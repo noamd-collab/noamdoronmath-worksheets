@@ -16,6 +16,7 @@ import { reviewedBatch05 as reviewedBatch05 } from './fixtures/batch05-pdf';
 import { beforeBatch03Registry } from './fixtures/batch03-pdf';
 import { beforeBatch08Copy, reviewedBatch08 } from './fixtures/batch08-pdf';
 import { reviewedBatch09 } from './fixtures/batch09-pdf';
+import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -244,7 +245,7 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
   };
   assert.deepEqual(reviewed.landingDeltas.map(d => d.slug), Object.keys(scope));
   for (const delta of reviewed.landingDeltas) {
-    const pageFile = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
+    const pageFile = (beforeLandingCorrections(delta.slug, read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`)) as any);
     const restored = beforeBatch02aCopy(delta.slug, pageFile) as any;
     // Batch 8 later appends its own section to some of these pages; compare this batch's state.
     const pageRaw = beforeBatch08Copy(delta.slug, pageFile) as any;
@@ -281,7 +282,7 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
         assert.ok(!text.includes(banned), `${delta.slug}: ${banned}`);
       }
     }
-    const page = loadTopicPage(delta.slug), flow = synthesizeBodyFlow(page);
+    const page = beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug)), flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text || '') === added.heading).length, 1);
     for (const block of added.blocks) assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text || '') === block.text).length, 1);
     const faq = extractJsonLdFaq(page.jsonLd).map(f => ({ question: plain(f.question), answer: plain(f.answer) }));
@@ -294,11 +295,11 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
     }
   }
   // The reduced-track series says so; the reviewed copy corrections stay in place.
-  const pyd = read('headless/astro-poc/src/data/topic-pages/pythagorean-theorem-grade-9.json');
+  const pyd = beforeLandingCorrections('pythagorean-theorem-grade-9', read('headless/astro-poc/src/data/topic-pages/pythagorean-theorem-grade-9.json')) as any;
   assert.match(pyd.intro, /סדרת PDF לתוכנית המצומצמת בכיתה ט׳/);
   const text = (slug: string) => {
     const delta = reviewed.landingDeltas.find(d => d.slug === slug)!;
-    const page = read(`headless/astro-poc/src/data/topic-pages/${slug}.json`);
+    const page = (beforeLandingCorrections(slug, read(`headless/astro-poc/src/data/topic-pages/${slug}.json`)) as any);
     const section = page.sections.find((candidate: any) => JSON.stringify(candidate) === JSON.stringify(delta.appendedSection));
     assert.ok(section, `${slug}: reviewed batch-02a section remains present`);
     return section.blocks.map((block: any) => block.text).join(' ');

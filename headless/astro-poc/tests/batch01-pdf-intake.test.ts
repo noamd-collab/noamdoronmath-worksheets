@@ -13,6 +13,7 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeBatch01Catalog, beforeBatch01Registry, beforeBatch01Copy,
   reviewedBatch01 as reviewed, reviewedBatch01Ids as ids } from './fixtures/batch01-pdf';
 import { beforeBatch02aRegistry } from './fixtures/batch02a-pdf';
+import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -166,7 +167,7 @@ test('four landing updates keep titles and CTAs and describe the actual series i
   };
   assert.deepEqual(reviewed.landingDeltas.map(d => d.slug), Object.keys(scope));
   for (const delta of reviewed.landingDeltas) {
-    const pageRaw = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
+    const pageRaw = (beforeLandingCorrections(delta.slug, read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`)) as any);
     const restored = beforeBatch01Copy(delta.slug, pageRaw) as any;
     assert.equal(digest(restored), delta.baselineSha256);
     assert.equal(pageRaw.h1, restored.h1); assert.equal(pageRaw.title, restored.title);
@@ -189,7 +190,7 @@ test('four landing updates keep titles and CTAs and describe the actual series i
       assert.ok(!text.includes('/'), `${delta.slug}: no slash fractions`);
       assert.ok(!text.includes('רמה ג׳'), `${delta.slug}: level names`);
     }
-    const page = loadTopicPage(delta.slug), flow = synthesizeBodyFlow(page);
+    const page = beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug)), flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text || '') === added.heading).length, 1);
     for (const block of added.blocks) assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text || '') === block.text).length, 1);
     const faq = extractJsonLdFaq(page.jsonLd).map(f => ({ question: plain(f.question), answer: plain(f.answer) }));

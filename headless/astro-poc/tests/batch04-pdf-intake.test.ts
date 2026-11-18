@@ -14,6 +14,7 @@ import { beforeBatch04Catalog, beforeBatch04Registry, beforeBatch04Copy,
   reviewedBatch04 as reviewed, reviewedBatch04Ids as ids } from './fixtures/batch04-pdf';
 import { beforeBatch05Registry } from './fixtures/batch05-pdf';
 import { beforeBatch08Copy } from './fixtures/batch08-pdf';
+import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -253,7 +254,7 @@ test('four landing updates keep titles and CTAs and describe the actual series i
   assert.deepEqual(reviewed.landingDeltas.map(d => d.slug), Object.keys(scope));
   assert.deepEqual(reviewed.landingDeltas.map(d => d.editionIds), ids.map(id => [id]));
   for (const delta of reviewed.landingDeltas) {
-    const pageFile = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
+    const pageFile = (beforeLandingCorrections(delta.slug, read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`)) as any);
     const restored = beforeBatch04Copy(delta.slug, pageFile) as any;
     // Batch 8 later appends its own section to some of these pages; compare this batch's state.
     const pageRaw = beforeBatch08Copy(delta.slug, pageFile) as any;
@@ -297,7 +298,7 @@ test('four landing updates keep titles and CTAs and describe the actual series i
       // Grade 8 teaches the AA similarity theorem only; no page here names SAS or SSS similarity.
       for (const banned of ['צ.ז.צ', 'צ.צ.צ']) assert.ok(!text.includes(banned), `${delta.slug}: ${banned}`);
     }
-    const page = loadTopicPage(delta.slug), flow = synthesizeBodyFlow(page);
+    const page = beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug)), flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text || '') === added.heading).length, 1);
     for (const block of added.blocks) assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text || '') === block.text).length, 1);
     const faq = extractJsonLdFaq(page.jsonLd).map(f => ({ question: plain(f.question), answer: plain(f.answer) }));
@@ -309,7 +310,7 @@ test('four landing updates keep titles and CTAs and describe the actual series i
       assert.equal(node.dateModified, '2026-11-17');
     }
   }
-  const page = (slug: string) => beforeBatch08Copy(slug, read(`headless/astro-poc/src/data/topic-pages/${slug}.json`)) as any;
+  const page = (slug: string) => beforeBatch08Copy(slug, (beforeLandingCorrections(slug, read(`headless/astro-poc/src/data/topic-pages/${slug}.json`)) as any)) as any;
   const text = (slug: string) => page(slug).sections.at(-1).blocks.map((b: any) => b.text).join(' ');
   // The official layout terms are used where the PDFs cover them.
   assert.ok(text('kite-grade-9').includes('תכונות הזוויות בדלתון') && text('kite-grade-9').includes('באלכסון הראשי בדלתון ובשטח דלתון'));

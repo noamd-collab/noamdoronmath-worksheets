@@ -14,6 +14,7 @@ import { beforeBatch05Catalog, beforeBatch05Copy, beforeBatch05Registry,
   reviewedBatch05 as reviewed, reviewedBatch05Ids as ids } from './fixtures/batch05-pdf';
 import { createRequire } from 'node:module';
 import { beforeBatch09Copy, reviewedBatch09 } from './fixtures/batch09-pdf';
+import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -206,7 +207,7 @@ test('ten landing routes add only reviewed PDF copy and preserve their complete 
   for (const delta of reviewed.landingDeltas) {
     assert.ok(delta.slug);
     const slug = delta.slug;
-    const page = read(`headless/astro-poc/src/data/topic-pages/${slug}.json`);
+    const page = (beforeLandingCorrections(slug, read(`headless/astro-poc/src/data/topic-pages/${slug}.json`)) as any);
     const restored = beforeBatch05Copy(slug, page);
     assert.equal(digest(restored), delta.baselineSha256, `${delta.slug}: exact previous page`);
     assert.equal(page.h1, restored.h1);
@@ -214,7 +215,7 @@ test('ten landing routes add only reviewed PDF copy and preserve their complete 
     assert.deepEqual(page.catalogCta, restored.catalogCta);
     assert.deepEqual(page.catalogCtas, restored.catalogCtas);
     assert.deepEqual((beforeBatch09Copy(slug, page) as any).sections.at(-1), delta.appendedSection);
-    const loaded = loadTopicPage(slug)!;
+    const loaded = beforeLandingCorrections(slug, loadTopicPage(slug)!);
     const sections = loaded.sections.filter(section => section.heading === delta.appendedSection.heading);
     assert.equal(sections.length, 1);
     assert.ok(sections[0].blocks.some(block => /רמה א׳/.test(block.text ?? '')));

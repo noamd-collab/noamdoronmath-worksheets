@@ -1,3 +1,10 @@
+## 2026-11-18 — landing corrections after the independent landing audit (candidate)
+
+- Google Antigravity audited the landing copy Claude wrote for the PDF editions (`reports/ANTIGRAVITY-AUDIT-claude-landings-20261117/review.json`: 38 essential and 59 minor findings). This change corrects 42 live pages with 138 exact text replacements, each checked against all three PDFs of its series.
+- Fixed: per-level claims that the PDFs do not support (a level said to add what an earlier level already has), task directions given backwards, hint promises that named Noam AI or did not exclude the extra PDFs, and the FAQ question "האם קובצי ה־PDF הנוספים כוללים רמזי?" on 40 pages, now "האם בקובצי ה־PDF הנוספים יש רמזים?" with an answer that opens with "לא.".
+- Findings that are not faults of the landing copy, or need more than a text replacement, are listed with reasons in `docs/landing-corrections-20261118.json`.
+- `tests/fixtures/landing-corrections-20261118.json` records every replacement with its count and the page hashes before and after; `beforeLandingCorrections` reverses them before every older landing fence. Titles are unchanged; the meta description changes only on two pages whose description repeated a corrected claim (trapezoid-grade-9, two-data-sources-grade-8).
+
 ## 2026-11-18 — four new PDF-only base topics with landings: 8/68, 9/50, 9/51, 9/52 (candidate)
 
 - Noam (18.11.2026) approved a new base topic with its own landing for each of four reviewed packages that had no topic to attach to: **G8-TRF-01** as grade-8 topic 68 **טרנספורמציות איזומטריות וצורות חופפות** (group geo), **G9-PLN-01** as grade-9 topic 50 **ישרים מקבילים — זוויות מתאימות ומתחלפות** and **G9-COI-01** as topic 51 **זוויות חד־צדדיות בין ישרים מקבילים** (both in a new regular grade-9 group, `geopar` **גיאומטריה — ישרים מקבילים וזוויות**, between fun and geo, so they are not listed among the quadrilaterals) and **G9-LIT-01** as topic 52 **משימות אוריינות — מודל מתמטי בהקשר מציאותי** (stat). All four are `publicationMode: "pdf-only"`.

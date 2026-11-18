@@ -1,0 +1,218 @@
+{
+  "schema": "landing-corrections-proof/v1",
+  "date": "2026-11-18",
+  "status": "REVIEW_CANDIDATE_NOT_PUBLISHED",
+  "audit": {
+    "path": "reports/ANTIGRAVITY-AUDIT-claude-landings-20261117/review.json",
+    "sha256": "98075aa385a2d9fe1fe5b1ccf4550b0dbd2b782c8722db9c1e6788b0a0e94f05",
+    "reviewer": "Google Antigravity (Gemini 4 Carbon High)",
+    "findings": 97,
+    "essential": 38,
+    "minor": 59,
+    "verdict": "FIX_REQUIRED"
+  },
+  "scope": {
+    "pages": 42,
+    "replacements": 138
+  },
+  "fixedFindingIds": [
+    0,
+    1,
+    2,
+    4,
+    5,
+    7,
+    8,
+    9,
+    12,
+    13,
+    14,
+    15,
+    18,
+    20,
+    23,
+    25,
+    26,
+    27,
+    29,
+    30,
+    31,
+    33,
+    38,
+    39,
+    41,
+    42,
+    43,
+    45,
+    47,
+    48,
+    50,
+    51,
+    53,
+    54,
+    55,
+    57,
+    60,
+    62,
+    63,
+    64,
+    66,
+    68,
+    71,
+    74,
+    75,
+    78,
+    80,
+    82,
+    83,
+    87,
+    89,
+    90,
+    92,
+    95
+  ],
+  "faqQuestionFindingIds": [
+    3,
+    6,
+    10,
+    16,
+    17,
+    19,
+    22,
+    24,
+    28,
+    32,
+    35,
+    37,
+    40,
+    44,
+    46,
+    49,
+    52,
+    56,
+    59,
+    61,
+    65,
+    67,
+    70,
+    72,
+    73,
+    77,
+    81,
+    84,
+    86,
+    88,
+    91,
+    93
+  ],
+  "faqQuestion": {
+    "before": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+    "after": "האם בקובצי ה־PDF הנוספים יש רמזים?",
+    "pages": 40
+  },
+  "notFixed": [
+    {
+      "slug": "equations-with-fractions-grade-8",
+      "findingId": 36,
+      "severity": "minor",
+      "reason": "The finding is not real. \"מאבחנים טעויות במעבר בין שורות של פתרון\" matches each worksheet's own header (\"פתרון, בדיקה, אבחון טעויות ובניית דוגמאות\") and question 6 (\"לזהות ... את הפעולה התקינה או את הטעות\"). In every level two of the three items contain an error that students correct, so the claim holds. Item 6ג in מצוינות (the conclusion from 0 = 0) is also an error to diagnose. \"מסתבכות\" in the sense of \"become more complex\" is standard Hebrew, not slang. The structure claim (same 7 questions in all levels, harder equations from level to level) holds in a, b and c."
+    },
+    {
+      "slug": "isosceles-triangle-properties-grade-8",
+      "findingId": 34,
+      "severity": "minor",
+      "reason": "Not a real fault. (1) The sentence comes right after the part-2 sentence. In all three levels part 2 has a grid question (Q9, ״במערכת הצירים מסורטטים ... כל משבצת היא יחידת אורך אחת״) and a sketch (Q10(ג) ״סרטטו סקיצה״). So the claim is true even if read as part 2 only, and it never says ״only in part 2״. (2) The page does not describe two parts: ״בסוף מבחינים בין תנאים: תיכון לבדו אינו מבטיח משולש שווה־שוקיים״ matches part 3, ״שילוב תכונות והבחנה בין תנאים — שאלות 11-12״, where Q12(ג) is the median-only claim. (3) ״מערכת צירים משובצת״ is natural Hebrew and matches the sheets' wording (״במערכת הצירים משובץ המשולש״). (4) In the intro, ״על תכונות המשולש״ refers back to the משולש שווה־שוקיים named in the sentence before it, which is not an error. No minimal replacement would make the page more accurate."
+    },
+    {
+      "slug": "linear-function-grade-8",
+      "findingId": 45,
+      "severity": "minor",
+      "reason": "Partial: sub-points (1) and (2) are fixed by the two corrections above. Sub-point (3) is not applied. It asks to also mention drawing a line on axes (Q5(ד), Q10(ד)) and the right-trapezoid area (רמה ב׳ Q12(ב), מצוינות Q6(ג), Q12(ב)). Both are true, but leaving them out is an omission, not a false claim, and adding them goes beyond a minimal correction."
+    },
+    {
+      "slug": "equations-advanced-grade-7",
+      "findingId": 58,
+      "severity": "minor",
+      "reason": "The finding is real: bodyFlow[11] (\"פתרו: 3(x−2)=12.\") has no answer, while sections[2].blocks[1] has \"תשובה: x=6.\". A text replacement cannot fix it. The fix is to add a new bodyFlow paragraph element after bodyFlow[11]. Appending the answer to \"פתרו: 3(x−2)=12.\" would also change sections[2].blocks[0], which would then show the answer twice next to sections[2].blocks[1]. The missing bodyFlow paragraph has to be inserted by structure: {\"type\":\"paragraph\",\"text\":\"תשובה: x=6.\",\"role\":\"body\"}."
+    },
+    {
+      "slug": "quadratic-inequalities-systems-grade-9",
+      "findingId": 76,
+      "severity": "minor",
+      "reason": "Not a real fault. \"באילו ערכי x גרף אחד נמצא מעל האחר\" already covers the below questions, because one graph is below the other exactly when the other is above it. G9-SYQ-01 רמה ב׳ Q1(ג) and Q5(ג) and מצוינות Q5(ג) are all questions of this kind. The surrounding claim also holds: רמה א׳ has no above/below question, and the sentence names only רמה ב׳ and מצוינות. The sentence is accurate as it stands."
+    },
+    {
+      "slug": "parallelogram-grade-9",
+      "findingId": 11,
+      "severity": "essential",
+      "reason": "This is a real fault, but it is in the PDF and its manifest, not in the landing copy. The G9-PAR-05-r02 level-c sheet.pdf, p1, prints 'רמה ג׳ · כיתה ט׳' and 'כיתה ט׳ — מסלול רגיל · רמה ג׳'. The page JSON does not contain 'רמה ג׳' anywhere. The fix is to point submissions/Claude/MANAGER-20261116/batch-01/pdfs.json at the corrected מצוינות PDF, or to re-render that PDF. A text replacement on the page cannot do that."
+    },
+    {
+      "slug": "parallelogram-grade-9",
+      "findingId": 13,
+      "severity": "minor",
+      "reason": "Partly fixed: the sentence in sections[4].blocks[1] is corrected (see corrections). Two parts were not done. Adding the construction series to the intro and FAQ would be new content: those fields claim nothing false about the PDFs. And the auditor's 'שני פתרונות' is not supported. In מצוינות Q4a (p3) the two compass arcs meet at two points, but only one of them gives the parallelogram. No level asks for a case with two solutions."
+    },
+    {
+      "slug": "trapezoid-grade-9",
+      "findingId": 78,
+      "severity": "essential",
+      "reason": "Partly fixed: 'זוויות הבסיס שוות זו לזו' becomes 'הזוויות שליד כל בסיס שוות זו לזו' (see corrections). Part 2 of the finding is not a fault. The page names the diagonal converse only as an example ('למשל כשהאלכסונים שלו שווים'). All three PDFs list 'המשפטים ההפוכים' in their 'מה בדף' line. מצוינות p6 Q5d asks students to state the base-angle converse and name the theorem that guarantees it. So the plural and the example both match the PDFs."
+    },
+    {
+      "slug": "trapezoid-grade-9",
+      "findingId": 79,
+      "severity": "essential",
+      "reason": "Not a real fault: מצוינות does build equations from equal legs and equal diagonals. c p3 Q3a: 'מצאו את כל ערכי t שעבורם אורך הקטע BC שווה לאורך הקטע AD' (answer t = 3 or t = 7). c p4 Q3b: 'מצאו את כל ערכי t שעבורם האלכסונים BD ו־AC שווים באורכם' (t = 3 or t = −9). The other levels also have these equations, though the auditor numbered them wrongly: a p2–p3 Q2c with diagonals 3x−2 and x+8, and b p2–p3 Q2a (diagonals) and Q2c (legs). The rest of the 'בכל הרמות' sentence also holds in c: heights in Q2, Q4 and Q6, and Pythagoras in Q2a, Q5b and Q6d."
+    },
+    {
+      "slug": "probability-sample-space-grade-8",
+      "findingId": 48,
+      "severity": "minor",
+      "reason": "תיקון חלקי. סעיפים 1–2 של הממצא מתוקנים ב־corrections. סעיף 3 (sections[3].blocks[0]: ״רושמים מרחב מדגם ... קובייה, כרטיסים ממוספרים ושק עם כדורים״) לא שונה: המשפט מסכם את הסדרה כולה ולא טוען שהדבר נכון בכל רמה. כל אחד מההקשרים מופיע לפחות ברמה אחת: רישום כל התוצאות וקובייה בודדת ברמה א׳ שאלה 1, כרטיסים ברמות א׳ וב׳, שתי קוביות ושק כדורים בכל הרמות. זהו ממצא minor, ואין כאן טענה שגויה על הרמות."
+    },
+    {
+      "slug": "triangle-30-60-90-grade-9",
+      "findingId": 87,
+      "severity": "essential",
+      "reason": "הערה בלבד, הממצא עצמו מתוקן ב־corrections. המבקר הציע עוד להסיר את הפסקאות היתומות ״קישורים קשורים״ ו״יחסי צלעות וזוויות במשולש לכיתה ט׳״ (sections[2].blocks[2..3], bodyFlow[9..10]). כדי להסיר אותן צריך למחוק בלוקים מה־JSON, ואי־אפשר לעשות זאת בהחלפת טקסט. החלפה במחרוזת ריקה תשאיר פסקאות ריקות. זה נשאר לטיפול מבני נפרד."
+    },
+    {
+      "slug": "coordinate-plane-scale-grade-7",
+      "findingId": 50,
+      "severity": "essential",
+      "reason": "תוקן חלקית. משפט הרמז עם ״נועם AI״ הוחלף בתיקון שלמעלה. החלק השני של הממצא נשאר: שתי מחרוזות קישור שהקישורים שלהן אבדו, ״מספרים מכוונים לכיתה ז׳״ (ב־sections[2].blocks[2] וב־bodyFlow[9]) ו״לכל דפי כיתה ז׳״ (ב־bodyFlow[10]). כדי לתקן אותן צריך למחוק את בלוקי הפסקה האלה או להחזיר להם את הקישורים, ושינוי מבנה כזה אינו אפשרי בהחלפת טקסט. החלפת המחרוזת בטקסט אחר הייתה משאירה פסקה חסרת משמעות או ריקה."
+    },
+    {
+      "slug": "isosceles-triangle-grade-9",
+      "findingId": 21,
+      "severity": "minor",
+      "reason": "Not a real fault. Checked in all three PDFs. Q4 (p3) in every level checks on the coordinate grid whether the triangle is isosceles (a, b: 'האם המשולש שווה־שוקיים? נמקו לפי תפקידיו של AD'; c: 'וקבעו אם המשולש שווה־שוקיים'). Q5 (p4) in every level uses a drawn example to show that a median alone is not enough. The PDF's own answer reads 'לא; בדוגמה AB ו־AC שונות. תיכון בלבד אינו תנאי מספיק', so 'מראים בדוגמה' is accurate. Q7 is covered by 'משלימים את ניסוח המשפט ההפוך'. 'מערכת צירים משובצת' is valid Hebrew for a gridded coordinate system and matches the PDF's 'כל משבצת היא יחידת אורך אחת'. In blocks[0], 'אותו קטע הוא שניים מתוך גובה, תיכון וחוצה זווית' already implies the same side: one segment from a vertex ends on a single side."
+    },
+    {
+      "slug": "equations-numeric-denominator-grade-9",
+      "findingId": 94,
+      "severity": "essential",
+      "reason": "Not a real fault, and it would not be a copy fix anyway. The live HTML of /equations-numeric-denominator-grade-9 wraps each expression in Unicode isolates: ⁦−(x + 5)⁩, ⁦−x − 5⁩, ⁦−x + 5⁩. isolateMathRuns in src/lib/mathDirection.ts lists '−' as a run opener. I measured the live page in Chromium 156: glyph left edges run − 830, ( 839, x 845, + 859, 5 873, ) 883, and − 725, x 735, − 748, 5 763. So the expressions display left to right exactly as written. The r2 screenshot shows the same correct layout; read right to left, it only looks reversed."
+    },
+    {
+      "slug": "equations-numeric-denominator-grade-9",
+      "findingId": 96,
+      "severity": "minor",
+      "reason": "Cannot be fixed by a page text replacement. The overflow of '4x − 3(x − 2) = 24' is in the minus-before-fraction interactive lesson component (layout and CSS), not in the page JSON copy. The 'שני חמישיות' typo is in the PDF itself (מצוינות p3 Q5: 'שני חמישיות מן הדרך'), so it needs a new PDF edition."
+    },
+    {
+      "slug": "kite-grade-9",
+      "findingId": 85,
+      "severity": "minor",
+      "reason": "Not a real fault. The sentence is explicitly about the first part, and it is accurate there. In Part 1 (Q1–3), a and b Q2 give the head angles and ask for the side angles ABC and CDA. Only מצוינות Q2(ב) asks 'חשבו את שתי זוויות הראש'. All levels do Q1 sides and perimeter and Q3 grid proof. The head angles in Q8(א) and Q9(ב) are in later parts, and nothing on the page says other levels never compute them. Part 3's content (angles as algebraic expressions, the grid question) is already in blocks[1]. 'מערכת צירים משובצת' is valid Hebrew and matches the PDF's 'כל משבצת היא יחידת אורך אחת'."
+    },
+    {
+      "slug": "square-root-grade-7",
+      "findingId": 69,
+      "severity": "minor",
+      "reason": "Held back: the sentence is the page meta description, which the frozen SEO proposals review keeps as reviewed copy; a description change belongs in a reviewed SEO proposal."
+    }
+  ],
+  "method": "Each correction was checked against all three PDFs of its series and applied as an exact text replacement in every synchronized field (sections, bodyFlow, faq, faqGroups, JSON-LD). tests/fixtures/landing-corrections-20261118.json records every replacement with its exact count and the page hashes before and after; beforeLandingCorrections reverses them before every older landing fence."
+}

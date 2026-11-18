@@ -15,6 +15,7 @@ import { beforeNext12Catalog, beforeNext12Registry, beforeNext12Copy,
 import { beforeNext21Registry } from './fixtures/next21-pdf';
 import { reviewedBatch03 } from './fixtures/batch03-pdf';
 import { reviewedBatch07 } from './fixtures/batch07-pdf';
+import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -77,13 +78,13 @@ test('all old teacher/learning/viewer sources stay identical and no additional P
 
 test('three exact landing deltas preserve old H1/title/primary CTAs and synchronize visible scope/FAQ', () => {
   for (const delta of reviewed.landingDeltas) {
-    const rawPage = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
+    const rawPage = (beforeLandingCorrections(delta.slug, read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`)) as any);
     const restored = beforeNext12Copy(delta.slug, rawPage) as any;
     assert.equal(digest(restored), delta.baselineSha256);
     assert.equal(rawPage.h1, restored.h1); assert.equal(rawPage.title, restored.title);
     assert.deepEqual(rawPage.catalogCta, restored.catalogCta);
     assert.deepEqual(rawPage.catalogCtas.slice(0, restored.catalogCtas.length), restored.catalogCtas);
-    const page = loadTopicPage(delta.slug);
+    const page = beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug));
     const added = rawPage.sections.at(-1);
     const flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text) === added.heading).length, 1);
