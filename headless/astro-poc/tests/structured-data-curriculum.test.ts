@@ -134,8 +134,8 @@ describe('curriculum-alignment.v1.json', () => {
       assert.ok(unit.name && !unit.name.includes('/'), id);
       assert.deepEqual(jsonLdBidiErrors(unit.name), [], id);
     }
-    assert.equal(Object.keys(file.pages).length, 124);
-    assert.equal(Object.keys(file.units).length, 156);
+    assert.equal(Object.keys(file.pages).length, 128); // + the four NEW4 landings (18.11)
+    assert.equal(Object.keys(file.units).length, 162); // + six units aligned by NEW4 (18.11)
   });
 
   it('applies the verifier corrections', () => {
@@ -238,11 +238,18 @@ describe('curriculum-alignment.v1.json', () => {
       assert.ok(curriculumUnitsForTopicPage(slug).every((u) => u.alignmentType === 'teaches'), slug);
       assert.ok(!rows.some((row) => row.pages.includes(slug)), slug);
     }
-    // One new unit-page pair (topic 9/49) and one pair moves to "teaches".
+    // One new unit-page pair (topic 9/49) and one pair moves to "teaches"; then NEW4 (18.11) adds
+    // six pairs: five "teaches" (9/50 x3, 9/51, 9/52) and one "educationalSubject" (8/68, partial).
     const pairs = Object.values(file.pages).flat();
-    assert.equal(pairs.length, 211);
-    assert.equal(pairs.filter((entry) => entry.alignmentType === 'teaches').length, 188);
-    assert.equal(pairs.filter((entry) => entry.alignmentType === 'educationalSubject').length, 23);
+    assert.equal(pairs.length, 211 + 6);
+    assert.equal(pairs.filter((entry) => entry.alignmentType === 'teaches').length, 188 + 5);
+    assert.equal(pairs.filter((entry) => entry.alignmentType === 'educationalSubject').length, 23 + 1);
+    assert.equal(type('isometric-transformations-grade-8', 'st.g8.transformations.isometries_congruence'), 'educationalSubject');
+    for (const id of ['st.g9r.parallels_trapezoid.properties', 'st.g9r.parallels_trapezoid.alternate_corresponding', 'st.g9r.parallels_trapezoid.converse']) {
+      assert.equal(type('parallel-lines-angles-grade-9', id), 'teaches', id);
+    }
+    assert.equal(type('co-interior-angles-grade-9', 'st.g9r.parallels_trapezoid.co_interior'), 'teaches');
+    assert.equal(type('math-literacy-tasks-grade-9', 'st.g9r.integrative_literacy.real_world_tasks'), 'teaches');
   });
 });
 
@@ -309,7 +316,7 @@ describe('topic-page JSON-LD (SEO-4)', () => {
         assert.ok(teaches.includes(unit.name), `${page.slug}: teaches ${unit.name}`);
       }
     }
-    assert.equal(aligned, 124);
+    assert.equal(aligned, 128);
   });
 
   it('lists every PDF behind the page level buttons as a MediaObject', () => {

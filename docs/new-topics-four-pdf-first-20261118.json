@@ -308,8 +308,7 @@
       "author": "Claude (Anthropic); fix r02 by Qwen Code",
       "landing": "/math-literacy-tasks-grade-9",
       "programSubtopics": [
-        "st.g9r.integrative_literacy.real_world_tasks",
-        "st.g9m.word_problems_integrative.literacy_contexts"
+        "st.g9r.integrative_literacy.real_world_tasks"
       ],
       "levels": [
         {

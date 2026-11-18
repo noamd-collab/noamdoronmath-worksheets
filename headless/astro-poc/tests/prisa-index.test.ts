@@ -60,16 +60,13 @@ const NOW = new Date('2026-11-17T10:00:00Z');
  * Units with no same-grade page at 118b4d90 (the mapping's no_topic units,
  * minus the triangle inequality, which batch 2a added to the median page, and
  * minus st.g9m.equations.numeric_denominator, whose planned landing
- * equations-numeric-denominator-grade-9 is served since the content train).
+ * equations-numeric-denominator-grade-9 is served since the content train, and minus the six
+ * units whose planned NEW4 landings are served since 18 Nov).
  * A new landing may only shrink this list, after a regenerate.
  */
 const NO_PAGE_UNITS = [
-  'st.g8.transformations.isometries_congruence',
-  'st.g9r.parallels_trapezoid.properties',
-  'st.g9r.parallels_trapezoid.alternate_corresponding',
-  'st.g9r.parallels_trapezoid.converse',
-  'st.g9r.parallels_trapezoid.co_interior',
-  'st.g9r.integrative_literacy.real_world_tasks',
+  // NEW4 (18.11) serves the planned landings of the grade-8 transformations unit, the four
+  // grade-9 parallel-lines units and the grade-9 literacy unit.
   'st.g9m.percentages.part_of_whole',
   'st.g9m.percentages.increase_decrease',
   'st.g9m.parallels_and_parallelogram.review',
