@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch11-pdf-reviewed.json';
+import { beforeBatch12Catalog, beforeBatch12Copy, beforeBatch12Registry } from './batch12-pdf';
 import { beforeFirst15Correction } from '../helpers/beforeFirst15Correction';
-import { beforeReviewedRamziActivation } from '../helpers/beforeReviewedRamziActivation';
 
 export { reviewed as reviewedBatch11 };
 export const reviewedBatch11Ids = reviewed.additions.map(a => a.editionId);
@@ -14,10 +14,10 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 
 /** Undo only batch 11's reviewed overlays and return the exact earlier state. */
 export function beforeBatch11Catalog<T>(catalog: T): T {
-  // The verified first15 hint-correction metadata (Codex #499, ported 18.11) is newer than
-  // batch 11: reverse it first, exactly once, for every older catalog fence.
-  // The receipt-backed additional Ramzi activation is newer still: reverse it before that.
-  const restored: any = structuredClone(beforeFirst15Correction(beforeReviewedRamziActivation(catalog)));
+  // Newer layers first, exactly once each: the batch 12 fence reverses the additional reviewed
+  // Ramzi activation (19.11) and batch 12; then the verified first15 hint-correction metadata
+  // (Codex #499, published with #538 on 18.11).
+  const restored: any = structuredClone(beforeFirst15Correction(beforeBatch12Catalog(catalog)));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;
@@ -46,7 +46,8 @@ export function beforeBatch11Catalog<T>(catalog: T): T {
 
 /** Validate exact registry rows before removing batch 11. */
 export function beforeBatch11Registry<T>(registry: T): T {
-  const restored: any = structuredClone(registry);
+  // Batch 12 (19.11) is newer: reverse it first.
+  const restored: any = structuredClone(beforeBatch12Registry(registry));
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -57,6 +58,8 @@ export function beforeBatch11Registry<T>(registry: T): T {
 
 /** Verify batch 11's exact changed fields and recover the earlier landing. */
 export function beforeBatch11Copy<T>(slug: string, page: T): T {
+  // Batch 12 (19.11) is newer: unwind it first. Older tests never call beforeBatch12Copy themselves.
+  page = beforeBatch12Copy(slug, page);
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);

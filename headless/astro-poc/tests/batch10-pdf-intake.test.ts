@@ -11,7 +11,8 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeBatch10Catalog, beforeBatch10Copy, beforeBatch10Registry,
   reviewedBatch10 as reviewed, reviewedBatch10Ids as ids } from './fixtures/batch10-pdf';
-import { beforeBatch11Registry } from './fixtures/batch11-pdf';
+import { beforeBatch11Copy, beforeBatch11Registry } from './fixtures/batch11-pdf';
+import { reviewedBatch12 } from './fixtures/batch12-pdf';
 import { createRequire } from 'node:module';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
@@ -31,6 +32,16 @@ for (const addition of reviewed.additions) {
   const topic = previousSsr.grades.find((g: any) => g.grade === addition.grade)
     .topics.find((t: any) => t.id === addition.topicId);
   topic.editions = topic.editions?.filter((e: any) => !ids.includes(e.editionId));
+  if (!topic.editions?.length) {
+    delete topic.editions;
+    delete topic.defaultEditionId;
+  }
+}
+// Batch 12 (19.11) adds a later edition on 7/12 (G7-ANG-02, after G7-ANG-03).
+for (const addition of reviewedBatch12.additions) {
+  const topic = previousSsr.grades.find((g: any) => g.grade === addition.grade)
+    .topics.find((t: any) => t.id === addition.topicId);
+  topic.editions = topic.editions?.filter((e: any) => e.editionId !== addition.editionId);
   if (!topic.editions?.length) {
     delete topic.editions;
     delete topic.defaultEditionId;
@@ -153,7 +164,8 @@ test('six additive editions recover the pinned baseline after the landing correc
     const selectedId = oldTopic.defaultEditionId ?? 'legacy';
     const topicAdditions = reviewed.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId);
     assert.deepEqual(groups.map(g => g.editionId),
-      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId)]);
+      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId),
+        ...reviewedBatch12.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId)]);
     const oldGroupCount = oldIds.length + 1;
     assert.deepEqual(groups.slice(0, oldGroupCount), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
     assert.deepEqual(groups.find(g => g.editionId === addition.editionId)!.levels.map(l => l.key), ['a', 'b', 'c']);
@@ -174,7 +186,8 @@ test('six landing routes add only reviewed PDF copy and preserve their complete 
     assert.equal(page.title, restored.title);
     assert.deepEqual(page.catalogCta, restored.catalogCta);
     assert.deepEqual(page.catalogCtas, restored.catalogCtas);
-    assert.deepEqual(page.sections.at(-1), delta.appendedSection);
+    // Batch 12 appends a second PDF section to adjacent-vertical-angles-grade-7 after this one.
+    assert.deepEqual((beforeBatch11Copy(slug, page) as any).sections.at(-1), delta.appendedSection);
     const loaded = loadTopicPage(slug)!;
     const sections = loaded.sections.filter(section => section.heading === delta.appendedSection.heading);
     assert.equal(sections.length, 1);
@@ -249,7 +262,8 @@ test('preservation fences reject catalog, registry and landing substitutions and
       const g = moved.grades.find((x: any) => x.grade === grade);
       const source = g.topics.find((t: any) => t.id === sourceId);
       const destination = g.topics.find((t: any) => t.id === destinationId);
-      const misplaced = source.editions.pop();
+      // Pick the batch-10 edition by id: a later batch may have appended another edition to the topic.
+      const [misplaced] = source.editions.splice(source.editions.findIndex((e: any) => e.editionId === editionId), 1);
       assert.equal(misplaced.editionId, editionId);
       if (!source.editions.length) {
         delete source.editions;

@@ -30,6 +30,7 @@ import { reviewedBatch08 } from './fixtures/batch08-pdf';
 import { reviewedBatch09 } from './fixtures/batch09-pdf';
 import { reviewedBatch10 } from './fixtures/batch10-pdf';
 import { reviewedBatch11 } from './fixtures/batch11-pdf';
+import { reviewedBatch12 } from './fixtures/batch12-pdf';
 import { reviewedPcm53 } from './fixtures/pcm53-pdf';
 import { afterLandingCorrections } from './fixtures/landing-corrections-20261118';
 
@@ -799,6 +800,32 @@ test('real batch-11 pages expose all 12 direct PDFs after the earlier editions o
   }
   assert.equal(slugs.length, 4);
   assert.equal(urls.size, 12);
+});
+
+test('the real batch-12 page exposes the three ANG-02 PDFs after the earlier editions of topic 7/12', async () => {
+  const urls = new Set<string>();
+  const slugs = [...new Set(reviewedBatch12.additions.map(addition => addition.slug))];
+  for (const slug of slugs) {
+    const document = await renderTopic(slug), hero = document.querySelector('.exact-topic-copy')!;
+    for (const addition of reviewedBatch12.additions.filter(item => item.slug === slug)) {
+      const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+      assert.deepEqual(links.map(link => link.getAttribute('href')),
+        addition.edition.levels.map(level => `https://static.wixstatic.com/ugd/d8e7ad_${level.pdfId}.pdf`));
+      assert.ok(links.every(link => link.textContent.includes('פתיחת PDF')
+        && !link.textContent.includes('רמזי') && !link.getAttribute('href')!.includes('viewer')));
+      links.forEach(link => urls.add(link.getAttribute('href')!));
+      const groups = [...new Set([...hero.querySelectorAll('a[data-edition-id]')].map(link => link.getAttribute('data-edition-id')))];
+      assert.deepEqual(groups, ['legacy', ...addition.baselineEditionIds, addition.editionId], `${slug}: later edition after the earlier ones`);
+    }
+    const delta = reviewedBatch12.landingDeltas.find(item => item.slug === slug)!;
+    const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    assert.ok(!mainText.includes('נועם AI'), `${slug}: no Noam AI hint copy`);
+    const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
+  }
+  assert.equal(slugs.length, 1);
+  assert.equal(urls.size, 3);
 });
 
 test('the new reduced-track landing percentages-grade-9 exposes exactly the three reviewed PCM PDFs and no hint tool', async () => {
