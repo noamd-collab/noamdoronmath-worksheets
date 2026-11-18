@@ -1,0 +1,295 @@
+---
+/**
+ * Homepage announcement: new junior-high worksheet editions.
+ * Remove later by deleting this file and the single include in src/pages/index.astro.
+ */
+const grades = [
+  { href: '/grade-7', label: 'כיתה ז׳' },
+  { href: '/grade-8', label: 'כיתה ח׳' },
+  { href: '/grade-9', label: 'כיתה ט׳' },
+];
+---
+<div class="jh-launch" role="region" data-junior-high-launch aria-labelledby="jh-launch-title">
+  <div class="jh-launch__confetti" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="jh-launch__inner">
+    <div class="jh-launch__copy">
+      <p class="jh-launch__kicker">
+        <svg class="jh-launch__mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+          <path fill="#e6a534" stroke="#22305a" stroke-width="1.3" stroke-linejoin="round" d="M12 1.8 14.7 8.2 21.4 8.8 16.4 13.4 18 20 12 16.6 6 20 7.6 13.4 2.6 8.8 9.3 8.2Z"></path>
+        </svg>
+        יש חדש!
+      </p>
+      <p id="jh-launch-title" class="jh-launch__title">גרסה חדשה לגמרי עלתה לדפי חטיבת הביניים!</p>
+      <p class="jh-launch__punch">לא אהבתם את הקודמים? <span class="jh-launch__love">עכשיו תתכוננו להתאהב מחדש.</span></p>
+    </div>
+    <nav class="jh-launch__nav" aria-label="לדפי העבודה החדשים">
+      {grades.map((grade) => (
+        <a class="jh-launch__go" href={grade.href}>{grade.label}</a>
+      ))}
+    </nav>
+    <button type="button" class="jh-launch__close" data-jh-dismiss aria-label="סגירת ההודעה על הגרסה החדשה">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+</div>
+<style>
+  .jh-launch {
+    position: relative;
+    background: #fff6df;
+    color: #22305a;
+    border-block-end: 2px solid #22305a;
+    box-shadow: inset 0 4px 0 #e6a534;
+  }
+  .jh-launch__confetti {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 12px;
+    margin: 0;
+    padding-inline: 10px;
+    pointer-events: none;
+  }
+  .jh-launch__confetti span {
+    display: block;
+    width: 7px;
+    height: 8px;
+    background: #e5735c;
+    border-radius: 1px;
+    transform: rotate(16deg);
+    opacity: 0.9;
+  }
+  .jh-launch__confetti span:nth-child(3n) {
+    width: 8px;
+    height: 8px;
+    background: #e6a534;
+    border-radius: 50%;
+    transform: none;
+  }
+  .jh-launch__confetti span:nth-child(3n + 1) {
+    width: 5px;
+    height: 11px;
+    background: #2a7c7a;
+    border-radius: 1px;
+    transform: rotate(-18deg);
+  }
+  .jh-launch[data-live] .jh-launch__confetti span {
+    animation: jh-confetti 2.4s ease-in-out infinite;
+  }
+  .jh-launch[data-live] .jh-launch__confetti span:nth-child(2n) { animation-delay: 0.35s; }
+  .jh-launch[data-live] .jh-launch__confetti span:nth-child(3n) {
+    animation-name: jh-confetti-dot;
+    animation-delay: 0.7s;
+  }
+  .jh-launch[data-live] .jh-launch__confetti span:nth-child(3n + 1) {
+    animation-name: jh-confetti-tilt;
+  }
+  .jh-launch[data-live] .jh-launch__mark {
+    animation: jh-twinkle 2.2s ease-in-out infinite;
+  }
+  @keyframes jh-confetti {
+    0%, 100% { transform: translateY(0) rotate(16deg); opacity: 0.85; }
+    50% { transform: translateY(-3px) rotate(16deg); opacity: 1; }
+  }
+  @keyframes jh-confetti-dot {
+    0%, 100% { transform: translateY(0); opacity: 0.85; }
+    50% { transform: translateY(-3px); opacity: 1; }
+  }
+  @keyframes jh-confetti-tilt {
+    0%, 100% { transform: translateY(0) rotate(-18deg); opacity: 0.85; }
+    50% { transform: translateY(-3px) rotate(-18deg); opacity: 1; }
+  }
+  @keyframes jh-twinkle {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.88); opacity: 0.75; }
+  }
+  .jh-launch__inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 20px;
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-block: 8px 12px;
+    padding-inline: 20px 64px;
+  }
+  .jh-launch__copy {
+    min-width: 0;
+  }
+  .jh-launch__kicker {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 2px;
+    font-family: 'Secular One', 'Secular One Fallback', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+    color: #a84434;
+  }
+  .jh-launch__mark {
+    display: block;
+    flex: none;
+    transform-origin: center;
+  }
+  .jh-launch__title {
+    margin: 0;
+    font-family: 'Secular One', 'Secular One Fallback', sans-serif;
+    font-size: clamp(22px, 2.5vw, 32px);
+    font-weight: 400;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .jh-launch__punch {
+    margin: 4px 0 0;
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .jh-launch__love {
+    color: #1f6462;
+  }
+  .jh-launch__nav {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .jh-launch__go {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px 14px;
+    background: #e6a534;
+    color: #22305a;
+    border: 2px solid #22305a;
+    border-radius: 16px 6px 18px 8px / 8px 18px 6px 16px;
+    box-shadow: 3px 3px 0 #22305a;
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .jh-launch__go:hover {
+    background: #f3c56a;
+  }
+  .jh-launch__go:focus-visible,
+  .jh-launch__close:focus-visible {
+    outline: 3px solid #1f6462;
+    outline-offset: 2px;
+  }
+  .jh-launch__close {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: #fbfaf5;
+    color: #22305a;
+    border: 2px solid #22305a;
+    border-radius: 12px 4px 14px 6px / 6px 14px 4px 12px;
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+  }
+  @media (max-width: 720px) {
+    .jh-launch__inner {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      padding-block: 6px 12px;
+      padding-inline: 14px;
+    }
+    .jh-launch__copy {
+      padding-inline-end: 48px;
+    }
+    .jh-launch__title {
+      font-size: 22px;
+    }
+    .jh-launch__punch {
+      font-size: 15px;
+    }
+    .jh-launch__nav {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .jh-launch__go {
+      padding-inline: 6px;
+      font-size: 15px;
+    }
+    .jh-launch__close {
+      inset-inline-end: 8px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .jh-launch[data-live] .jh-launch__confetti span,
+    .jh-launch[data-live] .jh-launch__mark {
+      animation: none;
+    }
+  }
+  :global(html.nd-motion-off) .jh-launch[data-live] .jh-launch__confetti span,
+  :global(html.noam-a11y-motion) .jh-launch[data-live] .jh-launch__confetti span,
+  :global(html[data-nd-motion='off']) .jh-launch[data-live] .jh-launch__confetti span,
+  :global(html.nd-motion-off) .jh-launch[data-live] .jh-launch__mark,
+  :global(html.noam-a11y-motion) .jh-launch[data-live] .jh-launch__mark,
+  :global(html[data-nd-motion='off']) .jh-launch[data-live] .jh-launch__mark {
+    animation: none;
+  }
+</style>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-junior-high-launch]');
+  if (root) {
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let onScreen = true;
+    const motionOff = () => {
+      const html = document.documentElement;
+      return (
+        motionQuery.matches ||
+        html.classList.contains('nd-motion-off') ||
+        html.classList.contains('noam-a11y-motion') ||
+        html.getAttribute('data-nd-motion') === 'off' ||
+        document.hidden ||
+        !onScreen
+      );
+    };
+    const sync = () => {
+      if (motionOff()) root.removeAttribute('data-live');
+      else root.setAttribute('data-live', '');
+    };
+    root.querySelector<HTMLButtonElement>('[data-jh-dismiss]')?.addEventListener('click', () => {
+      root.remove();
+    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        onScreen = entries.some((entry) => entry.isIntersecting);
+        sync();
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(root);
+    document.addEventListener('visibilitychange', sync);
+    motionQuery.addEventListener('change', sync);
+    new MutationObserver(sync).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class', 'data-nd-motion'],
+    });
+    sync();
+  }
+</script>
