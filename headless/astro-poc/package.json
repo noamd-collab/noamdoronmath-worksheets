@@ -33,6 +33,7 @@
     "sync:static": "node scripts/sync-github-static.mjs",
     "check:static": "node scripts/sync-github-static.mjs check",
     "audit:routes": "node scripts/audit-production-routes.mjs",
+    "check:live-robots": "node scripts/check-live-robots.mjs",
     "wix": "wix",
     "release": "wix release",
     "generate": "wix generate",

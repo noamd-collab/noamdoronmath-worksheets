@@ -1,0 +1,2856 @@
+{
+  "schema": "batch06-reviewed-additive-pdf-fixture/v1",
+  "baselineCommit": "4db6f5e3af9401629c5ecd47cd4cb096ae5fbece",
+  "baselineCatalogSha256": "cd0cb98fd2ed0539ad2f337a4b655f6e0e8e62be7874e3e5512ed9b46b5a9195",
+  "baselineRegistrySha256": "56e634d84fca3f7ac168ad710b1f499608fed68bec711b33b003ee65d10168f4",
+  "additions": [
+    {
+      "sheetId": "G7-ALG-02",
+      "grade": 7,
+      "topicId": 29,
+      "editionId": "ms-20261117-alg-02-r1",
+      "nativePrefix": "G7-T95",
+      "slug": "combining-like-terms-grade-7",
+      "pdfIds": [
+        "319c5231e7934fa9b025150f23c373b0",
+        "86e1d6f0c0fd46e98e7338617d68e7b1",
+        "c9038f10d45b49b4b6bb4fe3465f0a52"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 29,
+        "editionId": "ms-20261117-alg-02-r1",
+        "label": "שוויון בין ביטויים אלגבריים (זהות) · PDF",
+        "nativePrefix": "G7-T95",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "319c5231e7934fa9b025150f23c373b0",
+            "pdfSha256": "6ef29e63964fdca04e90f3fd72c97ee3f532ecec14f0240c2e8c644e5d8e1786",
+            "sourceSha256": "8fdc147170ba7a3833a6c3ca3347be7ab01ea342f1a265e5a1f919d809ddc175",
+            "nativeExportSha256": "a53e4942857cf8dacef1e2a4fac2948f0ab053af345049d223880c0f2ebb8bc3",
+            "worksheetId": "ms-g7-alg-02-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "86e1d6f0c0fd46e98e7338617d68e7b1",
+            "pdfSha256": "f37e7bcfa73d9d10bd27cf3b20faaee2fa08dd8d708bba4a197e4c86bb535569",
+            "sourceSha256": "356d863b960b83f990ade50ae0c3486ff7edc303562f8a8435c5a7c0163e03b6",
+            "nativeExportSha256": "1f3bf17d166f1770d59e16886eda251166c5ef28d1ba0547b75621271a3333fb",
+            "worksheetId": "ms-g7-alg-02-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "c9038f10d45b49b4b6bb4fe3465f0a52",
+            "pdfSha256": "341f100054527c94b9e8f853ac11b575a02fe8b2b42cf79f21f7a4548875fa48",
+            "sourceSha256": "ca0b19916e5adb690342df70edfc97daa922c4d917dba332c6e2537028f7ef7d",
+            "nativeExportSha256": "d3cde7c895e5689ccb8b948fde9b28a9ddb2d77ce172b3d64c81d9d9ee5782f7",
+            "worksheetId": "ms-g7-alg-02-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ז",
+      "generatedEditionSha256": "0830b5ba84664623c9cdb337115b5bc003461a1ff48fc3a3f8f90465fcd2ab6b",
+      "baselineTopicSha256": "af714f59cb27cde14b0e83bc30afb9ab9c450a84717861192836dc8d3755ecc2",
+      "baselineEditionIds": [
+        "ms-20261117-alg-03-r1"
+      ]
+    },
+    {
+      "sheetId": "G7-ALG-04",
+      "grade": 7,
+      "topicId": 29,
+      "editionId": "ms-20261117-alg-04-r1",
+      "nativePrefix": "G7-T97",
+      "slug": "combining-like-terms-grade-7",
+      "pdfIds": [
+        "ad7e74e374e64f9a8ce3c2e324246cec",
+        "5cc5e48809ab464fb6f18c00815b322a",
+        "7fbc776112514266baabbd208a35a9bc"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 29,
+        "editionId": "ms-20261117-alg-04-r1",
+        "label": "חוק הפילוג בביטויים אלגבריים · PDF",
+        "nativePrefix": "G7-T97",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "ad7e74e374e64f9a8ce3c2e324246cec",
+            "pdfSha256": "8bf85637db62d64004c1fc1540bff03936e6e878b92245f0d11b81014913c461",
+            "sourceSha256": "c10916a9738c3924a6b7d444e24c6d6fe369e72e4eda202efc3cb1ff8a45dfae",
+            "nativeExportSha256": "8bb47fe83db56f24ceb140088ffe15fd35efaaf49f76b26516ca031c6434cf23",
+            "worksheetId": "ms-g7-alg-04-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "5cc5e48809ab464fb6f18c00815b322a",
+            "pdfSha256": "1ed1a7a8efb3405b4f80c1fb9ea8ea5207bf67e15d3ff92317cd226b25e2507b",
+            "sourceSha256": "f9d6a6916e7fdc0ecc50aadb52070c7d3a069ce7c4f915c9cb683108a1275546",
+            "nativeExportSha256": "9cee0a16c2add3e6069ab048b047522f567aeba942dba3df8e2a04a51dd5b4e9",
+            "worksheetId": "ms-g7-alg-04-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "7fbc776112514266baabbd208a35a9bc",
+            "pdfSha256": "d424c3e7cc04521978f8cb6abc5cd719a6371288ca1da8c047bc00da1d5f267a",
+            "sourceSha256": "3428f2ffde3a56554eb737de38e7307bbe49163529934e2799fb36d325373fd9",
+            "nativeExportSha256": "84a82e9618fbe9df0f9afbe595e5cf96234c7d6281f3c62a3df5ad3da78487e3",
+            "worksheetId": "ms-g7-alg-04-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ז",
+      "generatedEditionSha256": "3df9e3f8fa1aeb80ffe0ecf3ff66061556ac6f443422b266d2371c85b692c69e",
+      "baselineTopicSha256": "af714f59cb27cde14b0e83bc30afb9ab9c450a84717861192836dc8d3755ecc2",
+      "baselineEditionIds": [
+        "ms-20261117-alg-03-r1"
+      ]
+    },
+    {
+      "sheetId": "G7-CRD-01",
+      "grade": 7,
+      "topicId": 9,
+      "editionId": "ms-20261117-crd-01-r1",
+      "nativePrefix": "G7-T80",
+      "slug": "coordinate-plane-four-quadrants-grade-7",
+      "pdfIds": [
+        "b5d0cd4f1bba4f40b2460025c87649df",
+        "5515f70f1f724488923aae8e2c0940f0",
+        "16f6f1731e154dfa87c0b330004190ac"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 9,
+        "editionId": "ms-20261117-crd-01-r1",
+        "label": "מערכת צירים בארבעה רביעים · PDF",
+        "nativePrefix": "G7-T80",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "b5d0cd4f1bba4f40b2460025c87649df",
+            "pdfSha256": "cb5306dcd465f6d24bf4195d550c3fc375fafb1bf2b391a76ea633280fe2b0be",
+            "sourceSha256": "6811f8741f912159f1e908580d35716aaf21d1463003ac0dafbe890f7ce08fe5",
+            "nativeExportSha256": "1b8ae2cdf450764a7bdeefb6ecfb105e31fa119184d28a68ffe2ebfb2a26bc23",
+            "worksheetId": "ms-g7-crd-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "5515f70f1f724488923aae8e2c0940f0",
+            "pdfSha256": "1be1b3c43d3469ec32e858d4cfc0a073bf26cd0d039ff9f3de42dccde1475108",
+            "sourceSha256": "c327d8d980643d96f2fa2917da46c29688c7ae4103710e2e1906bb3d51e29067",
+            "nativeExportSha256": "a5c46946d651ec193702e2999e7556c1fa1f0cc6169f78367522dcc8139627c0",
+            "worksheetId": "ms-g7-crd-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "16f6f1731e154dfa87c0b330004190ac",
+            "pdfSha256": "5e4eb21d45d328fe9a4a011171507495a814f5f2ac6fe5b34a6e8617e8b5e423",
+            "sourceSha256": "d374341f3a4220c8197135f8afec8c8391a08a1f1e52358bce27ad2ecb50e6fa",
+            "nativeExportSha256": "547088263fdac6d46061b9cd4a279d22995b6c4cef1b5fe2a4de610b2d8442dd",
+            "worksheetId": "ms-g7-crd-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ז",
+      "generatedEditionSha256": "44c547396fc7106c84461801cb44664a797e88daeb2624d84a2bfdcf6a5068dd",
+      "baselineTopicSha256": "936967b814d8aa725e15474bbf8537bd302ea941f84d4682c5236588c65747fe",
+      "baselineEditionIds": []
+    },
+    {
+      "sheetId": "G8-INE-01",
+      "grade": 8,
+      "topicId": 52,
+      "editionId": "ms-20261117-ine-01-r1",
+      "nativePrefix": "G8-T80",
+      "slug": "inequalities-grade-8",
+      "pdfIds": [
+        "cb7a38ef2d2d494ca0bdf66e1ccb553b",
+        "a9ba7290085f465886db52ab7275d4d7",
+        "2452329a2569498e84ad314abde23ded"
+      ],
+      "edition": {
+        "grade": 8,
+        "topicId": 52,
+        "editionId": "ms-20261117-ine-01-r1",
+        "label": "אי־שוויון: פתרונות והצגה על ציר המספרים · PDF",
+        "nativePrefix": "G8-T80",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "cb7a38ef2d2d494ca0bdf66e1ccb553b",
+            "pdfSha256": "6505aae6701ae59e2a034c9dbfd10ca2ff9f41a86afa2db772bdeeaa19eeed0d",
+            "sourceSha256": "bb75ffb83db52a29c824d2ee6139ef2c90655410d64e07d39f983c343a156e2c",
+            "nativeExportSha256": "aadfdb9336ba2ff0fc16e5dfbf394b9d91f905d7259b78dadf5a74bc012455dc",
+            "worksheetId": "ms-g8-ine-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "a9ba7290085f465886db52ab7275d4d7",
+            "pdfSha256": "a4d15d45878a29124379f81bcffe99a680fccdf0f1c332bccac37b34510eb8ad",
+            "sourceSha256": "7d5ec1e7c0b3643bfc1716fab64629398e8fb7f4ef2d48ddb27f02bf3964f8a0",
+            "nativeExportSha256": "23be144835f41fde6ef891d25811595f49f614ffb1140493d19f39de5f0a92c6",
+            "worksheetId": "ms-g8-ine-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "2452329a2569498e84ad314abde23ded",
+            "pdfSha256": "a2bdebf5a44103f90420965ec48a24bfd9722c6d942a3e3c91320b7f967658a4",
+            "sourceSha256": "9088244c4963ea2b1743c2d61ad2aba5ea589776e8c8df4f6b2c9ad2f02478a7",
+            "nativeExportSha256": "de025fbf1952261767e6220971e41205901b7fc226561d70d6ce40231fcecfd9",
+            "worksheetId": "ms-g8-ine-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ח",
+      "generatedEditionSha256": "bd16a5874e7bf63b83146bfb29f4330ffb2096619d5f3cca5f252d4a94548b8c",
+      "baselineTopicSha256": "8ad780de41c29a28851b000eadc9a45b51e2c1789c19225c3980a0a201a3624b",
+      "baselineEditionIds": [
+        "ms-20261117-ine-02-r1"
+      ]
+    },
+    {
+      "sheetId": "G9-FPR-01",
+      "grade": 9,
+      "topicId": 12,
+      "editionId": "ms-20261117-fpr-01-r1",
+      "nativePrefix": "G9-T53",
+      "slug": "precalculus-functions-graphs-grade-9",
+      "pdfIds": [
+        "4ec2d0fc517b4e02a084dcf0fec826d6",
+        "e08f4dadf35a4106965429c87b48d47a",
+        "574ba05d059a429e8037b951c7999b1b"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 12,
+        "editionId": "ms-20261117-fpr-01-r1",
+        "label": "תכונות פונקציה מתוך גרף ומשוואות כנקודות חיתוך · PDF",
+        "nativePrefix": "G9-T53",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "4ec2d0fc517b4e02a084dcf0fec826d6",
+            "pdfSha256": "9ef54b029ede051a5c3af400c4f34ac5a514a431934993b62e931453bddef091",
+            "sourceSha256": "e97ac69aa3616d3b7ff06d7a93627c04fab2d67c695fcd2de1286df7bc2e5cc9",
+            "nativeExportSha256": "241fce83055ab4a84c0835dad35801cf226a2f8a671132f5373f5dfdd693710f",
+            "worksheetId": "ms-g9-fpr-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "e08f4dadf35a4106965429c87b48d47a",
+            "pdfSha256": "ef14bb4fb7b6d7fa497d5744ac25b2e23d8aa46edf5b878ee380533a101ce045",
+            "sourceSha256": "1fc6ad35e9e559bf6e309780cb237833e74490b53a093c6628c17ecce7a43081",
+            "nativeExportSha256": "c54df731ccf4a699f9c3d15f1bb0d637173ac5ac9c29122d14c416d8d3907ab6",
+            "worksheetId": "ms-g9-fpr-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "574ba05d059a429e8037b951c7999b1b",
+            "pdfSha256": "a82d0ad76335adcfcfe0f5ebb157deb0fa6765bacfbab4eb8507fc76019ebacb",
+            "sourceSha256": "527b24c98828b5f25dd20e4434fbaa820201591471a5dc8f50e6f39f1be684f9",
+            "nativeExportSha256": "71c09862788c935ed737b29b9e66b0c44ecc40f3a2ae6734f060a0c21e7e7390",
+            "worksheetId": "ms-g9-fpr-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ט_רגילה",
+      "generatedEditionSha256": "d5b900f9b3f35e3d31cc806ff0f740ea8b789c077bb2cfcaad21d0c87561fa17",
+      "baselineTopicSha256": "cacecb9bece56f55659163af8a5c021f2d0e9decfe91d1978b389cadbf1f8fe0",
+      "baselineEditionIds": []
+    },
+    {
+      "sheetId": "G9-FSH-01",
+      "grade": 9,
+      "topicId": 12,
+      "editionId": "ms-20261117-fsh-01-r1",
+      "nativePrefix": "G9-T54",
+      "slug": "precalculus-functions-graphs-grade-9",
+      "pdfIds": [
+        "b0dcc3089dc246ef95cd9eae149f6715",
+        "98b790911c1f4797af701b6eff8fef1d",
+        "eaec8f2655ee4e0b939da7db4ffa24a1"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 12,
+        "editionId": "ms-20261117-fsh-01-r1",
+        "label": "הזזה ושיקוף של פונקציה · PDF",
+        "nativePrefix": "G9-T54",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "b0dcc3089dc246ef95cd9eae149f6715",
+            "pdfSha256": "a98232310474fbd50db64043950ceb6474578ae55a2cdc12ee962b91b93a110d",
+            "sourceSha256": "337f66732e4bd8f1d793865d05f384757485bb17dbe19e6591e8b9620efada49",
+            "nativeExportSha256": "73b9ebaf7c680860da95a364c8d05780cd6f68d04a34d0ad316c1b191bb5a10f",
+            "worksheetId": "ms-g9-fsh-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "98b790911c1f4797af701b6eff8fef1d",
+            "pdfSha256": "670f581ebb7a8b549508f2ed3e4c52ff81b8f59cb903f3f25b802fad9423efd1",
+            "sourceSha256": "b9689eb64e59a87d878a7f16198322114b6d23f13f61958403341a127e8daa2a",
+            "nativeExportSha256": "af702058c0382f4742563856ea6d9e41ebbddff79991c4fb927bbedf24a9d5c6",
+            "worksheetId": "ms-g9-fsh-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "eaec8f2655ee4e0b939da7db4ffa24a1",
+            "pdfSha256": "5bf17a2f77d07f91a7b6534feb9ca6163802f2af5082242d22c1decb3c07eab4",
+            "sourceSha256": "9309e2f3bad4cfd075a8c5276ace88affff3964640002095a92cb4417741e627",
+            "nativeExportSha256": "8677aa5098b903cb0c596bfcb9dc5fa5cdf80fe6d4fac8141e326ed5e9a998b8",
+            "worksheetId": "ms-g9-fsh-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ט_רגילה",
+      "generatedEditionSha256": "2da310eff1c3cbb601a3936934364727a5d81dff4d508bd4f3b7ba9ba663f455",
+      "baselineTopicSha256": "cacecb9bece56f55659163af8a5c021f2d0e9decfe91d1978b389cadbf1f8fe0",
+      "baselineEditionIds": []
+    },
+    {
+      "sheetId": "G9-GRD-01",
+      "grade": 9,
+      "topicId": 36,
+      "editionId": "ms-20261117-grd-01-r1",
+      "nativePrefix": "G9-T63",
+      "slug": "reading-graphs-grade-9",
+      "pdfIds": [
+        "21ac94bcaf98499cb1c192a8ad2416f8",
+        "a851d59d7f4f4f36be6f3cd175007e77",
+        "2cc74a5904b940e0ba9a83e786fa8a79"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 36,
+        "editionId": "ms-20261117-grd-01-r1",
+        "label": "ט׳ מצומצמת · קריאת גרפים של תופעות · PDF",
+        "nativePrefix": "G9-T63",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "21ac94bcaf98499cb1c192a8ad2416f8",
+            "pdfSha256": "6b081daf76e59e4cd638e5db7979193fdec888f93add0933ab05352308295806",
+            "sourceSha256": "541add5dd544be6274ee5ce54f4f07af6efa855657a3c01ab21a08d842f24c51",
+            "nativeExportSha256": "af746219d8187cbef6dcd20a01aae6ff083912b40dd99119e5b9d51f86f61a37",
+            "worksheetId": "ms-g9-grd-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "a851d59d7f4f4f36be6f3cd175007e77",
+            "pdfSha256": "8a753ce9f12377e05af22fba91367f1eea5ac26d01c3e8cb78c5646c64f8611f",
+            "sourceSha256": "db354cda7c5cc8538552fc55c57cf9b1df696bb5f63e36ee3e2cb5773e29d5b2",
+            "nativeExportSha256": "728225a9a7238398b31a7b0a25321f55337f38a88bcb83ebb88423e56ad72422",
+            "worksheetId": "ms-g9-grd-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "2cc74a5904b940e0ba9a83e786fa8a79",
+            "pdfSha256": "cf77ca6506c38ac5861a04de604e0361b83d46324591644ae4ad79730af41113",
+            "sourceSha256": "ee1b1d8bd28ada7e83b24b585de61a04c0afba4df9d1003841d499b72ce9b006",
+            "nativeExportSha256": "4d9e7df4ba5dfacc415ee70ced6afe1f59883918d04bde8d83f15366264d36fb",
+            "worksheetId": "ms-g9-grd-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ט_מצומצמת",
+      "generatedEditionSha256": "958b88ea152eca9724442a5ef3de09291149dccf9f54667a0270a57008f24ecb",
+      "baselineTopicSha256": "22fb67b683c80feee03de043bd2409de0479d25c8dc9ff36075551cf70721aea",
+      "baselineEditionIds": []
+    },
+    {
+      "sheetId": "G9-PBM-01",
+      "grade": 9,
+      "topicId": 10,
+      "editionId": "ms-20261117-pbm-01-r1",
+      "nativePrefix": "G9-T92",
+      "slug": "probability-grade-9",
+      "pdfIds": [
+        "c834ab4638b84375ac5545359e97e7b4",
+        "2a2b25b20e5b41bfa500c2c0cc8e4c32",
+        "4ddf1fe5d627446495c8de4df39dc0e5"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 10,
+        "editionId": "ms-20261117-pbm-01-r1",
+        "label": "ט׳ מצומצמת · הסתברות: מושגים בסיסיים, שכיחות יחסית ומאורע משלים · PDF",
+        "nativePrefix": "G9-T92",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "c834ab4638b84375ac5545359e97e7b4",
+            "pdfSha256": "ce95f7fe95dd021c245829d3e0264ca764527eb627d222accb50143db1226bec",
+            "sourceSha256": "3bf1113ba939120e6e6acc63f3a5ef7e6004f1544f42c8cdb412540f6e5a8298",
+            "nativeExportSha256": "a3f9d8b53f0f6b0964aa0d0bcd30b97422ba41f880635021a8c117dd1b86b5e1",
+            "worksheetId": "ms-g9-pbm-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "2a2b25b20e5b41bfa500c2c0cc8e4c32",
+            "pdfSha256": "700104e21e69197e036e48dcc4621fa00aa09a3122fafc2b3b98ea2fe6ae0440",
+            "sourceSha256": "3438583f55a4a4c0316df5f9c86dd54a54bb2bbdce5f92eb4409a189ff401b73",
+            "nativeExportSha256": "5ac188ca5f457260d1e2c08ecb0f02873cf2947856040b259488b62e9183a193",
+            "worksheetId": "ms-g9-pbm-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "4ddf1fe5d627446495c8de4df39dc0e5",
+            "pdfSha256": "8ac9e78d9771576b83ffd21fad141675e4976acedb8afcb1f3a7cc00b80346f3",
+            "sourceSha256": "89cb548b7b434fc2ea8c0790fb1a03f76fef111b9e972f9b7ea6720394d2c1f0",
+            "nativeExportSha256": "840cb191abf9889bf62dddac4ae90e5f886998b8133dd7f8cf46b4c1fe6b224b",
+            "worksheetId": "ms-g9-pbm-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ט_מצומצמת",
+      "generatedEditionSha256": "305434f9b57bbdcc8a8e354e2031d49eba197bd8db100af6458ee96242378b78",
+      "baselineTopicSha256": "9c8493a78c2e4cf6c33b6919f9f028d7363bd250ff553c6a15559c504766c370",
+      "baselineEditionIds": [
+        "ms-20261116-prc-01-r1",
+        "ms-20261116-prt-01-r1",
+        "ms-20261116-prw-01-r1"
+      ]
+    },
+    {
+      "sheetId": "G9-QFM-01",
+      "grade": 9,
+      "topicId": 6,
+      "editionId": "ms-20261117-qfm-01-r1",
+      "nativePrefix": "G9-T100",
+      "slug": "quadratic-equations-grade-9",
+      "pdfIds": [
+        "e0202eeef7fc4a8ca70f389ad7600526",
+        "a26c512b7d3e4fbd8106fdcadbb34b67",
+        "0a4a1329a3854deca1ea69bc83e825fc"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 6,
+        "editionId": "ms-20261117-qfm-01-r1",
+        "label": "ט׳ מצומצמת · נוסחת השורשים · PDF",
+        "nativePrefix": "G9-T100",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "e0202eeef7fc4a8ca70f389ad7600526",
+            "pdfSha256": "acfbad95c50907726daa372b0136ec02b4b4670714ba07e3aed777ad10778f6b",
+            "sourceSha256": "6eac688097b5ef2b23022db6bf105c44eced7af36df0e18fd7165f451021a4c4",
+            "nativeExportSha256": "8918fd9d06d03efab6bd0030a8e4cffe47d6334c7960a562be19c0d46b9f7a6f",
+            "worksheetId": "ms-g9-qfm-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "a26c512b7d3e4fbd8106fdcadbb34b67",
+            "pdfSha256": "04b06beecbc0a65f7f2e7cd3b0b68a50ff7eba907d30778cdf81fbf73cbc578b",
+            "sourceSha256": "d288d396937a0a94a10dc4976065df5ec60696eddd67b436823782b455cab2d3",
+            "nativeExportSha256": "8214d3e15af14a9c41b46d8df9e3eff7459db09c796f9c3325d258af960280dd",
+            "worksheetId": "ms-g9-qfm-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "0a4a1329a3854deca1ea69bc83e825fc",
+            "pdfSha256": "c6a50f61463487b0ba00fc5d4bf8f1fe67a7a8b83fac7017c82af7300d9b8660",
+            "sourceSha256": "cd81e280e57582ca31d8ace7b4eacd4951fa3a1a899f4f198f78c35a9d09d2b5",
+            "nativeExportSha256": "77cbfdad73601df6dbc34fc1da5f5cc6d3c65dada721b1a46e8a5d0e73819e3e",
+            "worksheetId": "ms-g9-qfm-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ט_מצומצמת",
+      "generatedEditionSha256": "00d879cc6da13ef693495d2cd5a840535f072dfd7ed322140305b900a59e357d",
+      "baselineTopicSha256": "097fd1813ad3989f95e4f76d4dec9d9409230595ba4e60c2cfa09c9f5875045e",
+      "baselineEditionIds": [
+        "ms-20261117-qap-01-r1"
+      ]
+    },
+    {
+      "sheetId": "G9-QVL-01",
+      "grade": 9,
+      "topicId": 5,
+      "editionId": "ms-20261117-qvl-01-r1",
+      "nativePrefix": "G9-T50",
+      "slug": "quadratic-function-grade-9",
+      "pdfIds": [
+        "58827e72995b40858899d498dfdcad43",
+        "b50ec3a847e3450b8334c972182e0204",
+        "3edfc4d4b1b84f5fbe8e5d9fbd9171c0"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 5,
+        "editionId": "ms-20261117-qvl-01-r1",
+        "label": "ט׳ מצומצמת · פונקציה ריבועית: הצבה ופתרון משוואה · PDF",
+        "nativePrefix": "G9-T50",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "58827e72995b40858899d498dfdcad43",
+            "pdfSha256": "9e4153e70fa1897e47d9977e64f0a604119d86aea961f67edb9ab7039aa6b5a1",
+            "sourceSha256": "e4fbe980630b2d86aef6318d4c2899596bcbf332ceac32e1218e3302bbae2eaf",
+            "nativeExportSha256": "4d3baa925def07a584c91e1d2bda8204ab6050799966a8bf1ce753603c61741d",
+            "worksheetId": "ms-g9-qvl-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "b50ec3a847e3450b8334c972182e0204",
+            "pdfSha256": "ac9cdd0801e8b9aa310aeb9cd18b7c06ff8a4a153c5db072c13010f12a750784",
+            "sourceSha256": "71e543f0b22258b597e94a232ff9142fcc92f7c4e78bb55830e2532e4e853d3f",
+            "nativeExportSha256": "11961e111b4403c292e449ce614002fd0c5d80f86bbafc5fa7cb837f00cb806e",
+            "worksheetId": "ms-g9-qvl-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "3edfc4d4b1b84f5fbe8e5d9fbd9171c0",
+            "pdfSha256": "f45edfb3c2a8aa0f5c1aa02cb00400e1653462ed6e0c6507c23b86186977bb31",
+            "sourceSha256": "2a99532c6390c27fafcdbf6c738aa8dd7ecebbeae14d39ff34d23b79b044334c",
+            "nativeExportSha256": "456a8018c5f65320ebf567a4a72c6ca7c9703505cd474f979b3af43ec9d4a6eb",
+            "worksheetId": "ms-g9-qvl-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ט_מצומצמת",
+      "generatedEditionSha256": "1bea92c091920aed86f30eca25c57484306202e423d9ce7497f7ef804728eba3",
+      "baselineTopicSha256": "4332fdc917faee45d00ad3d12c239434cfd5c4326d90c477c9c275d549ece9d2",
+      "baselineEditionIds": []
+    },
+    {
+      "sheetId": "G9-SMM-01",
+      "grade": 9,
+      "topicId": 40,
+      "editionId": "ms-20261117-smm-01-r1",
+      "nativePrefix": "G9-T47",
+      "slug": "triangle-similarity-aa-grade-9",
+      "pdfIds": [
+        "6ee45ad9771a46e49841fbf312cf9dd5",
+        "291828fdd1584690a912586c9c08c8fc",
+        "31ce1cff833245b48a1ce3480688c8c6"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 40,
+        "editionId": "ms-20261117-smm-01-r1",
+        "label": "ט׳ מצומצמת · צורות דומות, הגדלה והקטנה ומשפט דמיון ז.ז · PDF",
+        "nativePrefix": "G9-T47",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "6ee45ad9771a46e49841fbf312cf9dd5",
+            "pdfSha256": "544dc0fd90c343b4e07e57b97f543bc18b3e5beba1be1fa970f5bdca9dd8fc36",
+            "sourceSha256": "fad1ee7e38df158fd764be72c4317fbb10bf65c40cd8c4ba8bcc77fab01a2d6b",
+            "nativeExportSha256": "a58d248602aa1d25531a2e2a5deeb3391007b71ee50ae29598951a93d355e6b4",
+            "worksheetId": "ms-g9-smm-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "291828fdd1584690a912586c9c08c8fc",
+            "pdfSha256": "876c454e90707196438f3e78511837564e916cf98fccea3b3ba75fe15eba50df",
+            "sourceSha256": "16fa077a8b34e3aec5e9b4ae3ebe52857d40d0e78ed64e7332d44af51cbd53b6",
+            "nativeExportSha256": "9906b2d9a6f7173581d39b9f05eac7a2d9a353e9a21e9369ce27de9fe86d27e6",
+            "worksheetId": "ms-g9-smm-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "31ce1cff833245b48a1ce3480688c8c6",
+            "pdfSha256": "47adf5db2dc223243be950432eae446897f867c9415db0ae9d6ef6e4874f303e",
+            "sourceSha256": "e296d8bed1c1b03aba6f0bf4a167aabe607e8bceefe7b915de236fc8f1d01053",
+            "nativeExportSha256": "3873b0365af267db231ffad35ddccf017b6b30d99ce6219b9de9683e9f93f2b0",
+            "worksheetId": "ms-g9-smm-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "track": "ט_מצומצמת",
+      "generatedEditionSha256": "05c25c3b1a4ac0eef5b59593b0a691296600d29c069956a875390c5604da113a",
+      "baselineTopicSha256": "6d3b6a1e3dad804a408e9433617ca32b591661088a03e9fc3f2ccd2da0d3f7bd",
+      "baselineEditionIds": []
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "combining-like-terms-grade-7",
+      "grade": 7,
+      "topicId": 29,
+      "editionIds": [
+        "ms-20261117-alg-02-r1",
+        "ms-20261117-alg-04-r1"
+      ],
+      "baselineSha256": "e52018ba923a8043ac1e5f522c98141e5f82bd46e2a7dc6ec68ccf2bcd60f315",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "איברים דומים מכילים אותו משתנה באותה חזקה. בחוק הפילוג כופלים את הגורם שמחוץ לסוגריים בכל איבר שבתוכם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: 3(x+2)+2x=3x+6+2x=5x+6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אי אפשר לכנס את 5x ואת 6, כי הם אינם איברים דומים. בפתיחת סוגריים חשוב לכפול כל איבר, ובייחוד לשים לב לסימן שלילי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פשטו: 4(y−2)+3y.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 7y−8.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "כינוס איברים דומים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בכל השאלות יש משתנה אחד. מזהים איברים דומים, כלומר איברים עם אותו חלק משתני או מספרים חופשיים, ומכנסים אותם, גם כשהמקדמים הם מספרים עשרוניים ושברים. מציבים מספר בביטוי המקורי ובביטוי המכונס, ובודקים אם הצבה אחת מספיקה כדי לקבוע ששני ביטויים שקולים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל רמה מוצאים טעות בכינוס שעשה תלמיד, ובשאלה מהקשר כותבים ביטוי מכונס להיקף של מצולע או לסכום כסף. ברמה ב׳ יש יותר מקדמים שליליים ויותר איברים עם x², ובמצוינות גם משלימים איבר חסר, קובעים אם שוויון בין ביטויים הוא זהות ומכנסים לפני הצבה כדי לחשב בלי מחשבון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "איברים דומים מכילים אותו משתנה באותה חזקה. בחוק הפילוג כופלים את הגורם שמחוץ לסוגריים בכל איבר שבתוכם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: 3(x+2)+2x=3x+6+2x=5x+6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אי אפשר לכנס את 5x ואת 6, כי הם אינם איברים דומים. בפתיחת סוגריים חשוב לכפול כל איבר, ובייחוד לשים לב לסימן שלילי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פשטו: 4(y−2)+3y.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 7y−8.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "כינוס איברים דומים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בכל השאלות יש משתנה אחד. מזהים איברים דומים, כלומר איברים עם אותו חלק משתני או מספרים חופשיים, ומכנסים אותם, גם כשהמקדמים הם מספרים עשרוניים ושברים. מציבים מספר בביטוי המקורי ובביטוי המכונס, ובודקים אם הצבה אחת מספיקה כדי לקבוע ששני ביטויים שקולים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל רמה מוצאים טעות בכינוס שעשה תלמיד, ובשאלה מהקשר כותבים ביטוי מכונס להיקף של מצולע או לסכום כסף. ברמה ב׳ יש יותר מקדמים שליליים ויותר איברים עם x², ובמצוינות גם משלימים איבר חסר, קובעים אם שוויון בין ביטויים הוא זהות ומכנסים לפני הצבה כדי לחשב בלי מחשבון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "שוויון בין ביטויים וחוק הפילוג — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בודקים אם שני ביטויים אלגבריים שקולים באמצעות הצבה, דוגמה נגדית, חוקי החילוף והקיבוץ וקו השבר כסימן חילוק, ומכירים את המושג זהות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מיישמים את חוק הפילוג בחישוב בעל־פה ובביטויים אלגבריים (כולל שברים, ובהמשך גם מכפילים שליליים, מינוס לפני סוגריים ומספר עשרוני), מכנסים איברים דומים אחרי פתיחת סוגריים ומשלימים גורם או איבר חסר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לכל אחת משתי הסדרות שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "שוויון בין ביטויים וחוק הפילוג — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בודקים אם שני ביטויים אלגבריים שקולים באמצעות הצבה, דוגמה נגדית, חוקי החילוף והקיבוץ וקו השבר כסימן חילוק, ומכירים את המושג זהות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מיישמים את חוק הפילוג בחישוב בעל־פה ובביטויים אלגבריים (כולל שברים, ובהמשך גם מכפילים שליליים, מינוס לפני סוגריים ומספר עשרוני), מכנסים איברים דומים אחרי פתיחת סוגריים ומשלימים גורם או איבר חסר.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "לכל אחת משתי הסדרות שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "coordinate-plane-four-quadrants-grade-7",
+      "grade": 7,
+      "topicId": 9,
+      "editionIds": [
+        "ms-20261117-crd-01-r1"
+      ],
+      "baselineSha256": "84aa6ee4c83caf4a590f4f78b84e61066706931970ab65b11a8b5aa233de2635",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ברביע הראשון שני השיעורים חיוביים, בשני x שלילי ו־y חיובי, בשלישי שניהם שליליים וברביע הרביעי x חיובי ו־y שלילי. בשיקוף ביחס לציר x משתנה רק הסימן של y. דוגמה: שיקוף הנקודה (4,−3) ביחס לציר x הוא (4,3).",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה היא לשייך לרביע נקודה שנמצאת על ציר. הנקודה (0,−5) נמצאת על ציר y ואינה שייכת לאף רביע.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "באיזה רביע נמצאת הנקודה (−2,−6)? תשובה: ברביע השלישי, כי שני השיעורים שליליים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מערכת צירים — היכרות וקנה מידה",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ברביע הראשון שני השיעורים חיוביים, בשני x שלילי ו־y חיובי, בשלישי שניהם שליליים וברביע הרביעי x חיובי ו־y שלילי. בשיקוף ביחס לציר x משתנה רק הסימן של y. דוגמה: שיקוף הנקודה (4,−3) ביחס לציר x הוא (4,3).",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה היא לשייך לרביע נקודה שנמצאת על ציר. הנקודה (0,−5) נמצאת על ציר y ואינה שייכת לאף רביע.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "באיזה רביע נמצאת הנקודה (−2,−6)? תשובה: ברביע השלישי, כי שני השיעורים שליליים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מערכת צירים — היכרות וקנה מידה",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מערכת צירים — ארבעת הרביעים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קוראים ומסמנים נקודות בארבעת הרביעים ועל הצירים, ומקשרים בין סימני השיעורים לבין הרביע שבו נמצאת הנקודה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מוצאים אורכים של קטעים מקבילים לצירים, עובדים עם שיעורים נגדיים ומחשבים היקף ושטח של מלבנים בכל הרביעים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "מרחיבים את מערכת הצירים לשיעורים שליליים, מזהים באיזה רביע נמצאת נקודה, ומשקפים נקודות ביחס לצירים. דפי העבודה זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=7&topic=9",
+              "catalogTopicId": 9
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "ברביע הראשון שני השיעורים חיוביים, בשני x שלילי ו־y חיובי, בשלישי שניהם שליליים וברביע הרביעי x חיובי ו־y שלילי. בשיקוף ביחס לציר x משתנה רק הסימן של y. דוגמה: שיקוף הנקודה (4,−3) ביחס לציר x הוא (4,3).",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה היא לשייך לרביע נקודה שנמצאת על ציר. הנקודה (0,−5) נמצאת על ציר y ואינה שייכת לאף רביע.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "באיזה רביע נמצאת הנקודה (−2,−6)? תשובה: ברביע השלישי, כי שני השיעורים שליליים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מערכת צירים — היכרות וקנה מידה",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל דפי כיתה ז׳",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "מרחיבים את מערכת הצירים לשיעורים שליליים, מזהים באיזה רביע נמצאת נקודה, ומשקפים נקודות ביחס לצירים. דפי העבודה זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=7&topic=9",
+              "catalogTopicId": 9
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "ברביע הראשון שני השיעורים חיוביים, בשני x שלילי ו־y חיובי, בשלישי שניהם שליליים וברביע הרביעי x חיובי ו־y שלילי. בשיקוף ביחס לציר x משתנה רק הסימן של y. דוגמה: שיקוף הנקודה (4,−3) ביחס לציר x הוא (4,3).",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה היא לשייך לרביע נקודה שנמצאת על ציר. הנקודה (0,−5) נמצאת על ציר y ואינה שייכת לאף רביע.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "באיזה רביע נמצאת הנקודה (−2,−6)? תשובה: ברביע השלישי, כי שני השיעורים שליליים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מערכת צירים — היכרות וקנה מידה",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל דפי כיתה ז׳",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מערכת צירים — ארבעת הרביעים — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "קוראים ומסמנים נקודות בארבעת הרביעים ועל הצירים, ומקשרים בין סימני השיעורים לבין הרביע שבו נמצאת הנקודה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מוצאים אורכים של קטעים מקבילים לצירים, עובדים עם שיעורים נגדיים ומחשבים היקף ושטח של מלבנים בכל הרביעים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        }
+      ],
+      "appendedSection": {
+        "heading": "מערכת צירים — ארבעת הרביעים — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "קוראים ומסמנים נקודות בארבעת הרביעים ועל הצירים, ומקשרים בין סימני השיעורים לבין הרביע שבו נמצאת הנקודה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מוצאים אורכים של קטעים מקבילים לצירים, עובדים עם שיעורים נגדיים ומחשבים היקף ושטח של מלבנים בכל הרביעים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "inequalities-grade-8",
+      "grade": 8,
+      "topicId": 52,
+      "editionIds": [
+        "ms-20261117-ine-01-r1"
+      ],
+      "baselineSha256": "f53051f95dbdb1e3c74088877cc7116d5aad1a725684a08355afb0bbb9dd136a",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פותרים אי־שוויון בדומה למשוואה, אבל בכפל או בחילוק במספר שלילי הופכים את כיוון סימן האי־שוויון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: −3x<12, ולכן x>−4.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בכפל או בחילוק במספר שלילי חייבים להפוך את סימן האי־שוויון.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: 2x+5≥17.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x≥6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "אי־שוויון ממעלה ראשונה — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בתחילת כל דף בודקים איך פעולה על שני האגפים משפיעה על כיוון האי־שוויון: חיבור וחיסור, וכפל או חילוק במספר חיובי, שומרים על הכיוון, וכפל או חילוק במספר שלילי הופכים אותו. אחר כך פותרים אי־שוויונות ממעלה ראשונה, ובכל רמה כותבים אי־שוויון לבעיה מילולית ופותרים אותו.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה א׳ וברמה ב׳ מסמנים את קבוצת הפתרונות על ציר המספרים, בעיגול מלא או ריק, ומוצאים טעות בפתרון של תלמיד. ברמה ב׳ הנעלם מופיע בשני האגפים ויש גם סוגריים, וסופרים פתרונות שלמים. במצוינות בודקים את הכללים באותיות, פותרים אי־שוויונות שיש בהם כמה מכנים, מזהים אי־שוויון שכל מספר הוא פתרון שלו או שאין לו פתרון, מוצאים ערך של פרמטר ובונים אי־שוויון לפי קבוצת פתרונות נתונה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פותרים אי־שוויון בדומה למשוואה, אבל בכפל או בחילוק במספר שלילי הופכים את כיוון סימן האי־שוויון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: −3x<12, ולכן x>−4.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בכפל או בחילוק במספר שלילי חייבים להפוך את סימן האי־שוויון.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: 2x+5≥17.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x≥6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "אי־שוויון ממעלה ראשונה — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בתחילת כל דף בודקים איך פעולה על שני האגפים משפיעה על כיוון האי־שוויון: חיבור וחיסור, וכפל או חילוק במספר חיובי, שומרים על הכיוון, וכפל או חילוק במספר שלילי הופכים אותו. אחר כך פותרים אי־שוויונות ממעלה ראשונה, ובכל רמה כותבים אי־שוויון לבעיה מילולית ופותרים אותו.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה א׳ וברמה ב׳ מסמנים את קבוצת הפתרונות על ציר המספרים, בעיגול מלא או ריק, ומוצאים טעות בפתרון של תלמיד. ברמה ב׳ הנעלם מופיע בשני האגפים ויש גם סוגריים, וסופרים פתרונות שלמים. במצוינות בודקים את הכללים באותיות, פותרים אי־שוויונות שיש בהם כמה מכנים, מזהים אי־שוויון שכל מספר הוא פתרון שלו או שאין לו פתרון, מוצאים ערך של פרמטר ובונים אי־שוויון לפי קבוצת פתרונות נתונה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "אי־שוויון: פתרונות והצגה על ציר המספרים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בודקים בהצבה אם מספר מקיים אי־שוויון, ומכירים את קבוצת הפתרונות ואת המילים ״לפחות״ ו״לכל היותר״.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קוראים ומסרטטים את קבוצת הפתרונות על ציר המספרים, עם עיגול ריק או מלא וקרן (ובמצוינות גם אי־שוויון כפול וקטע), ומתרגמים בין מילים, אי־שוויון וציר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "אי־שוויון: פתרונות והצגה על ציר המספרים — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בודקים בהצבה אם מספר מקיים אי־שוויון, ומכירים את קבוצת הפתרונות ואת המילים ״לפחות״ ו״לכל היותר״.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "קוראים ומסרטטים את קבוצת הפתרונות על ציר המספרים, עם עיגול ריק או מלא וקרן (ובמצוינות גם אי־שוויון כפול וקטע), ומתרגמים בין מילים, אי־שוויון וציר.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "precalculus-functions-graphs-grade-9",
+      "grade": 9,
+      "topicId": 12,
+      "editionIds": [
+        "ms-20261117-fpr-01-r1",
+        "ms-20261117-fsh-01-r1"
+      ],
+      "baselineSha256": "38189fb70894f038319a001faffc75c6644bc980faae9030cccd63458f0d552e",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "מטבלה לגרף",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כל זוג ערכים בטבלה מגדיר נקודה במערכת הצירים. הנקודות שייכות לגרף הפונקציה, אך טבלה חלקית לבדה אינה קובעת את הגרף כולו. מחברים נקודות רק כשסוג הפונקציה או הנתונים מצדיקים זאת.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "איך מזהים חוקיות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בודקים מה משתנה בכל צעד ומנסחים כלל שמתאים לכל השורות",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בטבלה שבה x גדל ב־1 ו־y גדל ב־3, מהו קצב השינוי?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: קצב השינוי הוא 3. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לכל דפי העבודה של כיתה ט׳ לחצו כאן",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "מטבלה לגרף",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כל זוג ערכים בטבלה מגדיר נקודה במערכת הצירים. הנקודות שייכות לגרף הפונקציה, אך טבלה חלקית לבדה אינה קובעת את הגרף כולו. מחברים נקודות רק כשסוג הפונקציה או הנתונים מצדיקים זאת.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "איך מזהים חוקיות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בודקים מה משתנה בכל צעד ומנסחים כלל שמתאים לכל השורות",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בטבלה שבה x גדל ב־1 ו־y גדל ב־3, מהו קצב השינוי?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: קצב השינוי הוא 3. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לכל דפי העבודה של כיתה ט׳ לחצו כאן",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "פונקציות וגרפים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קוראים מתוך גרף את תכונות הפונקציה: נקודות חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה ותחומים שבהם הפונקציה קבועה; פותרים משוואות ואי־שוויונות בעזרת הגרף ונקודות החיתוך, ומסרטטים סקיצה של גרף לפי תכונות נתונות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מזיזים גרף של פונקציה אנכית ואופקית ומשקפים אותו ביחס לציר x, ובודקים מה קורה לנקודות, לקיצון, לנקודות האפס ולתחומים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לכל אחת משתי הסדרות שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "יחידה זו מכינה אתכם לעולם הפונקציות: זיהוי קשר בין משתנים, קריאת טבלה, תיאור גרף וחוקיות. דפי העבודה מחולקים לשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=12",
+              "catalogTopicId": 12
+            },
+            {
+              "type": "heading",
+              "text": "מטבלה לגרף"
+            },
+            {
+              "type": "paragraph",
+              "text": "כל זוג ערכים בטבלה מגדיר נקודה במערכת הצירים. הנקודות שייכות לגרף הפונקציה, אך טבלה חלקית לבדה אינה קובעת את הגרף כולו. מחברים נקודות רק כשסוג הפונקציה או הנתונים מצדיקים זאת.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "איך מזהים חוקיות"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים מה משתנה בכל צעד ומנסחים כלל שמתאים לכל השורות",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בטבלה שבה x גדל ב־1 ו־y גדל ב־3, מהו קצב השינוי?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: קצב השינוי הוא 3. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל דפי העבודה של כיתה ט׳ לחצו כאן",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "יחידה זו מכינה אתכם לעולם הפונקציות: זיהוי קשר בין משתנים, קריאת טבלה, תיאור גרף וחוקיות. דפי העבודה מחולקים לשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=12",
+              "catalogTopicId": 12
+            },
+            {
+              "type": "heading",
+              "text": "מטבלה לגרף"
+            },
+            {
+              "type": "paragraph",
+              "text": "כל זוג ערכים בטבלה מגדיר נקודה במערכת הצירים. הנקודות שייכות לגרף הפונקציה, אך טבלה חלקית לבדה אינה קובעת את הגרף כולו. מחברים נקודות רק כשסוג הפונקציה או הנתונים מצדיקים זאת.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "איך מזהים חוקיות"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים מה משתנה בכל צעד ומנסחים כלל שמתאים לכל השורות",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בטבלה שבה x גדל ב־1 ו־y גדל ב־3, מהו קצב השינוי?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: קצב השינוי הוא 3. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל דפי העבודה של כיתה ט׳ לחצו כאן",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "פונקציות וגרפים — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "קוראים מתוך גרף את תכונות הפונקציה: נקודות חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה ותחומים שבהם הפונקציה קבועה; פותרים משוואות ואי־שוויונות בעזרת הגרף ונקודות החיתוך, ומסרטטים סקיצה של גרף לפי תכונות נתונות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מזיזים גרף של פונקציה אנכית ואופקית ומשקפים אותו ביחס לציר x, ובודקים מה קורה לנקודות, לקיצון, לנקודות האפס ולתחומים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל אחת משתי הסדרות שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        }
+      ],
+      "appendedSection": {
+        "heading": "פונקציות וגרפים — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "קוראים מתוך גרף את תכונות הפונקציה: נקודות חיתוך עם הצירים, תחומי חיוביות ושליליות, נקודות קיצון, תחומי עלייה וירידה ותחומים שבהם הפונקציה קבועה; פותרים משוואות ואי־שוויונות בעזרת הגרף ונקודות החיתוך, ומסרטטים סקיצה של גרף לפי תכונות נתונות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מזיזים גרף של פונקציה אנכית ואופקית ומשקפים אותו ביחס לציר x, ובודקים מה קורה לנקודות, לקיצון, לנקודות האפס ולתחומים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "לכל אחת משתי הסדרות שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "reading-graphs-grade-9",
+      "grade": 9,
+      "topicId": 36,
+      "editionIds": [
+        "ms-20261117-grd-01-r1"
+      ],
+      "baselineSha256": "42627d58f2dfa0aeabea6ae7a93fc8d90df3bc1379ae610db7b2af4722e3956e",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני שמסיקים מסקנה בודקים מה כל ציר מייצג ובאילו יחידות. בגרף מרחק־זמן, מעבר מ־20 ק״מ בשעה 1 ל־50 ק״מ בשעה 2 מצביע על תוספת של 30 ק״מ בשעה זו.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "גובה הגרף והשיפוע מתארים דברים שונים. בגרף מרחק־זמן, נקודה גבוהה יותר אינה בהכרח מהירות גדולה יותר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בגרף טמפרטורה נרשמו 18° בשעה 8 ו־24° בשעה 10. בכמה עלתה הטמפרטורה? תשובה: ב־6 מעלות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קישורים קשורים",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "משולש ישר־זווית 30–60–90 לכיתה ט׳",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני שמסיקים מסקנה בודקים מה כל ציר מייצג ובאילו יחידות. בגרף מרחק־זמן, מעבר מ־20 ק״מ בשעה 1 ל־50 ק״מ בשעה 2 מצביע על תוספת של 30 ק״מ בשעה זו.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "גובה הגרף והשיפוע מתארים דברים שונים. בגרף מרחק־זמן, נקודה גבוהה יותר אינה בהכרח מהירות גדולה יותר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בגרף טמפרטורה נרשמו 18° בשעה 8 ו־24° בשעה 10. בכמה עלתה הטמפרטורה? תשובה: ב־6 מעלות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קישורים קשורים",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "משולש ישר־זווית 30–60–90 לכיתה ט׳",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "קריאת גרפים — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קוראים מתוך גרפים של תופעות ערכים, מגמות ונקודות מפגש, ומזהים קטעי עלייה, ירידה וקטעים קבועים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בודקים טענות מילוליות מול הגרף, מפרשים נקודות בגרף וקנה מידה בצירים, ומסרטטים גרף מתוך סיפור.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לקרוא מידע מצירים, מקנה מידה ומגרפים, להשוות ערכים ולתאר שינוי. שלוש רמות תרגול, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=36",
+              "catalogTopicId": 36
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "לפני שמסיקים מסקנה בודקים מה כל ציר מייצג ובאילו יחידות. בגרף מרחק־זמן, מעבר מ־20 ק״מ בשעה 1 ל־50 ק״מ בשעה 2 מצביע על תוספת של 30 ק״מ בשעה זו.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "גובה הגרף והשיפוע מתארים דברים שונים. בגרף מרחק־זמן, נקודה גבוהה יותר אינה בהכרח מהירות גדולה יותר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בגרף טמפרטורה נרשמו 18° בשעה 8 ו־24° בשעה 10. בכמה עלתה הטמפרטורה? תשובה: ב־6 מעלות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "קישורים קשורים",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "משולש ישר־זווית 30–60–90 לכיתה ט׳",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל דפי כיתה ט׳",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לקרוא מידע מצירים, מקנה מידה ומגרפים, להשוות ערכים ולתאר שינוי. שלוש רמות תרגול, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=36",
+              "catalogTopicId": 36
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "לפני שמסיקים מסקנה בודקים מה כל ציר מייצג ובאילו יחידות. בגרף מרחק־זמן, מעבר מ־20 ק״מ בשעה 1 ל־50 ק״מ בשעה 2 מצביע על תוספת של 30 ק״מ בשעה זו.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "גובה הגרף והשיפוע מתארים דברים שונים. בגרף מרחק־זמן, נקודה גבוהה יותר אינה בהכרח מהירות גדולה יותר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בגרף טמפרטורה נרשמו 18° בשעה 8 ו־24° בשעה 10. בכמה עלתה הטמפרטורה? תשובה: ב־6 מעלות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "קישורים קשורים",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "משולש ישר־זווית 30–60–90 לכיתה ט׳",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל דפי כיתה ט׳",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "קריאת גרפים — דפי PDF נוספים בט׳ מצומצמת"
+            },
+            {
+              "type": "paragraph",
+              "text": "קוראים מתוך גרפים של תופעות ערכים, מגמות ונקודות מפגש, ומזהים קטעי עלייה, ירידה וקטעים קבועים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בודקים טענות מילוליות מול הגרף, מפרשים נקודות בגרף וקנה מידה בצירים, ומסרטטים גרף מתוך סיפור.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        }
+      ],
+      "appendedSection": {
+        "heading": "קריאת גרפים — דפי PDF נוספים בט׳ מצומצמת",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "קוראים מתוך גרפים של תופעות ערכים, מגמות ונקודות מפגש, ומזהים קטעי עלייה, ירידה וקטעים קבועים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בודקים טענות מילוליות מול הגרף, מפרשים נקודות בגרף וקנה מידה בצירים, ומסרטטים גרף מתוך סיפור.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "probability-grade-9",
+      "grade": 9,
+      "topicId": 10,
+      "editionIds": [
+        "ms-20261117-pbm-01-r1"
+      ],
+      "baselineSha256": "8599ec2d6de3a7773f4551301864759cea9051e3d2452ef47f7b3d20e5c2f319",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כאשר כל התוצאות שוות הסתברות, ההסתברות למאורע היא מספר התוצאות הרצויות חלקי מספר כל התוצאות האפשריות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בהטלת קובייה הוגנת ההסתברות לקבל מספר זוגי היא ⟨3¦6⟩=⟨1¦2⟩.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הסתברות היא מספר בין 0 ל־1. בודקים שכל התוצאות במרחב התוצאות נספרו פעם אחת בלבד.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בשקית 3 כדורים אדומים ו־5 כחולים. מה ההסתברות להוציא כדור אדום?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: ⟨3¦8⟩.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "הסתברות בניסוי חד־שלבי ודו־שלבי — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסדרה על ניסוי חד־שלבי מחשבים הסתברות של מאורע בהטלת קובייה, בהוצאת כדור או כרטיס ובבחירת מספר באקראי, ומשתמשים במאורע המשלים. משווים שכיחות יחסית בניסוי חוזר להסתברות התאורטית, ומעריכים כמה פעמים צפויה תוצאה. ברמה ב׳ מחשבים גם הסתברות של ״זה או זה״ במאורעות זרים, ומשנים את הרכב השקית כדי לקבל הסתברות מבוקשת. במצוינות מעריכים הסתברות בניסוי שאין בו תוצאות שוות־סיכוי, כותבים משוואה למספר הכדורים ובונים שקית לפי תנאים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בסדרה על ניסוי דו־שלבי עם החזרה השלבים בלתי־תלויים: מוציאים כדור, מחזירים אותו ומוציאים שוב, מטילים שתי קוביות ומסובבים שתי חוגות. משרטטים דיאגרמת עץ ובונים טבלה דו־ממדית של התוצאות, כופלים הסתברויות לאורך מסלול, ומחשבים הסתברות של ״לפחות פעם אחת״ בעזרת המאורע המשלים. ברמה ב׳ מוצאים גם את ההסתברות בהוצאה אחת מתוך ההסתברות של שתי הוצאות, ובמצוינות בודקים אם משחק הוגן ומוצאים כמה הטלות צריך כדי שההסתברות לקבל 6 לפחות פעם אחת תהיה גדולה מחצי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בסדרה על ניסוי דו־שלבי בלי החזרה ההרכב משתנה אחרי השלב הראשון, ולכן ההסתברויות בשלב השני תלויות במה שכבר הוצא. מוציאים כדורים, נורות וכרטיסים, בוחרים נציגים מתוך קבוצה ומגרילים כרטיסים זוכים, ומשווים בין הוצאה בלי החזרה להוצאה עם החזרה. ברמה ב׳ ובמצוינות מוצאים גם כמה כדורים יש בשקית מתוך הסתברות נתונה, בעזרת משוואה, ובמצוינות בוחרים גם שלושה נציגים ובודקים אם משחק קלפים הוגן.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לכל סדרה שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "כאשר כל התוצאות שוות הסתברות, ההסתברות למאורע היא מספר התוצאות הרצויות חלקי מספר כל התוצאות האפשריות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בהטלת קובייה הוגנת ההסתברות לקבל מספר זוגי היא ⟨3¦6⟩=⟨1¦2⟩.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הסתברות היא מספר בין 0 ל־1. בודקים שכל התוצאות במרחב התוצאות נספרו פעם אחת בלבד.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בשקית 3 כדורים אדומים ו־5 כחולים. מה ההסתברות להוציא כדור אדום?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: ⟨3¦8⟩.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "הסתברות בניסוי חד־שלבי ודו־שלבי — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסדרה על ניסוי חד־שלבי מחשבים הסתברות של מאורע בהטלת קובייה, בהוצאת כדור או כרטיס ובבחירת מספר באקראי, ומשתמשים במאורע המשלים. משווים שכיחות יחסית בניסוי חוזר להסתברות התאורטית, ומעריכים כמה פעמים צפויה תוצאה. ברמה ב׳ מחשבים גם הסתברות של ״זה או זה״ במאורעות זרים, ומשנים את הרכב השקית כדי לקבל הסתברות מבוקשת. במצוינות מעריכים הסתברות בניסוי שאין בו תוצאות שוות־סיכוי, כותבים משוואה למספר הכדורים ובונים שקית לפי תנאים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בסדרה על ניסוי דו־שלבי עם החזרה השלבים בלתי־תלויים: מוציאים כדור, מחזירים אותו ומוציאים שוב, מטילים שתי קוביות ומסובבים שתי חוגות. משרטטים דיאגרמת עץ ובונים טבלה דו־ממדית של התוצאות, כופלים הסתברויות לאורך מסלול, ומחשבים הסתברות של ״לפחות פעם אחת״ בעזרת המאורע המשלים. ברמה ב׳ מוצאים גם את ההסתברות בהוצאה אחת מתוך ההסתברות של שתי הוצאות, ובמצוינות בודקים אם משחק הוגן ומוצאים כמה הטלות צריך כדי שההסתברות לקבל 6 לפחות פעם אחת תהיה גדולה מחצי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בסדרה על ניסוי דו־שלבי בלי החזרה ההרכב משתנה אחרי השלב הראשון, ולכן ההסתברויות בשלב השני תלויות במה שכבר הוצא. מוציאים כדורים, נורות וכרטיסים, בוחרים נציגים מתוך קבוצה ומגרילים כרטיסים זוכים, ומשווים בין הוצאה בלי החזרה להוצאה עם החזרה. ברמה ב׳ ובמצוינות מוצאים גם כמה כדורים יש בשקית מתוך הסתברות נתונה, בעזרת משוואה, ובמצוינות בוחרים גם שלושה נציגים ובודקים אם משחק קלפים הוגן.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לכל סדרה שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "הסתברות — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מכירים את מושגי היסוד של ההסתברות, מחשבים הסתברות של מאורע ומשווים אותה לשכיחות יחסית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מחשבים הסתברות של מאורע משלים ומתרגלים חישובים בהקשרים יומיומיים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לתאר מרחב תוצאות, לחשב הסתברות של מאורע ולבדוק תשובות. לצד הדפים הקיימים נוספו שלוש סדרות PDF: ניסוי חד־שלבי עם שכיחות יחסית ומאורע משלים, ניסוי דו־שלבי עם החזרה וניסוי דו־שלבי בלי החזרה, כל אחת ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=10",
+              "catalogTopicId": 10
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "כאשר כל התוצאות שוות הסתברות, ההסתברות למאורע היא מספר התוצאות הרצויות חלקי מספר כל התוצאות האפשריות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בהטלת קובייה הוגנת ההסתברות לקבל מספר זוגי היא ⟨3¦6⟩=⟨1¦2⟩.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "הסתברות היא מספר בין 0 ל־1. בודקים שכל התוצאות במרחב התוצאות נספרו פעם אחת בלבד.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בשקית 3 כדורים אדומים ו־5 כחולים. מה ההסתברות להוציא כדור אדום?",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "הסתברות בניסוי חד־שלבי ודו־שלבי — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסדרה על ניסוי חד־שלבי מחשבים הסתברות של מאורע בהטלת קובייה, בהוצאת כדור או כרטיס ובבחירת מספר באקראי, ומשתמשים במאורע המשלים. משווים שכיחות יחסית בניסוי חוזר להסתברות התאורטית, ומעריכים כמה פעמים צפויה תוצאה. ברמה ב׳ מחשבים גם הסתברות של ״זה או זה״ במאורעות זרים, ומשנים את הרכב השקית כדי לקבל הסתברות מבוקשת. במצוינות מעריכים הסתברות בניסוי שאין בו תוצאות שוות־סיכוי, כותבים משוואה למספר הכדורים ובונים שקית לפי תנאים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסדרה על ניסוי דו־שלבי עם החזרה השלבים בלתי־תלויים: מוציאים כדור, מחזירים אותו ומוציאים שוב, מטילים שתי קוביות ומסובבים שתי חוגות. משרטטים דיאגרמת עץ ובונים טבלה דו־ממדית של התוצאות, כופלים הסתברויות לאורך מסלול, ומחשבים הסתברות של ״לפחות פעם אחת״ בעזרת המאורע המשלים. ברמה ב׳ מוצאים גם את ההסתברות בהוצאה אחת מתוך ההסתברות של שתי הוצאות, ובמצוינות בודקים אם משחק הוגן ומוצאים כמה הטלות צריך כדי שההסתברות לקבל 6 לפחות פעם אחת תהיה גדולה מחצי.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסדרה על ניסוי דו־שלבי בלי החזרה ההרכב משתנה אחרי השלב הראשון, ולכן ההסתברויות בשלב השני תלויות במה שכבר הוצא. מוציאים כדורים, נורות וכרטיסים, בוחרים נציגים מתוך קבוצה ומגרילים כרטיסים זוכים, ומשווים בין הוצאה בלי החזרה להוצאה עם החזרה. ברמה ב׳ ובמצוינות מוצאים גם כמה כדורים יש בשקית מתוך הסתברות נתונה, בעזרת משוואה, ובמצוינות בוחרים גם שלושה נציגים ובודקים אם משחק קלפים הוגן.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל סדרה שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לתאר מרחב תוצאות, לחשב הסתברות של מאורע ולבדוק תשובות. לצד הדפים הקיימים נוספו שלוש סדרות PDF: ניסוי חד־שלבי עם שכיחות יחסית ומאורע משלים, ניסוי דו־שלבי עם החזרה וניסוי דו־שלבי בלי החזרה, כל אחת ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=10",
+              "catalogTopicId": 10
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "כאשר כל התוצאות שוות הסתברות, ההסתברות למאורע היא מספר התוצאות הרצויות חלקי מספר כל התוצאות האפשריות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בהטלת קובייה הוגנת ההסתברות לקבל מספר זוגי היא ⟨3¦6⟩=⟨1¦2⟩.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "הסתברות היא מספר בין 0 ל־1. בודקים שכל התוצאות במרחב התוצאות נספרו פעם אחת בלבד.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בשקית 3 כדורים אדומים ו־5 כחולים. מה ההסתברות להוציא כדור אדום?",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "הסתברות בניסוי חד־שלבי ודו־שלבי — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסדרה על ניסוי חד־שלבי מחשבים הסתברות של מאורע בהטלת קובייה, בהוצאת כדור או כרטיס ובבחירת מספר באקראי, ומשתמשים במאורע המשלים. משווים שכיחות יחסית בניסוי חוזר להסתברות התאורטית, ומעריכים כמה פעמים צפויה תוצאה. ברמה ב׳ מחשבים גם הסתברות של ״זה או זה״ במאורעות זרים, ומשנים את הרכב השקית כדי לקבל הסתברות מבוקשת. במצוינות מעריכים הסתברות בניסוי שאין בו תוצאות שוות־סיכוי, כותבים משוואה למספר הכדורים ובונים שקית לפי תנאים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסדרה על ניסוי דו־שלבי עם החזרה השלבים בלתי־תלויים: מוציאים כדור, מחזירים אותו ומוציאים שוב, מטילים שתי קוביות ומסובבים שתי חוגות. משרטטים דיאגרמת עץ ובונים טבלה דו־ממדית של התוצאות, כופלים הסתברויות לאורך מסלול, ומחשבים הסתברות של ״לפחות פעם אחת״ בעזרת המאורע המשלים. ברמה ב׳ מוצאים גם את ההסתברות בהוצאה אחת מתוך ההסתברות של שתי הוצאות, ובמצוינות בודקים אם משחק הוגן ומוצאים כמה הטלות צריך כדי שההסתברות לקבל 6 לפחות פעם אחת תהיה גדולה מחצי.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסדרה על ניסוי דו־שלבי בלי החזרה ההרכב משתנה אחרי השלב הראשון, ולכן ההסתברויות בשלב השני תלויות במה שכבר הוצא. מוציאים כדורים, נורות וכרטיסים, בוחרים נציגים מתוך קבוצה ומגרילים כרטיסים זוכים, ומשווים בין הוצאה בלי החזרה להוצאה עם החזרה. ברמה ב׳ ובמצוינות מוצאים גם כמה כדורים יש בשקית מתוך הסתברות נתונה, בעזרת משוואה, ובמצוינות בוחרים גם שלושה נציגים ובודקים אם משחק קלפים הוגן.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "לכל סדרה שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "הסתברות — דפי PDF נוספים בט׳ מצומצמת"
+            },
+            {
+              "type": "paragraph",
+              "text": "מכירים את מושגי היסוד של ההסתברות, מחשבים הסתברות של מאורע ומשווים אותה לשכיחות יחסית.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מחשבים הסתברות של מאורע משלים ומתרגלים חישובים בהקשרים יומיומיים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "הסתברות — דפי PDF נוספים בט׳ מצומצמת",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מכירים את מושגי היסוד של ההסתברות, מחשבים הסתברות של מאורע ומשווים אותה לשכיחות יחסית.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מחשבים הסתברות של מאורע משלים ומתרגלים חישובים בהקשרים יומיומיים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "quadratic-equations-grade-9",
+      "grade": 9,
+      "topicId": 6,
+      "editionIds": [
+        "ms-20261117-qfm-01-r1"
+      ],
+      "baselineSha256": "964600f7354c3d0368f319d42d2b5ae4af70dc6521b3de9d29b9dc4e89a2e1a5",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מסדרים תחילה את המשוואה בצורה ax²+bx+c=0. אחר כך בוחרים דרך פתרון מתאימה ובודקים כל שורש במשוואה המקורית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: x²−5x+6=0 מתפרקת ל־(x−2)(x−3)=0, ולכן הפתרונות הם x=2 או x=3.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "נוסחת השורשים מתאימה לכל משוואה ריבועית: x=⟨−b±√(b²−4ac)¦2a⟩. הביטוי שמתחת לשורש, b²−4ac, קובע כמה פתרונות יש: אם הוא חיובי יש שני פתרונות, אם הוא אפס יש פתרון אחד, ואם הוא שלילי אין פתרון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה בנוסחת השורשים: 2x²+3x−2=0. כאן a=2, b=3 ו־c=−2, ולכן b²−4ac=9+16=25 ו־√25=5. מקבלים x=⟨−3+5¦4⟩=⟨1¦2⟩ או x=⟨−3−5¦4⟩=−2.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני שימוש בנוסחת השורשים חייבים לזהות נכון את a, b ו־c, כולל הסימנים. המכנה הוא 2a, ולא 2 בלבד.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: x²−4x−5=0.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=5 או x=−1.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משוואות ריבועיות: טכניקה אלגברית ונקודות חיתוך — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בכל רמה מביאים משוואות לצורה הסטנדרטית ax²+bx+c=0 בעזרת פתיחת סוגריים, כפל מקוצר וכינוס איברים, ופותרים אותן. אחר כך מוצאים נקודות חיתוך של פרבולה עם ציר x ועם ישרים אופקיים, ומקשרים בין מספר הפתרונות של משוואה לבין מספר נקודות החיתוך.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה א׳ וברמה ב׳ מוצאים גם לאילו ערכי x שני ביטויים שווים. ברמה ב׳ ובמצוינות יש גם גרף מסורטט ושאלות על ערכי k שעבורם לישר y=k ולפרבולה יש שתי נקודות משותפות, אחת או אף אחת. במצוינות יש גם פרבולה הפתוחה כלפי מטה, נקודה על הגרף שאחד משיעוריה חסר, ובניית משוואה ריבועית לפי תנאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מסדרים תחילה את המשוואה בצורה ax²+bx+c=0. אחר כך בוחרים דרך פתרון מתאימה ובודקים כל שורש במשוואה המקורית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: x²−5x+6=0 מתפרקת ל־(x−2)(x−3)=0, ולכן הפתרונות הם x=2 או x=3.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "נוסחת השורשים מתאימה לכל משוואה ריבועית: x=⟨−b±√(b²−4ac)¦2a⟩. הביטוי שמתחת לשורש, b²−4ac, קובע כמה פתרונות יש: אם הוא חיובי יש שני פתרונות, אם הוא אפס יש פתרון אחד, ואם הוא שלילי אין פתרון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה בנוסחת השורשים: 2x²+3x−2=0. כאן a=2, b=3 ו־c=−2, ולכן b²−4ac=9+16=25 ו־√25=5. מקבלים x=⟨−3+5¦4⟩=⟨1¦2⟩ או x=⟨−3−5¦4⟩=−2.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני שימוש בנוסחת השורשים חייבים לזהות נכון את a, b ו־c, כולל הסימנים. המכנה הוא 2a, ולא 2 בלבד.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: x²−4x−5=0.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=5 או x=−1.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משוואות ריבועיות: טכניקה אלגברית ונקודות חיתוך — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בכל רמה מביאים משוואות לצורה הסטנדרטית ax²+bx+c=0 בעזרת פתיחת סוגריים, כפל מקוצר וכינוס איברים, ופותרים אותן. אחר כך מוצאים נקודות חיתוך של פרבולה עם ציר x ועם ישרים אופקיים, ומקשרים בין מספר הפתרונות של משוואה לבין מספר נקודות החיתוך.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה א׳ וברמה ב׳ מוצאים גם לאילו ערכי x שני ביטויים שווים. ברמה ב׳ ובמצוינות יש גם גרף מסורטט ושאלות על ערכי k שעבורם לישר y=k ולפרבולה יש שתי נקודות משותפות, אחת או אף אחת. במצוינות יש גם פרבולה הפתוחה כלפי מטה, נקודה על הגרף שאחד משיעוריה חסר, ובניית משוואה ריבועית לפי תנאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משוואות ריבועיות — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מסדרים משוואות לצורה ax²+bx+c=0, מזהים את המקדמים a, b ו־c ופותרים בעזרת נוסחת השורשים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קובעים כמה פתרונות יש למשוואה לפי הביטוי שמתחת לשורש, ומעגלים פתרונות שבהם השורש אינו מספר שלם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "משוואות ריבועיות — דפי PDF נוספים בט׳ מצומצמת",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מסדרים משוואות לצורה ax²+bx+c=0, מזהים את המקדמים a, b ו־c ופותרים בעזרת נוסחת השורשים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "קובעים כמה פתרונות יש למשוואה לפי הביטוי שמתחת לשורש, ומעגלים פתרונות שבהם השורש אינו מספר שלם.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "quadratic-function-grade-9",
+      "grade": 9,
+      "topicId": 5,
+      "editionIds": [
+        "ms-20261117-qvl-01-r1"
+      ],
+      "baselineSha256": "cf1e5e7c51fc13e42a8d1e918d4f57af7c603f8aac9c0760ff0e1e5d7cc9c650",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "גרף של y=ax²+bx+c הוא פרבולה. סימן a קובע את כיוון הפתיחה; נקודות האפס מתקבלות כאשר y=0, והקודקוד נמצא על ציר הסימטריה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בפונקציה y=(x−2)²−9 הקודקוד הוא (2,−9), ציר הסימטריה הוא x=2, ונקודות האפס מתקבלות ב־x=−1 וב־x=5.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הקודקוד אינו בהכרח נקודת אפס. חשוב להבחין בין שיעור x לשיעור y ולבדוק הצבה כאשר עוברים בין הצגות שונות של הפונקציה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מצאו את נקודות האפס של y=(x+1)²−4.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=−3 ו־x=1.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "גרף של y=ax²+bx+c הוא פרבולה. סימן a קובע את כיוון הפתיחה; נקודות האפס מתקבלות כאשר y=0, והקודקוד נמצא על ציר הסימטריה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בפונקציה y=(x−2)²−9 הקודקוד הוא (2,−9), ציר הסימטריה הוא x=2, ונקודות האפס מתקבלות ב־x=−1 וב־x=5.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הקודקוד אינו בהכרח נקודת אפס. חשוב להבחין בין שיעור x לשיעור y ולבדוק הצבה כאשר עוברים בין הצגות שונות של הפונקציה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מצאו את נקודות האפס של y=(x+1)²−4.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=−3 ו־x=1.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "הפונקציה הריבועית — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מציבים ערכים בפונקציה ריבועית, משלימים טבלאות ערכים ומקשרים בין ערכי הפונקציה לבין פתרון משוואה ריבועית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מוצאים מטבלה או מגרף עבור אילו ערכי x מתקבל ערך y נתון (ובפרט y=0), משווים ערכים של שתי פונקציות ומתרגלים בהקשרים כמו גובה כדור, שטח מלבן או רווח.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        }
+      ],
+      "appendedSection": {
+        "heading": "הפונקציה הריבועית — דפי PDF נוספים בט׳ מצומצמת",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מציבים ערכים בפונקציה ריבועית, משלימים טבלאות ערכים ומקשרים בין ערכי הפונקציה לבין פתרון משוואה ריבועית.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מוצאים מטבלה או מגרף עבור אילו ערכי x מתקבל ערך y נתון (ובפרט y=0), משווים ערכים של שתי פונקציות ומתרגלים בהקשרים כמו גובה כדור, שטח מלבן או רווח.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "triangle-similarity-aa-grade-9",
+      "grade": 9,
+      "topicId": 40,
+      "editionIds": [
+        "ms-20261117-smm-01-r1"
+      ],
+      "baselineSha256": "f6a258f6ca250a602084e38b4796e5e6b3f77240842b60ca1864f215d4b8dca4",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "משפט ז.ז",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אם לשני משולשים שני זוגות זוויות מתאימות שוות, המשולשים דומים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "יחס הדמיון",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתאימים קודקודים לפני כתיבת היחס; אם 6 מתאימה ל־9, אז 8 מתאימה ל־12.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מקדם הדמיון הוא 2.5 וצלע במשולש הקטן היא 4. מה אורך הצלע המתאימה בגדול? תשובה: 10.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "משפט ז.ז",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אם לשני משולשים שני זוגות זוויות מתאימות שוות, המשולשים דומים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "יחס הדמיון",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתאימים קודקודים לפני כתיבת היחס; אם 6 מתאימה ל־9, אז 8 מתאימה ל־12.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מקדם הדמיון הוא 2.5 וצלע במשולש הקטן היא 4. מה אורך הצלע המתאימה בגדול? תשובה: 10.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דמיון משולשים — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מזהים צורות דומות, מבינים הגדלה והקטנה ומוצאים את יחס הדמיון בין צלעות מתאימות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים במשפט הדמיון ז.ז, מזהים זוויות שוות ומחשבים אורכים בעזרת יחס הדמיון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים להוכיח דמיון לפי שני זוגות זוויות, להתאים קודקודים ולחשב צלעות מתאימות. דפי העבודה מחולקים לשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "heading",
+              "text": "משפט ז.ז"
+            },
+            {
+              "type": "paragraph",
+              "text": "אם לשני משולשים שני זוגות זוויות מתאימות שוות, המשולשים דומים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "יחס הדמיון"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתאימים קודקודים לפני כתיבת היחס; אם 6 מתאימה ל־9, אז 8 מתאימה ל־12.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מקדם הדמיון הוא 2.5 וצלע במשולש הקטן היא 4. מה אורך הצלע המתאימה בגדול? תשובה: 10.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים להוכיח דמיון לפי שני זוגות זוויות, להתאים קודקודים ולחשב צלעות מתאימות. דפי העבודה מחולקים לשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "heading",
+              "text": "משפט ז.ז"
+            },
+            {
+              "type": "paragraph",
+              "text": "אם לשני משולשים שני זוגות זוויות מתאימות שוות, המשולשים דומים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "יחס הדמיון"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתאימים קודקודים לפני כתיבת היחס; אם 6 מתאימה ל־9, אז 8 מתאימה ל־12.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מקדם הדמיון הוא 2.5 וצלע במשולש הקטן היא 4. מה אורך הצלע המתאימה בגדול? תשובה: 10.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דמיון משולשים — דפי PDF נוספים בט׳ מצומצמת"
+            },
+            {
+              "type": "paragraph",
+              "text": "מזהים צורות דומות, מבינים הגדלה והקטנה ומוצאים את יחס הדמיון בין צלעות מתאימות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "משתמשים במשפט הדמיון ז.ז, מזהים זוויות שוות ומחשבים אורכים בעזרת יחס הדמיון.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        }
+      ],
+      "appendedSection": {
+        "heading": "דמיון משולשים — דפי PDF נוספים בט׳ מצומצמת",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מזהים צורות דומות, מבינים הגדלה והקטנה ומוצאים את יחס הדמיון בין צלעות מתאימות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "משתמשים במשפט הדמיון ז.ז, מזהים זוויות שוות ומחשבים אורכים בעזרת יחס הדמיון.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    }
+  ],
+  "mediaReadbackSha256": "2e6506061aeb45b3d632ae8b346eb14cf3d05c71fa105c10855abe549a3b6944"
+}

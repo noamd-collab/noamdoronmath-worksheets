@@ -27,6 +27,11 @@
           "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
         },
         {
+          "path": "/equations-numeric-denominator-grade-9",
+          "label": "משוואות עם מכנה מספרי (ט׳ מצומצמת)",
+          "productionHref": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9"
+        },
+        {
           "path": "/rational-equations-grade-9",
           "label": "משוואות רציונליות",
           "productionHref": "https://www.noamdoronmath.co.il/rational-equations-grade-9"
@@ -65,6 +70,11 @@
           "path": "/algebraic-fractions-grade-9",
           "label": "צמצום שברים אלגבריים",
           "productionHref": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9"
+        },
+        {
+          "path": "/percentages-grade-9",
+          "label": "אחוזים (ט׳ מצומצמת)",
+          "productionHref": "https://www.noamdoronmath.co.il/percentages-grade-9"
         }
       ]
     },
@@ -100,6 +110,21 @@
           "path": "/coordinate-plane-applications-grade-9",
           "label": "מערכת הצירים — יישום והעמקה",
           "productionHref": "https://www.noamdoronmath.co.il/coordinate-plane-applications-grade-9"
+        }
+      ]
+    },
+    {
+      "heading": "ישרים מקבילים וזוויות",
+      "links": [
+        {
+          "path": "/parallel-lines-angles-grade-9",
+          "label": "ישרים מקבילים — זוויות מתאימות ומתחלפות",
+          "productionHref": "https://www.noamdoronmath.co.il/parallel-lines-angles-grade-9"
+        },
+        {
+          "path": "/co-interior-angles-grade-9",
+          "label": "זוויות חד־צדדיות",
+          "productionHref": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9"
         }
       ]
     },
@@ -247,6 +272,11 @@
           "productionHref": "https://www.noamdoronmath.co.il/probability-grade-9"
         },
         {
+          "path": "/math-literacy-tasks-grade-9",
+          "label": "משימות אוריינות",
+          "productionHref": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9"
+        },
+        {
           "path": "/transition-to-high-school-grade-9",
           "label": "מעבר לחטיבה העליונה",
           "productionHref": "https://www.noamdoronmath.co.il/transition-to-high-school-grade-9"
@@ -269,6 +299,11 @@
       "path": "/quadratic-equations-grade-9",
       "label": "משוואות ריבועיות",
       "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
+    },
+    {
+      "path": "/equations-numeric-denominator-grade-9",
+      "label": "משוואות עם מכנה מספרי (ט׳ מצומצמת)",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-numeric-denominator-grade-9"
     },
     {
       "path": "/rational-equations-grade-9",
@@ -474,6 +509,26 @@
       "path": "/median-to-hypotenuse-grade-9",
       "label": "משולש ישר זווית — התיכון ליתר",
       "productionHref": "https://www.noamdoronmath.co.il/median-to-hypotenuse-grade-9"
+    },
+    {
+      "path": "/parallel-lines-angles-grade-9",
+      "label": "ישרים מקבילים — זוויות מתאימות ומתחלפות",
+      "productionHref": "https://www.noamdoronmath.co.il/parallel-lines-angles-grade-9"
+    },
+    {
+      "path": "/co-interior-angles-grade-9",
+      "label": "זוויות חד־צדדיות",
+      "productionHref": "https://www.noamdoronmath.co.il/co-interior-angles-grade-9"
+    },
+    {
+      "path": "/math-literacy-tasks-grade-9",
+      "label": "משימות אוריינות",
+      "productionHref": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9"
+    },
+    {
+      "path": "/percentages-grade-9",
+      "label": "אחוזים (ט׳ מצומצמת)",
+      "productionHref": "https://www.noamdoronmath.co.il/percentages-grade-9"
     }
   ],
   "catalogCta": {

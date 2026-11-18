@@ -320,6 +320,8 @@ describe('exact-design protected live-baseline boundaries', () => {
         assert.deepEqual(publishedCatalog.ramziHintCorrection, activation.hintCorrection,
           'current snapshot correction matches the verified receipt bundle');
         const catalog = beforeEqnSgnFacCatalog(publishedCatalog);
+        // beforeEqnSgnFacCatalog's chain first reverses EQM49 (topic 49, its search
+        // terms and the new r9jan month group; tests/fixtures/eqm49-pdf.ts).
         // Reverse only the exact MED01 base topic; retain RAT47 and all older fences.
         const medGrade = catalog.grades.find((g: any) => g.grade === 9);
         const medIndex = medGrade.topics.findIndex((t: any) => t.id === 48);

@@ -1,0 +1,381 @@
+{
+  "schema": "noam-student-pdf-publication-evidence/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "preparedDate": "2026-11-17",
+  "publicationMode": "pdf-only",
+  "sourceProvenanceOnly": true,
+  "sitePublicationClaimed": false,
+  "scope": {
+    "packages": 3,
+    "pdfs": 9,
+    "pages": 47,
+    "subitems": 169,
+    "landingRoutes": 1
+  },
+  "baselineCommit": "6039c61cb6b7c606c2aca0a453907a1908503431",
+  "supersedes": {
+    "pr": 500,
+    "branch": "codex/probability-nine-pdf-20261116",
+    "head": "4724dd654153858cb3963ea3d6a5041aa6f810b2",
+    "decision": "Noam, 17.11.2026: Claude takes over draft PR #500. Its edition ids, worksheet ids, producer prefixes and Wix pdfIds are kept; the site data is regenerated on the current baseline."
+  },
+  "mediaReadbackSha256": "772d407680d605c5bba5628aec98ec6a700b03c6f208c1c49a14471292269125",
+  "pdfManifestSha256": "8ae6ca6d3ec5c97fe5c20fe5bd88966f5a5086214ff8ac9b9aa3b6a625889888",
+  "review": {
+    "attribution": "Claude (Anthropic, Claude Opus 5.5) authored all three student PDF sets. Each set is bound by exact SHA-256 to a passing independent review by Astra (Codex gpt-6-astra), a non-Claude agent and not the author. This integration rechecks the byte pins and both media routes and does not claim a new full math or visual review.",
+    "wordVisual": "NOT_RUN",
+    "nativeOrHintsAcceptance": false,
+    "allGatesPass": false,
+    "retainedLimits": [
+      "PDF publication only. Word files, private keys, didactic notes, hints and native exports stay outside the site.",
+      "All three producer v72 reports are PASS with 34/34 gates; the CLI step \"visual evidence\" is SKIP and Word visuals are not accepted here.",
+      "G9-PRC-01 r03 was reviewed as a delta (three changed final-answer pages viewed; the other twelve pages are RGB-identical to the viewed r02 review). G9-PRT-01 r02 and G9-PRW-01 r02 were reviewed in full (16 pages each).",
+      "All three sets are regular-track (ט_רגילה) by CLAIM.json; they share topic 9:10 and one landing section.",
+      "Producer prefixes are provenance only; no new native assets, viewer routing, teacher selection, learning identities or AI activation."
+    ]
+  },
+  "packages": [
+    {
+      "sheetId": "G9-PRC-01",
+      "producerPackage": "G9-T60",
+      "title": "הסתברות בניסוי חד־שלבי: שכיחות יחסית ומאורע משלים",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Astra (Codex gpt-6-astra) — independent; not the author",
+      "sourceSubmission": "MS-PROD-CLAUDE-024-r03",
+      "reviewReceiptSha256": "3f7c6f204f414acc967e671460d689dc556f1df274fb916cde8fac0eb1095cd0",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "codex-workspace/production-activation-461/claude024-r03-full-independent-delta-20261115/receipt.json",
+          "sha256": "3f7c6f204f414acc967e671460d689dc556f1df274fb916cde8fac0eb1095cd0"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 10,
+      "landing": "/probability-grade-9",
+      "editionId": "ms-20261116-prc-01-r1",
+      "nativePrefixProvenanceOnly": "G9-T60",
+      "label": "הסתברות בניסוי חד־שלבי: שכיחות יחסית ומאורע משלים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "fc3d4dccf1af451bbb9ad46581480ee6",
+          "pdfSha256": "a0b6c63f37db8d2f47c86ed14ba2b4498ef52a45f1c9fdeb48784054b39338b2",
+          "sourceSha256": "db1606cdc780a31e9dbed61016d30a4f456a088b0b2f804b24004aeff6819ac6",
+          "nativeExportSha256": "0f17c87b9d67d9088885aaad1b298125b35c6ecba2acb3e92a9b5b2aba170760",
+          "worksheetId": "ms-g9-prc-01-a-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 19,
+          "bytes": 37897,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_fc3d4dccf1af451bbb9ad46581480ee6.pdf",
+              "status": 200,
+              "sha256": "a0b6c63f37db8d2f47c86ed14ba2b4498ef52a45f1c9fdeb48784054b39338b2",
+              "bytes": 37897,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_fc3d4dccf1af451bbb9ad46581480ee6.pdf",
+              "status": 200,
+              "sha256": "a0b6c63f37db8d2f47c86ed14ba2b4498ef52a45f1c9fdeb48784054b39338b2",
+              "bytes": 37897,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "86662699e40146c4b8e1f48c1f6dbfc6",
+          "pdfSha256": "411cbad93315815e274779239903873ebb3876fd6cd27e548c0558e8691f1604",
+          "sourceSha256": "2e58ba034e850a9b463c42c7761ef9e4d16848e500a4a7f7fd08ae9381dc0671",
+          "nativeExportSha256": "79d0e84c4219d6c565f159091479fbe0761e6d2176ff4bc506e9a0b5036847b2",
+          "worksheetId": "ms-g9-prc-01-b-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "bytes": 36896,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_86662699e40146c4b8e1f48c1f6dbfc6.pdf",
+              "status": 200,
+              "sha256": "411cbad93315815e274779239903873ebb3876fd6cd27e548c0558e8691f1604",
+              "bytes": 36896,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_86662699e40146c4b8e1f48c1f6dbfc6.pdf",
+              "status": 200,
+              "sha256": "411cbad93315815e274779239903873ebb3876fd6cd27e548c0558e8691f1604",
+              "bytes": 36896,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "3af3ed8d30b54e41ac7fad49c7d090f6",
+          "pdfSha256": "153857a5c4c63ea5de77e26f78d055108b56036bb640ac0d37f9415c30b099a2",
+          "sourceSha256": "ab9e943011bfffc5da0bfcbe9272d01431219d7069644fa0f105e30a757a23cc",
+          "nativeExportSha256": "b95db5b76e4f5f915d7e6f52f90986dc563e4ce262d6e1b6112ef5eec4a7d199",
+          "worksheetId": "ms-g9-prc-01-c-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "bytes": 38207,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3af3ed8d30b54e41ac7fad49c7d090f6.pdf",
+              "status": 200,
+              "sha256": "153857a5c4c63ea5de77e26f78d055108b56036bb640ac0d37f9415c30b099a2",
+              "bytes": 38207,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3af3ed8d30b54e41ac7fad49c7d090f6.pdf",
+              "status": 200,
+              "sha256": "153857a5c4c63ea5de77e26f78d055108b56036bb640ac0d37f9415c30b099a2",
+              "bytes": 38207,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-PRT-01",
+      "producerPackage": "G9-T61",
+      "title": "ניסוי דו־שלבי עם החזרה: שלבים בלתי־תלויים",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Astra (Codex gpt-6-astra) — independent; not the author",
+      "sourceSubmission": "MS-PROD-CLAUDE-025-r02",
+      "reviewReceiptSha256": "b8b700cd357a8ca1b3e6c425887ee5bd0d0e49d17a0f8c78ea8df18ddba52530",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "codex-workspace/production-activation-461/claude025-r02-full-independent-review-20261115/receipt.json",
+          "sha256": "b8b700cd357a8ca1b3e6c425887ee5bd0d0e49d17a0f8c78ea8df18ddba52530"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 10,
+      "landing": "/probability-grade-9",
+      "editionId": "ms-20261116-prt-01-r1",
+      "nativePrefixProvenanceOnly": "G9-T61",
+      "label": "ניסוי דו־שלבי עם החזרה: שלבים בלתי־תלויים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "f8358246328743b29a01dbe0ad7d45bb",
+          "pdfSha256": "ef825ffc16f2cbf24d25ff372996be504af6df277b6507cc70eba67b57552521",
+          "sourceSha256": "1f3564e36dc431778b199d4f2fa7e50f82eb1f3becbadd3ae84ad02b9bf7ab2b",
+          "nativeExportSha256": "3a77d9e6b8eff8c38f78b6b95ed9725eda7f216e188acdc315f9f452c1963c5a",
+          "worksheetId": "ms-g9-prt-01-a-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 21,
+          "bytes": 38383,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f8358246328743b29a01dbe0ad7d45bb.pdf",
+              "status": 200,
+              "sha256": "ef825ffc16f2cbf24d25ff372996be504af6df277b6507cc70eba67b57552521",
+              "bytes": 38383,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_f8358246328743b29a01dbe0ad7d45bb.pdf",
+              "status": 200,
+              "sha256": "ef825ffc16f2cbf24d25ff372996be504af6df277b6507cc70eba67b57552521",
+              "bytes": 38383,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "894406739f3c4a87b8e07acb228fec68",
+          "pdfSha256": "a49b342f92f31065f70acc87e39143ece9a3a5bd932ac5ca42e8751995c408c4",
+          "sourceSha256": "1176254cc968c9934a64f37880e55988f1912e7fb69ecadddb43fe523803a007",
+          "nativeExportSha256": "5f0254dfbaf5e53fca59be1ab81e7b65288efc04c64d5cafa86234528879b2c4",
+          "worksheetId": "ms-g9-prt-01-b-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "bytes": 34958,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_894406739f3c4a87b8e07acb228fec68.pdf",
+              "status": 200,
+              "sha256": "a49b342f92f31065f70acc87e39143ece9a3a5bd932ac5ca42e8751995c408c4",
+              "bytes": 34958,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_894406739f3c4a87b8e07acb228fec68.pdf",
+              "status": 200,
+              "sha256": "a49b342f92f31065f70acc87e39143ece9a3a5bd932ac5ca42e8751995c408c4",
+              "bytes": 34958,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "742baf66b75245ef8593c5b50b343cde",
+          "pdfSha256": "052983455218329ba53c5d39ec927d3a307796a4a8bb4e63a57cca3638d5d0f7",
+          "sourceSha256": "21e43552ccbe989f393d2e332b9eb1a80de52b44bc17fd518d4409ed5af35d0b",
+          "nativeExportSha256": "e3fc1ee4dfd909a1569fd8a58b32cc90f8f0a9de7bcce5c6f1f97637a4611517",
+          "worksheetId": "ms-g9-prt-01-c-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "bytes": 35186,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_742baf66b75245ef8593c5b50b343cde.pdf",
+              "status": 200,
+              "sha256": "052983455218329ba53c5d39ec927d3a307796a4a8bb4e63a57cca3638d5d0f7",
+              "bytes": 35186,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_742baf66b75245ef8593c5b50b343cde.pdf",
+              "status": 200,
+              "sha256": "052983455218329ba53c5d39ec927d3a307796a4a8bb4e63a57cca3638d5d0f7",
+              "bytes": 35186,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-PRW-01",
+      "producerPackage": "G9-T62",
+      "title": "ניסוי דו־שלבי בלי החזרה: הסתברויות משתנות",
+      "author": "Claude (Anthropic), Claude Opus 5.5",
+      "reviewer": "Astra (Codex gpt-6-astra) — independent; not the author",
+      "sourceSubmission": "MS-PROD-CLAUDE-026-r02",
+      "reviewReceiptSha256": "49ecbd19c35123afb1ad583b9e79a7d9f44e95dbaac0216993fdd061a2a6faa7",
+      "reviewReceipts": [
+        {
+          "role": "independent PDF review by a non-Claude agent (PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "codex-workspace/production-activation-461/claude026-r02-full-independent-review-20261115/receipt.json",
+          "sha256": "49ecbd19c35123afb1ad583b9e79a7d9f44e95dbaac0216993fdd061a2a6faa7"
+        }
+      ],
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 10,
+      "landing": "/probability-grade-9",
+      "editionId": "ms-20261116-prw-01-r1",
+      "nativePrefixProvenanceOnly": "G9-T62",
+      "label": "ניסוי דו־שלבי בלי החזרה: הסתברויות משתנות · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "3e1dbd50ab9c40debde8d01b2c93c3cf",
+          "pdfSha256": "43272f5b49ef2acbef8fa1df646dd2b06e60c33c69c5fa00affc4b360cf6d810",
+          "sourceSha256": "6520cea54a1487f610ce64187cd65b8e149e13fb4690afcbff22974bab202179",
+          "nativeExportSha256": "8d9230db8ec31929d6f49ce408eaec104be4e7d548d5d62de2de7af6c307488b",
+          "worksheetId": "ms-g9-prw-01-a-r1",
+          "revision": 1,
+          "pages": 6,
+          "subitems": 21,
+          "bytes": 37897,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3e1dbd50ab9c40debde8d01b2c93c3cf.pdf",
+              "status": 200,
+              "sha256": "43272f5b49ef2acbef8fa1df646dd2b06e60c33c69c5fa00affc4b360cf6d810",
+              "bytes": 37897,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3e1dbd50ab9c40debde8d01b2c93c3cf.pdf",
+              "status": 200,
+              "sha256": "43272f5b49ef2acbef8fa1df646dd2b06e60c33c69c5fa00affc4b360cf6d810",
+              "bytes": 37897,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "07c2a60830574f41aa54d49296e89111",
+          "pdfSha256": "3be00b17a0865d90c95ba11de6083c6273a3260106cf27044373d38c719bb3d6",
+          "sourceSha256": "71ab9b06377f66eae21eb404e45ce2b0121ec0d85d1eed21292bf703a7279bac",
+          "nativeExportSha256": "0844ca9a247c1925150775e3ef70e8b85722cf7443521d77a936650d330f3f93",
+          "worksheetId": "ms-g9-prw-01-b-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "bytes": 34867,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_07c2a60830574f41aa54d49296e89111.pdf",
+              "status": 200,
+              "sha256": "3be00b17a0865d90c95ba11de6083c6273a3260106cf27044373d38c719bb3d6",
+              "bytes": 34867,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_07c2a60830574f41aa54d49296e89111.pdf",
+              "status": 200,
+              "sha256": "3be00b17a0865d90c95ba11de6083c6273a3260106cf27044373d38c719bb3d6",
+              "bytes": 34867,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "0daf689cd1014571ab478c659af2b08c",
+          "pdfSha256": "5efc5fc4e0b907ce36d5176efe7fb188e0fabc86c0e0168f1f4d82eb17f6f38a",
+          "sourceSha256": "9548b868f27826ab58d0cb41fae128d0b8f72c6d843c121672623c68b3382d61",
+          "nativeExportSha256": "247facdc01e9ad9d70d5e406cb27e46304ff8d4a41594cc3fbd1ce126bf29018",
+          "worksheetId": "ms-g9-prw-01-c-r1",
+          "revision": 1,
+          "pages": 5,
+          "subitems": 18,
+          "bytes": 34599,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_0daf689cd1014571ab478c659af2b08c.pdf",
+              "status": 200,
+              "sha256": "5efc5fc4e0b907ce36d5176efe7fb188e0fabc86c0e0168f1f4d82eb17f6f38a",
+              "bytes": 34599,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_0daf689cd1014571ab478c659af2b08c.pdf",
+              "status": 200,
+              "sha256": "5efc5fc4e0b907ce36d5176efe7fb188e0fabc86c0e0168f1f4d82eb17f6f38a",
+              "bytes": 34599,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GradeLoopPlayer from './GradeLoopPlayer.astro';
+import PrisaMonthIndex from './PrisaMonthIndex.astro';
 import '../styles/exact-grade.css';
+import '../styles/prisa-index.css';
+import { REDUCED_HUB_PATH } from '../lib/prisaIndex';
 import { buildGradeLoopPool } from '../lib/gradeLoopPools';
 import {
   loadGradeHub,
@@ -133,6 +136,13 @@ const gradePool = buildGradeLoopPool(grade);
             </p>
           )
         }
+        {
+          grade === 9 && (
+            <p class="grade-hub__track-link">
+              <a href={REDUCED_HUB_PATH}>כיתה ט׳ מצומצמת — דפי עבודה לפי הפריסה</a>
+            </p>
+          )
+        }
         <div class="exact-grade__walker" data-doodle="walker" dir="ltr">
           <div>
             <button type="button" class="exact-doodle-btn" aria-label="הנפשת השרבוט">
@@ -206,6 +216,8 @@ const gradePool = buildGradeLoopPool(grade);
         </section>
       )
     }
+
+    {grade >= 7 && <PrisaMonthIndex grade={grade} />}
 
     {
       hub.lead && !introIsCta && (

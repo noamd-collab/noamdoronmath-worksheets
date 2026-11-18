@@ -12,9 +12,11 @@ const digest = (c: any) => createHash('sha256').update(JSON.stringify(c, null, 2
 test('the verified correction reverses to the exact deployed historical catalog, without mutating input', () => {
   const before = JSON.stringify(current);
   const historical = beforeFirst15Correction(current);
-  // Catalog bytes at published baseline 58f2892df, not a new expected value
-  // generated from the correction or from mergeWorksheetEditions.
-  assert.equal(digest(historical), '17bedac54256640c2de45a4d311af4cd7c1d56e7fe7473313d30ef19f6dc4ce8');
+  // Catalog bytes at the published baseline e4ad27c7 (batch 11, live since 18.11; the port
+  // of #499 onto it), not a new expected value generated from the correction or from
+  // mergeWorksheetEditions. At 58f2892df the same projection was 17bedac5…; batches
+  // next21 to 11 and the new base topics were published in between.
+  assert.equal(digest(historical), '7b09f211cddfd16dd334b7c886fb616794ec258bc231b7e07a5aeda5ef137bbb');
   assert.equal(units(historical).length, 12);
   assert.equal(JSON.stringify(current), before);
 });

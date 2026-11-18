@@ -12,6 +12,9 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeNext21Catalog, beforeNext21Registry, beforeNext21Copy,
   reviewedNext21 as reviewed, reviewedNext21Ids as ids } from './fixtures/next21-pdf';
+import { beforeBatch01Registry } from './fixtures/batch01-pdf';
+import { reviewedBatch03 } from './fixtures/batch03-pdf';
+import { reviewedBatch09 } from './fixtures/batch09-pdf';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -41,11 +44,14 @@ test('seven fixed mappings add twenty-one frozen PDFs and recover the independen
   assert.deepEqual(ids, ['atq', 'apt', 'pyt', 'pya', 'grw', 'ctm', 'q1g'].map(key => `ms-20261115-${key}-01-r1`));
   assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 21);
   assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 21);
-  assert.equal(registry.editions.length, 35);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 105);
+  const afterNext21Registry = beforeBatch01Registry(registry);
+  assert.equal(afterNext21Registry.editions.length, 35);
+  assert.equal(afterNext21Registry.editions.flatMap((e: any) => e.levels).length, 105);
   assert.equal(priorRegistry.editions.length, 28);
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 84);
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
+  // Editions never add base levels; EQM49 (17.11, +3 levels) and NEW4 (18.11, +12 levels) are the later base topics.
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // NEW4 (18.11): four later base topics, +12 levels; batch 10 topic 9/53, +3
+  assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
   assert.equal(receipt.scope.pages, 137);
   assert.equal(receipt.scope.subitems, 405);
   assert.equal(receipt.sitePublicationClaimed, false);
@@ -61,7 +67,9 @@ test('all twenty-one additions have direct PDF routing and exact media/source bi
     assert.equal(edition.routing.aiHintShown, false);
     assert.equal(edition.publicationMode, 'pdf-only');
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, '/');
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', addition.editionId]);
+    // Batch 03 appends its own series after this one on 9/39 (ITP-01) and 7/6 (POW-01).
+    const later = [...reviewedBatch03.additions, ...reviewedBatch09.additions].filter(x => x.grade === addition.grade && x.topicId === addition.topicId).map(x => x.editionId);
+    assert.deepEqual(groups.map(g => g.editionId), ['legacy', addition.editionId, ...later]);
     assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, addition.grade, addition.topicId, '/')[0]);
     const proof = receipt.packages.find((p: any) => p.editionId === addition.editionId);
     assert.ok(proof, `${addition.editionId}: public frozen evidence`);

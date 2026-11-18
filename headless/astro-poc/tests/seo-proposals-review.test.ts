@@ -1,5 +1,12 @@
 import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
+import { reviewedBatch01 } from './fixtures/batch01-pdf';
+import { reviewedBatch02a } from './fixtures/batch02a-pdf';
+import { reviewedBatch03 } from './fixtures/batch03-pdf';
+import { reviewedProbabilityNine } from './fixtures/probability-nine-pdf';
+import { reviewedBatch04 } from './fixtures/batch04-pdf';
+import { reviewedBatch05 } from './fixtures/batch05-pdf';
+import { reviewedBatch06 } from './fixtures/batch06-pdf';
 import { reviewedSaoWpc } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfr } from './fixtures/ext-sml-afr-pdf';
 /**
@@ -28,6 +35,7 @@ import {
 import { EXACT, KEEP_CURRENT, NEEDS_DECISION } from '../scripts/lib/seo-overrides.mjs';
 import { PDF_ONLY_TOPIC_COPY } from './fixtures/pdf-only-topic-copy';
 import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
+import { afterLandingCorrections, reviewedLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 type Item = {
   path: string;
@@ -139,6 +147,121 @@ describe('seo proposals – generator and coverage', () => {
         }
         row.description = String(copy.after);
       }
+    }
+    for (const delta of reviewedBatch01.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      // The newer algebraic-systems landing is outside the frozen historical batch.
+      if (delta.slug === 'systems-algebraic-solution-grade-8') { assert.equal(row, undefined); continue; }
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: historical current description`);
+      row.currentDescription = String(copy.after);
+      if (delta.slug === 'exterior-angle-triangle-grade-8') {
+        // The longer historical description fell back to the page intro; the new one fits.
+        assert.equal(row.source, 'title:current|description:page-intro');
+        assert.equal(row.description, 'משתמשים במשפט הזווית החיצונית במשולש ומבחינים בינה לבין הזווית הפנימית הצמודה לה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');
+        row.source = 'title:current|description:current';
+      } else {
+        assert.match(row.source, /\|description:current$/);
+        assert.equal(row.description, copy.before);
+      }
+      row.description = String(copy.after);
+    }
+    // Batch 02a: four newer grade-8 landings are outside the frozen historical scope.
+    const batch02aOutOfScope = ['equations-with-fractions-grade-8', 'word-problems-choosing-unknowns-grade-8',
+      'two-data-sources-grade-8', 'probability-sample-space-grade-8'];
+    const batch02aPageIntro: Record<string, string> = {
+      'triangle-median-grade-8': 'מזהים תיכון במשולש ומשתמשים בהגדרתו כדי לחשב אורכים ולנמק שוויון קטעים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.',
+      'linear-function-grade-8': 'מקשרים בין נוסחה, טבלה וגרף ומבינים שיפוע וחיתוך עם הצירים. דפי העבודה זמינים בשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה.',
+    };
+    for (const delta of reviewedBatch02a.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      if (batch02aOutOfScope.includes(delta.slug)) { assert.equal(row, undefined, delta.slug); continue; }
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: historical current description`);
+      row.currentDescription = String(copy.after);
+      if (/\|description:review-fix$/.test(row.source)) {
+        // The independently reviewed override stays authoritative (word problems 9, isosceles 8, signed numbers 7).
+        assert.ok(['word-problems-grade-9', 'isosceles-triangle-properties-grade-8', 'multiplying-signed-numbers-grade-7'].includes(delta.slug), delta.slug);
+        continue;
+      }
+      if (Object.hasOwn(batch02aPageIntro, delta.slug)) {
+        // The longer historical description fell back to the page intro; the new one fits.
+        assert.match(row.source, /\|description:page-intro$/);
+        assert.equal(row.description, batch02aPageIntro[delta.slug]);
+        row.source = row.source.replace('description:page-intro', 'description:current');
+      } else {
+        assert.match(row.source, /\|description:current$/);
+        assert.equal(row.description, copy.before);
+      }
+      row.description = String(copy.after);
+    }
+    // Batch 03: the reviewed overrides for powers 7 and quadratic equations 9 stay authoritative.
+    const batch03PageIntro: Record<string, string> = {
+      'combining-like-terms-grade-7': 'לומדים לזהות איברים דומים, לכנס אותם ולהשתמש נכון בחוק הפילוג. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.',
+    };
+    for (const delta of reviewedBatch03.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: current description before batch 03`);
+      row.currentDescription = String(copy.after);
+      if (/\|description:review-fix$/.test(row.source)) {
+        assert.ok(['powers-grade-7', 'quadratic-equations-grade-9'].includes(delta.slug), delta.slug);
+        continue;
+      }
+      if (Object.hasOwn(batch03PageIntro, delta.slug)) {
+        // The longer historical description fell back to the page intro; the new one fits.
+        assert.match(row.source, /\|description:page-intro$/);
+        assert.equal(row.description, batch03PageIntro[delta.slug]);
+        row.source = row.source.replace('description:page-intro', 'description:current');
+      } else {
+        assert.match(row.source, /\|description:current$/);
+        assert.equal(row.description, copy.before);
+      }
+      row.description = String(copy.after);
+    }
+    // Grade-9 probability (replaces draft #500): apply only the reviewed description delta.
+    assert.equal(reviewedProbabilityNine.landingDeltas.length, 1);
+    for (const delta of reviewedProbabilityNine.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: historical current description`);
+      assert.equal(row.source, 'title:current|description:current');
+      assert.equal(row.description, copy.before);
+      row.currentDescription = String(copy.after);
+      row.description = String(copy.after);
+    }
+    // Batch 04: kite-grade-9 (authored 12.10.2026) is outside the frozen historical scope; the other
+    // three rows use current copy, with their complete old value asserted.
+    for (const delta of reviewedBatch04.landingDeltas) {
+      const copy = delta.fields.find(d => d.path.length === 1 && d.path[0] === 'description')!;
+      const row = expected.find(item => item.path === '/' + delta.slug);
+      if (delta.slug === 'kite-grade-9') { assert.equal(row, undefined, delta.slug); continue; }
+      assert.ok(row, delta.slug);
+      assert.equal(row.currentDescription, copy.before, `${delta.slug}: current description before batch 04`);
+      row.currentDescription = String(copy.after);
+      assert.match(row.source, /\|description:current$/);
+      assert.equal(row.description, copy.before);
+      row.description = String(copy.after);
+    }
+    // Batches 05 and 06 add visible sections without rewriting the existing metadata descriptions.
+    for (const delta of [...reviewedBatch05.landingDeltas, ...reviewedBatch06.landingDeltas]) {
+      assert.equal(delta.fields.some(d => d.path.length === 1 && d.path[0] === 'description'), false,
+        `${delta.slug}: PDF addition preserves the existing description`);
+    }
+    // The 18 Nov landing corrections rewrite two current descriptions that repeated a corrected
+    // claim (trapezoid-grade-9: the series count; two-data-sources-grade-8: the task scope).
+    for (const entry of reviewedLandingCorrections.pages) {
+      const row = expected.find(item => item.path === '/' + entry.slug);
+      if (!row) continue;
+      const corrected = afterLandingCorrections(entry.slug, row.currentDescription);
+      if (corrected === row.currentDescription) continue;
+      assert.ok(['trapezoid-grade-9', 'two-data-sources-grade-8'].includes(entry.slug), entry.slug);
+      if (row.description === row.currentDescription) row.description = corrected;
+      row.currentDescription = corrected;
     }
     assert.deepEqual(proposals, expected);
   });

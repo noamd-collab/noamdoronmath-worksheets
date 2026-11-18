@@ -1,0 +1,3895 @@
+{
+  "schema": "batch03-reviewed-additive-pdf-fixture/v1",
+  "baselineCommit": "7bccd5f587726234367154538b342cb5fd464c9f",
+  "baselineCatalogSha256": "907d855f00fec11c41b159842c73bdc94be867ad7e9b8e1d8b1d29e22e1bcf93",
+  "baselineRegistrySha256": "6c3fa7e3523155d885a15450b1327c9aefe853bdaf7bdae009aeb6593f8575a9",
+  "additions": [
+    {
+      "grade": 7,
+      "topicId": 29,
+      "editionId": "ms-20261117-alg-03-r1",
+      "nativePrefix": "G7-T96",
+      "slug": "combining-like-terms-grade-7",
+      "ctaTopics": [
+        29
+      ],
+      "pdfIds": [
+        "f8e4149d737746489f3866c6e9bfa807",
+        "54f64a4bda964c9d940858a150e05f9e",
+        "55bae24cc20746aa8375617301ab29f0"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 29,
+        "editionId": "ms-20261117-alg-03-r1",
+        "label": "כינוס איברים דומים · PDF",
+        "nativePrefix": "G7-T96",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "f8e4149d737746489f3866c6e9bfa807",
+            "pdfSha256": "c4a3fda219a4a3a361277889d0d6d3186eb1908d9ee767f7179ad15e5d8eaa22",
+            "sourceSha256": "dfb5eba797c01557b8c182804fe874005ef87a23446278795d54ad96689238ec",
+            "nativeExportSha256": "a0d1298a1299494d76a7f08f9f7b3bb56c1cfbe413dbeddcad78956d68d7d152",
+            "worksheetId": "ms-g7-alg-03-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "54f64a4bda964c9d940858a150e05f9e",
+            "pdfSha256": "8a00250f6779da6f6915be9bc5d34ae1118e24b0e49561795c2a44ed7d69dec0",
+            "sourceSha256": "355f500c853bc59262ca11052c75b4655bc75eaab833d2ade7566c3aaa941348",
+            "nativeExportSha256": "d88ba4a1ccc471476918c3a056129bea29409852f4f12060b443ce9b745c0857",
+            "worksheetId": "ms-g7-alg-03-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "55bae24cc20746aa8375617301ab29f0",
+            "pdfSha256": "b825b13f45fa3f76d15695d7b8755042abff144e0ba1adc797d07fb0918ede6d",
+            "sourceSha256": "f14818a3f225989f4565cc309f9de8f3e8de04387bec96cd7c026c17bf8f0448",
+            "nativeExportSha256": "4d4b7b643cf9caae35476113a2f72fd0771c4443c4b6021a0e854ba4d9c27d81",
+            "worksheetId": "ms-g7-alg-03-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "a019a9c0dadf6a507b9b9c109d2a93e0e1c6c70f0dbd0aeda7f26ad16a047d80",
+      "baselineTopicSha256": "6eebef31d1934ab41d0b0505014e2e23d1fcf9fe2a878aac1e0b6f370f057e64",
+      "baselineEditionIds": []
+    },
+    {
+      "grade": 7,
+      "topicId": 6,
+      "editionId": "ms-20261117-g7-pow-01-r1",
+      "nativePrefix": "G7-T79",
+      "slug": "powers-grade-7",
+      "ctaTopics": [
+        6
+      ],
+      "pdfIds": [
+        "f43aebdaa54b401b98f36fbe412b26ed",
+        "513043959765491587c1142fd5df11c0",
+        "78e939c9b053490e8407b107784ed450"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 6,
+        "editionId": "ms-20261117-g7-pow-01-r1",
+        "label": "חזקות — סימון, סדר פעולות ובסיס מכוון · PDF",
+        "nativePrefix": "G7-T79",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "f43aebdaa54b401b98f36fbe412b26ed",
+            "pdfSha256": "9e6b17c13764f34b296bab09932b2510bdd60520d6234e1b95ec2420ab06668b",
+            "sourceSha256": "855915e5e5162b7dda04aa5ad7e2c9d4bf0e9f10720ac6410a0db54f88641e01",
+            "nativeExportSha256": "3cfb13d47f37b016c3da86408553f72ffaa40aba7f581f19c510973a693fe07a",
+            "worksheetId": "ms-g7-pow-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "513043959765491587c1142fd5df11c0",
+            "pdfSha256": "4aea1b8020af9a78c7fe5f5ca21eb83c190364a011fd0e17ad45a561552b92b7",
+            "sourceSha256": "8f60770e4e22ec16f00246b317cc00470bbcb5a1777c680a16fef331a9e3c58a",
+            "nativeExportSha256": "b8e168566279500b584c94136b84e14be620ed514102380f309a76e2cfc7134c",
+            "worksheetId": "ms-g7-pow-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "78e939c9b053490e8407b107784ed450",
+            "pdfSha256": "2aef3a40d17833187b11b49a7a946dfbe046f3d451296e659eeac2a1d92f0deb",
+            "sourceSha256": "a80e0325406e62484795bdb370edd8fbd412b249d0e4ce5ddd13279cbc619ddc",
+            "nativeExportSha256": "861fb70208504223dfa88adaa98b05bed1fc2967f0a3fe7f3d508f40be332a1a",
+            "worksheetId": "ms-g7-pow-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "0f9e8b8b3164d3b07aa238040c42bda6d3a91e581ad6b240ba627615b1e13778",
+      "baselineTopicSha256": "2fcdbd1fb3b48f0595ca9993e9d656b25be51596317371483641b95524ba3fb0",
+      "baselineEditionIds": [
+        "ms-20261115-grw-01-r1"
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 7,
+      "editionId": "ms-20261117-root-01-r1",
+      "nativePrefix": "G7-T78",
+      "slug": "square-root-grade-7",
+      "ctaTopics": [
+        7
+      ],
+      "pdfIds": [
+        "f83235f7496948fdb9c010dcffd2df7c",
+        "485502f803114ead8e73dfb13acb1091",
+        "3f599b5c72284e42959eb866c4d23a6c"
+      ],
+      "edition": {
+        "grade": 7,
+        "topicId": 7,
+        "editionId": "ms-20261117-root-01-r1",
+        "label": "שורש ריבועי חיובי ואומדן שורש · PDF",
+        "nativePrefix": "G7-T78",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "f83235f7496948fdb9c010dcffd2df7c",
+            "pdfSha256": "1dc82e652005d216501c766dff90592668966f92b89f0b1dbee4e9a61c89cfc4",
+            "sourceSha256": "43a15143e946e0effb494f4cd0047a505f9dccd9fc35a4348bb11d6c7af5d5cd",
+            "nativeExportSha256": "2ca1b125db1a060f9d7da46384c5290c532679e2f1c1e467694cae8be499d637",
+            "worksheetId": "ms-g7-root-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "485502f803114ead8e73dfb13acb1091",
+            "pdfSha256": "c6ec451b834d397354c57f22fba7e0235665b6e69c12c5ba9972cf08a88ed2c2",
+            "sourceSha256": "48ff329b6e59846d2441224c007bb67f37c3288e641a76cfbcabb29aefd259ce",
+            "nativeExportSha256": "d0b204c0f561d1704bb586ce6790b1ef87c21c40953042b2823f7c3f308e584d",
+            "worksheetId": "ms-g7-root-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "3f599b5c72284e42959eb866c4d23a6c",
+            "pdfSha256": "e9cea85908b13771759ce56cd466e9952ec1416b89dab5618ecda9468446cfdc",
+            "sourceSha256": "4ec1778347619fa865681d80f52dd00710587b6a56c966b244f356f005942f08",
+            "nativeExportSha256": "9841d5ee2810fd126b32ac655717e89e229f36141ef4bbff8643198018563afc",
+            "worksheetId": "ms-g7-root-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "8b345a709d5fdf9c942a4c65258d1ecb9545c5483cb0e2e9de81dc9338b4a241",
+      "baselineTopicSha256": "388aa253121bea9909daaf2889a5f54455cf778f147ec3f457732e6d23668c76",
+      "baselineEditionIds": []
+    },
+    {
+      "grade": 8,
+      "topicId": 52,
+      "editionId": "ms-20261117-ine-02-r1",
+      "nativePrefix": "G8-T79",
+      "slug": "inequalities-grade-8",
+      "ctaTopics": [
+        52
+      ],
+      "pdfIds": [
+        "3de9d153f03a45a9937b717a590193cc",
+        "f3d9fbce56624504aa11393d7075d6f8",
+        "f6305df3ca714857adae73d608f9c068"
+      ],
+      "edition": {
+        "grade": 8,
+        "topicId": 52,
+        "editionId": "ms-20261117-ine-02-r1",
+        "label": "פתרון אי־שוויון ממעלה ראשונה · PDF",
+        "nativePrefix": "G8-T79",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "3de9d153f03a45a9937b717a590193cc",
+            "pdfSha256": "37128fa7e31086824033afe803faba06830affda50e131d9aeff39853eb07f36",
+            "sourceSha256": "d9cee5b8113cef2bbbf5e43f83871cc9c64fe787c9ac80f004d32800f83ec1d5",
+            "nativeExportSha256": "cbac22620f5ca75b56f0f7023c6da721d08a0cdcc4583ab826e32f7f8784f3e1",
+            "worksheetId": "ms-g8-ine-02-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "f3d9fbce56624504aa11393d7075d6f8",
+            "pdfSha256": "0fb5f0fe5fc835987f1ce8d5ed88a9195e2b3ecb30b3ccf1e480f60436aaeb6f",
+            "sourceSha256": "c90bca58ede8534fe5bbbaed5d2c8d2b2529c8d8f4fa92780fd4d6b9eff9b05c",
+            "nativeExportSha256": "d73ab4ac2bc4831db218223d9ff101d94d02af122fae7528a07714bf8687bf23",
+            "worksheetId": "ms-g8-ine-02-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "f6305df3ca714857adae73d608f9c068",
+            "pdfSha256": "467bdf2fed331d508f3b7976005571e6ed892056cf6a11c3898f78154a369189",
+            "sourceSha256": "be37638db5120197698fd2ad3e8a2334fd06d20a7abde7cff1f76ef45c8941ce",
+            "nativeExportSha256": "6414f480d98f601b199f33934128b3247b282707733310f967a479756e0c6587",
+            "worksheetId": "ms-g8-ine-02-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "7ae52bcfbe6e07cddfafd549619bc91cd2d19a7857b4952bd3cab18f2fcb344c",
+      "baselineTopicSha256": "af0aa1c0270f58c2d634e0656870bd0866e910f5bfd3043c08b5207a74e25849",
+      "baselineEditionIds": []
+    },
+    {
+      "grade": 9,
+      "topicId": 6,
+      "editionId": "ms-20261117-qap-01-r1",
+      "nativePrefix": "G9-T48",
+      "slug": "quadratic-equations-grade-9",
+      "ctaTopics": [
+        6
+      ],
+      "pdfIds": [
+        "36b97eae7e154b91b8731fb723f0d4db",
+        "5c29cd897daa488fa2b12f1eb24da62a",
+        "715ce5ea427f494a8c32811a2bb6396f"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 6,
+        "editionId": "ms-20261117-qap-01-r1",
+        "label": "משוואות ריבועיות — טכניקה אלגברית ונקודות חיתוך של פרבולה · PDF",
+        "nativePrefix": "G9-T48",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "36b97eae7e154b91b8731fb723f0d4db",
+            "pdfSha256": "524110151470dc2fca496901a4cce3ac5275ea9af948ae7fda323a06b841fdab",
+            "sourceSha256": "141da8581db1b841dd52c1a2c2b1f9351d544c016860771bb2fef2ca16713118",
+            "nativeExportSha256": "638b9ed90770947c4232b5fe9bee3a61826244ac44482564a960a2ce56748a42",
+            "worksheetId": "ms-g9-qap-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "5c29cd897daa488fa2b12f1eb24da62a",
+            "pdfSha256": "dfe4c7d1c622b87372200cf96efb86f0d8744043cc66d98c327b4d5f550e0048",
+            "sourceSha256": "bfdccafaa5e46ce4dd9afb858c048c8cf745a5ab599d14103cabfe9f6bd89a4e",
+            "nativeExportSha256": "fd4dfb624a53e27463977b62d40f8d204145d141980ffb52421e6742ecd30d3f",
+            "worksheetId": "ms-g9-qap-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "715ce5ea427f494a8c32811a2bb6396f",
+            "pdfSha256": "9c58af4f7c1682f95bbf417d0db6fa13ed49d0bc4ef9aa362f0158dc58c1b4d1",
+            "sourceSha256": "59e2581964530726db20903e99a8c58aab82fbc2012e2c4f3e836868e28719db",
+            "nativeExportSha256": "25ec91afcd50e15d2f9ea8e3109ab551d7b55ae6ac7a1a945965d83c5cab8d07",
+            "worksheetId": "ms-g9-qap-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "e96185e6618986b2e0b0f1f438aa464f293111a998c89a1eed06e3bb95830c10",
+      "baselineTopicSha256": "b64b16f06200e9ebfe9418a78a5032ed4d3cdd71ac351e0bd7f04c28da85b15d",
+      "baselineEditionIds": []
+    },
+    {
+      "grade": 9,
+      "topicId": 8,
+      "editionId": "ms-20261117-qin-01-r1",
+      "nativePrefix": "G9-T49",
+      "slug": "quadratic-inequalities-systems-grade-9",
+      "ctaTopics": [
+        8
+      ],
+      "pdfIds": [
+        "dd065333b62f4aa88957c1c2b4fbd2cc",
+        "14a156148aae41878e3f3c13aeca0893",
+        "3805bd63ad5d4ef0a6989b4c7fa338d5"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 8,
+        "editionId": "ms-20261117-qin-01-r1",
+        "label": "אי־שוויון ריבועי — פתרון בעזרת גרף וסקיצה של פרבולה · PDF",
+        "nativePrefix": "G9-T49",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "dd065333b62f4aa88957c1c2b4fbd2cc",
+            "pdfSha256": "a13659058f8cd979641b9bdbf47daf34e965acf81541a5ab1d8635c51b53db87",
+            "sourceSha256": "4b8bf85425cb6576401f661a07692add7c90c7821875a4cdf41ceedbe943479c",
+            "nativeExportSha256": "90643805ab80d4a548171fc37d6d2f77781d002c456b4bd3c4b1b0854756772f",
+            "worksheetId": "ms-g9-qin-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "14a156148aae41878e3f3c13aeca0893",
+            "pdfSha256": "695b6d85b686385fbd3a6f3e25aca135981137407606c5f4775e60a973b045d5",
+            "sourceSha256": "15c56191069e6a079fe5e0055886040d0a2234aa5f971f86c6cc303c0b1542a7",
+            "nativeExportSha256": "1bfc4dee04ff207958c3e851905b33fb66d931436a0cedbe10e25c18350f65df",
+            "worksheetId": "ms-g9-qin-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "3805bd63ad5d4ef0a6989b4c7fa338d5",
+            "pdfSha256": "e5b88bfc19200f9c1cc0900e67c2d1c27fd7424498681bb1b4624af1308f336f",
+            "sourceSha256": "fb0b9e1d513f38db6551aec3c51c019ebb6a0da1ac1d89ab7abc472bc1815961",
+            "nativeExportSha256": "0f66e9175ef5d3d8665f44ec4c3e57a342878de4ab6e9ef4440944864e945741",
+            "worksheetId": "ms-g9-qin-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "b67cb7d7ea132d2532b9c9710463622d140114794cf56fa8558a7987a0f8f59d",
+      "baselineTopicSha256": "f5cecb4aa83c72fe064e9247602ac6b4b974ed12b5416474698b64e63e6fccdd",
+      "baselineEditionIds": []
+    },
+    {
+      "grade": 9,
+      "topicId": 8,
+      "editionId": "ms-20261117-syq-01-r1",
+      "nativePrefix": "G9-T55",
+      "slug": "quadratic-inequalities-systems-grade-9",
+      "ctaTopics": [
+        8
+      ],
+      "pdfIds": [
+        "5d4484deaaa24c6a98c11f6c7cbe1cc2",
+        "82bca8eff07b4b75ac760ff0e0c17b19",
+        "a60abdb5575d471eb794d8507e28b0ed"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 8,
+        "editionId": "ms-20261117-syq-01-r1",
+        "label": "מערכת של ישר ופרבולה — פתרון אלגברי ונקודות חיתוך · PDF",
+        "nativePrefix": "G9-T55",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "5d4484deaaa24c6a98c11f6c7cbe1cc2",
+            "pdfSha256": "5ff4fd344f749f474c21bf99072ed57d18804c8ae357e8f77871c19ee64ac9b7",
+            "sourceSha256": "b367d6635133352e9164b28181001899de1dec9d7624dab76ceae196b6ef637b",
+            "nativeExportSha256": "7cb52cbb3cf80ebab03068e1ae69aaf1f6dcf33f201896743624f8ca17d4361a",
+            "worksheetId": "ms-g9-syq-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "82bca8eff07b4b75ac760ff0e0c17b19",
+            "pdfSha256": "164a24b84627d19582fc802f57e88193a6bd77803c53a0efe4d71135a67e3311",
+            "sourceSha256": "d38d2e27833c3ee08f0ea8582ba5616411958bbe9bfe006bc5172fe5fa4d221d",
+            "nativeExportSha256": "63cfb8b7ec4ffe3a7321ed75830d3427c721a1799875fc284e4bffc401de3e36",
+            "worksheetId": "ms-g9-syq-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "a60abdb5575d471eb794d8507e28b0ed",
+            "pdfSha256": "b1915099e66df294845b88d9b939bc0d8ad38c42dc797a18146fc46488275688",
+            "sourceSha256": "fc410f3cad79747231706e09912b68b58a135d1aadb2555b60a919b0155f63bf",
+            "nativeExportSha256": "07f7bbd97618cd58252eb8426c6548125f8db47934d897283918499af9198c6f",
+            "worksheetId": "ms-g9-syq-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "6daf669df7fa42d69d46142b6e7cedbec83e911ba4107429fe0c7c7893840419",
+      "baselineTopicSha256": "f5cecb4aa83c72fe064e9247602ac6b4b974ed12b5416474698b64e63e6fccdd",
+      "baselineEditionIds": []
+    },
+    {
+      "grade": 9,
+      "topicId": 39,
+      "editionId": "ms-20261117-itp-01-r1",
+      "nativePrefix": "G9-T80",
+      "slug": "trapezoid-grade-9",
+      "ctaTopics": [
+        39
+      ],
+      "pdfIds": [
+        "9a344ae17e4843d486c19d180b654a66",
+        "15faa528161e4b54af250a9f70f82cd9",
+        "9c96ce7f46f34701befcb5b993330902"
+      ],
+      "edition": {
+        "grade": 9,
+        "topicId": 39,
+        "editionId": "ms-20261117-itp-01-r1",
+        "label": "טרפז שווה־שוקיים — זוויות הבסיס והאלכסונים · PDF",
+        "nativePrefix": "G9-T80",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "9a344ae17e4843d486c19d180b654a66",
+            "pdfSha256": "ff40fc5991f20f275805744fa8ac72cd3ede9470ef5433679030b800ac77069a",
+            "sourceSha256": "2cd735dc82192231d48576020985b2c65dd14228311eafda596902069f24ad3d",
+            "nativeExportSha256": "2efad391a7c7b02186753286f6982305d514449fea28e1eb5cb76559456921f7",
+            "worksheetId": "ms-g9-itp-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "15faa528161e4b54af250a9f70f82cd9",
+            "pdfSha256": "be74b0aeb6de959ef7c9bc4d2dc485c21dd8bfa7270ec6fcd94586fd1bc2e433",
+            "sourceSha256": "9319a163e5942a37f76639d6c9389a107a464a4a531f66d23851e1e6c911ac59",
+            "nativeExportSha256": "5f904eba734a66abeb5c3d53adf4f261c3ef0e6ddaad0e8f78d98e085c17206b",
+            "worksheetId": "ms-g9-itp-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "9c96ce7f46f34701befcb5b993330902",
+            "pdfSha256": "211f55c2ca6af96ae55dbe97fe8675a3ded7a96b77f26a74cece1b3db66f4a29",
+            "sourceSha256": "5df1554ed9ddcf7a0616ee348d8b91d880f38bfa816af2cba2c607bdcee9e066",
+            "nativeExportSha256": "004458b621b43d412da2027573a8008ae6c71df5e28c7ce3bac411632eddbbdb",
+            "worksheetId": "ms-g9-itp-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "f54aa9860f7fa8ee8e0d25d60c1e0c9308ddf210e0f5c80a612fd26086e283ec",
+      "baselineTopicSha256": "bd5dafe4cf380a197dfe9b545033b3c409ccedd3aada46789a8b37dd9e560b2c",
+      "baselineEditionIds": [
+        "ms-20261115-trp-01-r1"
+      ]
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "combining-like-terms-grade-7",
+      "editionIds": [
+        "ms-20261117-alg-03-r1"
+      ],
+      "baselineSha256": "bfd4a5eda1014e9b1335a6f8c5f86b6f295b07a9f1fe760eec672f99b502a080",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "כינוס איברים וחוק הפילוג לכיתה ז׳: הסבר קצר, דוגמה פתורה, טעויות נפוצות ושאלת בדיקה. קישורים לדפי עבודה בשלוש רמות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+          "after": "כינוס איברים וחוק הפילוג לכיתה ז׳. דפי PDF נוספים בכינוס איברים דומים בביטויים אלגבריים, עם בדיקה בהצבה וטעויות נפוצות, בשלוש רמות ועם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים לזהות איברים דומים, לכנס אותם ולהשתמש נכון בחוק הפילוג. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "לומדים לזהות איברים דומים, לכנס אותם ולהשתמש נכון בחוק הפילוג. לצד הדפים הקיימים נוספו קובצי PDF לכינוס איברים דומים בביטויים אלגבריים במשתנה אחד, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "איברים דומים מכילים אותו משתנה באותה חזקה. בחוק הפילוג כופלים את הגורם שמחוץ לסוגריים בכל איבר שבתוכם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: 3(x+2)+2x=3x+6+2x=5x+6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אי אפשר לכנס את 5x ואת 6, כי הם אינם איברים דומים. בפתיחת סוגריים חשוב לכפול כל איבר, ובייחוד לשים לב לסימן שלילי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פשטו: 4(y−2)+3y.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 7y−8.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "איברים דומים מכילים אותו משתנה באותה חזקה. בחוק הפילוג כופלים את הגורם שמחוץ לסוגריים בכל איבר שבתוכם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: 3(x+2)+2x=3x+6+2x=5x+6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אי אפשר לכנס את 5x ואת 6, כי הם אינם איברים דומים. בפתיחת סוגריים חשוב לכפול כל איבר, ובייחוד לשים לב לסימן שלילי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פשטו: 4(y−2)+3y.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 7y−8.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "כינוס איברים דומים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בכל השאלות יש משתנה אחד. מזהים איברים דומים, כלומר איברים עם אותו חלק משתני או מספרים חופשיים, ומכנסים אותם, גם כשהמקדמים הם מספרים עשרוניים ושברים. מציבים מספר בביטוי המקורי ובביטוי המכונס, ובודקים אם הצבה אחת מספיקה כדי לקבוע ששני ביטויים שקולים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל רמה מוצאים טעות בכינוס שעשה תלמיד, ובשאלה מהקשר כותבים ביטוי מכונס להיקף של מצולע או לסכום כסף. ברמה ב׳ יש יותר מקדמים שליליים ויותר איברים עם x², ובמצוינות גם משלימים איבר חסר, קובעים אם שוויון בין ביטויים הוא זהות ומכנסים לפני הצבה כדי לחשב בלי מחשבון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא כינוס איברים וחוק הפילוג לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא כינוס איברים וחוק הפילוג לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "בכל השאלות יש משתנה אחד. מזהים איברים דומים, כלומר איברים עם אותו חלק משתני או מספרים חופשיים, ומכנסים אותם, גם כשהמקדמים הם מספרים עשרוניים ושברים. מציבים מספר בביטוי המקורי ובביטוי המכונס, ובודקים אם הצבה אחת מספיקה כדי לקבוע ששני ביטויים שקולים. בכל רמה מוצאים טעות בכינוס שעשה תלמיד, ובשאלה מהקשר כותבים ביטוי מכונס להיקף של מצולע או לסכום כסף. ברמה ב׳ יש יותר מקדמים שליליים ויותר איברים עם x², ובמצוינות גם משלימים איבר חסר, קובעים אם שוויון בין ביטויים הוא זהות ומכנסים לפני הצבה כדי לחשב בלי מחשבון. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא כינוס איברים וחוק הפילוג לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא כינוס איברים וחוק הפילוג לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "בכל השאלות יש משתנה אחד. מזהים איברים דומים, כלומר איברים עם אותו חלק משתני או מספרים חופשיים, ומכנסים אותם, גם כשהמקדמים הם מספרים עשרוניים ושברים. מציבים מספר בביטוי המקורי ובביטוי המכונס, ובודקים אם הצבה אחת מספיקה כדי לקבוע ששני ביטויים שקולים. בכל רמה מוצאים טעות בכינוס שעשה תלמיד, ובשאלה מהקשר כותבים ביטוי מכונס להיקף של מצולע או לסכום כסף. ברמה ב׳ יש יותר מקדמים שליליים ויותר איברים עם x², ובמצוינות גם משלימים איבר חסר, קובעים אם שוויון בין ביטויים הוא זהות ומכנסים לפני הצבה כדי לחשב בלי מחשבון. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7",
+                "name": "כינוס איברים וחוק הפילוג לכיתה ז׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "כינוס איברים וחוק הפילוג לכיתה ז׳: הסבר קצר, דוגמה פתורה, טעויות נפוצות ושאלת בדיקה. קישורים לדפי עבודה בשלוש רמות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7#learning-resource",
+                "name": "כינוס איברים וחוק הפילוג לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7",
+                "description": "כינוס איברים וחוק הפילוג לכיתה ז׳: הסבר קצר, דוגמה פתורה, טעויות נפוצות ושאלת בדיקה. קישורים לדפי עבודה בשלוש רמות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא כינוס איברים וחוק הפילוג לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7",
+                "name": "כינוס איברים וחוק הפילוג לכיתה ז׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "כינוס איברים וחוק הפילוג לכיתה ז׳. דפי PDF נוספים בכינוס איברים דומים בביטויים אלגבריים, עם בדיקה בהצבה וטעויות נפוצות, בשלוש רמות ועם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7#learning-resource",
+                "name": "כינוס איברים וחוק הפילוג לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7",
+                "description": "כינוס איברים וחוק הפילוג לכיתה ז׳. דפי PDF נוספים בכינוס איברים דומים בביטויים אלגבריים, עם בדיקה בהצבה וטעויות נפוצות, בשלוש רמות ועם תשובות סופיות.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/combining-like-terms-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא כינוס איברים וחוק הפילוג לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בכל השאלות יש משתנה אחד. מזהים איברים דומים, כלומר איברים עם אותו חלק משתני או מספרים חופשיים, ומכנסים אותם, גם כשהמקדמים הם מספרים עשרוניים ושברים. מציבים מספר בביטוי המקורי ובביטוי המכונס, ובודקים אם הצבה אחת מספיקה כדי לקבוע ששני ביטויים שקולים. בכל רמה מוצאים טעות בכינוס שעשה תלמיד, ובשאלה מהקשר כותבים ביטוי מכונס להיקף של מצולע או לסכום כסף. ברמה ב׳ יש יותר מקדמים שליליים ויותר איברים עם x², ובמצוינות גם משלימים איבר חסר, קובעים אם שוויון בין ביטויים הוא זהות ומכנסים לפני הצבה כדי לחשב בלי מחשבון. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "כינוס איברים דומים — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בכל השאלות יש משתנה אחד. מזהים איברים דומים, כלומר איברים עם אותו חלק משתני או מספרים חופשיים, ומכנסים אותם, גם כשהמקדמים הם מספרים עשרוניים ושברים. מציבים מספר בביטוי המקורי ובביטוי המכונס, ובודקים אם הצבה אחת מספיקה כדי לקבוע ששני ביטויים שקולים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בכל רמה מוצאים טעות בכינוס שעשה תלמיד, ובשאלה מהקשר כותבים ביטוי מכונס להיקף של מצולע או לסכום כסף. ברמה ב׳ יש יותר מקדמים שליליים ויותר איברים עם x², ובמצוינות גם משלימים איבר חסר, קובעים אם שוויון בין ביטויים הוא זהות ומכנסים לפני הצבה כדי לחשב בלי מחשבון.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "powers-grade-7",
+      "editionIds": [
+        "ms-20261117-g7-pow-01-r1"
+      ],
+      "baselineSha256": "6c6afdf8e3abdf2a5b66aedd6811d5d826d1e5e71564954e749fceada158eff1",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "חזקות עם מעריך טבעי לכיתה ז׳: כפל חוזר, בסיס ומעריך. דפי PDF נוספים על גדילה והקטנה חוזרות ושטח ריבוע, עם תשובות סופיות.",
+          "after": "חזקות עם מעריך טבעי לכיתה ז׳: בסיס ומעריך, סדר פעולות חשבון וחזקה שבסיסה מספר מכוון. דפי PDF נוספים בשלוש רמות, גם על גדילה והקטנה, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים לכתוב כפל חוזר בעזרת חזקות, לזהות בסיס ומעריך ולחשב ביטויים פשוטים. לצד הדפים הקיימים נוספו קובצי PDF המתמקדים בגדילה ובהקטנה. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+          "after": "לומדים לכתוב כפל חוזר בעזרת חזקות, לזהות בסיס ומעריך ולחשב ביטויים פשוטים. לצד הדפים הקיימים נוספו קובצי PDF המתמקדים בגדילה ובהקטנה. נוספה גם סדרת PDF על סימון חזקה, סדר פעולות חשבון עם חזקות וחזקה שבסיסה מספר מכוון, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בביטוי 3⁴ המספר 3 הוא הבסיס ו־4 הוא המעריך; לכן 3⁴=3×3×3×3. חזקה מתארת כפל חוזר, ולא חיבור חוזר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: 2³+3²=8+9=17.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "המעריך אינו מספר שמכפילים בו את הבסיס: 5² אינו 10 אלא 5×5=25.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "חשבו: 5²−4².",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 9, כי 25−16=9.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "חזקות עם מעריך טבעי — גדילה והקטנה בדפי PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בביטוי 3⁴ המספר 3 הוא הבסיס ו־4 הוא המעריך; לכן 3⁴=3×3×3×3. חזקה מתארת כפל חוזר, ולא חיבור חוזר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: 2³+3²=8+9=17.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "המעריך אינו מספר שמכפילים בו את הבסיס: 5² אינו 10 אלא 5×5=25.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "חשבו: 5²−4².",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 9, כי 25−16=9.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "חזקות עם מעריך טבעי — גדילה והקטנה בדפי PDF",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "חזקות: סימון, סדר פעולות ובסיס מכוון — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הדפים בנויים בארבעה חלקים: חזקה, בסיס ומעריך; סדר פעולות חשבון עם חזקות; חזקה שבסיסה מספר מכוון; ושאלות שילוב של חזקות, סדר פעולות וסימנים. כותבים מכפלה כחזקה, מבחינים בין הבסיס למעריך, ומבדילים בין חזקה של מספר שלילי בסוגריים, כמו (−5)², לבין −5².",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מוצאים טעות בחישוב של תלמיד, מוסיפים סוגריים כדי ששוויון יהיה נכון, וקובעים בלי לחשב אם התוצאה חיובית או שלילית. ברמה א׳ הבסיסים הם מספרים שלמים, ברמה ב׳ יש גם חזקות של שברים ושל מספרים עשרוניים, ובמצוינות מחפשים דפוסים בחזקות, כמו ספרת האחדות של 3⁸, ובוחנים את מבנה התרגיל לפני שמחשבים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "גם בסדרה זו שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 15.11.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים. התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים. התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            },
+            {
+              "question": "מה כוללים דפי ה־PDF על סדר פעולות ובסיס מכוון?",
+              "answer": "הדפים בנויים בארבעה חלקים: חזקה, בסיס ומעריך; סדר פעולות חשבון עם חזקות; חזקה שבסיסה מספר מכוון; ושאלות שילוב של חזקות, סדר פעולות וסימנים. כותבים מכפלה כחזקה, מבחינים בין הבסיס למעריך, ומבדילים בין חזקה של מספר שלילי בסוגריים, כמו (−5)², לבין −5². מוצאים טעות בחישוב של תלמיד, מוסיפים סוגריים כדי ששוויון יהיה נכון, וקובעים בלי לחשב אם התוצאה חיובית או שלילית. ברמה א׳ הבסיסים הם מספרים שלמים, ברמה ב׳ יש גם חזקות של שברים ושל מספרים עשרוניים, ובמצוינות מחפשים דפוסים בחזקות, כמו ספרת האחדות של 3⁸, ובוחנים את מבנה התרגיל לפני שמחשבים. גם בסדרה זו שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם דפי ה־PDF על סדר פעולות ובסיס מכוון כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים. התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים. התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                },
+                {
+                  "question": "מה כוללים דפי ה־PDF על סדר פעולות ובסיס מכוון?",
+                  "answer": "הדפים בנויים בארבעה חלקים: חזקה, בסיס ומעריך; סדר פעולות חשבון עם חזקות; חזקה שבסיסה מספר מכוון; ושאלות שילוב של חזקות, סדר פעולות וסימנים. כותבים מכפלה כחזקה, מבחינים בין הבסיס למעריך, ומבדילים בין חזקה של מספר שלילי בסוגריים, כמו (−5)², לבין −5². מוצאים טעות בחישוב של תלמיד, מוסיפים סוגריים כדי ששוויון יהיה נכון, וקובעים בלי לחשב אם התוצאה חיובית או שלילית. ברמה א׳ הבסיסים הם מספרים שלמים, ברמה ב׳ יש גם חזקות של שברים ושל מספרים עשרוניים, ובמצוינות מחפשים דפוסים בחזקות, כמו ספרת האחדות של 3⁸, ובוחנים את מבנה התרגיל לפני שמחשבים. גם בסדרה זו שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם דפי ה־PDF על סדר פעולות ובסיס מכוון כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/powers-grade-7",
+                "name": "חזקות לכיתה ז׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "חזקות עם מעריך טבעי לכיתה ז׳: כפל חוזר, בסיס ומעריך. דפי PDF נוספים על גדילה והקטנה חוזרות ושטח ריבוע, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/powers-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#learning-resource",
+                "name": "חזקות לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/powers-grade-7",
+                "description": "חזקות עם מעריך טבעי לכיתה ז׳: כפל חוזר, בסיס ומעריך. דפי PDF נוספים על גדילה והקטנה חוזרות ושטח ריבוע, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים. התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/powers-grade-7",
+                "name": "חזקות לכיתה ז׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "חזקות עם מעריך טבעי לכיתה ז׳: בסיס ומעריך, סדר פעולות חשבון וחזקה שבסיסה מספר מכוון. דפי PDF נוספים בשלוש רמות, גם על גדילה והקטנה, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/powers-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#learning-resource",
+                "name": "חזקות לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/powers-grade-7",
+                "description": "חזקות עם מעריך טבעי לכיתה ז׳: בסיס ומעריך, סדר פעולות חשבון וחזקה שבסיסה מספר מכוון. דפי PDF נוספים בשלוש רמות, גם על גדילה והקטנה, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/powers-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא חזקות לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "מתרגלים כפל חוזר ותהליכי גדילה והקטנה, ומתארים כמויות המשתנות במספר שלבים. התרגול כולל גם חישובים מספריים של שטח ריבוע ושינוי אורכי צלעות. זו סדרה ממוקדת המצטרפת לדפים הקיימים בחזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים דפי ה־PDF על סדר פעולות ובסיס מכוון?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "הדפים בנויים בארבעה חלקים: חזקה, בסיס ומעריך; סדר פעולות חשבון עם חזקות; חזקה שבסיסה מספר מכוון; ושאלות שילוב של חזקות, סדר פעולות וסימנים. כותבים מכפלה כחזקה, מבחינים בין הבסיס למעריך, ומבדילים בין חזקה של מספר שלילי בסוגריים, כמו (−5)², לבין −5². מוצאים טעות בחישוב של תלמיד, מוסיפים סוגריים כדי ששוויון יהיה נכון, וקובעים בלי לחשב אם התוצאה חיובית או שלילית. ברמה א׳ הבסיסים הם מספרים שלמים, ברמה ב׳ יש גם חזקות של שברים ושל מספרים עשרוניים, ובמצוינות מחפשים דפוסים בחזקות, כמו ספרת האחדות של 3⁸, ובוחנים את מבנה התרגיל לפני שמחשבים. גם בסדרה זו שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי ה־PDF על סדר פעולות ובסיס מכוון כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "חזקות: סימון, סדר פעולות ובסיס מכוון — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "הדפים בנויים בארבעה חלקים: חזקה, בסיס ומעריך; סדר פעולות חשבון עם חזקות; חזקה שבסיסה מספר מכוון; ושאלות שילוב של חזקות, סדר פעולות וסימנים. כותבים מכפלה כחזקה, מבחינים בין הבסיס למעריך, ומבדילים בין חזקה של מספר שלילי בסוגריים, כמו (−5)², לבין −5².",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מוצאים טעות בחישוב של תלמיד, מוסיפים סוגריים כדי ששוויון יהיה נכון, וקובעים בלי לחשב אם התוצאה חיובית או שלילית. ברמה א׳ הבסיסים הם מספרים שלמים, ברמה ב׳ יש גם חזקות של שברים ושל מספרים עשרוניים, ובמצוינות מחפשים דפוסים בחזקות, כמו ספרת האחדות של 3⁸, ובוחנים את מבנה התרגיל לפני שמחשבים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "גם בסדרה זו שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "square-root-grade-7",
+      "editionIds": [
+        "ms-20261117-root-01-r1"
+      ],
+      "baselineSha256": "93f150a6cfc0368ab67a7d0d16df26dff4607c0502cf1afe788b16b242119439",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "דפי עבודה בשורש ריבועי לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מבינים את משמעות השורש הריבועי, מוצאים שורשים של ריבועים שלמים ואומדים שורשים.",
+          "after": "שורש ריבועי חיובי לכיתה ז׳: שורשים של ריבועים שלמים, שברים ועשרוניים, ואומדן שורש בין שני שלמים עוקבים. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "מבינים את משמעות השורש הריבועי, מוצאים שורשים של ריבועים שלמים, אומדים שורשים ומקשרים לשטח של ריבוע. מתאים לכיתה ז׳ אחרי חזקות. שלוש רמות תרגול, בחינם וללא הרשמה.",
+          "after": "מבינים את משמעות השורש הריבועי, מוצאים שורשים של ריבועים שלמים, אומדים שורשים ומקשרים לשטח של ריבוע. מתאים לכיתה ז׳ אחרי חזקות. לצד הדפים הקיימים נוספו קובצי PDF לשורש ריבועי חיובי ולאומדן שורש, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "השורש הריבועי של מספר הוא המספר האי־שלילי שבריבוע נותן אותו. לכן √49 = 7, וזה גם אורך הצלע של ריבוע ששטחו 49. דוגמה לאומדן: √50 נמצא בין 7 ל־8, כי 49 < 50 < 64.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה היא לחלק את המספר ב־2 ולחשוב ש־√36 = 18. השורש הוא המספר שכופלים בעצמו: √36 = 6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בין אילו שני מספרים שלמים עוקבים נמצא √30?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: בין 5 ל־6, כי 25 < 30 < 36.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לפני: חזקות עם מעריך טבעי",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בהמשך: מערכת צירים — היכרות וקנה מידה",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קישורים קשורים",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "השורש הריבועי של מספר הוא המספר האי־שלילי שבריבוע נותן אותו. לכן √49 = 7, וזה גם אורך הצלע של ריבוע ששטחו 49. דוגמה לאומדן: √50 נמצא בין 7 ל־8, כי 49 < 50 < 64.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה היא לחלק את המספר ב־2 ולחשוב ש־√36 = 18. השורש הוא המספר שכופלים בעצמו: √36 = 6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בין אילו שני מספרים שלמים עוקבים נמצא √30?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: בין 5 ל־6, כי 25 < 30 < 36.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לפני: חזקות עם מעריך טבעי",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בהמשך: מערכת צירים — היכרות וקנה מידה",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קישורים קשורים",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "שורש ריבועי חיובי ואומדן שורש — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הדפים בנויים בשלושה חלקים: שורש ריבועי, שורש שאינו שלם ואומדן ערכו, ושאלות שילוב של חזקות, שורשים ואומדן. מחשבים שורשים של ריבועים שלמים, של שברים ושל מספרים עשרוניים, ובודקים טענות על השורש: השורש הריבועי הוא מספר אי־שלילי, למספר שלילי אין שורש ריבועי, ושורש של סכום אינו תמיד סכום השורשים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "באומדן מוצאים בין אילו שני מספרים שלמים עוקבים נמצא שורש, בודקים אילו מספרים הם אי־רציונליים ומסדרים מספרים לפי גודלם. יש גם שאלה על אורך הצלע של ריבוע ששטחו נתון. ברמה א׳ וברמה ב׳ מוצאים גם לאיזה מספר שלם השורש קרוב יותר, ובמצוינות אומדים שורש גם בדיוק של עשירית, ויש יותר שורשים של חזקות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא שורש ריבועי לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא שורש ריבועי לכיתה ז׳ מתאימים לכיתה ז׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "הדפים בנויים בשלושה חלקים: שורש ריבועי, שורש שאינו שלם ואומדן ערכו, ושאלות שילוב של חזקות, שורשים ואומדן. מחשבים שורשים של ריבועים שלמים, של שברים ושל מספרים עשרוניים, ובודקים טענות על השורש: השורש הריבועי הוא מספר אי־שלילי, למספר שלילי אין שורש ריבועי, ושורש של סכום אינו תמיד סכום השורשים. באומדן מוצאים בין אילו שני מספרים שלמים עוקבים נמצא שורש, בודקים אילו מספרים הם אי־רציונליים ומסדרים מספרים לפי גודלם. יש גם שאלה על אורך הצלע של ריבוע ששטחו נתון. ברמה א׳ וברמה ב׳ מוצאים גם לאיזה מספר שלם השורש קרוב יותר, ובמצוינות אומדים שורש גם בדיוק של עשירית, ויש יותר שורשים של חזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא שורש ריבועי לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא שורש ריבועי לכיתה ז׳ מתאימים לכיתה ז׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "הדפים בנויים בשלושה חלקים: שורש ריבועי, שורש שאינו שלם ואומדן ערכו, ושאלות שילוב של חזקות, שורשים ואומדן. מחשבים שורשים של ריבועים שלמים, של שברים ושל מספרים עשרוניים, ובודקים טענות על השורש: השורש הריבועי הוא מספר אי־שלילי, למספר שלילי אין שורש ריבועי, ושורש של סכום אינו תמיד סכום השורשים. באומדן מוצאים בין אילו שני מספרים שלמים עוקבים נמצא שורש, בודקים אילו מספרים הם אי־רציונליים ומסדרים מספרים לפי גודלם. יש גם שאלה על אורך הצלע של ריבוע ששטחו נתון. ברמה א׳ וברמה ב׳ מוצאים גם לאיזה מספר שלם השורש קרוב יותר, ובמצוינות אומדים שורש גם בדיוק של עשירית, ויש יותר שורשים של חזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/square-root-grade-7",
+                "name": "שורש ריבועי לכיתה ז׳ | דפי עבודה חינם",
+                "description": "דפי עבודה בשורש ריבועי לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מבינים את משמעות השורש הריבועי, מוצאים שורשים של ריבועים שלמים ואומדים שורשים.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#learning-resource",
+                "name": "שורש ריבועי לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/square-root-grade-7",
+                "description": "דפי עבודה בשורש ריבועי לכיתה ז׳ בשלוש רמות, בחינם וללא הרשמה. מבינים את משמעות השורש הריבועי, מוצאים שורשים של ריבועים שלמים ואומדים שורשים.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא שורש ריבועי לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#webpage",
+                "url": "https://www.noamdoronmath.co.il/square-root-grade-7",
+                "name": "שורש ריבועי לכיתה ז׳ | דפי עבודה חינם",
+                "description": "שורש ריבועי חיובי לכיתה ז׳: שורשים של ריבועים שלמים, שברים ועשרוניים, ואומדן שורש בין שני שלמים עוקבים. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#learning-resource",
+                "name": "שורש ריבועי לכיתה ז׳",
+                "url": "https://www.noamdoronmath.co.il/square-root-grade-7",
+                "description": "שורש ריבועי חיובי לכיתה ז׳: שורשים של ריבועים שלמים, שברים ועשרוניים, ואומדן שורש בין שני שלמים עוקבים. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ז׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/square-root-grade-7#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא שורש ריבועי לכיתה ז׳ מתאימים לכיתה ז׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ז׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "הדפים בנויים בשלושה חלקים: שורש ריבועי, שורש שאינו שלם ואומדן ערכו, ושאלות שילוב של חזקות, שורשים ואומדן. מחשבים שורשים של ריבועים שלמים, של שברים ושל מספרים עשרוניים, ובודקים טענות על השורש: השורש הריבועי הוא מספר אי־שלילי, למספר שלילי אין שורש ריבועי, ושורש של סכום אינו תמיד סכום השורשים. באומדן מוצאים בין אילו שני מספרים שלמים עוקבים נמצא שורש, בודקים אילו מספרים הם אי־רציונליים ומסדרים מספרים לפי גודלם. יש גם שאלה על אורך הצלע של ריבוע ששטחו נתון. ברמה א׳ וברמה ב׳ מוצאים גם לאיזה מספר שלם השורש קרוב יותר, ובמצוינות אומדים שורש גם בדיוק של עשירית, ויש יותר שורשים של חזקות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "שורש ריבועי חיובי ואומדן שורש — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "הדפים בנויים בשלושה חלקים: שורש ריבועי, שורש שאינו שלם ואומדן ערכו, ושאלות שילוב של חזקות, שורשים ואומדן. מחשבים שורשים של ריבועים שלמים, של שברים ושל מספרים עשרוניים, ובודקים טענות על השורש: השורש הריבועי הוא מספר אי־שלילי, למספר שלילי אין שורש ריבועי, ושורש של סכום אינו תמיד סכום השורשים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "באומדן מוצאים בין אילו שני מספרים שלמים עוקבים נמצא שורש, בודקים אילו מספרים הם אי־רציונליים ומסדרים מספרים לפי גודלם. יש גם שאלה על אורך הצלע של ריבוע ששטחו נתון. ברמה א׳ וברמה ב׳ מוצאים גם לאיזה מספר שלם השורש קרוב יותר, ובמצוינות אומדים שורש גם בדיוק של עשירית, ויש יותר שורשים של חזקות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "inequalities-grade-8",
+      "editionIds": [
+        "ms-20261117-ine-02-r1"
+      ],
+      "baselineSha256": "3fb8e1b7a1f1b50cd0ae1c807301a0a03293f77ab68130bc9954839f4414ef7d",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "אי־שוויונות לכיתה ח׳: פתרון אי־שוויונות, הצגה על ישר המספרים ובדיקת פתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "אי־שוויונות לכיתה ח׳: פתרון אי־שוויון ממעלה ראשונה, היפוך הכיוון בכפל ובחילוק במספר שלילי וציר המספרים. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים לפתור אי־שוויונות ולייצג את קבוצת הפתרונות, תוך שמירה על הכלל החשוב בכפל או בחילוק במספר שלילי. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "לומדים לפתור אי־שוויונות ולייצג את קבוצת הפתרונות, תוך שמירה על הכלל החשוב בכפל או בחילוק במספר שלילי. לצד הדפים הקיימים נוספו קובצי PDF לפתרון אי־שוויון ממעלה ראשונה, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פותרים אי־שוויון בדומה למשוואה, אבל בכפל או בחילוק במספר שלילי הופכים את כיוון סימן האי־שוויון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: −3x<12, ולכן x>−4.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בכפל או בחילוק במספר שלילי חייבים להפוך את סימן האי־שוויון.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: 2x+5≥17.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x≥6.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פותרים אי־שוויון בדומה למשוואה, אבל בכפל או בחילוק במספר שלילי הופכים את כיוון סימן האי־שוויון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: −3x<12, ולכן x>−4.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בכפל או בחילוק במספר שלילי חייבים להפוך את סימן האי־שוויון.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: 2x+5≥17.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x≥6.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "אי־שוויון ממעלה ראשונה — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בתחילת כל דף בודקים איך פעולה על שני האגפים משפיעה על כיוון האי־שוויון: חיבור וחיסור, וכפל או חילוק במספר חיובי, שומרים על הכיוון, וכפל או חילוק במספר שלילי הופכים אותו. אחר כך פותרים אי־שוויונות ממעלה ראשונה, ובכל רמה כותבים אי־שוויון לבעיה מילולית ופותרים אותו.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה א׳ וברמה ב׳ מסמנים את קבוצת הפתרונות על ציר המספרים, בעיגול מלא או ריק, ומוצאים טעות בפתרון של תלמיד. ברמה ב׳ הנעלם מופיע בשני האגפים ויש גם סוגריים, וסופרים פתרונות שלמים. במצוינות בודקים את הכללים באותיות, פותרים אי־שוויונות שיש בהם כמה מכנים, מזהים אי־שוויון שכל מספר הוא פתרון שלו או שאין לו פתרון, מוצאים ערך של פרמטר ובונים אי־שוויון לפי קבוצת פתרונות נתונה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 16.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא אי־שוויונות לכיתה ח׳ מתאימים לכיתה ח׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא אי־שוויונות לכיתה ח׳ מתאימים לכיתה ח׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "בתחילת כל דף בודקים איך פעולה על שני האגפים משפיעה על כיוון האי־שוויון: חיבור וחיסור, וכפל או חילוק במספר חיובי, שומרים על הכיוון, וכפל או חילוק במספר שלילי הופכים אותו. אחר כך פותרים אי־שוויונות ממעלה ראשונה, ובכל רמה כותבים אי־שוויון לבעיה מילולית ופותרים אותו. ברמה א׳ וברמה ב׳ מסמנים את קבוצת הפתרונות על ציר המספרים, בעיגול מלא או ריק, ומוצאים טעות בפתרון של תלמיד. ברמה ב׳ הנעלם מופיע בשני האגפים ויש גם סוגריים, וסופרים פתרונות שלמים. במצוינות בודקים את הכללים באותיות, פותרים אי־שוויונות שיש בהם כמה מכנים, מזהים אי־שוויון שכל מספר הוא פתרון שלו או שאין לו פתרון, מוצאים ערך של פרמטר ובונים אי־שוויון לפי קבוצת פתרונות נתונה. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא אי־שוויונות לכיתה ח׳ מתאימים לכיתה ח׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא אי־שוויונות לכיתה ח׳ מתאימים לכיתה ח׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "בתחילת כל דף בודקים איך פעולה על שני האגפים משפיעה על כיוון האי־שוויון: חיבור וחיסור, וכפל או חילוק במספר חיובי, שומרים על הכיוון, וכפל או חילוק במספר שלילי הופכים אותו. אחר כך פותרים אי־שוויונות ממעלה ראשונה, ובכל רמה כותבים אי־שוויון לבעיה מילולית ופותרים אותו. ברמה א׳ וברמה ב׳ מסמנים את קבוצת הפתרונות על ציר המספרים, בעיגול מלא או ריק, ומוצאים טעות בפתרון של תלמיד. ברמה ב׳ הנעלם מופיע בשני האגפים ויש גם סוגריים, וסופרים פתרונות שלמים. במצוינות בודקים את הכללים באותיות, פותרים אי־שוויונות שיש בהם כמה מכנים, מזהים אי־שוויון שכל מספר הוא פתרון שלו או שאין לו פתרון, מוצאים ערך של פרמטר ובונים אי־שוויון לפי קבוצת פתרונות נתונה. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/inequalities-grade-8#webpage",
+                "url": "https://www.noamdoronmath.co.il/inequalities-grade-8",
+                "name": "אי־שוויונות לכיתה ח׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "אי־שוויונות לכיתה ח׳: פתרון אי־שוויונות, הצגה על ישר המספרים ובדיקת פתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/inequalities-grade-8#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/inequalities-grade-8#learning-resource",
+                "name": "אי־שוויונות לכיתה ח׳",
+                "url": "https://www.noamdoronmath.co.il/inequalities-grade-8",
+                "description": "אי־שוויונות לכיתה ח׳: פתרון אי־שוויונות, הצגה על ישר המספרים ובדיקת פתרון. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+                "educationalLevel": "כיתה ח׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/inequalities-grade-8#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא אי־שוויונות לכיתה ח׳ מתאימים לכיתה ח׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/inequalities-grade-8#webpage",
+                "url": "https://www.noamdoronmath.co.il/inequalities-grade-8",
+                "name": "אי־שוויונות לכיתה ח׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "אי־שוויונות לכיתה ח׳: פתרון אי־שוויון ממעלה ראשונה, היפוך הכיוון בכפל ובחילוק במספר שלילי וציר המספרים. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/inequalities-grade-8#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/inequalities-grade-8#learning-resource",
+                "name": "אי־שוויונות לכיתה ח׳",
+                "url": "https://www.noamdoronmath.co.il/inequalities-grade-8",
+                "description": "אי־שוויונות לכיתה ח׳: פתרון אי־שוויון ממעלה ראשונה, היפוך הכיוון בכפל ובחילוק במספר שלילי וציר המספרים. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ח׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/inequalities-grade-8#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא אי־שוויונות לכיתה ח׳ מתאימים לכיתה ח׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ח׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בתחילת כל דף בודקים איך פעולה על שני האגפים משפיעה על כיוון האי־שוויון: חיבור וחיסור, וכפל או חילוק במספר חיובי, שומרים על הכיוון, וכפל או חילוק במספר שלילי הופכים אותו. אחר כך פותרים אי־שוויונות ממעלה ראשונה, ובכל רמה כותבים אי־שוויון לבעיה מילולית ופותרים אותו. ברמה א׳ וברמה ב׳ מסמנים את קבוצת הפתרונות על ציר המספרים, בעיגול מלא או ריק, ומוצאים טעות בפתרון של תלמיד. ברמה ב׳ הנעלם מופיע בשני האגפים ויש גם סוגריים, וסופרים פתרונות שלמים. במצוינות בודקים את הכללים באותיות, פותרים אי־שוויונות שיש בהם כמה מכנים, מזהים אי־שוויון שכל מספר הוא פתרון שלו או שאין לו פתרון, מוצאים ערך של פרמטר ובונים אי־שוויון לפי קבוצת פתרונות נתונה. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "אי־שוויון ממעלה ראשונה — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בתחילת כל דף בודקים איך פעולה על שני האגפים משפיעה על כיוון האי־שוויון: חיבור וחיסור, וכפל או חילוק במספר חיובי, שומרים על הכיוון, וכפל או חילוק במספר שלילי הופכים אותו. אחר כך פותרים אי־שוויונות ממעלה ראשונה, ובכל רמה כותבים אי־שוויון לבעיה מילולית ופותרים אותו.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "ברמה א׳ וברמה ב׳ מסמנים את קבוצת הפתרונות על ציר המספרים, בעיגול מלא או ריק, ומוצאים טעות בפתרון של תלמיד. ברמה ב׳ הנעלם מופיע בשני האגפים ויש גם סוגריים, וסופרים פתרונות שלמים. במצוינות בודקים את הכללים באותיות, פותרים אי־שוויונות שיש בהם כמה מכנים, מזהים אי־שוויון שכל מספר הוא פתרון שלו או שאין לו פתרון, מוצאים ערך של פרמטר ובונים אי־שוויון לפי קבוצת פתרונות נתונה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "quadratic-equations-grade-9",
+      "editionIds": [
+        "ms-20261117-qap-01-r1"
+      ],
+      "baselineSha256": "89839738c7c7c4a77fa2b7be640bc74644a10e929c019595415f4cc5b5bf3461",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "משוואות ריבועיות לכיתה ט׳: הסבר קצר, דוגמה פתורה, טעויות נפוצות ושאלת בדיקה. קישורים לדפי עבודה בשלוש רמות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+          "after": "משוואות ריבועיות לכיתה ט׳: צורה סטנדרטית, טכניקה אלגברית ונקודות חיתוך של פרבולה עם ציר x ועם ישר אופקי. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "פותרים משוואות ריבועיות בעזרת פירוק לגורמים ונוסחת השורשים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "פותרים משוואות ריבועיות בעזרת פירוק לגורמים ונוסחת השורשים. לצד הדפים הקיימים נוספו קובצי PDF להמשך פתרון משוואות ריבועיות: טכניקה אלגברית ונקודות חיתוך של פרבולה, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מסדרים תחילה את המשוואה בצורה ax²+bx+c=0. אחר כך בוחרים דרך פתרון מתאימה ובודקים כל שורש במשוואה המקורית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: x²−5x+6=0 מתפרקת ל־(x−2)(x−3)=0, ולכן הפתרונות הם x=2 או x=3.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "נוסחת השורשים מתאימה לכל משוואה ריבועית: x=⟨−b±√(b²−4ac)¦2a⟩. הביטוי שמתחת לשורש, b²−4ac, קובע כמה פתרונות יש: אם הוא חיובי יש שני פתרונות, אם הוא אפס יש פתרון אחד, ואם הוא שלילי אין פתרון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה בנוסחת השורשים: 2x²+3x−2=0. כאן a=2, b=3 ו־c=−2, ולכן b²−4ac=9+16=25 ו־√25=5. מקבלים x=⟨−3+5¦4⟩=⟨1¦2⟩ או x=⟨−3−5¦4⟩=−2.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני שימוש בנוסחת השורשים חייבים לזהות נכון את a, b ו־c, כולל הסימנים. המכנה הוא 2a, ולא 2 בלבד.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: x²−4x−5=0.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=5 או x=−1.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מסדרים תחילה את המשוואה בצורה ax²+bx+c=0. אחר כך בוחרים דרך פתרון מתאימה ובודקים כל שורש במשוואה המקורית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: x²−5x+6=0 מתפרקת ל־(x−2)(x−3)=0, ולכן הפתרונות הם x=2 או x=3.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "נוסחת השורשים מתאימה לכל משוואה ריבועית: x=⟨−b±√(b²−4ac)¦2a⟩. הביטוי שמתחת לשורש, b²−4ac, קובע כמה פתרונות יש: אם הוא חיובי יש שני פתרונות, אם הוא אפס יש פתרון אחד, ואם הוא שלילי אין פתרון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה בנוסחת השורשים: 2x²+3x−2=0. כאן a=2, b=3 ו־c=−2, ולכן b²−4ac=9+16=25 ו־√25=5. מקבלים x=⟨−3+5¦4⟩=⟨1¦2⟩ או x=⟨−3−5¦4⟩=−2.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לפני שימוש בנוסחת השורשים חייבים לזהות נכון את a, b ו־c, כולל הסימנים. המכנה הוא 2a, ולא 2 בלבד.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו: x²−4x−5=0.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=5 או x=−1.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משוואות ריבועיות: טכניקה אלגברית ונקודות חיתוך — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בכל רמה מביאים משוואות לצורה הסטנדרטית ax²+bx+c=0 בעזרת פתיחת סוגריים, כפל מקוצר וכינוס איברים, ופותרים אותן. אחר כך מוצאים נקודות חיתוך של פרבולה עם ציר x ועם ישרים אופקיים, ומקשרים בין מספר הפתרונות של משוואה לבין מספר נקודות החיתוך.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה א׳ וברמה ב׳ מוצאים גם לאילו ערכי x שני ביטויים שווים. ברמה ב׳ ובמצוינות יש גם גרף מסורטט ושאלות על ערכי k שעבורם לישר y=k ולפרבולה יש שתי נקודות משותפות, אחת או אף אחת. במצוינות יש גם פרבולה הפתוחה כלפי מטה, נקודה על הגרף שאחד משיעוריה חסר, ובניית משוואה ריבועית לפי תנאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 2.11.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא משוואות ריבועיות לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא משוואות ריבועיות לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "בכל רמה מביאים משוואות לצורה הסטנדרטית ax²+bx+c=0 בעזרת פתיחת סוגריים, כפל מקוצר וכינוס איברים, ופותרים אותן. אחר כך מוצאים נקודות חיתוך של פרבולה עם ציר x ועם ישרים אופקיים, ומקשרים בין מספר הפתרונות של משוואה לבין מספר נקודות החיתוך. ברמה א׳ וברמה ב׳ מוצאים גם לאילו ערכי x שני ביטויים שווים. ברמה ב׳ ובמצוינות יש גם גרף מסורטט ושאלות על ערכי k שעבורם לישר y=k ולפרבולה יש שתי נקודות משותפות, אחת או אף אחת. במצוינות יש גם פרבולה הפתוחה כלפי מטה, נקודה על הגרף שאחד משיעוריה חסר, ובניית משוואה ריבועית לפי תנאי. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא משוואות ריבועיות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא משוואות ריבועיות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "בכל רמה מביאים משוואות לצורה הסטנדרטית ax²+bx+c=0 בעזרת פתיחת סוגריים, כפל מקוצר וכינוס איברים, ופותרים אותן. אחר כך מוצאים נקודות חיתוך של פרבולה עם ציר x ועם ישרים אופקיים, ומקשרים בין מספר הפתרונות של משוואה לבין מספר נקודות החיתוך. ברמה א׳ וברמה ב׳ מוצאים גם לאילו ערכי x שני ביטויים שווים. ברמה ב׳ ובמצוינות יש גם גרף מסורטט ושאלות על ערכי k שעבורם לישר y=k ולפרבולה יש שתי נקודות משותפות, אחת או אף אחת. במצוינות יש גם פרבולה הפתוחה כלפי מטה, נקודה על הגרף שאחד משיעוריה חסר, ובניית משוואה ריבועית לפי תנאי. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9",
+                "name": "משוואות ריבועיות לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "משוואות ריבועיות לכיתה ט׳: הסבר קצר, דוגמה פתורה, טעויות נפוצות ושאלת בדיקה. קישורים לדפי עבודה בשלוש רמות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9#learning-resource",
+                "name": "משוואות ריבועיות לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9",
+                "description": "משוואות ריבועיות לכיתה ט׳: הסבר קצר, דוגמה פתורה, טעויות נפוצות ושאלת בדיקה. קישורים לדפי עבודה בשלוש רמות, בחינם וללא הרשמה, לתרגול בכיתה ובבית עם נועם AI.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא משוואות ריבועיות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9",
+                "name": "משוואות ריבועיות לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "משוואות ריבועיות לכיתה ט׳: צורה סטנדרטית, טכניקה אלגברית ונקודות חיתוך של פרבולה עם ציר x ועם ישר אופקי. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9#learning-resource",
+                "name": "משוואות ריבועיות לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9",
+                "description": "משוואות ריבועיות לכיתה ט׳: צורה סטנדרטית, טכניקה אלגברית ונקודות חיתוך של פרבולה עם ציר x ועם ישר אופקי. דפי PDF נוספים בשלוש רמות, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא משוואות ריבועיות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בכל רמה מביאים משוואות לצורה הסטנדרטית ax²+bx+c=0 בעזרת פתיחת סוגריים, כפל מקוצר וכינוס איברים, ופותרים אותן. אחר כך מוצאים נקודות חיתוך של פרבולה עם ציר x ועם ישרים אופקיים, ומקשרים בין מספר הפתרונות של משוואה לבין מספר נקודות החיתוך. ברמה א׳ וברמה ב׳ מוצאים גם לאילו ערכי x שני ביטויים שווים. ברמה ב׳ ובמצוינות יש גם גרף מסורטט ושאלות על ערכי k שעבורם לישר y=k ולפרבולה יש שתי נקודות משותפות, אחת או אף אחת. במצוינות יש גם פרבולה הפתוחה כלפי מטה, נקודה על הגרף שאחד משיעוריה חסר, ובניית משוואה ריבועית לפי תנאי. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "משוואות ריבועיות: טכניקה אלגברית ונקודות חיתוך — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בכל רמה מביאים משוואות לצורה הסטנדרטית ax²+bx+c=0 בעזרת פתיחת סוגריים, כפל מקוצר וכינוס איברים, ופותרים אותן. אחר כך מוצאים נקודות חיתוך של פרבולה עם ציר x ועם ישרים אופקיים, ומקשרים בין מספר הפתרונות של משוואה לבין מספר נקודות החיתוך.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "ברמה א׳ וברמה ב׳ מוצאים גם לאילו ערכי x שני ביטויים שווים. ברמה ב׳ ובמצוינות יש גם גרף מסורטט ושאלות על ערכי k שעבורם לישר y=k ולפרבולה יש שתי נקודות משותפות, אחת או אף אחת. במצוינות יש גם פרבולה הפתוחה כלפי מטה, נקודה על הגרף שאחד משיעוריה חסר, ובניית משוואה ריבועית לפי תנאי.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "quadratic-inequalities-systems-grade-9",
+      "editionIds": [
+        "ms-20261117-qin-01-r1",
+        "ms-20261117-syq-01-r1"
+      ],
+      "baselineSha256": "690b8525bfc3030fa95f87e91151d09d6e1423650ac3ada274f0f38e47043242",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳: הסבר ותרגול בשלוש רמות. פתחו דפי עבודה בחינם וללא הרשמה, היעזרו ברמזים של נועם AI ותרגלו בקצב שלכם.",
+          "after": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳: אי־שוויון ריבועי בעזרת סקיצה של פרבולה, ומערכת של ישר ופרבולה. שתי סדרות PDF בשלוש רמות, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "מתרגלים אי־שוויונות ריבועיים ומערכות משוואות ברמות א׳, ב׳ ומצוינות. דפי העבודה בחינם וללא הרשמה.",
+          "after": "מתרגלים אי־שוויונות ריבועיים ומערכות משוואות. לצד הדפים הקיימים נוספו שתי סדרות PDF ברמות א׳, ב׳ ומצוינות: אי־שוויון ריבועי בעזרת גרף וסקיצה של פרבולה, ומערכת משוואות ממעלה שנייה של ישר ופרבולה ושל שתי פרבולות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "אי־שוויון ריבועי — דוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פותרים x²−9>0. מפרקים: (x−3)(x+3)>0. המכפלה חיובית כאשר שני הגורמים בעלי אותו סימן. לכן הפתרון הוא: x קטן ממינוס 3, או x גדול מ־3. הקצוות אינם נכללים כי האי־שוויון חזק.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "טעויות נפוצות: מציאת נקודות האפס אינה מספיקה באי־שוויון ריבועי: צריך לבדוק באילו תחומים הביטוי חיובי או שלילי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מערכת משוואות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לדוגמה y=x² וגם y=x+2. משווים: x²=x+2, ולכן (x−2)(x+1)=0. הפתרונות הם (2,4) ו־(−1,1); כל זוג מקיים את שתי המשוואות.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו x²≤16.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה: −4≤x≤4, כולל הקצוות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "אי־שוויון ריבועי — דוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פותרים x²−9>0. מפרקים: (x−3)(x+3)>0. המכפלה חיובית כאשר שני הגורמים בעלי אותו סימן. לכן הפתרון הוא: x קטן ממינוס 3, או x גדול מ־3. הקצוות אינם נכללים כי האי־שוויון חזק.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "טעויות נפוצות: מציאת נקודות האפס אינה מספיקה באי־שוויון ריבועי: צריך לבדוק באילו תחומים הביטוי חיובי או שלילי.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מערכת משוואות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לדוגמה y=x² וגם y=x+2. משווים: x²=x+2, ולכן (x−2)(x+1)=0. הפתרונות הם (2,4) ו־(−1,1); כל זוג מקיים את שתי המשוואות.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "פתרו x²≤16.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה: −4≤x≤4, כולל הקצוות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "אי־שוויון ריבועי ומערכת של ישר ופרבולה — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסדרת אי־השוויונות פותרים אי־שוויון ריבועי בהקשר של פונקציה ריבועית: קוראים מהגרף או מסקיצה את נקודות החיתוך עם ציר x ואת כיוון הפתיחה, וקובעים באילו ערכי x הפרבולה מעל הציר או מתחתיו. בכל רמה יש פרבולות הפתוחות כלפי מעלה וכלפי מטה, סקיצה שמסרטטים לבד, שאלות על פתרונות שלמים ואי־שוויון שאין לו פתרון.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה ב׳ ובמצוינות פותרים גם אי־שוויון בעזרת ישר אופקי, כמו y=−3, מעבירים אגפים ופוגשים אי־שוויון שמתקיים לכל x. במצוינות יש גם פרמטר, ובונים אי־שוויון ריבועי לפי תנאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בסדרת המערכות פותרים מערכת משוואות ממעלה שנייה, של ישר ופרבולה ושל שתי פרבולות, בהצבה או בהשוואת ביטויים. בכל רמה משווים את הפתרון האלגברי לנקודות החיתוך בסרטוט, ולומדים את המשמעות האלגברית והגרפית של הפתרון: שתי נקודות חיתוך, נקודה אחת או אף נקודה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה ב׳ ובמצוינות מוצאים גם ישר משיק לפרבולה ואת נקודת ההשקה, וקובעים באילו ערכי x גרף אחד נמצא מעל האחר. ברמה ב׳ יש גם פתרונות שאינם מספרים שלמים. במצוינות מוצאים ערכי פרמטר שעבורם אין למערכת פתרון, מוצאים את הישר העובר דרך נקודות החיתוך של שתי פרבולות ובונים ישרים לפי תנאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לכל סדרה שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "בסדרת אי־השוויונות פותרים אי־שוויון ריבועי בהקשר של פונקציה ריבועית: קוראים מהגרף או מסקיצה את נקודות החיתוך עם ציר x ואת כיוון הפתיחה, וקובעים באילו ערכי x הפרבולה מעל הציר או מתחתיו. בכל רמה יש פרבולות הפתוחות כלפי מעלה וכלפי מטה, סקיצה שמסרטטים לבד, שאלות על פתרונות שלמים ואי־שוויון שאין לו פתרון. ברמה ב׳ ובמצוינות פותרים גם אי־שוויון בעזרת ישר אופקי, כמו y=−3, מעבירים אגפים ופוגשים אי־שוויון שמתקיים לכל x. במצוינות יש גם פרמטר, ובונים אי־שוויון ריבועי לפי תנאי. בסדרת המערכות פותרים מערכת משוואות ממעלה שנייה, של ישר ופרבולה ושל שתי פרבולות, בהצבה או בהשוואת ביטויים. בכל רמה משווים את הפתרון האלגברי לנקודות החיתוך בסרטוט, ולומדים את המשמעות האלגברית והגרפית של הפתרון: שתי נקודות חיתוך, נקודה אחת או אף נקודה. ברמה ב׳ ובמצוינות מוצאים גם ישר משיק לפרבולה ואת נקודת ההשקה, וקובעים באילו ערכי x גרף אחד נמצא מעל האחר. ברמה ב׳ יש גם פתרונות שאינם מספרים שלמים. במצוינות מוצאים ערכי פרמטר שעבורם אין למערכת פתרון, מוצאים את הישר העובר דרך נקודות החיתוך של שתי פרבולות ובונים ישרים לפי תנאי. לכל סדרה שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "בסדרת אי־השוויונות פותרים אי־שוויון ריבועי בהקשר של פונקציה ריבועית: קוראים מהגרף או מסקיצה את נקודות החיתוך עם ציר x ואת כיוון הפתיחה, וקובעים באילו ערכי x הפרבולה מעל הציר או מתחתיו. בכל רמה יש פרבולות הפתוחות כלפי מעלה וכלפי מטה, סקיצה שמסרטטים לבד, שאלות על פתרונות שלמים ואי־שוויון שאין לו פתרון. ברמה ב׳ ובמצוינות פותרים גם אי־שוויון בעזרת ישר אופקי, כמו y=−3, מעבירים אגפים ופוגשים אי־שוויון שמתקיים לכל x. במצוינות יש גם פרמטר, ובונים אי־שוויון ריבועי לפי תנאי. בסדרת המערכות פותרים מערכת משוואות ממעלה שנייה, של ישר ופרבולה ושל שתי פרבולות, בהצבה או בהשוואת ביטויים. בכל רמה משווים את הפתרון האלגברי לנקודות החיתוך בסרטוט, ולומדים את המשמעות האלגברית והגרפית של הפתרון: שתי נקודות חיתוך, נקודה אחת או אף נקודה. ברמה ב׳ ובמצוינות מוצאים גם ישר משיק לפרבולה ואת נקודת ההשקה, וקובעים באילו ערכי x גרף אחד נמצא מעל האחר. ברמה ב׳ יש גם פתרונות שאינם מספרים שלמים. במצוינות מוצאים ערכי פרמטר שעבורם אין למערכת פתרון, מוצאים את הישר העובר דרך נקודות החיתוך של שתי פרבולות ובונים ישרים לפי תנאי. לכל סדרה שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9",
+                "name": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ | נועם דורון",
+                "description": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳: הסבר ותרגול בשלוש רמות. פתחו דפי עבודה בחינם וללא הרשמה, היעזרו ברמזים של נועם AI ותרגלו בקצב שלכם.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#learning-resource",
+                "name": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9",
+                "description": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳: הסבר ותרגול בשלוש רמות. פתחו דפי עבודה בחינם וללא הרשמה, היעזרו ברמזים של נועם AI ותרגלו בקצב שלכם.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9",
+                "name": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ | נועם דורון",
+                "description": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳: אי־שוויון ריבועי בעזרת סקיצה של פרבולה, ומערכת של ישר ופרבולה. שתי סדרות PDF בשלוש רמות, עם תשובות סופיות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#learning-resource",
+                "name": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9",
+                "description": "אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳: אי־שוויון ריבועי בעזרת סקיצה של פרבולה, ומערכת של ישר ופרבולה. שתי סדרות PDF בשלוש רמות, עם תשובות סופיות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/quadratic-inequalities-systems-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא אי־שוויונות ריבועיים ומערכות משוואות לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בסדרת אי־השוויונות פותרים אי־שוויון ריבועי בהקשר של פונקציה ריבועית: קוראים מהגרף או מסקיצה את נקודות החיתוך עם ציר x ואת כיוון הפתיחה, וקובעים באילו ערכי x הפרבולה מעל הציר או מתחתיו. בכל רמה יש פרבולות הפתוחות כלפי מעלה וכלפי מטה, סקיצה שמסרטטים לבד, שאלות על פתרונות שלמים ואי־שוויון שאין לו פתרון. ברמה ב׳ ובמצוינות פותרים גם אי־שוויון בעזרת ישר אופקי, כמו y=−3, מעבירים אגפים ופוגשים אי־שוויון שמתקיים לכל x. במצוינות יש גם פרמטר, ובונים אי־שוויון ריבועי לפי תנאי. בסדרת המערכות פותרים מערכת משוואות ממעלה שנייה, של ישר ופרבולה ושל שתי פרבולות, בהצבה או בהשוואת ביטויים. בכל רמה משווים את הפתרון האלגברי לנקודות החיתוך בסרטוט, ולומדים את המשמעות האלגברית והגרפית של הפתרון: שתי נקודות חיתוך, נקודה אחת או אף נקודה. ברמה ב׳ ובמצוינות מוצאים גם ישר משיק לפרבולה ואת נקודת ההשקה, וקובעים באילו ערכי x גרף אחד נמצא מעל האחר. ברמה ב׳ יש גם פתרונות שאינם מספרים שלמים. במצוינות מוצאים ערכי פרמטר שעבורם אין למערכת פתרון, מוצאים את הישר העובר דרך נקודות החיתוך של שתי פרבולות ובונים ישרים לפי תנאי. לכל סדרה שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "אי־שוויון ריבועי ומערכת של ישר ופרבולה — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בסדרת אי־השוויונות פותרים אי־שוויון ריבועי בהקשר של פונקציה ריבועית: קוראים מהגרף או מסקיצה את נקודות החיתוך עם ציר x ואת כיוון הפתיחה, וקובעים באילו ערכי x הפרבולה מעל הציר או מתחתיו. בכל רמה יש פרבולות הפתוחות כלפי מעלה וכלפי מטה, סקיצה שמסרטטים לבד, שאלות על פתרונות שלמים ואי־שוויון שאין לו פתרון.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "ברמה ב׳ ובמצוינות פותרים גם אי־שוויון בעזרת ישר אופקי, כמו y=−3, מעבירים אגפים ופוגשים אי־שוויון שמתקיים לכל x. במצוינות יש גם פרמטר, ובונים אי־שוויון ריבועי לפי תנאי.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בסדרת המערכות פותרים מערכת משוואות ממעלה שנייה, של ישר ופרבולה ושל שתי פרבולות, בהצבה או בהשוואת ביטויים. בכל רמה משווים את הפתרון האלגברי לנקודות החיתוך בסרטוט, ולומדים את המשמעות האלגברית והגרפית של הפתרון: שתי נקודות חיתוך, נקודה אחת או אף נקודה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "ברמה ב׳ ובמצוינות מוצאים גם ישר משיק לפרבולה ואת נקודת ההשקה, וקובעים באילו ערכי x גרף אחד נמצא מעל האחר. ברמה ב׳ יש גם פתרונות שאינם מספרים שלמים. במצוינות מוצאים ערכי פרמטר שעבורם אין למערכת פתרון, מוצאים את הישר העובר דרך נקודות החיתוך של שתי פרבולות ובונים ישרים לפי תנאי.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "לכל סדרה שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "trapezoid-grade-9",
+      "editionIds": [
+        "ms-20261117-itp-01-r1"
+      ],
+      "baselineSha256": "9a85671996e0cd9d573ef97735c827b7823fc188d90b8e4c660926d14bad1f0b",
+      "fields": [
+        {
+          "path": [
+            "description"
+          ],
+          "existedBefore": true,
+          "before": "טרפז לכיתה ט׳: בסיסים, זוויות, שטח והיקף. דפי PDF נוספים לחישוב גובה ומידות חסרות ולהשוואת שטחים, בשלוש רמות ועם תשובות.",
+          "after": "טרפז לכיתה ט׳: שטח, היקף, גובה ומידות חסרות, וטרפז שווה־שוקיים: זוויות הבסיס, האלכסונים והמשפטים ההפוכים. שתי סדרות PDF בשלוש רמות, עם תשובות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים לזהות טרפז, לעבוד עם בסיסים וזוויות ולחשב שטח. לצד הדפים הקיימים נוספו קובצי PDF לתרגול שטח, גובה, היקף והשוואת שטחים, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+          "after": "לומדים לזהות טרפז, לעבוד עם בסיסים וזוויות ולחשב שטח. לצד הדפים הקיימים נוספו קובצי PDF לתרגול שטח, גובה, היקף והשוואת שטחים, ברמות א׳, ב׳ ומצוינות. נוספו גם קובצי PDF לטרפז שווה־שוקיים: זוויות הבסיס, האלכסונים והמשפטים ההפוכים, גם הם ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דפי PDF נוספים: שטח והיקף בטרפז",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "דפי PDF נוספים: שטח והיקף בטרפז",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה. בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים, למשל כשהאלכסונים שלו שווים, ומוכיחים שוויון של זוויות ושל קטעים בעזרת חפיפת משולשים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות מורידים גבהים לבסיס, מחשבים זוויות ואורכים, בונים משוואות לפי שוויון של אלכסונים או של שוקיים ומשתמשים במשפט פיתגורס. יש גם סקיצה לפי נתונים ושאלה במערכת צירים משובצת; ברמה ב׳ ובמצוינות מוצאים בה שתי אפשרויות לקודקוד ובוחרים בנימוק את זו שיוצרת טרפז שווה־שוקיים. במצוינות מבטאים זוויות בעזרת פרמטרים, מוכיחים משפט הפוך בעזרת גבהים ובודקים טענה של תלמידה על טרפז שיש בו שתי זוויות שוות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לזהות טרפז, לעבוד עם בסיסים וזוויות ולחשב שטח. לצד הדפים הקיימים נוספו קובצי PDF לתרגול שטח, גובה, היקף והשוואת שטחים, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=39",
+              "catalogTopicId": 39
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דפי PDF נוספים: שטח והיקף בטרפז"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לזהות טרפז, לעבוד עם בסיסים וזוויות ולחשב שטח. לצד הדפים הקיימים נוספו קובצי PDF לתרגול שטח, גובה, היקף והשוואת שטחים, ברמות א׳, ב׳ ומצוינות. נוספו גם קובצי PDF לטרפז שווה־שוקיים: זוויות הבסיס, האלכסונים והמשפטים ההפוכים, גם הם ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=39",
+              "catalogTopicId": 39
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "בטרפז יש זוג אחד של צלעות נגדיות מקבילות, הנקראות בסיסים. הגובה הוא קטע המאונך לשני הבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בטרפז בסיסים באורך 10 ו־6 ס״מ וגובה 4 ס״מ. השטח הוא (10+6)×4:2=32 סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "שוק הטרפז אינה בהכרח הגובה. בחישוב שטח משתמשים רק בקטע המאונך לבסיסים.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "לטרפז בסיסים באורך 12 ו־8 ס״מ וגובה 5 ס״מ. מה שטחו?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: 50 סמ״ר, כי (12+8)×5:2=50.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "דפי PDF נוספים: שטח והיקף בטרפז"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה. בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים, למשל כשהאלכסונים שלו שווים, ומוכיחים שוויון של זוויות ושל קטעים בעזרת חפיפת משולשים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל הרמות מורידים גבהים לבסיס, מחשבים זוויות ואורכים, בונים משוואות לפי שוויון של אלכסונים או של שוקיים ומשתמשים במשפט פיתגורס. יש גם סקיצה לפי נתונים ושאלה במערכת צירים משובצת; ברמה ב׳ ובמצוינות מוצאים בה שתי אפשרויות לקודקוד ובוחרים בנימוק את זו שיוצרת טרפז שווה־שוקיים. במצוינות מבטאים זוויות בעזרת פרמטרים, מוכיחים משפט הפוך בעזרת גבהים ובודקים טענה של תלמידה על טרפז שיש בו שתי זוויות שוות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 15.11.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 17.11.2026"
+        },
+        {
+          "path": [
+            "faq"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "question": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים. התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ],
+          "after": [
+            {
+              "question": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+              "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+            },
+            {
+              "question": "איך בוחרים רמת תרגול?",
+              "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+            },
+            {
+              "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+              "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            },
+            {
+              "question": "מה כוללים קובצי ה־PDF הנוספים?",
+              "answer": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים. התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+            },
+            {
+              "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            },
+            {
+              "question": "מה כוללים דפי ה־PDF בטרפז שווה־שוקיים?",
+              "answer": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה. בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים, למשל כשהאלכסונים שלו שווים, ומוכיחים שוויון של זוויות ושל קטעים בעזרת חפיפת משולשים. בכל הרמות מורידים גבהים לבסיס, מחשבים זוויות ואורכים, בונים משוואות לפי שוויון של אלכסונים או של שוקיים ומשתמשים במשפט פיתגורס. יש גם סקיצה לפי נתונים ושאלה במערכת צירים משובצת; ברמה ב׳ ובמצוינות מוצאים בה שתי אפשרויות לקודקוד ובוחרים בנימוק את זו שיוצרת טרפז שווה־שוקיים. במצוינות מבטאים זוויות בעזרת פרמטרים, מוכיחים משפט הפוך בעזרת גבהים ובודקים טענה של תלמידה על טרפז שיש בו שתי זוויות שוות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+            },
+            {
+              "question": "האם דפי ה־PDF בטרפז שווה־שוקיים כוללים רמזי?",
+              "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+            }
+          ]
+        },
+        {
+          "path": [
+            "faqGroups"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים. התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "שאלות נפוצות",
+              "source": "visible+jsonld",
+              "items": [
+                {
+                  "question": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+                  "answer": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                },
+                {
+                  "question": "איך בוחרים רמת תרגול?",
+                  "answer": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                },
+                {
+                  "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                  "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                },
+                {
+                  "question": "מה כוללים קובצי ה־PDF הנוספים?",
+                  "answer": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים. התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+                },
+                {
+                  "question": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                },
+                {
+                  "question": "מה כוללים דפי ה־PDF בטרפז שווה־שוקיים?",
+                  "answer": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה. בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים, למשל כשהאלכסונים שלו שווים, ומוכיחים שוויון של זוויות ושל קטעים בעזרת חפיפת משולשים. בכל הרמות מורידים גבהים לבסיס, מחשבים זוויות ואורכים, בונים משוואות לפי שוויון של אלכסונים או של שוקיים ומשתמשים במשפט פיתגורס. יש גם סקיצה לפי נתונים ושאלה במערכת צירים משובצת; ברמה ב׳ ובמצוינות מוצאים בה שתי אפשרויות לקודקוד ובוחרים בנימוק את זו שיוצרת טרפז שווה־שוקיים. במצוינות מבטאים זוויות בעזרת פרמטרים, מוכיחים משפט הפוך בעזרת גבהים ובודקים טענה של תלמידה על טרפז שיש בו שתי זוויות שוות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                },
+                {
+                  "question": "האם דפי ה־PDF בטרפז שווה־שוקיים כוללים רמזי?",
+                  "answer": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "jsonLd"
+          ],
+          "existedBefore": true,
+          "before": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/trapezoid-grade-9",
+                "name": "טרפז לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "טרפז לכיתה ט׳: בסיסים, זוויות, שטח והיקף. דפי PDF נוספים לחישוב גובה ומידות חסרות ולהשוואת שטחים, בשלוש רמות ועם תשובות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#learning-resource",
+                "name": "טרפז לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/trapezoid-grade-9",
+                "description": "טרפז לכיתה ט׳: בסיסים, זוויות, שטח והיקף. דפי PDF נוספים לחישוב גובה ומידות חסרות ולהשוואת שטחים, בשלוש רמות ועם תשובות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים. התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "WebPage",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#webpage",
+                "url": "https://www.noamdoronmath.co.il/trapezoid-grade-9",
+                "name": "טרפז לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון",
+                "description": "טרפז לכיתה ט׳: שטח, היקף, גובה ומידות חסרות, וטרפז שווה־שוקיים: זוויות הבסיס, האלכסונים והמשפטים ההפוכים. שתי סדרות PDF בשלוש רמות, עם תשובות.",
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                },
+                "about": {
+                  "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#learning-resource"
+                }
+              },
+              {
+                "@type": "LearningResource",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#learning-resource",
+                "name": "טרפז לכיתה ט׳",
+                "url": "https://www.noamdoronmath.co.il/trapezoid-grade-9",
+                "description": "טרפז לכיתה ט׳: שטח, היקף, גובה ומידות חסרות, וטרפז שווה־שוקיים: זוויות הבסיס, האלכסונים והמשפטים ההפוכים. שתי סדרות PDF בשלוש רמות, עם תשובות.",
+                "educationalLevel": "כיתה ט׳",
+                "learningResourceType": "דפי עבודה",
+                "isAccessibleForFree": true,
+                "inLanguage": "he",
+                "author": {
+                  "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+                }
+              },
+              {
+                "@type": "Person",
+                "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+                "name": "נועם דורון",
+                "url": "https://www.noamdoronmath.co.il/aboutus"
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://www.noamdoronmath.co.il/trapezoid-grade-9#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי העבודה בנושא טרפז לכיתה ט׳ מתאימים לכיתה ט׳?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "כן. התרגול בעמוד מותאם לתלמידי כיתה ט׳ ומסודר לפי רמות קושי."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "איך בוחרים רמת תרגול?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "רמה א׳ מתאימה לביסוס, רמה ב׳ לתרגול מלא ורמת מצוינות להעמקה ולאתגר."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים קובצי ה־PDF הנוספים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים הנוספים מתרגלים חישובי שטח והיקף בטרפז, מציאת גובה ובסיס חסרים, קריאת קודקודים במערכת הצירים והשוואת שטחים. התרגול כולל טרפז כללי וישר־זווית, שימוש במשפט פיתגורס, בעיות עלות ותכנון טרפז לפי נתונים. הוא מצטרף לדפים הקיימים בנושא. שלושה קובצי PDF להורדה ולהדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "מה כוללים דפי ה־PDF בטרפז שווה־שוקיים?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה. בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים, למשל כשהאלכסונים שלו שווים, ומוכיחים שוויון של זוויות ושל קטעים בעזרת חפיפת משולשים. בכל הרמות מורידים גבהים לבסיס, מחשבים זוויות ואורכים, בונים משוואות לפי שוויון של אלכסונים או של שוקיים ומשתמשים במשפט פיתגורס. יש גם סקיצה לפי נתונים ושאלה במערכת צירים משובצת; ברמה ב׳ ובמצוינות מוצאים בה שתי אפשרויות לקודקוד ובוחרים בנימוק את זו שיוצרת טרפז שווה־שוקיים. במצוינות מבטאים זוויות בעזרת פרמטרים, מוכיחים משפט הפוך בעזרת גבהים ובודקים טענה של תלמידה על טרפז שיש בו שתי זוויות שוות. שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "האם דפי ה־PDF בטרפז שווה־שוקיים כוללים רמזי?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "appendedSection": {
+        "heading": "טרפז שווה־שוקיים: זוויות הבסיס והאלכסונים — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה. בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים, למשל כשהאלכסונים שלו שווים, ומוכיחים שוויון של זוויות ושל קטעים בעזרת חפיפת משולשים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בכל הרמות מורידים גבהים לבסיס, מחשבים זוויות ואורכים, בונים משוואות לפי שוויון של אלכסונים או של שוקיים ומשתמשים במשפט פיתגורס. יש גם סקיצה לפי נתונים ושאלה במערכת צירים משובצת; ברמה ב׳ ובמצוינות מוצאים בה שתי אפשרויות לקודקוד ובוחרים בנימוק את זו שיוצרת טרפז שווה־שוקיים. במצוינות מבטאים זוויות בעזרת פרמטרים, מוכיחים משפט הפוך בעזרת גבהים ובודקים טענה של תלמידה על טרפז שיש בו שתי זוויות שוות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      }
+    }
+  ]
+}

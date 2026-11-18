@@ -1,0 +1,169 @@
+{
+  "schema": "noam-base-pdf-publication/v1",
+  "status": "review_candidate_not_published",
+  "grade": 9,
+  "topicId": 49,
+  "title": "משוואות עם מכנה מספרי",
+  "track": "ט׳ מצומצמת",
+  "group": {
+    "key": "r9jan",
+    "label": "ינואר",
+    "reducedProgram": true,
+    "createdWithThisTopic": true
+  },
+  "scope": "משוואות ממעלה ראשונה עם מכנים מספריים: כפל במכנה המשותף, מונה בסוגריים, סימן חיסור לפני שבר, משוואות מיוחדות ובעיות מילוליות.",
+  "publicationMode": "pdf-only",
+  "sourcePackage": "G9-T52",
+  "sourceSheetId": "G9-EQM-01",
+  "sourceFolder": "submissions/Claude/MS-PROD-CLAUDE-020-r01",
+  "author": "Claude (Anthropic), Claude Opus 5.5",
+  "sourceProvenanceOnly": true,
+  "landing": "/equations-numeric-denominator-grade-9",
+  "approval": {
+    "by": "Noam",
+    "date": "2026-11-17",
+    "decision": "Open the reduced-track month group r9jan ('ינואר') with its first topic, G9-EQM-01 as base topic 49; a month group opens when the first topic of that month arrives. Recorded in MANAGER-20261116/README-he.md (החלטות נועם, 17.11.2026)."
+  },
+  "levels": [
+    {
+      "level": "a",
+      "label": "רמה א׳",
+      "pdfId": "53fb5318e99546a6a6b12c06e118ba59",
+      "pdfSha256": "6dfa3a85463ddb098be4356bbdccc24a3541e1c71fe8e79afbe7d074f7b9d6c1",
+      "bytes": 37492,
+      "pages": 5,
+      "questions": 6,
+      "subitems": 19,
+      "downloadChecks": [
+        {
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_53fb5318e99546a6a6b12c06e118ba59.pdf",
+          "http": 200,
+          "bytes": 37492,
+          "sha256": "6dfa3a85463ddb098be4356bbdccc24a3541e1c71fe8e79afbe7d074f7b9d6c1",
+          "matchesReviewedPdf": true
+        },
+        {
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_53fb5318e99546a6a6b12c06e118ba59.pdf",
+          "http": 200,
+          "bytes": 37492,
+          "sha256": "6dfa3a85463ddb098be4356bbdccc24a3541e1c71fe8e79afbe7d074f7b9d6c1",
+          "matchesReviewedPdf": true
+        },
+        {
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_53fb5318e99546a6a6b12c06e118ba59.pdf",
+          "http": 200,
+          "bytes": 37492,
+          "sha256": "6dfa3a85463ddb098be4356bbdccc24a3541e1c71fe8e79afbe7d074f7b9d6c1",
+          "matchesReviewedPdf": true
+        }
+      ]
+    },
+    {
+      "level": "b",
+      "label": "רמה ב׳",
+      "pdfId": "f5d9e89adee948768e456876b8e087cf",
+      "pdfSha256": "44a74d0d96df5bddc460b0ce5bf860fcef403ddc5db059d28c740f2bc79f2f4c",
+      "bytes": 36862,
+      "pages": 5,
+      "questions": 6,
+      "subitems": 19,
+      "downloadChecks": [
+        {
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_f5d9e89adee948768e456876b8e087cf.pdf",
+          "http": 200,
+          "bytes": 36862,
+          "sha256": "44a74d0d96df5bddc460b0ce5bf860fcef403ddc5db059d28c740f2bc79f2f4c",
+          "matchesReviewedPdf": true
+        },
+        {
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_f5d9e89adee948768e456876b8e087cf.pdf",
+          "http": 200,
+          "bytes": 36862,
+          "sha256": "44a74d0d96df5bddc460b0ce5bf860fcef403ddc5db059d28c740f2bc79f2f4c",
+          "matchesReviewedPdf": true
+        },
+        {
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_f5d9e89adee948768e456876b8e087cf.pdf",
+          "http": 200,
+          "bytes": 36862,
+          "sha256": "44a74d0d96df5bddc460b0ce5bf860fcef403ddc5db059d28c740f2bc79f2f4c",
+          "matchesReviewedPdf": true
+        }
+      ]
+    },
+    {
+      "level": "c",
+      "label": "מצוינות",
+      "pdfId": "038d9928b68942ca91f3a17ac6cf92b3",
+      "pdfSha256": "a5e18b5b9bc8324c34077eb3e72fa12bfa29704a84fefa75030f37cbbca06e2a",
+      "bytes": 36027,
+      "pages": 5,
+      "questions": 6,
+      "subitems": 18,
+      "downloadChecks": [
+        {
+          "url": "https://static.wixstatic.com/ugd/d8e7ad_038d9928b68942ca91f3a17ac6cf92b3.pdf",
+          "http": 200,
+          "bytes": 36027,
+          "sha256": "a5e18b5b9bc8324c34077eb3e72fa12bfa29704a84fefa75030f37cbbca06e2a",
+          "matchesReviewedPdf": true
+        },
+        {
+          "url": "https://df6b8141-b7d5-4d8b-8ba5-e382f5ebfd46.usrfiles.com/ugd/d8e7ad_038d9928b68942ca91f3a17ac6cf92b3.pdf",
+          "http": 200,
+          "bytes": 36027,
+          "sha256": "a5e18b5b9bc8324c34077eb3e72fa12bfa29704a84fefa75030f37cbbca06e2a",
+          "matchesReviewedPdf": true
+        },
+        {
+          "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_038d9928b68942ca91f3a17ac6cf92b3.pdf",
+          "http": 200,
+          "bytes": 36027,
+          "sha256": "a5e18b5b9bc8324c34077eb3e72fa12bfa29704a84fefa75030f37cbbca06e2a",
+          "matchesReviewedPdf": true
+        }
+      ]
+    }
+  ],
+  "review": {
+    "reviewer": "Google Antigravity — Gemini 4 Carbon High (independent; not the author)",
+    "verdict": "PASS_STUDENT_PDF_ESSENTIALS",
+    "receipt": "reports/ANTIGRAVITY-INDEPENDENT-G9-EQM-01-20261116/review.json",
+    "independentReviewSha256": "8a00cd8b4f2706ddf236edcbcfa7a565928d3d9e1509ddf47b62b1c27a5f17a4",
+    "boundPdfSha256": {
+      "a": "6dfa3a85463ddb098be4356bbdccc24a3541e1c71fe8e79afbe7d074f7b9d6c1",
+      "b": "44a74d0d96df5bddc460b0ce5bf860fcef403ddc5db059d28c740f2bc79f2f4c",
+      "c": "a5e18b5b9bc8324c34077eb3e72fa12bfa29704a84fefa75030f37cbbca06e2a"
+    },
+    "reviewedPages": 15,
+    "reviewedSubitems": 56,
+    "essentialFindings": 0,
+    "nonEssentialFindingsRetained": 4,
+    "note": "The four non-essential wording/typography notes stay documented; the reviewed PDF bytes are published unchanged. This integration rechecks the byte pins and nine media readbacks and does not claim a new full math or visual review."
+  },
+  "notActivated": [
+    "Ramzi or question-level hints",
+    "native viewer/question manifest",
+    "teacher question bank",
+    "learning/progress identities",
+    "Word",
+    "Supabase",
+    "Noam prefix (assigned only at a later activation)"
+  ],
+  "legacyPreserved": [
+    "all previous topic IDs and PDFs",
+    "reduced-track topics 33–36 in r9sep/r9oct",
+    "topic 18 / G9-T09 word-problems-grade-9 (registry slot not replaced)",
+    "topic 47 / rational-equations-grade-9"
+  ],
+  "officialSource": {
+    "file": "prisa_9B.pdf",
+    "sha256": "f137ce2940e858cc5380a4a27e3634c9a6192a75d36b04a287ffae4db4e23a08",
+    "page": 4,
+    "month": "ינואר",
+    "unitHours": 6,
+    "heading": "משוואות",
+    "content": "פתרון משוואות ממעלה ראשונה עם מכנה מספרי",
+    "completeUnitReplacement": false
+  }
+}

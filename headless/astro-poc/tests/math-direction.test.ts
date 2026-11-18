@@ -12,6 +12,7 @@ import { contentToParitySnapshot } from '../src/lib/parity/contentToParitySnapsh
 import { cleanText, diffTopicParity, type TopicParitySnapshot } from '../src/lib/parity/topicParity.ts';
 import { applyContentCorrections, topicPageCorrections } from '../src/lib/parity/contentCorrections.ts';
 import { beforeEqnSgnFacCopy } from './fixtures/eqn-sgn-fac-pdf';
+import { beforeBatch09Copy } from './fixtures/batch09-pdf';
 
 const LRI = '\u2066';
 const PDI = '\u2069';
@@ -80,7 +81,7 @@ describe('topic pages apply math isolates without rewriting JSON', () => {
 
   it('parity comparison ignores the isolates', () => {
     const page = loadTopicPage('signed-numbers-grade-7');
-    const preview = contentToParitySnapshot(beforeEqnSgnFacCopy('signed-numbers-grade-7', page), 'preview');
+    const preview = contentToParitySnapshot(beforeEqnSgnFacCopy('signed-numbers-grade-7', beforeBatch09Copy('signed-numbers-grade-7', page)), 'preview');
     const source = applyContentCorrections(
       JSON.parse(
         readFileSync('tests/fixtures/topic-parity/signed-numbers-grade-7.production.json', 'utf8')

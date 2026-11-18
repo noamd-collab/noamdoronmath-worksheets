@@ -1,0 +1,62 @@
+---
+/**
+ * SEO-2 — one month of official layout units. The unit name is the link to
+ * its topic page; further pages for the same unit follow as chips. A unit
+ * with no served page stays plain text.
+ */
+import type { PrisaUnitView } from '../lib/prisaIndex';
+
+interface Props {
+  units: PrisaUnitView[];
+}
+const { units } = Astro.props;
+
+/** Split LRI…PDI math runs out, so each renders as one unbroken LTR span. */
+function parts(text: string): { text: string; math: boolean }[] {
+  const out: { text: string; math: boolean }[] = [];
+  let last = 0;
+  for (const match of text.matchAll(/\u2066([^\u2066-\u2069]*)\u2069/g)) {
+    const index = match.index ?? 0;
+    if (index > last) out.push({ text: text.slice(last, index), math: false });
+    out.push({ text: match[1] ?? '', math: true });
+    last = index + match[0].length;
+  }
+  if (last < text.length) out.push({ text: text.slice(last), math: false });
+  return out;
+}
+---
+<ul class="prisa-units">
+  {
+    units.map((unit) => (
+      <li class="prisa-unit" data-unit-id={unit.id} data-unit-linked={unit.primary ? 'yes' : 'no'}>
+        <span class="prisa-unit__head">
+          {unit.primary ? (
+            <a class="prisa-unit__link" href={unit.primary.href}>
+              <span>{parts(unit.displayName).map((p) => (p.math ? <span class="prisa-math" dir="ltr">{p.text}</span> : p.text))}</span>
+            </a>
+          ) : (
+            <span class="prisa-unit__name">
+              <span>{parts(unit.displayName).map((p) => (p.math ? <span class="prisa-math" dir="ltr">{p.text}</span> : p.text))}</span>
+            </span>
+          )}
+          {unit.optional && <span class="prisa-unit__tag">רשות</span>}
+        </span>
+        {unit.more.length > 0 && (
+          <span class="prisa-unit__more">
+            <span class="prisa-unit__more-label">דפים נוספים:</span>
+            {unit.more.map((link) => (
+              <a class="prisa-unit__chip" href={link.href}>
+                <span>{parts(link.label).map((p) => (p.math ? <span class="prisa-math" dir="ltr">{p.text}</span> : p.text))}</span>
+              </a>
+            ))}
+          </span>
+        )}
+        {unit.note && (
+          <span class="prisa-unit__note">
+            {parts(unit.note).map((p) => (p.math ? <span class="prisa-math" dir="ltr">{p.text}</span> : p.text))}
+          </span>
+        )}
+      </li>
+    ))
+  }
+</ul>

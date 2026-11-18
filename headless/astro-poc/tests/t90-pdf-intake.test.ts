@@ -67,7 +67,7 @@ test('T90 stays a non-default direct-PDF edition with no teacher, learning, or n
 test('the existing parallelogram landing describes the precise T90 scope and retains its canonical identity', () => {
   const page = read('../src/data/topic-pages/parallelogram-grade-9.json');
   assert.equal(page.path, '/parallelogram-grade-9'); assert.equal(page.h1, 'מקבילית לכיתה ט׳');
-  assert.equal(page.updatedLine, 'נועם דורון מתמטיקה · עודכן 15.11.2026');
+  assert.equal(page.updatedLine, 'נועם דורון מתמטיקה · עודכן 17.11.2026');
   assert.equal(page.title, 'מקבילית לכיתה ט׳ | דפי עבודה במתמטיקה – נועם דורון');
   assert.equal(page.catalogCta.catalogTopicId, 7); assert.equal(page.catalogCta.href, '/worksheets?grade=9&topic=7');
   assert.equal(page.description, 'מקבילית לכיתה ט׳: תכונות הצלעות והזוויות, אלכסונים והוכחות. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');

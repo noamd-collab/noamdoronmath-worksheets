@@ -1,3 +1,120 @@
+## 2026-11-18 — batch 11: four reviewed PDF editions; the grade 7 angle units go live (candidate)
+
+- G9-QFR-01 (9/6, quadratic-equations-grade-9, ט׳ רגילה; the third extra edition on that topic after QAP-01 and QFM-01), G7-DGM-01 (7/26, relative-frequency-grade-7, after FRQ-01), G7-ANG-01 (7/11, angles-introduction-measurement-grade-7) and G7-ANG-04 (7/14, triangle-quadrilateral-angle-sum-grade-7): twelve pdf-only PDFs, non-default; each landing gets one short section. Every existing default and earlier edition stays in place.
+- G7-DGM-01 maps to 7/26 rather than 7/24: most of the series is relative frequency and probability estimation (drafter and two independent checkers agreed). Its r05 and r06 are two small language fixes on top of the reviewed r04 ("מד־זווית" for a non-word, and the percent sign after its number); G7-ANG-04 r03 removes a page that held only "בהצלחה!". Both were checked by independent delta reviews.
+- The two angle pages get their first PDF edition; their legacy sentence that named Noam AI as the hint tool now reads like the landing corrections.
+- Review receipts (Google Antigravity) are cited in `docs/batch11-pdf-first-20261118.json` by project-relative path and SHA-256; registry source and native hashes are the deliver files of the same build as each published PDF; two media readbacks per PDF match.
+
+## 2026-11-18 — batch 10: six reviewed PDF editions and reduced-track topic 9/53 in a new month group נובמבר (candidate)
+
+- Six non-default pdf-only editions on six existing topic pages (18 PDFs): G8-DAT-03 (8/18, pie-charts-grade-8), G8-CRC-01 (8/63, circle-area-circumference-grade-8), G8-CNG-01 (8/36, triangle-congruence-grade-8), G7-DIR-01 (7/1, number-line-absolute-value-grade-7), G7-ANG-03 (7/12, adjacent-vertical-angles-grade-7) and G9-QSH-01 (9/5, quadratic-function-grade-9). Every existing default and earlier edition stays in place; each landing gets one short section.
+- Noam (18.11.2026) approved G9-PCM-01 (percentages, ט׳ מצומצמת) as base topic 53 **אחוזים: חלק מהשלם, הגדלה והקטנה**, pdf-only, which opens the reduced-track month group **r9nov ('נובמבר')** between אוקטובר and ינואר, with the new landing `/percentages-grade-9`.
+- Review receipts (Google Antigravity and Kimi Work) are cited in `docs/batch10-pdf-first-20261118.json` by project-relative path and SHA-256; the registry source and native hashes are the real build files of each package; two media readbacks per PDF match.
+- The PCM53 fence reverses topic 53, its search terms, r9nov and its trackGroups entry; batch 10 unwinds before NEW4, the landing corrections and every older fence.
+- Four of the six pages (circle-area-circumference-grade-8, triangle-congruence-grade-8, number-line-absolute-value-grade-7, adjacent-vertical-angles-grade-7) carried the legacy sentence that names Noam AI as the worksheet hint tool; now that they carry a PDF edition, it reads like the landing corrections: hints on the earlier Ramzi sheets, questions and final answers in the PDFs.
+
+## 2026-11-18 — landing corrections after the independent landing audit (candidate)
+
+- Google Antigravity audited the landing copy Claude wrote for the PDF editions (`reports/ANTIGRAVITY-AUDIT-claude-landings-20261117/review.json`: 38 essential and 59 minor findings). This change corrects 55 live pages with 156 exact text replacements, each checked against all three PDFs of its series.
+- Fixed: per-level claims that the PDFs do not support (a level said to add what an earlier level already has), task directions given backwards, hint promises that named Noam AI or did not exclude the extra PDFs, and the FAQ question "האם קובצי ה־PDF הנוספים כוללים רמזי?" on 40 pages, now "האם בקובצי ה־PDF הנוספים יש רמזים?" with an answer that opens with "לא.".
+- Findings that are not faults of the landing copy, or need more than a text replacement, are listed with reasons in `docs/landing-corrections-20261118.json`.
+- The independent site review of the first version (`reports/ANTIGRAVITY-SITE-REVIEW-landing-corrections-full-20261118/review.json`, FIX_REQUIRED) found two more pages that still named Noam AI as the hint tool, two series FAQ questions with "כוללים רמזי", and test gaps. All are fixed; the sweep now also covers every page whose catalog topic has an extra PDF edition (13 more pages), and the test rejects "כוללים רמזי" on every page and "נועם AI" in the body copy of those pages.
+- `tests/fixtures/landing-corrections-20261118.json` records every replacement with its count and the page hashes before and after; `beforeLandingCorrections` reverses them before every older landing fence. Titles are unchanged; the meta description changes only on two pages whose description repeated a corrected claim (trapezoid-grade-9, two-data-sources-grade-8).
+
+## 2026-11-18 — four new PDF-only base topics with landings: 8/68, 9/50, 9/51, 9/52 (candidate)
+
+- Noam (18.11.2026) approved a new base topic with its own landing for each of four reviewed packages that had no topic to attach to: **G8-TRF-01** as grade-8 topic 68 **טרנספורמציות איזומטריות וצורות חופפות** (group geo), **G9-PLN-01** as grade-9 topic 50 **ישרים מקבילים — זוויות מתאימות ומתחלפות** and **G9-COI-01** as topic 51 **זוויות חד־צדדיות בין ישרים מקבילים** (both in a new regular grade-9 group, `geopar` **גיאומטריה — ישרים מקבילים וזוויות**, between fun and geo, so they are not listed among the quadrilaterals) and **G9-LIT-01** as topic 52 **משימות אוריינות — מודל מתמטי בהקשר מציאותי** (stat). All four are `publicationMode: "pdf-only"`.
+- Twelve PDFs, 102 pages, with final answers. Each is bound by SHA-256 to an independent review that binds the published bytes: Kimi Work for TRF-01 and PLN-01, and Google Antigravity for COI-01 and LIT-01. Two media readbacks per PDF match. Details: `docs/new-topics-four-pdf-first-20261118.json`.
+- New landings: `/isometric-transformations-grade-8`, `/parallel-lines-angles-grade-9`, `/co-interior-angles-grade-9` and `/math-literacy-tasks-grade-9`, each linked once from its grade hub, with its own worked example, common mistake, self-check and calculation lesson.
+- PDF-only: no Noam prefix, Ramzi, viewer manifests, teacher questions, learning identities, Word or Supabase. Every earlier topic, group, track group and PDF is unchanged; the NEW4 fence reverses exactly these four topics, their search terms and the geopar group before every older catalog fence.
+- This is a source candidate, not a publication claim.
+
+## 2026-11-18 — batch 09: six reviewed student PDF editions (candidate)
+
+- G7-SGM-01 (7/2, signed-numbers-grade-7), G9-STR-01 (9/9, statistics-grade-9, ט׳ מצומצמת), G8-FNC-02 (8/21, function-representations-grade-8), G7-EQN-03 (7/37, equations-advanced-grade-7), G7-CRT-01 (7/20, solids-box-cube-prism-grade-7) and G7-PGA-01 (7/42, pythagorean-theorem-grade-7): 18 non-default pdf-only PDFs, 219 pages, on six existing topic pages. Every existing default and earlier edition stays in place.
+- Each landing gets one short section; its last paragraph says the PDFs are for download and printing, with final answers at the end of each file, and, on topics whose earlier sheets open with Ramzi, that hints are in those earlier sheets.
+- Review receipts are cited in `docs/batch09-pdf-first-20261118.json` by project-relative path and SHA-256: Google Antigravity for G7-SGM-01, G8-FNC-02 r02, G7-EQN-03 r02, G7-CRT-01 r03 and G7-PGA-01 r03 (full and blind-numbers reviews for the last two), and Kimi Work for the Antigravity-authored G9-STR-01. The registry source and native hashes are the real build files of each package.
+- Older tests that read the same pages or topics unwind batch 09 first.
+
+## 2026-11-18 — batch 08: five reviewed student PDF editions (candidate)
+
+- G7-SOL-01 (7/20, solids-box-cube-prism-grade-7), G8-DAT-01 (8/67, statistics-data-frequency-grade-8), G8-RAT-01 (8/4, ratio-proportion-grade-8), G9-RHM-01 (9/13, rhombus-grade-9, ט׳ מצומצמת) and G9-SQM-01 (9/14, square-grade-9, ט׳ מצומצמת): 15 PDFs on five existing topic pages. Every existing default and earlier edition stays in place.
+- Each landing gets one short section; the last paragraph says the PDFs are for download and printing and that hints are in the earlier sheets, which open with Ramzi.
+- Review receipts (Kimi Work for the four Antigravity-authored packages, Claude for the Astra-authored G7-SOL-01) are cited in `docs/batch08-pdf-first-20261118.json` by project-relative path and SHA-256. The registry source and native hashes are the real build files of each package.
+- G7-ANG-02 (reviewed) waits for a frozen build with its deliver tree.
+
+## 2026-11-17 — batch 07: three reviewed student PDF editions (candidate)
+
+- G9-TRP-02 (9/39, trapezoid-grade-9), G9-LNM-01 (9/34, linear-function-grade-9, ט׳ מצומצמת) and G7-ALG-05 (7/22, algebraic-expressions-grade-7): 9 PDFs on three existing topic pages. Every existing default and earlier edition stays in place.
+- Each landing gets one short section that describes the PDFs; the last paragraph says the PDFs are for download and printing and that hints are in the earlier sheets, which open with Ramzi.
+- Exact PDF SHA-256 values match a fresh CDN read-back (two reads per file). Review receipts (Astra and Google Antigravity) are cited in `docs/batch07-pdf-first-20261117.json` by project-relative path.
+- New entries are non-default, PDF-only editions. G9-LIT-01 waits for a new topic page.
+
+## 2026-11-17 — batch 06: eleven reviewed student PDF editions (candidate)
+
+- G7-ALG-02, G7-ALG-04, G7-CRD-01, G8-INE-01, G9-FPR-01, G9-FSH-01, G9-GRD-01, G9-PBM-01, G9-QFM-01, G9-QVL-01 and G9-SMM-01: 33 PDFs on nine existing topic pages. Every existing default and earlier edition stays in place.
+- Nine landing sections describe the PDF content; reduced-track sheets are labelled ט׳ מצומצמת in the section and edition label. G9-QFM-01 fills the missing mandatory quadratic-formula unit. Each PDF ends with final answers; no worked solutions or hints are claimed.
+- Exact PDF SHA-256 values match the recorded CDN read-back. The PDFs carry Google Antigravity PASS receipts; details and relative receipt paths: `docs/batch06-pdf-first-20261117.json`.
+- New entries are non-default, PDF-only editions. No native worksheet, Word file, hint, teacher, learning or database activation is added.
+- This is a site candidate, not a publication claim. Build, checks and desktop/phone evidence are recorded in the PR package.
+
+## 2026-11-17 — batch 05: eleven reviewed student PDF editions (candidate)
+
+- G7-DAT-01, G7-WPM-01, G8-FNC-01, G8-INT-01, G8-PCT-01, G8-PYT-01, G9-DIS-01, G9-EQD-01, G9-PAR-05, G9-POW-02 and G9-WQP-01: 33 PDFs on ten existing topic pages. Every existing default and earlier edition stays in place.
+- Ten landing sections describe the PDF contents; DIS and EQD share the topic 9:1 section. DIS and EQD are labelled ט׳ מצומצמת. POW is identified as enrichment. Each PDF ends with final answers; no worked solutions or hints are claimed.
+- Exact PDF SHA-256 values match the recorded CDN read-back. The PDFs have primary review receipts and a Google Antigravity PASS_DELTA receipt; details and relative receipt paths: `docs/batch05-pdf-first-20261117.json`.
+- New entries are non-default, PDF-only editions. No native worksheet, Word file, hint, teacher, learning or database activation is added.
+- This is a site candidate, not a publication claim. Build, checks and desktop/phone evidence are recorded in the PR package.
+
+## 2026-11-17 — EQM01: new reduced-track topic 49 and month group ינואר (candidate)
+
+- Noam (17.11.2026) approved opening a ט׳ מצומצמת month group when the first topic of that month arrives. G9-EQM-01 opens **r9jan ('ינואר')** as base topic 49 **משוואות עם מכנה מספרי**, pdf-only, after r9oct; prisa_9B page 4 places the unit in January (6 hours).
+- Three PDFs (a/b/c), 15 pages, 56 parts (19 + 19 + 18), with final answers. Bound by SHA-256 to an independent Antigravity review (PASS_STUDENT_PDF_ESSENTIALS, receipt 8a00cd8b…); nine media readbacks (three routes per PDF) match. Details: `docs/g9-eqm01-pdf-first-20261117.json`.
+- New landing `/equations-numeric-denominator-grade-9`, H1 **משוואות עם מכנה מספרי לכיתה ט׳ מצומצמת**, linked from the grade-9 hub. Its worked example, self-check and calculation lesson (minus before a fraction) differ from the grade-8 page and from the sheet questions. The CTA opens the reduced track without a track parameter.
+- PDF-only: no Noam prefix, Ramzi, drawing hints, viewer manifests, teacher questions, learning identities, Word or Supabase. Topic 18 and every earlier topic, group and PDF are unchanged; the learning catalog has no diff.
+- This is a source candidate, not a publication claim. Tests, build and phone/desktop evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+23,340 bytes against 6039c61c, about 16.90 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
+## 2026-11-17 — batch 04: four reviewed Astra-authored student PDF editions (candidate)
+
+- KTE9:46, R30 9:37, PRS7:48 and SIM8:43: 12 PDFs, 114 pages, 342 parts. Every existing default, legacy link and the 66 preceding editions are preserved.
+- Four existing landings describe the exact practice scope of the new series. Titles, H1 and CTA order are unchanged. PRS joins topic 7:48 on the landing it shares with 7:47 and 7:20; topic 8:43 keeps its four legacy levels. Both grade-9 series are regular-track. The grade-8 similarity copy names the AA theorem (ז.ז) only.
+- Exact reviewed PDF bytes were read back from both media routes: 24 matching reads. Astra (Codex) authored all four sets; each passed an independent review by Claude, which is not the author, attributed by exact SHA-256 and not repeated here.
+- No producer v72 report is PASS. Each non-PASS gate is covered by a per-finding waiver decided by the production manager under Noam's rule of 17.11.2026: checker false positives, accepted G94 pages, the G87 layout conflict (PRS) and the G92 registry-text error (SIM). Details and SHA-256 of the waiver files: `docs/batch04-pdf-first-20261117.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+67,056 bytes, about 17.75 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
+## 2026-11-17 — grade-9 probability: three reviewed Claude-authored student PDF editions (candidate, replaces draft #500)
+
+- PRC9:10, PRT9:10 and PRW9:10 (single-stage with relative frequency and complement; two-stage with replacement; two-stage without replacement): 9 PDFs, 47 pages, 169 parts. The legacy default, its links and the 63 preceding editions are preserved.
+- The probability landing describes the exact practice scope of the three series in one appended section. Title, H1 and CTA are unchanged. All three series are regular-track.
+- Exact reviewed PDF bytes were downloaded from both media routes: 18 matching reads of Codex's 16.11 uploads. Claude authored all three sets; each passed an independent review by Astra (Codex gpt-6-astra), a non-Claude agent, attributed by exact SHA-256 and not repeated here. Details: `docs/probability-nine-pdf-first-20261117.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- Supersedes draft PR #500 by Noam's 17.11 decision; the same edition ids and pdfIds, regenerated on the current baseline. This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+45,936 bytes, about 17.73 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
+## 2026-11-17 — batch 03: eight reviewed Claude-authored student PDF editions (candidate)
+
+- ALG7:29, POW7:6, ROOT7:7, INE8:52, QAP9:6, QIN9:8, SYQ9:8 and ITP9:39: 24 PDFs, 142 pages, 588 parts. Every existing default, legacy link and the 55 preceding editions are preserved.
+- Seven existing landings describe the exact practice scope of the new series; QIN and SYQ share topic 9:8 and one landing section. Titles, H1 and CTA order are unchanged. All four grade-9 series are regular-track.
+- Exact reviewed PDF bytes were downloaded from both media routes: 48 matching reads. Claude authored all eight sets; each passed an independent review by Google Antigravity (Gemini 4 Carbon High), a non-Claude agent, attributed by exact SHA-256 and not repeated here. Details: `docs/batch03-pdf-first-20261117.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+117,432 bytes, about 17.68 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
+## 2026-11-17 — batch 02a: sixteen reviewed student PDF editions (candidate)
+
+- SQR9:14, RHB9:13, ISO9:4, POW9:16, MPL9:18, PYD9:35, TRI8:42, TRI8:40, WPE8:3, WPE8:46, DAT8:66, SLP8:29, PRB8:50, Q1C7:8, MUL7:3 and EQN7:37: 48 PDFs, 385 pages, 1431 parts. Every existing default, legacy link and the 39 preceding editions are preserved.
+- Sixteen existing landings describe the exact practice scope of the new series. Titles, H1 and CTA order are unchanged. PYD is labelled as a reduced-track (מצומצמת) series.
+- Exact reviewed PDF bytes were downloaded from both media routes: 96 matching reads. Independent PDF reviews (Claude Opus 5.5 for fifteen sets of other authors; claude007 for EQN-02) are attributed by exact SHA-256, not repeated here. Details: `docs/batch02a-pdf-first-20261117.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+239,872 bytes, about 17.56 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
+## 2026-11-16 — batch 01: four reviewed student PDF editions (candidate)
+
+- SYS-01 8:47, SYS-02 8:48, TRI-03 8:39 and P3D-01 8:54: 12 PDFs, 83 pages, 372 parts. Every existing default, legacy link and the 35 preceding editions are preserved; topic 8:54 keeps its legacy c2 level.
+- Four existing landings describe the exact practice scope of the new series. Titles, H1 and CTA order are unchanged.
+- Exact reviewed PDF bytes were uploaded and downloaded from both media routes: 24 matching reads. Independent PDF reviews (Astra r02 deltas; claude007 for P3D-01) are attributed by exact SHA-256, not repeated here. Details: `docs/batch01-pdf-first-20261116.json`.
+- New editions open PDFs directly. No Word, native assets, teacher selection, learning activation, hints or database activation.
+- This is a source candidate, not a publication claim. Build, tests and desktop/phone evidence are recorded in the PR package; the Wix payload has only a proxy estimate (+54,960 bytes, about 17.32 MB) and still needs a credentialed `npm run build`; the release job's postbuild budget check stops a release over 19,500,000 bytes.
+
 ## 2026-11-15 — seven additional student PDF editions (candidate)
 
 - ATQ7:19, APT7:45, PYT7:42, PYA7:43, GRW7:6, CTM9:33 and Q1G7:31:21PDFs,137pages,405parts. Existing defaults,973legacy links and28preceding editions are preserved.
