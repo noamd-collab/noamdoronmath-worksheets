@@ -28,6 +28,8 @@ import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
 import { reviewedBatch07 } from './fixtures/batch07-pdf';
 import { reviewedBatch08 } from './fixtures/batch08-pdf';
 import { reviewedBatch09 } from './fixtures/batch09-pdf';
+import { reviewedBatch10 } from './fixtures/batch10-pdf';
+import { reviewedPcm53 } from './fixtures/pcm53-pdf';
 import { afterLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 const require = createRequire(import.meta.url);
@@ -727,4 +729,48 @@ test('real batch-09 pages expose all 18 direct PDFs in their mapped edition grou
   assert.equal(reduced.length, 1);
   assert.ok(reduced.every(addition => addition.track === 'ט_מצומצמת'
     && addition.edition.label.includes('ט׳ מצומצמת')));
+});
+
+test('real batch-10 pages expose all 18 direct PDFs in their mapped edition groups', async () => {
+  const urls = new Set<string>();
+  const slugs = [...new Set(reviewedBatch10.additions.map(addition => addition.slug))];
+  for (const slug of slugs) {
+    const document = await renderTopic(slug), hero = document.querySelector('.exact-topic-copy')!;
+    const additions = reviewedBatch10.additions.filter(addition => addition.slug === slug);
+    for (const addition of additions) {
+      const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
+      assert.deepEqual(links.map(link => link.getAttribute('href')),
+        addition.edition.levels.map(level => `https://static.wixstatic.com/ugd/d8e7ad_${level.pdfId}.pdf`));
+      assert.equal(links.length, 3, `${slug}/${addition.editionId}: all three levels`);
+      assert.ok(links.every(link => link.textContent.includes('פתיחת PDF')
+        && !link.textContent.includes('רמזי') && !link.getAttribute('href')!.includes('viewer')));
+      links.forEach(link => urls.add(link.getAttribute('href')!));
+    }
+    const delta = reviewedBatch10.landingDeltas.find(item => item.slug === slug)!;
+    const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    assert.ok(!mainText.includes('נועם AI'), `${slug}: no Noam AI hint copy`);
+    assert.ok(hero.querySelectorAll('a[data-edition-id="legacy"]').length >= 3, `${slug}: old downloads remain`);
+    const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
+    assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
+  }
+  assert.equal(slugs.length, 6);
+  assert.equal(urls.size, 18);
+  // G9-QSH-01 is a later edition on 9/5, after G9-QVL-01 (batch 6).
+  const quadratic = await renderTopic('quadratic-function-grade-9');
+  const groups = [...new Set([...quadratic.querySelector('.exact-topic-copy')!.querySelectorAll('a[data-edition-id]')]
+    .map(link => link.getAttribute('data-edition-id')))];
+  assert.deepEqual(groups, ['legacy', 'ms-20261117-qvl-01-r1', 'ms-20261118-qsh-01-r1']);
+});
+
+test('the new reduced-track landing percentages-grade-9 exposes exactly the three reviewed PCM PDFs and no hint tool', async () => {
+  const document = await renderTopic('percentages-grade-9'), hero = document.querySelector('.exact-topic-copy')!;
+  const pdfs = reviewedPcm53.pdfIds.map(id => `https://static.wixstatic.com/ugd/d8e7ad_${id}.pdf`);
+  const hrefs = [...hero.querySelectorAll('a[href]')].map(link => link.getAttribute('href')!);
+  assert.deepEqual(hrefs.filter(href => href.includes('static.wixstatic.com')), pdfs);
+  assert.ok(hrefs.every(href => !href.includes('viewer')), 'no viewer link');
+  const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
+  assert.ok(!/רמזי|רמזים|נועם AI/.test(mainText), 'no hint tool on a PDF-only topic');
+  const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
+  assert.equal(new Set(anchors).size, anchors.length, 'unique anchors');
 });

@@ -346,7 +346,7 @@
       "sheetId": "G7-DIR-01",
       "producerPackage": "G7-T63",
       "title": "מספרים מכוונים: סדר, מספרים נגדיים וערך מוחלט",
-      "author": "Qwen Code",
+      "author": "Claude (Anthropic); independent fix r04 by Qwen Code",
       "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
       "reviewReceipts": [
         {
