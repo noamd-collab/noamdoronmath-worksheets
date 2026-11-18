@@ -4,8 +4,11 @@ import { readFirst567Activation } from './first567Activation';
 /** Reverse only the applied, independently verified 15-row correction metadata.
  * Historical catalog hashes remain frozen. Never use the catalog merger as the
  * rollback oracle or remove an arbitrary readiness field to make a hash pass. */
+// The receipt bundle is read and validated from disk once per test process: every older
+// catalog fence now calls this first, and the on-disk evidence does not change during a run.
+let phaseCache: ReturnType<typeof readFirst567Activation> | undefined;
 export function beforeFirst15Correction<T>(catalog: T): T {
-  const phase = readFirst567Activation();
+  const phase = (phaseCache ??= readFirst567Activation());
   assert.ok(phase.hintCorrection, 'historical projection requires the actual correction evidence');
   const restored: any = structuredClone(catalog);
   assert.deepEqual(restored.ramziActivation, phase.ready, 'historical readiness remains exact');
