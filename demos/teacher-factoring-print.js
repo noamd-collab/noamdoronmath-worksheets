@@ -581,6 +581,8 @@ async function pickWithAi(rawCount) {
 function paintAiPickButtons() {
   const next = $('wizard-next');
   if (next && state.wizard === 'pick') next.disabled = wizardNavigating || aiPickPending > 0 || !allSelectedKeys().length;
+  const nextCta = $('wizard-next-cta');
+  if (nextCta && next) nextCta.classList.toggle('cta-on', state.wizard === 'pick' && !next.hidden && !next.disabled);
   const group = $('ai-pick-group');
   if (!group) return;
   group.hidden = false;
@@ -3487,6 +3489,8 @@ function applyWizard() {
   const selectedKeys = allSelectedKeys();
   const selectedQuestionCount = blockQuestionCount(selectedKeys);
   $('wizard-next').disabled = wizardNavigating || (step === 'pick' && (!selectedKeys.length || aiPickPending > 0));
+  const nextCta = $('wizard-next-cta');
+  if (nextCta) nextCta.classList.toggle('cta-on', step === 'pick' && !$('wizard-next').hidden && !$('wizard-next').disabled);
   const selectionSummary = $('wizard-selection-summary');
   if (selectionSummary) selectionSummary.textContent = selectedKeys.length
     ? `${selectedQuestionCount === 1 ? 'שאלה אחת' : selectedQuestionCount + ' שאלות'} · ${selectedKeys.length === 1 ? 'סעיף אחד' : selectedKeys.length + ' סעיפים'}`
@@ -3693,6 +3697,7 @@ function bind() {
     if (wizardNavigating || (state.wizard === 'pick' && (!allSelectedKeys().length || aiPickPending > 0))) return;
     wizardNavigating = true;
     $('wizard-next').disabled = true;
+    if ($('wizard-next-cta')) $('wizard-next-cta').classList.remove('cta-on');
     try {
       const index = WIZARD_ORDER.indexOf(state.wizard || 'setup');
       state.wizard = WIZARD_ORDER[Math.min(WIZARD_ORDER.length - 1, index + 1)];
