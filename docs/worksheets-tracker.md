@@ -1,3 +1,9 @@
+## 2026-11-19 — batch 12: G7-ANG-02, the last required program package (candidate)
+
+- G7-ANG-02 (7/12, adjacent-vertical-angles-grade-7, after G7-ANG-03): angle bisector, and sum and difference of angles. Three pdf-only PDFs, non-default; the landing gets a second short PDF section, whose note starts with "גם לסדרה זו" so the page repeats no paragraph.
+- Qwen Code took the package over from GitHub Copilot with Astra integration; r02 fixed both HOLD receipts of r01 (copied example content, a rounding contradiction, an ambiguous claim, an answer without the angle name). Both r02 reviews (Google Antigravity full and blind numbers) PASS. Two media readbacks per PDF match.
+- With this package every required grade 7–9 program unit has a reviewed series on the site.
+
 ## 2026-11-18 — batch 11: four reviewed PDF editions; the grade 7 angle units go live (candidate)
 
 - G9-QFR-01 (9/6, quadratic-equations-grade-9, ט׳ רגילה; the third extra edition on that topic after QAP-01 and QFM-01), G7-DGM-01 (7/26, relative-frequency-grade-7, after FRQ-01), G7-ANG-01 (7/11, angles-introduction-measurement-grade-7) and G7-ANG-04 (7/14, triangle-quadrilateral-angle-sum-grade-7): twelve pdf-only PDFs, non-default; each landing gets one short section. Every existing default and earlier edition stays in place.

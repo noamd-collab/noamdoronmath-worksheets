@@ -11,6 +11,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeBatch11Catalog, beforeBatch11Copy, beforeBatch11Registry,
   reviewedBatch11 as reviewed, reviewedBatch11Ids as ids } from './fixtures/batch11-pdf';
+import { beforeBatch12Registry } from './fixtures/batch12-pdf';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -35,6 +36,8 @@ for (const addition of reviewed.additions) {
   }
 }
 const registry = read('headless/catalog/worksheet-editions.v1.json');
+// Batch 12 (19.11) is newer: its row comes after batch 11's.
+const batch11Registry = beforeBatch12Registry(registry);
 const priorRegistry = beforeBatch11Registry(registry);
 const receipt = read('docs/batch11-pdf-first-20261118.json');
 const expectedIds = ["ms-20261118-qfr-01-r1", "ms-20261118-dgm-01-r1", "ms-20261118-ang-01-r1", "ms-20261118-ang-04-r1"];
@@ -88,9 +91,9 @@ test('four additive editions recover the pinned baseline after batch 10 (143d3d5
   assert.equal(receipt.status, 'REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED');
   assert.equal(receipt.sitePublicationClaimed, false);
   assert.deepEqual(receipt.scope, { packages: 4, pdfs: 12, pages: 143, landingRoutes: 4 });
-  assert.equal(registry.editions.length, priorRegistry.editions.length + 4);
-  assert.deepEqual(registry.editions.slice(0, -4), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(-4), reviewed.additions.map(a => a.edition));
+  assert.equal(batch11Registry.editions.length, priorRegistry.editions.length + 4);
+  assert.deepEqual(batch11Registry.editions.slice(0, -4), priorRegistry.editions);
+  assert.deepEqual(batch11Registry.editions.slice(-4), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // batch 11 adds no base topic
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991);
 

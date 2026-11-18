@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { beforeFirst15Correction } from './helpers/beforeFirst15Correction';
+import { beforeBatch12Catalog } from './fixtures/batch12-pdf';
 
 const current = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
 const units = (c: any) => c.grades.flatMap((g: any) => g.topics.flatMap((t: any) =>
@@ -11,7 +12,8 @@ const digest = (c: any) => createHash('sha256').update(JSON.stringify(c, null, 2
 
 test('the verified correction reverses to the exact deployed historical catalog, without mutating input', () => {
   const before = JSON.stringify(current);
-  const historical = beforeFirst15Correction(current);
+  // Batch 12 (G7-ANG-02) was added after that baseline; its fence removes it first.
+  const historical = beforeFirst15Correction(beforeBatch12Catalog(current));
   // Catalog bytes at the published baseline e4ad27c7 (batch 11, live since 18.11; the port
   // of #499 onto it), not a new expected value generated from the correction or from
   // mergeWorksheetEditions. At 58f2892df the same projection was 17bedac5…; batches
