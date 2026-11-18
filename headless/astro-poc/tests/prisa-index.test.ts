@@ -67,8 +67,6 @@ const NOW = new Date('2026-11-17T10:00:00Z');
 const NO_PAGE_UNITS = [
   // NEW4 (18.11) serves the planned landings of the grade-8 transformations unit, the four
   // grade-9 parallel-lines units and the grade-9 literacy unit.
-  'st.g9m.percentages.part_of_whole',
-  'st.g9m.percentages.increase_decrease',
   'st.g9m.parallels_and_parallelogram.review',
   'st.g9m.word_problems_integrative.literacy_contexts',
 ];
@@ -651,9 +649,10 @@ describe('rendered HTML', () => {
     const itemList = [...hub.querySelectorAll('script[type="application/ld+json"]')].map((s) => JSON.parse(s.textContent))
       .find((ld) => ld['@type'] === 'ItemList');
     assert.equal(itemList.itemListElement.filter((item: Record<string, unknown>) => item.url === `https://www.noamdoronmath.co.il${href}`).length, 1);
-    // Four reduced-track units still wait for a landing; they stay plain text.
-    assert.equal(hub.querySelectorAll('li.prisa-unit[data-unit-linked="no"]').length, 4);
-    assert.equal(loadPrisaTrack('g9m').linkedUnitCount, 35);
+    // Two reduced-track units still wait for a landing; they stay plain text (batch 10, 18.11: the two
+    // percentages units now link /percentages-grade-9).
+    assert.equal(hub.querySelectorAll('li.prisa-unit[data-unit-linked="no"]').length, 2);
+    assert.equal(loadPrisaTrack('g9m').linkedUnitCount, 37);
     // The grade-9 hub index: the same link, in the reduced panel only, inside its January month.
     const index = await render('../src/components/PrisaMonthIndex.astro', { grade: 9, now: NOW }, '/grade-9');
     const [regular, reduced] = [...index.querySelectorAll('.prisa-index__panel')];

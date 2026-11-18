@@ -323,6 +323,22 @@
             "math-literacy-tasks-grade-9"
           ],
           "reason": "new topics 18.11: no_topic -> covered by the new landing of base topic 9/52"
+        },
+        {
+          "unit": "st.g9m.percentages.part_of_whole",
+          "status": "covered_by_landing",
+          "pages": [
+            "percentages-grade-9"
+          ],
+          "reason": "batch 10 (18.11): no_topic -> covered by the new reduced-track landing of base topic 9/53"
+        },
+        {
+          "unit": "st.g9m.percentages.increase_decrease",
+          "status": "covered_by_landing",
+          "pages": [
+            "percentages-grade-9"
+          ],
+          "reason": "batch 10 (18.11): no_topic -> covered by the new reduced-track landing of base topic 9/53"
         }
       ]
     }
@@ -434,6 +450,8 @@
     "st.g9m.parallels_and_parallelogram.parallelogram_def": {"track": "ט_מצומצמת", "name": "הגדרת המקבילית וחישובי היקף ושטח בסיסיים"},
     "st.g9m.parallels_and_parallelogram.parallelogram_identify": {"track": "ט_מצומצמת", "name": "זיהוי מקבילית לפי תכונות הצלעות, הזוויות והאלכסונים"},
     "st.g9m.parallels_and_parallelogram.parallelogram_props": {"track": "ט_מצומצמת", "name": "תכונות הצלעות, הזוויות והאלכסונים במקבילית"},
+    "st.g9m.percentages.increase_decrease": {"track": "ט_מצומצמת", "name": "הגדלה והקטנה באחוזים (הנחה והתייקרות)"},
+    "st.g9m.percentages.part_of_whole": {"track": "ט_מצומצמת", "name": "החלק היחסי מהשלם וחישוב ערך האחוז"},
     "st.g9m.probability.basic_concepts_relative_freq": {"track": "ט_מצומצמת", "name": "מושגים בסיסיים בהסתברות והקשר לשכיחות יחסית"},
     "st.g9m.probability.events_complement": {"track": "ט_מצומצמת", "name": "מאורע משלים, מאורע ודאי ומאורע בלתי־אפשרי"},
     "st.g9m.pythagoras.composite_areas_perim": {"track": "ט_מצומצמת", "name": "חישובי צלעות, היקפים ושטחים בצורות מורכבות ובמערכת צירים"},
@@ -569,6 +587,7 @@
     "percent-change-grade-8": [{"unit": "st.g8.percentages.change_multiplier", "alignmentType": "teaches"}],
     "percent-representations-grade-8": [{"unit": "st.g8.percentages.part_whole", "alignmentType": "teaches"}],
     "percentage-problems-grade-8": [{"unit": "st.g8.percentages.part_whole", "alignmentType": "teaches"}, {"unit": "st.g8.word_problems_eq.motion_percent_problems", "alignmentType": "teaches"}],
+    "percentages-grade-9": [{"unit": "st.g9m.percentages.part_of_whole", "alignmentType": "teaches"}, {"unit": "st.g9m.percentages.increase_decrease", "alignmentType": "teaches"}],
     "powers-grade-7": [{"unit": "st.g7.powers_roots.power_notation", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.order_of_operations", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.growth_contexts", "alignmentType": "teaches"}, {"unit": "st.g7.powers_roots.signed_base", "alignmentType": "teaches"}],
     "probability-experiments-fairness-grade-8": [{"unit": "st.g8.probability.sample_space_events", "alignmentType": "teaches"}],
     "probability-grade-9": [{"unit": "st.g9r.probability.single_stage_complement", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.probability.basic_concepts_relative_freq", "alignmentType": "educationalSubject"}, {"unit": "st.g9m.probability.events_complement", "alignmentType": "educationalSubject"}],

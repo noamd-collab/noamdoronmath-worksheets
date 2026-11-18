@@ -239,8 +239,8 @@
           {"id": "st.g9m.statistics.central_measures_range", "name": "טווח נתונים ומדדי מרכז: ממוצע, שכיח וחציון", "pages": ["statistics-grade-9"]},
           {"id": "st.g9m.kite_and_isosceles.isosceles_converse", "name": "משולש שווה־שוקיים: זוויות, קווים מיוחדים וזיהוי משולש שווה־שוקיים", "pages": ["isosceles-triangle-grade-9"]},
           {"id": "st.g9m.kite_and_isosceles.kite_properties", "name": "תכונות הדלתון וחישובי שטחים והיקפים", "pages": ["kite-grade-9"]},
-          {"id": "st.g9m.percentages.part_of_whole", "name": "החלק היחסי מהשלם וחישוב ערך האחוז", "pages": []},
-          {"id": "st.g9m.percentages.increase_decrease", "name": "הגדלה והקטנה באחוזים (הנחה והתייקרות)", "pages": []}
+          {"id": "st.g9m.percentages.part_of_whole", "name": "החלק היחסי מהשלם וחישוב ערך האחוז", "pages": ["percentages-grade-9"]},
+          {"id": "st.g9m.percentages.increase_decrease", "name": "הגדלה והקטנה באחוזים (הנחה והתייקרות)", "pages": ["percentages-grade-9"]}
         ]},
         {"key": "m12", "label": "דצמבר", "prisaPage": 4, "units": [
           {"id": "st.g9m.similarity.concept_scale", "name": "המושג צורות דומות, הגדלה והקטנה וצלעות פרופורציונליות", "pages": ["similar-triangles-grade-9"]},

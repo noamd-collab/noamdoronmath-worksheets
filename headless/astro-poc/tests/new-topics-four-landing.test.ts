@@ -10,6 +10,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog.ts';
 import { parseWorksheetsUrlState } from '../src/lib/worksheetsUrlState.ts';
 import { beforeNew4Catalog, reviewedNew4 } from './fixtures/new4-pdf.ts';
 import { beforeBatch09Catalog, reviewedBatch09 } from './fixtures/batch09-pdf.ts';
+import { beforeBatch10Catalog } from './fixtures/batch10-pdf.ts';
 
 const plain = (text: string) => text.replace(/[⁦-⁩]/g, '');
 
@@ -77,9 +78,10 @@ test('the four reviewed topics are PDF-only base topics with exactly their revie
     assert.equal(state.grade, t.grade);
     assert.equal(state.topic, t.topicId);
   }
-  // One regular group for the two parallel-lines topics, before the quadrilaterals; no month or track group.
+  // One regular group for the two parallel-lines topics, before the quadrilaterals; no month or track group
+  // (r9nov arrives later, with topic 9/53 in batch 10).
   const grade9 = catalog.grades.find(g => g.grade === 9)!;
-  assert.deepEqual(grade9.groups.filter(group => group.reducedProgram).map(group => group.key), ['r9sep', 'r9oct', 'r9jan']);
+  assert.deepEqual(grade9.groups.filter(group => group.reducedProgram).map(group => group.key), ['r9sep', 'r9oct', 'r9nov', 'r9jan']);
   assert.deepEqual(grade9.groups.slice(0, 4).map(group => [group.key, group.label]), [['alg', 'אלגברה'], ['fun', 'פונקציות וגרפים'],
     ['geopar', 'גיאומטריה — ישרים מקבילים וזוויות'], ['geo', 'גיאומטריה — מרובעים ומשולשים']]);
   assert.deepEqual(grade9.topics.filter(topic => topic.group === 'geopar').map(topic => topic.id), [50, 51]);
@@ -218,7 +220,8 @@ test('the NEW4 fence reverses exactly the four topics and rejects substitutions,
   const pristine = structuredClone(raw);
   const restored: any = beforeNew4Catalog(raw);
   assert.deepEqual(raw, pristine, 'the fence works on a copy');
-  const expected = structuredClone(raw);
+  // Batch 10 (topic 9/53 and its editions) is newer than NEW4, so the fence reverses it too.
+  const expected: any = structuredClone(beforeBatch10Catalog(raw));
   for (const t of TOPICS) {
     gradeOf(expected, t.grade).topics = gradeOf(expected, t.grade).topics.filter((item: any) => item.id !== t.topicId);
     delete expected.searchTerms[String(t.grade)][String(t.topicId)];
@@ -226,7 +229,7 @@ test('the NEW4 fence reverses exactly the four topics and rejects substitutions,
   gradeOf(expected, 9).groups = gradeOf(expected, 9).groups.filter((g: any) => g.key !== 'geopar');
   assert.deepEqual(restored, expected);
   assert.equal(restored.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length,
-    raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length - 12);
+    raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length - 12 - 3);
   // With NEW4 reversed first, the batch-09 fence recovers its independently pinned baseline.
   assert.equal(digest(beforeBatch09Catalog(raw)), reviewedBatch09.baselineCatalogSha256);
 
@@ -249,7 +252,16 @@ test('the NEW4 fence reverses exactly the four topics and rejects substitutions,
   rejects(cat => { gradeOf(cat, 9).groups.find((g: any) => g.key === 'geopar').label = 'ישרים'; }, 'NEW4: exact geopar group');
   rejects(cat => { const gs = gradeOf(cat, 9).groups, at = gs.findIndex((g: any) => g.key === 'geopar'); [gs[at], gs[at + 1]] = [gs[at + 1], gs[at]]; }, 'NEW4: reviewed group position');
   rejects(cat => { gradeOf(cat, 9).groups.push(structuredClone(gradeOf(cat, 9).groups.find((g: any) => g.key === 'geopar'))); }, 'NEW4: exactly one geopar group');
-  assert.throws(() => beforeNew4Catalog(restored), named('NEW4: exactly one topic 8/68'), 'never reverses twice');
+  // A second call stops at the newest fence of the chain (PCM53, reversed by batch 10 first) ...
+  assert.throws(() => beforeNew4Catalog(restored), named('PCM53: exactly one topic 53'), 'never reverses twice');
+  // ... and NEW4 itself refuses a catalog whose four topics are already gone while batch 10 is still in place.
+  const new4Gone: any = structuredClone(raw);
+  for (const t of TOPICS) {
+    gradeOf(new4Gone, t.grade).topics = gradeOf(new4Gone, t.grade).topics.filter((item: any) => item.id !== t.topicId);
+    delete new4Gone.searchTerms[String(t.grade)][String(t.topicId)];
+  }
+  gradeOf(new4Gone, 9).groups = gradeOf(new4Gone, 9).groups.filter((g: any) => g.key !== 'geopar');
+  assert.throws(() => beforeNew4Catalog(new4Gone), named('NEW4: exactly one topic 8/68'), 'NEW4 never reverses twice');
 
   // A change anywhere else passes through NEW4, so the older batch-09 fence rejects it.
   for (const change of [

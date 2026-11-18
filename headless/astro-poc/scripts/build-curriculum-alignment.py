@@ -261,6 +261,14 @@ REJUDGED = [
      'pages': ['math-literacy-tasks-grade-9'],
      'evidence': {'math-literacy-tasks-grade-9': ['במשימת אוריינות שולפים נתונים מטבלה או מתיאור']},
      'reason': 'new topics 18.11: no_topic -> covered by the new landing of base topic 9/52'},
+    {'unit': 'st.g9m.percentages.part_of_whole', 'status': 'covered_by_landing',
+     'pages': ['percentages-grade-9'],
+     'evidence': {'percentages-grade-9': ['בעזרתו מחשבים חלק משלם, מוצאים שלם לפי חלק ידוע']},
+     'reason': 'batch 10 (18.11): no_topic -> covered by the new reduced-track landing of base topic 9/53'},
+    {'unit': 'st.g9m.percentages.increase_decrease', 'status': 'covered_by_landing',
+     'pages': ['percentages-grade-9'],
+     'evidence': {'percentages-grade-9': ['ומתארים הנחה, התייקרות ושינוי']},
+     'reason': 'batch 10 (18.11): no_topic -> covered by the new reduced-track landing of base topic 9/53'},
 ]
 
 BIDI = re.compile('[⁦-⁩]')

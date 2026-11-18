@@ -48,12 +48,12 @@ describe('middle lesson equations at phone width', { timeout: 180_000 }, () => {
           assert.ok(statements.some(s => s.text === 'g(x) = 7 − x'));
         }
         if (['graphical-inequality', 'line-from-points', 'missing-mean', 'numeric-denominators', 'system-elimination', 'rational-domain', 'hypotenuse-median', 'minus-before-fraction',
-          'rotation-90-origin', 'corresponding-converse', 'co-interior-sum', 'compare-offers'].includes(variant)) {
+          'rotation-90-origin', 'corresponding-converse', 'co-interior-sum', 'compare-offers', 'percent-multiplier'].includes(variant)) {
           const scene = await page.$(selector);
           await scene!.screenshot({ path: `reports/middle-math-mobile/${variant}-390.png` });
         }
       }
-      assert.equal(variants.size, 28); // + the four NEW4 lessons (18.11)
+      assert.equal(variants.size, 29); // + the four NEW4 lessons (18.11) and PCM53 (batch 10)
     } finally {
       await page.close();
       await browser.close();

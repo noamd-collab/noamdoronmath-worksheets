@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { beforeBatch10Catalog } from './batch10-pdf';
 
 const sha = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 
@@ -111,7 +112,8 @@ export const reviewedNew4Slugs = reviewedNew4.topics.map(t => t.slug);
  * catalog fence. Any other change, or a moved or edited topic, must fail.
  */
 export function beforeNew4Catalog<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  // Batch 10 (18 Nov, with topic 9/53) is newer than NEW4: reverse it first.
+  const restored: any = structuredClone(beforeBatch10Catalog(catalog));
   for (const t of reviewedNew4.topics) {
     const grade = restored.grades.find((g: any) => g.grade === t.grade);
     assert.equal(grade.topics.filter((x: any) => x.id === t.topicId).length, 1, `NEW4: exactly one topic ${t.grade}/${t.topicId}`);

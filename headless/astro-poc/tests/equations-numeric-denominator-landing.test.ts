@@ -13,6 +13,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog.ts';
 import { parseWorksheetsUrlState, trackForPinnedTopic } from '../src/lib/worksheetsUrlState.ts';
 import { beforeEqm49Catalog, reviewedEqm49 } from './fixtures/eqm49-pdf.ts';
 import { beforeBatch03Catalog, reviewedBatch03 } from './fixtures/batch03-pdf.ts';
+import { beforePcm53Catalog } from './fixtures/pcm53-pdf.ts';
 
 const slug = 'equations-numeric-denominator-grade-9';
 const plain = (text: string) => text.replace(/[⁦-⁩]/g, '');
@@ -31,7 +32,8 @@ test('topic 49 opens the new reduced-track month group with exactly the three re
   assert.equal(topic.routing.usesViewer, false);
   assert.equal(topic.routing.aiHintShown, false);
   const reduced = grade9.groups.filter(group => group.reducedProgram);
-  assert.deepEqual(reduced.map(group => [group.key, group.label]), [['r9sep', 'ספטמבר'], ['r9oct', 'אוקטובר'], ['r9jan', 'ינואר']]);
+  // Batch 10 (18.11) opens נובמבר (r9nov, topic 53) between אוקטובר and ינואר.
+  assert.deepEqual(reduced.map(group => [group.key, group.label]), [['r9sep', 'ספטמבר'], ['r9oct', 'אוקטובר'], ['r9nov', 'נובמבר'], ['r9jan', 'ינואר']]);
   // The landing CTA needs no &track: the pinned topic opens the reduced track.
   const state = parseWorksheetsUrlState(new URLSearchParams(page.catalogCta.href.split('?')[1]));
   assert.equal(state.topic, 49);
@@ -167,7 +169,9 @@ test('the grade hub links the new reduced-track topic once, beside the other equ
 });
 
 test('the EQM49 fence reverses exactly the reviewed addition and rejects substitutions, moves, duplicates and edits', () => {
-  const raw = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
+  const fullRaw = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
+  // Topic 9/53 and its month group r9nov (batch 10) are newer than EQM49 and change trackGroups: reverse them first.
+  const raw = beforePcm53Catalog(fullRaw);
   const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
   const grade9 = (cat: any) => cat.grades.find((g: any) => g.grade === 9);
   const topicOf = (cat: any, id: number) => grade9(cat).topics.find((t: any) => t.id === id);
@@ -192,7 +196,7 @@ test('the EQM49 fence reverses exactly the reviewed addition and rejects substit
   assert.equal(restored.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973 + 12);
   assert.deepEqual(reviewedEqm49.pdfIds, PDF_IDS);
   // With EQM49 reversed first, the batch-03 fence still recovers its independently pinned baseline.
-  assert.equal(digest(beforeBatch03Catalog(raw)), reviewedBatch03.baselineCatalogSha256);
+  assert.equal(digest(beforeBatch03Catalog(fullRaw)), reviewedBatch03.baselineCatalogSha256);
 
   // Substituted, reordered, added or removed PDFs.
   rejects(cat => { topicOf(cat, 49).levels[0].pdfId = 'f8e4149d737746489f3866c6e9bfa807'; }, 'EQM49: reviewed PDFs');
@@ -246,7 +250,7 @@ test('the EQM49 fence reverses exactly the reviewed addition and rejects substit
     (cat: any) => { cat.searchTerms['9']['36'] += ' ינואר'; },
     (cat: any) => { grade9(cat).groups.find((g: any) => g.key === 'r9oct').label = 'ינואר'; },
   ]) {
-    const cat = tampered(change);
+    const cat = structuredClone(fullRaw); change(cat);
     let recovered: string | null = null;
     try { recovered = digest(beforeBatch03Catalog(cat)); } catch { /* an older fence threw: rejected */ }
     assert.notEqual(recovered, reviewedBatch03.baselineCatalogSha256);

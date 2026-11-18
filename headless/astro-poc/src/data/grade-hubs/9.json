@@ -70,6 +70,11 @@
           "path": "/algebraic-fractions-grade-9",
           "label": "צמצום שברים אלגבריים",
           "productionHref": "https://www.noamdoronmath.co.il/algebraic-fractions-grade-9"
+        },
+        {
+          "path": "/percentages-grade-9",
+          "label": "אחוזים (ט׳ מצומצמת)",
+          "productionHref": "https://www.noamdoronmath.co.il/percentages-grade-9"
         }
       ]
     },
@@ -519,6 +524,11 @@
       "path": "/math-literacy-tasks-grade-9",
       "label": "משימות אוריינות",
       "productionHref": "https://www.noamdoronmath.co.il/math-literacy-tasks-grade-9"
+    },
+    {
+      "path": "/percentages-grade-9",
+      "label": "אחוזים (ט׳ מצומצמת)",
+      "productionHref": "https://www.noamdoronmath.co.il/percentages-grade-9"
     }
   ],
   "catalogCta": {

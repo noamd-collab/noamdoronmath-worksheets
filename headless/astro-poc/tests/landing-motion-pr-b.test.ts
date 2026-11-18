@@ -54,6 +54,7 @@ const INTEGRATED_LESSONS: Record<string, string> = {
   'parallel-lines-angles-grade-9': 'corresponding-converse',
   'co-interior-angles-grade-9': 'co-interior-sum',
   'math-literacy-tasks-grade-9': 'compare-offers',
+  'percentages-grade-9': 'percent-multiplier',
   'graphical-inequalities-grade-8': 'graphical-inequality',
   'interpolation-extrapolation-grade-8': 'linear-interpolation',
   'lines-parallel-to-axes-grade-8': 'axis-parallel-lines',

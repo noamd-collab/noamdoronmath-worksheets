@@ -1,3 +1,11 @@
+## 2026-11-18 — batch 10: six reviewed PDF editions and reduced-track topic 9/53 in a new month group נובמבר (candidate)
+
+- Six non-default pdf-only editions on six existing topic pages (18 PDFs): G8-DAT-03 (8/18, pie-charts-grade-8), G8-CRC-01 (8/63, circle-area-circumference-grade-8), G8-CNG-01 (8/36, triangle-congruence-grade-8), G7-DIR-01 (7/1, number-line-absolute-value-grade-7), G7-ANG-03 (7/12, adjacent-vertical-angles-grade-7) and G9-QSH-01 (9/5, quadratic-function-grade-9). Every existing default and earlier edition stays in place; each landing gets one short section.
+- Noam (18.11.2026) approved G9-PCM-01 (percentages, ט׳ מצומצמת) as base topic 53 **אחוזים: חלק מהשלם, הגדלה והקטנה**, pdf-only, which opens the reduced-track month group **r9nov ('נובמבר')** between אוקטובר and ינואר, with the new landing `/percentages-grade-9`.
+- Review receipts (Google Antigravity and Kimi Work) are cited in `docs/batch10-pdf-first-20261118.json` by project-relative path and SHA-256; the registry source and native hashes are the real build files of each package; two media readbacks per PDF match.
+- The PCM53 fence reverses topic 53, its search terms, r9nov and its trackGroups entry; batch 10 unwinds before NEW4, the landing corrections and every older fence.
+- Four of the six pages (circle-area-circumference-grade-8, triangle-congruence-grade-8, number-line-absolute-value-grade-7, adjacent-vertical-angles-grade-7) carried the legacy sentence that names Noam AI as the worksheet hint tool; now that they carry a PDF edition, it reads like the landing corrections: hints on the earlier Ramzi sheets, questions and final answers in the PDFs.
+
 ## 2026-11-18 — landing corrections after the independent landing audit (candidate)
 
 - Google Antigravity audited the landing copy Claude wrote for the PDF editions (`reports/ANTIGRAVITY-AUDIT-claude-landings-20261117/review.json`: 38 essential and 59 minor findings). This change corrects 55 live pages with 156 exact text replacements, each checked against all three PDFs of its series.

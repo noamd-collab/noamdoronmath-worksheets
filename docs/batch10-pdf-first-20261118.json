@@ -1,0 +1,2075 @@
+{
+  "schema": "noam-pdf-batch-proof/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "preparedDate": "2026-11-18",
+  "publicationMode": "pdf-only",
+  "sitePublicationClaimed": false,
+  "scope": {
+    "packages": 6,
+    "pdfs": 18,
+    "pages": 183,
+    "landingRoutes": 6
+  },
+  "baselineCommit": "b251def8452e0762ba926098d0151a92d20b60cc",
+  "baselineCatalogSha256": "0b561bfc62736f74457dbe0ac3471215d0ad5ca9f07ae7ea11376395ce3a44a2",
+  "baselineRegistrySha256": "13d2e0547b0b8cbe5e1efc5c890badfd241f882fd2cbca07dc5d9a6d2b15b3fe",
+  "mediaReadback": {
+    "path": "submissions/Claude/MANAGER-20261116/batch-11/media-cdn-readback.json",
+    "sha256": "39d8b4baebbbe6d2d86ff241299ecdf4b2550b009c4281bab8e94e3958ef6fa1",
+    "reads": 36
+  },
+  "packages": [
+    {
+      "sheetId": "G8-DAT-03",
+      "producerPackage": "G8-T103",
+      "title": "שכיחות יחסית ודיאגרמת עיגול, מיון נתונים, ומדדי מרכז כשמשנים את הנתונים",
+      "author": "Kimi Work",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review of r01 (Google Antigravity) (verdict HOLD_ESSENTIAL_FINDINGS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G8-DAT-03-r01-20261117/review.json",
+          "sha256": "667c157cd7c7aefb9e898ae50047126722659c1e0d695f051e1ec9b0ae61e107"
+        },
+        {
+          "role": "independent review of the r02 fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G8-DAT-03-r02-20261118/review.json",
+          "sha256": "fa9aacfee3660699c399ce95726e81779963721d3b870bba3e9ef196f25cf6e9"
+        }
+      ],
+      "track": "ח",
+      "grade": 8,
+      "topicId": 18,
+      "landing": "/pie-charts-grade-8",
+      "editionId": "ms-20261118-dat-03-r1",
+      "label": "שכיחות יחסית ודיאגרמת עיגול, מיון נתונים, ומדדי מרכז כשמשנים את הנתונים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "b9b1db69377a4d88a09b5e007e437313",
+          "pdfSha256": "b635f115b0189e87daac2c0a65de609502761484631c2e7ed0c404fdec008edf",
+          "sourceSha256": "9782abae8b0117beacfdb79c53dc0662e934ffcb345e81818b1cfd17fcb1221c",
+          "nativeExportSha256": "78a4ed46a966b68286d94228384c749c9bc13a443991a32f88ef19baa2d08225",
+          "worksheetId": "ms-g8-dat-03-a-r1",
+          "revision": 1,
+          "pages": 16,
+          "bytes": 85155,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b9b1db69377a4d88a09b5e007e437313.pdf",
+              "status": 200,
+              "sha256": "b635f115b0189e87daac2c0a65de609502761484631c2e7ed0c404fdec008edf",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b9b1db69377a4d88a09b5e007e437313.pdf",
+              "status": 200,
+              "sha256": "b635f115b0189e87daac2c0a65de609502761484631c2e7ed0c404fdec008edf",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "b13b23c998974e40b7d96b3234f71483",
+          "pdfSha256": "87a44db33f9ad824b5133605479857cb4306b0c1e310e93a7e7e8f7bd86e07aa",
+          "sourceSha256": "c397c83d7b2d48b06ac82d6877285f6190973287dddbd646439631082509724c",
+          "nativeExportSha256": "4b3b37ddcaa4e2af558f9a19b3b4795983909cae8fe826fe86e590d2a89f8548",
+          "worksheetId": "ms-g8-dat-03-b-r1",
+          "revision": 1,
+          "pages": 14,
+          "bytes": 81533,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b13b23c998974e40b7d96b3234f71483.pdf",
+              "status": 200,
+              "sha256": "87a44db33f9ad824b5133605479857cb4306b0c1e310e93a7e7e8f7bd86e07aa",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b13b23c998974e40b7d96b3234f71483.pdf",
+              "status": 200,
+              "sha256": "87a44db33f9ad824b5133605479857cb4306b0c1e310e93a7e7e8f7bd86e07aa",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "ef663c26e72041ee97d905cc8d57d83d",
+          "pdfSha256": "684a8aaad470489019bd01eb2bc30aee724804b922cfc6a0a8e0c002d317e4fd",
+          "sourceSha256": "7b703e2b8911d0623664c32e2da670b04979197934b21c4947a4638473082883",
+          "nativeExportSha256": "439f045021e32642157f6259f4ea851c01321271538fdd3396b8ba693a686adc",
+          "worksheetId": "ms-g8-dat-03-c-r1",
+          "revision": 1,
+          "pages": 16,
+          "bytes": 91204,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ef663c26e72041ee97d905cc8d57d83d.pdf",
+              "status": 200,
+              "sha256": "684a8aaad470489019bd01eb2bc30aee724804b922cfc6a0a8e0c002d317e4fd",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_ef663c26e72041ee97d905cc8d57d83d.pdf",
+              "status": 200,
+              "sha256": "684a8aaad470489019bd01eb2bc30aee724804b922cfc6a0a8e0c002d317e4fd",
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G8-CRC-01",
+      "producerPackage": "G8-T101",
+      "title": "המעגל: מיתר, סימטריה, סרטוט במחוגה, היחס בין היקף לקוטר ופריסת גליל",
+      "author": "Qwen Code",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent full review of r02 (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G8-CRC-01-r02-20261117/review.json",
+          "sha256": "f3ba575501650691579f3c00e8ac194131bb7749c2169ee27fad2e3bdd989d96"
+        },
+        {
+          "role": "independent numbers review of r02 (Google Antigravity) (verdict HOLD_ESSENTIAL_FINDINGS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G8-CRC-01-r02-20261117/numbers-blind.json",
+          "sha256": "48eb2a7c8a95c38d06a02452fd3f894a8cd86378922ef180c7d9e005728f2eca"
+        },
+        {
+          "role": "independent numbers review of the r03 fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G8-CRC-01-r03-20261118/numbers-blind.json",
+          "sha256": "4be41ebe8b7f672431b76bb4dcdbd22580797144e0b80eca5b44307e091d2575"
+        }
+      ],
+      "track": "ח",
+      "grade": 8,
+      "topicId": 63,
+      "landing": "/circle-area-circumference-grade-8",
+      "editionId": "ms-20261118-crc-01-r1",
+      "label": "המעגל: מיתר, סימטריה, סרטוט במחוגה, היחס בין היקף לקוטר ופריסת גליל · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "8f870a62f51046d586e986d13cc9eca4",
+          "pdfSha256": "ab1622d884c51b50a1c84629d42e7eead38e189f12bbd1f5cfe5dcaad6d9473d",
+          "sourceSha256": "3a262af135cdda7709defed20b7ae7ea107eeef908b1998dd253ef560da8a3f4",
+          "nativeExportSha256": "4e0593113a4b921a7fa713748190964e7e40d6cbb9359fbcf8e069a2c6b875b1",
+          "worksheetId": "ms-g8-crc-01-a-r1",
+          "revision": 1,
+          "pages": 10,
+          "bytes": 114509,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_8f870a62f51046d586e986d13cc9eca4.pdf",
+              "status": 200,
+              "sha256": "ab1622d884c51b50a1c84629d42e7eead38e189f12bbd1f5cfe5dcaad6d9473d",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_8f870a62f51046d586e986d13cc9eca4.pdf",
+              "status": 200,
+              "sha256": "ab1622d884c51b50a1c84629d42e7eead38e189f12bbd1f5cfe5dcaad6d9473d",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "99fbab053f68433ab53fc1337b376902",
+          "pdfSha256": "57e27aa344bfbc54fd0a4dc0a74b251bf4d369727af4cd1e8fe90a4d615e2371",
+          "sourceSha256": "c8729aa44ed41a6bfc179edccc0a05930cbea8e49c32d259648a1633248dca58",
+          "nativeExportSha256": "73bee7ec1c89b05fc039d0e66454d282c2421870d0b86fbb09d36ce8171c2beb",
+          "worksheetId": "ms-g8-crc-01-b-r1",
+          "revision": 1,
+          "pages": 12,
+          "bytes": 113203,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_99fbab053f68433ab53fc1337b376902.pdf",
+              "status": 200,
+              "sha256": "57e27aa344bfbc54fd0a4dc0a74b251bf4d369727af4cd1e8fe90a4d615e2371",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_99fbab053f68433ab53fc1337b376902.pdf",
+              "status": 200,
+              "sha256": "57e27aa344bfbc54fd0a4dc0a74b251bf4d369727af4cd1e8fe90a4d615e2371",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "72b43b4531bd4f6caf72cc4901772981",
+          "pdfSha256": "bca7536adc6e6ee7628ebce90ca4866b87388136ffd80701f74436af826f45e4",
+          "sourceSha256": "982bdf7f1a1b852278767428a7015900ef6477474f11a4e22fc42b062c8b54d3",
+          "nativeExportSha256": "c95e2ddae50c5588dcdb9ebe9fd3180a8eb187afba1fdd58f0b46df3ad6498b9",
+          "worksheetId": "ms-g8-crc-01-c-r1",
+          "revision": 1,
+          "pages": 13,
+          "bytes": 122676,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_72b43b4531bd4f6caf72cc4901772981.pdf",
+              "status": 200,
+              "sha256": "bca7536adc6e6ee7628ebce90ca4866b87388136ffd80701f74436af826f45e4",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_72b43b4531bd4f6caf72cc4901772981.pdf",
+              "status": 200,
+              "sha256": "bca7536adc6e6ee7628ebce90ca4866b87388136ffd80701f74436af826f45e4",
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G8-CNG-01",
+      "producerPackage": "G8-T91",
+      "title": "חפיפת משולשים",
+      "author": "Google Antigravity; fix r01 by Claude; fix r02 by Qwen Code",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review of r01 (Kimi Work) (verdict HOLD_ESSENTIAL_FINDINGS)",
+          "path": "reports/KIMI-INDEPENDENT-G8-CNG-01-20261118/review.json",
+          "sha256": "25a4ffaf986ce85335bfb27548a8a4ee9680676d17718ea1dcd176eb1a892dae"
+        },
+        {
+          "role": "independent review of the r02 fix (Kimi Work) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/KIMI-INDEPENDENT-G8-CNG-01-r02-20261118/review.json",
+          "sha256": "07723eccc86c4cde66f611df196af76db45bc25dde308084a3df282bd56dde45"
+        }
+      ],
+      "track": "ח",
+      "grade": 8,
+      "topicId": 36,
+      "landing": "/triangle-congruence-grade-8",
+      "editionId": "ms-20261118-cng-01-r1",
+      "label": "חפיפת משולשים · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "b64687ca7ad14929b483ddd01dd067a9",
+          "pdfSha256": "bcf7fa074916816dffd4fed23255f62422d219f9d7d045ba08efa85d88a6910e",
+          "sourceSha256": "fe1d53c88c9aae0283f96ff8b4aa311bad329aebff0b64f44af891915611a57a",
+          "nativeExportSha256": "eb8a43427bd53c462e54347c521711940b752fb15fce810b2bfbc3be6c308170",
+          "worksheetId": "ms-g8-cng-01-a-r1",
+          "revision": 1,
+          "pages": 13,
+          "bytes": 141983,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b64687ca7ad14929b483ddd01dd067a9.pdf",
+              "status": 200,
+              "sha256": "bcf7fa074916816dffd4fed23255f62422d219f9d7d045ba08efa85d88a6910e",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b64687ca7ad14929b483ddd01dd067a9.pdf",
+              "status": 200,
+              "sha256": "bcf7fa074916816dffd4fed23255f62422d219f9d7d045ba08efa85d88a6910e",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "76f5f8e1378b46ce94a456abb93e361f",
+          "pdfSha256": "3d0e932695a8c06a3139494ec8b3ce0ce8ac9830bd5ec61f9db2101f1ee7618f",
+          "sourceSha256": "b556e345976f2ed70e0b80d64e5f17a1de25fcbba7e7c1404bb54e99f2cc4689",
+          "nativeExportSha256": "edde96fcb0a4b92951315ce376644120a6ef3a0314c8956e825e3176c41c0ec8",
+          "worksheetId": "ms-g8-cng-01-b-r1",
+          "revision": 1,
+          "pages": 13,
+          "bytes": 148881,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_76f5f8e1378b46ce94a456abb93e361f.pdf",
+              "status": 200,
+              "sha256": "3d0e932695a8c06a3139494ec8b3ce0ce8ac9830bd5ec61f9db2101f1ee7618f",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_76f5f8e1378b46ce94a456abb93e361f.pdf",
+              "status": 200,
+              "sha256": "3d0e932695a8c06a3139494ec8b3ce0ce8ac9830bd5ec61f9db2101f1ee7618f",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "3c2f6aee91c64ee0a2d645100481948a",
+          "pdfSha256": "b2ea610b6c719bec4bebdf1c293f43828017ede162f4c3bf95403ab2ea982f69",
+          "sourceSha256": "01d9e5b3fbef05cb1187cd83aaf856c9669fa034af47dd6780e3f8b5cffc56ca",
+          "nativeExportSha256": "21fcf8c2c8858cab801346479319e7d67a6036f8abcb04d51421a202d9e89476",
+          "worksheetId": "ms-g8-cng-01-c-r1",
+          "revision": 1,
+          "pages": 12,
+          "bytes": 155195,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3c2f6aee91c64ee0a2d645100481948a.pdf",
+              "status": 200,
+              "sha256": "b2ea610b6c719bec4bebdf1c293f43828017ede162f4c3bf95403ab2ea982f69",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3c2f6aee91c64ee0a2d645100481948a.pdf",
+              "status": 200,
+              "sha256": "b2ea610b6c719bec4bebdf1c293f43828017ede162f4c3bf95403ab2ea982f69",
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-DIR-01",
+      "producerPackage": "G7-T63",
+      "title": "מספרים מכוונים: סדר, מספרים נגדיים וערך מוחלט",
+      "author": "Qwen Code",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent full review of the r04 fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-DIR-01-r04-20261118/review.json",
+          "sha256": "4a202773582a9199be9ba978a15505a8c273230a0d1c241c5f55869823d3bd0e"
+        },
+        {
+          "role": "independent numbers review of the r04 fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-DIR-01-r04-20261118/numbers-blind.json",
+          "sha256": "31dbe2b86f39472f163c01e899eb5548081acc92e5616e3027fbab2c81c77e10"
+        }
+      ],
+      "track": "ז",
+      "grade": 7,
+      "topicId": 1,
+      "landing": "/number-line-absolute-value-grade-7",
+      "editionId": "ms-20261118-dir-01-r1",
+      "label": "מספרים מכוונים: סדר, מספרים נגדיים וערך מוחלט · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "9bbe74b00dd84b70957934d25886c099",
+          "pdfSha256": "680b84e0f33d05b17e92df02c048733cf3a6feee07fadb05f7ef26652a4f09f9",
+          "sourceSha256": "594da3aa0f9fefca5d764ae649af67d93b1011b4924691d453221bb1d248129a",
+          "nativeExportSha256": "ac9739a6a2fb57fcb2522d1ccf4372a6945e7ce5114aa69a26e833234ea14bf6",
+          "worksheetId": "ms-g7-dir-01-a-r1",
+          "revision": 1,
+          "pages": 7,
+          "bytes": 65891,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_9bbe74b00dd84b70957934d25886c099.pdf",
+              "status": 200,
+              "sha256": "680b84e0f33d05b17e92df02c048733cf3a6feee07fadb05f7ef26652a4f09f9",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_9bbe74b00dd84b70957934d25886c099.pdf",
+              "status": 200,
+              "sha256": "680b84e0f33d05b17e92df02c048733cf3a6feee07fadb05f7ef26652a4f09f9",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "aef807ca2bdf40b89a2b79ab40d37a60",
+          "pdfSha256": "dba54ff14f7468fa2aad5b31b39d09411a67bde484163a8e976566ad9e662bdf",
+          "sourceSha256": "bfe91e2516e89d9ce4ded4a2ce36c3c1da339a80150d06f90ca3a3f0e31090ed",
+          "nativeExportSha256": "1b382f2ce67f3131dadd08998281cc4c6c10147fde3f4631fe7afcb6d43f7022",
+          "worksheetId": "ms-g7-dir-01-b-r1",
+          "revision": 1,
+          "pages": 6,
+          "bytes": 53568,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_aef807ca2bdf40b89a2b79ab40d37a60.pdf",
+              "status": 200,
+              "sha256": "dba54ff14f7468fa2aad5b31b39d09411a67bde484163a8e976566ad9e662bdf",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_aef807ca2bdf40b89a2b79ab40d37a60.pdf",
+              "status": 200,
+              "sha256": "dba54ff14f7468fa2aad5b31b39d09411a67bde484163a8e976566ad9e662bdf",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "79552e1ba9aa4920af9e00a2b9c5c1f8",
+          "pdfSha256": "990f0628e92f3fc787149cf2387652a1329e2af48ddd8038e1f73d968605374b",
+          "sourceSha256": "8ff46d5cd0f0d18b25b87196e2c1dba7f40ea02fed6edff2842dacc7155110b5",
+          "nativeExportSha256": "8554210533db246b8d30fcc5b7aa23d80710445d305c5dfaefb591605b8b325a",
+          "worksheetId": "ms-g7-dir-01-c-r1",
+          "revision": 1,
+          "pages": 6,
+          "bytes": 57295,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_79552e1ba9aa4920af9e00a2b9c5c1f8.pdf",
+              "status": 200,
+              "sha256": "990f0628e92f3fc787149cf2387652a1329e2af48ddd8038e1f73d968605374b",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_79552e1ba9aa4920af9e00a2b9c5c1f8.pdf",
+              "status": 200,
+              "sha256": "990f0628e92f3fc787149cf2387652a1329e2af48ddd8038e1f73d968605374b",
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G7-ANG-03",
+      "producerPackage": "G7-T55",
+      "title": "זוויות צמודות וזוויות קודקודיות",
+      "author": "GitHub Copilot with Astra integration; fix r01 by Qwen Code",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent full review of the fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-ANG-03-fix-r01-20261118/review.json",
+          "sha256": "313d939ca62f11fe63163e52af52720a669c9a1871c3a1438499999940d3e37d"
+        },
+        {
+          "role": "independent numbers review of the fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G7-ANG-03-fix-r01-20261118/numbers-blind.json",
+          "sha256": "b122adc394f27252ce75f6711b981f199a205d5ddce3b1c1a51dad27ae8413b7"
+        }
+      ],
+      "track": "ז",
+      "grade": 7,
+      "topicId": 12,
+      "landing": "/adjacent-vertical-angles-grade-7",
+      "editionId": "ms-20261118-ang-03-r1",
+      "label": "זוויות צמודות וזוויות קודקודיות · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "c3967f7b32b146b8baf018c231f875ba",
+          "pdfSha256": "273347ca2c0e1828cb39ab0b37fc99bf893dbd9f016656f95a9d4d366ac5180b",
+          "sourceSha256": "b2caf3b300ad97e7e7f695ad19b08e7b0ba836f21b357d69f2d61322a98438db",
+          "nativeExportSha256": "d1a1bf004a14d650d7153b085c2ad25425a9c8313644d5b62d72fa19876ebc64",
+          "worksheetId": "ms-g7-ang-03-a-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 112183,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c3967f7b32b146b8baf018c231f875ba.pdf",
+              "status": 200,
+              "sha256": "273347ca2c0e1828cb39ab0b37fc99bf893dbd9f016656f95a9d4d366ac5180b",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_c3967f7b32b146b8baf018c231f875ba.pdf",
+              "status": 200,
+              "sha256": "273347ca2c0e1828cb39ab0b37fc99bf893dbd9f016656f95a9d4d366ac5180b",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "e12f3c2810064d26a1bb3c6eb141e90c",
+          "pdfSha256": "c31b83a5bc4fbabe64185c28e102cf60d1a77c464d69a18a8c6b3ec63dbcffe2",
+          "sourceSha256": "1c7bff1141a8e9e3059b8a417b2f39145d999e2f46d923c2e70cdf3e2a708d0f",
+          "nativeExportSha256": "cef9f04f50425bcccf33f10721f4630722c20769ab38d3da573541f22b0cea09",
+          "worksheetId": "ms-g7-ang-03-b-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 113448,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_e12f3c2810064d26a1bb3c6eb141e90c.pdf",
+              "status": 200,
+              "sha256": "c31b83a5bc4fbabe64185c28e102cf60d1a77c464d69a18a8c6b3ec63dbcffe2",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_e12f3c2810064d26a1bb3c6eb141e90c.pdf",
+              "status": 200,
+              "sha256": "c31b83a5bc4fbabe64185c28e102cf60d1a77c464d69a18a8c6b3ec63dbcffe2",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "38e0d3aaac1c465da4da7f882bb6b6c4",
+          "pdfSha256": "7fd6335345d5f095dd637c8f64d9b35088d7ae20669547ef234fd99b09373dba",
+          "sourceSha256": "8bdd595a88e6d5907ebc25c1a41fc55b8f7816cff5717b23877fba4dbadaa4e1",
+          "nativeExportSha256": "b9148bf51b8fa41c9d251674ea5646eebf1c901c34407ff9abe9d4a636d3436a",
+          "worksheetId": "ms-g7-ang-03-c-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 125381,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_38e0d3aaac1c465da4da7f882bb6b6c4.pdf",
+              "status": 200,
+              "sha256": "7fd6335345d5f095dd637c8f64d9b35088d7ae20669547ef234fd99b09373dba",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_38e0d3aaac1c465da4da7f882bb6b6c4.pdf",
+              "status": 200,
+              "sha256": "7fd6335345d5f095dd637c8f64d9b35088d7ae20669547ef234fd99b09373dba",
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-QSH-01",
+      "producerPackage": "G9-T101",
+      "title": "הזזות של פרבולה והצגת קודקוד",
+      "author": "Kimi Work",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review of r01 (Google Antigravity) (verdict HOLD_ESSENTIAL_FINDINGS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-QSH-01-r01-20261117/review.json",
+          "sha256": "29dcdbd46807b3f0126d99ad55e6a0eba75786536c83f2b062ebe14e3ba4a158"
+        },
+        {
+          "role": "independent review of the r02 fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-QSH-01-r02-20261118/review.json",
+          "sha256": "441e2a40f5750a3d874f51e285d2ddb9a0ed8664a9d23444220ac47ff083c19a"
+        }
+      ],
+      "track": "ט_רגילה",
+      "grade": 9,
+      "topicId": 5,
+      "landing": "/quadratic-function-grade-9",
+      "editionId": "ms-20261118-qsh-01-r1",
+      "label": "הזזות של פרבולה והצגת קודקוד · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "55df00341e49450a92b59df82afb7f92",
+          "pdfSha256": "a7bb5376c080a8e552b7173c8ec91d25c152bb5d47ef71e9ff5942992b7e666a",
+          "sourceSha256": "ddadbcf4fffd6a50ac152bc7d7278762674ddc51068923cd41f9b21a52ca2c59",
+          "nativeExportSha256": "5a7aa8622d2c6b9aff40c1bdf2cd4de93c0c1b74a2a16fb3137ee8e647992ec9",
+          "worksheetId": "ms-g9-qsh-01-a-r1",
+          "revision": 1,
+          "pages": 6,
+          "bytes": 57398,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_55df00341e49450a92b59df82afb7f92.pdf",
+              "status": 200,
+              "sha256": "a7bb5376c080a8e552b7173c8ec91d25c152bb5d47ef71e9ff5942992b7e666a",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_55df00341e49450a92b59df82afb7f92.pdf",
+              "status": 200,
+              "sha256": "a7bb5376c080a8e552b7173c8ec91d25c152bb5d47ef71e9ff5942992b7e666a",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "8ef4c5a8c6504029986cd3f09e0dd359",
+          "pdfSha256": "ca8aa7aac44ebbdd55f78e9ad4112e4b044bd367a16bcddfe9dbf0825935e7dc",
+          "sourceSha256": "c6da5521bab43937fc5c967e5be1346d55b1018f0f12ae5815abec8c44bc4ea5",
+          "nativeExportSha256": "b8441f052fb5f3aa82359acd0ec7f0376510c9a6d272d5ca00363c3ed95663ee",
+          "worksheetId": "ms-g9-qsh-01-b-r1",
+          "revision": 1,
+          "pages": 6,
+          "bytes": 60332,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_8ef4c5a8c6504029986cd3f09e0dd359.pdf",
+              "status": 200,
+              "sha256": "ca8aa7aac44ebbdd55f78e9ad4112e4b044bd367a16bcddfe9dbf0825935e7dc",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_8ef4c5a8c6504029986cd3f09e0dd359.pdf",
+              "status": 200,
+              "sha256": "ca8aa7aac44ebbdd55f78e9ad4112e4b044bd367a16bcddfe9dbf0825935e7dc",
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "a8d7f83cbbe0409c91c9f049183d07b4",
+          "pdfSha256": "735a863c806f9365c5594541c488dcd5f30b8c95e8b50e4adb9cd26653088785",
+          "sourceSha256": "4476bb3c4f1569e54479bff198b4f728bb04f987f3f2c2886b91705da01482fc",
+          "nativeExportSha256": "6eef56096660b58e56525a70edfb290f20582a8551c84934d032c56a6c94213e",
+          "worksheetId": "ms-g9-qsh-01-c-r1",
+          "revision": 1,
+          "pages": 6,
+          "bytes": 64108,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a8d7f83cbbe0409c91c9f049183d07b4.pdf",
+              "status": 200,
+              "sha256": "735a863c806f9365c5594541c488dcd5f30b8c95e8b50e4adb9cd26653088785",
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a8d7f83cbbe0409c91c9f049183d07b4.pdf",
+              "status": 200,
+              "sha256": "735a863c806f9365c5594541c488dcd5f30b8c95e8b50e4adb9cd26653088785",
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "pie-charts-grade-8",
+      "grade": 8,
+      "topicId": 18,
+      "editionIds": [
+        "ms-20261118-dat-03-r1"
+      ],
+      "baselineSha256": "995422a5ae42e54a6a37f7801192e24dae0890b482d4d272bb4b5d854b079b1d",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "דיאגרמת עוגה מראה איך שלם מתחלק לחלקים. כל העוגה היא 100% ו־360°, וסכום כל הגזרות הוא בדיוק השלם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כדי למצוא את זווית הגזרה כופלים את החלק ב־360°. גזרה של 25% היא ⟨1¦4⟩ מהעוגה, כלומר 90°.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בחוג 60 חברים, ו־35% מהם בחרו בציור. בציור בחרו 0.35 × 60 = 21 חברים, וזווית הגזרה היא 0.35 × 360° = 126°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משווים גזרות משתי עוגות לפי האחוז בלבד. 40% מ־480 הם יותר מ־40% מ־270, ולכן צריך לדעת גם את גודל השלם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בבניית עוגה שוכחים לבדוק שסכום הזוויות הוא 360°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בגינה 42 שתילים הם עגבניות, והם 35% מכל השתילים. כמה שתילים יש בגינה?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא 120 שתילים, כי 42 : 0.35 = 120.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "דיאגרמת עוגה מראה איך שלם מתחלק לחלקים. כל העוגה היא 100% ו־360°, וסכום כל הגזרות הוא בדיוק השלם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כדי למצוא את זווית הגזרה כופלים את החלק ב־360°. גזרה של 25% היא ⟨1¦4⟩ מהעוגה, כלומר 90°.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בחוג 60 חברים, ו־35% מהם בחרו בציור. בציור בחרו 0.35 × 60 = 21 חברים, וזווית הגזרה היא 0.35 × 360° = 126°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משווים גזרות משתי עוגות לפי האחוז בלבד. 40% מ־480 הם יותר מ־40% מ־270, ולכן צריך לדעת גם את גודל השלם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בבניית עוגה שוכחים לבדוק שסכום הזוויות הוא 360°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בגינה 42 שתילים הם עגבניות, והם 35% מכל השתילים. כמה שתילים יש בגינה?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא 120 שתילים, כי 42 : 0.35 = 120.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "שכיחות יחסית, דיאגרמת עיגול ומדדי מרכז — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסדרה ממיינים נתונים גולמיים לקבוצות זרות וממצות, משלימים טבלת שכיחויות ומסבירים אם מיון שעשה מישהו אחר תקין. מחשבים שכיחות יחסית באחוזים ואת הזווית המרכזית של כל גזרה, מחשבים כמה פריטים מייצגת גזרה בדיאגרמת עיגול, ומסרטטים דיאגרמת עיגול במחוגה, במד־זווית ובסרגל.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בחלק השני מחשבים ממוצע, חציון, שכיח וטווח, ובוחנים מה קורה להם כשמוסיפים קבוע לכל הנתונים או כופלים את כולם בקבוע. מגלים שסכום הסטיות מן הממוצע הוא 0, ובשאלות השילוב מנמקים מה קורה לדיאגרמת העיגול כשכל הכמויות מוכפלות. במצוינות משווים גם קבוצות בגדלים שונים באחוזים ובכמויות, ומנמקים כללים בעזרת אותיות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לקרוא דיאגרמת עוגה, לחשב כמה פריטים יש בכל גזרה מתוך האחוז, לחשב את זווית הגזרה ולבנות עוגה מתוך טבלה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=18",
+              "catalogTopicId": 18
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "דיאגרמת עוגה מראה איך שלם מתחלק לחלקים. כל העוגה היא 100% ו־360°, וסכום כל הגזרות הוא בדיוק השלם.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כדי למצוא את זווית הגזרה כופלים את החלק ב־360°. גזרה של 25% היא ⟨1¦4⟩ מהעוגה, כלומר 90°.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בחוג 60 חברים, ו־35% מהם בחרו בציור. בציור בחרו 0.35 × 60 = 21 חברים, וזווית הגזרה היא 0.35 × 360° = 126°.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "משווים גזרות משתי עוגות לפי האחוז בלבד. 40% מ־480 הם יותר מ־40% מ־270, ולכן צריך לדעת גם את גודל השלם.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בבניית עוגה שוכחים לבדוק שסכום הזוויות הוא 360°.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בגינה 42 שתילים הם עגבניות, והם 35% מכל השתילים. כמה שתילים יש בגינה?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התשובה היא 120 שתילים, כי 42 : 0.35 = 120.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לקרוא דיאגרמת עוגה, לחשב כמה פריטים יש בכל גזרה מתוך האחוז, לחשב את זווית הגזרה ולבנות עוגה מתוך טבלה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=18",
+              "catalogTopicId": 18
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "דיאגרמת עוגה מראה איך שלם מתחלק לחלקים. כל העוגה היא 100% ו־360°, וסכום כל הגזרות הוא בדיוק השלם.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כדי למצוא את זווית הגזרה כופלים את החלק ב־360°. גזרה של 25% היא ⟨1¦4⟩ מהעוגה, כלומר 90°.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בחוג 60 חברים, ו־35% מהם בחרו בציור. בציור בחרו 0.35 × 60 = 21 חברים, וזווית הגזרה היא 0.35 × 360° = 126°.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "משווים גזרות משתי עוגות לפי האחוז בלבד. 40% מ־480 הם יותר מ־40% מ־270, ולכן צריך לדעת גם את גודל השלם.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בבניית עוגה שוכחים לבדוק שסכום הזוויות הוא 360°.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "בגינה 42 שתילים הם עגבניות, והם 35% מכל השתילים. כמה שתילים יש בגינה?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התשובה היא 120 שתילים, כי 42 : 0.35 = 120.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "שכיחות יחסית, דיאגרמת עיגול ומדדי מרכז — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסדרה ממיינים נתונים גולמיים לקבוצות זרות וממצות, משלימים טבלת שכיחויות ומסבירים אם מיון שעשה מישהו אחר תקין. מחשבים שכיחות יחסית באחוזים ואת הזווית המרכזית של כל גזרה, מחשבים כמה פריטים מייצגת גזרה בדיאגרמת עיגול, ומסרטטים דיאגרמת עיגול במחוגה, במד־זווית ובסרגל.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בחלק השני מחשבים ממוצע, חציון, שכיח וטווח, ובוחנים מה קורה להם כשמוסיפים קבוע לכל הנתונים או כופלים את כולם בקבוע. מגלים שסכום הסטיות מן הממוצע הוא 0, ובשאלות השילוב מנמקים מה קורה לדיאגרמת העיגול כשכל הכמויות מוכפלות. במצוינות משווים גם קבוצות בגדלים שונים באחוזים ובכמויות, ומנמקים כללים בעזרת אותיות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 18.11.2026"
+        }
+      ],
+      "appendedSection": {
+        "heading": "שכיחות יחסית, דיאגרמת עיגול ומדדי מרכז — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בסדרה ממיינים נתונים גולמיים לקבוצות זרות וממצות, משלימים טבלת שכיחויות ומסבירים אם מיון שעשה מישהו אחר תקין. מחשבים שכיחות יחסית באחוזים ואת הזווית המרכזית של כל גזרה, מחשבים כמה פריטים מייצגת גזרה בדיאגרמת עיגול, ומסרטטים דיאגרמת עיגול במחוגה, במד־זווית ובסרגל.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחלק השני מחשבים ממוצע, חציון, שכיח וטווח, ובוחנים מה קורה להם כשמוסיפים קבוע לכל הנתונים או כופלים את כולם בקבוע. מגלים שסכום הסטיות מן הממוצע הוא 0, ובשאלות השילוב מנמקים מה קורה לדיאגרמת העיגול כשכל הכמויות מוכפלות. במצוינות משווים גם קבוצות בגדלים שונים באחוזים ובכמויות, ומנמקים כללים בעזרת אותיות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "circle-area-circumference-grade-8",
+      "grade": 8,
+      "topicId": 63,
+      "editionIds": [
+        "ms-20261118-crc-01-r1"
+      ],
+      "baselineSha256": "8470fffaab344e3db4488c12897f62362dbd1272c6e48aad3443fed2b55d3092",
+      "fields": [
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "בדפי העבודה לומדים להבחין בין מעגל לעיגול, לחשב היקף ושטח ולהציב נכון רדיוס או קוטר. שלוש רמות תרגול: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "בדפי העבודה לומדים להבחין בין מעגל לעיגול, לחשב היקף ושטח ולהציב נכון רדיוס או קוטר. שלוש רמות תרגול: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "מעגל ועיגול — הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מעגל ועיגול: מעגל הוא קו סגור שכל נקודותיו נמצאות במרחק שווה ממרכז המעגל, ועיגול הוא המעגל יחד עם השטח שבתוכו. היקף המעגל הוא 2πr ושטח העיגול הוא πr². ברדיוס 3 ס״מ ההיקף 6π ס״מ והשטח 9π סמ״ר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: היקף נמדד ביחידות אורך ושטח ביחידות ריבועיות. אם נתון קוטר, מחלקים ב־2 לפני שמציבים רדיוס.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדקו את עצמכם: קוטר המעגל הוא 10 ס״מ. מה שטח העיגול? תשובה: 25π סמ״ר.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "מעגל ועיגול — הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מעגל ועיגול: מעגל הוא קו סגור שכל נקודותיו נמצאות במרחק שווה ממרכז המעגל, ועיגול הוא המעגל יחד עם השטח שבתוכו. היקף המעגל הוא 2πr ושטח העיגול הוא πr². ברדיוס 3 ס״מ ההיקף 6π ס״מ והשטח 9π סמ״ר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: היקף נמדד ביחידות אורך ושטח ביחידות ריבועיות. אם נתון קוטר, מחלקים ב־2 לפני שמציבים רדיוס.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדקו את עצמכם: קוטר המעגל הוא 10 ס״מ. מה שטח העיגול? תשובה: 25π סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מיתר וקוטר, סרטוט במחוגה ופריסת גליל — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסדרה מבחינים בין מיתר לקוטר ומנמקים מדוע הקוטר הוא המיתר הארוך ביותר, מסבירים מדוע נקודה על המעגל ששיקפו אותה ביחס לקוטר נמצאת גם היא על המעגל, ומסרטטים מעגל במחוגה ובסרגל. מחשבים מטבלת מדידות את היחס בין ההיקף לקוטר בדיוק של שתי ספרות אחרי הנקודה, ובמעגל שבמערכת צירים רושמים שיעורי נקודות, מחשבים אורך של מיתר וקובעים אם הוא קוטר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בחלק על הגליל הישר עוסקים בפריסה בלבד, בלי חישובי שטח או נפח: מחשבים את אורך המלבן שבפריסה, משאירים את π בתשובה או משתמשים בקירוב 3.14, משלימים פריסה חלקית ומסרטטים פריסה בגודל אמיתי בסרגל ובמחוגה. ברמה ב׳ ובמצוינות מחשבים אורך מיתר גם בעזרת משפט פיתגורס, ובמצוינות מבטאים את אורך המלבן גם באמצעות r.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "בדפי העבודה לומדים להבחין בין מעגל לעיגול, לחשב היקף ושטח ולהציב נכון רדיוס או קוטר. שלוש רמות תרגול: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי עבודה",
+              "href": "/worksheets?grade=8&topic=63",
+              "catalogTopicId": 63
+            },
+            {
+              "type": "heading",
+              "text": "מעגל ועיגול — הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "מעגל ועיגול: מעגל הוא קו סגור שכל נקודותיו נמצאות במרחק שווה ממרכז המעגל, ועיגול הוא המעגל יחד עם השטח שבתוכו. היקף המעגל הוא 2πr ושטח העיגול הוא πr². ברדיוס 3 ס״מ ההיקף 6π ס״מ והשטח 9π סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: היקף נמדד ביחידות אורך ושטח ביחידות ריבועיות. אם נתון קוטר, מחלקים ב־2 לפני שמציבים רדיוס.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדקו את עצמכם: קוטר המעגל הוא 10 ס״מ. מה שטח העיגול? תשובה: 25π סמ״ר.",
+              "role": "self-check"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "בדפי העבודה לומדים להבחין בין מעגל לעיגול, לחשב היקף ושטח ולהציב נכון רדיוס או קוטר. שלוש רמות תרגול: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי עבודה",
+              "href": "/worksheets?grade=8&topic=63",
+              "catalogTopicId": 63
+            },
+            {
+              "type": "heading",
+              "text": "מעגל ועיגול — הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "מעגל ועיגול: מעגל הוא קו סגור שכל נקודותיו נמצאות במרחק שווה ממרכז המעגל, ועיגול הוא המעגל יחד עם השטח שבתוכו. היקף המעגל הוא 2πr ושטח העיגול הוא πr². ברדיוס 3 ס״מ ההיקף 6π ס״מ והשטח 9π סמ״ר.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: היקף נמדד ביחידות אורך ושטח ביחידות ריבועיות. אם נתון קוטר, מחלקים ב־2 לפני שמציבים רדיוס.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בדקו את עצמכם: קוטר המעגל הוא 10 ס״מ. מה שטח העיגול? תשובה: 25π סמ״ר.",
+              "role": "self-check"
+            },
+            {
+              "type": "heading",
+              "text": "מיתר וקוטר, סרטוט במחוגה ופריסת גליל — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "בסדרה מבחינים בין מיתר לקוטר ומנמקים מדוע הקוטר הוא המיתר הארוך ביותר, מסבירים מדוע נקודה על המעגל ששיקפו אותה ביחס לקוטר נמצאת גם היא על המעגל, ומסרטטים מעגל במחוגה ובסרגל. מחשבים מטבלת מדידות את היחס בין ההיקף לקוטר בדיוק של שתי ספרות אחרי הנקודה, ובמעגל שבמערכת צירים רושמים שיעורי נקודות, מחשבים אורך של מיתר וקובעים אם הוא קוטר.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בחלק על הגליל הישר עוסקים בפריסה בלבד, בלי חישובי שטח או נפח: מחשבים את אורך המלבן שבפריסה, משאירים את π בתשובה או משתמשים בקירוב 3.14, משלימים פריסה חלקית ומסרטטים פריסה בגודל אמיתי בסרגל ובמחוגה. ברמה ב׳ ובמצוינות מחשבים אורך מיתר גם בעזרת משפט פיתגורס, ובמצוינות מבטאים את אורך המלבן גם באמצעות r.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 18.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        }
+      ],
+      "appendedSection": {
+        "heading": "מיתר וקוטר, סרטוט במחוגה ופריסת גליל — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בסדרה מבחינים בין מיתר לקוטר ומנמקים מדוע הקוטר הוא המיתר הארוך ביותר, מסבירים מדוע נקודה על המעגל ששיקפו אותה ביחס לקוטר נמצאת גם היא על המעגל, ומסרטטים מעגל במחוגה ובסרגל. מחשבים מטבלת מדידות את היחס בין ההיקף לקוטר בדיוק של שתי ספרות אחרי הנקודה, ובמעגל שבמערכת צירים רושמים שיעורי נקודות, מחשבים אורך של מיתר וקובעים אם הוא קוטר.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחלק על הגליל הישר עוסקים בפריסה בלבד, בלי חישובי שטח או נפח: מחשבים את אורך המלבן שבפריסה, משאירים את π בתשובה או משתמשים בקירוב 3.14, משלימים פריסה חלקית ומסרטטים פריסה בגודל אמיתי בסרגל ובמחוגה. ברמה ב׳ ובמצוינות מחשבים אורך מיתר גם בעזרת משפט פיתגורס, ובמצוינות מבטאים את אורך המלבן גם באמצעות r.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "triangle-congruence-grade-8",
+      "grade": 8,
+      "topicId": 36,
+      "editionIds": [
+        "ms-20261118-cng-01-r1"
+      ],
+      "baselineSha256": "d2e78b27eb31ffdc7f12d7ecfbb4cc2840534a9e6c34e598d06ad4303f80e034",
+      "fields": [
+        {
+          "path": [
+            "intro"
+          ],
+          "existedBefore": true,
+          "before": "לומדים להתאים בין קודקודים ולהוכיח חפיפת משולשים לפי משפטי החפיפה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "לומדים להתאים בין קודקודים ולהוכיח חפיפת משולשים לפי משפטי החפיפה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים."
+        },
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בחפיפה מציינים התאמה מלאה בין הקודקודים ומשתמשים במשפט מתאים: צ.צ.צ, צ.ז.צ או ז.צ.ז. לאחר החפיפה אפשר להסיק שוויון בין חלקים מתאימים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: אם AB=DE, AC=DF וגם ∠A=∠D, אז △ABC≅△DEF לפי צ.ז.צ. ההתאמה היא A↔D, B↔E, C↔F.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשפט צ.ז.צ הזווית השווה חייבת להיות כלואה בין שתי הצלעות השוות. חשוב לכתוב את שמות המשולשים לפי סדר ההתאמה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בשני משולשים אורכי הצלעות הם 4, 5 ו־6. לפי איזה משפט אפשר להוכיח חפיפה?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: צ.צ.צ.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "עוד תרגול בחפיפת משולשים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משפטי חפיפה",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כתיבת הוכחה גאומטרית",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "הוכחות בחפיפת משולשים",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בחפיפה מציינים התאמה מלאה בין הקודקודים ומשתמשים במשפט מתאים: צ.צ.צ, צ.ז.צ או ז.צ.ז. לאחר החפיפה אפשר להסיק שוויון בין חלקים מתאימים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: אם AB=DE, AC=DF וגם ∠A=∠D, אז △ABC≅△DEF לפי צ.ז.צ. ההתאמה היא A↔D, B↔E, C↔F.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במשפט צ.ז.צ הזווית השווה חייבת להיות כלואה בין שתי הצלעות השוות. חשוב לכתוב את שמות המשולשים לפי סדר ההתאמה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בשני משולשים אורכי הצלעות הם 4, 5 ו־6. לפי איזה משפט אפשר להוכיח חפיפה?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: צ.צ.צ.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "עוד תרגול בחפיפת משולשים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משפטי חפיפה",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כתיבת הוכחה גאומטרית",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "הוכחות בחפיפת משולשים",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "משפטי החפיפה והוכחה היסקית — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסדרה מתרגלים את משפטי החפיפה צ.ז.צ, ז.צ.ז ו־צ.צ.צ: קובעים לפי איזה משפט שני משולשים חופפים, כותבים הוכחה היסקית בטענה ונימוק ומסיקים מהחפיפה שוויון של צלעות וזוויות מתאימות. בכל הרמות יש גם משולשים במערכת צירים, שבהם מחשבים אורכי צלעות בעזרת משפט פיתגורס, ושאלות שבהן מוצאים את x מתוך אורכי צלעות המבוטאים בעזרתו.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "ברמה א׳ יש גם שתי שאלות שבהן משלימים נימוקים חסרים בטבלת הוכחה. ברמה ב׳ ובמצוינות עוסקים גם במקרה של שתי צלעות וזווית שאינה כלואה ביניהן, שאינו מבטיח חפיפה, ובמצוינות קובעים אם טענות על חפיפה מתקיימות תמיד, לפעמים או אף פעם, ומביעים זוויות באמצעות α.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 18.11.2026"
+        }
+      ],
+      "appendedSection": {
+        "heading": "משפטי החפיפה והוכחה היסקית — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בסדרה מתרגלים את משפטי החפיפה צ.ז.צ, ז.צ.ז ו־צ.צ.צ: קובעים לפי איזה משפט שני משולשים חופפים, כותבים הוכחה היסקית בטענה ונימוק ומסיקים מהחפיפה שוויון של צלעות וזוויות מתאימות. בכל הרמות יש גם משולשים במערכת צירים, שבהם מחשבים אורכי צלעות בעזרת משפט פיתגורס, ושאלות שבהן מוצאים את x מתוך אורכי צלעות המבוטאים בעזרתו.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "ברמה א׳ יש גם שתי שאלות שבהן משלימים נימוקים חסרים בטבלת הוכחה. ברמה ב׳ ובמצוינות עוסקים גם במקרה של שתי צלעות וזווית שאינה כלואה ביניהן, שאינו מבטיח חפיפה, ובמצוינות קובעים אם טענות על חפיפה מתקיימות תמיד, לפעמים או אף פעם, ומביעים זוויות באמצעות α.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "number-line-absolute-value-grade-7",
+      "grade": 7,
+      "topicId": 1,
+      "editionIds": [
+        "ms-20261118-dir-01-r1"
+      ],
+      "baselineSha256": "94f1402bad4c186831620f4c15a92ce698af559aa4adf70781572e2fa4b62d6e",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ערך מוחלט הוא המרחק של מספר מאפס, ולכן הוא אינו שלילי לעולם. שני מספרים נגדיים נמצאים באותו מרחק מאפס, משני צדדיו. דוגמה: |−7| = 7 וגם |7| = 7, והמספר הנגדי ל־7 הוא −7.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה היא לחשוב ש־−9 גדול מ־−2 כי 9 גדול מ־2. על ישר המספרים −9 נמצא שמאלה יותר, ולכן הוא קטן יותר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "סדרו מן הקטן אל הגדול: 3, −5, 0, −1.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: −5, −1, 0, 3.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "אחרי: חיבור וחיסור מספרים מכוונים",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בהמשך הפרק: כפל מספרים מכוונים",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קישורים קשורים",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ערך מוחלט הוא המרחק של מספר מאפס, ולכן הוא אינו שלילי לעולם. שני מספרים נגדיים נמצאים באותו מרחק מאפס, משני צדדיו. דוגמה: |−7| = 7 וגם |7| = 7, והמספר הנגדי ל־7 הוא −7.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה היא לחשוב ש־−9 גדול מ־−2 כי 9 גדול מ־2. על ישר המספרים −9 נמצא שמאלה יותר, ולכן הוא קטן יותר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "סדרו מן הקטן אל הגדול: 3, −5, 0, −1.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: −5, −1, 0, 3.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדפים הקודמים שנפתחים עם רמזי אפשר לבקש רמז ולהמשיך לנסות באופן עצמאי; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "אחרי: חיבור וחיסור מספרים מכוונים",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בהמשך הפרק: כפל מספרים מכוונים",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קישורים קשורים",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "סדר, מספרים נגדיים וערך מוחלט — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "בסדרה קוראים מספרים מכוונים מתוך ציר המספרים, משווים ומסדרים אותם מהקטן לגדול, גם כשהם שברים או מספרים עשרוניים, וקובעים בין אילו שני מספרים שלמים סמוכים נמצא מספר נתון. השאלות כוללות גם הקשרים מוחשיים, למשל קומות בבניין ברמה א׳, גובה ביחס לפני הים ברמה ב׳ ומדחום במצוינות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בחלק השני מזהים מספרים נגדיים, מחשבים ביטויים כמו −(−4) וערכים מוחלטים, ומוצאים מספרים לפי תנאי על הערך המוחלט שלהם. ברמה ב׳ ובמצוינות גם קובעים אם טענות נכונות ומנמקים, ובמצוינות עובדים גם עם משתנים, למשל מפשטים −(−x) ומוצאים את כל המספרים שמקיימים |x| = 2.5.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 18.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        }
+      ],
+      "appendedSection": {
+        "heading": "סדר, מספרים נגדיים וערך מוחלט — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בסדרה קוראים מספרים מכוונים מתוך ציר המספרים, משווים ומסדרים אותם מהקטן לגדול, גם כשהם שברים או מספרים עשרוניים, וקובעים בין אילו שני מספרים שלמים סמוכים נמצא מספר נתון. השאלות כוללות גם הקשרים מוחשיים, למשל קומות בבניין ברמה א׳, גובה ביחס לפני הים ברמה ב׳ ומדחום במצוינות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחלק השני מזהים מספרים נגדיים, מחשבים ביטויים כמו −(−4) וערכים מוחלטים, ומוצאים מספרים לפי תנאי על הערך המוחלט שלהם. ברמה ב׳ ובמצוינות גם קובעים אם טענות נכונות ומנמקים, ובמצוינות עובדים גם עם משתנים, למשל מפשטים −(−x) ומוצאים את כל המספרים שמקיימים |x| = 2.5.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "adjacent-vertical-angles-grade-7",
+      "grade": 7,
+      "topicId": 12,
+      "editionIds": [
+        "ms-20261118-ang-03-r1"
+      ],
+      "baselineSha256": "504e13cfb1ed911d2f34f788cb564586fc5c7d7ed31d98bbb7352136e877df81",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "זוויות צמודות משלימות יחד ל־180°, וזוויות קודקודיות שוות זו לזו. חוצה זווית מחלק אותה לשתי זוויות שוות. דוגמה: אם זווית אחת היא 65°, הזווית הצמודה לה היא 115° והזווית הקודקודית לה היא 65°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה היא להסיק ששתי זוויות שוות רק מפני שכך נראה בשרטוט. יש לנמק כל שוויון בעזרת קשר שנלמד, כמו זוויות קודקודיות.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שתי זוויות צמודות, ואחת גדולה מן השנייה ב־40°. מה גודלן?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 70° ו־110°, כי 70 + 110 = 180 וההפרש ביניהן 40.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לפני: זוויות לכיתה ז׳",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קישורים קשורים",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "זוויות צמודות משלימות יחד ל־180°, וזוויות קודקודיות שוות זו לזו. חוצה זווית מחלק אותה לשתי זוויות שוות. דוגמה: אם זווית אחת היא 65°, הזווית הצמודה לה היא 115° והזווית הקודקודית לה היא 65°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה היא להסיק ששתי זוויות שוות רק מפני שכך נראה בשרטוט. יש לנמק כל שוויון בעזרת קשר שנלמד, כמו זוויות קודקודיות.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שתי זוויות צמודות, ואחת גדולה מן השנייה ב־40°. מה גודלן?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 70° ו־110°, כי 70 + 110 = 180 וההפרש ביניהן 40.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בדפים הקודמים שנפתחים עם רמזי אפשר לבקש רמז ולהמשיך לנסות באופן עצמאי; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "לפני: זוויות לכיתה ז׳",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קישורים קשורים",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "חישוב זוויות צמודות וקודקודיות — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הסדרה בנויה משלושה חלקים: זוויות צמודות, זוויות קודקודיות ושילוב ביניהן. מחשבים זוויות חסרות בסרטוטים של ישר וקרן, של שני ישרים נחתכים ושל שלושה ישרים שנחתכים בנקודה אחת, משתמשים בחוצה זווית, מוצאים את x כשהזוויות נתונות בביטויים עם x, ומנמקים בעזרת התכונות של זוויות צמודות וקודקודיות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל שלוש הרמות גם מסרטטים זוויות בעזרת סרגל ומד־זווית, מודדים זוויות, ומחשבים זוויות במערכת צירים ומוצאים בה נקודה עם שיעורים שלמים. ברמה ב׳ ובמצוינות קובעים אם טענות כלליות על זוגות זוויות נכונות תמיד, ובמצוינות יש למשל שאלה על קיפול פינה של דף נייר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": null,
+          "after": "נועם דורון מתמטיקה · עודכן 18.11.2026"
+        },
+        {
+          "path": [
+            "updatedLinePlacement"
+          ],
+          "existedBefore": true,
+          "before": "absent",
+          "after": "after-sections"
+        }
+      ],
+      "appendedSection": {
+        "heading": "חישוב זוויות צמודות וקודקודיות — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "הסדרה בנויה משלושה חלקים: זוויות צמודות, זוויות קודקודיות ושילוב ביניהן. מחשבים זוויות חסרות בסרטוטים של ישר וקרן, של שני ישרים נחתכים ושל שלושה ישרים שנחתכים בנקודה אחת, משתמשים בחוצה זווית, מוצאים את x כשהזוויות נתונות בביטויים עם x, ומנמקים בעזרת התכונות של זוויות צמודות וקודקודיות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בכל שלוש הרמות גם מסרטטים זוויות בעזרת סרגל ומד־זווית, מודדים זוויות, ומחשבים זוויות במערכת צירים ומוצאים בה נקודה עם שיעורים שלמים. ברמה ב׳ ובמצוינות קובעים אם טענות כלליות על זוגות זוויות נכונות תמיד, ובמצוינות יש למשל שאלה על קיפול פינה של דף נייר.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "quadratic-function-grade-9",
+      "grade": 9,
+      "topicId": 5,
+      "editionIds": [
+        "ms-20261118-qsh-01-r1"
+      ],
+      "baselineSha256": "6023736c54a3219d772d44be511f8ddc2836ee3a11580979d9d02fb5683aacfd",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "גרף של y=ax²+bx+c הוא פרבולה. סימן a קובע את כיוון הפתיחה; נקודות האפס מתקבלות כאשר y=0, והקודקוד נמצא על ציר הסימטריה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בפונקציה y=(x−2)²−9 הקודקוד הוא (2,−9), ציר הסימטריה הוא x=2, ונקודות האפס מתקבלות ב־x=−1 וב־x=5.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הקודקוד אינו בהכרח נקודת אפס. חשוב להבחין בין שיעור x לשיעור y ולבדוק הצבה כאשר עוברים בין הצגות שונות של הפונקציה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מצאו את נקודות האפס של y=(x+1)²−4.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=−3 ו־x=1.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "הפונקציה הריבועית — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מציבים ערכים בפונקציה ריבועית, משלימים טבלאות ערכים ומקשרים בין ערכי הפונקציה לבין פתרון משוואה ריבועית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מוצאים מטבלה או מגרף עבור אילו ערכי x מתקבל ערך y נתון (ובפרט y=0), משווים ערכים של שתי פונקציות ומתרגלים בהקשרים כמו גובה כדור, שטח מלבן או רווח.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "גרף של y=ax²+bx+c הוא פרבולה. סימן a קובע את כיוון הפתיחה; נקודות האפס מתקבלות כאשר y=0, והקודקוד נמצא על ציר הסימטריה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בפונקציה y=(x−2)²−9 הקודקוד הוא (2,−9), ציר הסימטריה הוא x=2, ונקודות האפס מתקבלות ב־x=−1 וב־x=5.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "הקודקוד אינו בהכרח נקודת אפס. חשוב להבחין בין שיעור x לשיעור y ולבדוק הצבה כאשר עוברים בין הצגות שונות של הפונקציה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מצאו את נקודות האפס של y=(x+1)²−4.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: x=−3 ו־x=1.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "הפונקציה הריבועית — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מציבים ערכים בפונקציה ריבועית, משלימים טבלאות ערכים ומקשרים בין ערכי הפונקציה לבין פתרון משוואה ריבועית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מוצאים מטבלה או מגרף עבור אילו ערכי x מתקבל ערך y נתון (ובפרט y=0), משווים ערכים של שתי פונקציות ומתרגלים בהקשרים כמו גובה כדור, שטח מלבן או רווח.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "הזזות של פרבולה והצגת קודקוד — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתרגלים הזזה אופקית והזזה אנכית של הפרבולה y = x² ואת הצגת הקודקוד y = a(x − p)² + k. כותבים ייצוג אלגברי לפי הזזה נתונה, קוראים מסרטוט את הקודקוד וכותבים את הפרבולה בהצגת קודקוד, ומסיקים מן ההצגה את הקודקוד, את ציר הסימטריה, את כיוון הפתיחה ואת ערך המינימום או המקסימום.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל שלוש הרמות גם מוצאים את נקודת החיתוך עם ציר y, כותבים תחומי עלייה וירידה, מנמקים אם לפרבולה יש נקודות חיתוך עם ציר x, מסרטטים סקיצה של פרבולה ובוחנים טענות של תלמידים. ברמה ב׳ ובמצוינות מחשבים את נקודות החיתוך עם ציר x ומוצאים פרמטר חסר (p או k) לפי נתון, ובמצוינות יש למשל שאלה אם סדר ההזזות משנה את הפרבולה המתקבלת.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "הזזות של פרבולה והצגת קודקוד — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מתרגלים הזזה אופקית והזזה אנכית של הפרבולה y = x² ואת הצגת הקודקוד y = a(x − p)² + k. כותבים ייצוג אלגברי לפי הזזה נתונה, קוראים מסרטוט את הקודקוד וכותבים את הפרבולה בהצגת קודקוד, ומסיקים מן ההצגה את הקודקוד, את ציר הסימטריה, את כיוון הפתיחה ואת ערך המינימום או המקסימום.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בכל שלוש הרמות גם מוצאים את נקודת החיתוך עם ציר y, כותבים תחומי עלייה וירידה, מנמקים אם לפרבולה יש נקודות חיתוך עם ציר x, מסרטטים סקיצה של פרבולה ובוחנים טענות של תלמידים. ברמה ב׳ ובמצוינות מחשבים את נקודות החיתוך עם ציר x ומוצאים פרמטר חסר (p או k) לפי נתון, ובמצוינות יש למשל שאלה אם סדר ההזזות משנה את הפרבולה המתקבלת.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    }
+  ],
+  "mediaReadbackSha256": "39d8b4baebbbe6d2d86ff241299ecdf4b2550b009c4281bab8e94e3958ef6fa1",
+  "newBaseTopic": {
+    "grade": 9,
+    "topicId": 53,
+    "title": "אחוזים: חלק מהשלם, הגדלה והקטנה",
+    "track": "ט׳ מצומצמת",
+    "publicationMode": "pdf-only",
+    "group": {
+      "key": "r9nov",
+      "label": "נובמבר",
+      "reducedProgram": true,
+      "createdWithThisTopic": true,
+      "position": "between r9oct and r9jan"
+    },
+    "approval": {
+      "by": "Noam",
+      "date": "2026-11-18",
+      "decision": "Open G9-PCM-01 as a new PDF-only reduced-track base topic in a new month group נובמבר, after אוקטובר, the same way topic 49 opened ינואר."
+    },
+    "sourceSheetId": "G9-PCM-01",
+    "sourcePackage": "G9-T65",
+    "sourceFolder": "submissions/Qwen/MS-FIX-G9-PCM-01-20261118-r02",
+    "author": "Claude (Anthropic); fix r02 by Qwen Code",
+    "landing": "/percentages-grade-9",
+    "programSubtopics": [
+      "st.g9m.percentages.part_of_whole",
+      "st.g9m.percentages.increase_decrease"
+    ],
+    "levels": [
+      {
+        "level": "a",
+        "label": "רמה א׳",
+        "pdfId": "51d9de626e314f26b2f6652b63424aea",
+        "pdfSha256": "26cf657565783a3c48ddd7187b7697d604f9c64c4db40e1082e5086b1f814ae6",
+        "pages": 7,
+        "downloadChecks": [
+          {
+            "url": "https://static.wixstatic.com/ugd/d8e7ad_51d9de626e314f26b2f6652b63424aea.pdf",
+            "status": 200,
+            "sha256": "26cf657565783a3c48ddd7187b7697d604f9c64c4db40e1082e5086b1f814ae6",
+            "matchesFrozenPdf": true
+          },
+          {
+            "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_51d9de626e314f26b2f6652b63424aea.pdf",
+            "status": 200,
+            "sha256": "26cf657565783a3c48ddd7187b7697d604f9c64c4db40e1082e5086b1f814ae6",
+            "matchesFrozenPdf": true
+          }
+        ]
+      },
+      {
+        "level": "b",
+        "label": "רמה ב׳",
+        "pdfId": "afdc0fde19884fb99efcee39eca6758a",
+        "pdfSha256": "5f618e0c18a803f2918034e67489d18634de1980ae42b737a14e8a1da6e52915",
+        "pages": 7,
+        "downloadChecks": [
+          {
+            "url": "https://static.wixstatic.com/ugd/d8e7ad_afdc0fde19884fb99efcee39eca6758a.pdf",
+            "status": 200,
+            "sha256": "5f618e0c18a803f2918034e67489d18634de1980ae42b737a14e8a1da6e52915",
+            "matchesFrozenPdf": true
+          },
+          {
+            "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_afdc0fde19884fb99efcee39eca6758a.pdf",
+            "status": 200,
+            "sha256": "5f618e0c18a803f2918034e67489d18634de1980ae42b737a14e8a1da6e52915",
+            "matchesFrozenPdf": true
+          }
+        ]
+      },
+      {
+        "level": "c",
+        "label": "מצוינות",
+        "pdfId": "6a1f274d04494ab1ac5393811845c7ac",
+        "pdfSha256": "f6c9c17272416739adf281b67e71c67010a87394d3981a606c6591eb5fdc8627",
+        "pages": 7,
+        "downloadChecks": [
+          {
+            "url": "https://static.wixstatic.com/ugd/d8e7ad_6a1f274d04494ab1ac5393811845c7ac.pdf",
+            "status": 200,
+            "sha256": "f6c9c17272416739adf281b67e71c67010a87394d3981a606c6591eb5fdc8627",
+            "matchesFrozenPdf": true
+          },
+          {
+            "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_6a1f274d04494ab1ac5393811845c7ac.pdf",
+            "status": 200,
+            "sha256": "f6c9c17272416739adf281b67e71c67010a87394d3981a606c6591eb5fdc8627",
+            "matchesFrozenPdf": true
+          }
+        ]
+      }
+    ],
+    "reviewReceipts": [
+      {
+        "role": "independent review of r01 (Google Antigravity) (verdict HOLD_ESSENTIAL_FINDINGS)",
+        "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-PCM-01-r01-20261117/review.json",
+        "sha256": "a2a67854b320b8c5ce66ff1c44ca7e5b37462d7070c932a6588bd484e890c5c7"
+      },
+      {
+        "role": "independent full review of the r02 fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+        "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-PCM-01-r02-20261118/review.json",
+        "sha256": "dd390c7875c6e79f9b6b93d74c1bda1d25695889e4961ce3b50d8942a1d600f6"
+      },
+      {
+        "role": "independent numbers review of the r02 fix (Google Antigravity) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+        "path": "reports/ANTIGRAVITY-INDEPENDENT-G9-PCM-01-r02-20261118/numbers-blind.json",
+        "sha256": "7da910fcb0a9e3c22f5e46ffc516b2eca69085f1351b29701aaa5ebdcf1a3e00"
+      }
+    ],
+    "notActivated": [
+      "Ramzi or question-level hints",
+      "native viewer or question manifest",
+      "teacher question bank",
+      "learning or progress identities",
+      "Word",
+      "Supabase",
+      "Noam prefix"
+    ]
+  },
+  "legacyHintCopy": {
+    "note": "Four of the six pages carried the legacy sentence that names Noam AI as the worksheet hint tool. Since each now carries an extra PDF edition, the sentence is replaced with the one used by the landing corrections (#529): hints on the earlier Ramzi sheets; questions and final answers in the PDFs. Each topic has a noamTopicId with Ramzi legacy sheets, and its only extra edition is this batch's reviewed PDFs, which end with their final answers and contain no hints.",
+    "pages": {
+      "circle-area-circumference-grade-8": [
+        "intro",
+        "bodyFlow[0]"
+      ],
+      "triangle-congruence-grade-8": [
+        "intro"
+      ],
+      "number-line-absolute-value-grade-7": [
+        "sections[2].blocks[2]"
+      ],
+      "adjacent-vertical-angles-grade-7": [
+        "sections[2].blocks[2]"
+      ]
+    },
+    "unchanged": "triangle-congruence-grade-8 keeps its meta description (outside the visible body copy and frozen by the SEO proposals review)."
+  }
+}
