@@ -10,6 +10,21 @@ const readPage = (slug: string) => JSON.parse(readFileSync(new URL(`${slug}.json
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const plain = (text: string) => text.replace(/[⁦-⁩]/g, '');
 const allText = (value: unknown) => JSON.stringify(value);
+const editions = JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8')).editions as Array<{ editionId: string; label: string; grade: number; topicId: number }>;
+const pdfTopics = new Set(editions.filter(e => e.editionId.startsWith('ms-') && e.label.includes('PDF')).map(e => `${e.grade}/${e.topicId}`));
+// Visible body copy: the intro, sections, body flow and FAQ (meta descriptions and JSON-LD are derived or site-wide).
+const bodyTexts = (raw: any): string[] => {
+  const out: string[] = [raw.intro ?? ''];
+  for (const section of raw.sections ?? []) for (const block of section.blocks ?? []) out.push(block.text ?? '');
+  for (const item of raw.bodyFlow ?? []) out.push(item.text ?? '');
+  for (const item of [...(raw.faq ?? []), ...(raw.faqGroups ?? []).flatMap((g: any) => g.items ?? [])]) out.push(item.question ?? '', item.answer ?? '');
+  return out;
+};
+const topicsOf = (raw: any): string[] => [raw.catalogCta, ...(raw.catalogCtas ?? [])].filter(Boolean)
+  .flatMap((cta: { href: string }) => {
+    const m = cta.href.match(/grade=(\d+)&topic=(\d+)/);
+    return m ? [`${m[1]}/${m[2]}`] : [];
+  });
 
 const OLD_QUESTION = 'האם קובצי ה־PDF הנוספים כוללים רמזי?';
 const NEW_QUESTION = 'האם בקובצי ה־PDF הנוספים יש רמזים?';
@@ -18,8 +33,9 @@ const NEW_ANSWER = 'לא. קובצי ה־PDF הנוספים מיועדים לה�
 test('every corrected page is exactly the reviewed correction of its exact earlier page', () => {
   assert.equal(reviewed.schema, 'landing-corrections/v1');
   assert.equal(reviewed.audit, 'reports/ANTIGRAVITY-AUDIT-claude-landings-20261117/review.json');
-  assert.equal(reviewed.pages.length, 42);
-  assert.equal(reviewed.pages.reduce((n, page) => n + page.replacements.length, 0), 138);
+  assert.equal((reviewed as { siteReview?: string }).siteReview, 'reports/ANTIGRAVITY-SITE-REVIEW-landing-corrections-full-20261118/review.json');
+  assert.equal(reviewed.pages.length, 55);
+  assert.equal(reviewed.pages.reduce((n, page) => n + page.replacements.length, 0), 156);
   for (const entry of reviewed.pages) {
     const raw = readPage(entry.slug);
     assertCorrectedRawPage(entry.slug, raw);
@@ -32,12 +48,14 @@ test('every corrected page is exactly the reviewed correction of its exact earli
   }
 });
 
-test('no page keeps the ungrammatical FAQ question; each answer opens with "לא." and limits hints to the earlier sheets', () => {
+test('no page keeps an ungrammatical "כוללים רמזי" question; each central answer opens with "לא." and limits hints to the earlier sheets', () => {
   const slugs = readdirSync(root).filter(name => name.endsWith('.json')).map(name => name.slice(0, -5));
   let pages = 0;
   for (const slug of slugs) {
     const raw = readPage(slug);
     assert.ok(!allText(raw).includes(OLD_QUESTION), `${slug}: old FAQ question`);
+    // Series-specific FAQ questions used the same construction ('האם דפי ה־PDF … כוללים רמזי?').
+    assert.doesNotMatch(allText(raw), /כוללים רמזי/, `${slug}: ungrammatical hint question`);
     const item = (raw.faq ?? []).find((f: { question: string }) => f.question === NEW_QUESTION);
     if (!item) continue;
     pages += 1;
@@ -49,7 +67,7 @@ test('no page keeps the ungrammatical FAQ question; each answer opens with "לא
   assert.equal(pages, 40);
 });
 
-test('no correction names Noam AI as a hint source, and every corrected hint sentence is limited to the earlier sheets', () => {
+test('no corrected page, and no page with an extra PDF edition, names Noam AI in its body copy; every corrected hint sentence is limited to the earlier sheets', () => {
   for (const entry of reviewed.pages) {
     const raw = readPage(entry.slug);
     // Site-wide production copy (meta descriptions, the generic hint prompt) is outside this
@@ -57,10 +75,19 @@ test('no correction names Noam AI as a hint source, and every corrected hint sen
     assert.ok(entry.replacements.every(r => !r.after.includes('נועם AI')), `${entry.slug}: a correction names נועם AI`);
     assert.ok(!/רמה ג׳/.test(allText(raw)), `${entry.slug}: רמה ג׳`);
     for (const r of entry.replacements) {
-      if (!/רמז/.test(r.after) || (r as { central?: string }).central === 'faq-ramzi-question') continue;
+      // Questions (the central FAQ question, the series FAQ questions, the hint FAQ question) carry no claim.
+      if (!/רמז/.test(r.after) || /question$/.test((r as { central?: string }).central ?? '')) continue;
       assert.match(r.after, /בדפים הקודמים שנפתחים עם רמזי/, `${entry.slug}: ${r.after}`);
       assert.match(r.after, /PDF/, `${entry.slug}: says what the PDFs contain`);
     }
+  }
+  // The site review found legacy body sentences that still named Noam AI as the worksheet hint tool on
+  // corrected pages and on other pages with extra PDF editions; none may remain in visible body copy.
+  const pdfPages = readdirSync(root).filter(name => name.endsWith('.json')).map(name => name.slice(0, -5))
+    .filter(slug => topicsOf(readPage(slug)).some(topic => pdfTopics.has(topic)));
+  assert.ok(pdfPages.length >= 60, `${pdfPages.length} pages with extra PDF editions`);
+  for (const slug of new Set([...reviewed.pages.map(page => page.slug), ...pdfPages])) {
+    for (const text of bodyTexts(readPage(slug))) assert.ok(!text.includes('נועם AI'), `${slug}: ${text.slice(0, 60)}`);
   }
 });
 

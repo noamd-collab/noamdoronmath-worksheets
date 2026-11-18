@@ -2,6 +2,7 @@
   "schema": "landing-corrections/v1",
   "date": "2026-11-18",
   "audit": "reports/ANTIGRAVITY-AUDIT-claude-landings-20261117/review.json",
+  "siteReview": "reports/ANTIGRAVITY-SITE-REVIEW-landing-corrections-full-20261118/review.json",
   "pages": [
     {
       "slug": "area-parallelogram-trapezoid-composite-grade-7",
@@ -92,6 +93,51 @@
       ]
     },
     {
+      "slug": "cone-grade-8",
+      "baselineSha256": "270de9616a188e6f0ea326a780afc0a91c434b4dbc17dc56e8ec7c0c4767ed03",
+      "correctedSha256": "696655841e9839160831f94591064d5443638a5218ccac90cf832615d8aa510a",
+      "replacements": [
+        {
+          "before": "בדפים הנפתחים בצופה אפשר לבקש רמז מנועם AI. המהדורה הנוספת זמינה כעת בקובצי PDF להדפסה.",
+          "after": "בדפים הקודמים שנפתחים עם רמזי אפשר לבקש רמז. המהדורה הנוספת זמינה בקובצי PDF להדפסה, עם שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "siteReviewFinding": 6
+        }
+      ]
+    },
+    {
+      "slug": "coordinate-plane-four-quadrants-grade-7",
+      "baselineSha256": "ac62172d61be4641213df30c71d88fe96d7f02a59d6f743770641a1c36637a6f",
+      "correctedSha256": "f4702a3a263ea47eadda571baf45908b4a798279a1029e3ead48fcd882d763e9",
+      "replacements": [
+        {
+          "before": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+          "after": "בדפים הקודמים שנפתחים עם רמזי אפשר לבקש רמז ולהמשיך לנסות באופן עצמאי; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "siteReviewFinding": 6
+        }
+      ]
+    },
+    {
+      "slug": "coordinate-plane-quadrants-grade-7",
+      "baselineSha256": "2fd6b7658be0ac9b5e690b515db967182ad5ee101003c2f17f5e304b07f23c27",
+      "correctedSha256": "2cce0c1354511f74037a1d24d54204a1001088e2ee5fc9d055cf5324da517860",
+      "replacements": [
+        {
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 1,
+          "beforeCount": 1,
+          "findingIds": [],
+          "siteReviewFinding": 6
+        }
+      ]
+    },
+    {
       "slug": "coordinate-plane-scale-grade-7",
       "baselineSha256": "cd80efc7cc2522167ba70db2c48aa9676644bb2013b342b608f45e18b98eed20",
       "correctedSha256": "1f620ba1df07d0ba7debd4d2bb0773f6c18c7dbd97109297e8de637f411021c4",
@@ -129,6 +175,21 @@
           "beforeCount": 5,
           "findingIds": [],
           "central": "faq-ramzi-answer"
+        }
+      ]
+    },
+    {
+      "slug": "cylinder-volume-grade-8",
+      "baselineSha256": "b1fdb308dc9f0049c6ca65e3abac9ae10029676a8967952de4984133564245bc",
+      "correctedSha256": "e6ab3756609409ea6ab1ef4e4c3063f147e6b86aa5eb154b5b3e4d9b66c77aec",
+      "replacements": [
+        {
+          "before": "בדפים הנפתחים בצופה אפשר לבקש רמז מנועם AI. המהדורה הנוספת זמינה כעת בקובצי PDF להדפסה.",
+          "after": "בדפים הקודמים שנפתחים עם רמזי אפשר לבקש רמז. המהדורה הנוספת זמינה בקובצי PDF להדפסה, עם שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "siteReviewFinding": 6
         }
       ]
     },
@@ -532,8 +593,25 @@
     {
       "slug": "patterns-and-graphs-grade-7",
       "baselineSha256": "86f9c452e91cacb08f7e67792a1a926e400389b87401acdadf2b20e0ace494cd",
-      "correctedSha256": "5888e7bfa01e3074d942064c802dbe3e12aa14ae698d1bae9d80bf62e49625c1",
+      "correctedSha256": "e1878c80cbf97ca1b953a720dc980848deb673d6526d4006b1b1323ab6b4b64d",
       "replacements": [
+        {
+          "before": "איך משתמשים בכלי נועם AI?",
+          "after": "איך מקבלים רמזים בדפי העבודה?",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "central": "hint-faq-question",
+          "siteReviewFinding": 2
+        },
+        {
+          "before": "בזמן הצפייה בדף העבודה, תוכלו להפעיל את העוזר הדיגיטלי לקבלת הסברים, רמזים ופתרונות שלב אחר שלב.",
+          "after": "בדפים הקודמים שנפתחים עם רמזי אפשר לבקש רמזים בזמן התרגול; בקובצי ה־PDF הנוספים אין רמזים, ויש בהם שאלות ותשובות סופיות בלבד.",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "siteReviewFinding": 2
+        },
         {
           "before": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
           "after": "האם בקובצי ה־PDF הנוספים יש רמזים?",
@@ -553,9 +631,24 @@
       ]
     },
     {
+      "slug": "percentage-problems-grade-8",
+      "baselineSha256": "2890e30dc58244c7e5f36157cd8005e916e931bdbe596afe64bf320166906710",
+      "correctedSha256": "13b59ded0a5cc05605c4e4adc7e3cc57b9a229bd043e05a903d1ddd6c5ad5351",
+      "replacements": [
+        {
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 1,
+          "beforeCount": 1,
+          "findingIds": [],
+          "siteReviewFinding": 6
+        }
+      ]
+    },
+    {
       "slug": "powers-grade-7",
       "baselineSha256": "3ee61911eaaff9171776e32e86a958520afbd1dd39729a2208c61e77967d14bb",
-      "correctedSha256": "bc4e275ecac9ff902f5629efcd56f464d9a02c71cb205d5c82a3f75c13a76987",
+      "correctedSha256": "ed86817e813f74099f946f58b6b1aa1df5b6f8fc07c5c7523d2e12c4b6df820a",
       "replacements": [
         {
           "before": "ברמה א׳ הבסיסים הם מספרים שלמים, ברמה ב׳ יש גם חזקות של שברים ושל מספרים עשרוניים, ובמצוינות מחפשים דפוסים בחזקות, כמו ספרת האחדות של 3⁸, ובוחנים את מבנה התרגיל לפני שמחשבים.",
@@ -565,6 +658,15 @@
           "findingIds": [
             66
           ]
+        },
+        {
+          "before": "האם דפי ה־PDF על סדר פעולות ובסיס מכוון כוללים רמזי?",
+          "after": "האם בדפי ה־PDF על סדר פעולות ובסיס מכוון יש רמזים?",
+          "count": 3,
+          "beforeCount": 3,
+          "findingIds": [],
+          "central": "faq-series-question",
+          "siteReviewFinding": 3
         },
         {
           "before": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
@@ -581,6 +683,21 @@
           "beforeCount": 7,
           "findingIds": [],
           "central": "faq-ramzi-answer"
+        }
+      ]
+    },
+    {
+      "slug": "precalculus-functions-graphs-grade-9",
+      "baselineSha256": "f4ace9e0e84117bca78aea872fc783fc8f4c227764232d7436fedefab60ce404",
+      "correctedSha256": "ad435733b1648a9fce7b5dc62975ebbae0a6aa90757ff2c66db80b0cffb1a454",
+      "replacements": [
+        {
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "siteReviewFinding": 6
         }
       ]
     },
@@ -772,6 +889,21 @@
       ]
     },
     {
+      "slug": "pythagorean-theorem-grade-8",
+      "baselineSha256": "da444940074c9fc5ee30c337aa22c14aeb291b86baa91e3b266f53f72b181071",
+      "correctedSha256": "08c7955f203633327d68b58daa4af1388a6e06444c5b616900477f9c966f3c13",
+      "replacements": [
+        {
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 1,
+          "beforeCount": 1,
+          "findingIds": [],
+          "siteReviewFinding": 6
+        }
+      ]
+    },
+    {
       "slug": "pythagorean-theorem-grade-9",
       "baselineSha256": "b501f02e4ded3c6a4acac9fe5f915548a7657aae8b3b69c147e9fcd2e6f91544",
       "correctedSha256": "d17992405ac500f6ccdd6cb1c4d20b5f77b4f811d23e01b3b5114e705cf55a71",
@@ -827,6 +959,21 @@
       ]
     },
     {
+      "slug": "quadratic-function-grade-9",
+      "baselineSha256": "038cb9f77d2d24c1d563864d5f7091c98970b4d498de5a401ca7c9cbd836b9b1",
+      "correctedSha256": "6023736c54a3219d772d44be511f8ddc2836ee3a11580979d9d02fb5683aacfd",
+      "replacements": [
+        {
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 1,
+          "beforeCount": 1,
+          "findingIds": [],
+          "siteReviewFinding": 6
+        }
+      ]
+    },
+    {
       "slug": "quadratic-inequalities-systems-grade-9",
       "baselineSha256": "3128d5666145f112c6d8a7c61d0df93009059e0f3fbd3a00831977821d069e59",
       "correctedSha256": "5552a43c49f3062535a0cf20f53367e04919a79282cc56c1853b30eb5b0867df",
@@ -864,6 +1011,36 @@
           "beforeCount": 4,
           "findingIds": [],
           "central": "faq-ramzi-answer"
+        }
+      ]
+    },
+    {
+      "slug": "reading-graphs-grade-9",
+      "baselineSha256": "3627b904460b211014a3c7ac8b7b4c8e8901fac7a2dd2bc9afd759da07081f04",
+      "correctedSha256": "e9c3e61cdb43ca1439957215831205299d547bb1764c62b4909d1b20df3ffffb",
+      "replacements": [
+        {
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "בדפים הקודמים שנפתחים עם רמזי אפשר לבחור רמה ולקבל רמזים; בקובצי ה־PDF הנוספים אין רמזים, ובסוף כל דף יש תשובות סופיות.",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "siteReviewFinding": 6
+        }
+      ]
+    },
+    {
+      "slug": "rectangle-grade-9",
+      "baselineSha256": "833017ac88235e65ecfc05d7e9583776080fe89845c3f41386926b835f2e5d23",
+      "correctedSha256": "012e47a08182b36939f415faf27476793f4efe01c07a016d8008f4d8d7c0acb0",
+      "replacements": [
+        {
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 1,
+          "beforeCount": 1,
+          "findingIds": [],
+          "siteReviewFinding": 6
         }
       ]
     },
@@ -1060,6 +1237,36 @@
       ]
     },
     {
+      "slug": "statistics-data-frequency-grade-8",
+      "baselineSha256": "fea34f0e6afcc3de5c3b3fb6a4a4f2b4543146173d19d321cb8b2e4357bc4ef4",
+      "correctedSha256": "797a4369c087a263dd991d50ef02de6011bfd34fab4e28cab1fbeb907110d919",
+      "replacements": [
+        {
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "siteReviewFinding": 6
+        }
+      ]
+    },
+    {
+      "slug": "statistics-grade-9",
+      "baselineSha256": "6f4a3ad9099524f105098d0f852ab23ae08e608691a319f372af8aa2f6a18963",
+      "correctedSha256": "65289a1eaeabfd74ee81b7f376c7e2113cb9899a64cf3027e223a078b6520586",
+      "replacements": [
+        {
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "siteReviewFinding": 6
+        }
+      ]
+    },
+    {
       "slug": "systems-algebraic-solution-grade-8",
       "baselineSha256": "ae82f2c12ae28ef42d17afb41e59d8c401f233547d59fbcad5f7cc6fda493b17",
       "correctedSha256": "5ec491936459f4072bc15a57d6ab4609d73aa434e6aa2236bc7894dc16d63137",
@@ -1154,7 +1361,7 @@
     {
       "slug": "trapezoid-grade-9",
       "baselineSha256": "46926dfa26cf255e19c349add978d24ec64e9d6c8482532f0346d021c8648d3a",
-      "correctedSha256": "bb7446a04ca0486275168acbce794206eafee4b2b8dfbda3087ba7d9d2c9cfe1",
+      "correctedSha256": "997dc04d0b0575aa7619daf0c46bb13ccda3a1c8e793a260b49b155c661fbdeb",
       "replacements": [
         {
           "before": "משתמשים בתכונות של טרפז שווה־שוקיים: זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה.",
@@ -1173,6 +1380,15 @@
           "findingIds": [
             80
           ]
+        },
+        {
+          "before": "האם דפי ה־PDF בטרפז שווה־שוקיים כוללים רמזי?",
+          "after": "האם בדפי ה־PDF בטרפז שווה־שוקיים יש רמזים?",
+          "count": 3,
+          "beforeCount": 3,
+          "findingIds": [],
+          "central": "faq-series-question",
+          "siteReviewFinding": 4
         },
         {
           "before": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
@@ -1250,8 +1466,16 @@
     {
       "slug": "triangle-calculations-grade-9",
       "baselineSha256": "01a517479063632becccda75d2af7825c95cb757500cafb71ce431a4c1052b08",
-      "correctedSha256": "1d548e2307b0dd94bc26a8c7f76ea501534f51c65b0aac2d1867f213ecc9c201",
+      "correctedSha256": "ff76b58bcb639b79e6170c4f03979d2bafa979ccfba16b69bbbd792091ff3602",
       "replacements": [
+        {
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "siteReviewFinding": 1
+        },
         {
           "before": "האם קובצי ה־PDF הנוספים כוללים רמזי?",
           "after": "האם בקובצי ה־PDF הנוספים יש רמזים?",
@@ -1317,6 +1541,21 @@
           "beforeCount": 5,
           "findingIds": [],
           "central": "faq-ramzi-answer"
+        }
+      ]
+    },
+    {
+      "slug": "triangle-similarity-aa-grade-9",
+      "baselineSha256": "57b1b95c2be1b6f6b49b50cb62c580375be98b9336d0f9de98102a376b298b61",
+      "correctedSha256": "63d96b2e35fa55be3404fd99bb3bc601dc5089582795328416a993cf84e94237",
+      "replacements": [
+        {
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "זקוקים לרמז? בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.",
+          "count": 2,
+          "beforeCount": 2,
+          "findingIds": [],
+          "siteReviewFinding": 6
         }
       ]
     },

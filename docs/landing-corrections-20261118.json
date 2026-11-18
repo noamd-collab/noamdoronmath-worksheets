@@ -12,8 +12,8 @@
     "verdict": "FIX_REQUIRED"
   },
   "scope": {
-    "pages": 42,
-    "replacements": 138
+    "pages": 55,
+    "replacements": 156
   },
   "fixedFindingIds": [
     0,
@@ -214,5 +214,72 @@
       "reason": "Held back: the sentence is the page meta description, which the frozen SEO proposals review keeps as reviewed copy; a description change belongs in a reviewed SEO proposal."
     }
   ],
-  "method": "Each correction was checked against all three PDFs of its series and applied as an exact text replacement in every synchronized field (sections, bodyFlow, faq, faqGroups, JSON-LD). tests/fixtures/landing-corrections-20261118.json records every replacement with its exact count and the page hashes before and after; beforeLandingCorrections reverses them before every older landing fence."
+  "method": "Each correction was checked against all three PDFs of its series and applied as an exact text replacement in every synchronized field (sections, bodyFlow, faq, faqGroups, JSON-LD). tests/fixtures/landing-corrections-20261118.json records every replacement with its exact count and the page hashes before and after; beforeLandingCorrections reverses them before every older landing fence.",
+  "siteReview": {
+    "path": "reports/ANTIGRAVITY-SITE-REVIEW-landing-corrections-full-20261118/review.json",
+    "sha256": "7a2998f0835e8f18b4707f9ad7e2aa40614e0edf9a76e23e0d5c59c26e2d5c04",
+    "reviewer": "Google Antigravity (Gemini 4 Carbon High)",
+    "head": "3b9c4754",
+    "verdict": "FIX_REQUIRED",
+    "findings": [
+      {
+        "id": 1,
+        "severity": "blocking",
+        "slug": "triangle-calculations-grade-9",
+        "fixed": true,
+        "how": "'זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.' replaced with the sentence already used on the audited pages (2 fields)."
+      },
+      {
+        "id": 2,
+        "severity": "blocking",
+        "slug": "patterns-and-graphs-grade-7",
+        "fixed": true,
+        "how": "Inline FAQ 'איך משתמשים בכלי נועם AI?' becomes 'איך מקבלים רמזים בדפי העבודה?'; its answer no longer promises step-by-step solutions and limits hints to the earlier sheets (2 fields each)."
+      },
+      {
+        "id": 3,
+        "severity": "medium",
+        "slug": "powers-grade-7",
+        "fixed": true,
+        "how": "Series FAQ question becomes 'האם בדפי ה־PDF על סדר פעולות ובסיס מכוון יש רמזים?' (faq, faqGroups, JSON-LD)."
+      },
+      {
+        "id": 4,
+        "severity": "medium",
+        "slug": "trapezoid-grade-9",
+        "fixed": true,
+        "how": "Series FAQ question becomes 'האם בדפי ה־PDF בטרפז שווה־שוקיים יש רמזים?' (faq, faqGroups, JSON-LD)."
+      },
+      {
+        "id": 5,
+        "severity": "medium",
+        "slug": null,
+        "fixed": true,
+        "how": "The test now rejects /כוללים רמזי/ on every topic page, and rejects 'נועם AI' in the visible body copy (intro, sections, bodyFlow, FAQ) of every corrected page and of every page whose catalog topic has an extra PDF edition."
+      },
+      {
+        "id": 6,
+        "severity": "nit",
+        "slug": null,
+        "fixed": true,
+        "how": "The sweep is extended: the five listed pages that carry extra PDF editions (cone-grade-8, cylinder-volume-grade-8, coordinate-plane-four-quadrants-grade-7, precalculus-functions-graphs-grade-9, reading-graphs-grade-9), and eight more PDF-edition pages the stronger test found with the same sentence in the intro or body (coordinate-plane-quadrants-grade-7, percentage-problems-grade-8, pythagorean-theorem-grade-8, quadratic-function-grade-9, rectangle-grade-9, statistics-data-frequency-grade-8, statistics-grade-9, triangle-similarity-aa-grade-9). special-triangles-grade-7-new is not changed: its catalog topic 7/15 has no PDF edition, so its Noam AI copy belongs to the separate site-wide hint-copy question."
+      }
+    ],
+    "pdfEvidence": "For every page added in this round, each PDF of its extra editions (45 files across 14 catalog topics) was downloaded from static.wixstatic.com, matched to the registry pdfSha256, and read with PyMuPDF: every file ends with its final-answers pages and none contains the word רמז or 'נועם AI'. Every new sentence states only that (hints on the earlier Ramzi sheets; questions and final answers in the PDFs), and every changed page's catalog topic has a noamTopicId with Ramzi legacy sheets.",
+    "pagesAdded": [
+      "cone-grade-8",
+      "coordinate-plane-four-quadrants-grade-7",
+      "coordinate-plane-quadrants-grade-7",
+      "cylinder-volume-grade-8",
+      "percentage-problems-grade-8",
+      "precalculus-functions-graphs-grade-9",
+      "pythagorean-theorem-grade-8",
+      "quadratic-function-grade-9",
+      "reading-graphs-grade-9",
+      "rectangle-grade-9",
+      "statistics-data-frequency-grade-8",
+      "statistics-grade-9",
+      "triangle-similarity-aa-grade-9"
+    ]
+  }
 }
