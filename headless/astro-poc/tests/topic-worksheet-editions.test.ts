@@ -197,6 +197,27 @@ async function renderTopic(slug: string) {
   return parseHTML(html).document;
 }
 
+test('the activated PAR-02/03/04 editions and the RAT base binding open their own PDFs in the Ramzi viewer on the real landings', async () => {
+  const catalog = loadCatalog();
+  const grade9: any = catalog.grades.find(g => g.grade === 9)!;
+  const parTopic = grade9.topics.find((t: any) => t.id === 7);
+  const parHero = (await renderTopic('parallelogram-grade-9')).querySelector('.exact-topic-copy')!;
+  for (const editionId of ['ms-20261113-par-02-r1', 'ms-20261113-par-03-r1', 'ms-20261113-par-04-r1']) {
+    assert.ok(reviewedPrefix.has(editionId), `${editionId}: trusted scope`);
+    const edition = parTopic.editions.find((e: any) => e.editionId === editionId);
+    const links = [...parHero.querySelectorAll(`a[data-edition-id="${editionId}"]`)];
+    assert.equal(links.length, 3, `${editionId}: three level links`);
+    assertEditionLinks(catalog, links, editionId, edition.levels.map((l: any) => l.pdfId));
+  }
+  const binding = grade9.topics.find((t: any) => t.id === 47).reviewedBaseBinding;
+  assert.equal(binding.editionId, 'ms-20261115-rat-01-r1');
+  const ratLinks = [...(await renderTopic('rational-equations-grade-9')).querySelector('.exact-topic-copy')!.querySelectorAll('a[data-edition-id="legacy"]')];
+  assert.deepEqual(ratLinks.map(a => { const u = new URL(a.getAttribute('href')!, 'https://example.test');
+    return [u.pathname, u.searchParams.get('edition'), u.searchParams.get('x'), u.searchParams.get('pdf')]; }),
+    binding.levels.map((l: any) => ['/worksheet-viewer-noam.html', binding.editionId, reviewedPrefix.get(binding.editionId), l.pdfId]));
+  assert.ok(ratLinks.every(a => !a.textContent.includes('פתיחת PDF')));
+});
+
 test('real equation, signed-number and factoring landings expose nine PDF links with the correct topic groups', async () => {
   const catalog = loadCatalog();
   for (const addition of reviewedEqnSgnFac.additions) {
