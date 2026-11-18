@@ -14,6 +14,7 @@ import { beforeProbabilityNineCatalog, beforeProbabilityNineRegistry, beforeProb
   reviewedProbabilityNine as reviewed, probabilityNineIds as ids } from './fixtures/probability-nine-pdf';
 import { beforeBatch06Copy, reviewedBatch06 } from './fixtures/batch06-pdf';
 import { beforeBatch04Registry } from './fixtures/batch04-pdf';
+import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -168,7 +169,7 @@ test('the probability landing keeps title, H1 and CTA and describes the three se
   const [delta] = reviewed.landingDeltas;
   assert.equal(delta.slug, SLUG);
   assert.deepEqual(delta.editionIds, ids);
-  const pageRaw = read(`headless/astro-poc/src/data/topic-pages/${SLUG}.json`);
+  const pageRaw = (beforeLandingCorrections(SLUG, read(`headless/astro-poc/src/data/topic-pages/${SLUG}.json`)) as any);
   const restored = beforeProbabilityNineCopy(SLUG, pageRaw) as any;
   const afterBatch06 = beforeBatch06Copy(SLUG, pageRaw) as any;
   assert.equal(digest(restored), delta.baselineSha256);
@@ -203,7 +204,7 @@ test('the probability landing keeps title, H1 and CTA and describes the three se
       assert.ok(!text.includes(banned), banned);
     }
   }
-  const page = loadTopicPage(SLUG), flow = synthesizeBodyFlow(page);
+  const page = beforeLandingCorrections(SLUG, loadTopicPage(SLUG)), flow = synthesizeBodyFlow(page);
   assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text || '') === added.heading).length, 1);
   for (const block of added.blocks) assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text || '') === block.text).length, 1);
   const faq = extractJsonLdFaq(page.jsonLd).map(f => ({ question: plain(f.question), answer: plain(f.answer) }));
@@ -242,10 +243,10 @@ test('preservation fences reject changed old links, substitutions, reordering, d
   const registryDefault = structuredClone(registry);
   registryDefault.editions.find((e: any) => e.editionId === ids[2]).isDefault = true;
   assert.throws(() => beforeProbabilityNineRegistry(registryDefault));
-  const page = read(`headless/astro-poc/src/data/topic-pages/${SLUG}.json`);
+  const page = (beforeLandingCorrections(SLUG, read(`headless/astro-poc/src/data/topic-pages/${SLUG}.json`)) as any);
   page.intro += ' כל PDF כולל רמזי ופתרון מלא';
   assert.throws(() => beforeProbabilityNineCopy(SLUG, page));
-  const section = read(`headless/astro-poc/src/data/topic-pages/${SLUG}.json`);
+  const section = (beforeLandingCorrections(SLUG, read(`headless/astro-poc/src/data/topic-pages/${SLUG}.json`)) as any);
   section.sections.find((s: any) => s.heading === reviewed.landingDeltas[0].appendedSection.heading).blocks[1].text += ' עם דוגמה פתורה';
   assert.throws(() => beforeProbabilityNineCopy(SLUG, section));
 });

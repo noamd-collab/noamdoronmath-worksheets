@@ -107,7 +107,7 @@ REJUDGED = [
     {'unit': 'st.g7.directed_numbers.mul_div', 'status': 'covered_by_landing',
      'pages': ['multiplying-signed-numbers-grade-7', 'dividing-signed-numbers-grade-7',
                'order-of-operations-signed-numbers-grade-7'],
-     'evidence': {'multiplying-signed-numbers-grade-7': ['מתרגלים גם מספר הופכי, חילוק באפס וסדר פעולות החשבון']},
+     'evidence': {'multiplying-signed-numbers-grade-7': ['מתרגלים גם מספר הופכי וסדר פעולות החשבון']},
      'reason': 'unchanged: the reciprocal, missing before, is now in the copy'},
     {'unit': 'st.g8.triangle_parts.triangle_inequality', 'status': 'covered_by_landing',
      'pages': ['triangle-median-grade-8'],
@@ -126,7 +126,7 @@ REJUDGED = [
                'isosceles-triangle-grade-8 still states no converse'},
     {'unit': 'st.g8.functions_intro.inc_dec_linear_graphs', 'status': 'partial',
      'pages': ['function-representations-grade-8', 'linear-function-grade-8'],
-     'evidence': {'linear-function-grade-8': ['וקובעים אם הישר עולה, יורד או אופקי']},
+     'evidence': {'linear-function-grade-8': ['אם הישר עולה, יורד או אופקי']},
      'reason': 'unchanged partial: rising, falling and horizontal lines are linear only; '
                'intervals of increase, decrease and constancy of a function are still one clause'},
     {'unit': 'st.g8.word_problems_eq.special_denominators', 'status': 'covered_by_landing',
@@ -160,7 +160,7 @@ REJUDGED = [
      'pages': ['word-problems-grade-9'],
      'evidence': {'word-problems-grade-9': [
          'תנועה, אחוזים ואוריינות',
-         'יש שאלות תנועה בהלוך ושוב, במפגש ובהשגה, שאלות אחוזים על עלייה, הנחה ושינוי חוזר באחוזים',
+         'שאלות אחוזים על עלייה, הנחה ושינוי חוזר באחוזים',
          'בכל רמה קוראים גם נתונים מטבלה']},
      'reason': 'topic_exists_no_landing_copy -> covered'},
     {'unit': 'st.g9r.isosceles_converse.theorems_and_coord', 'status': 'covered_by_landing',
@@ -194,7 +194,7 @@ REJUDGED = [
     {'unit': 'st.g9r.rhombus.converse_theorems', 'status': 'covered_by_landing',
      'pages': ['rhombus-grade-9'],
      'evidence': {'rhombus-grade-9': [
-         'מרובע שכל ארבע צלעותיו שוות, או מקבילית שיש בה שתי צלעות סמוכות שוות, אלכסונים מאונכים או אלכסון שחוצה זווית']},
+         'כשיש בה שתי צלעות סמוכות שוות, כשהאלכסונים מאונכים זה לזה או כשאלכסון חוצה זווית']},
      'reason': 'verify.json coverage_errors[1] made this partial because rhombus-grade-9 stated no converse; '
                'the merged copy states them, so the coverage status (covered) stands'},
     {'unit': 'st.g7.powers_roots.signed_base', 'status': 'covered_by_landing',
@@ -216,7 +216,7 @@ REJUDGED = [
     {'unit': 'st.g9r.parallels_trapezoid.isosceles_trapezoid', 'status': 'covered_by_landing',
      'pages': ['trapezoid-grade-9'],
      'evidence': {'trapezoid-grade-9': [
-         'זוויות הבסיס שוות זו לזו והאלכסונים שווים זה לזה',
+         'הזוויות שליד כל בסיס שוות זו לזו והאלכסונים שווים זה לזה',
          'בעזרת המשפטים ההפוכים קובעים מתי טרפז הוא שווה־שוקיים']},
      'reason': 'batch 3: partial -> covered on trapezoid-grade-9, which now has the base-angles and diagonals '
                'section; parallelogram-grade-9 only reaches the isosceles trapezoid through parallelogram '

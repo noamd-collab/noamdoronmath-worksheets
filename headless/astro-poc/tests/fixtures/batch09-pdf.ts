@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch09-pdf-reviewed.json';
 import { beforeNew4Catalog } from './new4-pdf';
+import { beforeLandingCorrections } from './landing-corrections-20261118';
 
 export { reviewed as reviewedBatch09 };
 export const reviewedBatch09Ids = reviewed.additions.map(a => a.editionId);
@@ -54,6 +55,8 @@ export function beforeBatch09Registry<T>(registry: T): T {
 
 /** Verify batch 9's exact changed fields and recover the batch 8 landing. */
 export function beforeBatch09Copy<T>(slug: string, page: T): T {
+  // The 18 Nov landing corrections are newer than batch 09: reverse them first.
+  page = beforeLandingCorrections(slug, page);
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);

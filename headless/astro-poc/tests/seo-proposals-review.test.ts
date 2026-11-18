@@ -35,6 +35,7 @@ import {
 import { EXACT, KEEP_CURRENT, NEEDS_DECISION } from '../scripts/lib/seo-overrides.mjs';
 import { PDF_ONLY_TOPIC_COPY } from './fixtures/pdf-only-topic-copy';
 import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
+import { afterLandingCorrections, reviewedLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 type Item = {
   path: string;
@@ -250,6 +251,17 @@ describe('seo proposals – generator and coverage', () => {
     for (const delta of [...reviewedBatch05.landingDeltas, ...reviewedBatch06.landingDeltas]) {
       assert.equal(delta.fields.some(d => d.path.length === 1 && d.path[0] === 'description'), false,
         `${delta.slug}: PDF addition preserves the existing description`);
+    }
+    // The 18 Nov landing corrections rewrite two current descriptions that repeated a corrected
+    // claim (trapezoid-grade-9: the series count; two-data-sources-grade-8: the task scope).
+    for (const entry of reviewedLandingCorrections.pages) {
+      const row = expected.find(item => item.path === '/' + entry.slug);
+      if (!row) continue;
+      const corrected = afterLandingCorrections(entry.slug, row.currentDescription);
+      if (corrected === row.currentDescription) continue;
+      assert.ok(['trapezoid-grade-9', 'two-data-sources-grade-8'].includes(entry.slug), entry.slug);
+      if (row.description === row.currentDescription) row.description = corrected;
+      row.currentDescription = corrected;
     }
     assert.deepEqual(proposals, expected);
   });

@@ -28,6 +28,7 @@ import { reviewedEqnSgnFac } from './fixtures/eqn-sgn-fac-pdf';
 import { reviewedBatch07 } from './fixtures/batch07-pdf';
 import { reviewedBatch08 } from './fixtures/batch08-pdf';
 import { reviewedBatch09 } from './fixtures/batch09-pdf';
+import { afterLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 const require = createRequire(import.meta.url);
 const routes = [
@@ -593,7 +594,8 @@ test('real batch-05 pages expose all 33 direct PDFs in their mapped edition grou
     }
     const delta = reviewedBatch05.landingDeltas.find(item => item.slug === slug)!;
     const mainText = document.querySelector('main')!.textContent.replace(/[\u2066-\u2069]/g, '');
-    assert.ok(mainText.includes(delta.appendedSection.blocks[0].text), `${slug}: reviewed landing section`);
+    // The 18 Nov landing corrections may rewrite a reviewed sentence; the page shows the corrected text.
+    assert.ok(mainText.includes(afterLandingCorrections(slug, delta.appendedSection.blocks[0].text)), `${slug}: reviewed landing section`);
     assert.ok(hero.querySelectorAll('a[data-edition-id="legacy"]').length >= 3, `${slug}: old downloads remain`);
     const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
     assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);

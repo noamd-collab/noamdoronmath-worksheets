@@ -15,6 +15,7 @@ import { beforeBatch03Catalog, beforeBatch03Registry, beforeBatch03Copy,
 import { beforeProbabilityNineRegistry } from './fixtures/probability-nine-pdf';
 import { beforeBatch06Copy, reviewedBatch06 } from './fixtures/batch06-pdf';
 import { reviewedBatch07 } from './fixtures/batch07-pdf';
+import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -218,7 +219,7 @@ test('seven landing updates keep titles and CTAs and describe the actual series 
   assert.deepEqual(reviewed.landingDeltas.map(d => d.slug), Object.keys(scope));
   assert.deepEqual(reviewed.landingDeltas.map(d => d.editionIds), [[ids[0]], [ids[1]], [ids[2]], [ids[3]], [ids[4]], [ids[5], ids[6]], [ids[7]]]);
   for (const delta of reviewed.landingDeltas) {
-    const pageRaw = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
+    const pageRaw = (beforeLandingCorrections(delta.slug, read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`)) as any);
     const restored = beforeBatch03Copy(delta.slug, pageRaw) as any;
     const afterBatch06 = beforeBatch06Copy(delta.slug, pageRaw) as any;
     assert.equal(digest(restored), delta.baselineSha256);
@@ -260,7 +261,7 @@ test('seven landing updates keep titles and CTAs and describe the actual series 
         assert.ok(!text.includes(banned), `${delta.slug}: ${banned}`);
       }
     }
-    const page = loadTopicPage(delta.slug), flow = synthesizeBodyFlow(page);
+    const page = beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug)), flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text || '') === added.heading).length, 1);
     for (const block of added.blocks) assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text || '') === block.text).length, 1);
     const faq = extractJsonLdFaq(page.jsonLd).map(f => ({ question: plain(f.question), answer: plain(f.answer) }));
@@ -273,7 +274,7 @@ test('seven landing updates keep titles and CTAs and describe the actual series 
     }
   }
   // Pages with an earlier PDF series keep it and add the new one before the Ramzi sentence.
-  const page = (slug: string) => read(`headless/astro-poc/src/data/topic-pages/${slug}.json`);
+  const page = (slug: string) => (beforeLandingCorrections(slug, read(`headless/astro-poc/src/data/topic-pages/${slug}.json`)) as any);
   assert.match(page('powers-grade-7').intro, /המתמקדים בגדילה ובהקטנה\. נוספה גם סדרת PDF על סימון חזקה/);
   assert.match(page('trapezoid-grade-9').intro, /והשוואת שטחים, ברמות א׳, ב׳ ומצוינות\. נוספו גם קובצי PDF לטרפז שווה־שוקיים/);
   assert.match(page('quadratic-inequalities-systems-grade-9').intro, /נוספו שתי סדרות PDF ברמות א׳, ב׳ ומצוינות/);
