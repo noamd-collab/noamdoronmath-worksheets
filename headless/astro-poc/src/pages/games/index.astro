@@ -14,6 +14,16 @@ export const prerender = false;
 
 /* A game appears here only once it is playable. */
 const games = ALL_GAMES.filter((game) => game.kind === 'legacy' || hasSpec(game.slug));
+
+/* One section per stage, by the first grade a game fits; empty ones are skipped. */
+const sections = [
+  { id: 'grades-3-6', label: 'כיתות ג׳–ו׳', fits: (order: number) => order <= 6 },
+  { id: 'grade-7', label: 'כיתה ז׳', fits: (order: number) => order === 7 },
+  { id: 'grade-8', label: 'כיתה ח׳', fits: (order: number) => order === 8 },
+  { id: 'grade-9', label: 'כיתה ט׳', fits: (order: number) => order >= 9 },
+]
+  .map((section) => ({ ...section, games: games.filter((game) => section.fits(game.gradeOrder)) }))
+  .filter((section) => section.games.length > 0);
 ---
 <BaseLayout
   title={GAMES_INDEX_TITLE}
@@ -30,21 +40,33 @@ const games = ALL_GAMES.filter((game) => game.kind === 'legacy' || hasSpec(game.
       <p class="games-corner__meta">
         {games.length} משחקים · כל אחד כרבע שעה · בלי הרשמה ובלי התקנה
       </p>
+      <nav class="games-corner__jump" aria-label="מעבר לפי כיתה">
+        {sections.map((section) => (
+          <a href={`#${section.id}`}>
+            {section.label} <span class="games-corner__count">({section.games.length})</span>
+          </a>
+        ))}
+      </nav>
     </header>
 
-    <ul class="games-corner__grid">
-      {games.map((game) => (
-        <li class="games-corner__item" style={`--card-main:${game.theme.main};--card-soft:${game.theme.mainSoft};--card-line:${game.theme.mainLine}`}>
-          <a class="games-corner__card" href={gamePath(game)}>
-            <span class="games-corner__emoji" aria-hidden="true">{game.emoji}</span>
-            <span class="games-corner__grade">{game.grade}</span>
-            <h2 class="games-corner__title">{game.h1}</h2>
-            <p class="games-corner__short">{game.short}</p>
-            <span class="games-corner__go">למשחק</span>
-          </a>
-        </li>
-      ))}
-    </ul>
+    {sections.map((section) => (
+      <section class="games-corner__stage" id={section.id} aria-labelledby={`${section.id}-title`}>
+        <h2 class="games-corner__stage-title" id={`${section.id}-title`}>{section.label}</h2>
+        <ul class="games-corner__grid">
+          {section.games.map((game) => (
+            <li class="games-corner__item" style={`--card-main:${game.theme.main};--card-soft:${game.theme.mainSoft};--card-line:${game.theme.mainLine}`}>
+              <a class="games-corner__card" href={gamePath(game)}>
+                <span class="games-corner__emoji" aria-hidden="true">{game.emoji}</span>
+                <span class="games-corner__grade">{game.grade}</span>
+                <h3 class="games-corner__title">{game.h1}</h3>
+                <p class="games-corner__short">{game.short}</p>
+                <span class="games-corner__go">למשחק</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
 
     <section class="games-corner__note">
       <h2>איך המשחקים עובדים</h2>
@@ -99,9 +121,54 @@ const games = ALL_GAMES.filter((game) => game.kind === 'legacy' || hasSpec(game.
     font-weight: 700;
     color: #6b7694;
   }
+  .games-corner__jump {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .games-corner__jump a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 44px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    border: 2px solid #dfe3ef;
+    border-radius: 999px;
+    background: #fff;
+    color: #22305a;
+    font-weight: 800;
+    font-size: 15px;
+    text-decoration: none;
+  }
+  .games-corner__jump a:hover,
+  .games-corner__jump a:focus-visible {
+    border-color: #1e605e;
+    color: #1e605e;
+  }
+  .games-corner__jump a:focus-visible {
+    outline: 3px solid #2a7c7a;
+    outline-offset: 2px;
+  }
+  .games-corner__count {
+    font-weight: 700;
+    color: #6b7694;
+  }
+  .games-corner__stage {
+    scroll-margin-top: 80px;
+  }
+  .games-corner__stage-title {
+    margin: 0 0 12px;
+    font-family: 'Secular One', sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 1.3;
+  }
   .games-corner__grid {
     list-style: none;
-    margin: 0 0 36px;
+    margin: 0 0 30px;
     padding: 0;
     display: grid;
     gap: 16px;
