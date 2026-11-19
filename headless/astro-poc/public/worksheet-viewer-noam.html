@@ -3284,7 +3284,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
 <script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>
 <script src="noam-glossary-curriculum.js?v=20261018-fracbar"></script>
 <script src="noam-glossary.js?v=20261114-trapezoid-context1"></script>
-<script src="noam-curated-hints.js?v=20261107-edition-bindings1"></script>
+<script src="noam-curated-hints.js?v=20261120-three-digit-editions"></script>
 <script>
 (function(){
 
@@ -3581,8 +3581,9 @@ if(elementaryPreparedHintsOnly){
 var okGrade =
   (g >= 7 && g <= 9) || (g >= 1 && g <= 6 && okEdition);
 
+// Three-digit topic IDs belong to the reviewed edition path.
 var okX =
-  /^G[1-9]-T\d{2}$/
+  (editionRequested ? /^(?:G[1-9]-T[0-9]{2}|G[7-9]-T[1-9][0-9]{2})$(?![\s\S])/ : /^G[1-9]-T\d{2}$/)
   .test(x) &&
   x.indexOf(
     "G" + g + "-"
