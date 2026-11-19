@@ -224,12 +224,16 @@ body{min-height:100dvh;font-family:Heebo,system-ui,sans-serif;color:#1e1b4b;back
 button{font:inherit;-webkit-tap-highlight-color:transparent}
 button:focus-visible{outline:3px solid #4338ca;outline-offset:3px}
 button[data-primary]:focus-visible{outline-color:#f59e0b}
+g[data-kb]:focus-visible{outline:none}
+g[data-kb]:focus-visible circle:last-child{stroke:#4338ca;stroke-width:.14;fill:rgba(67,56,202,.14)}
+g[data-kb]:focus-visible .knob{stroke:#4338ca;stroke-width:.2}
+.kbPad{margin-top:6px}
 #app{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px}
 #card{position:relative;overflow:hidden;width:min(1080px,100%);background:#fff;border-radius:24px;box-shadow:0 16px 40px rgba(30,27,75,.12);padding:14px 20px 18px;display:flex;flex-direction:column;gap:12px}
 .head{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .step-chip{flex:none;white-space:nowrap;font-size:12.5px;font-weight:700;background:#eef0fb;border-radius:999px;padding:6px 12px;color:#1e1b4b}
 .score-chip{display:flex;align-items:center;gap:5px;background:#fdf6e5;border:1.5px solid #ecd195;border-radius:999px;padding:4px 12px;font-family:"Secular One",sans-serif;font-size:14px;color:#92580a}
-#soundBtn{width:40px;height:40px;border-radius:12px;border:0;background:transparent;font-size:20px;cursor:pointer;display:grid;place-items:center}
+#soundBtn{width:44px;height:44px;border-radius:12px;border:0;background:transparent;font-size:20px;cursor:pointer;display:grid;place-items:center}
 @media (hover:hover){#soundBtn:hover{background:#eef0fb}}
 .track{height:5px;background:#e4e4f0;border-radius:5px;overflow:hidden}
 #progressFill{height:100%;width:0;background:linear-gradient(90deg,#7c74ec,#4338ca);border-radius:5px;transition:width .4s cubic-bezier(.2,.8,.2,1)}
@@ -313,7 +317,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
 .mSteppers{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 .mStep{display:flex;align-items:center;gap:8px;background:#fbfaff;border:1.5px solid #e6e3f2;border-radius:12px;padding:6px 10px}
 .mStep .mVar{font-family:"Secular One",sans-serif;font-size:18px;color:#4338ca;min-width:18px;text-align:center}
-.mStep button{width:32px;height:32px;border-radius:10px;border:1.5px solid #b9b2ee;background:#ecebfe;color:#4338ca;font-family:"Secular One",sans-serif;font-size:17px;cursor:pointer;line-height:1;display:grid;place-items:center}
+.mStep button{width:44px;height:44px;border-radius:10px;border:1.5px solid #b9b2ee;background:#ecebfe;color:#4338ca;font-family:"Secular One",sans-serif;font-size:17px;cursor:pointer;line-height:1;display:grid;place-items:center}
 .mStep button:disabled{opacity:.35;cursor:default}
 #diceBtn{align-self:center;font-family:"Secular One",sans-serif;font-size:14.5px;padding:8px 20px;border-radius:50px;cursor:pointer;background:#f59e0b;color:#1e1b4b;border:2px solid #b45309;box-shadow:0 3px 0 #b45309}
 .mForms{display:flex;flex-direction:column;gap:3px;font-family:"Secular One",sans-serif;font-size:15.5px;color:#1e1b4b;text-align:center}
@@ -377,6 +381,10 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         </div>
         <div id="panelTri" class="panel" hidden>
           <div id="triFrame"><svg id="triSvg" viewBox="0 0 402 330" preserveAspectRatio="xMidYMid meet" dir="ltr" role="img" aria-label="משולש ישר־זווית עם ריבועים על הצלעות"></svg></div>
+          <div id="triPad" class="mSteppers kbPad" dir="ltr" hidden>
+            <div class="mStep"><span class="mVar">a</span><button type="button" id="tAdn" aria-label="הקטן את a">−</button><span class="mVar" id="tAv">3</span><button type="button" id="tAup" aria-label="הגדל את a">+</button></div>
+            <div class="mStep"><span class="mVar">b</span><button type="button" id="tBdn" aria-label="הקטן את b">−</button><span class="mVar" id="tBv">4</span><button type="button" id="tBup" aria-label="הגדל את b">+</button></div>
+          </div>
           <div id="strip" dir="ltr" hidden></div>
           <div id="synth" role="status" aria-live="polite" hidden></div>
         </div>
@@ -390,6 +398,10 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         </div>
         <div id="panelNumeric" class="panel" hidden>
           <div id="checkFrame"><svg id="checkSvg" viewBox="0 0 402 330" preserveAspectRatio="xMidYMid meet" dir="ltr" role="img" aria-label="בדיקה ויזואלית: הריבועים מתמלאים במשבצות ונשפכים לריבוע הגדול"></svg></div>
+          <div id="chkPad" class="mSteppers kbPad" dir="ltr">
+            <div class="mStep"><span class="mVar">a</span><button type="button" id="kAdn" aria-label="הקטן את a">−</button><span class="mVar" id="kAv">3</span><button type="button" id="kAup" aria-label="הגדל את a">+</button></div>
+            <div class="mStep"><span class="mVar">b</span><button type="button" id="kBdn" aria-label="הקטן את b">−</button><span class="mVar" id="kBv">4</span><button type="button" id="kBup" aria-label="הגדל את b">+</button></div>
+          </div>
           <div id="checkRow">
             <button id="checkBtn" type="button">שפוך את המשבצות ⤵</button>
           </div>
@@ -504,7 +516,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
   const VB = { idle: '20 20 120 130', blink: '180 20 120 130', happy: '340 20 120 130', think: '500 20 120 130', talk: '660 20 120 130' };
   const STEPS = [
     { mode: 'intro', tA: 'למה ', tM: 'a² + b² = c²', tB: '?', sub: 'המשפט הכי מפורסם בעולם. הפעם — מוכיחים.', tip: 'הרבה זוכרים את הנוסחה בעל־פה. אתה תוכיח אותה בעצמך, בלי לשנן.', btn: 'בוא נוכיח ←', cue: 'לחץ כדי להתחיל' },
-    { mode: 'explore', tA: 'בנה משולש ישר־זווית', sub: 'גרור את הידיות. שנה את הניצבים ' + m('a') + ' ו־' + m('b') + '.', tip: 'על כל צלע יושב ריבוע. גרור ובדוק: מה יוצא כשמחברים ' + m('a²') + ' ועוד ' + m('b²') + '?', btn: 'הבנתי ←', cue: 'גרור ידית כדי להמשיך', cueDone: 'יפה! זה עובד תמיד. אפשר להמשיך ←' },
+    { mode: 'explore', tA: 'בנה משולש ישר־זווית', sub: 'שנה את הניצבים ' + m('a') + ' ו־' + m('b') + ' בגרירה, בכפתורים או בחיצים.', tip: 'על כל צלע יושב ריבוע. שנה ובדוק: מה יוצא כשמחברים ' + m('a²') + ' ועוד ' + m('b²') + '?', btn: 'הבנתי ←', cue: 'שנה ניצב כדי להמשיך', cueDone: 'יפה! זה עובד תמיד. אפשר להמשיך ←' },
     { mode: 'quiz', kind: 'legs', tA: 'מהן שתי הצלעות המסומנות?', sub: 'הן נפגשות בזווית הישרה.', tip: 'הצלעות המסומנות נוגעות בזווית הישרה. איפה הן?', btn: 'המשך ←', win: 'יש! הניצבים יוצרים את הזווית הישרה.', wrongSay: 'כמעט. שים לב איפה הזווית הישרה.',
       opts: [
         { t: 'שני הניצבים', c: true, f: 'נכון! הניצבים הם הצלעות שיוצרות את הזווית הישרה.' },
@@ -1217,8 +1229,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       h += '<text id="valA2" text-anchor="middle" dominant-baseline="central"></text>';
       h += '<text id="valB2" text-anchor="middle" dominant-baseline="central"></text>';
       h += '<text id="valC2" text-anchor="middle" dominant-baseline="central"></text>';
-      h += '<g id="hA" data-handle="a" style="cursor:grab"><circle class="ring" r=".62" fill="none" stroke="' + IND + '" stroke-width=".09"></circle><circle class="knob" r=".5" fill="#fff" stroke="' + INK + '" stroke-width=".1"></circle><circle class="dot" r=".17" fill="' + IND + '"></circle><circle r="1.1" fill="transparent"></circle></g>';
-      h += '<g id="hB" data-handle="b" style="cursor:grab"><circle class="ring" r=".62" fill="none" stroke="' + AMB + '" stroke-width=".09"></circle><circle class="knob" r=".5" fill="#fff" stroke="' + INK + '" stroke-width=".1"></circle><circle class="dot" r=".17" fill="' + AMB + '"></circle><circle r="1.1" fill="transparent"></circle></g>';
+      h += '<g id="hA" data-handle="a" tabindex="0" role="slider" data-kb="a" aria-label="ידית הניצב a: חצים משנים את האורך" aria-orientation="horizontal" aria-valuemin="2" aria-valuemax="8" aria-valuenow="3" style="cursor:grab"><circle class="ring" r=".62" fill="none" stroke="' + IND + '" stroke-width=".09"></circle><circle class="knob" r=".5" fill="#fff" stroke="' + INK + '" stroke-width=".1"></circle><circle class="dot" r=".17" fill="' + IND + '"></circle><circle r="1.1" fill="transparent"></circle></g>';
+      h += '<g id="hB" data-handle="b" tabindex="0" role="slider" data-kb="b" aria-label="ידית הניצב b: חצים משנים את האורך" aria-orientation="vertical" aria-valuemin="2" aria-valuemax="8" aria-valuenow="4" style="cursor:grab"><circle class="ring" r=".62" fill="none" stroke="' + AMB + '" stroke-width=".09"></circle><circle class="knob" r=".5" fill="#fff" stroke="' + INK + '" stroke-width=".1"></circle><circle class="dot" r=".17" fill="' + AMB + '"></circle><circle r="1.1" fill="transparent"></circle></g>';
       h += '</g>';
       // Eliyahu's arms when he points from outside the drawing, and the "opposite the angle" arrow (drawing units)
       h += '<g id="hypArrow" style="pointer-events:none"></g><g id="pointArms" style="opacity:0;transition:opacity .35s ease;pointer-events:none"></g>';
@@ -1228,6 +1240,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       svg.addEventListener('pointercancel', () => app.onUp());
       $('hA').addEventListener('pointerdown', (e) => app.onDown(e, 'a'));
       $('hB').addEventListener('pointerdown', (e) => app.onDown(e, 'b'));
+      $('hA').addEventListener('keydown', (e) => app.kbKey(e, 'a', 'tri'));
+      $('hB').addEventListener('keydown', (e) => app.kbKey(e, 'b', 'tri'));
     },
     triGeom(a, b) {
       const W = 402, H = 330, padX = 30, padY = 24;
@@ -1271,6 +1285,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       ['valA2', 'valB2', 'valC2'].forEach((id) => { $(id).style.display = showCaps ? '' : 'none'; });
       // handles
       const hA = $('hA'), hB = $('hB');
+      $('triPad').hidden = !isExp;
       hA.style.display = isExp ? '' : 'none';
       hB.style.display = isExp ? '' : 'none';
       if (isExp) {
@@ -1337,6 +1352,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const key = st.idx + '|' + a + '|' + b;
       if (this._triKey === key) return;
       this._triKey = key;
+      this.kbSync('t', 'hA', 'hB', a, b);
       $('labA').textContent = isExp ? 'a = ' + a : 'a';
       $('labB').textContent = isExp ? 'b = ' + b : 'b';
       const labCEl = $('labC');
@@ -1839,8 +1855,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       h += '<text id="ckSqLabB" text-anchor="middle" dominant-baseline="central"></text>';
       h += '<text id="ckSqLabC" text-anchor="middle" dominant-baseline="central"></text>';
       ['A', 'B', 'C'].forEach((q) => { h += '<circle id="ckChip' + q + '" fill="#fff"></circle><text id="ckLab' + q + '" text-anchor="middle" dominant-baseline="central"></text>'; });
-      h += '<g id="ckHA" style="cursor:grab"><circle class="ring" r=".62" fill="none" stroke="' + IND + '" stroke-width=".09"></circle><circle class="knob" r=".5" fill="#fff" stroke="' + INK + '" stroke-width=".1"></circle><circle class="dot" r=".17" fill="' + IND + '"></circle><circle r="1.1" fill="transparent"></circle></g>';
-      h += '<g id="ckHB" style="cursor:grab"><circle class="ring" r=".62" fill="none" stroke="' + AMB + '" stroke-width=".09"></circle><circle class="knob" r=".5" fill="#fff" stroke="' + INK + '" stroke-width=".1"></circle><circle class="dot" r=".17" fill="' + AMB + '"></circle><circle r="1.1" fill="transparent"></circle></g>';
+      h += '<g id="ckHA" tabindex="0" role="slider" data-kb="a" aria-label="ידית הניצב a: חצים משנים את האורך" aria-orientation="horizontal" aria-valuemin="2" aria-valuemax="8" aria-valuenow="3" style="cursor:grab"><circle class="ring" r=".62" fill="none" stroke="' + IND + '" stroke-width=".09"></circle><circle class="knob" r=".5" fill="#fff" stroke="' + INK + '" stroke-width=".1"></circle><circle class="dot" r=".17" fill="' + IND + '"></circle><circle r="1.1" fill="transparent"></circle></g>';
+      h += '<g id="ckHB" tabindex="0" role="slider" data-kb="b" aria-label="ידית הניצב b: חצים משנים את האורך" aria-orientation="vertical" aria-valuemin="2" aria-valuemax="8" aria-valuenow="4" style="cursor:grab"><circle class="ring" r=".62" fill="none" stroke="' + AMB + '" stroke-width=".09"></circle><circle class="knob" r=".5" fill="#fff" stroke="' + INK + '" stroke-width=".1"></circle><circle class="dot" r=".17" fill="' + AMB + '"></circle><circle r="1.1" fill="transparent"></circle></g>';
       h += '</g>';
       const svg = $('checkSvg');
       svg.innerHTML = h;
@@ -1854,6 +1870,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       svg.addEventListener('pointercancel', () => app.chkUp());
       $('ckHA').addEventListener('pointerdown', (e) => app.chkDown(e, 'a'));
       $('ckHB').addEventListener('pointerdown', (e) => app.chkDown(e, 'b'));
+      $('ckHA').addEventListener('keydown', (e) => app.kbKey(e, 'a', 'chk'));
+      $('ckHB').addEventListener('keydown', (e) => app.kbKey(e, 'b', 'chk'));
       this.renderCheck();
     },
     renderCheck() {
@@ -1928,6 +1946,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         ring.style.transformBox = 'fill-box'; ring.style.transformOrigin = 'center'; ring.style.animation = 'ringPulse 1.2s ease-out infinite';
         hh.style.cursor = (this.chkDrag || this._chkRunning) ? 'grabbing' : 'grab';
       });
+      this.kbSync('k', 'ckHA', 'ckHB', a, b);
       $('checkSvg').style.touchAction = 'none';
       this._chkN = { nA, nB, gN, c, theta, stepC, ux, uy, vx, vy, f: c - gN, fVis };
     },
@@ -1960,6 +1979,57 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         }
       }
       const h = this.chkDrag.which === 'a' ? $('ckHA') : $('ckHB'); if (h) this.gazeAt(h);
+    },
+    /* keyboard and on-screen buttons: the same steps as a drag, one whole number at a time */
+    kbSync(pre, ia, ib, a, b) {
+      [[ia, 'a', a], [ib, 'b', b]].forEach((q) => {
+        const h = $(q[0]); if (h) { h.setAttribute('aria-valuenow', q[2]); h.setAttribute('aria-valuetext', q[1] + ' = ' + q[2]); }
+        const v = $(pre + q[1].toUpperCase() + 'v'); if (v) v.textContent = q[2];
+        const dn = $(pre + q[1].toUpperCase() + 'dn'), up = $(pre + q[1].toUpperCase() + 'up');
+        if (dn) dn.disabled = q[2] <= 2;
+        if (up) up.disabled = q[2] >= 8;
+      });
+    },
+    kbKey(e, which, kind) {
+      const k = e.key, cur = this.state[which]; let t = null;
+      if (k === 'ArrowRight') t = cur + 1; else if (k === 'ArrowLeft') t = cur - 1;
+      else if (k === 'ArrowUp') t = cur + (which === 'a' ? 1 : -1); else if (k === 'ArrowDown') t = cur + (which === 'a' ? -1 : 1);
+      else if (k === 'Home') t = 2; else if (k === 'End') t = 8;
+      if (t === null) return;
+      e.preventDefault();
+      this.kbSet(which, t, kind);
+    },
+    kbSet(which, t, kind) {
+      t = Math.max(2, Math.min(8, t));
+      if (kind === 'tri') this.kbTri(which, t); else this.kbChk(which, t);
+    },
+    kbTri(which, t) {
+      if (STEPS[this.state.idx].mode !== 'explore' || this.drag) return;
+      const st = this.state; if (t === st[which]) return;
+      this.settleStop();
+      const v = this.dv = this.triView(); v.a = st.a; v.b = st.b;
+      this.onDown({ pointerId: -1, clientX: 0, clientY: 0, preventDefault() {} }, which);
+      const d = this.drag; if (!d) return;
+      d.inv = { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0 }; d.p0 = { x: 0, y: 0 }; d.x = -1000; d.y = -1000;
+      d.cx = d.cy = (t - st[which]) * v.k;
+      this.dragFrame();
+      if (v[which] !== t) { v[which] = t; this.triPlace(v); this.dragCommit(); }
+      this.onUp();
+    },
+    kbChk(which, t) {
+      if (STEPS[this.state.idx].mode !== 'numeric' || this._chkRunning) return;
+      const st = this.state; if (t === st[which]) return;
+      const patch = {}; patch[which] = t;
+      if (st.checkOn || st.checkDone) { patch.checkOn = false; patch.checkDone = false; $('checkCap').hidden = true; }
+      this.goHome(); this.armNudge();
+      this.setState(patch);
+      if (!this._saidChkDrag) { this._saidChkDrag = true; this.say('יפה! הריבועים והמשבצות משתנים יחד.'); }
+      const na = this.state.a, nb = this.state.b, nc = Math.sqrt(na * na + nb * nb), key = na + ',' + nb;
+      if (Number.isInteger(nc) && this._lastChkTriple !== key) {
+        this._lastChkTriple = key;
+        this.say('כאן היתר יוצא מספר שלם! שפוך — ותראה.', { mood: 'happy' });
+        this.sfx('tick');
+      }
     },
     chkUp() {
       if (!this.chkDrag) return;
@@ -2573,13 +2643,13 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const S = STEPS[this.state.idx];
       this.nudgeT = setTimeout(() => {
         const st = this.state, S2 = STEPS[st.idx];
-        if (S2.mode === 'explore' && !st.dragged) this.point('handle', 'שתי הידיות מחכות לך. נסה לגרור אחת מהן.');
+        if (S2.mode === 'explore' && !st.dragged) this.point('handle', 'שתי הידיות מחכות לך. גרור אחת מהן, או לחץ על הכפתורים.');
         else if (S2.mode === 'quiz' && !st.done) {
           if (st.hint < 2) this.point('hint', 'אולי אתה רוצה רמז?');
           else this.say('חבר את מה שהרמזים אמרו. אתה קרוב.', { attn: true, mood: 'think' });
         }
         else if (S2.mode === 'proof' && st.pBeat < 5 && !st.proofBusy) this.point('proof', 'מוכן? לחץ "הצעד הבא" — ונמשיך.');
-        else if (S2.mode === 'numeric' && !st.checkDone && !this._chkRunning) this.point('check', 'גרור את הידיות, ואז לחץ "שפוך" — וצפה במשבצות!');
+        else if (S2.mode === 'numeric' && !st.checkDone && !this._chkRunning) this.point('check', 'שנה את הניצבים, ואז לחץ "שפוך" — וצפה במשבצות!');
         else if (S2.mode === 'triples' && st.tBeat < 3 && !this._tpRunning) this.point('triples', 'מוכן? לחץ על הכפתור — ונמשיך.');
       }, ms || (this.props.idleNudgeSec || 9) * 1000);
     },
@@ -2598,6 +2668,11 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       $('mDn').addEventListener('click', () => this.machineSet(this.state.mg - 1, this.state.ng));
       $('nUp').addEventListener('click', () => this.machineSet(this.state.mg, this.state.ng + 1));
       $('nDn').addEventListener('click', () => this.machineSet(this.state.mg, this.state.ng - 1));
+      [['t', 'tri'], ['k', 'chk']].forEach((q) => ['a', 'b'].forEach((w) => {
+        const W = w.toUpperCase();
+        $(q[0] + W + 'dn').addEventListener('click', () => this.kbSet(w, this.state[w] - 1, q[1]));
+        $(q[0] + W + 'up').addEventListener('click', () => this.kbSet(w, this.state[w] + 1, q[1]));
+      }));
       $('diceBtn').addEventListener('click', () => {
         const mg = 2 + Math.floor(Math.random() * 6);
         const ng = 1 + Math.floor(Math.random() * (mg - 1));

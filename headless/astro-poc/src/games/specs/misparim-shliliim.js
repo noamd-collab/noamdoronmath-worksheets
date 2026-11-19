@@ -46,7 +46,7 @@
       if (v % 2 === 0) s += T(308, EY(v) + 4, fmt(v), 11, v === 0 ? INK : MAIN, 'start');
     }
     s += '<line x1="40" y1="' + EY(0) + '" x2="170" y2="' + EY(0) + '" stroke="' + INK + '" stroke-width="1.6" stroke-dasharray="5 4"/>';
-    s += HT(24, EY(0) - 6, 'קרקע', 11, INK, 'start');
+    s += HT(72, EY(0) - 6, 'קרקע', 11, INK, 'start');
     s += '<line id="arL" x1="150" y1="' + EY(-3) + '" x2="150" y2="' + EY(-3) + '" stroke="' + GOOD + '" stroke-width="4" stroke-linecap="round" opacity="0"/>';
     s += '<polygon id="arH" points="150,' + EY(-3) + ' 143,' + (EY(-3) + 9) + ' 157,' + (EY(-3) + 9) + '" fill="' + GOOD + '" opacity="0"/>';
     s += '<g id="cab" transform="translate(0,' + EY(-3) + ')">'
@@ -139,9 +139,10 @@
     s += '<path id="arc" d="M ' + dx(a) + ' ' + AY + ' Q ' + ((dx(a) + dx(b)) / 2) + ' 100 ' + dx(b) + ' ' + AY
       + '" fill="none" stroke="' + GOOD + '" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 0"/>';
     s += T(201, 60, '', 22, GOOD, 'middle', 'dist');
-    s += '<g id="pB" style="cursor:ew-resize"><circle id="cB" cx="' + dx(b) + '" cy="' + AY + '" r="13" fill="' + WARM + '" stroke="#fff" stroke-width="2"/>'
+    s += '<style>#pA:focus-visible circle,#pB:focus-visible circle{stroke:' + INK + ';stroke-width:4}#pA:focus,#pB:focus{outline:none}</style>';
+    s += '<g id="pB" tabindex="0" role="slider" aria-valuemin="-8" aria-valuemax="8" aria-label="הנקודה הכתומה; הזז בעזרת מקשי החצים" style="cursor:ew-resize"><circle id="hB" cx="' + dx(b) + '" cy="' + AY + '" r="29" fill="transparent"/><circle id="cB" cx="' + dx(b) + '" cy="' + AY + '" r="13" fill="' + WARM + '" stroke="#fff" stroke-width="2"/>'
       + T(dx(b), AY + 5, fmt(b), 13, '#fff', 'middle', 'tB') + '</g>';
-    s += '<g id="pA" style="cursor:ew-resize"><circle id="cA" cx="' + dx(a) + '" cy="' + AY + '" r="13" fill="' + MAIN + '" stroke="#fff" stroke-width="2"/>'
+    s += '<g id="pA" tabindex="0" role="slider" aria-valuemin="-8" aria-valuemax="8" aria-label="הנקודה הכחולה; הזז בעזרת מקשי החצים" style="cursor:ew-resize"><circle id="hA" cx="' + dx(a) + '" cy="' + AY + '" r="29" fill="transparent"/><circle id="cA" cx="' + dx(a) + '" cy="' + AY + '" r="13" fill="' + MAIN + '" stroke="#fff" stroke-width="2"/>'
       + T(dx(a), AY + 5, fmt(a), 13, '#fff', 'middle', 'tA') + '</g>';
     ctx.draw(s);
 
@@ -153,12 +154,14 @@
       arc.setAttribute('d', 'M ' + xa + ' ' + AY + ' Q ' + ((xa + xb) / 2) + ' ' + ctrl + ' ' + xb + ' ' + AY);
       arc.setAttribute('stroke', col);
       arc.setAttribute('opacity', n === 0 ? '0' : '1');
-      ctx.el('cA').setAttribute('cx', xa); ctx.el('tA').setAttribute('x', xa); ctx.el('tA').textContent = fmt(a);
-      ctx.el('cB').setAttribute('cx', xb); ctx.el('tB').setAttribute('x', xb); ctx.el('tB').textContent = fmt(b);
+      ctx.el('hA').setAttribute('cx', xa); ctx.el('cA').setAttribute('cx', xa); ctx.el('tA').setAttribute('x', xa); ctx.el('tA').textContent = fmt(a);
+      ctx.el('hB').setAttribute('cx', xb); ctx.el('cB').setAttribute('cx', xb); ctx.el('tB').setAttribute('x', xb); ctx.el('tB').textContent = fmt(b);
       var peak = AY - (AY - ctrl) / 2;
       var d = ctx.el('dist');
       d.setAttribute('x', (xa + xb) / 2); d.setAttribute('y', peak - 8); d.setAttribute('fill', col);
       d.textContent = n === 0 ? '0' : (a > b ? '+' : '\u2212') + n;
+      ctx.el('pA').setAttribute('aria-valuenow', a);
+      ctx.el('pB').setAttribute('aria-valuenow', b);
       ctx.caption(m(fmt(a) + ' \u2212 ' + par(b) + ' = ' + fmt(a - b)));
       var why = a > b ? 'הכחולה מימין לכתומה, ולכן ההפרש חיובי.'
         : (a < b ? 'הכחולה משמאל לכתומה, ולכן ההפרש שלילי.' : 'שתי הנקודות באותו מקום, ולכן ההפרש הוא אפס.');
@@ -181,6 +184,25 @@
       move: function (x) { var n = snap(x); if (n !== b) { b = n; ctx.sfx('tick'); render(); check(); } },
       end: function () { check(); }
     });
+    function setA(n) { n = Math.max(-8, Math.min(8, n)); if (n !== a) { a = n; ctx.sfx('tick'); render(); check(); } }
+    function setB(n) { n = Math.max(-8, Math.min(8, n)); if (n !== b) { b = n; ctx.sfx('tick'); render(); check(); } }
+    function keys(id, get, set) {
+      ctx.el(id).addEventListener('keydown', function (e) {
+        var k = e.key, d = 0;
+        if (k === 'ArrowRight' || k === 'ArrowUp') d = 1;
+        else if (k === 'ArrowLeft' || k === 'ArrowDown') d = -1;
+        else if (k === 'Home') { e.preventDefault(); set(-8); return; }
+        else if (k === 'End') { e.preventDefault(); set(8); return; }
+        else return;
+        e.preventDefault(); set(get() + d);
+      });
+    }
+    keys('pA', function () { return a; }, setA);
+    keys('pB', function () { return b; }, setB);
+    ctx.button('הכחולה ' + m('\u22121'), function () { setA(a - 1); }, { ghost: true, target: 'aminus' });
+    ctx.button('הכחולה ' + m('+1'), function () { setA(a + 1); }, { ghost: true, target: 'aplus' });
+    ctx.button('הכתומה ' + m('\u22121'), function () { setB(b - 1); }, { ghost: true, target: 'bminus' });
+    ctx.button('הכתומה ' + m('+1'), function () { setB(b + 1); }, { ghost: true, target: 'bplus' });
     ctx.register('ptA', ctx.el('pA'));
     render();
   }
@@ -302,14 +324,14 @@
     {
       mode: 'scene',
       tA: 'חיסור הוא מרחק',
-      sub: 'גרור את שתי הנקודות על הציר וראה מה קורה לקשת שביניהן.',
-      tip: 'חיסור הוא בעצם מרחק. גרור את הכחולה ל־' + m('2') + ' ואת הכתומה ל־' + m('\u22125') + '.',
-      cue: 'גרור את הכחולה ל־' + m('2') + ' ואת הכתומה ל־' + m('\u22125'),
+      sub: 'גרור את שתי הנקודות על הציר, או הזז אותן בכפתורים ובחיצים, וראה מה קורה לקשת שביניהן.',
+      tip: 'חיסור הוא בעצם מרחק. הבא את הכחולה ל־' + m('2') + ' ואת הכתומה ל־' + m('\u22125') + '.',
+      cue: 'הבא את הכחולה ל־' + m('2') + ' ואת הכתומה ל־' + m('\u22125'),
       cueDone: 'ראית את ההפרש. אפשר להמשיך ←',
       btn: 'המשך ←',
       aspect: [W, H],
       alt: 'ציר מספרים אופקי עם שתי נקודות נגררות וקשת שמראה את המרחק ביניהן',
-      nudge: { target: 'ptA', text: 'גרור את הנקודה הכחולה ימינה או שמאלה.' },
+      nudge: { target: 'ptA', text: 'הזז את הנקודה הכחולה ימינה או שמאלה, בגרירה או בכפתורים.' },
       setup: distanceScene
     },
     {
