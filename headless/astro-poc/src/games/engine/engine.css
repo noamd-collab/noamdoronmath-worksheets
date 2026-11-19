@@ -64,7 +64,7 @@ button[data-primary]:focus-visible { outline-color: var(--warm); }
   padding: 4px 12px; font-family: "Secular One", sans-serif; font-size: 14px; color: #92580a;
 }
 #soundBtn {
-  width: 40px; height: 40px; border-radius: 12px; border: 0; background: transparent;
+  width: 44px; height: 44px; border-radius: 12px; border: 0; background: transparent;
   font-size: 20px; cursor: pointer; display: grid; place-items: center;
 }
 @media (hover: hover) { #soundBtn:hover { background: var(--chip); } }
@@ -100,7 +100,7 @@ button[data-primary]:focus-visible { outline-color: var(--warm); }
 }
 #sceneRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
 #sceneRow button {
-  font-family: "Secular One", sans-serif; font-size: 15.5px; padding: 10px 22px;
+  font-family: "Secular One", sans-serif; font-size: 15.5px; padding: 10px 22px; min-height: 44px;
   border-radius: 50px; cursor: pointer; background: var(--main); color: #fff;
   border: 2px solid var(--main-dark); box-shadow: 0 3px 0 var(--main-dark); transition: transform .15s;
 }
@@ -133,7 +133,7 @@ button[data-primary]:focus-visible { outline-color: var(--warm); }
 }
 .stepper .var { font-family: "Secular One", sans-serif; font-size: 18px; color: var(--main); min-width: 18px; text-align: center; }
 .stepper button {
-  width: 32px; height: 32px; border-radius: 10px; border: 1.5px solid var(--main-line);
+  width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid var(--main-line);
   background: var(--main-soft); color: var(--main); font-family: "Secular One", sans-serif;
   font-size: 17px; cursor: pointer; line-height: 1; display: grid; place-items: center;
   box-shadow: none;
@@ -157,7 +157,7 @@ h1 {
 }
 .opt.heb { direction: rtl; font-family: Heebo, sans-serif; font-weight: 700; font-size: 17px; white-space: normal; }
 #hintBtn {
-  align-self: flex-start; font-family: "Secular One", sans-serif; font-size: 15px;
+  align-self: flex-start; font-family: "Secular One", sans-serif; font-size: 15px; min-height: 44px;
   padding: 8px 20px; border-radius: 50px; cursor: pointer; background: var(--warm);
   color: var(--ink); border: 2px solid var(--warm-dark); box-shadow: 0 3px 0 var(--warm-dark);
 }
@@ -193,14 +193,14 @@ h1 {
 .skill { background: #fff; border: 1.5px solid var(--panel-line); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; text-align: right; }
 .bar { height: 8px; background: #efedf8; border-radius: 8px; overflow: hidden; }
 .bar > i { display: block; height: 100%; border-radius: 8px; transform-origin: right center; }
-.retry { align-self: flex-start; font-family: "Secular One", sans-serif; font-size: 13.5px; padding: 6px 16px; border-radius: 50px; border: 2px solid var(--main); background: #fff; color: var(--main); cursor: pointer; }
+.retry { align-self: flex-start; font-family: "Secular One", sans-serif; font-size: 13.5px; min-height: 44px; padding: 6px 16px; border-radius: 50px; border: 2px solid var(--main); background: #fff; color: var(--main); cursor: pointer; }
 .formula {
   background: #fff; border: 2.5px solid var(--main); border-radius: 16px; padding: 14px 20px;
   font-family: "Secular One", sans-serif; font-size: clamp(20px, 5.4vw, 26px); color: var(--ink);
   box-shadow: 0 8px 20px rgba(67, 56, 202, .14); text-align: center;
 }
 #bonusToggle {
-  align-self: center; font-family: "Secular One", sans-serif; font-size: 14.5px; padding: 8px 20px;
+  align-self: center; font-family: "Secular One", sans-serif; font-size: 14.5px; min-height: 44px; padding: 8px 20px;
   border-radius: 50px; cursor: pointer; background: #fff; color: var(--main);
   border: 2px solid var(--main); box-shadow: 0 3px 0 var(--main-line);
 }
@@ -211,7 +211,7 @@ h1 {
 #bonus .bChip { align-self: center; font-family: "Secular One", sans-serif; font-size: 21px; color: var(--main); background: var(--main-soft); border: 2px solid var(--main-line); border-radius: 12px; padding: 8px 18px; }
 #bonus .bOk { font-weight: 800; font-size: 14px; color: var(--good); text-align: center; }
 #bonus .bDice {
-  align-self: center; font-family: "Secular One", sans-serif; font-size: 14.5px; padding: 8px 20px;
+  align-self: center; font-family: "Secular One", sans-serif; font-size: 14.5px; min-height: 44px; padding: 8px 20px;
   border-radius: 50px; cursor: pointer; background: var(--warm); color: var(--ink);
   border: 2px solid var(--warm-dark); box-shadow: 0 3px 0 var(--warm-dark);
 }

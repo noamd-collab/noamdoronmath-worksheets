@@ -22,6 +22,18 @@ export type GameTheme = {
 
 export type GameLink = { href: string; label: string };
 
+/**
+ * A catalog topic the game teaches: `grade` and `topic` are the grade and the
+ * topic id in src/data/catalog.v1.json, the same pair a worksheet link carries
+ * (`/worksheets?grade=…&topic=…`).
+ *
+ * `full` means the game's scenes and questions reach every part of the topic
+ * as the catalog describes it. `partial` means it teaches one route through a
+ * wider topic, so the topic still needs more routes before it counts as
+ * covered. A link alone never makes a topic covered.
+ */
+export type GameTopicRef = { grade: number; topic: number; coverage: 'full' | 'partial' };
+
 export type EliyahuGame = {
   /** Last path segment under /games. */
   slug: string;
@@ -41,6 +53,8 @@ export type EliyahuGame = {
   emoji: string;
   /** Worksheet pages this game belongs to. */
   links: GameLink[];
+  /** Catalog topics this game teaches; drives the coverage map in gameCoverage.ts. */
+  topics: GameTopicRef[];
   /** Palette, injected as custom properties into the document. */
   theme: GameTheme;
   /**
@@ -108,6 +122,7 @@ export const ENGINE_GAMES: EliyahuGame[] = [
       { href: '/multiplication-facts-arrays-grade-3', label: 'עובדות הכפל והמערכים לכיתה ג׳' },
       { href: '/multiplication-multi-digit-grade-4', label: 'כפל רב־ספרתי לכיתה ד׳' }
     ],
+    topics: [{ grade: 3, topic: 9, coverage: 'partial' }, { grade: 4, topic: 9, coverage: 'partial' }],
     theme: OCEAN,
     kind: 'engine',
     playPath: '/games/luach-hakefel/play'
@@ -125,6 +140,7 @@ export const ENGINE_GAMES: EliyahuGame[] = [
       { href: '/equivalent-fractions-grade-4', label: 'שברים שקולים לכיתה ד׳' },
       { href: '/compare-fractions-decimals-grade-5', label: 'השוואת שברים לכיתה ה׳' }
     ],
+    topics: [{ grade: 4, topic: 13, coverage: 'partial' }, { grade: 5, topic: 29, coverage: 'partial' }],
     theme: PLUM,
     kind: 'engine',
     playPath: '/games/shivrim-shkulim/play'
@@ -142,6 +158,7 @@ export const ENGINE_GAMES: EliyahuGame[] = [
       { href: '/area-perimeter-rectangle-grade-4', label: 'שטח והיקף המלבן לכיתה ד׳' },
       { href: '/area-perimeter-rectangles-grade-5', label: 'שטח והיקף לכיתה ה׳' }
     ],
+    topics: [{ grade: 4, topic: 22, coverage: 'partial' }, { grade: 5, topic: 25, coverage: 'partial' }],
     theme: FOREST,
     kind: 'engine',
     playPath: '/games/shetach-vehekef/play'
@@ -159,6 +176,7 @@ export const ENGINE_GAMES: EliyahuGame[] = [
       { href: '/decimal-place-value-grade-5', label: 'ערך המקום במספר עשרוני לכיתה ה׳' },
       { href: '/add-subtract-decimals-grade-5', label: 'חיבור וחיסור עשרוניים לכיתה ה׳' }
     ],
+    topics: [{ grade: 5, topic: 28, coverage: 'partial' }, { grade: 5, topic: 30, coverage: 'partial' }],
     theme: CYAN,
     kind: 'engine',
     playPath: '/games/erech-hamakom/play'
@@ -176,6 +194,7 @@ export const ENGINE_GAMES: EliyahuGame[] = [
       { href: '/box-volume-grade-6', label: 'נפח התיבה לכיתה ו׳' },
       { href: '/box-surface-area-grade-6', label: 'שטח פנים של תיבה לכיתה ו׳' }
     ],
+    topics: [{ grade: 6, topic: 14, coverage: 'partial' }, { grade: 6, topic: 13, coverage: 'partial' }],
     theme: AMBER,
     kind: 'engine',
     playPath: '/games/nefach-tevah/play'
@@ -193,6 +212,7 @@ export const ENGINE_GAMES: EliyahuGame[] = [
       { href: '/percent-of-quantity-grade-6', label: 'אחוז מתוך כמות לכיתה ו׳' },
       { href: '/fraction-decimal-percent-grade-6', label: 'שבר, עשרוני ואחוז לכיתה ו׳' }
     ],
+    topics: [{ grade: 6, topic: 19, coverage: 'partial' }, { grade: 6, topic: 18, coverage: 'partial' }],
     theme: ROSE,
     kind: 'engine',
     playPath: '/games/achuzim/play'
@@ -210,6 +230,7 @@ export const ENGINE_GAMES: EliyahuGame[] = [
       { href: '/equations-basics-grade-7', label: 'יסודות המשוואה לכיתה ז׳' },
       { href: '/equations-advanced-grade-7', label: 'משוואות מתקדמות לכיתה ז׳' }
     ],
+    topics: [{ grade: 7, topic: 34, coverage: 'partial' }],
     theme: TEAL,
     kind: 'engine',
     playPath: '/games/maznayim/play'
@@ -227,6 +248,7 @@ export const ENGINE_GAMES: EliyahuGame[] = [
       { href: '/adjacent-vertical-angles-grade-7', label: 'זוויות צמודות וקודקודיות לכיתה ז׳' },
       { href: '/parallel-lines-angles-grade-8', label: 'זוויות במקבילים לכיתה ח׳' }
     ],
+    topics: [{ grade: 7, topic: 12, coverage: 'partial' }, { grade: 8, topic: 62, coverage: 'partial' }],
     theme: EMBER,
     kind: 'engine',
     playPath: '/games/tzayid-hazaviyot/play'
@@ -244,6 +266,7 @@ export const ENGINE_GAMES: EliyahuGame[] = [
       { href: '/signed-numbers-grade-7', label: 'מספרים מכוונים לכיתה ז׳' },
       { href: '/number-line-absolute-value-grade-7', label: 'ציר המספרים וערך מוחלט לכיתה ז׳' }
     ],
+    topics: [{ grade: 7, topic: 2, coverage: 'partial' }, { grade: 7, topic: 1, coverage: 'partial' }],
     theme: SLATE,
     kind: 'engine',
     playPath: '/games/misparim-shliliim/play'
@@ -261,9 +284,105 @@ export const ENGINE_GAMES: EliyahuGame[] = [
       { href: '/linear-function-grade-8', label: 'הפונקציה הקווית לכיתה ח׳' },
       { href: '/linear-function-grade-9', label: 'הפונקציה הקווית לכיתה ט׳' }
     ],
+    topics: [{ grade: 8, topic: 29, coverage: 'partial' }, { grade: 9, topic: 34, coverage: 'partial' }],
     theme: INDIGO,
     kind: 'engine',
     playPath: '/games/shipua-kavi/play'
+  },
+  {
+    slug: 'mapat-hatsirim',
+    title: 'משחק מפת הצירים וקנה המידה עם אליהו | נועם דורון',
+    h1: 'משחק מפת הצירים וקנה המידה עם אליהו',
+    description: 'שיעור קצר עם אליהו: גוררים נקודה על מערכת צירים, קוראים את שיעוריה ובוחרים קנה מידה שמכניס את כל הנקודות למפה.',
+    short: 'בוחרים קנה מידה, וכל הנקודות נכנסות למפה.',
+    grade: 'כיתה ז׳',
+    gradeOrder: 7,
+    emoji: '🗺️',
+    links: [{ href: '/coordinate-plane-scale-grade-7', label: 'מערכת צירים וקנה מידה לכיתה ז׳' }],
+    topics: [{ grade: 7, topic: 8, coverage: 'full' }],
+    theme: OCEAN,
+    kind: 'engine',
+    playPath: '/games/mapat-hatsirim/play'
+  },
+  {
+    slug: 'bituyim-shkulim',
+    title: 'משחק כינוס איברים וחוק הפילוג עם אליהו | נועם דורון',
+    h1: 'משחק כינוס איברים וחוק הפילוג עם אליהו',
+    description: 'שיעור קצר עם אליהו: פותחים סוגריים, ממיינים איברים דומים ומגלים מתי שני ביטויים שקולים באמת.',
+    short: 'פותחים חבילות, ממיינים כרטיסים ומקבלים ביטוי שקול.',
+    grade: 'כיתה ז׳',
+    gradeOrder: 7,
+    emoji: '🧪',
+    links: [{ href: '/combining-like-terms-grade-7', label: 'כינוס איברים וחוק הפילוג לכיתה ז׳' }],
+    topics: [{ grade: 7, topic: 29, coverage: 'full' }],
+    theme: PLUM,
+    kind: 'engine',
+    playPath: '/games/bituyim-shkulim/play'
+  },
+  {
+    slug: 'sadnat-hayachasim',
+    title: 'משחק יחס ופרופורציה עם אליהו | נועם דורון',
+    h1: 'משחק יחס ופרופורציה עם אליהו',
+    description: 'שיעור קצר עם אליהו: משכפלים חבילות של אסימונים, מחלקים כמות לפי יחס ומבחינים בין פרופורציה ישרה להפוכה.',
+    short: 'חבילה אחת של יחס, משוכפלת עד שהכמות מתחלקת.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '🧮',
+    links: [{ href: '/ratio-proportion-grade-8', label: 'יחס ופרופורציה לכיתה ח׳' }],
+    topics: [{ grade: 8, topic: 4, coverage: 'full' }],
+    theme: AMBER,
+    kind: 'engine',
+    playPath: '/games/sadnat-hayachasim/play'
+  },
+  {
+    slug: 'chatsiyon',
+    title: 'משחק החציון עם אליהו | נועם דורון',
+    h1: 'משחק החציון עם אליהו',
+    description: 'שיעור קצר עם אליהו: מסדרים כרטיסי נתונים, מוצאים את האמצע ומשווים בין החציון לממוצע כשמופיע ערך קיצוני.',
+    short: 'מסדרים את הכרטיסים, והאמצע מתגלה.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '🎯',
+    links: [{ href: '/median-grade-8', label: 'החציון לכיתה ח׳' }],
+    topics: [{ grade: 8, topic: 24, coverage: 'full' }],
+    theme: ROSE,
+    kind: 'engine',
+    playPath: '/games/chatsiyon/play'
+  },
+  {
+    slug: 'sadnat-hagormim',
+    title: 'משחק פירוק לגורמים עם אליהו | נועם דורון',
+    h1: 'משחק פירוק לגורמים עם אליהו',
+    description: 'שיעור קצר עם אליהו: מוציאים גורם משותף, מפרקים טרינום למכפלה ופותרים משוואה עם שבר אלגברי בלי לאבד את תחום ההגדרה.',
+    short: 'הופכים סכום למכפלה, ופותחים בחזרה כדי לבדוק.',
+    grade: 'כיתה ט׳',
+    gradeOrder: 9,
+    emoji: '🔧',
+    links: [{ href: '/factoring-grade-9', label: 'פירוק לגורמים לכיתה ט׳' }],
+    topics: [
+      { grade: 9, topic: 2, coverage: 'partial' },
+      { grade: 9, topic: 41, coverage: 'partial' },
+      { grade: 9, topic: 42, coverage: 'partial' },
+      { grade: 9, topic: 43, coverage: 'partial' }
+    ],
+    theme: FOREST,
+    kind: 'engine',
+    playPath: '/games/sadnat-hagormim/play'
+  },
+  {
+    slug: 'maabadat-haparabolot',
+    title: 'משחק הפונקציה הריבועית עם אליהו | נועם דורון',
+    h1: 'משחק הפונקציה הריבועית עם אליהו',
+    description: 'שיעור קצר עם אליהו: גוררים את קודקוד הפרבולה, מוצאים אפסים וציר סימטריה ובודקים איפה ישר חותך את הגרף.',
+    short: 'גוררים את הקודקוד, והנוסחה זזה איתו.',
+    grade: 'כיתה ט׳',
+    gradeOrder: 9,
+    emoji: '🎢',
+    links: [{ href: '/quadratic-function-grade-9', label: 'הפונקציה הריבועית לכיתה ט׳' }],
+    topics: [{ grade: 9, topic: 5, coverage: 'partial' }],
+    theme: INDIGO,
+    kind: 'engine',
+    playPath: '/games/maabadat-haparabolot/play'
   }
 ];
 
@@ -279,6 +398,7 @@ export const LEGACY_GAMES: EliyahuGame[] = [
     gradeOrder: 8,
     emoji: '🧩',
     links: [{ href: '/binomial-square-grade-9', label: 'נוסחאות כפל מקוצר לכיתה ט׳' }],
+    topics: [{ grade: 9, topic: 44, coverage: 'partial' }],
     theme: TEAL,
     kind: 'legacy',
     playPath: '/games/kefel-mekutsar-2'
@@ -296,6 +416,7 @@ export const LEGACY_GAMES: EliyahuGame[] = [
       { href: '/pythagorean-theorem-grade-8', label: 'משפט פיתגורס לכיתה ח׳' },
       { href: '/pythagorean-theorem-grade-9', label: 'משפט פיתגורס לכיתה ט׳' }
     ],
+    topics: [{ grade: 8, topic: 11, coverage: 'partial' }, { grade: 9, topic: 35, coverage: 'partial' }],
     theme: INDIGO,
     kind: 'legacy',
     playPath: '/games/eliyahu-pythagoras/play'
