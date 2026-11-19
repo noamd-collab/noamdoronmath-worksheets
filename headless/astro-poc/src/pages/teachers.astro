@@ -4,10 +4,21 @@ import TeacherComingSoon from '../components/TeacherComingSoon.astro';
 import {
   TEACHER_LANDING_TITLE,
   TEACHER_LANDING_DESCRIPTION,
+  TEACHER_FAQ,
   legacyTeacherToolRedirect,
 } from '../lib/teacherLandingContent';
 
 export const prerender = false;
+
+const teacherFaqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: TEACHER_FAQ.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: { '@type': 'Answer', text: item.answer },
+  })),
+};
 
 // Existing /teachers?grade=... links remain direct entries to the wizard.
 // Keep the full query, including pick/minutes, rather than rebuilding a subset.
@@ -26,5 +37,6 @@ if (legacyTarget) {
   activeNav="teachers"
   skipHref="#teacher-start"
 >
+  <script type="application/ld+json" set:html={JSON.stringify(teacherFaqJsonLd)} />
   <TeacherComingSoon />
 </BaseLayout>

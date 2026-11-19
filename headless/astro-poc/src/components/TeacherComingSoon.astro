@@ -1,5 +1,5 @@
 ---
-import { TEACHER_LANDING_H1 } from '../lib/teacherLandingContent';
+import { TEACHER_FAQ, TEACHER_LANDING_H1 } from '../lib/teacherLandingContent';
 import '../styles/teacher-landing.css';
 ---
 <main class="teacher-landing teacher-coming-soon" id="teacher-coming-soon">
@@ -47,5 +47,58 @@ import '../styles/teacher-landing.css';
       <li><h3>השלב בתוכנית הלימודים</h3><p>בחירת תרגול לפי הנושא והשלב שאליהם הגעתם במהלך השנה.</p></li>
       <li><h3>השיעור האחרון</h3><p>חיבור בין מה שנלמד לאחרונה לבין החזרה וההמשך שתרצו להכין.</p></li>
     </ul>
+  </section>
+
+  <section class="coming-soon-context teacher-tools wrap" aria-labelledby="teacher-tools-title">
+    <div class="section-heading">
+      <p class="eyebrow">כבר היום בכלי המורים</p>
+      <h2 id="teacher-tools-title">כלי המורים: דפי עבודה שתואמים לתוכנית הלימודים, מוכנים לשיעור</h2>
+      <p>דפי העבודה באתר תואמים לתוכנית הלימודים הישראלית במתמטיקה לכיתות א׳–ט׳. הדפים לא קיבלו אישור רשמי של משרד החינוך.</p>
+    </div>
+    <ul class="coming-soon-context-list">
+      <li><h3>בחירת שאלות לפי הכיתה</h3><p>בוחרים כיתה, נושא ורמה ומסמנים את השאלות שמתאימות לשיעור, מתוך הדפים שכבר פורסמו באתר.</p></li>
+      <li><h3>תואם לתוכנית הלימודים</h3><p>הנושאים מסודרים לפי תוכנית הלימודים במתמטיקה, מכיתה א׳ ועד כיתה ט׳.</p></li>
+      <li><h3>דפים להדפסה בחינם</h3><p>מרכיבים דף אחד ומדפיסים אותו, עם אפשרות לצרף את התשובות.</p></li>
+      <li><h3>ייצוא ל־Word</h3><p>מייצאים את הדף ל־Word ומתאימים אותו לכיתה לפני השיעור.</p></li>
+      <li><h3>דפי עבודה דיפרנציאליים</h3><p>רוב הנושאים מופיעים בשלוש רמות: רמה א׳, רמה ב׳ ומצוינות, כך שאפשר להכין דף שונה לכל קבוצה.</p></li>
+    </ul>
+    <p class="teacher-tools-note">תלמידים יכולים לסמן לעצמם את הדפים שפתרו באזור <a href="/learning.html">הלמידה שלי</a>.</p>
+  </section>
+
+  <section class="coming-soon-context teacher-steps wrap" aria-labelledby="teacher-steps-title">
+    <div class="section-heading">
+      <p class="eyebrow">איך זה עובד</p>
+      <h2 id="teacher-steps-title">שלושה צעדים לדף מוכן</h2>
+    </div>
+    <ol class="coming-soon-context-list teacher-steps-list">
+      <li><h3>1. בוחרים כיתה ונושא</h3><p>מתחילים מהנושא שלומדים עכשיו בכיתה ומהרמה שמתאימה לתלמידים.</p></li>
+      <li><h3>2. מרכיבים דף</h3><p>מסמנים את השאלות שרוצים, ומחליטים אם לצרף את התשובות.</p></li>
+      <li><h3>3. מדפיסים או מייצאים</h3><p>מדפיסים את הדף לשיעור, או מייצאים אותו ל־Word לעריכה.</p></li>
+    </ol>
+  </section>
+
+  <section class="coming-soon-context teacher-grades wrap" aria-labelledby="teacher-grades-title">
+    <div class="section-heading">
+      <p class="eyebrow">לפי שלב הלימוד</p>
+      <h2 id="teacher-grades-title">דפי עבודה ליסודי ולחטיבת הביניים</h2>
+    </div>
+    <ul class="coming-soon-context-list teacher-grades-list">
+      <li><h3><a href="/worksheets?level=ysodi">בית ספר יסודי: כיתות א׳–ו׳</a></h3><p>מספרים ופעולות, שברים, גיאומטריה, מדידות ונתונים. תואם לתוכנית הלימודים הישראלית.</p></li>
+      <li><h3><a href="/worksheets?level=hatzava">חטיבת הביניים: כיתות ז׳–ט׳</a></h3><p>אלגברה, משוואות, פונקציות, גיאומטריה, סטטיסטיקה והסתברות. תואם לתוכנית הלימודים הישראלית.</p></li>
+    </ul>
+  </section>
+
+  <section class="coming-soon-context teacher-faq wrap" aria-labelledby="teacher-faq-title">
+    <div class="section-heading">
+      <h2 id="teacher-faq-title">שאלות נפוצות של מורים</h2>
+    </div>
+    <div class="teacher-faq-list">
+      {TEACHER_FAQ.map((item) => (
+        <details class="teacher-faq-item">
+          <summary>{item.question}</summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </div>
   </section>
 </main>

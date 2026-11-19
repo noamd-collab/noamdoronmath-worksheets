@@ -907,3 +907,50 @@ main.teacher-coming-soon .coming-soon-context-list p {
     padding-block: 28px 40px;
   }
 }
+
+/* Teachers page: tools, steps, grade bands and FAQ (Noam, 19.11.2026). Page-scoped. */
+main.teacher-coming-soon .teacher-tools .coming-soon-context-list,
+main.teacher-coming-soon .teacher-grades-list {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+main.teacher-coming-soon .teacher-steps-list {
+  list-style: none;
+}
+main.teacher-coming-soon .teacher-tools-note {
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 17px;
+}
+main.teacher-coming-soon .teacher-grades-list h3 a,
+main.teacher-coming-soon .teacher-tools-note a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+main.teacher-coming-soon .teacher-faq-list {
+  margin-top: 22px;
+  display: grid;
+  gap: 10px;
+  max-width: 820px;
+}
+main.teacher-coming-soon .teacher-faq-item {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  background: #fff;
+}
+main.teacher-coming-soon .teacher-faq-item summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 18px;
+}
+main.teacher-coming-soon .teacher-faq-item p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 17px;
+}
+@media (max-width: 600px) {
+  main.teacher-coming-soon .teacher-tools .coming-soon-context-list,
+  main.teacher-coming-soon .teacher-grades-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
