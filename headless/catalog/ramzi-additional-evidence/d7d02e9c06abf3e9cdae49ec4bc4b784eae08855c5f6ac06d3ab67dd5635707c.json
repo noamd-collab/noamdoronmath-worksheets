@@ -1,0 +1,31 @@
+{
+  "schema": "noam-reviewed-additional-assets/v1",
+  "status": "reviewed_local_final_assets_with_verified_cdn_pdfs",
+  "scopeId": "ms-20261115-fac-01-r1",
+  "scopeSha256": "d8a67bd9dbe0320e9a1969552978d6ca3c903e43d35cc7957b62b1d1d895d169",
+  "pdfs": [
+    {
+      "pdfId": "2d4ba0fc410d4aadb67c9a2caa548b02",
+      "pdfSha256": "91cef40f14474fde848c8ed3af30fda5952e00c8a9bc423fc9091c5614569725"
+    },
+    {
+      "pdfId": "0b462c30ee8844c5b4d131c84ba73b4d",
+      "pdfSha256": "12b488b679e8caab336a07dd8e1b8be01ce1a978ab1e8a435fe36bbe46fe73be"
+    },
+    {
+      "pdfId": "7480f758805b4ae9aea2cc4bcc57100a",
+      "pdfSha256": "d36ee58b1ef7a0d8d56ad12c83ac67f9f412c2602635d23c912e9320bab76ae1"
+    }
+  ],
+  "localManifestHashes": [
+    "afa2bfc2a1947df41415f1b881ae13ca3a2344e5af6922e69f4beb38056c3119",
+    "a2e7a7545d48d478df03797d0bf90fbc172fd1afe1af7f2955fec1d19c178a37",
+    "ec1aabb32f8e2a6906900a3ea521f9aee45f85c857bb4ebb33bffcdc665c929a"
+  ],
+  "localNativeHashes": [
+    "516cb93b598e70c29baa121887f2b9995dabeeac9899b31daba8593ca5bea2cd",
+    "9032f33650a4b4b679a0308c1643f70c16e698d578e3502318ea1f302cc99abe",
+    "585e043032618e705b1e13844d196e08992b1bf9419c47daa21cf09d7e0c4b82"
+  ],
+  "learningScopeSha256": "ae9490819782f1f17c73a05e6ce0f929ed98663f0cdfbf48dd4eb1c6a87e1821"
+}

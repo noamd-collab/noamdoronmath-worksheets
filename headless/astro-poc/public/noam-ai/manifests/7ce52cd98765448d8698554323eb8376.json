@@ -1,0 +1,5715 @@
+{
+  "sourceSha256": "957e3923ab6473a77db89f29689710ca7c543bd4e1c795a4ad0df69b6885a092",
+  "canonicalSourceSha256": "25571ca459a0c907ea412c45dd544123d25231d0cf47693a9cdca2c9468fd181",
+  "layoutSha256": "92ebcb841253a0b80f04e6bd958a3657928d52b511a1363ef4eacbd2f48179b0",
+  "editionId": "ms-20261115-grw-01-r1",
+  "geometryContract": "measured-v1",
+  "reviewRequired": false,
+  "publishable": true,
+  "pageCount": 5,
+  "exercisePageCount": 4,
+  "answerStartPage": 5,
+  "schemaVersion": 1,
+  "pdfHash": "7ce52cd98765448d8698554323eb8376",
+  "prefix": "G7-T61",
+  "grade": 7,
+  "topicId": 6,
+  "topic": "חזקות בהקשר: גידול, הקטנה ושינוי שטח",
+  "level": "c",
+  "levelCode": "E",
+  "questionCount": 6,
+  "exerciseCount": 18,
+  "nativeExportUrl": "/noam-ai/native/G7-T61/c/noam-ai.json",
+  "nativeExportSha256": "89187c675b7393ce1b3f58778474546ad8ff4900f0d7a0e6284875dd5fa4e382",
+  "exercises": [
+    {
+      "q": 1,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.01",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.01.item.01",
+      "text": "במשחק מתחילים עם 2 אסימונים. בכל סבב מחליפים כל אסימון ב־3 אסימונים. אין הוספה אחרת. המצב ההתחלתי הוא לפני הסבב הראשון.\nא. כמה אסימונים יהיו לאחר הסבב הראשון ולאחר הסבב השני?",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q01א",
+      "canonicalQuestionSha256": "66989b928d0380d37612db33242e64a063ab482b126ce66760a222e140ca3991",
+      "sourceExerciseSha256": "90fd353dc203e65b49c94909f490f5f9ccaaf80012d83f51a11833a535a270b8",
+      "context": "במשחק מתחילים עם 2 אסימונים. בכל סבב מחליפים כל אסימון ב־3 אסימונים. אין הוספה אחרת. המצב ההתחלתי הוא לפני הסבב הראשון.",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375662,
+        "y": 0.4399416011971566
+      },
+      "pinFragmentRef": "auxiliary:dom-27:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.28853460531238306,
+          "w": 0.8571428571428573,
+          "h": 0.4141848671904228
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.01:1",
+        "element:ms-g7-grw-01-c-r1.question.01:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.42759319117096883,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239432
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.01.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 1,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.01",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.01.item.02",
+      "text": "במשחק מתחילים עם 2 אסימונים. בכל סבב מחליפים כל אסימון ב־3 אסימונים. אין הוספה אחרת. המצב ההתחלתי הוא לפני הסבב הראשון.\nב. כתבו בעזרת חזקה כמה אסימונים יהיו לאחר 4 סבבים, וחשבו.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q01ב",
+      "canonicalQuestionSha256": "66989b928d0380d37612db33242e64a063ab482b126ce66760a222e140ca3991",
+      "sourceExerciseSha256": "20c12ff388c164b05f4c90b432d41e60ccedd051fa6365c14167958d0de4ead4",
+      "context": "במשחק מתחילים עם 2 אסימונים. בכל סבב מחליפים כל אסימון ב־3 אסימונים. אין הוספה אחרת. המצב ההתחלתי הוא לפני הסבב הראשון.",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375662,
+        "y": 0.5308584923307145
+      },
+      "pinFragmentRef": "auxiliary:dom-29:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.28853460531238306,
+          "w": 0.8571428571428573,
+          "h": 0.4141848671904228
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.01:1",
+        "element:ms-g7-grw-01-c-r1.question.01:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.5185100823045267,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239438
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.01.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 1,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.01",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.01.item.03",
+      "text": "במשחק מתחילים עם 2 אסימונים. בכל סבב מחליפים כל אסימון ב־3 אסימונים. אין הוספה אחרת. המצב ההתחלתי הוא לפני הסבב הראשון.\nג. האם בכל סבב מתווסף אותו מספר אסימונים? הסבירו בעזרת שני הסבבים הראשונים.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q01ג",
+      "canonicalQuestionSha256": "66989b928d0380d37612db33242e64a063ab482b126ce66760a222e140ca3991",
+      "sourceExerciseSha256": "df0bf35b9b030bdf45ae4512813271b47ad60a7bf7fa90c3579688d93af594cf",
+      "context": "במשחק מתחילים עם 2 אסימונים. בכל סבב מחליפים כל אסימון ב־3 אסימונים. אין הוספה אחרת. המצב ההתחלתי הוא לפני הסבב הראשון.",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375663,
+        "y": 0.6265265993265993
+      },
+      "pinFragmentRef": "auxiliary:dom-31:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.28853460531238306,
+          "w": 0.8571428571428573,
+          "h": 0.4141848671904228
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.01:1",
+        "element:ms-g7-grw-01-c-r1.question.01:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.6141781893004115,
+          "w": 0.7832275132275135,
+          "h": 0.08854128320239438
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.01.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 2,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.02",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.02.item.01",
+      "text": "בכל שלב של ניסוי נשארת בדיוק מחצית מכמות הנוזל שהייתה בתחילת אותו שלב. בתחילה יש 320 מ״ל.\nא. כמה נוזל נשאר לאחר שלב אחד ולאחר שני שלבים?",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q02א",
+      "canonicalQuestionSha256": "ffb8e0668cff836707883c7e9f94ac2437076904b2e6144ca151ac8de9ae7603",
+      "sourceExerciseSha256": "86d3d904bb044d7ac39fd513e70c40f253eea5fb9f45e79293cd260aed900f40",
+      "context": "בכל שלב של ניסוי נשארת בדיוק מחצית מכמות הנוזל שהייתה בתחילת אותו שלב. בתחילה יש 320 מ״ל.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.1132384960718294
+      },
+      "pinFragmentRef": "auxiliary:dom-38:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.32214431350542455
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.02:1",
+        "element:ms-g7-grw-01-c-r1.question.02:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.10089008604564159,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239431
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.02.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 2,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.02",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.02.item.02",
+      "text": "בכל שלב של ניסוי נשארת בדיוק מחצית מכמות הנוזל שהייתה בתחילת אותו שלב. בתחילה יש 320 מ״ל.\nב. כתבו בעזרת חזקה את הכמות שנותרת לאחר 5 שלבים, וחשבו.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q02ב",
+      "canonicalQuestionSha256": "ffb8e0668cff836707883c7e9f94ac2437076904b2e6144ca151ac8de9ae7603",
+      "sourceExerciseSha256": "656937bae763da17b051cbf0ded1c8b626794c0ff093dfdf126f81ae49c3bc5e",
+      "context": "בכל שלב של ניסוי נשארת בדיוק מחצית מכמות הנוזל שהייתה בתחילת אותו שלב. בתחילה יש 320 מ״ל.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.20415538720538717
+      },
+      "pinFragmentRef": "auxiliary:dom-40:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.32214431350542455
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.02:1",
+        "element:ms-g7-grw-01-c-r1.question.02:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.1918069771791994,
+          "w": 0.7832275132275134,
+          "h": 0.0885412832023943
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.02.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 2,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.02",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.02.item.03",
+      "text": "בכל שלב של ניסוי נשארת בדיוק מחצית מכמות הנוזל שהייתה בתחילת אותו שלב. בתחילה יש 320 מ״ל.\nג. האם בכל שלב נגרעת אותה כמות נוזל? נמקו.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q02ג",
+      "canonicalQuestionSha256": "ffb8e0668cff836707883c7e9f94ac2437076904b2e6144ca151ac8de9ae7603",
+      "sourceExerciseSha256": "997b9d25a7976ca57106aef6f4b7af94040b7f8338e724340279458fe03ff457",
+      "context": "בכל שלב של ניסוי נשארת בדיוק מחצית מכמות הנוזל שהייתה בתחילת אותו שלב. בתחילה יש 320 מ״ל.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.2998234942012719
+      },
+      "pinFragmentRef": "auxiliary:dom-42:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.32214431350542455
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.02:1",
+        "element:ms-g7-grw-01-c-r1.question.02:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.28747508417508416,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239427
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.02.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 3,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.03",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.03.item.01",
+      "text": "בשתי קופסאות יש בתחילה 4 חרוזים בכל קופסה. בכל סבב מוסיפים לקופסה א׳ 7 חרוזים, ובקופסה ב׳ מכפילים את הכמות פי 2. הסבבים מתבצעים בו־זמנית.\nא. כמה חרוזים יש בכל קופסה לאחר שני סבבים?",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q03א",
+      "canonicalQuestionSha256": "4b1566aac3a6c18d052bb74b5955eeb468e552ad7ef418a4f5063a6d7b4c171b",
+      "sourceExerciseSha256": "a86c9d35e38c5a8bdfad590aa6f77c9b4880885da37de718eeaef609ac3f4f49",
+      "context": "בשתי קופסאות יש בתחילה 4 חרוזים בכל קופסה. בכל סבב מוסיפים לקופסה א׳ 7 חרוזים, ובקופסה ב׳ מכפילים את הכמות פי 2. הסבבים מתבצעים בו־זמנית.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.44369743733632605
+      },
+      "pinFragmentRef": "auxiliary:dom-49:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.3843309951365506,
+          "w": 0.8571428571428573,
+          "h": 0.3221443135054247
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.03:1",
+        "element:ms-g7-grw-01-c-r1.question.03:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.4313490273101383,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239432
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.03.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 3,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.03",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.03.item.02",
+      "text": "בשתי קופסאות יש בתחילה 4 חרוזים בכל קופסה. בכל סבב מוסיפים לקופסה א׳ 7 חרוזים, ובקופסה ב׳ מכפילים את הכמות פי 2. הסבבים מתבצעים בו־זמנית.\nב. כמה חרוזים יש בכל קופסה לאחר 4 סבבים, ובאיזו קופסה יש יותר?",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q03ב",
+      "canonicalQuestionSha256": "4b1566aac3a6c18d052bb74b5955eeb468e552ad7ef418a4f5063a6d7b4c171b",
+      "sourceExerciseSha256": "94720f3b1bb0a5e1cdcc035920e602cca6f8e90d5e2395c60ab19f17824fa46d",
+      "context": "בשתי קופסאות יש בתחילה 4 חרוזים בכל קופסה. בכל סבב מוסיפים לקופסה א׳ 7 חרוזים, ובקופסה ב׳ מכפילים את הכמות פי 2. הסבבים מתבצעים בו־זמנית.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375663,
+        "y": 0.534614328469884
+      },
+      "pinFragmentRef": "auxiliary:dom-51:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.3843309951365506,
+          "w": 0.8571428571428573,
+          "h": 0.3221443135054247
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.03:1",
+        "element:ms-g7-grw-01-c-r1.question.03:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.5222659184436961,
+          "w": 0.7832275132275135,
+          "h": 0.08854128320239438
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.03.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 3,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.03",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.03.item.03",
+      "text": "בשתי קופסאות יש בתחילה 4 חרוזים בכל קופסה. בכל סבב מוסיפים לקופסה א׳ 7 חרוזים, ובקופסה ב׳ מכפילים את הכמות פי 2. הסבבים מתבצעים בו־זמנית.\nג. באיזה סבב קופסה ב׳ מובילה לראשונה? בדקו את הסבב שלפניו ונמקו.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q03ג",
+      "canonicalQuestionSha256": "4b1566aac3a6c18d052bb74b5955eeb468e552ad7ef418a4f5063a6d7b4c171b",
+      "sourceExerciseSha256": "b70a082e9c39b3668262408f8d0ae5d29e5e71f72f85f9249dfcb6fe5362c569",
+      "context": "בשתי קופסאות יש בתחילה 4 חרוזים בכל קופסה. בכל סבב מוסיפים לקופסה א׳ 7 חרוזים, ובקופסה ב׳ מכפילים את הכמות פי 2. הסבבים מתבצעים בו־זמנית.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375663,
+        "y": 0.6302824354657688
+      },
+      "pinFragmentRef": "auxiliary:dom-53:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.3843309951365506,
+          "w": 0.8571428571428573,
+          "h": 0.3221443135054247
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.03:1",
+        "element:ms-g7-grw-01-c-r1.question.03:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.6179340254395809,
+          "w": 0.7832275132275135,
+          "h": 0.08854128320239438
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.03.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 4,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.04",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.04.item.01",
+      "text": "אורך צלעו של ריבוע קטן הוא 5 ס״מ. אורך צלעו של ריבוע גדול הוא פי 4 מאורך צלעו של הריבוע הקטן. אין סרטוט נתון.\nא. כתבו כחזקה וחשבו את שטח הריבוע הקטן.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q04א",
+      "canonicalQuestionSha256": "93901567e46cfe18b9bb83e3d581c0e641500c7ec67e156c0c7332fbfd82cf24",
+      "sourceExerciseSha256": "ed28791cbc4637710845be0ffce21486998525b5df99ff507f877e8a26fd5205",
+      "context": "אורך צלעו של ריבוע קטן הוא 5 ס״מ. אורך צלעו של ריבוע גדול הוא פי 4 מאורך צלעו של הריבוע הקטן. אין סרטוט נתון.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.1132384960718294
+      },
+      "pinFragmentRef": "auxiliary:dom-60:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.32214431350542455
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.04:1",
+        "element:ms-g7-grw-01-c-r1.question.04:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.10089008604564159,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239431
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.04.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 4,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.04",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.04.item.02",
+      "text": "אורך צלעו של ריבוע קטן הוא 5 ס״מ. אורך צלעו של ריבוע גדול הוא פי 4 מאורך צלעו של הריבוע הקטן. אין סרטוט נתון.\nב. מצאו את אורך צלעו ואת שטחו של הריבוע הגדול.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q04ב",
+      "canonicalQuestionSha256": "93901567e46cfe18b9bb83e3d581c0e641500c7ec67e156c0c7332fbfd82cf24",
+      "sourceExerciseSha256": "70b536ff2cb9a3a2913945b1164fefe83ef58b5efa744eec729a5eac301a0480",
+      "context": "אורך צלעו של ריבוע קטן הוא 5 ס״מ. אורך צלעו של ריבוע גדול הוא פי 4 מאורך צלעו של הריבוע הקטן. אין סרטוט נתון.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.20415538720538717
+      },
+      "pinFragmentRef": "auxiliary:dom-62:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.32214431350542455
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.04:1",
+        "element:ms-g7-grw-01-c-r1.question.04:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.1918069771791994,
+          "w": 0.7832275132275134,
+          "h": 0.0885412832023943
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.04.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 4,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.04",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.04.item.03",
+      "text": "אורך צלעו של ריבוע קטן הוא 5 ס״מ. אורך צלעו של ריבוע גדול הוא פי 4 מאורך צלעו של הריבוע הקטן. אין סרטוט נתון.\nג. פי כמה גדל השטח? הסבירו מדוע גורם זה שונה מגורם ההגדלה של הצלע.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q04ג",
+      "canonicalQuestionSha256": "93901567e46cfe18b9bb83e3d581c0e641500c7ec67e156c0c7332fbfd82cf24",
+      "sourceExerciseSha256": "119ea69d496838a93f4da309d9713272d4ad6116d6b80d6c89133e4731c17ec0",
+      "context": "אורך צלעו של ריבוע קטן הוא 5 ס״מ. אורך צלעו של ריבוע גדול הוא פי 4 מאורך צלעו של הריבוע הקטן. אין סרטוט נתון.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375663,
+        "y": 0.2998234942012719
+      },
+      "pinFragmentRef": "auxiliary:dom-64:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.32214431350542455
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.04:1",
+        "element:ms-g7-grw-01-c-r1.question.04:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.28747508417508416,
+          "w": 0.7832275132275135,
+          "h": 0.08854128320239427
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.04.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 5,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.05",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.05.item.01",
+      "text": "כמות התחלתית של 5 יחידות גדלה פי 2 בכל שלב. רוצים למצוא את השלב הראשון שבו הכמות גדולה מ־300 יחידות. השתמשו בחישוב שלבים עוקבים; אין צורך בנוסחה למציאת מעריך.\nא. מצאו את הכמות לאחר שלושה שלבים.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q05א",
+      "canonicalQuestionSha256": "720962f339453456bc928119275267736f2ed74f8185e79eaad7a8c604db8566",
+      "sourceExerciseSha256": "7accdc27fb1b3900f54b264c65c25e8a4cec8044e2b3ca4252807d03dec459e9",
+      "context": "כמות התחלתית של 5 יחידות גדלה פי 2 בכל שלב. רוצים למצוא את השלב הראשון שבו הכמות גדולה מ־300 יחידות. השתמשו בחישוב שלבים עוקבים; אין צורך בנוסחה למציאת מעריך.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.44369743733632605
+      },
+      "pinFragmentRef": "auxiliary:dom-71:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.3843309951365506,
+          "w": 0.8571428571428573,
+          "h": 0.36490525626636744
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.05:1",
+        "element:ms-g7-grw-01-c-r1.question.05:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.4313490273101383,
+          "w": 0.7832275132275134,
+          "h": 0.10279493078937524
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.05.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 5,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.05",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.05.item.02",
+      "text": "כמות התחלתית של 5 יחידות גדלה פי 2 בכל שלב. רוצים למצוא את השלב הראשון שבו הכמות גדולה מ־300 יחידות. השתמשו בחישוב שלבים עוקבים; אין צורך בנוסחה למציאת מעריך.\nב. באיזה שלב עוברים לראשונה את הכמות שנקבעה? הראו גם את הכמות בשלב שלפניו.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q05ב",
+      "canonicalQuestionSha256": "720962f339453456bc928119275267736f2ed74f8185e79eaad7a8c604db8566",
+      "sourceExerciseSha256": "965ffd076a626b166daa4d8b668fd067e359645b4be2fa89ded1cb49a4ca4891",
+      "context": "כמות התחלתית של 5 יחידות גדלה פי 2 בכל שלב. רוצים למצוא את השלב הראשון שבו הכמות גדולה מ־300 יחידות. השתמשו בחישוב שלבים עוקבים; אין צורך בנוסחה למציאת מעריך.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375663,
+        "y": 0.5488679760568649
+      },
+      "pinFragmentRef": "auxiliary:dom-73:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.3843309951365506,
+          "w": 0.8571428571428573,
+          "h": 0.36490525626636744
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.05:1",
+        "element:ms-g7-grw-01-c-r1.question.05:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.536519566030677,
+          "w": 0.7832275132275135,
+          "h": 0.1027949307893753
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.05.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 5,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.05",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.05.item.03",
+      "text": "כמות התחלתית של 5 יחידות גדלה פי 2 בכל שלב. רוצים למצוא את השלב הראשון שבו הכמות גדולה מ־300 יחידות. השתמשו בחישוב שלבים עוקבים; אין צורך בנוסחה למציאת מעריך.\nג. אילו הכמות ההתחלתית הייתה גדולה פי 2, האם מספר השלבים הנדרש היה משתנה? נמקו.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q05ג",
+      "canonicalQuestionSha256": "720962f339453456bc928119275267736f2ed74f8185e79eaad7a8c604db8566",
+      "sourceExerciseSha256": "86d6faa2d16ecc17ff22ccb970a7dc7f534c59c606568e66f222f2252275fee7",
+      "context": "כמות התחלתית של 5 יחידות גדלה פי 2 בכל שלב. רוצים למצוא את השלב הראשון שבו הכמות גדולה מ־300 יחידות. השתמשו בחישוב שלבים עוקבים; אין צורך בנוסחה למציאת מעריך.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375663,
+        "y": 0.6587897306397307
+      },
+      "pinFragmentRef": "auxiliary:dom-75:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.3843309951365506,
+          "w": 0.8571428571428573,
+          "h": 0.36490525626636744
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.05:1",
+        "element:ms-g7-grw-01-c-r1.question.05:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.6464413206135428,
+          "w": 0.7832275132275135,
+          "h": 0.1027949307893753
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.05.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 6,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.06",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.06.item.01",
+      "text": "רוצים לתכנן משחק שבו מספר האסימונים מוכפל פי 2 בכל סבב. אחרי 5 סבבים צריכים להיות בדיוק 96 אסימונים. מספר האסימונים ההתחלתי חייב להיות שלם וחיובי.\nא. כמה אסימונים צריכים להיות בתחילה? הסבירו.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q06א",
+      "canonicalQuestionSha256": "bf4e37a18138c43e83dfb90d13a0d502a5f6877521697c4020b94602c6c89edd",
+      "sourceExerciseSha256": "42950aeaf1a19ab64d0a1bc37a70245d165bcec9b1bb399fe563684fb667348c",
+      "context": "רוצים לתכנן משחק שבו מספר האסימונים מוכפל פי 2 בכל סבב. אחרי 5 סבבים צריכים להיות בדיוק 96 אסימונים. מספר האסימונים ההתחלתי חייב להיות שלם וחיובי.",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375662,
+        "y": 0.1132384960718294
+      },
+      "pinFragmentRef": "auxiliary:dom-82:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.40954768050879153
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.06:1",
+        "element:ms-g7-grw-01-c-r1.question.06:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.10089008604564159,
+          "w": 0.7832275132275134,
+          "h": 0.10279493078937522
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.06.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 6,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.06",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.06.item.02",
+      "text": "רוצים לתכנן משחק שבו מספר האסימונים מוכפל פי 2 בכל סבב. אחרי 5 סבבים צריכים להיות בדיוק 96 אסימונים. מספר האסימונים ההתחלתי חייב להיות שלם וחיובי.\nב. הציעו משחק אחר שמתחיל באותה כמות, אבל בכל סבב מוסיפים מספר שלם חיובי קבוע של אסימונים. בחרו את התוספת וכתבו כמה יהיו לאחר שני סבבים.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q06ב",
+      "canonicalQuestionSha256": "bf4e37a18138c43e83dfb90d13a0d502a5f6877521697c4020b94602c6c89edd",
+      "sourceExerciseSha256": "6cd90925409071895c317c0929f44d60e322c2777ac99bbdedcec88f20ff5e9c",
+      "context": "רוצים לתכנן משחק שבו מספר האסימונים מוכפל פי 2 בכל סבב. אחרי 5 סבבים צריכים להיות בדיוק 96 אסימונים. מספר האסימונים ההתחלתי חייב להיות שלם וחיובי.",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375663,
+        "y": 0.21840903479236812
+      },
+      "pinFragmentRef": "auxiliary:dom-84:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.40954768050879153
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.06:1",
+        "element:ms-g7-grw-01-c-r1.question.06:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.2060606247661803,
+          "w": 0.7832275132275135,
+          "h": 0.1251161429105873
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.06.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 6,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.06",
+      "canonicalItemId": "ms-g7-grw-01-c-r1.question.06.item.03",
+      "text": "רוצים לתכנן משחק שבו מספר האסימונים מוכפל פי 2 בכל סבב. אחרי 5 סבבים צריכים להיות בדיוק 96 אסימונים. מספר האסימונים ההתחלתי חייב להיות שלם וחיובי.\nג. במשחק המקורי רוצים להגיע ל־96 אסימונים אחרי שישה סבבים במקום חמישה. האם כמות התחלתית שלמה וחיובית תאפשר זאת? נמקו.",
+      "requiredQuestions": [],
+      "id": "G7-T61-E-Q06ג",
+      "canonicalQuestionSha256": "bf4e37a18138c43e83dfb90d13a0d502a5f6877521697c4020b94602c6c89edd",
+      "sourceExerciseSha256": "4b421f3b99de3c5680ad213e1c317db6436860c9faf5130b4e0e8af1e4e60037",
+      "context": "רוצים לתכנן משחק שבו מספר האסימונים מוכפל פי 2 בכל סבב. אחרי 5 סבבים צריכים להיות בדיוק 96 אסימונים. מספר האסימונים ההתחלתי חייב להיות שלם וחיובי.",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375663,
+        "y": 0.3506520014964459
+      },
+      "pinFragmentRef": "auxiliary:dom-86:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.40954768050879153
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-grw-01-c-r1.question.06:1",
+        "element:ms-g7-grw-01-c-r1.question.06:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.33830359147025807,
+          "w": 0.7832275132275135,
+          "h": 0.12511614291058734
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-grw-01-c-r1.question.06.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    }
+  ],
+  "sourceNativeExportSha256": "89187c675b7393ce1b3f58778474546ad8ff4900f0d7a0e6284875dd5fa4e382",
+  "measured": {
+    "version": 1,
+    "fragments": {
+      "element:ms-g7-grw-01-c-r1.question.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.01",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01"
+      },
+      "element:ms-g7-grw-01-c-r1.question.01:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.01",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.28853460531238306,
+          "w": 0.8571428571428573,
+          "h": 0.4141848671904228
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01"
+      },
+      "element:ms-g7-grw-01-c-r1.question.01.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.01.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.42759319117096883,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239432
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.01"
+      },
+      "element:ms-g7-grw-01-c-r1.question.01.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.01.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.5185100823045267,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239438
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.02"
+      },
+      "element:ms-g7-grw-01-c-r1.question.01.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.01.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.6141781893004115,
+          "w": 0.7832275132275135,
+          "h": 0.08854128320239438
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.03"
+      },
+      "element:ms-g7-grw-01-c-r1.question.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.02",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02"
+      },
+      "element:ms-g7-grw-01-c-r1.question.02:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.02",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.32214431350542455
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02"
+      },
+      "element:ms-g7-grw-01-c-r1.question.02.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.02.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.10089008604564159,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239431
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.01"
+      },
+      "element:ms-g7-grw-01-c-r1.question.02.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.02.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.1918069771791994,
+          "w": 0.7832275132275134,
+          "h": 0.0885412832023943
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.02"
+      },
+      "element:ms-g7-grw-01-c-r1.question.02.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.02.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.28747508417508416,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239427
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.03"
+      },
+      "element:ms-g7-grw-01-c-r1.question.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.03",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03"
+      },
+      "element:ms-g7-grw-01-c-r1.question.03:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.03",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.3843309951365506,
+          "w": 0.8571428571428573,
+          "h": 0.3221443135054247
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03"
+      },
+      "element:ms-g7-grw-01-c-r1.question.03.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.03.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.4313490273101383,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239432
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.01"
+      },
+      "element:ms-g7-grw-01-c-r1.question.03.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.03.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.5222659184436961,
+          "w": 0.7832275132275135,
+          "h": 0.08854128320239438
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.02"
+      },
+      "element:ms-g7-grw-01-c-r1.question.03.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.03.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.6179340254395809,
+          "w": 0.7832275132275135,
+          "h": 0.08854128320239438
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.03"
+      },
+      "element:ms-g7-grw-01-c-r1.question.04:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.04",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04"
+      },
+      "element:ms-g7-grw-01-c-r1.question.04:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.04",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.32214431350542455
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04"
+      },
+      "element:ms-g7-grw-01-c-r1.question.04.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.04.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.10089008604564159,
+          "w": 0.7832275132275134,
+          "h": 0.08854128320239431
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.01"
+      },
+      "element:ms-g7-grw-01-c-r1.question.04.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.04.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.1918069771791994,
+          "w": 0.7832275132275134,
+          "h": 0.0885412832023943
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.02"
+      },
+      "element:ms-g7-grw-01-c-r1.question.04.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.04.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.28747508417508416,
+          "w": 0.7832275132275135,
+          "h": 0.08854128320239427
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.03"
+      },
+      "element:ms-g7-grw-01-c-r1.question.05:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.05",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05"
+      },
+      "element:ms-g7-grw-01-c-r1.question.05:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.05",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.3843309951365506,
+          "w": 0.8571428571428573,
+          "h": 0.36490525626636744
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05"
+      },
+      "element:ms-g7-grw-01-c-r1.question.05.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.05.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.4313490273101383,
+          "w": 0.7832275132275134,
+          "h": 0.10279493078937524
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.01"
+      },
+      "element:ms-g7-grw-01-c-r1.question.05.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.05.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.536519566030677,
+          "w": 0.7832275132275135,
+          "h": 0.1027949307893753
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.02"
+      },
+      "element:ms-g7-grw-01-c-r1.question.05.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.05.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.6464413206135428,
+          "w": 0.7832275132275135,
+          "h": 0.1027949307893753
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.03"
+      },
+      "element:ms-g7-grw-01-c-r1.question.06:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.06",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06"
+      },
+      "element:ms-g7-grw-01-c-r1.question.06:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.06",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.40954768050879153
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06"
+      },
+      "element:ms-g7-grw-01-c-r1.question.06.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.06.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.10089008604564159,
+          "w": 0.7832275132275134,
+          "h": 0.10279493078937522
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.01"
+      },
+      "element:ms-g7-grw-01-c-r1.question.06.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.06.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.2060606247661803,
+          "w": 0.7832275132275135,
+          "h": 0.1251161429105873
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.02"
+      },
+      "element:ms-g7-grw-01-c-r1.question.06.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-grw-01-c-r1.question.06.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.33830359147025807,
+          "w": 0.7832275132275135,
+          "h": 0.12511614291058734
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.03"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.01",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.0714285714285713,
+          "y": 0.12194034792368123,
+          "w": 0.8571428571428573,
+          "h": 0.04419343434343434
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.01.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.01.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.6857348503637568,
+          "y": 0.1235438832772166,
+          "w": 0.19579954117063492,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.01"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.01.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.01.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.5058072840711806,
+          "y": 0.1235438832772166,
+          "w": 0.16144873031374013,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.02"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.01.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.01.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.4551632222170549,
+          "y": 0.14376980920314253,
+          "w": 0.4263711693173363,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.03"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.02",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.0714285714285713,
+          "y": 0.1661337822671156,
+          "w": 0.8571428571428573,
+          "h": 0.048514926487093143
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.02.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.02.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.6842140867848877,
+          "y": 0.16773731762065094,
+          "w": 0.19732030474950396,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.01"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.02.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.02.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.5144422627480159,
+          "y": 0.1670317620650954,
+          "w": 0.15129298805803582,
+          "h": 0.025252973625140285
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.02"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.02.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.02.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.3886113597728585,
+          "y": 0.1922847356902357,
+          "w": 0.4929230317615328,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.03"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.03",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.0714285714285713,
+          "y": 0.21464870875420872,
+          "w": 0.8571428571428573,
+          "h": 0.04419343434343432
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.03.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.03.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.6681402555596894,
+          "y": 0.21625224410774407,
+          "w": 0.21339413597470222,
+          "h": 0.020225925925925904
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.01"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.03.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.03.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.4554933772011409,
+          "y": 0.21625224410774407,
+          "w": 0.19416804237971222,
+          "h": 0.020225925925925904
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.02"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.03.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.03.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.3273034248150212,
+          "y": 0.23647817003367,
+          "w": 0.5542309667193701,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.03"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.04:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.04",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.0714285714285713,
+          "y": 0.25884214309764303,
+          "w": 0.8571428571428573,
+          "h": 0.023967508417508412
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.04.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.04.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.772500328259342,
+          "y": 0.2604456784511784,
+          "w": 0.10903406327504958,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.01"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.04.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.04.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.4916154691375247,
+          "y": 0.2604456784511784,
+          "w": 0.26240602314298117,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.02"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.04.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.04.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.22757760925615916,
+          "y": 0.2604456784511784,
+          "w": 0.24555902390252973,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.03"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.05:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.05",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857116,
+          "y": 0.2828096515151515,
+          "w": 0.8571428571428574,
+          "h": 0.06441936026936028
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.05.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.05.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.7909136155547288,
+          "y": 0.28441318686868683,
+          "w": 0.09062077597966268,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.01"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.05.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.05.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.3366658819289432,
+          "y": 0.28441318686868683,
+          "w": 0.4357688976469493,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.02"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.05.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.05.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.12542205972015544,
+          "y": 0.30463911279461275,
+          "w": 0.7561123318142361,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.03"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.05.item.03:2": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.05.item.03",
+        "fragment": 2,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.8480960486679481,
+          "y": 0.3248650387205386,
+          "w": 0.03343834286644345,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.03"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.06:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.06",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857116,
+          "y": 0.3472290117845117,
+          "w": 0.8571428571428574,
+          "h": 0.0932882704826038
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.06.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.06.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.7180297703693369,
+          "y": 0.3481269915824915,
+          "w": 0.1635046211650546,
+          "h": 0.025252973625140313
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.01"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.06.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.06.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.13624581150276951,
+          "y": 0.37337996520763184,
+          "w": 0.7452885800316219,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.02"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.06.item.02:2": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.06.item.02",
+        "fragment": 2,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.811133865275711,
+          "y": 0.3936058911335577,
+          "w": 0.07040052625868055,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.02"
+      },
+      "element:answer:ms-g7-grw-01-c-r1.question.06.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-grw-01-c-r1.question.06.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.4519945753668567,
+          "y": 0.4131262615039281,
+          "w": 0.4295398161675348,
+          "h": 0.025252973625140313
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.03"
+      },
+      "auxiliary:dom-27:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-27",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 1,
+          "x": 0.8076190476190477,
+          "y": 0.42878099513655055,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.01"
+      },
+      "auxiliary:dom-29:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-29",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 1,
+          "x": 0.8076190476190477,
+          "y": 0.5196978862701084,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.02"
+      },
+      "auxiliary:dom-31:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-31",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 1,
+          "x": 0.8076190476190477,
+          "y": 0.6153659932659932,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.03"
+      },
+      "auxiliary:dom-18:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-18",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.28853460531238306,
+          "w": 0.7832275132275135,
+          "h": 0.0813503179947624
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01"
+      },
+      "auxiliary:dom-25:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-25",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.38057515899738115,
+          "w": 0.7832275132275134,
+          "h": 0.044642424242424206
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01"
+      },
+      "auxiliary:dom-38:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-38",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.10207789001122333,
+          "w": 0.04703703703703708,
+          "h": 0.02232121212121213
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.01"
+      },
+      "auxiliary:dom-40:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-40",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.19299478114478114,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.02"
+      },
+      "auxiliary:dom-42:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-42",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.2886628881406659,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.03"
+      },
+      "auxiliary:dom-36:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-36",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.7832275132275134,
+          "h": 0.04464242424242423
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02"
+      },
+      "auxiliary:dom-49:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-49",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.43253683127572,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.01"
+      },
+      "auxiliary:dom-51:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-51",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.5234537224092779,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.02"
+      },
+      "auxiliary:dom-53:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-53",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.6191218294051627,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.03"
+      },
+      "auxiliary:dom-47:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-47",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.3843309951365506,
+          "w": 0.7832275132275134,
+          "h": 0.044642424242424206
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03"
+      },
+      "auxiliary:dom-60:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-60",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.10207789001122333,
+          "w": 0.04703703703703708,
+          "h": 0.02232121212121213
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.01"
+      },
+      "auxiliary:dom-62:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-62",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.19299478114478114,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.02"
+      },
+      "auxiliary:dom-64:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-64",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.2886628881406659,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.03"
+      },
+      "auxiliary:dom-58:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-58",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.7832275132275134,
+          "h": 0.04464242424242423
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04"
+      },
+      "auxiliary:dom-71:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-71",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.43253683127572,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.01"
+      },
+      "auxiliary:dom-73:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-73",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.5377073699962588,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.02"
+      },
+      "auxiliary:dom-75:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-75",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.6476291245791246,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.03"
+      },
+      "auxiliary:dom-69:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-69",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.3843309951365506,
+          "w": 0.7832275132275134,
+          "h": 0.044642424242424206
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05"
+      },
+      "auxiliary:dom-82:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-82",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 4,
+          "x": 0.8076190476190477,
+          "y": 0.10207789001122333,
+          "w": 0.04703703703703708,
+          "h": 0.02232121212121213
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.01"
+      },
+      "auxiliary:dom-84:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-84",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 4,
+          "x": 0.8076190476190477,
+          "y": 0.20724842873176205,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.02"
+      },
+      "auxiliary:dom-86:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-86",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 4,
+          "x": 0.8076190476190477,
+          "y": 0.33949139543583984,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.03"
+      },
+      "auxiliary:dom-80:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-80",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.7832275132275134,
+          "h": 0.04464242424242423
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06"
+      },
+      "auxiliary:dom-6:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-6",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.8571428571428573,
+          "h": 0.025193322109988776
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-7:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-7",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.08975561167227834,
+          "w": 0.8571428571428573,
+          "h": 0.03656060606060605
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-8:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-8",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.12869182566404785,
+          "w": 0.8571428571428573,
+          "h": 0.02116666666666668
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-9:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-9",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.16054872802095024,
+          "w": 0.8571428571428573,
+          "h": 0.021166666666666657
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-10:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-10",
+        "fragment": 1,
+        "role": "worksheet-instructions",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-11:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11",
+        "fragment": 1,
+        "role": "section-source",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-87:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-87",
+        "fragment": 1,
+        "role": "worksheet-closing",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.4800489898989898,
+          "w": 0.8571428571428573,
+          "h": 0.02501515151515155
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-89:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-89",
+        "fragment": 1,
+        "role": "answer-header",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.8571428571428574,
+          "h": 0.03376926674148896
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-90:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-90",
+        "fragment": 1,
+        "role": "answer-header",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.09595594837261504,
+          "w": 0.8571428571428573,
+          "h": 0.01885757575757575
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-26.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-26.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.4511022072577627,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.01"
+      },
+      "auxiliary:dom-28.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-28.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.5420190983913206,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.02"
+      },
+      "auxiliary:dom-30.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-30.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.6376872053872054,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": "ms-g7-grw-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01.item.03"
+      },
+      "auxiliary:dom-37.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-37.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.12439910213243546,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.01"
+      },
+      "auxiliary:dom-39.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-39.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.21531599326599324,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.02"
+      },
+      "auxiliary:dom-41.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-41.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.31098410026187795,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": "ms-g7-grw-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02.item.03"
+      },
+      "auxiliary:dom-48.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-48.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.45485804339693214,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.01"
+      },
+      "auxiliary:dom-50.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-50.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.54577493453049,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.02"
+      },
+      "auxiliary:dom-52.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-52.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.6414430415263749,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": "ms-g7-grw-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03.item.03"
+      },
+      "auxiliary:dom-59.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-59.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.12439910213243546,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.01"
+      },
+      "auxiliary:dom-61.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-61.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.21531599326599324,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.02"
+      },
+      "auxiliary:dom-63.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-63.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.31098410026187795,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": "ms-g7-grw-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04.item.03"
+      },
+      "auxiliary:dom-70.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-70.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.45485804339693214,
+          "w": 0.7832275132275134,
+          "h": 0.07839506172839505
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.01"
+      },
+      "auxiliary:dom-72.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-72.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.560028582117471,
+          "w": 0.7832275132275134,
+          "h": 0.07839506172839505
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.02"
+      },
+      "auxiliary:dom-74.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-74.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.6699503367003367,
+          "w": 0.7832275132275134,
+          "h": 0.07839506172839505
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": "ms-g7-grw-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05.item.03"
+      },
+      "auxiliary:dom-81.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-81.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.12439910213243546,
+          "w": 0.7832275132275134,
+          "h": 0.07839506172839505
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.01"
+      },
+      "auxiliary:dom-83.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-83.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.2518908529741863,
+          "w": 0.7832275132275134,
+          "h": 0.07839506172839505
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.02"
+      },
+      "auxiliary:dom-85.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-85.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.38413381967826404,
+          "w": 0.7832275132275134,
+          "h": 0.07839506172839505
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": "ms-g7-grw-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06.item.03"
+      },
+      "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.01:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-grw-01-c-r1.question.01",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.01"
+      },
+      "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.02:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-grw-01-c-r1.question.02",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.02"
+      },
+      "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.03:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-grw-01-c-r1.question.03",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.03"
+      },
+      "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.04:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-grw-01-c-r1.question.04",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.04"
+      },
+      "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.05:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-grw-01-c-r1.question.05",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.05"
+      },
+      "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.06:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-grw-01-c-r1.question.06",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-grw-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-grw-01-c-r1.question.06"
+      },
+      "margin:page1-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 1,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 1,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 1,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 1,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 2,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 2,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 2,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 2,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 3,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 3,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 3,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 3,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 4,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 4,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 4,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 4,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 5,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 5,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 5,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 5,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      }
+    },
+    "sheet": {
+      "sourceSha256": "957e3923ab6473a77db89f29689710ca7c543bd4e1c795a4ad0df69b6885a092",
+      "canonicalSourceSha256": "25571ca459a0c907ea412c45dd544123d25231d0cf47693a9cdca2c9468fd181",
+      "layoutSha256": "92ebcb841253a0b80f04e6bd958a3657928d52b511a1363ef4eacbd2f48179b0",
+      "editionId": "ms-20261115-grw-01-r1",
+      "geometryContract": "measured-v1",
+      "reviewRequired": true,
+      "publishable": false,
+      "pageCount": 5,
+      "exercisePageCount": 4,
+      "answerStartPage": 5,
+      "pdfId": "7ce52cd98765448d8698554323eb8376",
+      "pdfUrl": "https://static.wixstatic.com/ugd/d8e7ad_7ce52cd98765448d8698554323eb8376.pdf",
+      "grade": 7,
+      "topicId": 6,
+      "topic": "חזקות בהקשר: גידול, הקטנה ושינוי שטח",
+      "level": "c",
+      "levelLabel": "מצוינות",
+      "mode": "exercise",
+      "questions": [
+        {
+          "q": 1,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.01",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.01.item.01",
+          "text": "במשחק מתחילים עם 2 אסימונים. בכל סבב מחליפים כל אסימון ב־3 אסימונים. אין הוספה אחרת. המצב ההתחלתי הוא לפני הסבב הראשון.\nא. כמה אסימונים יהיו לאחר הסבב הראשון ולאחר הסבב השני?",
+          "requiredQuestions": [],
+          "id": "1א",
+          "page": 1,
+          "label": "שאלה 1 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.42878099513655055,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.42759319117096883,
+            "w": 0.7832275132275134,
+            "h": 0.08854128320239432
+          },
+          "rows": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.42759319117096883,
+              "w": 0.7832275132275134,
+              "h": 0.08854128320239432
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.01.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.28853460531238306,
+              "w": 0.7832275132275135,
+              "h": 0.0813503179947624
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.38057515899738115,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-18:1",
+            "auxiliary:dom-25:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.01:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-26.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-27:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 1,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.01",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.01.item.02",
+          "text": "במשחק מתחילים עם 2 אסימונים. בכל סבב מחליפים כל אסימון ב־3 אסימונים. אין הוספה אחרת. המצב ההתחלתי הוא לפני הסבב הראשון.\nב. כתבו בעזרת חזקה כמה אסימונים יהיו לאחר 4 סבבים, וחשבו.",
+          "requiredQuestions": [],
+          "id": "1ב",
+          "page": 1,
+          "label": "שאלה 1 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.5196978862701084,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.5185100823045267,
+            "w": 0.7832275132275134,
+            "h": 0.08854128320239438
+          },
+          "rows": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.5185100823045267,
+              "w": 0.7832275132275134,
+              "h": 0.08854128320239438
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.01.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.28853460531238306,
+              "w": 0.7832275132275135,
+              "h": 0.0813503179947624
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.38057515899738115,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-18:1",
+            "auxiliary:dom-25:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.01:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-28.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-29:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 1,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.01",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.01.item.03",
+          "text": "במשחק מתחילים עם 2 אסימונים. בכל סבב מחליפים כל אסימון ב־3 אסימונים. אין הוספה אחרת. המצב ההתחלתי הוא לפני הסבב הראשון.\nג. האם בכל סבב מתווסף אותו מספר אסימונים? הסבירו בעזרת שני הסבבים הראשונים.",
+          "requiredQuestions": [],
+          "id": "1ג",
+          "page": 1,
+          "label": "שאלה 1 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.6153659932659932,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.6141781893004115,
+            "w": 0.7832275132275135,
+            "h": 0.08854128320239438
+          },
+          "rows": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.6141781893004115,
+              "w": 0.7832275132275135,
+              "h": 0.08854128320239438
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.01.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.28853460531238306,
+              "w": 0.7832275132275135,
+              "h": 0.0813503179947624
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.38057515899738115,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-18:1",
+            "auxiliary:dom-25:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.01:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-30.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-31:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 2,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.02",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.02.item.01",
+          "text": "בכל שלב של ניסוי נשארת בדיוק מחצית מכמות הנוזל שהייתה בתחילת אותו שלב. בתחילה יש 320 מ״ל.\nא. כמה נוזל נשאר לאחר שלב אחד ולאחר שני שלבים?",
+          "requiredQuestions": [],
+          "id": "2א",
+          "page": 2,
+          "label": "שאלה 2 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.10207789001122333,
+            "w": 0.04703703703703708,
+            "h": 0.02232121212121213
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.10089008604564159,
+            "w": 0.7832275132275134,
+            "h": 0.08854128320239431
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.10089008604564159,
+              "w": 0.7832275132275134,
+              "h": 0.08854128320239431
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.02.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-36:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.02:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-37.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-38:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 2,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.02",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.02.item.02",
+          "text": "בכל שלב של ניסוי נשארת בדיוק מחצית מכמות הנוזל שהייתה בתחילת אותו שלב. בתחילה יש 320 מ״ל.\nב. כתבו בעזרת חזקה את הכמות שנותרת לאחר 5 שלבים, וחשבו.",
+          "requiredQuestions": [],
+          "id": "2ב",
+          "page": 2,
+          "label": "שאלה 2 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.19299478114478114,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.1918069771791994,
+            "w": 0.7832275132275134,
+            "h": 0.0885412832023943
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.1918069771791994,
+              "w": 0.7832275132275134,
+              "h": 0.0885412832023943
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.02.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-36:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.02:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-39.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-40:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 2,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.02",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.02.item.03",
+          "text": "בכל שלב של ניסוי נשארת בדיוק מחצית מכמות הנוזל שהייתה בתחילת אותו שלב. בתחילה יש 320 מ״ל.\nג. האם בכל שלב נגרעת אותה כמות נוזל? נמקו.",
+          "requiredQuestions": [],
+          "id": "2ג",
+          "page": 2,
+          "label": "שאלה 2 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.2886628881406659,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.28747508417508416,
+            "w": 0.7832275132275134,
+            "h": 0.08854128320239427
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.28747508417508416,
+              "w": 0.7832275132275134,
+              "h": 0.08854128320239427
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.02.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-36:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.02:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-41.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-42:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 3,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.03",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.03.item.01",
+          "text": "בשתי קופסאות יש בתחילה 4 חרוזים בכל קופסה. בכל סבב מוסיפים לקופסה א׳ 7 חרוזים, ובקופסה ב׳ מכפילים את הכמות פי 2. הסבבים מתבצעים בו־זמנית.\nא. כמה חרוזים יש בכל קופסה לאחר שני סבבים?",
+          "requiredQuestions": [],
+          "id": "3א",
+          "page": 2,
+          "label": "שאלה 3 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.43253683127572,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.4313490273101383,
+            "w": 0.7832275132275134,
+            "h": 0.08854128320239432
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.4313490273101383,
+              "w": 0.7832275132275134,
+              "h": 0.08854128320239432
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.03.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.3843309951365506,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-47:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.03:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-48.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-49:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 3,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.03",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.03.item.02",
+          "text": "בשתי קופסאות יש בתחילה 4 חרוזים בכל קופסה. בכל סבב מוסיפים לקופסה א׳ 7 חרוזים, ובקופסה ב׳ מכפילים את הכמות פי 2. הסבבים מתבצעים בו־זמנית.\nב. כמה חרוזים יש בכל קופסה לאחר 4 סבבים, ובאיזו קופסה יש יותר?",
+          "requiredQuestions": [],
+          "id": "3ב",
+          "page": 2,
+          "label": "שאלה 3 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.5234537224092779,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.5222659184436961,
+            "w": 0.7832275132275135,
+            "h": 0.08854128320239438
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.5222659184436961,
+              "w": 0.7832275132275135,
+              "h": 0.08854128320239438
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.03.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.3843309951365506,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-47:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.03:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-50.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-51:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 3,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.03",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.03.item.03",
+          "text": "בשתי קופסאות יש בתחילה 4 חרוזים בכל קופסה. בכל סבב מוסיפים לקופסה א׳ 7 חרוזים, ובקופסה ב׳ מכפילים את הכמות פי 2. הסבבים מתבצעים בו־זמנית.\nג. באיזה סבב קופסה ב׳ מובילה לראשונה? בדקו את הסבב שלפניו ונמקו.",
+          "requiredQuestions": [],
+          "id": "3ג",
+          "page": 2,
+          "label": "שאלה 3 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.6191218294051627,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.6179340254395809,
+            "w": 0.7832275132275135,
+            "h": 0.08854128320239438
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.6179340254395809,
+              "w": 0.7832275132275135,
+              "h": 0.08854128320239438
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.03.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.3843309951365506,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-47:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.03:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-52.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-53:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 4,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.04",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.04.item.01",
+          "text": "אורך צלעו של ריבוע קטן הוא 5 ס״מ. אורך צלעו של ריבוע גדול הוא פי 4 מאורך צלעו של הריבוע הקטן. אין סרטוט נתון.\nא. כתבו כחזקה וחשבו את שטח הריבוע הקטן.",
+          "requiredQuestions": [],
+          "id": "4א",
+          "page": 3,
+          "label": "שאלה 4 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.10207789001122333,
+            "w": 0.04703703703703708,
+            "h": 0.02232121212121213
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.10089008604564159,
+            "w": 0.7832275132275134,
+            "h": 0.08854128320239431
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.10089008604564159,
+              "w": 0.7832275132275134,
+              "h": 0.08854128320239431
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.04.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-58:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.04:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-59.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-60:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 4,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.04",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.04.item.02",
+          "text": "אורך צלעו של ריבוע קטן הוא 5 ס״מ. אורך צלעו של ריבוע גדול הוא פי 4 מאורך צלעו של הריבוע הקטן. אין סרטוט נתון.\nב. מצאו את אורך צלעו ואת שטחו של הריבוע הגדול.",
+          "requiredQuestions": [],
+          "id": "4ב",
+          "page": 3,
+          "label": "שאלה 4 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.19299478114478114,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.1918069771791994,
+            "w": 0.7832275132275134,
+            "h": 0.0885412832023943
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.1918069771791994,
+              "w": 0.7832275132275134,
+              "h": 0.0885412832023943
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.04.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-58:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.04:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-61.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-62:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 4,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.04",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.04.item.03",
+          "text": "אורך צלעו של ריבוע קטן הוא 5 ס״מ. אורך צלעו של ריבוע גדול הוא פי 4 מאורך צלעו של הריבוע הקטן. אין סרטוט נתון.\nג. פי כמה גדל השטח? הסבירו מדוע גורם זה שונה מגורם ההגדלה של הצלע.",
+          "requiredQuestions": [],
+          "id": "4ג",
+          "page": 3,
+          "label": "שאלה 4 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.2886628881406659,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.28747508417508416,
+            "w": 0.7832275132275135,
+            "h": 0.08854128320239427
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.28747508417508416,
+              "w": 0.7832275132275135,
+              "h": 0.08854128320239427
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.04.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-58:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.04:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-63.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-64:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 5,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.05",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.05.item.01",
+          "text": "כמות התחלתית של 5 יחידות גדלה פי 2 בכל שלב. רוצים למצוא את השלב הראשון שבו הכמות גדולה מ־300 יחידות. השתמשו בחישוב שלבים עוקבים; אין צורך בנוסחה למציאת מעריך.\nא. מצאו את הכמות לאחר שלושה שלבים.",
+          "requiredQuestions": [],
+          "id": "5א",
+          "page": 3,
+          "label": "שאלה 5 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.43253683127572,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.4313490273101383,
+            "w": 0.7832275132275134,
+            "h": 0.10279493078937524
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.4313490273101383,
+              "w": 0.7832275132275134,
+              "h": 0.10279493078937524
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.05.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.3843309951365506,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-69:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.05:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-70.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-71:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 5,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.05",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.05.item.02",
+          "text": "כמות התחלתית של 5 יחידות גדלה פי 2 בכל שלב. רוצים למצוא את השלב הראשון שבו הכמות גדולה מ־300 יחידות. השתמשו בחישוב שלבים עוקבים; אין צורך בנוסחה למציאת מעריך.\nב. באיזה שלב עוברים לראשונה את הכמות שנקבעה? הראו גם את הכמות בשלב שלפניו.",
+          "requiredQuestions": [],
+          "id": "5ב",
+          "page": 3,
+          "label": "שאלה 5 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.5377073699962588,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.536519566030677,
+            "w": 0.7832275132275135,
+            "h": 0.1027949307893753
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.536519566030677,
+              "w": 0.7832275132275135,
+              "h": 0.1027949307893753
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.05.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.3843309951365506,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-69:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.05:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-72.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-73:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 5,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.05",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.05.item.03",
+          "text": "כמות התחלתית של 5 יחידות גדלה פי 2 בכל שלב. רוצים למצוא את השלב הראשון שבו הכמות גדולה מ־300 יחידות. השתמשו בחישוב שלבים עוקבים; אין צורך בנוסחה למציאת מעריך.\nג. אילו הכמות ההתחלתית הייתה גדולה פי 2, האם מספר השלבים הנדרש היה משתנה? נמקו.",
+          "requiredQuestions": [],
+          "id": "5ג",
+          "page": 3,
+          "label": "שאלה 5 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.6476291245791246,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.6464413206135428,
+            "w": 0.7832275132275135,
+            "h": 0.1027949307893753
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.6464413206135428,
+              "w": 0.7832275132275135,
+              "h": 0.1027949307893753
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.05.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.3843309951365506,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-69:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.05:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-74.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-75:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 6,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.06",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.06.item.01",
+          "text": "רוצים לתכנן משחק שבו מספר האסימונים מוכפל פי 2 בכל סבב. אחרי 5 סבבים צריכים להיות בדיוק 96 אסימונים. מספר האסימונים ההתחלתי חייב להיות שלם וחיובי.\nא. כמה אסימונים צריכים להיות בתחילה? הסבירו.",
+          "requiredQuestions": [],
+          "id": "6א",
+          "page": 4,
+          "label": "שאלה 6 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.10207789001122333,
+            "w": 0.04703703703703708,
+            "h": 0.02232121212121213
+          },
+          "row": {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.10089008604564159,
+            "w": 0.7832275132275134,
+            "h": 0.10279493078937522
+          },
+          "rows": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.10089008604564159,
+              "w": 0.7832275132275134,
+              "h": 0.10279493078937522
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.06.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-80:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.06:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-81.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-82:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 6,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.06",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.06.item.02",
+          "text": "רוצים לתכנן משחק שבו מספר האסימונים מוכפל פי 2 בכל סבב. אחרי 5 סבבים צריכים להיות בדיוק 96 אסימונים. מספר האסימונים ההתחלתי חייב להיות שלם וחיובי.\nב. הציעו משחק אחר שמתחיל באותה כמות, אבל בכל סבב מוסיפים מספר שלם חיובי קבוע של אסימונים. בחרו את התוספת וכתבו כמה יהיו לאחר שני סבבים.",
+          "requiredQuestions": [],
+          "id": "6ב",
+          "page": 4,
+          "label": "שאלה 6 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.20724842873176205,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.2060606247661803,
+            "w": 0.7832275132275135,
+            "h": 0.1251161429105873
+          },
+          "rows": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.2060606247661803,
+              "w": 0.7832275132275135,
+              "h": 0.1251161429105873
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.06.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-80:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.06:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-83.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-84:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 6,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.06",
+          "canonicalItemId": "ms-g7-grw-01-c-r1.question.06.item.03",
+          "text": "רוצים לתכנן משחק שבו מספר האסימונים מוכפל פי 2 בכל סבב. אחרי 5 סבבים צריכים להיות בדיוק 96 אסימונים. מספר האסימונים ההתחלתי חייב להיות שלם וחיובי.\nג. במשחק המקורי רוצים להגיע ל־96 אסימונים אחרי שישה סבבים במקום חמישה. האם כמות התחלתית שלמה וחיובית תאפשר זאת? נמקו.",
+          "requiredQuestions": [],
+          "id": "6ג",
+          "page": 4,
+          "label": "שאלה 6 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.33949139543583984,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.33830359147025807,
+            "w": 0.7832275132275135,
+            "h": 0.12511614291058734
+          },
+          "rows": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.33830359147025807,
+              "w": 0.7832275132275135,
+              "h": 0.12511614291058734
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-grw-01-c-r1.question.06.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-80:1",
+            "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.06:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-85.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-86:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        }
+      ],
+      "headerCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.8571428571428573,
+          "h": 0.025193322109988776
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.08975561167227834,
+          "w": 0.8571428571428573,
+          "h": 0.03656060606060605
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.12869182566404785,
+          "w": 0.8571428571428573,
+          "h": 0.02116666666666668
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.16054872802095024,
+          "w": 0.8571428571428573,
+          "h": 0.021166666666666657
+        }
+      ],
+      "headerFragmentRefs": [
+        "auxiliary:dom-6:1",
+        "auxiliary:dom-7:1",
+        "auxiliary:dom-8:1",
+        "auxiliary:dom-9:1"
+      ],
+      "runningHeaderCrops": [
+        {
+          "page": 1,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 1,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 2,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 2,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 3,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 3,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 4,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 4,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 5,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 5,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        }
+      ],
+      "runningHeaderFragmentRefs": [
+        "margin:page1-margin0:1",
+        "margin:page1-margin1:1",
+        "margin:page2-margin0:1",
+        "margin:page2-margin1:1",
+        "margin:page3-margin0:1",
+        "margin:page3-margin1:1",
+        "margin:page4-margin0:1",
+        "margin:page4-margin1:1",
+        "margin:page5-margin0:1",
+        "margin:page5-margin1:1"
+      ],
+      "footerCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 1,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 1,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 2,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 2,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 3,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 3,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 4,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 4,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 5,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 5,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        }
+      ],
+      "footerFragmentRefs": [
+        "margin:page1-margin2:1",
+        "margin:page1-margin3:1",
+        "margin:page1-margin4:1",
+        "margin:page2-margin2:1",
+        "margin:page2-margin3:1",
+        "margin:page2-margin4:1",
+        "margin:page3-margin2:1",
+        "margin:page3-margin3:1",
+        "margin:page3-margin4:1",
+        "margin:page4-margin2:1",
+        "margin:page4-margin3:1",
+        "margin:page4-margin4:1",
+        "margin:page5-margin2:1",
+        "margin:page5-margin3:1",
+        "margin:page5-margin4:1"
+      ],
+      "marginFragmentRefs": [
+        "margin:page1-margin0:1",
+        "margin:page1-margin1:1",
+        "margin:page2-margin0:1",
+        "margin:page2-margin1:1",
+        "margin:page3-margin0:1",
+        "margin:page3-margin1:1",
+        "margin:page4-margin0:1",
+        "margin:page4-margin1:1",
+        "margin:page5-margin0:1",
+        "margin:page5-margin1:1",
+        "margin:page1-margin2:1",
+        "margin:page1-margin3:1",
+        "margin:page1-margin4:1",
+        "margin:page2-margin2:1",
+        "margin:page2-margin3:1",
+        "margin:page2-margin4:1",
+        "margin:page3-margin2:1",
+        "margin:page3-margin3:1",
+        "margin:page3-margin4:1",
+        "margin:page4-margin2:1",
+        "margin:page4-margin3:1",
+        "margin:page4-margin4:1",
+        "margin:page5-margin2:1",
+        "margin:page5-margin3:1",
+        "margin:page5-margin4:1"
+      ],
+      "worksheetInstructionFragmentRefs": [
+        "auxiliary:dom-10:1"
+      ],
+      "answerGeometry": "measured",
+      "answerSourceSha256": "957e3923ab6473a77db89f29689710ca7c543bd4e1c795a4ad0df69b6885a092",
+      "answerMap": {
+        "version": 1,
+        "sourceSha256": "957e3923ab6473a77db89f29689710ca7c543bd4e1c795a4ad0df69b6885a092",
+        "questions": [
+          {
+            "q": 1,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.0714285714285713,
+                "y": 0.12194034792368123,
+                "w": 0.8571428571428573,
+                "h": 0.04419343434343434
+              }
+            ]
+          },
+          {
+            "q": 2,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.0714285714285713,
+                "y": 0.1661337822671156,
+                "w": 0.8571428571428573,
+                "h": 0.048514926487093143
+              }
+            ]
+          },
+          {
+            "q": 3,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.0714285714285713,
+                "y": 0.21464870875420872,
+                "w": 0.8571428571428573,
+                "h": 0.04419343434343432
+              }
+            ]
+          },
+          {
+            "q": 4,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.0714285714285713,
+                "y": 0.25884214309764303,
+                "w": 0.8571428571428573,
+                "h": 0.023967508417508412
+              }
+            ]
+          },
+          {
+            "q": 5,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.07142857142857116,
+                "y": 0.2828096515151515,
+                "w": 0.8571428571428574,
+                "h": 0.06441936026936028
+              }
+            ]
+          },
+          {
+            "q": 6,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.07142857142857116,
+                "y": 0.3472290117845117,
+                "w": 0.8571428571428574,
+                "h": 0.0932882704826038
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "wholeQuestions": [
+      {
+        "q": 1,
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.01",
+        "fragmentRefs": [
+          "element:ms-g7-grw-01-c-r1.question.01:1",
+          "element:ms-g7-grw-01-c-r1.question.01:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.28853460531238306,
+            "w": 0.8571428571428573,
+            "h": 0.4141848671904228
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-18:1",
+          "auxiliary:dom-25:1",
+          "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.01:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 2,
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.02",
+        "fragmentRefs": [
+          "element:ms-g7-grw-01-c-r1.question.02:1",
+          "element:ms-g7-grw-01-c-r1.question.02:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.05387205387205386,
+            "w": 0.8571428571428573,
+            "h": 0.32214431350542455
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-36:1",
+          "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.02:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 3,
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.03",
+        "fragmentRefs": [
+          "element:ms-g7-grw-01-c-r1.question.03:1",
+          "element:ms-g7-grw-01-c-r1.question.03:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.3843309951365506,
+            "w": 0.8571428571428573,
+            "h": 0.3221443135054247
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-47:1",
+          "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.03:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 4,
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.04",
+        "fragmentRefs": [
+          "element:ms-g7-grw-01-c-r1.question.04:1",
+          "element:ms-g7-grw-01-c-r1.question.04:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.05387205387205386,
+            "w": 0.8571428571428573,
+            "h": 0.32214431350542455
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-58:1",
+          "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.04:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 5,
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.05",
+        "fragmentRefs": [
+          "element:ms-g7-grw-01-c-r1.question.05:1",
+          "element:ms-g7-grw-01-c-r1.question.05:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.3843309951365506,
+            "w": 0.8571428571428573,
+            "h": 0.36490525626636744
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-69:1",
+          "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.05:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 6,
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.06",
+        "fragmentRefs": [
+          "element:ms-g7-grw-01-c-r1.question.06:1",
+          "element:ms-g7-grw-01-c-r1.question.06:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.05387205387205386,
+            "w": 0.8571428571428573,
+            "h": 0.40954768050879153
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-80:1",
+          "auxiliary:dom-11.for.ms-g7-grw-01-c-r1.question.06:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      }
+    ],
+    "figureOccurrences": [],
+    "answerParts": [
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.01",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.01.item.01",
+        "q": 1,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.01.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.6857348503637568,
+            "y": 0.1235438832772166,
+            "w": 0.19579954117063492,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.01",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.01.item.02",
+        "q": 1,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.01.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.5058072840711806,
+            "y": 0.1235438832772166,
+            "w": 0.16144873031374013,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.01",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.01.item.03",
+        "q": 1,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.01.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.4551632222170549,
+            "y": 0.14376980920314253,
+            "w": 0.4263711693173363,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.02",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.02.item.01",
+        "q": 2,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.02.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.6842140867848877,
+            "y": 0.16773731762065094,
+            "w": 0.19732030474950396,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.02",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.02.item.02",
+        "q": 2,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.02.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.5144422627480159,
+            "y": 0.1670317620650954,
+            "w": 0.15129298805803582,
+            "h": 0.025252973625140285
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.02",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.02.item.03",
+        "q": 2,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.02.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.3886113597728585,
+            "y": 0.1922847356902357,
+            "w": 0.4929230317615328,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.03",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.03.item.01",
+        "q": 3,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.03.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.6681402555596894,
+            "y": 0.21625224410774407,
+            "w": 0.21339413597470222,
+            "h": 0.020225925925925904
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.03",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.03.item.02",
+        "q": 3,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.03.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.4554933772011409,
+            "y": 0.21625224410774407,
+            "w": 0.19416804237971222,
+            "h": 0.020225925925925904
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.03",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.03.item.03",
+        "q": 3,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.03.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.3273034248150212,
+            "y": 0.23647817003367,
+            "w": 0.5542309667193701,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.04",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.04.item.01",
+        "q": 4,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.04.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.772500328259342,
+            "y": 0.2604456784511784,
+            "w": 0.10903406327504958,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.04",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.04.item.02",
+        "q": 4,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.04.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.4916154691375247,
+            "y": 0.2604456784511784,
+            "w": 0.26240602314298117,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.04",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.04.item.03",
+        "q": 4,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.04.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.22757760925615916,
+            "y": 0.2604456784511784,
+            "w": 0.24555902390252973,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.05",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.05.item.01",
+        "q": 5,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.05.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.7909136155547288,
+            "y": 0.28441318686868683,
+            "w": 0.09062077597966268,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.05",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.05.item.02",
+        "q": 5,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.05.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.3366658819289432,
+            "y": 0.28441318686868683,
+            "w": 0.4357688976469493,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.05",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.05.item.03",
+        "q": 5,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.05.item.03:1",
+          "element:answer:ms-g7-grw-01-c-r1.question.05.item.03:2"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.12542205972015544,
+            "y": 0.30463911279461275,
+            "w": 0.7561123318142361,
+            "h": 0.020225925925925932
+          },
+          {
+            "page": 5,
+            "x": 0.8480960486679481,
+            "y": 0.3248650387205386,
+            "w": 0.03343834286644345,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.06",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.06.item.01",
+        "q": 6,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.06.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.7180297703693369,
+            "y": 0.3481269915824915,
+            "w": 0.1635046211650546,
+            "h": 0.025252973625140313
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.06",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.06.item.02",
+        "q": 6,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.06.item.02:1",
+          "element:answer:ms-g7-grw-01-c-r1.question.06.item.02:2"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.13624581150276951,
+            "y": 0.37337996520763184,
+            "w": 0.7452885800316219,
+            "h": 0.020225925925925932
+          },
+          {
+            "page": 5,
+            "x": 0.811133865275711,
+            "y": 0.3936058911335577,
+            "w": 0.07040052625868055,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-grw-01-c-r1.question.06",
+        "canonicalItemId": "ms-g7-grw-01-c-r1.question.06.item.03",
+        "q": 6,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-grw-01-c-r1.question.06.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.4519945753668567,
+            "y": 0.4131262615039281,
+            "w": 0.4295398161675348,
+            "h": 0.025252973625140313
+          }
+        ]
+      }
+    ]
+  },
+  "nativeExportPublished": true
+}

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './landing-corrections-20261118.json';
+import { beforeRamziActivationCopy } from './ramzi-activation-copy-20261119';
 
 export { reviewed as reviewedLandingCorrections };
 export const reviewedLandingCorrectionSlugs = reviewed.pages.map(page => page.slug);
@@ -27,6 +28,8 @@ function occurrences(value: any, needle: string): number {
  * fence was reached by another path) passes unchanged. Anything else fails.
  */
 export function beforeLandingCorrections<T>(slug: string, page: T): T {
+  // The landing copy after the additional Ramzi activation (19.11) is newer: unwind it first.
+  page = beforeRamziActivationCopy(slug, page);
   const entry = reviewed.pages.find(item => item.slug === slug);
   if (!entry) return page;
   const corrected = entry.replacements.every(r => occurrences(page, r.after) === r.count);

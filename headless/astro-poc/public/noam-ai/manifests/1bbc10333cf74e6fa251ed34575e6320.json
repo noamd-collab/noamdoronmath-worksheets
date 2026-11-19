@@ -1,0 +1,5667 @@
+{
+  "sourceSha256": "44a418b5429f9d7a462c8b38ae9abdf80b6c160efeb8c93e16b08f8ed0c47135",
+  "canonicalSourceSha256": "af097a70b9b8b279c62bac7e0ac7f409d12c385f839ae5d7ca9347c21baa1788",
+  "layoutSha256": "151b076fbcb7cfeb632dd13c52d42e518ab9108f070d147519e559dcc131ef8b",
+  "editionId": "ms-20261115-rat-01-r1",
+  "geometryContract": "measured-v1",
+  "reviewRequired": false,
+  "publishable": true,
+  "pageCount": 5,
+  "exercisePageCount": 4,
+  "answerStartPage": 5,
+  "schemaVersion": 1,
+  "pdfHash": "1bbc10333cf74e6fa251ed34575e6320",
+  "prefix": "G9-T93",
+  "grade": 9,
+  "topicId": 47,
+  "topic": "משוואות רציונליות",
+  "level": "c",
+  "levelCode": "E",
+  "questionCount": 6,
+  "exerciseCount": 18,
+  "nativeExportUrl": "/noam-ai/native/G9-T93/c/noam-ai.json",
+  "nativeExportSha256": "1e6e7314c5d9819b65ae791cd203511e2b4424cefdca8880a962e71d40656e64",
+  "exercises": [
+    {
+      "q": 1,
+      "part": "א",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.01",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.01.item.01",
+      "text": "מצאו את תחום ההצבה. נמקו מדוע גם גורם שמצטמצם אינו מבטל הגבלה.\nא. $\\f{2}{x^2−6x+9}$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q01א",
+      "canonicalQuestionSha256": "a64d3ed8c9fa621f4694ecce7905be779e85117f55f4075206606a1372a0cff5",
+      "sourceExerciseSha256": "d2a348f914392b39074b1a43ee5c0da00fdc697ca703b5f5dfb2015e1799c270",
+      "context": "מצאו את תחום ההצבה. נמקו מדוע גם גורם שמצטמצם אינו מבטל הגבלה.",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375662,
+        "y": 0.4387847468094573
+      },
+      "pinFragmentRef": "auxiliary:dom-24:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.3073137860082304,
+          "w": 0.8571428571428573,
+          "h": 0.410614257201646
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.01:1",
+        "element:ms-g9-rat-01-c-r1.question.01:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.42405115974560414,
+          "w": 0.7832275132275134,
+          "h": 0.09479148391320612
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.01.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 1,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.01",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.01.item.02",
+      "text": "מצאו את תחום ההצבה. נמקו מדוע גם גורם שמצטמצם אינו מבטל הגבלה.\nב. $\\f{x+1}{x^2+x−6}$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q01ב",
+      "canonicalQuestionSha256": "a64d3ed8c9fa621f4694ecce7905be779e85117f55f4075206606a1372a0cff5",
+      "sourceExerciseSha256": "54500d292779291318941ae525edcd619bfde060d77bf343dee8843b0ae5b8a1",
+      "context": "מצאו את תחום ההצבה. נמקו מדוע גם גורם שמצטמצם אינו מבטל הגבלה.",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375662,
+        "y": 0.535951838653827
+      },
+      "pinFragmentRef": "auxiliary:dom-34:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.3073137860082304,
+          "w": 0.8571428571428573,
+          "h": 0.410614257201646
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.01:1",
+        "element:ms-g9-rat-01-c-r1.question.01:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.5212182515899737,
+          "w": 0.7832275132275134,
+          "h": 0.09479148391320612
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.01.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 1,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.01",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.01.item.03",
+      "text": "מצאו את תחום ההצבה. נמקו מדוע גם גורם שמצטמצם אינו מבטל הגבלה.\nג. $\\f{x−4}{x^3−4x}$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q01ג",
+      "canonicalQuestionSha256": "a64d3ed8c9fa621f4694ecce7905be779e85117f55f4075206606a1372a0cff5",
+      "sourceExerciseSha256": "222d7c3ca9d16bfbaab772a6cf3ab5c09c4722728159c41bb5bcacc16603eb46",
+      "context": "מצאו את תחום ההצבה. נמקו מדוע גם גורם שמצטמצם אינו מבטל הגבלה.",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375662,
+        "y": 0.6378701463605235
+      },
+      "pinFragmentRef": "auxiliary:dom-45:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.3073137860082304,
+          "w": 0.8571428571428573,
+          "h": 0.410614257201646
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.01:1",
+        "element:ms-g9-rat-01-c-r1.question.01:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.6231365592966703,
+          "w": 0.7832275132275134,
+          "h": 0.09479148391320612
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.01.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 2,
+      "part": "א",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.02",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.02.item.01",
+      "text": "קבעו תחום הצבה ופתרו. השאירו תשובות לא שלמות כשברים מדויקים.\nא. $\\f{x−2}{2x+1}=\\f{3}{5}$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q02א",
+      "canonicalQuestionSha256": "63b6f987167e8c39fd15062b2964f2c8c6d49825d943357d4b63a35bfd5cce2e",
+      "sourceExerciseSha256": "206e743f63e6cb79959f9154644956f2a38829240805969764c2a386233adf4e",
+      "context": "קבעו תחום הצבה ופתרו. השאירו תשובות לא שלמות כשברים מדויקים.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.09330246098828271
+      },
+      "pinFragmentRef": "auxiliary:dom-60:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385335
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.02:1",
+        "element:ms-g9-rat-01-c-r1.question.02:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.07856887392442947,
+          "w": 0.7832275132275134,
+          "h": 0.12329877908716796
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.02.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 2,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.02",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.02.item.02",
+      "text": "קבעו תחום הצבה ופתרו. השאירו תשובות לא שלמות כשברים מדויקים.\nב. $\\f{2x+5}{x−1}=3$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q02ב",
+      "canonicalQuestionSha256": "63b6f987167e8c39fd15062b2964f2c8c6d49825d943357d4b63a35bfd5cce2e",
+      "sourceExerciseSha256": "f6b9bc45a67acbab0eaffd40093cbabf2dec5dec846bc2aaf42ed9c374f923e3",
+      "context": "קבעו תחום הצבה ופתרו. השאירו תשובות לא שלמות כשברים מדויקים.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.21897684800661416
+      },
+      "pinFragmentRef": "auxiliary:dom-74:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385335
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.02:1",
+        "element:ms-g9-rat-01-c-r1.question.02:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.2042432609427609,
+          "w": 0.7832275132275134,
+          "h": 0.12329877908716798
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.02.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 2,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.02",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.02.item.03",
+      "text": "קבעו תחום הצבה ופתרו. השאירו תשובות לא שלמות כשברים מדויקים.\nג. $\\f{4}{3x+2}=−2$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q02ג",
+      "canonicalQuestionSha256": "63b6f987167e8c39fd15062b2964f2c8c6d49825d943357d4b63a35bfd5cce2e",
+      "sourceExerciseSha256": "7d73c7831ccae9d7dd005773c8a378a42d3c06015aa78f205581da3d1439114c",
+      "context": "קבעו תחום הצבה ופתרו. השאירו תשובות לא שלמות כשברים מדויקים.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.3494024508872725
+      },
+      "pinFragmentRef": "auxiliary:dom-84:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385335
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.02:1",
+        "element:ms-g9-rat-01-c-r1.question.02:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.33466886382341937,
+          "w": 0.7832275132275134,
+          "h": 0.123298779087168
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.02.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 3,
+      "part": "א",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.03",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.03.item.01",
+      "text": "פתרו בתחום ההצבה המקורי. הסבירו מתי הכפל במכנה מוביל לסתירה או לזהות.\nא. $\\f{2x}{x−3}−\\f{x+6}{x−3}=1$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q03א",
+      "canonicalQuestionSha256": "7ed45edd09f90297532a34db496e015f6d81b7df73914724795a5b6f20e440d8",
+      "sourceExerciseSha256": "aebd0bf1ce747bae2791378a9b74d46e7517abd1a7c520e322a36dec8efc7caf",
+      "context": "פתרו בתחום ההצבה המקורי. הסבירו מתי הכפל במכנה מוביל לסתירה או לזהות.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.5057126777858885
+      },
+      "pinFragmentRef": "auxiliary:dom-98:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.4662822706696596,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385334
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.03:1",
+        "element:ms-g9-rat-01-c-r1.question.03:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.4909790907220352,
+          "w": 0.7832275132275134,
+          "h": 0.12329877908716796
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.03.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 3,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.03",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.03.item.02",
+      "text": "פתרו בתחום ההצבה המקורי. הסבירו מתי הכפל במכנה מוביל לסתירה או לזהות.\nב. $\\f{x^2−1}{x−1}=4$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q03ב",
+      "canonicalQuestionSha256": "7ed45edd09f90297532a34db496e015f6d81b7df73914724795a5b6f20e440d8",
+      "sourceExerciseSha256": "8580e344902966e26fcb80d091ddc353c64479e9656a909ea9314fc3271e25ee",
+      "context": "פתרו בתחום ההצבה המקורי. הסבירו מתי הכפל במכנה מוביל לסתירה או לזהות.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.6313870648042199
+      },
+      "pinFragmentRef": "auxiliary:dom-114:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.4662822706696596,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385334
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.03:1",
+        "element:ms-g9-rat-01-c-r1.question.03:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.6163961028143998,
+          "w": 0.7832275132275134,
+          "h": 0.12355615401313479
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.03.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 3,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.03",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.03.item.03",
+      "text": "פתרו בתחום ההצבה המקורי. הסבירו מתי הכפל במכנה מוביל לסתירה או לזהות.\nג. $\\f{x^2−4}{x+2}=x−2$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q03ג",
+      "canonicalQuestionSha256": "7ed45edd09f90297532a34db496e015f6d81b7df73914724795a5b6f20e440d8",
+      "sourceExerciseSha256": "4dd40bc7c938f9f7db2e46f0b0f086550e714d7c16c1861a62f18bbdc239c41e",
+      "context": "פתרו בתחום ההצבה המקורי. הסבירו מתי הכפל במכנה מוביל לסתירה או לזהות.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.7618126676848783
+      },
+      "pinFragmentRef": "auxiliary:dom-125:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.4662822706696596,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385334
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.03:1",
+        "element:ms-g9-rat-01-c-r1.question.03:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.7468217056950582,
+          "w": 0.7832275132275134,
+          "h": 0.12355615401313479
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.03.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 4,
+      "part": "א",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.04",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.04.item.01",
+      "text": "קבעו תחום הצבה ופתרו בדרך יעילה. הציגו את המכנה המשותף שבחרתם.\nא. $\\f{2}{x−2}+\\f{3}{x+1}=\\f{5}{x^2−x−2}$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q04א",
+      "canonicalQuestionSha256": "5f60981ae24a9396ed7c5152438b8d1c6e30826b569133ac31704c00b0901fbb",
+      "sourceExerciseSha256": "901dcde3695d600a27de0c27cb1923d17cb332d2e687b16cfa2b540c0597fbe7",
+      "context": "קבעו תחום הצבה ופתרו בדרך יעילה. הציגו את המכנה המשותף שבחרתם.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.09330246098828271
+      },
+      "pinFragmentRef": "auxiliary:dom-142:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385335
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.04:1",
+        "element:ms-g9-rat-01-c-r1.question.04:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.07856887392442947,
+          "w": 0.7832275132275134,
+          "h": 0.12329877908716796
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.04.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 4,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.04",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.04.item.02",
+      "text": "קבעו תחום הצבה ופתרו בדרך יעילה. הציגו את המכנה המשותף שבחרתם.\nב. $\\f{x+3}{x−2}=\\f{x−1}{x+2}$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q04ב",
+      "canonicalQuestionSha256": "5f60981ae24a9396ed7c5152438b8d1c6e30826b569133ac31704c00b0901fbb",
+      "sourceExerciseSha256": "c6e8991f938c1314d2b603f96af148c16999ae165745084c49056418a7f2d1d7",
+      "context": "קבעו תחום הצבה ופתרו בדרך יעילה. הציגו את המכנה המשותף שבחרתם.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.21897684800661416
+      },
+      "pinFragmentRef": "auxiliary:dom-164:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385335
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.04:1",
+        "element:ms-g9-rat-01-c-r1.question.04:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.2042432609427609,
+          "w": 0.7832275132275134,
+          "h": 0.12329877908716798
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.04.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 4,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.04",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.04.item.03",
+      "text": "קבעו תחום הצבה ופתרו בדרך יעילה. הציגו את המכנה המשותף שבחרתם.\nג. $\\f{1}{x−1}+\\f{1}{x+1}=\\f{1}{x^2−1}$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q04ג",
+      "canonicalQuestionSha256": "5f60981ae24a9396ed7c5152438b8d1c6e30826b569133ac31704c00b0901fbb",
+      "sourceExerciseSha256": "6c1d340202494715ae265ff80ab6ff3090377640e620709436a404a9de8dc233",
+      "context": "קבעו תחום הצבה ופתרו בדרך יעילה. הציגו את המכנה המשותף שבחרתם.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.3494024508872725
+      },
+      "pinFragmentRef": "auxiliary:dom-180:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385335
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.04:1",
+        "element:ms-g9-rat-01-c-r1.question.04:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.33466886382341937,
+          "w": 0.7832275132275134,
+          "h": 0.123298779087168
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.04.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 5,
+      "part": "א",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.05",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.05.item.01",
+      "text": "פתרו לאחר פירוק לגורמים וקביעת תחום ההצבה. בדקו כל מועמד במשוואה המקורית.\nא. $\\f{x^2−4x+4}{x−2}=3$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q05א",
+      "canonicalQuestionSha256": "fb04bc568442d64c25939759089294b4f3cfcecc1b8a284eea78f89bac10183d",
+      "sourceExerciseSha256": "c99b2d8980415741cd21ee078097268266aa9f45ca7839f68bd2bbee6a7ed32d",
+      "context": "פתרו לאחר פירוק לגורמים וקביעת תחום ההצבה. בדקו כל מועמד במשוואה המקורית.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.5057126777858885
+      },
+      "pinFragmentRef": "auxiliary:dom-206:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.4662822706696596,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385334
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.05:1",
+        "element:ms-g9-rat-01-c-r1.question.05:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.4907217157960684,
+          "w": 0.7832275132275134,
+          "h": 0.12355615401313479
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.05.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 5,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.05",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.05.item.02",
+      "text": "פתרו לאחר פירוק לגורמים וקביעת תחום ההצבה. בדקו כל מועמד במשוואה המקורית.\nב. $\\f{x^2−9}{x^2−3x}=2$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q05ב",
+      "canonicalQuestionSha256": "fb04bc568442d64c25939759089294b4f3cfcecc1b8a284eea78f89bac10183d",
+      "sourceExerciseSha256": "893272751848a07b65cb472699ca2123788abd367e169cfc7121d8cc69e254e4",
+      "context": "פתרו לאחר פירוק לגורמים וקביעת תחום ההצבה. בדקו כל מועמד במשוואה המקורית.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.6313870648042199
+      },
+      "pinFragmentRef": "auxiliary:dom-218:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.4662822706696596,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385334
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.05:1",
+        "element:ms-g9-rat-01-c-r1.question.05:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.6163961028143998,
+          "w": 0.7832275132275134,
+          "h": 0.12355615401313479
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.05.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 5,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.05",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.05.item.03",
+      "text": "פתרו לאחר פירוק לגורמים וקביעת תחום ההצבה. בדקו כל מועמד במשוואה המקורית.\nג. $\\f{x^2−1}{x^2+x}=\\f{2}{x+1}$",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q05ג",
+      "canonicalQuestionSha256": "fb04bc568442d64c25939759089294b4f3cfcecc1b8a284eea78f89bac10183d",
+      "sourceExerciseSha256": "ba36bf37143bd380e765f1820309bda9faaa1e0c115451722df50798e955b358",
+      "context": "פתרו לאחר פירוק לגורמים וקביעת תחום ההצבה. בדקו כל מועמד במשוואה המקורית.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.7618126676848783
+      },
+      "pinFragmentRef": "auxiliary:dom-230:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.4662822706696596,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385334
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.05:1",
+        "element:ms-g9-rat-01-c-r1.question.05:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.7468217056950582,
+          "w": 0.7832275132275134,
+          "h": 0.12355615401313479
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.05.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 6,
+      "part": "א",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.06",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.06.item.01",
+      "text": "בכל סעיף בדקו את הטענה, הציגו תיקון מלא ונמקו מדוע הוא נדרש.\nא. תלמיד פתר את המשוואה $\\f{x^2−4}{x^2−3x+2}=0$ וטען: ״הפתרונות הם $x=2$ ו־$x=−2$״. קבעו אם צדק, וכתבו את תחום ההצבה ואת קבוצת הפתרונות הנכונה. נמקו.",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q06א",
+      "canonicalQuestionSha256": "b710b9546e786b60791df17179f10d887188d08dbb7983a3651a151be03515a8",
+      "sourceExerciseSha256": "fd4f3622b9f181b88ae589ce7f228589365fe2e69d25e9c26da185f309f209c6",
+      "context": "בכל סעיף בדקו את הטענה, הציגו תיקון מלא ונמקו מדוע הוא נדרש.",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375662,
+        "y": 0.09330246098828271
+      },
+      "pinFragmentRef": "auxiliary:dom-252:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.42117145884773655
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.06:1",
+        "element:ms-g9-rat-01-c-r1.question.06:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.07831149899846263,
+          "w": 0.7832275132275134,
+          "h": 0.1292481106162025
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.06.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 6,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.06",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.06.item.02",
+      "text": "בכל סעיף בדקו את הטענה, הציגו תיקון מלא ונמקו מדוע הוא נדרש.\nב. תלמיד פתר את המשוואה $\\f{x^2−1}{x−1}=2$ וטען: ״לאחר צמצום מצאתי $x=1$, ולכן הוא פתרון״. קבעו אם צדק, וכתבו את תחום ההצבה ואת קבוצת הפתרונות הנכונה. נמקו.",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q06ב",
+      "canonicalQuestionSha256": "b710b9546e786b60791df17179f10d887188d08dbb7983a3651a151be03515a8",
+      "sourceExerciseSha256": "caa366a3642b4901d183580de930983f3540d80f7327ebbb706a64404a5c63fc",
+      "context": "בכל סעיף בדקו את הטענה, הציגו תיקון מלא ונמקו מדוע הוא נדרש.",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375663,
+        "y": 0.2246688046096819
+      },
+      "pinFragmentRef": "auxiliary:dom-269:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.42117145884773655
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.06:1",
+        "element:ms-g9-rat-01-c-r1.question.06:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.2096778426198618,
+          "w": 0.7832275132275135,
+          "h": 0.12924811061620245
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.06.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 6,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.06",
+      "canonicalItemId": "ms-g9-rat-01-c-r1.question.06.item.03",
+      "text": "בכל סעיף בדקו את הטענה, הציגו תיקון מלא ונמקו מדוע הוא נדרש.\nג. תלמיד פתר את המשוואה $\\f{x^2−4x+4}{x−2}=x−2$ וטען: ״שני האגפים שווים לכל מספר ממשי״. קבעו אם צדק, וכתבו את תחום ההצבה ואת קבוצת הפתרונות הנכונה. נמקו.",
+      "requiredQuestions": [],
+      "id": "G9-T93-E-Q06ג",
+      "canonicalQuestionSha256": "b710b9546e786b60791df17179f10d887188d08dbb7983a3651a151be03515a8",
+      "sourceExerciseSha256": "cf3cbf8838fb7b1a4fab63475929c66d64ae5a3ff3280745c5dae0ccc5b3e956",
+      "context": "בכל סעיף בדקו את הטענה, הציגו תיקון מלא ונמקו מדוע הוא נדרש.",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375663,
+        "y": 0.36078636409340786
+      },
+      "pinFragmentRef": "auxiliary:dom-282:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.055969322858211705
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.42117145884773655
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g9-rat-01-c-r1.question.06:1",
+        "element:ms-g9-rat-01-c-r1.question.06:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.34579540210358783,
+          "w": 0.7832275132275135,
+          "h": 0.12924811061620256
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g9-rat-01-c-r1.question.06.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    }
+  ],
+  "sourceNativeExportSha256": "1e6e7314c5d9819b65ae791cd203511e2b4424cefdca8880a962e71d40656e64",
+  "measured": {
+    "version": 1,
+    "fragments": {
+      "element:ms-g9-rat-01-c-r1.question.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.01",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01"
+      },
+      "element:ms-g9-rat-01-c-r1.question.01:2": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.01",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.3073137860082304,
+          "w": 0.8571428571428573,
+          "h": 0.410614257201646
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01"
+      },
+      "element:ms-g9-rat-01-c-r1.question.01.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.01.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.42405115974560414,
+          "w": 0.7832275132275134,
+          "h": 0.09479148391320612
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.01"
+      },
+      "element:ms-g9-rat-01-c-r1.question.01.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.01.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.5212182515899737,
+          "w": 0.7832275132275134,
+          "h": 0.09479148391320612
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.02"
+      },
+      "element:ms-g9-rat-01-c-r1.question.01.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.01.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.6231365592966703,
+          "w": 0.7832275132275134,
+          "h": 0.09479148391320612
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.03"
+      },
+      "element:ms-g9-rat-01-c-r1.question.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.02",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02"
+      },
+      "element:ms-g9-rat-01-c-r1.question.02:2": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.02",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385335
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02"
+      },
+      "element:ms-g9-rat-01-c-r1.question.02.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.02.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.07856887392442947,
+          "w": 0.7832275132275134,
+          "h": 0.12329877908716796
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.01"
+      },
+      "element:ms-g9-rat-01-c-r1.question.02.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.02.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.2042432609427609,
+          "w": 0.7832275132275134,
+          "h": 0.12329877908716798
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.02"
+      },
+      "element:ms-g9-rat-01-c-r1.question.02.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.02.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.33466886382341937,
+          "w": 0.7832275132275134,
+          "h": 0.123298779087168
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.03"
+      },
+      "element:ms-g9-rat-01-c-r1.question.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.03",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03"
+      },
+      "element:ms-g9-rat-01-c-r1.question.03:2": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.03",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.4662822706696596,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385334
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03"
+      },
+      "element:ms-g9-rat-01-c-r1.question.03.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.03.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.4909790907220352,
+          "w": 0.7832275132275134,
+          "h": 0.12329877908716796
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.01"
+      },
+      "element:ms-g9-rat-01-c-r1.question.03.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.03.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.6163961028143998,
+          "w": 0.7832275132275134,
+          "h": 0.12355615401313479
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.02"
+      },
+      "element:ms-g9-rat-01-c-r1.question.03.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.03.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.7468217056950582,
+          "w": 0.7832275132275134,
+          "h": 0.12355615401313479
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.03"
+      },
+      "element:ms-g9-rat-01-c-r1.question.04:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.04",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04"
+      },
+      "element:ms-g9-rat-01-c-r1.question.04:2": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.04",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385335
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04"
+      },
+      "element:ms-g9-rat-01-c-r1.question.04.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.04.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.07856887392442947,
+          "w": 0.7832275132275134,
+          "h": 0.12329877908716796
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.01"
+      },
+      "element:ms-g9-rat-01-c-r1.question.04.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.04.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.2042432609427609,
+          "w": 0.7832275132275134,
+          "h": 0.12329877908716798
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.02"
+      },
+      "element:ms-g9-rat-01-c-r1.question.04.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.04.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.33466886382341937,
+          "w": 0.7832275132275134,
+          "h": 0.123298779087168
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.03"
+      },
+      "element:ms-g9-rat-01-c-r1.question.05:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.05",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05"
+      },
+      "element:ms-g9-rat-01-c-r1.question.05:2": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.05",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.4662822706696596,
+          "w": 0.8571428571428573,
+          "h": 0.4040955890385334
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05"
+      },
+      "element:ms-g9-rat-01-c-r1.question.05.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.05.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.4907217157960684,
+          "w": 0.7832275132275134,
+          "h": 0.12355615401313479
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.01"
+      },
+      "element:ms-g9-rat-01-c-r1.question.05.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.05.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.6163961028143998,
+          "w": 0.7832275132275134,
+          "h": 0.12355615401313479
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.02"
+      },
+      "element:ms-g9-rat-01-c-r1.question.05.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.05.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.7468217056950582,
+          "w": 0.7832275132275134,
+          "h": 0.12355615401313479
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.03"
+      },
+      "element:ms-g9-rat-01-c-r1.question.06:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.06",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06"
+      },
+      "element:ms-g9-rat-01-c-r1.question.06:2": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.06",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.42117145884773655
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06"
+      },
+      "element:ms-g9-rat-01-c-r1.question.06.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.06.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.07831149899846263,
+          "w": 0.7832275132275134,
+          "h": 0.1292481106162025
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.01"
+      },
+      "element:ms-g9-rat-01-c-r1.question.06.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.06.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.2096778426198618,
+          "w": 0.7832275132275135,
+          "h": 0.12924811061620245
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.02"
+      },
+      "element:ms-g9-rat-01-c-r1.question.06.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g9-rat-01-c-r1.question.06.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.34579540210358783,
+          "w": 0.7832275132275135,
+          "h": 0.12924811061620256
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.03"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.01",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857116,
+          "y": 0.12194034792368123,
+          "w": 0.8571428571428575,
+          "h": 0.06441936026936028
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.01.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.01.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.3952195637657901,
+          "y": 0.1235438832772166,
+          "w": 0.4863148277686012,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.01"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.01.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.01.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.346204240352968,
+          "y": 0.14376980920314253,
+          "w": 0.5353301511814236,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.02"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.01.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.01.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.30535871480720905,
+          "y": 0.16399573512906845,
+          "w": 0.5761756767271825,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.03"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.02",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857116,
+          "y": 0.1863597081930415,
+          "w": 0.8571428571428575,
+          "h": 0.028289000561167236
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.02.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.02.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.6938252864127397,
+          "y": 0.18725768799102133,
+          "w": 0.18770910512165193,
+          "h": 0.025252973625140285
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.01"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.02.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.02.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.5299774759174106,
+          "y": 0.18796324354657687,
+          "w": 0.14536897451649308,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.02"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.02.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.02.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.3215072519765209,
+          "y": 0.18725768799102133,
+          "w": 0.18999138796205364,
+          "h": 0.025252973625140285
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.03"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.03",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.0714285714285713,
+          "y": 0.21464870875420874,
+          "w": 0.8571428571428573,
+          "h": 0.04419343434343434
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.03.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.03.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.514705318354084,
+          "y": 0.21625224410774407,
+          "w": 0.36682907318030755,
+          "h": 0.020225925925925904
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.01"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.03.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.03.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.3508575078587549,
+          "y": 0.21625224410774407,
+          "w": 0.145368974516493,
+          "h": 0.020225925925925904
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.02"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.03.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.03.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.3295708084954528,
+          "y": 0.23647817003367005,
+          "w": 0.5519635830389384,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.03"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.04:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.04",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857116,
+          "y": 0.2588421430976431,
+          "w": 0.8571428571428575,
+          "h": 0.07738383670033666
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.04.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.04.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.4508231129565142,
+          "y": 0.25974012289562287,
+          "w": 0.43071127857787705,
+          "h": 0.025252973625140313
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.01"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.04.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.04.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.46925236580869706,
+          "y": 0.2842875409652076,
+          "w": 0.4122820257256945,
+          "h": 0.025252973625140313
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.02"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.04.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.04.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.4831631692251157,
+          "y": 0.30883495903479236,
+          "w": 0.39837122230927585,
+          "h": 0.025252973625140313
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.03"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.05:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.05",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.0714285714285713,
+          "y": 0.33622597979797975,
+          "w": 0.8571428571428573,
+          "h": 0.023967508417508412
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.05.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.05.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.7338350559997934,
+          "y": 0.3378295151515151,
+          "w": 0.14769933553459816,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.01"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.05.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.05.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.49437257607849716,
+          "y": 0.3378295151515151,
+          "w": 0.22098364394246045,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.02"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.05.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.05.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.1390603524193536,
+          "y": 0.3378295151515151,
+          "w": 0.33683338768030757,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.03"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.06:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.06",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857116,
+          "y": 0.3601934882154882,
+          "w": 0.8571428571428575,
+          "h": 0.06441936026936028
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.06.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.06.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.20706865526802254,
+          "y": 0.36179702356902355,
+          "w": 0.674465736266369,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.01"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.06.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.06.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.29096113122610756,
+          "y": 0.38202294949494947,
+          "w": 0.5905732603082837,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.02"
+      },
+      "element:answer:ms-g9-rat-01-c-r1.question.06.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g9-rat-01-c-r1.question.06.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.21836558698627648,
+          "y": 0.4022488754208754,
+          "w": 0.663168804548115,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.03"
+      },
+      "auxiliary:dom-24:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-24",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 1,
+          "x": 0.8076190476190477,
+          "y": 0.42762414074885124,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.01"
+      },
+      "auxiliary:dom-34:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-34",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 1,
+          "x": 0.8076190476190477,
+          "y": 0.5247912325932209,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.02"
+      },
+      "auxiliary:dom-45:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-45",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 1,
+          "x": 0.8076190476190477,
+          "y": 0.6267095402999174,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.03"
+      },
+      "auxiliary:dom-18:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-18",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.3073137860082304,
+          "w": 0.7832275132275135,
+          "h": 0.08135031799476244
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01"
+      },
+      "auxiliary:dom-22:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-22",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.39935433969322853,
+          "w": 0.7832275132275134,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01"
+      },
+      "auxiliary:dom-60:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-60",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.08214185492767664,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212117
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.01"
+      },
+      "auxiliary:dom-74:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-74",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.20781624194600812,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.02"
+      },
+      "auxiliary:dom-84:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-84",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.33824184482666647,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.03"
+      },
+      "auxiliary:dom-58:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-58",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.7832275132275134,
+          "h": 0.022321212121212117
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02"
+      },
+      "auxiliary:dom-98:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-98",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.49455207172528237,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.01"
+      },
+      "auxiliary:dom-114:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-114",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.6202264587436138,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.02"
+      },
+      "auxiliary:dom-125:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-125",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.7506520616242722,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.03"
+      },
+      "auxiliary:dom-96:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-96",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.4662822706696596,
+          "w": 0.7832275132275134,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03"
+      },
+      "auxiliary:dom-142:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-142",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.08214185492767664,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212117
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.01"
+      },
+      "auxiliary:dom-164:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-164",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.20781624194600812,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.02"
+      },
+      "auxiliary:dom-180:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-180",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.33824184482666647,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.03"
+      },
+      "auxiliary:dom-140:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-140",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.7832275132275134,
+          "h": 0.022321212121212117
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04"
+      },
+      "auxiliary:dom-206:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-206",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.49455207172528237,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.01"
+      },
+      "auxiliary:dom-218:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-218",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.6202264587436138,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.02"
+      },
+      "auxiliary:dom-230:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-230",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.7506520616242722,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.03"
+      },
+      "auxiliary:dom-204:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-204",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.4662822706696596,
+          "w": 0.7832275132275134,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05"
+      },
+      "auxiliary:dom-252:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-252",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 4,
+          "x": 0.8076190476190477,
+          "y": 0.08214185492767664,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212117
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.01"
+      },
+      "auxiliary:dom-269:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-269",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 4,
+          "x": 0.8076190476190477,
+          "y": 0.21350819854907582,
+          "w": 0.047037037037037224,
+          "h": 0.02232121212121213
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.02"
+      },
+      "auxiliary:dom-282:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-282",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 4,
+          "x": 0.8076190476190477,
+          "y": 0.3496257580328018,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.03"
+      },
+      "auxiliary:dom-250:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-250",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.7832275132275134,
+          "h": 0.022321212121212117
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06"
+      },
+      "auxiliary:dom-6:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-6",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.8571428571428573,
+          "h": 0.025193322109988776
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-7:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-7",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.08975561167227834,
+          "w": 0.8571428571428573,
+          "h": 0.03656060606060605
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-8:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-8",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.12869182566404785,
+          "w": 0.8571428571428573,
+          "h": 0.02116666666666668
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-9:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-9",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.16054872802095024,
+          "w": 0.8571428571428573,
+          "h": 0.021166666666666657
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-10:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-10",
+        "fragment": 1,
+        "role": "worksheet-instructions",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.055969322858211705
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-11:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11",
+        "fragment": 1,
+        "role": "section-source",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-294:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-294",
+        "fragment": 1,
+        "role": "worksheet-closing",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.49167276823793477,
+          "w": 0.8571428571428573,
+          "h": 0.02501515151515155
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-296:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-296",
+        "fragment": 1,
+        "role": "answer-header",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.8571428571428574,
+          "h": 0.03376926674148896
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-297:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-297",
+        "fragment": 1,
+        "role": "answer-header",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.09595594837261504,
+          "w": 0.8571428571428573,
+          "h": 0.01885757575757575
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-23.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-23.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.4538103765432098,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.01"
+      },
+      "auxiliary:dom-33.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-33.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.5509774683875793,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.02"
+      },
+      "auxiliary:dom-44.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-44.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.652895776094276,
+          "w": 0.7832275132275134,
+          "h": 0.06414141414141414
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": "ms-g9-rat-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01.item.03"
+      },
+      "auxiliary:dom-59.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-59.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.10832809072203516,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.01"
+      },
+      "auxiliary:dom-73.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-73.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.23400247774036662,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.02"
+      },
+      "auxiliary:dom-83.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-83.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.36442808062102505,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": "ms-g9-rat-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02.item.03"
+      },
+      "auxiliary:dom-97.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-97.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.5207383075196409,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.01"
+      },
+      "auxiliary:dom-113.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-113.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.6464126945379723,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.02"
+      },
+      "auxiliary:dom-124.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-124.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.7768382974186308,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": "ms-g9-rat-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03.item.03"
+      },
+      "auxiliary:dom-141.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-141.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.10832809072203516,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.01"
+      },
+      "auxiliary:dom-163.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-163.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.23400247774036662,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.02"
+      },
+      "auxiliary:dom-179.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-179.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.36442808062102505,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": "ms-g9-rat-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04.item.03"
+      },
+      "auxiliary:dom-205.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-205.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.5207383075196409,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.01"
+      },
+      "auxiliary:dom-217.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-217.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.6464126945379723,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.02"
+      },
+      "auxiliary:dom-229.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-229.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.7768382974186308,
+          "w": 0.7832275132275134,
+          "h": 0.09264870931537597
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": "ms-g9-rat-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05.item.03"
+      },
+      "auxiliary:dom-251.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-251.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.13064930284324727,
+          "w": 0.7832275132275134,
+          "h": 0.07601945379723156
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.01"
+      },
+      "auxiliary:dom-268.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-268.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.2620156464646464,
+          "w": 0.7832275132275134,
+          "h": 0.07601945379723156
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.02"
+      },
+      "auxiliary:dom-281.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-281.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.3981332059483725,
+          "w": 0.7832275132275134,
+          "h": 0.07601945379723156
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": "ms-g9-rat-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06.item.03"
+      },
+      "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.01:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g9-rat-01-c-r1.question.01",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.01"
+      },
+      "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.02:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g9-rat-01-c-r1.question.02",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.02"
+      },
+      "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.03:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g9-rat-01-c-r1.question.03",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.03"
+      },
+      "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.04:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g9-rat-01-c-r1.question.04",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.04"
+      },
+      "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.05:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g9-rat-01-c-r1.question.05",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.05"
+      },
+      "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.06:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g9-rat-01-c-r1.question.06",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.26500420875420866,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g9-rat-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g9-rat-01-c-r1.question.06"
+      },
+      "margin:page1-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 1,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 1,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 1,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 1,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 2,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 2,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 2,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 2,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 3,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 3,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 3,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 3,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 4,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 4,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 4,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 4,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 5,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 5,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 5,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 5,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      }
+    },
+    "sheet": {
+      "sourceSha256": "44a418b5429f9d7a462c8b38ae9abdf80b6c160efeb8c93e16b08f8ed0c47135",
+      "canonicalSourceSha256": "af097a70b9b8b279c62bac7e0ac7f409d12c385f839ae5d7ca9347c21baa1788",
+      "layoutSha256": "151b076fbcb7cfeb632dd13c52d42e518ab9108f070d147519e559dcc131ef8b",
+      "editionId": "ms-20261115-rat-01-r1",
+      "geometryContract": "measured-v1",
+      "reviewRequired": true,
+      "publishable": false,
+      "pageCount": 5,
+      "exercisePageCount": 4,
+      "answerStartPage": 5,
+      "pdfId": "1bbc10333cf74e6fa251ed34575e6320",
+      "pdfUrl": "https://static.wixstatic.com/ugd/d8e7ad_1bbc10333cf74e6fa251ed34575e6320.pdf",
+      "grade": 9,
+      "topicId": 47,
+      "topic": "משוואות רציונליות",
+      "level": "c",
+      "levelLabel": "מצוינות",
+      "mode": "exercise",
+      "questions": [
+        {
+          "q": 1,
+          "part": "א",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.01",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.01.item.01",
+          "text": "מצאו את תחום ההצבה. נמקו מדוע גם גורם שמצטמצם אינו מבטל הגבלה.\nא. $\\f{2}{x^2−6x+9}$",
+          "requiredQuestions": [],
+          "id": "1א",
+          "page": 1,
+          "label": "שאלה 1 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.42762414074885124,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.42405115974560414,
+            "w": 0.7832275132275134,
+            "h": 0.09479148391320612
+          },
+          "rows": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.42405115974560414,
+              "w": 0.7832275132275134,
+              "h": 0.09479148391320612
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.01.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.3073137860082304,
+              "w": 0.7832275132275135,
+              "h": 0.08135031799476244
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.39935433969322853,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212103
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-18:1",
+            "auxiliary:dom-22:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.01:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-23.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-24:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 1,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.01",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.01.item.02",
+          "text": "מצאו את תחום ההצבה. נמקו מדוע גם גורם שמצטמצם אינו מבטל הגבלה.\nב. $\\f{x+1}{x^2+x−6}$",
+          "requiredQuestions": [],
+          "id": "1ב",
+          "page": 1,
+          "label": "שאלה 1 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.5247912325932209,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.5212182515899737,
+            "w": 0.7832275132275134,
+            "h": 0.09479148391320612
+          },
+          "rows": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.5212182515899737,
+              "w": 0.7832275132275134,
+              "h": 0.09479148391320612
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.01.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.3073137860082304,
+              "w": 0.7832275132275135,
+              "h": 0.08135031799476244
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.39935433969322853,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212103
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-18:1",
+            "auxiliary:dom-22:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.01:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-33.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-34:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 1,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.01",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.01.item.03",
+          "text": "מצאו את תחום ההצבה. נמקו מדוע גם גורם שמצטמצם אינו מבטל הגבלה.\nג. $\\f{x−4}{x^3−4x}$",
+          "requiredQuestions": [],
+          "id": "1ג",
+          "page": 1,
+          "label": "שאלה 1 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.6267095402999174,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.6231365592966703,
+            "w": 0.7832275132275134,
+            "h": 0.09479148391320612
+          },
+          "rows": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.6231365592966703,
+              "w": 0.7832275132275134,
+              "h": 0.09479148391320612
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.01.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.3073137860082304,
+              "w": 0.7832275132275135,
+              "h": 0.08135031799476244
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.39935433969322853,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212103
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-18:1",
+            "auxiliary:dom-22:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.01:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-44.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-45:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 2,
+          "part": "א",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.02",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.02.item.01",
+          "text": "קבעו תחום הצבה ופתרו. השאירו תשובות לא שלמות כשברים מדויקים.\nא. $\\f{x−2}{2x+1}=\\f{3}{5}$",
+          "requiredQuestions": [],
+          "id": "2א",
+          "page": 2,
+          "label": "שאלה 2 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.08214185492767664,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212117
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.07856887392442947,
+            "w": 0.7832275132275134,
+            "h": 0.12329877908716796
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.07856887392442947,
+              "w": 0.7832275132275134,
+              "h": 0.12329877908716796
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.02.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-58:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.02:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-59.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-60:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 2,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.02",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.02.item.02",
+          "text": "קבעו תחום הצבה ופתרו. השאירו תשובות לא שלמות כשברים מדויקים.\nב. $\\f{2x+5}{x−1}=3$",
+          "requiredQuestions": [],
+          "id": "2ב",
+          "page": 2,
+          "label": "שאלה 2 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.20781624194600812,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.2042432609427609,
+            "w": 0.7832275132275134,
+            "h": 0.12329877908716798
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.2042432609427609,
+              "w": 0.7832275132275134,
+              "h": 0.12329877908716798
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.02.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-58:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.02:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-73.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-74:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 2,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.02",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.02.item.03",
+          "text": "קבעו תחום הצבה ופתרו. השאירו תשובות לא שלמות כשברים מדויקים.\nג. $\\f{4}{3x+2}=−2$",
+          "requiredQuestions": [],
+          "id": "2ג",
+          "page": 2,
+          "label": "שאלה 2 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.33824184482666647,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.33466886382341937,
+            "w": 0.7832275132275134,
+            "h": 0.123298779087168
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.33466886382341937,
+              "w": 0.7832275132275134,
+              "h": 0.123298779087168
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.02.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-58:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.02:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-83.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-84:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 3,
+          "part": "א",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.03",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.03.item.01",
+          "text": "פתרו בתחום ההצבה המקורי. הסבירו מתי הכפל במכנה מוביל לסתירה או לזהות.\nא. $\\f{2x}{x−3}−\\f{x+6}{x−3}=1$",
+          "requiredQuestions": [],
+          "id": "3א",
+          "page": 2,
+          "label": "שאלה 3 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.49455207172528237,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.4909790907220352,
+            "w": 0.7832275132275134,
+            "h": 0.12329877908716796
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.4909790907220352,
+              "w": 0.7832275132275134,
+              "h": 0.12329877908716796
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.03.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.4662822706696596,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212155
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-96:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.03:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-97.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-98:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 3,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.03",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.03.item.02",
+          "text": "פתרו בתחום ההצבה המקורי. הסבירו מתי הכפל במכנה מוביל לסתירה או לזהות.\nב. $\\f{x^2−1}{x−1}=4$",
+          "requiredQuestions": [],
+          "id": "3ב",
+          "page": 2,
+          "label": "שאלה 3 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.6202264587436138,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.6163961028143998,
+            "w": 0.7832275132275134,
+            "h": 0.12355615401313479
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.6163961028143998,
+              "w": 0.7832275132275134,
+              "h": 0.12355615401313479
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.03.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.4662822706696596,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212155
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-96:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.03:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-113.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-114:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 3,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.03",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.03.item.03",
+          "text": "פתרו בתחום ההצבה המקורי. הסבירו מתי הכפל במכנה מוביל לסתירה או לזהות.\nג. $\\f{x^2−4}{x+2}=x−2$",
+          "requiredQuestions": [],
+          "id": "3ג",
+          "page": 2,
+          "label": "שאלה 3 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.7506520616242722,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.7468217056950582,
+            "w": 0.7832275132275134,
+            "h": 0.12355615401313479
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.7468217056950582,
+              "w": 0.7832275132275134,
+              "h": 0.12355615401313479
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.03.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.4662822706696596,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212155
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-96:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.03:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-124.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-125:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 4,
+          "part": "א",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.04",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.04.item.01",
+          "text": "קבעו תחום הצבה ופתרו בדרך יעילה. הציגו את המכנה המשותף שבחרתם.\nא. $\\f{2}{x−2}+\\f{3}{x+1}=\\f{5}{x^2−x−2}$",
+          "requiredQuestions": [],
+          "id": "4א",
+          "page": 3,
+          "label": "שאלה 4 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.08214185492767664,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212117
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.07856887392442947,
+            "w": 0.7832275132275134,
+            "h": 0.12329877908716796
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.07856887392442947,
+              "w": 0.7832275132275134,
+              "h": 0.12329877908716796
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.04.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-140:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.04:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-141.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-142:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 4,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.04",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.04.item.02",
+          "text": "קבעו תחום הצבה ופתרו בדרך יעילה. הציגו את המכנה המשותף שבחרתם.\nב. $\\f{x+3}{x−2}=\\f{x−1}{x+2}$",
+          "requiredQuestions": [],
+          "id": "4ב",
+          "page": 3,
+          "label": "שאלה 4 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.20781624194600812,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.2042432609427609,
+            "w": 0.7832275132275134,
+            "h": 0.12329877908716798
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.2042432609427609,
+              "w": 0.7832275132275134,
+              "h": 0.12329877908716798
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.04.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-140:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.04:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-163.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-164:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 4,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.04",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.04.item.03",
+          "text": "קבעו תחום הצבה ופתרו בדרך יעילה. הציגו את המכנה המשותף שבחרתם.\nג. $\\f{1}{x−1}+\\f{1}{x+1}=\\f{1}{x^2−1}$",
+          "requiredQuestions": [],
+          "id": "4ג",
+          "page": 3,
+          "label": "שאלה 4 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.33824184482666647,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.33466886382341937,
+            "w": 0.7832275132275134,
+            "h": 0.123298779087168
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.33466886382341937,
+              "w": 0.7832275132275134,
+              "h": 0.123298779087168
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.04.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-140:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.04:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-179.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-180:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 5,
+          "part": "א",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.05",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.05.item.01",
+          "text": "פתרו לאחר פירוק לגורמים וקביעת תחום ההצבה. בדקו כל מועמד במשוואה המקורית.\nא. $\\f{x^2−4x+4}{x−2}=3$",
+          "requiredQuestions": [],
+          "id": "5א",
+          "page": 3,
+          "label": "שאלה 5 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.49455207172528237,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.4907217157960684,
+            "w": 0.7832275132275134,
+            "h": 0.12355615401313479
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.4907217157960684,
+              "w": 0.7832275132275134,
+              "h": 0.12355615401313479
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.05.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.4662822706696596,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212155
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-204:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.05:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-205.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-206:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 5,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.05",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.05.item.02",
+          "text": "פתרו לאחר פירוק לגורמים וקביעת תחום ההצבה. בדקו כל מועמד במשוואה המקורית.\nב. $\\f{x^2−9}{x^2−3x}=2$",
+          "requiredQuestions": [],
+          "id": "5ב",
+          "page": 3,
+          "label": "שאלה 5 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.6202264587436138,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.6163961028143998,
+            "w": 0.7832275132275134,
+            "h": 0.12355615401313479
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.6163961028143998,
+              "w": 0.7832275132275134,
+              "h": 0.12355615401313479
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.05.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.4662822706696596,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212155
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-204:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.05:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-217.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-218:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 5,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.05",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.05.item.03",
+          "text": "פתרו לאחר פירוק לגורמים וקביעת תחום ההצבה. בדקו כל מועמד במשוואה המקורית.\nג. $\\f{x^2−1}{x^2+x}=\\f{2}{x+1}$",
+          "requiredQuestions": [],
+          "id": "5ג",
+          "page": 3,
+          "label": "שאלה 5 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.7506520616242722,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.7468217056950582,
+            "w": 0.7832275132275134,
+            "h": 0.12355615401313479
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.7468217056950582,
+              "w": 0.7832275132275134,
+              "h": 0.12355615401313479
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.05.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.4662822706696596,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212155
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-204:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.05:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-229.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-230:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 6,
+          "part": "א",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.06",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.06.item.01",
+          "text": "בכל סעיף בדקו את הטענה, הציגו תיקון מלא ונמקו מדוע הוא נדרש.\nא. תלמיד פתר את המשוואה $\\f{x^2−4}{x^2−3x+2}=0$ וטען: ״הפתרונות הם $x=2$ ו־$x=−2$״. קבעו אם צדק, וכתבו את תחום ההצבה ואת קבוצת הפתרונות הנכונה. נמקו.",
+          "requiredQuestions": [],
+          "id": "6א",
+          "page": 4,
+          "label": "שאלה 6 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.08214185492767664,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212117
+          },
+          "row": {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.07831149899846263,
+            "w": 0.7832275132275134,
+            "h": 0.1292481106162025
+          },
+          "rows": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.07831149899846263,
+              "w": 0.7832275132275134,
+              "h": 0.1292481106162025
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.06.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-250:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.06:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-251.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-252:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 6,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.06",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.06.item.02",
+          "text": "בכל סעיף בדקו את הטענה, הציגו תיקון מלא ונמקו מדוע הוא נדרש.\nב. תלמיד פתר את המשוואה $\\f{x^2−1}{x−1}=2$ וטען: ״לאחר צמצום מצאתי $x=1$, ולכן הוא פתרון״. קבעו אם צדק, וכתבו את תחום ההצבה ואת קבוצת הפתרונות הנכונה. נמקו.",
+          "requiredQuestions": [],
+          "id": "6ב",
+          "page": 4,
+          "label": "שאלה 6 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.21350819854907582,
+            "w": 0.047037037037037224,
+            "h": 0.02232121212121213
+          },
+          "row": {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.2096778426198618,
+            "w": 0.7832275132275135,
+            "h": 0.12924811061620245
+          },
+          "rows": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.2096778426198618,
+              "w": 0.7832275132275135,
+              "h": 0.12924811061620245
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.06.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-250:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.06:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-268.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-269:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 6,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.06",
+          "canonicalItemId": "ms-g9-rat-01-c-r1.question.06.item.03",
+          "text": "בכל סעיף בדקו את הטענה, הציגו תיקון מלא ונמקו מדוע הוא נדרש.\nג. תלמיד פתר את המשוואה $\\f{x^2−4x+4}{x−2}=x−2$ וטען: ״שני האגפים שווים לכל מספר ממשי״. קבעו אם צדק, וכתבו את תחום ההצבה ואת קבוצת הפתרונות הנכונה. נמקו.",
+          "requiredQuestions": [],
+          "id": "6ג",
+          "page": 4,
+          "label": "שאלה 6 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.3496257580328018,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.34579540210358783,
+            "w": 0.7832275132275135,
+            "h": 0.12924811061620256
+          },
+          "rows": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.34579540210358783,
+              "w": 0.7832275132275135,
+              "h": 0.12924811061620256
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g9-rat-01-c-r1.question.06.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.26500420875420866,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-250:1",
+            "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.06:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-281.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-282:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        }
+      ],
+      "headerCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.8571428571428573,
+          "h": 0.025193322109988776
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.08975561167227834,
+          "w": 0.8571428571428573,
+          "h": 0.03656060606060605
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.12869182566404785,
+          "w": 0.8571428571428573,
+          "h": 0.02116666666666668
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.16054872802095024,
+          "w": 0.8571428571428573,
+          "h": 0.021166666666666657
+        }
+      ],
+      "headerFragmentRefs": [
+        "auxiliary:dom-6:1",
+        "auxiliary:dom-7:1",
+        "auxiliary:dom-8:1",
+        "auxiliary:dom-9:1"
+      ],
+      "runningHeaderCrops": [
+        {
+          "page": 1,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 1,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 2,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 2,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 3,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 3,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 4,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 4,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 5,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 5,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        }
+      ],
+      "runningHeaderFragmentRefs": [
+        "margin:page1-margin0:1",
+        "margin:page1-margin1:1",
+        "margin:page2-margin0:1",
+        "margin:page2-margin1:1",
+        "margin:page3-margin0:1",
+        "margin:page3-margin1:1",
+        "margin:page4-margin0:1",
+        "margin:page4-margin1:1",
+        "margin:page5-margin0:1",
+        "margin:page5-margin1:1"
+      ],
+      "footerCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 1,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 1,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 2,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 2,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 3,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 3,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 4,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 4,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 5,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 5,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        }
+      ],
+      "footerFragmentRefs": [
+        "margin:page1-margin2:1",
+        "margin:page1-margin3:1",
+        "margin:page1-margin4:1",
+        "margin:page2-margin2:1",
+        "margin:page2-margin3:1",
+        "margin:page2-margin4:1",
+        "margin:page3-margin2:1",
+        "margin:page3-margin3:1",
+        "margin:page3-margin4:1",
+        "margin:page4-margin2:1",
+        "margin:page4-margin3:1",
+        "margin:page4-margin4:1",
+        "margin:page5-margin2:1",
+        "margin:page5-margin3:1",
+        "margin:page5-margin4:1"
+      ],
+      "marginFragmentRefs": [
+        "margin:page1-margin0:1",
+        "margin:page1-margin1:1",
+        "margin:page2-margin0:1",
+        "margin:page2-margin1:1",
+        "margin:page3-margin0:1",
+        "margin:page3-margin1:1",
+        "margin:page4-margin0:1",
+        "margin:page4-margin1:1",
+        "margin:page5-margin0:1",
+        "margin:page5-margin1:1",
+        "margin:page1-margin2:1",
+        "margin:page1-margin3:1",
+        "margin:page1-margin4:1",
+        "margin:page2-margin2:1",
+        "margin:page2-margin3:1",
+        "margin:page2-margin4:1",
+        "margin:page3-margin2:1",
+        "margin:page3-margin3:1",
+        "margin:page3-margin4:1",
+        "margin:page4-margin2:1",
+        "margin:page4-margin3:1",
+        "margin:page4-margin4:1",
+        "margin:page5-margin2:1",
+        "margin:page5-margin3:1",
+        "margin:page5-margin4:1"
+      ],
+      "worksheetInstructionFragmentRefs": [
+        "auxiliary:dom-10:1"
+      ],
+      "answerGeometry": "measured",
+      "answerSourceSha256": "44a418b5429f9d7a462c8b38ae9abdf80b6c160efeb8c93e16b08f8ed0c47135",
+      "answerMap": {
+        "version": 1,
+        "sourceSha256": "44a418b5429f9d7a462c8b38ae9abdf80b6c160efeb8c93e16b08f8ed0c47135",
+        "questions": [
+          {
+            "q": 1,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.07142857142857116,
+                "y": 0.12194034792368123,
+                "w": 0.8571428571428575,
+                "h": 0.06441936026936028
+              }
+            ]
+          },
+          {
+            "q": 2,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.07142857142857116,
+                "y": 0.1863597081930415,
+                "w": 0.8571428571428575,
+                "h": 0.028289000561167236
+              }
+            ]
+          },
+          {
+            "q": 3,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.0714285714285713,
+                "y": 0.21464870875420874,
+                "w": 0.8571428571428573,
+                "h": 0.04419343434343434
+              }
+            ]
+          },
+          {
+            "q": 4,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.07142857142857116,
+                "y": 0.2588421430976431,
+                "w": 0.8571428571428575,
+                "h": 0.07738383670033666
+              }
+            ]
+          },
+          {
+            "q": 5,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.0714285714285713,
+                "y": 0.33622597979797975,
+                "w": 0.8571428571428573,
+                "h": 0.023967508417508412
+              }
+            ]
+          },
+          {
+            "q": 6,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.07142857142857116,
+                "y": 0.3601934882154882,
+                "w": 0.8571428571428575,
+                "h": 0.06441936026936028
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "wholeQuestions": [
+      {
+        "q": 1,
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.01",
+        "fragmentRefs": [
+          "element:ms-g9-rat-01-c-r1.question.01:1",
+          "element:ms-g9-rat-01-c-r1.question.01:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.26500420875420866,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.3073137860082304,
+            "w": 0.8571428571428573,
+            "h": 0.410614257201646
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-18:1",
+          "auxiliary:dom-22:1",
+          "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.01:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 2,
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.02",
+        "fragmentRefs": [
+          "element:ms-g9-rat-01-c-r1.question.02:1",
+          "element:ms-g9-rat-01-c-r1.question.02:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.26500420875420866,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.05387205387205386,
+            "w": 0.8571428571428573,
+            "h": 0.4040955890385335
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-58:1",
+          "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.02:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 3,
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.03",
+        "fragmentRefs": [
+          "element:ms-g9-rat-01-c-r1.question.03:1",
+          "element:ms-g9-rat-01-c-r1.question.03:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.26500420875420866,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.4662822706696596,
+            "w": 0.8571428571428573,
+            "h": 0.4040955890385334
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-96:1",
+          "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.03:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 4,
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.04",
+        "fragmentRefs": [
+          "element:ms-g9-rat-01-c-r1.question.04:1",
+          "element:ms-g9-rat-01-c-r1.question.04:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.26500420875420866,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.05387205387205386,
+            "w": 0.8571428571428573,
+            "h": 0.4040955890385335
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-140:1",
+          "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.04:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 5,
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.05",
+        "fragmentRefs": [
+          "element:ms-g9-rat-01-c-r1.question.05:1",
+          "element:ms-g9-rat-01-c-r1.question.05:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.26500420875420866,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.4662822706696596,
+            "w": 0.8571428571428573,
+            "h": 0.4040955890385334
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-204:1",
+          "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.05:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 6,
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.06",
+        "fragmentRefs": [
+          "element:ms-g9-rat-01-c-r1.question.06:1",
+          "element:ms-g9-rat-01-c-r1.question.06:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.26500420875420866,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.05387205387205386,
+            "w": 0.8571428571428573,
+            "h": 0.42117145884773655
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-250:1",
+          "auxiliary:dom-11.for.ms-g9-rat-01-c-r1.question.06:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      }
+    ],
+    "figureOccurrences": [],
+    "answerParts": [
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.01",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.01.item.01",
+        "q": 1,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.01.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.3952195637657901,
+            "y": 0.1235438832772166,
+            "w": 0.4863148277686012,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.01",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.01.item.02",
+        "q": 1,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.01.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.346204240352968,
+            "y": 0.14376980920314253,
+            "w": 0.5353301511814236,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.01",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.01.item.03",
+        "q": 1,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.01.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.30535871480720905,
+            "y": 0.16399573512906845,
+            "w": 0.5761756767271825,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.02",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.02.item.01",
+        "q": 2,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.02.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.6938252864127397,
+            "y": 0.18725768799102133,
+            "w": 0.18770910512165193,
+            "h": 0.025252973625140285
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.02",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.02.item.02",
+        "q": 2,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.02.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.5299774759174106,
+            "y": 0.18796324354657687,
+            "w": 0.14536897451649308,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.02",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.02.item.03",
+        "q": 2,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.02.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.3215072519765209,
+            "y": 0.18725768799102133,
+            "w": 0.18999138796205364,
+            "h": 0.025252973625140285
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.03",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.03.item.01",
+        "q": 3,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.03.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.514705318354084,
+            "y": 0.21625224410774407,
+            "w": 0.36682907318030755,
+            "h": 0.020225925925925904
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.03",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.03.item.02",
+        "q": 3,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.03.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.3508575078587549,
+            "y": 0.21625224410774407,
+            "w": 0.145368974516493,
+            "h": 0.020225925925925904
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.03",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.03.item.03",
+        "q": 3,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.03.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.3295708084954528,
+            "y": 0.23647817003367005,
+            "w": 0.5519635830389384,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.04",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.04.item.01",
+        "q": 4,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.04.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.4508231129565142,
+            "y": 0.25974012289562287,
+            "w": 0.43071127857787705,
+            "h": 0.025252973625140313
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.04",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.04.item.02",
+        "q": 4,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.04.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.46925236580869706,
+            "y": 0.2842875409652076,
+            "w": 0.4122820257256945,
+            "h": 0.025252973625140313
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.04",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.04.item.03",
+        "q": 4,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.04.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.4831631692251157,
+            "y": 0.30883495903479236,
+            "w": 0.39837122230927585,
+            "h": 0.025252973625140313
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.05",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.05.item.01",
+        "q": 5,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.05.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.7338350559997934,
+            "y": 0.3378295151515151,
+            "w": 0.14769933553459816,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.05",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.05.item.02",
+        "q": 5,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.05.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.49437257607849716,
+            "y": 0.3378295151515151,
+            "w": 0.22098364394246045,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.05",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.05.item.03",
+        "q": 5,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.05.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.1390603524193536,
+            "y": 0.3378295151515151,
+            "w": 0.33683338768030757,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.06",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.06.item.01",
+        "q": 6,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.06.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.20706865526802254,
+            "y": 0.36179702356902355,
+            "w": 0.674465736266369,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.06",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.06.item.02",
+        "q": 6,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.06.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.29096113122610756,
+            "y": 0.38202294949494947,
+            "w": 0.5905732603082837,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g9-rat-01-c-r1.question.06",
+        "canonicalItemId": "ms-g9-rat-01-c-r1.question.06.item.03",
+        "q": 6,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g9-rat-01-c-r1.question.06.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.21836558698627648,
+            "y": 0.4022488754208754,
+            "w": 0.663168804548115,
+            "h": 0.020225925925925932
+          }
+        ]
+      }
+    ]
+  },
+  "nativeExportPublished": true
+}

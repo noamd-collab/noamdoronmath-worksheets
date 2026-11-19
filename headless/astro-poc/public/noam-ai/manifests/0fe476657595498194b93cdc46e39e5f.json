@@ -1,0 +1,5691 @@
+{
+  "sourceSha256": "fe5923fe5f82985dbde4090063335c8c19e05467ab083388a35ab4105dc75540",
+  "canonicalSourceSha256": "5f1d9a0c450f287656cf1b6a9a540dab2c8d3c9ed724fd9922c8b4b8749e5b73",
+  "layoutSha256": "066b5e0efb6a7cb3386964eb85d2c994a61da6728cc28293714199aa0cfe9a35",
+  "editionId": "ms-20261115-alg-01-r1",
+  "geometryContract": "measured-v1",
+  "reviewRequired": false,
+  "publishable": true,
+  "pageCount": 5,
+  "exercisePageCount": 4,
+  "answerStartPage": 5,
+  "schemaVersion": 1,
+  "pdfHash": "0fe476657595498194b93cdc46e39e5f",
+  "prefix": "G7-T87",
+  "grade": 7,
+  "topicId": 22,
+  "topic": "משתנים וביטויים אלגבריים",
+  "level": "c",
+  "levelCode": "E",
+  "questionCount": 6,
+  "exerciseCount": 18,
+  "nativeExportUrl": "/noam-ai/native/G7-T87/c/noam-ai.json",
+  "nativeExportSha256": "400122554c711f4170f9ae3ef52c43625ba911cbb70eba9bd2e3bfb2171bcada",
+  "exercises": [
+    {
+      "q": 1,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.01",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.01.item.01",
+      "text": "בשירות השכרת אופניים נגבים 10 שקלים לפתיחת השכרה ו־7 שקלים לכל שעת השכרה. מחייבים לפי שעות שלמות.\nא. בחרו משתנה לגודל שאינו קבוע וכתבו את משמעותו ואת יחידתו.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q01א",
+      "canonicalQuestionSha256": "0370d5bd8c51c0be0cb875505e20f2441d93d4fe3cf809b99c40aa1a4bad1459",
+      "sourceExerciseSha256": "73d44aba691bf3f9ea4f7755e7bdbab8e3712e6f5a0c2bf5390b37be11e91361",
+      "context": "בשירות השכרת אופניים נגבים 10 שקלים לפתיחת השכרה ו־7 שקלים לכל שעת השכרה. מחייבים לפי שעות שלמות.",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375663,
+        "y": 0.41915978301533846
+      },
+      "pinFragmentRef": "auxiliary:dom-23:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.28853460531238306,
+          "w": 0.8571428571428573,
+          "h": 0.38009014216236436
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.01:1",
+        "element:ms-g7-alg-01-c-r1.question.01:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.40681137298915065,
+          "w": 0.7832275132275135,
+          "h": 0.07666324354657686
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.01.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 1,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.01",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.01.item.02",
+      "text": "בשירות השכרת אופניים נגבים 10 שקלים לפתיחת השכרה ו־7 שקלים לכל שעת השכרה. מחייבים לפי שעות שלמות.\nב. כתבו שני גדלים קבועים במצב המתואר, עם יחידותיהם.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q01ב",
+      "canonicalQuestionSha256": "0370d5bd8c51c0be0cb875505e20f2441d93d4fe3cf809b99c40aa1a4bad1459",
+      "sourceExerciseSha256": "8d2b7c1b31202fc22bc6d071187e6602abb2760ddc45b0be150d850633fc2ba2",
+      "context": "בשירות השכרת אופניים נגבים 10 שקלים לפתיחת השכרה ו־7 שקלים לכל שעת השכרה. מחייבים לפי שעות שלמות.",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375662,
+        "y": 0.4981986344930789
+      },
+      "pinFragmentRef": "auxiliary:dom-25:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.28853460531238306,
+          "w": 0.8571428571428573,
+          "h": 0.38009014216236436
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.01:1",
+        "element:ms-g7-alg-01-c-r1.question.01:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.48585022446689097,
+          "w": 0.7832275132275134,
+          "h": 0.07666324354657691
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.01.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 1,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.01",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.01.item.03",
+      "text": "בשירות השכרת אופניים נגבים 10 שקלים לפתיחת השכרה ו־7 שקלים לכל שעת השכרה. מחייבים לפי שעות שלמות.\nג. האם אפשר לסמן באותה אות גם את מספר השעות וגם את התשלום ולשמור על משמעות אחת למשתנה? הסבירו.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q01ג",
+      "canonicalQuestionSha256": "0370d5bd8c51c0be0cb875505e20f2441d93d4fe3cf809b99c40aa1a4bad1459",
+      "sourceExerciseSha256": "46586e31d71467f3a07f9660f9ca79a9c2ab5ef856d78b244a0ef3792ab2d2ee",
+      "context": "בשירות השכרת אופניים נגבים 10 שקלים לפתיחת השכרה ו־7 שקלים לכל שעת השכרה. מחייבים לפי שעות שלמות.",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375663,
+        "y": 0.5819887018331462
+      },
+      "pinFragmentRef": "auxiliary:dom-27:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.28853460531238306,
+          "w": 0.8571428571428573,
+          "h": 0.38009014216236436
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.01:1",
+        "element:ms-g7-alg-01-c-r1.question.01:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.5696402918069584,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778906
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.01.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q1",
+      "nativeItemId": "q1c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 2,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.02",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.02.item.01",
+      "text": "כתבו ביטוי מתאים לכל תיאור. אין צורך לחשב ערך מספרי.\nא. מחיר מוצר לפני הנחה הוא $p$ שקלים. ההנחה היא 13 שקלים, והמחיר המקורי הוא לפחות 13 שקלים. כתבו ביטוי למחיר לאחר ההנחה.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q02א",
+      "canonicalQuestionSha256": "91c5b9ead2ac7d40d26895e07adf7779e1de0cf5efdbb0c30c32d0222bf6cb3f",
+      "sourceExerciseSha256": "8925a843866e681e893760692c35ece77774af76d14c341b74c8c18e77058be5",
+      "context": "כתבו ביטוי מתאים לכל תיאור. אין צורך לחשב ערך מספרי.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375663,
+        "y": 0.0909172839506173
+      },
+      "pinFragmentRef": "auxiliary:dom-34:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.3311526187803965
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.02:1",
+        "element:ms-g7-alg-01-c-r1.question.02:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.07856887392442947,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778902
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.02.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 2,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.02",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.02.item.02",
+      "text": "כתבו ביטוי מתאים לכל תיאור. אין צורך לחשב ערך מספרי.\nב. מחלקים 36 מטרים של חבל שווה בשווה בין $k$ קבוצות. מספר הקבוצות חיובי. כתבו ביטוי לאורך החבל שמקבלת כל קבוצה.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q02ב",
+      "canonicalQuestionSha256": "91c5b9ead2ac7d40d26895e07adf7779e1de0cf5efdbb0c30c32d0222bf6cb3f",
+      "sourceExerciseSha256": "0bfb6e1527da8eab4fc76143e39616de45c7490b631f97be2baa7442d40e513d",
+      "context": "כתבו ביטוי מתאים לכל תיאור. אין צורך לחשב ערך מספרי.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375663,
+        "y": 0.19227734754956977
+      },
+      "pinFragmentRef": "auxiliary:dom-37:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.3311526187803965
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.02:1",
+        "element:ms-g7-alg-01-c-r1.question.02:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.17992893752338196,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778899
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.02.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 2,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.02",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.02.item.03",
+      "text": "כתבו ביטוי מתאים לכל תיאור. אין צורך לחשב ערך מספרי.\nג. מחיר כרטיס רגיל הוא $q$ שקלים. כרטיס מיוחד עולה פי 3 מכרטיס רגיל. כתבו ביטוי למחיר הכרטיס המיוחד.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q02ג",
+      "canonicalQuestionSha256": "91c5b9ead2ac7d40d26895e07adf7779e1de0cf5efdbb0c30c32d0222bf6cb3f",
+      "sourceExerciseSha256": "70c76d2fe197141dc54f2d24b7a37fb6c93ec352314fc7ab418a15fde1d4c574",
+      "context": "כתבו ביטוי מתאים לכל תיאור. אין צורך לחשב ערך מספרי.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375663,
+        "y": 0.2983886270108492
+      },
+      "pinFragmentRef": "auxiliary:dom-40:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.3311526187803965
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.02:1",
+        "element:ms-g7-alg-01-c-r1.question.02:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.2860402169846614,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778896
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.02.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q2",
+      "nativeItemId": "q2c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 3,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.03",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.03.item.01",
+      "text": "המשתנה $u$ מייצג מספר חיובי. תארו כל ביטוי במשפט המציין גם את סדר הפעולות.\nא. $\\f{u+5}{4}$",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q03א",
+      "canonicalQuestionSha256": "5bee27e0e8ef34ede5e778e3a9970a2fd99b7022467be5ea576bbe9eed33c1c8",
+      "sourceExerciseSha256": "cc2dd099ea31337fb6d90f84601c08e6279e7b2aa84ad010c61a44bee110ed68",
+      "context": "המשתנה $u$ מייצג מספר חיובי. תארו כל ביטוי במשפט המציין גם את סדר הפעולות.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.43276970752775135
+      },
+      "pinFragmentRef": "auxiliary:dom-49:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.39333930041152254,
+          "w": 0.8571428571428573,
+          "h": 0.27043918312757204
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.03:1",
+        "element:ms-g7-alg-01-c-r1.question.03:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.41803612046389815,
+          "w": 0.7832275132275134,
+          "h": 0.08291344425738871
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.03.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 3,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.03",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.03.item.02",
+      "text": "המשתנה $u$ מייצג מספר חיובי. תארו כל ביטוי במשפט המציין גם את סדר הפעולות.\nב. $4u+5$",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q03ב",
+      "canonicalQuestionSha256": "5bee27e0e8ef34ede5e778e3a9970a2fd99b7022467be5ea576bbe9eed33c1c8",
+      "sourceExerciseSha256": "7f48c487a62a12dc371f426b1b8e7246ae40ee9e62bbf8860700473813e1e786",
+      "context": "המשתנה $u$ מייצג מספר חיובי. תארו כל ביטוי במשפט המציין גם את סדר הפעולות.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.5156735826786382
+      },
+      "pinFragmentRef": "auxiliary:dom-57:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.39333930041152254,
+          "w": 0.8571428571428573,
+          "h": 0.27043918312757204
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.03:1",
+        "element:ms-g7-alg-01-c-r1.question.03:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.5033251726524504,
+          "w": 0.7832275132275134,
+          "h": 0.07666324354657691
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.03.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 3,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.03",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.03.item.03",
+      "text": "המשתנה $u$ מייצג מספר חיובי. תארו כל ביטוי במשפט המציין גם את סדר הפעולות.\nג. $4(u+5)$",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q03ג",
+      "canonicalQuestionSha256": "5bee27e0e8ef34ede5e778e3a9970a2fd99b7022467be5ea576bbe9eed33c1c8",
+      "sourceExerciseSha256": "27ca53a1a789389b58e2d840c1d1d8fbf139a0a9e5611ca8387705336b2da187",
+      "context": "המשתנה $u$ מייצג מספר חיובי. תארו כל ביטוי במשפט המציין גם את סדר הפעולות.",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.5994636500187056
+      },
+      "pinFragmentRef": "auxiliary:dom-61:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.39333930041152254,
+          "w": 0.8571428571428573,
+          "h": 0.27043918312757204
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.03:1",
+        "element:ms-g7-alg-01-c-r1.question.03:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.5871152399925177,
+          "w": 0.7832275132275134,
+          "h": 0.07666324354657691
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.03.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q3",
+      "nativeItemId": "q3c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 4,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.04",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.04.item.01",
+      "text": "כתבו ביטוי לכל מצב. אל תפתחו סוגריים.\nא. יש $n$ משתתפים בטיול ועוד 2 מדריכים. כל אחד מהם מקבל 3 בקבוקי מים. כתבו ביטוי למספר הבקבוקים הדרוש.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q04א",
+      "canonicalQuestionSha256": "b4febe8116ac07d487288db5140958be5ba36c9b4f33e1ce86bed01724cf9d1b",
+      "sourceExerciseSha256": "bfc757faca2ed9b610ad5b90f58975871e54db94b1a1bad93ceaaa9280dfe9da",
+      "context": "כתבו ביטוי לכל מצב. אל תפתחו סוגריים.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375663,
+        "y": 0.0909172839506173
+      },
+      "pinFragmentRef": "auxiliary:dom-70:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.3311526187803965
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.04:1",
+        "element:ms-g7-alg-01-c-r1.question.04:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.07856887392442947,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778902
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.04.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 4,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.04",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.04.item.02",
+      "text": "כתבו ביטוי לכל מצב. אל תפתחו סוגריים.\nב. מכל מכיל $v$ ליטרים של מים. שומרים 8 ליטרים בצד, ואת הכמות שנותרה מחלקים שווה בשווה בין 4 מכלים ריקים. במכל יש לפחות 8 ליטרים. כתבו ביטוי לכמות בכל מכל חדש.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q04ב",
+      "canonicalQuestionSha256": "b4febe8116ac07d487288db5140958be5ba36c9b4f33e1ce86bed01724cf9d1b",
+      "sourceExerciseSha256": "09e921c9e63c3600e9e1b4b3562e09e57e214cad5ef74cb19c5e8eeb3d46af68",
+      "context": "כתבו ביטוי לכל מצב. אל תפתחו סוגריים.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375663,
+        "y": 0.19227734754956977
+      },
+      "pinFragmentRef": "auxiliary:dom-73:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.3311526187803965
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.04:1",
+        "element:ms-g7-alg-01-c-r1.question.04:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.17992893752338196,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778899
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.04.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 4,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.04",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.04.item.03",
+      "text": "כתבו ביטוי לכל מצב. אל תפתחו סוגריים.\nג. מחיר סדנה למשתתף הוא $p$ שקלים. 5 משתתפים נרשמים יחד ומקבלים הנחה של 6 שקלים לכל משתתף. המחיר המקורי למשתתף הוא לפחות 6 שקלים. כתבו ביטוי לתשלום הקבוצה.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q04ג",
+      "canonicalQuestionSha256": "b4febe8116ac07d487288db5140958be5ba36c9b4f33e1ce86bed01724cf9d1b",
+      "sourceExerciseSha256": "66a1e65d73e9d88aecea8ac5cea4a196172bd5303eeeb6130748d159030a760d",
+      "context": "כתבו ביטוי לכל מצב. אל תפתחו סוגריים.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375663,
+        "y": 0.2983886270108492
+      },
+      "pinFragmentRef": "auxiliary:dom-76:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.3311526187803965
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.04:1",
+        "element:ms-g7-alg-01-c-r1.question.04:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.2860402169846614,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778896
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.04.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q4",
+      "nativeItemId": "q4c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 5,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.05",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.05.item.01",
+      "text": "בדקו אם התיאור מתאים לביטוי. אם אינו מתאים, תקנו את התיאור או את הביטוי ונמקו.\nא. הביטוי $2(x+9)$ מתאר: ״מחיר שני כרטיסים, שכל אחד עולה $x$ שקלים, ודמי טיפול חד־פעמיים של 9 שקלים״.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q05א",
+      "canonicalQuestionSha256": "3fdbd29d7828dc0e8d7ec6644ad4d586f7c46912d37c5a6488bba1c57f0e0c26",
+      "sourceExerciseSha256": "690581ebb3a71378f695850cf1e3587988ce0931c575eeea8b9af1d27bc807a6",
+      "context": "בדקו אם התיאור מתאים לביטוי. אם אינו מתאים, תקנו את התיאור או את הביטוי ונמקו.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.43038453049008596
+      },
+      "pinFragmentRef": "auxiliary:dom-84:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.39333930041152254,
+          "w": 0.8571428571428573,
+          "h": 0.31508160736999624
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.05:1",
+        "element:ms-g7-alg-01-c-r1.question.05:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.41803612046389815,
+          "w": 0.7832275132275134,
+          "h": 0.09898445566778902
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.05.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 5,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.05",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.05.item.02",
+      "text": "בדקו אם התיאור מתאים לביטוי. אם אינו מתאים, תקנו את התיאור או את הביטוי ונמקו.\nב. הביטוי $\\f{50}{b}$ מתאר: ״מחלקים 50 קילוגרמים של קמח שווה בשווה בין $b$ שקיות״. מספר השקיות חיובי.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q05ב",
+      "canonicalQuestionSha256": "3fdbd29d7828dc0e8d7ec6644ad4d586f7c46912d37c5a6488bba1c57f0e0c26",
+      "sourceExerciseSha256": "41d95297154797c837b2437d487f9db9f4e8b25dbe6ebac6cb7d9c0e44348998",
+      "context": "בדקו אם התיאור מתאים לביטוי. אם אינו מתאים, תקנו את התיאור או את הביטוי ונמקו.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375663,
+        "y": 0.5341297711267039
+      },
+      "pinFragmentRef": "auxiliary:dom-89:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.39333930041152254,
+          "w": 0.8571428571428573,
+          "h": 0.31508160736999624
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.05:1",
+        "element:ms-g7-alg-01-c-r1.question.05:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.5193961840628506,
+          "w": 0.7832275132275135,
+          "h": 0.10523465637860081
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.05.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 5,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.05",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.05.item.03",
+      "text": "בדקו אם התיאור מתאים לביטוי. אם אינו מתאים, תקנו את התיאור או את הביטוי ונמקו.\nג. הביטוי $m−12$ מתאר: ״המספר הקטן ב־$m$ מן המספר 12״.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q05ג",
+      "canonicalQuestionSha256": "3fdbd29d7828dc0e8d7ec6644ad4d586f7c46912d37c5a6488bba1c57f0e0c26",
+      "sourceExerciseSha256": "cc48ee1d41088131399452fdeb3c25322c1b0210b961c2af5adf14eb3064197b",
+      "context": "בדקו אם התיאור מתאים לביטוי. אם אינו מתאים, תקנו את התיאור או את הביטוי ונמקו.",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.6441060742611298
+      },
+      "pinFragmentRef": "auxiliary:dom-97:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.39333930041152254,
+          "w": 0.8571428571428573,
+          "h": 0.31508160736999624
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.05:1",
+        "element:ms-g7-alg-01-c-r1.question.05:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.631757664234942,
+          "w": 0.7832275132275134,
+          "h": 0.07666324354657691
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.05.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q5",
+      "nativeItemId": "q5c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 6,
+      "part": "א",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.06",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.06.item.01",
+      "text": "תכננו הזמנה של מארזים זהים לאירוע. מחיר מארז הוא 16 שקלים, ודמי ההובלה לכל ההזמנה הם 22 שקלים.\nא. בחרו משתנה לכמות שאינה נתונה. הגדירו אותו וציינו אילו ערכים מתאימים לו בהקשר.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q06א",
+      "canonicalQuestionSha256": "379949827d1cd364d5f7ca05d73eeb9da1c2bdeaa38740f2bc199601a653af11",
+      "sourceExerciseSha256": "9f84285667e26a8244189f7abd90b297b5ce4b644e08929f1c73cca3c4255253",
+      "context": "תכננו הזמנה של מארזים זהים לאירוע. מחיר מארז הוא 16 שקלים, ודמי ההובלה לכל ההזמנה הם 22 שקלים.",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375663,
+        "y": 0.1132384960718294
+      },
+      "pinFragmentRef": "auxiliary:dom-107:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.30883140665918435
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.06:1",
+        "element:ms-g7-alg-01-c-r1.question.06:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.10089008604564159,
+          "w": 0.7832275132275135,
+          "h": 0.0766632435465769
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.06.item.01:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6a",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 6,
+      "part": "ב",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.06",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.06.item.02",
+      "text": "תכננו הזמנה של מארזים זהים לאירוע. מחיר מארז הוא 16 שקלים, ודמי ההובלה לכל ההזמנה הם 22 שקלים.\nב. כתבו באמצעות המשתנה ביטוי לתשלום הכולל, עם יחידה.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q06ב",
+      "canonicalQuestionSha256": "379949827d1cd364d5f7ca05d73eeb9da1c2bdeaa38740f2bc199601a653af11",
+      "sourceExerciseSha256": "f4e73cddced216100bf5c883e4a52b7c78ff33f6333f0034b9dc634996c245d5",
+      "context": "תכננו הזמנה של מארזים זהים לאירוע. מחיר מארז הוא 16 שקלים, ודמי ההובלה לכל ההזמנה הם 22 שקלים.",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375662,
+        "y": 0.19227734754956977
+      },
+      "pinFragmentRef": "auxiliary:dom-109:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.30883140665918435
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.06:1",
+        "element:ms-g7-alg-01-c-r1.question.06:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.17992893752338196,
+          "w": 0.7832275132275134,
+          "h": 0.07666324354657683
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.06.item.02:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6b",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    },
+    {
+      "q": 6,
+      "part": "ג",
+      "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.06",
+      "canonicalItemId": "ms-g7-alg-01-c-r1.question.06.item.03",
+      "text": "תכננו הזמנה של מארזים זהים לאירוע. מחיר מארז הוא 16 שקלים, ודמי ההובלה לכל ההזמנה הם 22 שקלים.\nג. הציעו תוספת הגיונית לתנאי ההזמנה שתדרוש שינוי בביטוי. כתבו ביטוי חדש והסבירו מה השתנה.",
+      "requiredQuestions": [],
+      "id": "G7-T87-E-Q06ג",
+      "canonicalQuestionSha256": "379949827d1cd364d5f7ca05d73eeb9da1c2bdeaa38740f2bc199601a653af11",
+      "sourceExerciseSha256": "7e657612f6078c1ad131f4dc699a99da2b5bb41d092741b1214839754373f743",
+      "context": "תכננו הזמנה של מארזים זהים לאירוע. מחיר מארז הוא 16 שקלים, ודמי ההובלה לכל ההזמנה הם 22 שקלים.",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375663,
+        "y": 0.27606741488963704
+      },
+      "pinFragmentRef": "auxiliary:dom-111:1",
+      "crop": {
+        "page": 1,
+        "x": 0.07142857142857142,
+        "y": 0.19359343434343435,
+        "w": 0.8571428571428574,
+        "h": 0.03719014216236436
+      },
+      "crops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.30883140665918435
+        }
+      ],
+      "fragmentRefs": [
+        "auxiliary:dom-10:1",
+        "element:ms-g7-alg-01-c-r1.question.06:1",
+        "element:ms-g7-alg-01-c-r1.question.06:2"
+      ],
+      "itemCrops": [
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.26371900486344924,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778896
+        }
+      ],
+      "itemFragmentRefs": [
+        "element:ms-g7-alg-01-c-r1.question.06.item.03:1"
+      ],
+      "contextQuestionNumbers": [],
+      "needsVision": false,
+      "requiresVision": false,
+      "nativeQuestionId": "q6",
+      "nativeItemId": "q6c",
+      "nativeLevel": "c",
+      "nativeFigures": [],
+      "nativeVisuals": []
+    }
+  ],
+  "sourceNativeExportSha256": "400122554c711f4170f9ae3ef52c43625ba911cbb70eba9bd2e3bfb2171bcada",
+  "measured": {
+    "version": 1,
+    "fragments": {
+      "element:ms-g7-alg-01-c-r1.question.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.01",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01"
+      },
+      "element:ms-g7-alg-01-c-r1.question.01:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.01",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.28853460531238306,
+          "w": 0.8571428571428573,
+          "h": 0.38009014216236436
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01"
+      },
+      "element:ms-g7-alg-01-c-r1.question.01.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.01.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.40681137298915065,
+          "w": 0.7832275132275135,
+          "h": 0.07666324354657686
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.01"
+      },
+      "element:ms-g7-alg-01-c-r1.question.01.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.01.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.48585022446689097,
+          "w": 0.7832275132275134,
+          "h": 0.07666324354657691
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.02"
+      },
+      "element:ms-g7-alg-01-c-r1.question.01.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.01.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.5696402918069584,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778906
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.03"
+      },
+      "element:ms-g7-alg-01-c-r1.question.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.02",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02"
+      },
+      "element:ms-g7-alg-01-c-r1.question.02:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.02",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.3311526187803965
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02"
+      },
+      "element:ms-g7-alg-01-c-r1.question.02.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.02.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.07856887392442947,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778902
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.01"
+      },
+      "element:ms-g7-alg-01-c-r1.question.02.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.02.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.17992893752338196,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778899
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.02"
+      },
+      "element:ms-g7-alg-01-c-r1.question.02.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.02.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.2860402169846614,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778896
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.03"
+      },
+      "element:ms-g7-alg-01-c-r1.question.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.03",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03"
+      },
+      "element:ms-g7-alg-01-c-r1.question.03:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.03",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.39333930041152254,
+          "w": 0.8571428571428573,
+          "h": 0.27043918312757204
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03"
+      },
+      "element:ms-g7-alg-01-c-r1.question.03.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.03.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.41803612046389815,
+          "w": 0.7832275132275134,
+          "h": 0.08291344425738871
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.01"
+      },
+      "element:ms-g7-alg-01-c-r1.question.03.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.03.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.5033251726524504,
+          "w": 0.7832275132275134,
+          "h": 0.07666324354657691
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.02"
+      },
+      "element:ms-g7-alg-01-c-r1.question.03.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.03.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.5871152399925177,
+          "w": 0.7832275132275134,
+          "h": 0.07666324354657691
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.03"
+      },
+      "element:ms-g7-alg-01-c-r1.question.04:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.04",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04"
+      },
+      "element:ms-g7-alg-01-c-r1.question.04:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.04",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.3311526187803965
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04"
+      },
+      "element:ms-g7-alg-01-c-r1.question.04.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.04.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.07856887392442947,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778902
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.01"
+      },
+      "element:ms-g7-alg-01-c-r1.question.04.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.04.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.17992893752338196,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778899
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.02"
+      },
+      "element:ms-g7-alg-01-c-r1.question.04.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.04.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.2860402169846614,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778896
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.03"
+      },
+      "element:ms-g7-alg-01-c-r1.question.05:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.05",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05"
+      },
+      "element:ms-g7-alg-01-c-r1.question.05:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.05",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.39333930041152254,
+          "w": 0.8571428571428573,
+          "h": 0.31508160736999624
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05"
+      },
+      "element:ms-g7-alg-01-c-r1.question.05.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.05.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.41803612046389815,
+          "w": 0.7832275132275134,
+          "h": 0.09898445566778902
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.01"
+      },
+      "element:ms-g7-alg-01-c-r1.question.05.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.05.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.5193961840628506,
+          "w": 0.7832275132275135,
+          "h": 0.10523465637860081
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.02"
+      },
+      "element:ms-g7-alg-01-c-r1.question.05.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.05.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.631757664234942,
+          "w": 0.7832275132275134,
+          "h": 0.07666324354657691
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.03"
+      },
+      "element:ms-g7-alg-01-c-r1.question.06:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.06",
+        "fragment": 1,
+        "role": "question",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06"
+      },
+      "element:ms-g7-alg-01-c-r1.question.06:2": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.06",
+        "fragment": 2,
+        "role": "question",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205386,
+          "w": 0.8571428571428573,
+          "h": 0.30883140665918435
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06"
+      },
+      "element:ms-g7-alg-01-c-r1.question.06.item.01:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.06.item.01",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.10089008604564159,
+          "w": 0.7832275132275135,
+          "h": 0.0766632435465769
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.01"
+      },
+      "element:ms-g7-alg-01-c-r1.question.06.item.02:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.06.item.02",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.17992893752338196,
+          "w": 0.7832275132275134,
+          "h": 0.07666324354657683
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.02"
+      },
+      "element:ms-g7-alg-01-c-r1.question.06.item.03:1": {
+        "kind": "element",
+        "ownerId": "ms-g7-alg-01-c-r1.question.06.item.03",
+        "fragment": 1,
+        "role": "item",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.26371900486344924,
+          "w": 0.7832275132275135,
+          "h": 0.09898445566778896
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.03"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.01",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.0714285714285713,
+          "y": 0.12194034792368123,
+          "w": 0.8571428571428573,
+          "h": 0.04419343434343434
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.01.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.01.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.5440306906725364,
+          "y": 0.1235438832772166,
+          "w": 0.3375037008618552,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.01"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.01.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.01.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.19704477461557532,
+          "y": 0.1235438832772166,
+          "w": 0.32850708007812496,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.02"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.01.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.01.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.6028618480541089,
+          "y": 0.14376980920314253,
+          "w": 0.27867254348028264,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.03"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.02",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857116,
+          "y": 0.1661337822671156,
+          "w": 0.8571428571428575,
+          "h": 0.028289000561167236
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.02.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.02.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.768596326368221,
+          "y": 0.16773731762065094,
+          "w": 0.11293806516617065,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.01"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.02.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.02.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.6497398047557044,
+          "y": 0.1670317620650954,
+          "w": 0.1003776856336806,
+          "h": 0.025252973625140285
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.02"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.02.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.02.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.5440200775473298,
+          "y": 0.16773731762065094,
+          "w": 0.08724089122953854,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.03"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.03",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.0714285714285713,
+          "y": 0.19442278282828282,
+          "w": 0.8571428571428573,
+          "h": 0.04419343434343434
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.03.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.03.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.5550537658368468,
+          "y": 0.19602631818181818,
+          "w": 0.3264806256975447,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.01"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.03.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.03.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.21730931842137888,
+          "y": 0.19602631818181818,
+          "w": 0.3192656114366319,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.02"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.03.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.03.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.5748003149284887,
+          "y": 0.21625224410774407,
+          "w": 0.3067340766059027,
+          "h": 0.020225925925925904
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.03"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.04:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.04",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857116,
+          "y": 0.23861621717171716,
+          "w": 0.8571428571428575,
+          "h": 0.028289000561167208
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.04.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.04.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.811696931681961,
+          "y": 0.24021975252525252,
+          "w": 0.06983745985243058,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.01"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.04.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.04.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.6774192941158234,
+          "y": 0.23951419696969695,
+          "w": 0.11579880158730152,
+          "h": 0.025252973625140313
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.02"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.04.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.04.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.5385819033719828,
+          "y": 0.24021975252525252,
+          "w": 0.12035855476500476,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.03"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.05:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.05",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857116,
+          "y": 0.2669052177328844,
+          "w": 0.8571428571428574,
+          "h": 0.0846452861952862
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.05.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.05.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.11868521486958497,
+          "y": 0.26850875308641975,
+          "w": 0.7628491766648064,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.01"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.05.item.01:2": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.05.item.01",
+        "fragment": 2,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.8318401195384838,
+          "y": 0.2887346790123456,
+          "w": 0.049694271995907736,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.01"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.05.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.05.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.3964071187014299,
+          "y": 0.3089606049382716,
+          "w": 0.48512727283296136,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.02"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.05.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.05.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.10146958056898975,
+          "y": 0.3291865308641975,
+          "w": 0.7800648109654017,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.03"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.06:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.06",
+        "fragment": 1,
+        "role": "answer-question",
+        "crop": {
+          "page": 5,
+          "x": 0.0714285714285713,
+          "y": 0.35155050392817055,
+          "w": 0.8571428571428573,
+          "h": 0.04419343434343434
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.06.item.01:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.06.item.01",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.5418910402974125,
+          "y": 0.3531540392817059,
+          "w": 0.3396433512369791,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.01"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.06.item.02:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.06.item.02",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.2622661313399056,
+          "y": 0.3531540392817059,
+          "w": 0.26114607297867065,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.02"
+      },
+      "element:answer:ms-g7-alg-01-c-r1.question.06.item.03:1": {
+        "kind": "element",
+        "ownerId": "answer:ms-g7-alg-01-c-r1.question.06.item.03",
+        "fragment": 1,
+        "role": "answer-item",
+        "crop": {
+          "page": 5,
+          "x": 0.37627701236462435,
+          "y": 0.3733799652076319,
+          "w": 0.505257379169767,
+          "h": 0.020225925925925932
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.03"
+      },
+      "auxiliary:dom-23:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-23",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 1,
+          "x": 0.8076190476190477,
+          "y": 0.4079991769547324,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.01"
+      },
+      "auxiliary:dom-25:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-25",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 1,
+          "x": 0.8076190476190477,
+          "y": 0.4870380284324728,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.02"
+      },
+      "auxiliary:dom-27:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-27",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 1,
+          "x": 0.8076190476190477,
+          "y": 0.5708280957725401,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.03"
+      },
+      "auxiliary:dom-18:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-18",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.28853460531238306,
+          "w": 0.7832275132275135,
+          "h": 0.06056849981294424
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01"
+      },
+      "auxiliary:dom-21:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-21",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.35979334081556297,
+          "w": 0.7832275132275134,
+          "h": 0.044642424242424206
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01"
+      },
+      "auxiliary:dom-34:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-34",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.07975667789001123,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212117
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.01"
+      },
+      "auxiliary:dom-37:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-37",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.18111674148896373,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.02"
+      },
+      "auxiliary:dom-40:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-40",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.28722802095024313,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.03"
+      },
+      "auxiliary:dom-32:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-32",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.7832275132275134,
+          "h": 0.022321212121212117
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02"
+      },
+      "auxiliary:dom-49:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-49",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.4216091014671453,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.01"
+      },
+      "auxiliary:dom-57:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-57",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.5045129766180321,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.02"
+      },
+      "auxiliary:dom-61:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-61",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 2,
+          "x": 0.8076190476190477,
+          "y": 0.5883030439580995,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.03"
+      },
+      "auxiliary:dom-46:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-46",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.39333930041152254,
+          "w": 0.7832275132275134,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03"
+      },
+      "auxiliary:dom-70:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-70",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.07975667789001123,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212117
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.01"
+      },
+      "auxiliary:dom-73:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-73",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.18111674148896373,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.02"
+      },
+      "auxiliary:dom-76:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-76",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.28722802095024313,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.03"
+      },
+      "auxiliary:dom-68:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-68",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.7832275132275134,
+          "h": 0.022321212121212117
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04"
+      },
+      "auxiliary:dom-84:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-84",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.4192239244294799,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.01"
+      },
+      "auxiliary:dom-89:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-89",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.5229691650660978,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.02"
+      },
+      "auxiliary:dom-97:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-97",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 3,
+          "x": 0.8076190476190477,
+          "y": 0.6329454682005237,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212155
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.03"
+      },
+      "auxiliary:dom-82:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-82",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.39333930041152254,
+          "w": 0.7832275132275134,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05"
+      },
+      "auxiliary:dom-107:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-107",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 4,
+          "x": 0.8076190476190477,
+          "y": 0.10207789001122333,
+          "w": 0.047037037037037224,
+          "h": 0.02232121212121213
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.01"
+      },
+      "auxiliary:dom-109:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-109",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 4,
+          "x": 0.8076190476190477,
+          "y": 0.18111674148896373,
+          "w": 0.04703703703703708,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.02"
+      },
+      "auxiliary:dom-111:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-111",
+        "fragment": 1,
+        "role": "item-label",
+        "crop": {
+          "page": 4,
+          "x": 0.8076190476190477,
+          "y": 0.264906808829031,
+          "w": 0.047037037037037224,
+          "h": 0.022321212121212103
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.03"
+      },
+      "auxiliary:dom-105:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-105",
+        "fragment": 1,
+        "role": "question-prompt",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.7832275132275134,
+          "h": 0.04464242424242423
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06"
+      },
+      "auxiliary:dom-6:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-6",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.8571428571428573,
+          "h": 0.025193322109988776
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-7:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-7",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.08975561167227834,
+          "w": 0.8571428571428573,
+          "h": 0.03656060606060605
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-8:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-8",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.12869182566404785,
+          "w": 0.8571428571428573,
+          "h": 0.02116666666666668
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-9:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-9",
+        "fragment": 1,
+        "role": "worksheet-header",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.16054872802095024,
+          "w": 0.8571428571428573,
+          "h": 0.021166666666666657
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-10:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-10",
+        "fragment": 1,
+        "role": "worksheet-instructions",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.19359343434343435,
+          "w": 0.8571428571428574,
+          "h": 0.03719014216236436
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-11:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11",
+        "fragment": 1,
+        "role": "section-source",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-112:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-112",
+        "fragment": 1,
+        "role": "worksheet-closing",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.3793327160493826,
+          "w": 0.8571428571428573,
+          "h": 0.025015151515151497
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-114:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-114",
+        "fragment": 1,
+        "role": "answer-header",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.8571428571428574,
+          "h": 0.03376926674148896
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-115:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-115",
+        "fragment": 1,
+        "role": "answer-header",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.09595594837261504,
+          "w": 0.8571428571428573,
+          "h": 0.01885757575757575
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "auxiliary:dom-22.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-22.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.4303203890759445,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.01"
+      },
+      "auxiliary:dom-24.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-24.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.5093592405536849,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.02"
+      },
+      "auxiliary:dom-26.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-26.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.6154705200149645,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": "ms-g7-alg-01-c-r1.question.01.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01.item.03"
+      },
+      "auxiliary:dom-33.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-33.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.12439910213243546,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.01"
+      },
+      "auxiliary:dom-36.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-36.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.22575916573138793,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.02"
+      },
+      "auxiliary:dom-39.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-39.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.33187044519266734,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": "ms-g7-alg-01-c-r1.question.02.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02.item.03"
+      },
+      "auxiliary:dom-48.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-48.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.44779533726150383,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.01"
+      },
+      "auxiliary:dom-56.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-56.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.5268341887392443,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.02"
+      },
+      "auxiliary:dom-60.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-60.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.6106242560793116,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": "ms-g7-alg-01-c-r1.question.03.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03.item.03"
+      },
+      "auxiliary:dom-69.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-69.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.12439910213243546,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.01"
+      },
+      "auxiliary:dom-72.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-72.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.22575916573138793,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.02"
+      },
+      "auxiliary:dom-75.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-75.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.33187044519266734,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": "ms-g7-alg-01-c-r1.question.04.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04.item.03"
+      },
+      "auxiliary:dom-83.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-83.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.4638663486719041,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.01"
+      },
+      "auxiliary:dom-88.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-88.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.5714766129816685,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.02"
+      },
+      "auxiliary:dom-96.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-96.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.6552666803217359,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": "ms-g7-alg-01-c-r1.question.05.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05.item.03"
+      },
+      "auxiliary:dom-106.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-106.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.12439910213243546,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.01",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.01"
+      },
+      "auxiliary:dom-108.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-108.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.20343795361017583,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.02",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.02"
+      },
+      "auxiliary:dom-110.writing-space:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-110.writing-space",
+        "fragment": 1,
+        "role": "writing-space",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.3095492330714552,
+          "w": 0.7832275132275134,
+          "h": 0.0522633744855967
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": "ms-g7-alg-01-c-r1.question.06.item.03",
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06.item.03"
+      },
+      "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.01:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-alg-01-c-r1.question.01",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.01",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.01"
+      },
+      "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.02:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-alg-01-c-r1.question.02",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.02",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.02"
+      },
+      "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.03:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-alg-01-c-r1.question.03",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.03",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.03"
+      },
+      "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.04:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-alg-01-c-r1.question.04",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.04",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.04"
+      },
+      "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.05:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-alg-01-c-r1.question.05",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.05",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.05"
+      },
+      "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.06:1": {
+        "kind": "auxiliary",
+        "ownerId": "dom-11.for.ms-g7-alg-01-c-r1.question.06",
+        "fragment": 1,
+        "role": "section-title",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.24622502805836133,
+          "w": 0.8571428571428574,
+          "h": 0.03161934156378601
+        },
+        "questionId": "ms-g7-alg-01-c-r1.question.06",
+        "itemId": null,
+        "canonicalOwnerId": "ms-g7-alg-01-c-r1.question.06"
+      },
+      "margin:page1-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 1,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 1,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 1,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page1-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page1-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 1,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 2,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 2,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 2,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page2-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page2-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 2,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 3,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 3,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 3,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page3-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page3-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 3,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 4,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 4,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 4,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page4-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page4-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 4,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin0:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin0",
+        "fragment": 1,
+        "role": "@top-center",
+        "crop": {
+          "page": 5,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin1:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin1",
+        "fragment": 1,
+        "role": "@top-right",
+        "crop": {
+          "page": 5,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin2:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin2",
+        "fragment": 1,
+        "role": "@bottom-left",
+        "crop": {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin3:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin3",
+        "fragment": 1,
+        "role": "@bottom-center",
+        "crop": {
+          "page": 5,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      },
+      "margin:page5-margin4:1": {
+        "kind": "margin",
+        "ownerId": "page5-margin4",
+        "fragment": 1,
+        "role": "@bottom-right",
+        "crop": {
+          "page": 5,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        "questionId": null,
+        "itemId": null,
+        "canonicalOwnerId": null
+      }
+    },
+    "sheet": {
+      "sourceSha256": "fe5923fe5f82985dbde4090063335c8c19e05467ab083388a35ab4105dc75540",
+      "canonicalSourceSha256": "5f1d9a0c450f287656cf1b6a9a540dab2c8d3c9ed724fd9922c8b4b8749e5b73",
+      "layoutSha256": "066b5e0efb6a7cb3386964eb85d2c994a61da6728cc28293714199aa0cfe9a35",
+      "editionId": "ms-20261115-alg-01-r1",
+      "geometryContract": "measured-v1",
+      "reviewRequired": true,
+      "publishable": false,
+      "pageCount": 5,
+      "exercisePageCount": 4,
+      "answerStartPage": 5,
+      "pdfId": "0fe476657595498194b93cdc46e39e5f",
+      "pdfUrl": "https://static.wixstatic.com/ugd/d8e7ad_0fe476657595498194b93cdc46e39e5f.pdf",
+      "grade": 7,
+      "topicId": 22,
+      "topic": "משתנים וביטויים אלגבריים",
+      "level": "c",
+      "levelLabel": "מצוינות",
+      "mode": "exercise",
+      "questions": [
+        {
+          "q": 1,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.01",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.01.item.01",
+          "text": "בשירות השכרת אופניים נגבים 10 שקלים לפתיחת השכרה ו־7 שקלים לכל שעת השכרה. מחייבים לפי שעות שלמות.\nא. בחרו משתנה לגודל שאינו קבוע וכתבו את משמעותו ואת יחידתו.",
+          "requiredQuestions": [],
+          "id": "1א",
+          "page": 1,
+          "label": "שאלה 1 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.4079991769547324,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.40681137298915065,
+            "w": 0.7832275132275135,
+            "h": 0.07666324354657686
+          },
+          "rows": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.40681137298915065,
+              "w": 0.7832275132275135,
+              "h": 0.07666324354657686
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.01.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.28853460531238306,
+              "w": 0.7832275132275135,
+              "h": 0.06056849981294424
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.35979334081556297,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-18:1",
+            "auxiliary:dom-21:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.01:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-22.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-23:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 1,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.01",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.01.item.02",
+          "text": "בשירות השכרת אופניים נגבים 10 שקלים לפתיחת השכרה ו־7 שקלים לכל שעת השכרה. מחייבים לפי שעות שלמות.\nב. כתבו שני גדלים קבועים במצב המתואר, עם יחידותיהם.",
+          "requiredQuestions": [],
+          "id": "1ב",
+          "page": 1,
+          "label": "שאלה 1 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.4870380284324728,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.48585022446689097,
+            "w": 0.7832275132275134,
+            "h": 0.07666324354657691
+          },
+          "rows": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.48585022446689097,
+              "w": 0.7832275132275134,
+              "h": 0.07666324354657691
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.01.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.28853460531238306,
+              "w": 0.7832275132275135,
+              "h": 0.06056849981294424
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.35979334081556297,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-18:1",
+            "auxiliary:dom-21:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.01:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-24.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-25:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 1,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.01",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.01.item.03",
+          "text": "בשירות השכרת אופניים נגבים 10 שקלים לפתיחת השכרה ו־7 שקלים לכל שעת השכרה. מחייבים לפי שעות שלמות.\nג. האם אפשר לסמן באותה אות גם את מספר השעות וגם את התשלום ולשמור על משמעות אחת למשתנה? הסבירו.",
+          "requiredQuestions": [],
+          "id": "1ג",
+          "page": 1,
+          "label": "שאלה 1 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.5708280957725401,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.5696402918069584,
+            "w": 0.7832275132275135,
+            "h": 0.09898445566778906
+          },
+          "rows": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.5696402918069584,
+              "w": 0.7832275132275135,
+              "h": 0.09898445566778906
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.01.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.28853460531238306,
+              "w": 0.7832275132275135,
+              "h": 0.06056849981294424
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.35979334081556297,
+              "w": 0.7832275132275134,
+              "h": 0.044642424242424206
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-18:1",
+            "auxiliary:dom-21:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.01:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-26.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-27:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 2,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.02",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.02.item.01",
+          "text": "כתבו ביטוי מתאים לכל תיאור. אין צורך לחשב ערך מספרי.\nא. מחיר מוצר לפני הנחה הוא $p$ שקלים. ההנחה היא 13 שקלים, והמחיר המקורי הוא לפחות 13 שקלים. כתבו ביטוי למחיר לאחר ההנחה.",
+          "requiredQuestions": [],
+          "id": "2א",
+          "page": 2,
+          "label": "שאלה 2 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.07975667789001123,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212117
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.07856887392442947,
+            "w": 0.7832275132275135,
+            "h": 0.09898445566778902
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.07856887392442947,
+              "w": 0.7832275132275135,
+              "h": 0.09898445566778902
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.02.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-32:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.02:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-33.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-34:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 2,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.02",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.02.item.02",
+          "text": "כתבו ביטוי מתאים לכל תיאור. אין צורך לחשב ערך מספרי.\nב. מחלקים 36 מטרים של חבל שווה בשווה בין $k$ קבוצות. מספר הקבוצות חיובי. כתבו ביטוי לאורך החבל שמקבלת כל קבוצה.",
+          "requiredQuestions": [],
+          "id": "2ב",
+          "page": 2,
+          "label": "שאלה 2 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.18111674148896373,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.17992893752338196,
+            "w": 0.7832275132275135,
+            "h": 0.09898445566778899
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.17992893752338196,
+              "w": 0.7832275132275135,
+              "h": 0.09898445566778899
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.02.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-32:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.02:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-36.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-37:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 2,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.02",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.02.item.03",
+          "text": "כתבו ביטוי מתאים לכל תיאור. אין צורך לחשב ערך מספרי.\nג. מחיר כרטיס רגיל הוא $q$ שקלים. כרטיס מיוחד עולה פי 3 מכרטיס רגיל. כתבו ביטוי למחיר הכרטיס המיוחד.",
+          "requiredQuestions": [],
+          "id": "2ג",
+          "page": 2,
+          "label": "שאלה 2 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.28722802095024313,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.2860402169846614,
+            "w": 0.7832275132275135,
+            "h": 0.09898445566778896
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.2860402169846614,
+              "w": 0.7832275132275135,
+              "h": 0.09898445566778896
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.02.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-32:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.02:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-39.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-40:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 3,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.03",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.03.item.01",
+          "text": "המשתנה $u$ מייצג מספר חיובי. תארו כל ביטוי במשפט המציין גם את סדר הפעולות.\nא. $\\f{u+5}{4}$",
+          "requiredQuestions": [],
+          "id": "3א",
+          "page": 2,
+          "label": "שאלה 3 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.4216091014671453,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.41803612046389815,
+            "w": 0.7832275132275134,
+            "h": 0.08291344425738871
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.41803612046389815,
+              "w": 0.7832275132275134,
+              "h": 0.08291344425738871
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.03.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.39333930041152254,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212103
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-46:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.03:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-48.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-49:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 3,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.03",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.03.item.02",
+          "text": "המשתנה $u$ מייצג מספר חיובי. תארו כל ביטוי במשפט המציין גם את סדר הפעולות.\nב. $4u+5$",
+          "requiredQuestions": [],
+          "id": "3ב",
+          "page": 2,
+          "label": "שאלה 3 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.5045129766180321,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.5033251726524504,
+            "w": 0.7832275132275134,
+            "h": 0.07666324354657691
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.5033251726524504,
+              "w": 0.7832275132275134,
+              "h": 0.07666324354657691
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.03.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.39333930041152254,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212103
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-46:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.03:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-56.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-57:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 3,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.03",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.03.item.03",
+          "text": "המשתנה $u$ מייצג מספר חיובי. תארו כל ביטוי במשפט המציין גם את סדר הפעולות.\nג. $4(u+5)$",
+          "requiredQuestions": [],
+          "id": "3ג",
+          "page": 2,
+          "label": "שאלה 3 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.5883030439580995,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.5871152399925177,
+            "w": 0.7832275132275134,
+            "h": 0.07666324354657691
+          },
+          "rows": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.5871152399925177,
+              "w": 0.7832275132275134,
+              "h": 0.07666324354657691
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.03.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 2,
+              "x": 0.07142857142857142,
+              "y": 0.39333930041152254,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212103
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-46:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.03:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-60.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-61:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 4,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.04",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.04.item.01",
+          "text": "כתבו ביטוי לכל מצב. אל תפתחו סוגריים.\nא. יש $n$ משתתפים בטיול ועוד 2 מדריכים. כל אחד מהם מקבל 3 בקבוקי מים. כתבו ביטוי למספר הבקבוקים הדרוש.",
+          "requiredQuestions": [],
+          "id": "4א",
+          "page": 3,
+          "label": "שאלה 4 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.07975667789001123,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212117
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.07856887392442947,
+            "w": 0.7832275132275135,
+            "h": 0.09898445566778902
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.07856887392442947,
+              "w": 0.7832275132275135,
+              "h": 0.09898445566778902
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.04.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-68:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.04:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-69.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-70:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 4,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.04",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.04.item.02",
+          "text": "כתבו ביטוי לכל מצב. אל תפתחו סוגריים.\nב. מכל מכיל $v$ ליטרים של מים. שומרים 8 ליטרים בצד, ואת הכמות שנותרה מחלקים שווה בשווה בין 4 מכלים ריקים. במכל יש לפחות 8 ליטרים. כתבו ביטוי לכמות בכל מכל חדש.",
+          "requiredQuestions": [],
+          "id": "4ב",
+          "page": 3,
+          "label": "שאלה 4 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.18111674148896373,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.17992893752338196,
+            "w": 0.7832275132275135,
+            "h": 0.09898445566778899
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.17992893752338196,
+              "w": 0.7832275132275135,
+              "h": 0.09898445566778899
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.04.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-68:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.04:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-72.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-73:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 4,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.04",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.04.item.03",
+          "text": "כתבו ביטוי לכל מצב. אל תפתחו סוגריים.\nג. מחיר סדנה למשתתף הוא $p$ שקלים. 5 משתתפים נרשמים יחד ומקבלים הנחה של 6 שקלים לכל משתתף. המחיר המקורי למשתתף הוא לפחות 6 שקלים. כתבו ביטוי לתשלום הקבוצה.",
+          "requiredQuestions": [],
+          "id": "4ג",
+          "page": 3,
+          "label": "שאלה 4 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.28722802095024313,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.2860402169846614,
+            "w": 0.7832275132275135,
+            "h": 0.09898445566778896
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.2860402169846614,
+              "w": 0.7832275132275135,
+              "h": 0.09898445566778896
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.04.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212117
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-68:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.04:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-75.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-76:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 5,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.05",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.05.item.01",
+          "text": "בדקו אם התיאור מתאים לביטוי. אם אינו מתאים, תקנו את התיאור או את הביטוי ונמקו.\nא. הביטוי $2(x+9)$ מתאר: ״מחיר שני כרטיסים, שכל אחד עולה $x$ שקלים, ודמי טיפול חד־פעמיים של 9 שקלים״.",
+          "requiredQuestions": [],
+          "id": "5א",
+          "page": 3,
+          "label": "שאלה 5 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.4192239244294799,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.41803612046389815,
+            "w": 0.7832275132275134,
+            "h": 0.09898445566778902
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.41803612046389815,
+              "w": 0.7832275132275134,
+              "h": 0.09898445566778902
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.05.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.39333930041152254,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212103
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-82:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.05:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-83.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-84:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 5,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.05",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.05.item.02",
+          "text": "בדקו אם התיאור מתאים לביטוי. אם אינו מתאים, תקנו את התיאור או את הביטוי ונמקו.\nב. הביטוי $\\f{50}{b}$ מתאר: ״מחלקים 50 קילוגרמים של קמח שווה בשווה בין $b$ שקיות״. מספר השקיות חיובי.",
+          "requiredQuestions": [],
+          "id": "5ב",
+          "page": 3,
+          "label": "שאלה 5 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.5229691650660978,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.5193961840628506,
+            "w": 0.7832275132275135,
+            "h": 0.10523465637860081
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.5193961840628506,
+              "w": 0.7832275132275135,
+              "h": 0.10523465637860081
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.05.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.39333930041152254,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212103
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-82:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.05:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-88.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-89:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 5,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.05",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.05.item.03",
+          "text": "בדקו אם התיאור מתאים לביטוי. אם אינו מתאים, תקנו את התיאור או את הביטוי ונמקו.\nג. הביטוי $m−12$ מתאר: ״המספר הקטן ב־$m$ מן המספר 12״.",
+          "requiredQuestions": [],
+          "id": "5ג",
+          "page": 3,
+          "label": "שאלה 5 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.6329454682005237,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212155
+          },
+          "row": {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.631757664234942,
+            "w": 0.7832275132275134,
+            "h": 0.07666324354657691
+          },
+          "rows": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.631757664234942,
+              "w": 0.7832275132275134,
+              "h": 0.07666324354657691
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.05.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 3,
+              "x": 0.07142857142857142,
+              "y": 0.39333930041152254,
+              "w": 0.7832275132275134,
+              "h": 0.022321212121212103
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-82:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.05:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-96.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-97:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 6,
+          "part": "א",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.06",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.06.item.01",
+          "text": "תכננו הזמנה של מארזים זהים לאירוע. מחיר מארז הוא 16 שקלים, ודמי ההובלה לכל ההזמנה הם 22 שקלים.\nא. בחרו משתנה לכמות שאינה נתונה. הגדירו אותו וציינו אילו ערכים מתאימים לו בהקשר.",
+          "requiredQuestions": [],
+          "id": "6א",
+          "page": 4,
+          "label": "שאלה 6 סעיף א",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.10207789001122333,
+            "w": 0.047037037037037224,
+            "h": 0.02232121212121213
+          },
+          "row": {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.10089008604564159,
+            "w": 0.7832275132275135,
+            "h": 0.0766632435465769
+          },
+          "rows": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.10089008604564159,
+              "w": 0.7832275132275135,
+              "h": 0.0766632435465769
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.06.item.01:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-105:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.06:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-106.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-107:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 6,
+          "part": "ב",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.06",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.06.item.02",
+          "text": "תכננו הזמנה של מארזים זהים לאירוע. מחיר מארז הוא 16 שקלים, ודמי ההובלה לכל ההזמנה הם 22 שקלים.\nב. כתבו באמצעות המשתנה ביטוי לתשלום הכולל, עם יחידה.",
+          "requiredQuestions": [],
+          "id": "6ב",
+          "page": 4,
+          "label": "שאלה 6 סעיף ב",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.18111674148896373,
+            "w": 0.04703703703703708,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.17992893752338196,
+            "w": 0.7832275132275134,
+            "h": 0.07666324354657683
+          },
+          "rows": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.17992893752338196,
+              "w": 0.7832275132275134,
+              "h": 0.07666324354657683
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.06.item.02:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-105:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.06:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-108.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-109:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        },
+        {
+          "q": 6,
+          "part": "ג",
+          "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.06",
+          "canonicalItemId": "ms-g7-alg-01-c-r1.question.06.item.03",
+          "text": "תכננו הזמנה של מארזים זהים לאירוע. מחיר מארז הוא 16 שקלים, ודמי ההובלה לכל ההזמנה הם 22 שקלים.\nג. הציעו תוספת הגיונית לתנאי ההזמנה שתדרוש שינוי בביטוי. כתבו ביטוי חדש והסבירו מה השתנה.",
+          "requiredQuestions": [],
+          "id": "6ג",
+          "page": 4,
+          "label": "שאלה 6 סעיף ג",
+          "box": {
+            "x": 0.8076190476190477,
+            "y": 0.264906808829031,
+            "w": 0.047037037037037224,
+            "h": 0.022321212121212103
+          },
+          "row": {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.26371900486344924,
+            "w": 0.7832275132275135,
+            "h": 0.09898445566778896
+          },
+          "rows": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.26371900486344924,
+              "w": 0.7832275132275135,
+              "h": 0.09898445566778896
+            }
+          ],
+          "fragmentRefs": [
+            "element:ms-g7-alg-01-c-r1.question.06.item.03:1"
+          ],
+          "contextCrops": [
+            {
+              "page": 4,
+              "x": 0.07142857142857142,
+              "y": 0.05387205387205387,
+              "w": 0.7832275132275134,
+              "h": 0.04464242424242423
+            },
+            {
+              "page": 1,
+              "x": 0.07142857142857142,
+              "y": 0.24622502805836133,
+              "w": 0.8571428571428574,
+              "h": 0.03161934156378601
+            }
+          ],
+          "contextFragmentRefs": [
+            "auxiliary:dom-105:1",
+            "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.06:1"
+          ],
+          "dependencyCrops": [],
+          "dependencyFragmentRefs": [],
+          "writingSpaceFragmentRefs": [
+            "auxiliary:dom-110.writing-space:1"
+          ],
+          "labelFragmentRefs": [
+            "auxiliary:dom-111:1"
+          ],
+          "figureOccurrenceIds": [],
+          "dependencyFigureOccurrenceIds": []
+        }
+      ],
+      "headerCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.05387205387205387,
+          "w": 0.8571428571428573,
+          "h": 0.025193322109988776
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.08975561167227834,
+          "w": 0.8571428571428573,
+          "h": 0.03656060606060605
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.12869182566404785,
+          "w": 0.8571428571428573,
+          "h": 0.02116666666666668
+        },
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.16054872802095024,
+          "w": 0.8571428571428573,
+          "h": 0.021166666666666657
+        }
+      ],
+      "headerFragmentRefs": [
+        "auxiliary:dom-6:1",
+        "auxiliary:dom-7:1",
+        "auxiliary:dom-8:1",
+        "auxiliary:dom-9:1"
+      ],
+      "runningHeaderCrops": [
+        {
+          "page": 1,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 1,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 2,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 2,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 3,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 3,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 4,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 4,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 5,
+          "x": 0.4317944917224703,
+          "y": 0,
+          "w": 0.13641101655505952,
+          "h": 0.05387205387205387
+        },
+        {
+          "page": 5,
+          "x": 0.8984957449776786,
+          "y": 0,
+          "w": 0.030075683593749996,
+          "h": 0.05387205387205387
+        }
+      ],
+      "runningHeaderFragmentRefs": [
+        "margin:page1-margin0:1",
+        "margin:page1-margin1:1",
+        "margin:page2-margin0:1",
+        "margin:page2-margin1:1",
+        "margin:page3-margin0:1",
+        "margin:page3-margin1:1",
+        "margin:page4-margin0:1",
+        "margin:page4-margin1:1",
+        "margin:page5-margin0:1",
+        "margin:page5-margin1:1"
+      ],
+      "footerCrops": [
+        {
+          "page": 1,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 1,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 1,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 2,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 2,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 2,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 3,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 3,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 3,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 4,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 4,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 4,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 5,
+          "x": 0.07142857142857142,
+          "y": 0.9528619528619529,
+          "w": 0.3491333589099702,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 5,
+          "x": 0.46000797816685274,
+          "y": 0.9528619528619529,
+          "w": 0.07998404366629464,
+          "h": 0.04713804713804714
+        },
+        {
+          "page": 5,
+          "x": 0.7997420828683036,
+          "y": 0.9528619528619529,
+          "w": 0.128829345703125,
+          "h": 0.04713804713804714
+        }
+      ],
+      "footerFragmentRefs": [
+        "margin:page1-margin2:1",
+        "margin:page1-margin3:1",
+        "margin:page1-margin4:1",
+        "margin:page2-margin2:1",
+        "margin:page2-margin3:1",
+        "margin:page2-margin4:1",
+        "margin:page3-margin2:1",
+        "margin:page3-margin3:1",
+        "margin:page3-margin4:1",
+        "margin:page4-margin2:1",
+        "margin:page4-margin3:1",
+        "margin:page4-margin4:1",
+        "margin:page5-margin2:1",
+        "margin:page5-margin3:1",
+        "margin:page5-margin4:1"
+      ],
+      "marginFragmentRefs": [
+        "margin:page1-margin0:1",
+        "margin:page1-margin1:1",
+        "margin:page2-margin0:1",
+        "margin:page2-margin1:1",
+        "margin:page3-margin0:1",
+        "margin:page3-margin1:1",
+        "margin:page4-margin0:1",
+        "margin:page4-margin1:1",
+        "margin:page5-margin0:1",
+        "margin:page5-margin1:1",
+        "margin:page1-margin2:1",
+        "margin:page1-margin3:1",
+        "margin:page1-margin4:1",
+        "margin:page2-margin2:1",
+        "margin:page2-margin3:1",
+        "margin:page2-margin4:1",
+        "margin:page3-margin2:1",
+        "margin:page3-margin3:1",
+        "margin:page3-margin4:1",
+        "margin:page4-margin2:1",
+        "margin:page4-margin3:1",
+        "margin:page4-margin4:1",
+        "margin:page5-margin2:1",
+        "margin:page5-margin3:1",
+        "margin:page5-margin4:1"
+      ],
+      "worksheetInstructionFragmentRefs": [
+        "auxiliary:dom-10:1"
+      ],
+      "answerGeometry": "measured",
+      "answerSourceSha256": "fe5923fe5f82985dbde4090063335c8c19e05467ab083388a35ab4105dc75540",
+      "answerMap": {
+        "version": 1,
+        "sourceSha256": "fe5923fe5f82985dbde4090063335c8c19e05467ab083388a35ab4105dc75540",
+        "questions": [
+          {
+            "q": 1,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.0714285714285713,
+                "y": 0.12194034792368123,
+                "w": 0.8571428571428573,
+                "h": 0.04419343434343434
+              }
+            ]
+          },
+          {
+            "q": 2,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.07142857142857116,
+                "y": 0.1661337822671156,
+                "w": 0.8571428571428575,
+                "h": 0.028289000561167236
+              }
+            ]
+          },
+          {
+            "q": 3,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.0714285714285713,
+                "y": 0.19442278282828282,
+                "w": 0.8571428571428573,
+                "h": 0.04419343434343434
+              }
+            ]
+          },
+          {
+            "q": 4,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.07142857142857116,
+                "y": 0.23861621717171716,
+                "w": 0.8571428571428575,
+                "h": 0.028289000561167208
+              }
+            ]
+          },
+          {
+            "q": 5,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.07142857142857116,
+                "y": 0.2669052177328844,
+                "w": 0.8571428571428574,
+                "h": 0.0846452861952862
+              }
+            ]
+          },
+          {
+            "q": 6,
+            "parts": [
+              "א",
+              "ב",
+              "ג"
+            ],
+            "crops": [
+              {
+                "page": 5,
+                "x": 0.0714285714285713,
+                "y": 0.35155050392817055,
+                "w": 0.8571428571428573,
+                "h": 0.04419343434343434
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "wholeQuestions": [
+      {
+        "q": 1,
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.01",
+        "fragmentRefs": [
+          "element:ms-g7-alg-01-c-r1.question.01:1",
+          "element:ms-g7-alg-01-c-r1.question.01:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.28853460531238306,
+            "w": 0.8571428571428573,
+            "h": 0.38009014216236436
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-18:1",
+          "auxiliary:dom-21:1",
+          "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.01:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 2,
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.02",
+        "fragmentRefs": [
+          "element:ms-g7-alg-01-c-r1.question.02:1",
+          "element:ms-g7-alg-01-c-r1.question.02:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.05387205387205386,
+            "w": 0.8571428571428573,
+            "h": 0.3311526187803965
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-32:1",
+          "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.02:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 3,
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.03",
+        "fragmentRefs": [
+          "element:ms-g7-alg-01-c-r1.question.03:1",
+          "element:ms-g7-alg-01-c-r1.question.03:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 2,
+            "x": 0.07142857142857142,
+            "y": 0.39333930041152254,
+            "w": 0.8571428571428573,
+            "h": 0.27043918312757204
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-46:1",
+          "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.03:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 4,
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.04",
+        "fragmentRefs": [
+          "element:ms-g7-alg-01-c-r1.question.04:1",
+          "element:ms-g7-alg-01-c-r1.question.04:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.05387205387205386,
+            "w": 0.8571428571428573,
+            "h": 0.3311526187803965
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-68:1",
+          "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.04:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 5,
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.05",
+        "fragmentRefs": [
+          "element:ms-g7-alg-01-c-r1.question.05:1",
+          "element:ms-g7-alg-01-c-r1.question.05:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 3,
+            "x": 0.07142857142857142,
+            "y": 0.39333930041152254,
+            "w": 0.8571428571428573,
+            "h": 0.31508160736999624
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-82:1",
+          "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.05:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      },
+      {
+        "q": 6,
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.06",
+        "fragmentRefs": [
+          "element:ms-g7-alg-01-c-r1.question.06:1",
+          "element:ms-g7-alg-01-c-r1.question.06:2"
+        ],
+        "crops": [
+          {
+            "page": 1,
+            "x": 0.07142857142857142,
+            "y": 0.24622502805836133,
+            "w": 0.8571428571428574,
+            "h": 0.03161934156378601
+          },
+          {
+            "page": 4,
+            "x": 0.07142857142857142,
+            "y": 0.05387205387205386,
+            "w": 0.8571428571428573,
+            "h": 0.30883140665918435
+          }
+        ],
+        "contextFragmentRefs": [
+          "auxiliary:dom-105:1",
+          "auxiliary:dom-11.for.ms-g7-alg-01-c-r1.question.06:1"
+        ],
+        "requiredQuestions": [],
+        "dependencyFragmentRefs": []
+      }
+    ],
+    "figureOccurrences": [],
+    "answerParts": [
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.01",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.01.item.01",
+        "q": 1,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.01.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.5440306906725364,
+            "y": 0.1235438832772166,
+            "w": 0.3375037008618552,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.01",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.01.item.02",
+        "q": 1,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.01.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.19704477461557532,
+            "y": 0.1235438832772166,
+            "w": 0.32850708007812496,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.01",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.01.item.03",
+        "q": 1,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.01.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.6028618480541089,
+            "y": 0.14376980920314253,
+            "w": 0.27867254348028264,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.02",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.02.item.01",
+        "q": 2,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.02.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.768596326368221,
+            "y": 0.16773731762065094,
+            "w": 0.11293806516617065,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.02",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.02.item.02",
+        "q": 2,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.02.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.6497398047557044,
+            "y": 0.1670317620650954,
+            "w": 0.1003776856336806,
+            "h": 0.025252973625140285
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.02",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.02.item.03",
+        "q": 2,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.02.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.5440200775473298,
+            "y": 0.16773731762065094,
+            "w": 0.08724089122953854,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.03",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.03.item.01",
+        "q": 3,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.03.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.5550537658368468,
+            "y": 0.19602631818181818,
+            "w": 0.3264806256975447,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.03",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.03.item.02",
+        "q": 3,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.03.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.21730931842137888,
+            "y": 0.19602631818181818,
+            "w": 0.3192656114366319,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.03",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.03.item.03",
+        "q": 3,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.03.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.5748003149284887,
+            "y": 0.21625224410774407,
+            "w": 0.3067340766059027,
+            "h": 0.020225925925925904
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.04",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.04.item.01",
+        "q": 4,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.04.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.811696931681961,
+            "y": 0.24021975252525252,
+            "w": 0.06983745985243058,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.04",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.04.item.02",
+        "q": 4,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.04.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.6774192941158234,
+            "y": 0.23951419696969695,
+            "w": 0.11579880158730152,
+            "h": 0.025252973625140313
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.04",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.04.item.03",
+        "q": 4,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.04.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.5385819033719828,
+            "y": 0.24021975252525252,
+            "w": 0.12035855476500476,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.05",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.05.item.01",
+        "q": 5,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.05.item.01:1",
+          "element:answer:ms-g7-alg-01-c-r1.question.05.item.01:2"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.11868521486958497,
+            "y": 0.26850875308641975,
+            "w": 0.7628491766648064,
+            "h": 0.020225925925925932
+          },
+          {
+            "page": 5,
+            "x": 0.8318401195384838,
+            "y": 0.2887346790123456,
+            "w": 0.049694271995907736,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.05",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.05.item.02",
+        "q": 5,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.05.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.3964071187014299,
+            "y": 0.3089606049382716,
+            "w": 0.48512727283296136,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.05",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.05.item.03",
+        "q": 5,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.05.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.10146958056898975,
+            "y": 0.3291865308641975,
+            "w": 0.7800648109654017,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.06",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.06.item.01",
+        "q": 6,
+        "part": "א",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.06.item.01:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.5418910402974125,
+            "y": 0.3531540392817059,
+            "w": 0.3396433512369791,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.06",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.06.item.02",
+        "q": 6,
+        "part": "ב",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.06.item.02:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.2622661313399056,
+            "y": 0.3531540392817059,
+            "w": 0.26114607297867065,
+            "h": 0.020225925925925932
+          }
+        ]
+      },
+      {
+        "canonicalQuestionId": "ms-g7-alg-01-c-r1.question.06",
+        "canonicalItemId": "ms-g7-alg-01-c-r1.question.06.item.03",
+        "q": 6,
+        "part": "ג",
+        "fragmentRefs": [
+          "element:answer:ms-g7-alg-01-c-r1.question.06.item.03:1"
+        ],
+        "crops": [
+          {
+            "page": 5,
+            "x": 0.37627701236462435,
+            "y": 0.3733799652076319,
+            "w": 0.505257379169767,
+            "h": 0.020225925925925932
+          }
+        ]
+      }
+    ]
+  },
+  "nativeExportPublished": true
+}

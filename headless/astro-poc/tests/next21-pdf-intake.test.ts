@@ -15,6 +15,7 @@ import { beforeNext21Catalog, beforeNext21Registry, beforeNext21Copy,
 import { beforeBatch01Registry } from './fixtures/batch01-pdf';
 import { reviewedBatch03 } from './fixtures/batch03-pdf';
 import { reviewedBatch09 } from './fixtures/batch09-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -23,8 +24,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = beforeNext21Catalog(raw) as ReturnType<typeof loadCatalog>;
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = beforeNext21Registry(registry);

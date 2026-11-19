@@ -5,6 +5,32 @@
 
 const PDF_CDN = "https://static.wixstatic.com/ugd/d8e7ad_";
 
+/** Select additional records from a catalog already checked by the activation loader. */
+export function worksheetVariants(catalog, topic) {
+  const variants = [{ topic, editionId: null }];
+  const refs = catalog && catalog.reviewedRamziActivations && catalog.reviewedRamziActivations.batches;
+  if (!Array.isArray(refs) || !refs.length) return variants;
+  const seen = new Set();
+  for (const edition of [topic.reviewedBaseBinding, ...(topic.editions || [])]) {
+    if (!edition || !/^[a-z0-9][a-z0-9-]{0,63}$/.test(edition.editionId || "") ||
+        edition.editionId === "legacy" || seen.has(edition.editionId) ||
+        !edition.routing || !edition.routing.usesViewer || !Array.isArray(edition.levels) ||
+        edition.levels.length !== 3 || !edition.levels.every(level => {
+          const hint = level.ramzi;
+          if (!hint || hint.status !== "ready" || !/^[0-9a-f]{64}$/.test(hint.learningScopeSha256 || "")) return false;
+          return refs.some(ref => hint.learningScopeUrl === "/noam-ai/learning-scopes/" + ref.scopeId + ".json");
+        })) continue;
+    seen.add(edition.editionId);
+    variants.push({
+      editionId: edition.editionId,
+      topic: { ...topic, ...edition, title: edition.label || topic.title,
+        // Native item levels A/B/E are different from viewer URL levels a/b/c.
+        levels: edition.levels.map(level => ({ ...level, viewerLevel: level.key })) },
+    });
+  }
+  return variants;
+}
+
 export function worksheetHref(catalog, grade, topic, level) {
   const pdfDirect = PDF_CDN + level.pdfId + ".pdf";
   const viewerEnabled = !!(catalog.config && catalog.config.viewer && catalog.config.viewer.enabled);
@@ -24,6 +50,7 @@ export function worksheetHref(catalog, grade, topic, level) {
   params.set("lv", viewerLevel);
   params.set("pdf", level.pdfId);
   params.set("t", topic.routing.sourceTitle || topic.title);
+  if (topic.editionId && topic.editionId !== "legacy") params.set("edition", topic.editionId);
   const siblings = (topic.routing && topic.routing.siblingPdfQuery) || {};
   for (const key of ["pa", "pb", "pc", "pc2"]) {
     if (siblings[key]) params.set(key, siblings[key]);
@@ -43,23 +70,28 @@ export function buildCatalogRecords(catalog) {
       (catalog.searchTerms && catalog.searchTerms[String(grade.grade)]) || {};
     for (const topic of grade.topics || []) {
       const extra = termBucket[String(topic.id)] || "";
-      for (const level of topic.levels || []) {
-        if (!/^[0-9a-f]{32}$/i.test(String(level.pdfId || ""))) continue;
-        records.push({
-          id: "g" + grade.grade + "-t" + topic.id + "-" + level.key,
-          grade: grade.grade,
-          gradeLabel: grade.label,
-          topicId: topic.id,
-          title: topic.title,
-          description: topic.description || "",
-          levelKey: level.key,
-          levelLabel: level.label,
-          pdfId: level.pdfId,
-          href: worksheetHref(catalog, grade, topic, level),
-          searchText: [grade.label, topic.title, topic.description || "", level.label, extra]
-            .join(" ")
-            .toLowerCase(),
-        });
+      for (const variant of worksheetVariants(catalog, topic)) {
+        const source = variant.topic;
+        for (const level of source.levels || []) {
+          if (!/^[0-9a-f]{32}$/i.test(String(level.pdfId || ""))) continue;
+          records.push({
+            id: "g" + grade.grade + "-t" + topic.id + "-" + level.key + (variant.editionId ? "-e-" + variant.editionId : ""),
+            ...(variant.editionId ? { editionId: variant.editionId } : {}),
+            grade: grade.grade,
+            gradeLabel: grade.label,
+            topicId: topic.id,
+            title: source.title,
+            description: topic.description || "",
+            levelKey: level.key,
+            levelLabel: level.label,
+            pdfId: level.pdfId,
+            href: worksheetHref(catalog, grade, source, level),
+            searchText: [grade.label, source.title, topic.description || "", level.label, extra,
+              ...(variant.editionId ? ["רמזי רמזים דף עבודה חדש דפי עבודה חדשים מהדורה חדשה מהדורות חדשות"] : [])]
+              .join(" ")
+              .toLowerCase(),
+          });
+        }
       }
     }
   }
