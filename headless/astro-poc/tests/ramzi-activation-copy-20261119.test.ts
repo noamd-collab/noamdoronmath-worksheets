@@ -25,8 +25,8 @@ const activatedOn = (key: string) => {
 
 test('every corrected page is exactly the reviewed correction of its exact earlier page', () => {
   assert.equal(reviewed.schema, 'landing-copy-correction/v1');
-  assert.equal(reviewed.pages.length, 7);
-  assert.equal(reviewed.pages.reduce((n, page) => n + page.replacements.length, 0), 16);
+  assert.equal(reviewed.pages.length, 9);
+  assert.equal(reviewed.pages.reduce((n, page) => n + page.replacements.length, 0), 23);
   for (const entry of reviewed.pages) {
     const raw = readPage(entry.slug);
     assertRamziActivationCopyRawPage(entry.slug, raw);

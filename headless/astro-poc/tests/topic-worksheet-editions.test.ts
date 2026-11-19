@@ -33,6 +33,7 @@ import { reviewedBatch11 } from './fixtures/batch11-pdf';
 import { reviewedBatch12 } from './fixtures/batch12-pdf';
 import { reviewedPcm53 } from './fixtures/pcm53-pdf';
 import { afterLandingCorrections } from './fixtures/landing-corrections-20261118';
+import { afterRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
 
 const require = createRequire(import.meta.url);
 // The receipt-backed reviewed activation (headless/catalog/ramzi-additional-trust.v1.json)
@@ -752,7 +753,7 @@ test('real batch-09 pages expose all 18 direct PDFs in their mapped edition grou
     }
     const delta = reviewedBatch09.landingDeltas.find(item => item.slug === slug)!;
     const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
-    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(afterRamziActivationCopy(slug, block.text)), `${slug}: reviewed landing section`);
     assert.ok(hero.querySelectorAll('a[data-edition-id="legacy"]').length >= 3, `${slug}: old downloads remain`);
     const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
     assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
@@ -782,7 +783,7 @@ test('real batch-10 pages expose all 18 direct PDFs in their mapped edition grou
     }
     const delta = reviewedBatch10.landingDeltas.find(item => item.slug === slug)!;
     const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
-    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(afterRamziActivationCopy(slug, block.text)), `${slug}: reviewed landing section`);
     assert.ok(!mainText.includes('נועם AI'), `${slug}: no Noam AI hint copy`);
     assert.ok(hero.querySelectorAll('a[data-edition-id="legacy"]').length >= 3, `${slug}: old downloads remain`);
     const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
@@ -814,7 +815,7 @@ test('real batch-11 pages expose all 12 direct PDFs after the earlier editions o
     }
     const delta = reviewedBatch11.landingDeltas.find(item => item.slug === slug)!;
     const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
-    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(afterRamziActivationCopy(slug, block.text)), `${slug}: reviewed landing section`);
     assert.ok(!mainText.includes('נועם AI'), `${slug}: no Noam AI hint copy`);
     const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
     assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
@@ -840,7 +841,7 @@ test('the real batch-12 page exposes the three ANG-02 PDFs after the earlier edi
     }
     const delta = reviewedBatch12.landingDeltas.find(item => item.slug === slug)!;
     const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
-    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(afterRamziActivationCopy(slug, block.text)), `${slug}: reviewed landing section`);
     assert.ok(!mainText.includes('נועם AI'), `${slug}: no Noam AI hint copy`);
     const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
     assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);

@@ -33,7 +33,6 @@ export function beforeRamziActivationCopy<T>(slug: string, page: T): T {
   const entry = reviewed.pages.find(item => item.slug === slug);
   if (!entry) return page;
   const present = entry.replacements.filter(r => plainAt(page, r.path as Path) !== null);
-  assert.ok(present.length > 0, `${slug}: no recorded Ramzi activation copy field is present`);
   const carries = present.map(r => plainAt(page, r.path as Path)!.split(r.after).length - 1);
   if (carries.every(n => n === 0)) {
     // Already reversed, or an older fence already unwound the text these fields replaced

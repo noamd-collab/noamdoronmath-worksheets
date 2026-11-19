@@ -2,13 +2,13 @@
   "schema": "landing-copy-correction/v1",
   "date": "2026-11-19",
   "reason": "The additional reviewed Ramzi activation (19.11) makes these series open with Ramzi; sentences that said hints exist only in the earlier sheets, or that the extra PDF series have no hints, now name the series that open with Ramzi.",
-  "draftReview": "Claude drafter plus two independent Claude verifiers (routing truth; Hebrew and completeness); verifier wording fixes applied",
+  "draftReview": "Claude drafter plus two independent Claude verifiers (routing truth; Hebrew and completeness), verifier wording fixes applied; then the independent Google Antigravity delta review (reports/ANTIGRAVITY-SITE-REVIEW-ramzi-pr544-delta-20261119/review.json) findings applied: the powers-grade-7 POW FAQ, the closing note of the newer PDF-only series on signed-numbers, algebraic-expressions and relative-frequency, and two wording polishes",
   "siteReview": null,
   "pages": [
     {
       "slug": "signed-numbers-grade-7",
       "baselineSha256": "474d29d3498a021199c45a3343f7f209938e98194f52e528391432ef08197521",
-      "correctedSha256": "234affb0636665ad1e51b2d227da4feb0d2eaa3b748e6a266b73ac416e94a9f2",
+      "correctedSha256": "724c7358ebae88adde08378f2a467b4b01dc40a7c850a0ae85311fd4700a2d7e",
       "replacements": [
         {
           "path": [
@@ -17,7 +17,7 @@
             "answer"
           ],
           "before": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה, עם תשובות בסוף.",
-          "after": "בדפים שנפתחים עם רמזי, וגם בסדרת ה־PDF הנוספת שממוקדת בחיבור ובחיסור, אפשר לקבל רמזים; קובצי ה־PDF עצמם מיועדים להורדה ולהדפסה, עם תשובות בסוף."
+          "after": "בדפים הקודמים וגם בסדרת ה־PDF הנוספת שממוקדת בחיבור ובחיסור, שנפתחים באתר עם רמזי, אפשר לקבל רמזים; קובצי ה־PDF עצמם מיועדים להורדה ולהדפסה, עם תשובות בסוף."
         },
         {
           "path": [
@@ -28,7 +28,7 @@
             "answer"
           ],
           "before": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה, עם תשובות בסוף.",
-          "after": "בדפים שנפתחים עם רמזי, וגם בסדרת ה־PDF הנוספת שממוקדת בחיבור ובחיסור, אפשר לקבל רמזים; קובצי ה־PDF עצמם מיועדים להורדה ולהדפסה, עם תשובות בסוף."
+          "after": "בדפים הקודמים וגם בסדרת ה־PDF הנוספת שממוקדת בחיבור ובחיסור, שנפתחים באתר עם רמזי, אפשר לקבל רמזים; קובצי ה־PDF עצמם מיועדים להורדה ולהדפסה, עם תשובות בסוף."
         },
         {
           "path": [
@@ -41,21 +41,32 @@
             "text"
           ],
           "before": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה, עם תשובות בסוף.",
-          "after": "בדפים שנפתחים עם רמזי, וגם בסדרת ה־PDF הנוספת שממוקדת בחיבור ובחיסור, אפשר לקבל רמזים; קובצי ה־PDF עצמם מיועדים להורדה ולהדפסה, עם תשובות בסוף."
+          "after": "בדפים הקודמים וגם בסדרת ה־PDF הנוספת שממוקדת בחיבור ובחיסור, שנפתחים באתר עם רמזי, אפשר לקבל רמזים; קובצי ה־PDF עצמם מיועדים להורדה ולהדפסה, עם תשובות בסוף."
+        },
+        {
+          "path": [
+            "sections",
+            3,
+            "blocks",
+            2,
+            "text"
+          ],
+          "before": "בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+          "after": "בדפים האחרים בעמוד שנפתחים עם רמזי אפשר לקבל רמזים."
         }
       ]
     },
     {
       "slug": "powers-grade-7",
       "baselineSha256": "ed86817e813f74099f946f58b6b1aa1df5b6f8fc07c5c7523d2e12c4b6df820a",
-      "correctedSha256": "4af748b972bcf0aa2e301e40184c5e7df8460ec5ddd5aeb1ace663afdfa474aa",
+      "correctedSha256": "e2351594903bf6eb7f5ae7b62f67a051b12fb6f9817e5f1a7d67ff6ec919e18f",
       "replacements": [
         {
           "path": [
             "intro"
           ],
           "before": "בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
-          "after": "בדפים שנפתחים עם רמזי, וגם בסדרה על גדילה והקטנה, אפשר לקבל רמזים; קובצי ה־PDF עצמם מיועדים להורדה ולהדפסה."
+          "after": "בדפים הקודמים וגם בסדרה על גדילה והקטנה, שנפתחים באתר עם רמזי, אפשר לקבל רמזים; קובצי ה־PDF עצמם מיועדים להורדה ולהדפסה."
         },
         {
           "path": [
@@ -89,6 +100,84 @@
           ],
           "before": "לא. קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה, ויש בהם שאלות ותשובות סופיות. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
           "after": "בקבצים עצמם אין רמזים: הם מיועדים להורדה ולהדפסה, ויש בהם שאלות ותשובות סופיות. סדרת ה־PDF על גדילה והקטנה נפתחת גם עם רמזי, ושם אפשר לקבל רמזים בשלוש דרגות לכל שאלה. גם בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים."
+        },
+        {
+          "path": [
+            "faq",
+            6,
+            "answer"
+          ],
+          "before": "לא. קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה, ויש בהם שאלות ותשובות סופיות. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+          "after": "לא. סדרת ה־PDF על סדר פעולות ובסיס מכוון אינה נפתחת עם רמזי: הקבצים מיועדים להורדה ולהדפסה, ויש בהם שאלות ותשובות סופיות. בדפים הקודמים ובסדרת ה־PDF על גדילה והקטנה, שנפתחים באתר עם רמזי, אפשר לקבל רמזים."
+        },
+        {
+          "path": [
+            "faqGroups",
+            0,
+            "items",
+            6,
+            "answer"
+          ],
+          "before": "לא. קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה, ויש בהם שאלות ותשובות סופיות. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+          "after": "לא. סדרת ה־PDF על סדר פעולות ובסיס מכוון אינה נפתחת עם רמזי: הקבצים מיועדים להורדה ולהדפסה, ויש בהם שאלות ותשובות סופיות. בדפים הקודמים ובסדרת ה־PDF על גדילה והקטנה, שנפתחים באתר עם רמזי, אפשר לקבל רמזים."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            3,
+            "mainEntity",
+            6,
+            "acceptedAnswer",
+            "text"
+          ],
+          "before": "לא. קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה, ויש בהם שאלות ותשובות סופיות. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+          "after": "לא. סדרת ה־PDF על סדר פעולות ובסיס מכוון אינה נפתחת עם רמזי: הקבצים מיועדים להורדה ולהדפסה, ויש בהם שאלות ותשובות סופיות. בדפים הקודמים ובסדרת ה־PDF על גדילה והקטנה, שנפתחים באתר עם רמזי, אפשר לקבל רמזים."
+        }
+      ]
+    },
+    {
+      "slug": "algebraic-expressions-grade-7",
+      "baselineSha256": "c049a319a5cfbf18001eeff31e599c99dc5200831b568ed25b66d51a34cc7f69",
+      "correctedSha256": "d296bf603bc9b00f794c7288a917e9b7b7153a11eb7ac0be57b811345437cdf7",
+      "replacements": [
+        {
+          "path": [
+            "sections",
+            3,
+            "blocks",
+            2,
+            "text"
+          ],
+          "before": "בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+          "after": "בדפים האחרים בעמוד שנפתחים עם רמזי אפשר לקבל רמזים."
+        }
+      ]
+    },
+    {
+      "slug": "relative-frequency-grade-7",
+      "baselineSha256": "08dce6c2f58bfe1bbdf7244a9d7301ca92e9acb4b2a12aea96594be40f87cded",
+      "correctedSha256": "eb3b20385892c494feab9384655b96e3c5cc38d165470aadd1a5b0db03566010",
+      "replacements": [
+        {
+          "path": [
+            "sections",
+            3,
+            "blocks",
+            2,
+            "text"
+          ],
+          "before": "בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+          "after": "בדפים האחרים בעמוד שנפתחים עם רמזי אפשר לקבל רמזים."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            15,
+            "text"
+          ],
+          "before": "בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+          "after": "בדפים האחרים בעמוד שנפתחים עם רמזי אפשר לקבל רמזים."
         }
       ]
     },
