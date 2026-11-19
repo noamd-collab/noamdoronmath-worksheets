@@ -4,8 +4,8 @@
   "layoutSha256": "8b5b41ed8cc8753055bf56f9534df970889d11f47fe371d3d0c8f37d7fd0e9b8",
   "editionId": "ms-20261115-prb-01-r1",
   "geometryContract": "measured-v1",
-  "reviewRequired": true,
-  "publishable": false,
+  "reviewRequired": false,
+  "publishable": true,
   "pageCount": 5,
   "exercisePageCount": 4,
   "answerStartPage": 5,
@@ -7702,5 +7702,6 @@
         ]
       }
     ]
-  }
+  },
+  "nativeExportPublished": true
 }

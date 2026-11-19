@@ -1,12 +1,14 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
-const root=path.resolve(__dirname,'..'),catalog=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/catalog.v1.json'))),registry=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/worksheet-editions.v1.json')));
+const root=path.resolve(__dirname,'..'),committed=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/catalog.v1.json'))),registry=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/worksheet-editions.v1.json')));
 const {fixture,hash,bytes}=require('./fixtures/reviewed-ramzi-additional.cjs');
-const {validateAdditionalEvidence}=require('../scripts/lib/reviewed-ramzi-activation-build.cjs');
+const {validateAdditionalEvidence,loadAdditionalEvidence}=require('../scripts/lib/reviewed-ramzi-activation-build.cjs');
 const {mergeReviewedCatalog,validateAdditionalProjection}=require('../scripts/lib/reviewed-ramzi-activation.mjs');
 const {buildLearningCatalog}=require('../scripts/build-learning-catalog.cjs');
 const {exportCatalog,loadIndexCatalog}=require('../scripts/lib/headless-catalog.cjs');
 const {loadRamziActivationEvidence}=require('../scripts/lib/worksheet-ramzi-activation.cjs');
 const old=loadRamziActivationEvidence(path.join(root,'headless/catalog'),path.join(root,'headless/astro-poc/public'));
+// Synthetic fixtures start from the committed catalog with its real reviewed activations withdrawn.
+const catalog=mergeReviewedCatalog(committed,registry,old.ready,old.hintCorrection,undefined,{version:1,scopes:[]});
 const raw=loadIndexCatalog(path.join(root,'index.html'));
 const clone=structuredClone;
 function build(b){return validateAdditionalEvidence(catalog,registry,b);}
@@ -17,7 +19,7 @@ test('no added request preserves exact catalog, learning and original v1 proof',
  const trusted={version:1,scopes:[]};assert.equal(validateAdditionalEvidence(catalog,registry,undefined),undefined);
  assert.deepEqual(mergeReviewedCatalog(catalog,registry,old.ready,old.hintCorrection,undefined,trusted),catalog);
  assert.equal(exportCatalog({indexPath:path.join(root,'index.html'),dryRun:true}).text,fs.readFileSync(path.join(root,'headless/catalog/catalog.v1.json'),'utf8'));
- const learning=buildLearningCatalog(raw,registry,old);const vm=require('node:vm'),ctx={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'noam-learning-catalog.js'),'utf8'),ctx);assert.equal(JSON.stringify(learning),JSON.stringify(ctx.window.NOAM_LEARNING_CATALOG));
+ const learning=buildLearningCatalog(raw,registry,old),active=buildLearningCatalog(raw,registry,old,loadAdditionalEvidence(path.join(root,'headless/catalog'),path.join(root,'headless/astro-poc/public')));const vm=require('node:vm'),ctx={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'noam-learning-catalog.js'),'utf8'),ctx);assert.equal(JSON.stringify(active),JSON.stringify(ctx.window.NOAM_LEARNING_CATALOG));assert.deepEqual(active.slice(0,learning.length),learning);
 });
 test('actual six disabled source fixtures support synthetic 108-row binding without duplicate base PDFs',()=>{
  const b=fixture(registry),p=build(b),next=merged(b,p);assert.equal(p.batches.length,2);assert(!JSON.stringify(p).includes('canonicalItemId'));assert(!JSON.stringify(p).includes('units'));
@@ -120,13 +122,15 @@ for(const [name,mutate,error] of [
 test('reviewed scope requires actual bounded tool lists',()=>{
  const b=fixture(registry);rebindSynthetic(b,(s,b)=>{const p=JSON.parse(b.assets.learningScopes[b.requests.batches[0].scopeId]);p.permittedTools=[];const raw=bytes(p);b.assets.learningScopes[p.scopeId]=raw;s.batch.learningScopeSha256=hash(raw);});assert.throws(()=>build(b),/bounded scope tools/);
 });
-test('candidate static assets are byte-identical disabled sources, never synthetic test receipts',()=>{
+test('committed final assets derive from the disabled sources by three flags only, never synthetic test receipts',()=>{
  const zlib=require('node:zlib'),dir=path.join(root,'tests/fixtures/reviewed-ramzi-additional'),pins=JSON.parse(fs.readFileSync(path.join(dir,'source-pins.json')));
  for(const p of pins.files){const raw=zlib.gunzipSync(fs.readFileSync(path.join(dir,p.file))),j=JSON.parse(raw);
-  const target=p.file.includes('.manifest.')?'manifests/'+j.pdfHash+'.json':'native/'+j.package+'/'+j.level+'/noam-ai.json';
-  assert.equal(hash(fs.readFileSync(path.join(root,'headless/astro-poc/public/noam-ai',target))),p.uncompressedSha256);
-  if(p.file.includes('.manifest.')){assert.equal(j.publishable,false);assert.equal(j.reviewRequired,true);}
+  const target=p.file.includes('.manifest.')?'manifests/'+j.pdfHash+'.json':'native/'+j.package+'/'+j.level+'/noam-ai.json',committedBytes=fs.readFileSync(path.join(root,'headless/astro-poc/public/noam-ai',target));
+  if(p.file.includes('.manifest.')){assert.equal(j.publishable,false);assert.equal(j.reviewRequired,true);j.publishable=true;j.reviewRequired=false;j.nativeExportPublished=true;assert.equal(committedBytes.toString(),bytes(j));}
+  else assert.equal(hash(committedBytes),p.uncompressedSha256);
  }
- assert.equal(fs.existsSync(path.join(root,'headless/catalog/ramzi-additional-requests.v1.json')),false);
- assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/ramzi-additional-trust.v1.json'))),{version:1,scopes:[]});
+ const trust=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/ramzi-additional-trust.v1.json'))),requests=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/ramzi-additional-requests.v1.json')));
+ assert.equal(trust.scopes.length,14);assert.deepEqual(requests.batches.map(r=>r.scopeId),trust.scopes.map(s=>s.scopeId));
+ for(const s of trust.scopes){assert.notEqual(s.rootAcceptanceSha256,hash('synthetic root acceptance '+s.scopeId));assert.notEqual(s.independentReviewSha256,hash('synthetic independent review '+s.scopeId));assert.notEqual(s.batch.payloadSha256,hash('synthetic verified payload '+s.scopeId));}
+ const evidence=path.join(root,'headless/catalog/ramzi-additional-evidence');for(const f of fs.readdirSync(evidence))assert(!fs.readFileSync(path.join(evidence,f),'utf8').includes('synthetic'),f);
 });

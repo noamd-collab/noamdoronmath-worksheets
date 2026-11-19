@@ -33,8 +33,24 @@ import { reviewedBatch11 } from './fixtures/batch11-pdf';
 import { reviewedBatch12 } from './fixtures/batch12-pdf';
 import { reviewedPcm53 } from './fixtures/pcm53-pdf';
 import { afterLandingCorrections } from './fixtures/landing-corrections-20261118';
+import { afterRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
 
 const require = createRequire(import.meta.url);
+// The receipt-backed reviewed activation (headless/catalog/ramzi-additional-trust.v1.json)
+// opens these editions' own PDFs in the Ramzi viewer; every other edition keeps its direct PDF link.
+const reviewedPrefix = new Map<string, string>(JSON.parse(readFileSync(new URL('../../catalog/ramzi-additional-trust.v1.json', import.meta.url), 'utf8'))
+  .scopes.map((s: any) => [s.scopeId, s.batch.nativePrefix]));
+function assertEditionLinks(catalog: CatalogV1, links: Element[], editionId: string, pdfIds: string[]) {
+  if (!reviewedPrefix.has(editionId)) {
+    assert.deepEqual(links.map(a => a.getAttribute('href')), pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+    assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמז') && !a.getAttribute('href')!.includes('viewer')));
+    return;
+  }
+  assert.deepEqual(links.map(a => { const u = new URL(a.getAttribute('href')!, 'https://example.test');
+    return [u.pathname, u.searchParams.get('edition'), u.searchParams.get('x'), u.searchParams.get('pdf')]; }),
+    pdfIds.map(id => ['/worksheet-viewer-noam.html', editionId, reviewedPrefix.get(editionId), id]));
+  assert.ok(links.every(a => !a.textContent.includes('פתיחת PDF')));
+}
 const routes = [
   [7, 17, 'congruent-polygons-transformations-grade-7'],
   [8, 14, 'cylinder-volume-grade-8'],
@@ -182,15 +198,34 @@ async function renderTopic(slug: string) {
   return parseHTML(html).document;
 }
 
+test('the activated PAR-02/03/04 editions and the RAT base binding open their own PDFs in the Ramzi viewer on the real landings', async () => {
+  const catalog = loadCatalog();
+  const grade9: any = catalog.grades.find(g => g.grade === 9)!;
+  const parTopic = grade9.topics.find((t: any) => t.id === 7);
+  const parHero = (await renderTopic('parallelogram-grade-9')).querySelector('.exact-topic-copy')!;
+  for (const editionId of ['ms-20261113-par-02-r1', 'ms-20261113-par-03-r1', 'ms-20261113-par-04-r1']) {
+    assert.ok(reviewedPrefix.has(editionId), `${editionId}: trusted scope`);
+    const edition = parTopic.editions.find((e: any) => e.editionId === editionId);
+    const links = [...parHero.querySelectorAll(`a[data-edition-id="${editionId}"]`)];
+    assert.equal(links.length, 3, `${editionId}: three level links`);
+    assertEditionLinks(catalog, links, editionId, edition.levels.map((l: any) => l.pdfId));
+  }
+  const binding = grade9.topics.find((t: any) => t.id === 47).reviewedBaseBinding;
+  assert.equal(binding.editionId, 'ms-20261115-rat-01-r1');
+  const ratLinks = [...(await renderTopic('rational-equations-grade-9')).querySelector('.exact-topic-copy')!.querySelectorAll('a[data-edition-id="legacy"]')];
+  assert.deepEqual(ratLinks.map(a => { const u = new URL(a.getAttribute('href')!, 'https://example.test');
+    return [u.pathname, u.searchParams.get('edition'), u.searchParams.get('x'), u.searchParams.get('pdf')]; }),
+    binding.levels.map((l: any) => ['/worksheet-viewer-noam.html', binding.editionId, reviewedPrefix.get(binding.editionId), l.pdfId]));
+  assert.ok(ratLinks.every(a => !a.textContent.includes('פתיחת PDF')));
+});
+
 test('real equation, signed-number and factoring landings expose nine PDF links with the correct topic groups', async () => {
   const catalog = loadCatalog();
   for (const addition of reviewedEqnSgnFac.additions) {
     const document = await renderTopic(addition.slug);
     const hero = document.querySelector('.exact-topic-copy')!;
     const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
-    assert.deepEqual(links.map(link => link.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
-    assert.ok(links.every(link => link.textContent.includes('פתיחת PDF')));
-    assert.ok(links.every(link => !link.textContent.includes('רמזי') && !link.getAttribute('href')!.includes('viewer')));
+    assertEditionLinks(catalog, links, addition.editionId, addition.pdfIds);
     const text = document.querySelector('main')!.textContent.replace(/[\u2066-\u2069]/g, '');
     assert.ok(text.includes(reviewedEqnSgnFac.landingDeltas.find(d => d.slug === addition.slug)!.appendedSection.blocks[0].text));
     const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
@@ -233,8 +268,7 @@ test('real algebra landing routes all three hero topics to distinct groups and e
   assert.deepEqual([...hero.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), expectedLegacy);
   const newPdfIds = ['b376976911234b758027329c9ea05cbf', 'b6a76fb3eccd477b9788958efefbded2', '0fe476657595498194b93cdc46e39e5f'];
   const additions = [...hero.querySelectorAll('a[data-edition-id="ms-20261115-alg-01-r1"]')];
-  assert.deepEqual(additions.map(a => a.getAttribute('href')), newPdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
-  assert.ok(additions.every(a => a.textContent.includes('פתיחת PDF') && !a.getAttribute('href')!.includes('viewer')));
+  assertEditionLinks(catalog, additions, 'ms-20261115-alg-01-r1', newPdfIds);
   const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
   assert.equal(new Set(ids).size, ids.length, 'no duplicate anchors');
 });
@@ -277,8 +311,7 @@ test('both frequency landings expose six direct FRQ links while keeping their or
         .find(group => group.editionId === 'legacy')!.levels.map(level => level.href));
     assert.deepEqual([...hero.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), expectedLegacy);
     const pdfLinks = [...hero.querySelectorAll(`a[data-edition-id="${editionId}"]`)];
-    assert.deepEqual(pdfLinks.map(a => a.getAttribute('href')), pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
-    assert.ok(pdfLinks.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמז')));
+    assertEditionLinks(catalog, pdfLinks, editionId, pdfIds);
     additions += pdfLinks.length;
     if (slug === 'frequency-grade-7') {
       assert.equal(ctas[1].getAttribute('href'), '#topic-levels-hero-26');
@@ -302,8 +335,7 @@ test('real EXT/SML/AFR pages expose nine distinct PDFs, with the shared SML seco
     const hero = document.querySelector('.exact-topic-copy')!;
     const controls = slug === 'difference-of-squares-grade-9' ? document : hero;
     const links = [...controls.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
-    assert.deepEqual(links.map(a => a.getAttribute('href')), addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
-    assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמזי')));
+    assertEditionLinks(catalog, links, addition.editionId, addition.pdfIds);
     for (const a of links) urls.add(a.getAttribute('href')!);
     const anchors = [...document.querySelectorAll('[id]')].map(e => e.id);
     assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
@@ -400,9 +432,7 @@ test('real next21 pages expose twenty-one PDFs only in their mapped groups and p
       const controls = hero.querySelector(target)!;
       assert.ok(controls, `${addition.slug}: group${topicId}`);
       const links = [...controls.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
-      assert.deepEqual(links.map(a => a.getAttribute('href')), topicId === addition.topicId
-        ? addition.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`) : []);
-      assert.ok(links.every(a => a.textContent.includes('פתיחת PDF') && !a.textContent.includes('רמזי')));
+      assertEditionLinks(catalog, links, addition.editionId, topicId === addition.topicId ? addition.pdfIds : []);
       links.forEach(a => urls.add(a.getAttribute('href')!));
       const oldLinks = topicWorksheetEditionLinks(catalog, addition.grade, topicId, `/worksheets?grade=${addition.grade}&topic=${topicId}`)[0].levels.map(l => l.href);
       assert.deepEqual([...controls.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), oldLinks);
@@ -723,7 +753,7 @@ test('real batch-09 pages expose all 18 direct PDFs in their mapped edition grou
     }
     const delta = reviewedBatch09.landingDeltas.find(item => item.slug === slug)!;
     const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
-    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(afterRamziActivationCopy(slug, block.text)), `${slug}: reviewed landing section`);
     assert.ok(hero.querySelectorAll('a[data-edition-id="legacy"]').length >= 3, `${slug}: old downloads remain`);
     const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
     assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
@@ -753,7 +783,7 @@ test('real batch-10 pages expose all 18 direct PDFs in their mapped edition grou
     }
     const delta = reviewedBatch10.landingDeltas.find(item => item.slug === slug)!;
     const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
-    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(afterRamziActivationCopy(slug, block.text)), `${slug}: reviewed landing section`);
     assert.ok(!mainText.includes('נועם AI'), `${slug}: no Noam AI hint copy`);
     assert.ok(hero.querySelectorAll('a[data-edition-id="legacy"]').length >= 3, `${slug}: old downloads remain`);
     const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
@@ -785,7 +815,7 @@ test('real batch-11 pages expose all 12 direct PDFs after the earlier editions o
     }
     const delta = reviewedBatch11.landingDeltas.find(item => item.slug === slug)!;
     const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
-    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(afterRamziActivationCopy(slug, block.text)), `${slug}: reviewed landing section`);
     assert.ok(!mainText.includes('נועם AI'), `${slug}: no Noam AI hint copy`);
     const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
     assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);
@@ -811,7 +841,7 @@ test('the real batch-12 page exposes the three ANG-02 PDFs after the earlier edi
     }
     const delta = reviewedBatch12.landingDeltas.find(item => item.slug === slug)!;
     const mainText = document.querySelector('main')!.textContent.replace(/[⁦-⁩]/g, '');
-    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(block.text), `${slug}: reviewed landing section`);
+    for (const block of delta.appendedSection.blocks) assert.ok(mainText.includes(afterRamziActivationCopy(slug, block.text)), `${slug}: reviewed landing section`);
     assert.ok(!mainText.includes('נועם AI'), `${slug}: no Noam AI hint copy`);
     const anchors = [...document.querySelectorAll('[id]')].map(element => element.id);
     assert.equal(new Set(anchors).size, anchors.length, `${slug}: unique anchors`);

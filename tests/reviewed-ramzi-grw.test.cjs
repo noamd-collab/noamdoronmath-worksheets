@@ -12,9 +12,11 @@ const { loadIndexCatalog } = require('../scripts/lib/headless-catalog.cjs');
 const { loadRamziActivationEvidence } = require('../scripts/lib/worksheet-ramzi-activation.cjs');
 const navigation = require('../noam-ai/site-companion/retrieve.js');
 const root = path.resolve(__dirname, '..');
-const catalog = JSON.parse(fs.readFileSync(path.join(root, 'headless/catalog/catalog.v1.json')));
+const committed = JSON.parse(fs.readFileSync(path.join(root, 'headless/catalog/catalog.v1.json')));
 const registry = JSON.parse(fs.readFileSync(path.join(root, 'headless/catalog/worksheet-editions.v1.json')));
 const old = loadRamziActivationEvidence(path.join(root, 'headless/catalog'), path.join(root, 'headless/astro-poc/public'));
+// Synthetic fixtures start from the committed catalog with its real reviewed activations withdrawn.
+const catalog = mergeReviewedCatalog(committed, registry, old.ready, old.hintCorrection, undefined, { version: 1, scopes: [] });
 const raw = loadIndexCatalog(path.join(root, 'index.html'));
 const editionId = 'ms-20261115-grw-01-r1';
 const grw = ['G7-T61', 7, 6, 'edition', 'grw'];
@@ -126,13 +128,19 @@ test('GRW cannot gain drawing permission through a fully re-pinned profile', () 
   assert.throws(() => build(b), /drawing policy/);
 });
 
-test('committed GRW sources remain disabled and expose no activation receipts', () => {
+test('committed GRW activation uses real receipts and final manifests derived from its disabled sources', () => {
   for (const level of registry.editions.find(e => e.editionId === editionId).levels) {
     const manifest = JSON.parse(fs.readFileSync(path.join(root, `headless/astro-poc/public/noam-ai/manifests/${level.pdfId}.json`)));
-    assert.equal(manifest.publishable, false);
-    assert.equal(manifest.reviewRequired, true);
+    assert.equal(manifest.publishable, true);
+    assert.equal(manifest.reviewRequired, false);
+    assert.equal(manifest.nativeExportPublished, true);
   }
-  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root, 'headless/catalog/ramzi-additional-trust.v1.json'))), { version: 1, scopes: [] });
-  assert.equal(fs.existsSync(path.join(root, 'headless/catalog/ramzi-additional-requests.v1.json')), false);
+  const scope = JSON.parse(fs.readFileSync(path.join(root, 'headless/catalog/ramzi-additional-trust.v1.json'))).scopes.find(s => s.scopeId === editionId);
+  assert.notEqual(scope.rootAcceptanceSha256, hash('synthetic root acceptance ' + editionId));
+  assert.notEqual(scope.independentReviewSha256, hash('synthetic independent review ' + editionId));
+  assert.ok(JSON.parse(fs.readFileSync(path.join(root, 'headless/catalog/ramzi-additional-requests.v1.json'))).batches.some(r => r.scopeId === editionId));
   assert.equal(originalTopic.editions.find(e => e.editionId === editionId).routing.usesViewer, false);
+  const live = committed.grades.find(g => g.grade === 7).topics.find(t => t.id === 6).editions.find(e => e.editionId === editionId);
+  assert.equal(live.routing.usesViewer, true);
+  assert.equal(live.routing.aiHintShown, true);
 });

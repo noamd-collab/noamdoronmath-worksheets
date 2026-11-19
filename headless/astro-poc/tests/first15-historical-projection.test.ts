@@ -3,9 +3,10 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { beforeFirst15Correction } from './helpers/beforeFirst15Correction';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 import { beforeBatch12Catalog } from './fixtures/batch12-pdf';
 
-const current = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
+const current = beforeReviewedRamziActivation(JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')));
 const units = (c: any) => c.grades.flatMap((g: any) => g.topics.flatMap((t: any) =>
   (t.editions || []).flatMap((e: any) => e.levels.filter((l: any) => l.ramzi))));
 const digest = (c: any) => createHash('sha256').update(JSON.stringify(c, null, 2) + '\n').digest('hex');

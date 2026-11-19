@@ -14,8 +14,9 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 
 /** Undo only batch 11's reviewed overlays and return the exact earlier state. */
 export function beforeBatch11Catalog<T>(catalog: T): T {
-  // Newer layers first, exactly once each: batch 12 (19.11), then the verified first15 hint-correction
-  // metadata (Codex #499, published with #538 on 18.11).
+  // Newer layers first, exactly once each: the batch 12 fence reverses the additional reviewed
+  // Ramzi activation (19.11) and batch 12; then the verified first15 hint-correction metadata
+  // (Codex #499, published with #538 on 18.11).
   const restored: any = structuredClone(beforeFirst15Correction(beforeBatch12Catalog(catalog)));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {

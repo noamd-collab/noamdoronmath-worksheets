@@ -10,6 +10,7 @@ import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, import.meta.url), 'utf8'));
 const require = createRequire(import.meta.url);
@@ -18,7 +19,7 @@ const { buildLearningCatalog } = require('../../../scripts/build-learning-catalo
 const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-ramzi-activation.cjs');
 const id = 'ms-20261113-par-04-r1';
 const pdfs = ['d1af58a5e73745faba0aba254b4e2c6c', 'e957f5b06d514375a1fc32c468a250a1', 'bf58cc24b85643c798c77049ebf619b8'];
-const catalog = loadCatalog();
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = structuredClone(catalog);
 const topic = catalog.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 7)!;
 previous.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 7)!.editions = topic.editions!.filter(e => e.editionId !== id);

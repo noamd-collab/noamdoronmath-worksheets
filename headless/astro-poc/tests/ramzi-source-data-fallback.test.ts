@@ -6,6 +6,7 @@ import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const root=new URL('../../../',import.meta.url),pub=new URL('../public/',import.meta.url),c:any={};c.window=c;
+const reviewedManifestPins=new Map<string,string>(JSON.parse(readFileSync(new URL('headless/catalog/ramzi-additional-trust.v1.json',root),'utf8')).scopes.flatMap((s:any)=>s.batch.units.map((u:any)=>[u.pdfId,u.manifestSha256])));
 for(const name of ['noam-native-visual.js','noam-authored-geometry.js','noam-authored-visual.js','noam-visual-data.js','noam-visual-plan.js','noam-source-data-visual.js'])runInNewContext(readFileSync(new URL(name,root),'utf8'),c);
 const options={studentMessage:'אפשר רמז 1?',helpKind:'hint',drawCurrentStep:true,answer:'רמז שלא מוסיף נתונים.'};
 function fixture(pdf:string,q:number,part:string){const manifest=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+pdf+'.json',pub),'utf8'));const bytes=readFileSync(new URL(manifest.nativeExportUrl.slice(1),pub));assert.equal(createHash('sha256').update(bytes).digest('hex'),manifest.nativeExportSha256);c.input=JSON.stringify({manifest,data:JSON.parse(bytes.toString())});runInNewContext('var fixtureData=JSON.parse(input)',c);const m=c.fixtureData.manifest,data=c.fixtureData.data,e=m.exercises.find((e:any)=>e.q===q&&e.part===part);return {manifest:m,data,exercise:e,context:c.NoamNativeVisual.authoredContext(data,e,'')};}
@@ -71,13 +72,16 @@ it('whole corpus preserves412 legacy,12 evidence-gated measured and42 explicitly
    const isMeasured=measuredPaths.has(m.nativeExportUrl),binding=passivePaths.get(m.nativeExportUrl),group=isMeasured?measured:binding?passive:legacy;
    if(isMeasured){seen.push(m.nativeExportUrl);assertFirst567Phase(m,readFileSync(new URL('noam-ai/manifests/'+file,pub)),phase);assert.equal(m.geometryContract,'measured-v1');}
    if(binding){
-    assert.equal(m.publishable,false);assert.equal(m.reviewRequired,true);
-    // Retained PAR manifests explicitly set false; newly measured manifests
-    // omit the field. Neither schema grants native publication here.
-    assert.equal(m.nativeExportPublished,['G9-T88','G9-T89','G9-T90'].includes(binding.prefix)?false:undefined);
+    // The receipt-backed activation publishes each staged source with exactly three
+    // flags flipped. Retained PAR sources set nativeExportPublished false; newly
+    // measured sources omitted it. The staged pins below remain the #499 values.
+    assert.equal(m.publishable,true);assert.equal(m.reviewRequired,false);assert.equal(m.nativeExportPublished,true);
+    assert.equal(createHash('sha256').update(manifestBytes).digest('hex'),reviewedManifestPins.get(m.pdfHash),'trusted final manifest bytes');
+    const staged={...m,publishable:false,reviewRequired:true};
+    if(['G9-T88','G9-T89','G9-T90'].includes(binding.prefix))staged.nativeExportPublished=false;else delete staged.nativeExportPublished;
     assert.equal(m.geometryContract,'measured-v1');assert.equal(m.prefix,binding.prefix);assert.equal(m.editionId,binding.editionId);
     assert.equal(file,m.pdfHash+'.json');passiveSeen.push(m.nativeExportUrl);
-    passivePins.push(file+':'+createHash('sha256').update(manifestBytes).digest('hex')+':'+m.nativeExportSha256);
+    passivePins.push(file+':'+createHash('sha256').update(JSON.stringify(staged,null,2)+'\n').digest('hex')+':'+m.nativeExportSha256);
    }
    group.manifests++;const bytes=readFileSync(new URL(m.nativeExportUrl.slice(1),pub));assert.equal(createHash('sha256').update(bytes).digest('hex'),m.nativeExportSha256,file);
    c.raw=bytes.toString();const d=runInNewContext('JSON.parse(raw)',c);

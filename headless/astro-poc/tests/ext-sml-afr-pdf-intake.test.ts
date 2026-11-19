@@ -14,6 +14,8 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeExtSmlAfrCatalog, beforeExtSmlAfrRegistry, beforeExtSmlAfrCopy,
   reviewedExtSmlAfr as reviewed, reviewedExtSmlAfrIds as ids } from './fixtures/ext-sml-afr-pdf';
 import { beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -22,8 +24,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, root), 'utf8'));
 const digest = (v: unknown) => createHash('sha256').update(JSON.stringify(v, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = beforeExtra15Catalog(raw) as ReturnType<typeof loadCatalog>;
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = beforeExtra15Registry(registry);
@@ -97,7 +99,9 @@ test('four exact landing deltas preserve old H1/title/primary CTAs and synchroni
     const flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text) === added.heading).length, 1);
     assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text) === added.blocks[0].text).length, 1);
-    assert.match(plain(page.intro), /בדפים שנפתחים עם רמזי אפשר לקבל רמזים/);
+    // The 19.11 copy after the additional Ramzi activation names the series that now open with Ramzi.
+    assert.match(plain((beforeRamziActivationCopy(delta.slug, page) as any).intro), /בדפים שנפתחים עם רמזי אפשר לקבל רמזים/);
+    assert.match(plain(page.intro), /רמזי/);
     for (const q of extractJsonLdFaq(page.jsonLd)) {
       assert.deepEqual({ question: plain(q.question), answer: plain(q.answer) }, rawPage.faq.find((f: any) => f.question === plain(q.question)));
     }

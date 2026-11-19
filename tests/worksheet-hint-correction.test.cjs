@@ -9,6 +9,10 @@ const { validateHintCorrection, hintCorrectionScope } = require('../scripts/lib/
 const { hintCorrectionBuildScope, validateHintCorrectionRows } = require('../scripts/lib/worksheet-hint-correction-build.cjs');
 const { exportCatalog, loadIndexCatalog } = require('../scripts/lib/headless-catalog.cjs');
 const { buildLearningCatalog } = require('../scripts/build-learning-catalog.cjs');
+const { mergeReviewedCatalog } = require('../scripts/lib/reviewed-ramzi-activation.mjs');
+const { loadAdditionalEvidence } = require('../scripts/lib/reviewed-ramzi-activation-build.cjs');
+// The committed, receipt-backed additional activation is independent of the hint correction.
+const additional = loadAdditionalEvidence(catalogDir, pub);
 const registry = JSON.parse(fs.readFileSync(path.join(catalogDir, 'worksheet-editions.v1.json')));
 const catalog = JSON.parse(fs.readFileSync(path.join(catalogDir, 'catalog.v1.json')));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
@@ -46,8 +50,9 @@ test('explicitly absent correction preserves historical evidence and all learnin
   assert.equal(validateHintCorrection(b.ready, undefined), undefined);
   const historical = mergeWorksheetEditions(catalog, registry, b.ready);
   assert(!Object.hasOwn(historical, 'ramziHintCorrection'));
-  assert.deepEqual(exportCatalog({ indexPath: path.join(root, 'index.html'), ramziActivation: b, dryRun: true }).catalog, historical);
-  const learning = buildLearningCatalog(loadIndexCatalog(path.join(root, 'index.html')), registry, b);
+  assert.deepEqual(exportCatalog({ indexPath: path.join(root, 'index.html'), ramziActivation: b, dryRun: true }).catalog,
+    mergeReviewedCatalog(historical, registry, b.ready, undefined, catalog.reviewedRamziActivations, additional.trust));
+  const learning = buildLearningCatalog(loadIndexCatalog(path.join(root, 'index.html')), registry, b, additional);
   assert.equal('/* Generated from index.html; do not edit by hand. */\nwindow.NOAM_LEARNING_CATALOG=' + JSON.stringify(learning) + ';\n',
     fs.readFileSync(path.join(root, 'noam-learning-catalog.js'), 'utf8'));
 });
@@ -67,7 +72,7 @@ test('committed real15/45 correction loads exact independently verified readback
   assert.equal(out.validation.ok, true);
   assert.equal(out.text, fs.readFileSync(path.join(catalogDir, 'catalog.v1.json'), 'utf8'));
   assert.deepEqual(out.catalog.ramziHintCorrection, bundle);
-  assert.deepEqual(mergeWorksheetEditions(out.catalog, registry, b.ready, bundle), out.catalog);
+  assert.deepEqual(mergeReviewedCatalog(out.catalog, registry, b.ready, bundle, out.catalog.reviewedRamziActivations, additional.trust), out.catalog);
   for (const ready of checked.values()) assert.equal(ready.payloadSha256, bundle.record.effectivePayloadSha256);
   assert.deepEqual(buildLearningCatalog(loadIndexCatalog(path.join(root, 'index.html')), registry, b),
     buildLearningCatalog(loadIndexCatalog(path.join(root, 'index.html')), registry, baseline()));
@@ -205,7 +210,7 @@ test('regeneration carries exact correction evidence into a snapshot accepted by
   assert.equal(out.validation.ok, true);
   const snapshot = JSON.parse(out.text);
   assert.deepEqual(snapshot.ramziHintCorrection, b.hintCorrection);
-  assert.deepEqual(mergeWorksheetEditions(snapshot, registry, snapshot.ramziActivation, snapshot.ramziHintCorrection), snapshot);
+  assert.deepEqual(mergeReviewedCatalog(snapshot, registry, snapshot.ramziActivation, snapshot.ramziHintCorrection, snapshot.reviewedRamziActivations, additional.trust), snapshot);
   assert.deepEqual(snapshot.grades.map(g => g.topics.map(t => t.levels)), catalog.grades.map(g => g.topics.map(t => t.levels)));
 });
 

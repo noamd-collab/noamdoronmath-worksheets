@@ -5,6 +5,7 @@ import { test } from 'node:test';
 import { loadTopicPage, extractJsonLdFaq } from '../src/lib/topicPages.ts';
 import { assertCorrectedRawPage, beforeLandingCorrections, reviewedLandingCorrections as reviewed } from './fixtures/landing-corrections-20261118.ts';
 import { beforeBatch10Copy } from './fixtures/batch10-pdf.ts';
+import { afterRamziActivationCopy, beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119.ts';
 
 const root = new URL('../src/data/topic-pages/', import.meta.url);
 const readCurrent = (slug: string) => JSON.parse(readFileSync(new URL(`${slug}.json`, root), 'utf8'));
@@ -62,10 +63,14 @@ test('no page keeps an ungrammatical "כוללים רמזי" question; each cent
     const item = (raw.faq ?? []).find((f: { question: string }) => f.question === NEW_QUESTION);
     if (!item) continue;
     pages += 1;
-    assert.equal(item.answer, NEW_ANSWER, slug);
+    // The 19.11 copy after the additional Ramzi activation rewrote this answer on pages whose extra series
+    // now open with Ramzi; before that copy the answer is exactly the 18.11 central answer.
+    const earlier = (beforeRamziActivationCopy(slug, raw) as any).faq.find((f: { question: string }) => f.question === NEW_QUESTION);
+    assert.equal(earlier.answer, NEW_ANSWER, slug);
+    if (item.answer !== NEW_ANSWER) assert.equal(afterRamziActivationCopy(slug, NEW_ANSWER), item.answer, `${slug}: only the reviewed Ramzi copy`);
     const loaded = loadTopicPage(slug);
     const schema = extractJsonLdFaq(loaded.jsonLd).map(f => ({ question: plain(f.question), answer: plain(f.answer) }));
-    assert.ok(schema.some(f => f.question === NEW_QUESTION && f.answer === NEW_ANSWER), `${slug}: FAQ schema synchronized`);
+    assert.ok(schema.some(f => f.question === NEW_QUESTION && f.answer === item.answer), `${slug}: FAQ schema synchronized`);
   }
   assert.equal(pages, 40);
 });

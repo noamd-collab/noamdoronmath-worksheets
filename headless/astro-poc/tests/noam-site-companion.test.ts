@@ -131,7 +131,10 @@ function factoringLevelA() {
 
 describe('Noam AI site manual', () => {
   it('covers repo pages and keeps worksheet ids on the catalog', () => {
-    const catalogIds = catalogPdfIds(catalog).sort();
+    // Each receipt-backed reviewed activation adds one viewer record per level (RAT reuses its base PDFs).
+    const reviewedIds = JSON.parse(readFileSync(new URL('../../catalog/ramzi-additional-trust.v1.json', import.meta.url), 'utf8'))
+      .scopes.flatMap((scope: any) => scope.batch.units.map((unit: any) => unit.pdfId));
+    const catalogIds = [...catalogPdfIds(catalog), ...reviewedIds].sort();
     const guideIds = guide.records
       .filter((row) => row.type === 'worksheet')
       .map((row) => String(row.pdfId).toLowerCase())

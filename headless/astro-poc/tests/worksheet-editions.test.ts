@@ -15,10 +15,12 @@ import { buildIndex } from '../src/lib/siteSearch/buildIndex';
 import { prepareIndex, search } from '../src/lib/siteSearch/engine';
 import { editionFixture, middleEditionFixture } from './fixtures/worksheet-editions';
 import { mergeWorksheetEditions, worksheetLearningId } from '../../../scripts/lib/worksheet-editions.cjs';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const activation = readFirst567Activation();
-const committed = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')) as CatalogV1;
+// The receipt-backed additional Ramzi activation is a separate, newer layer above these editions.
+const committed = beforeReviewedRamziActivation(JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'))) as CatalogV1;
 const { ramziActivation: _activationSummary, ramziHintCorrection: _hintCorrection, ...committedWithoutActivation } = committed;
 // Synthetic registries start from legacy fields, regardless of which real
 // editions are currently published. Do not use the merger itself as this oracle.

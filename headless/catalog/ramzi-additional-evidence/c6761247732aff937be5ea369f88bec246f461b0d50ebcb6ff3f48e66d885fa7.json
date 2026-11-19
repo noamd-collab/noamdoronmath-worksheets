@@ -1,0 +1,7 @@
+{
+  "schema": "noam-reviewed-additional-scope-enforcement/v1",
+  "status": "verified_server_scope_and_drawing_policy",
+  "scopeId": "ms-20261115-grw-01-r1",
+  "learningScopeSha256": "63b7514029f1a7d7b653e9e0e5c778f088692caad191e5b1d09bbe282a76a18a",
+  "sourceReceiptSha256": "fdbcf99f1679d6571b9c4f4cecb502a1d5fbe5c5d46f34864f8390d22551b6bf"
+}
