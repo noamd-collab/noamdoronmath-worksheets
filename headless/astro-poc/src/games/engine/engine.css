@@ -38,6 +38,8 @@ body {
 button { font: inherit; -webkit-tap-highlight-color: transparent; }
 button:focus-visible { outline: 3px solid var(--main); outline-offset: 3px; }
 button[data-primary]:focus-visible { outline-color: var(--warm); }
+svg [tabindex]:focus { outline: none; }
+svg [tabindex]:focus-visible { outline: 3px solid var(--main); outline-offset: 2px; border-radius: 8px; }
 #app { min-height: 100dvh; display: flex; align-items: center; justify-content: center; padding: 8px; }
 #card {
   position: relative;

@@ -67,10 +67,11 @@
       + ' font-family="Secular One, sans-serif"></text>'
       + '<text id="lr" x="' + (OX - 14) + '" font-size="17" fill="' + MAIN + '" text-anchor="middle"'
       + ' font-family="Secular One, sans-serif"></text>'
-      + '<g id="hg" style="cursor:nwse-resize">'
+      + '<style>#hg:focus-visible #hk{stroke:' + WARM + ';stroke-width:4}</style>'
+      + '<g id="hg" tabindex="0" role="button" aria-label="פינת המלבן; שנה את האורך והרוחב בעזרת מקשי החצים" style="cursor:nwse-resize">'
       + '<circle id="hk" r="11" fill="' + INK + '" stroke="#fff" stroke-width="2"/>'
       + '<text id="ha" font-size="12" fill="#fff" text-anchor="middle" font-family="Secular One, sans-serif">⤡</text>'
-      + '<circle id="hb" r="24" fill="transparent"/></g>';
+      + '<circle id="hb" r="30" fill="transparent"/></g>';
     ctx.draw(html);
     var rects = [].slice.call(ctx.el('cg').children);
     ctx.register('handle', ctx.el('hk'));
@@ -118,18 +119,41 @@
       ctx.say('מצאת! נסה עכשיו מלבן אחר, ותראה מה קורה להיקף.', { mood: 'happy', attn: true });
       ctx.solved();
     }
+    function setSize(nc, nr) {
+      nc = Math.max(1, Math.min(MAXC, nc));
+      nr = Math.max(1, Math.min(MAXR, nr));
+      if (nc !== cols || nr !== rows) {
+        cols = nc; rows = nr;
+        ctx.sfx('tick');
+        render();
+        check();
+      }
+    }
     ctx.drag(ctx.el('hg'), {
       move: function (x, y) {
-        var nc = Math.max(1, Math.min(MAXC, Math.round((x - OX) / CS)));
-        var nr = Math.max(1, Math.min(MAXR, Math.round((y - OY) / CS)));
-        if (nc !== cols || nr !== rows) {
-          cols = nc; rows = nr;
-          ctx.sfx('tick');
-          render();
-          check();
-        }
+        setSize(Math.round((x - OX) / CS), Math.round((y - OY) / CS));
       },
       end: function () { check(); }
+    });
+    ctx.el('hg').addEventListener('keydown', function (event) {
+      var k = event.key;
+      if (k === 'ArrowLeft') setSize(cols - 1, rows);
+      else if (k === 'ArrowRight') setSize(cols + 1, rows);
+      else if (k === 'ArrowUp') setSize(cols, rows - 1);
+      else if (k === 'ArrowDown') setSize(cols, rows + 1);
+      else if (k === 'Home') setSize(1, 1);
+      else if (k === 'End') setSize(MAXC, MAXR);
+      else return;
+      event.preventDefault();
+    });
+    [
+      ['wMinus', 'אורך −', 'הקטן את האורך', -1, 0],
+      ['wPlus', 'אורך +', 'הגדל את האורך', 1, 0],
+      ['hMinus', 'רוחב −', 'הקטן את הרוחב', 0, -1],
+      ['hPlus', 'רוחב +', 'הגדל את הרוחב', 0, 1]
+    ].forEach(function (d) {
+      var b = ctx.button(d[1], function () { setSize(cols + d[3], rows + d[4]); }, { ghost: true, id: d[0] });
+      b.setAttribute('aria-label', d[2]);
     });
     render();
   }
@@ -356,14 +380,14 @@
     {
       mode: 'scene',
       tA: 'בונים מלבן',
-      sub: 'גרור את העיגול השחור בפינה כדי לשנות את האורך ואת הרוחב.',
+      sub: 'גרור את העיגול השחור בפינה, או לחץ על הכפתורים, כדי לשנות את האורך ואת הרוחב.',
       tip: 'שטח הוא כמה משבצות יש בפנים. בנה לי מלבן עם ' + m('12') + ' משבצות.',
       cue: 'בנה מלבן עם שטח 12',
       cueDone: 'יפה. אפשר להמשיך ←',
       btn: 'המשך ←',
       aspect: [W, H],
-      alt: 'רשת משבצות עם מלבן שאפשר להגדיל ולהקטין בגרירת הפינה',
-      nudge: { target: 'handle', text: 'גרור את העיגול השחור בפינה של המלבן.' },
+      alt: 'רשת משבצות עם מלבן שאפשר להגדיל ולהקטין בגרירת הפינה, בכפתורים או בחיצים',
+      nudge: { target: 'handle', text: 'הזז את הפינה של המלבן, בגרירה או בכפתורים.' },
       setup: buildScene
     },
     {
