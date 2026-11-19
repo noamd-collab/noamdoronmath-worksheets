@@ -11,6 +11,7 @@ import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/t
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
 import { reviewedBatch11 } from './fixtures/batch11-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -21,7 +22,7 @@ const read = (path: string) => readFileSync(new URL(path, root), 'utf8');
 const id = 'ms-20261115-frq-01-r1';
 const pdfs = ['941793a9b6614849bd5b7465c894ba87', '6cdddaac6d8c472580f2be5b4bdd0323', '659db2eb8dab43aaae976e9a669d503b'];
 const hashes = ['b2aea9500e62220cd66322cb775b4db49b52234bbaa18a80680c257c33514a75', '5f411b0cb2ceaa8ddab056a3ce12ed20afa6fa4b152261372892a0d31601f351', '6ab22a1ee2a572ca44ac2c827ae2339b431b716ee4e534d1fff22ec78bc616f9'];
-const catalog = loadCatalog();
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const topic = catalog.grades.find(g => g.grade === 7)!.topics.find(t => t.id === 26)!;
 const before = structuredClone(catalog);
 const priorTopic = before.grades.find(g => g.grade === 7)!.topics.find(t => t.id === 26)!;

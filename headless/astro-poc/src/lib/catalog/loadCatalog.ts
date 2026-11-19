@@ -17,6 +17,8 @@ import type { CatalogV1 } from './types';
 import { normalizePdfBase } from '../wixMedia';
 import editionRegistry from '../../../../catalog/worksheet-editions.v1.json';
 import { mergeWorksheetEditions } from '../../../../../scripts/lib/worksheet-editions.mjs';
+import { mergeReviewedCatalog } from '../../../../../scripts/lib/reviewed-ramzi-activation.mjs';
+import additionalTrust from '../../../../catalog/ramzi-additional-trust.v1.json';
 
 export function loadCatalog(): CatalogV1 {
   const data = { ...(raw as CatalogV1) };
@@ -27,7 +29,7 @@ export function loadCatalog(): CatalogV1 {
     ...data.config,
     pdfBase: normalizePdfBase(data.config.pdfBase),
   };
-  return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection) as CatalogV1;
+  return mergeReviewedCatalog(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection, data.reviewedRamziActivations, additionalTrust) as CatalogV1;
 }
 
 export type { CatalogV1 };

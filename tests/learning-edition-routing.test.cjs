@@ -43,8 +43,10 @@ for(const rel of ['noam-learning.js','headless/astro-poc/public/noam-learning.js
   const rows=baselineEnv.window.NOAM_LEARNING_CATALOG;
   assert.equal(rows.length,967);assert.equal(new Set(rows.map(r=>r.id)).size,967);
   assert.equal(JSON.stringify(current.slice(0,rows.length)),JSON.stringify(rows),'all pre-activation catalog rows stay exact');
-  const extras=current.slice(rows.length);assert([0,12].includes(extras.length));
-  if(extras.length){const approved=new Set(['ms-20261113-trn-r1','ms-20261113-cyl-r1','ms-20261113-con-r1','ms-20261113-par-r1']);assert(extras.every(r=>approved.has(r.editionId)));assert.equal(new Set(extras.map(r=>r.id)).size,12);}
+  const extras=current.slice(rows.length);assert([0,12,54].includes(extras.length));
+  if(extras.length){const approved=new Set(['ms-20261113-trn-r1','ms-20261113-cyl-r1','ms-20261113-con-r1','ms-20261113-par-r1']);assert(extras.slice(0,12).every(r=>approved.has(r.editionId)));assert.equal(new Set(extras.map(r=>r.id)).size,extras.length);
+   // The receipt-backed additional activation appends only its trusted reviewed scopes.
+   const reviewed=new Set(JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/ramzi-additional-trust.v1.json'),'utf8')).scopes.map(s=>s.scopeId));assert(extras.slice(12).every(r=>reviewed.has(r.editionId)));}
   const before=cp.execFileSync('git',['show','36910380:'+rel],{cwd:root,encoding:'utf8'});
   const old=functions(before,rows),now=functions(source,current);
   for(const row of rows)assert.equal(now.openPdf(row),old.openPdf(row),row.id);

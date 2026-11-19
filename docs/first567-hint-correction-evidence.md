@@ -1,12 +1,12 @@
 # First567 reviewed hint corrections
 
-This is passive compatibility code. No correction record or applied database receipt is committed. Without the optional correction file, the existing catalog, learning catalog, v1 readiness, four v1 receipts and source assets remain byte-identical.
+The exact 15-row correction was committed to the database and independently read back on 2026-11-16. This candidate includes its real public correction record, hash-bound readback summary and required row proof. Site publication remains a separate reviewed release. Without the optional correction file, the existing historical catalog, learning catalog, v1 readiness, four v1 receipts and source assets remain byte-identical.
 
 The selected scope is 15 subitems / 45 hint cells, reviewed separately from the remaining 552 subitems. The source CSV, independent semantic review, Root acceptance, original v1 baseline and the fresh pre-update database snapshot are pinned in `scripts/lib/worksheet-hint-correction.mjs`. No full-bank semantic reapproval is claimed.
 
 ## Evidence files
 
-A later reviewed correction may add `headless/catalog/worksheet-ramzi-hint-correction.v2.json`. Its `readbackReceiptSha256` names the content-addressed file `headless/catalog/ramzi-evidence/<sha256>.json`. The loader checks the original v1 file hash, validates the receipt path before reading, hashes the readback bytes, and calls the same structural validator used by SSR. A correction without the v1 baseline fails.
+The reviewed correction is recorded in `headless/catalog/worksheet-ramzi-hint-correction.v2.json`. Its `readbackReceiptSha256` names the content-addressed file `headless/catalog/ramzi-evidence/<sha256>.json`. The loader checks the original v1 file hash, validates the receipt path before reading, hashes the readback bytes, and calls the same structural validator used by SSR. A correction without the v1 baseline fails.
 
 The correction record has exactly:
 
@@ -47,6 +47,14 @@ The generator must not reuse the initial insert-only 567-row importer or overwri
 
 ## Verification
 
-`tests/worksheet-hint-correction.test.cjs` exercises build and SSR rejection, no-overlay byte equality, learning preservation, loader receipt hashing, complete baseline comparison, stale overlay removal and the exact 15-row synthetic positive case. Its temporary applied-shaped fixtures contain hashes only and never enter the production catalog.
+`tests/worksheet-hint-correction.test.cjs` exercises build and SSR rejection, explicit historical no-overlay equality, learning preservation, loader receipt hashing, complete baseline comparison, stale overlay removal, the exact 15-row synthetic positive case and the separately pinned real committed correction. Its temporary applied-shaped fixtures contain hashes only and never enter the production catalog.
 
 The protected-design test reverses just the exact optional fourth argument in `loadCatalog.ts`, then checks the existing activation and historical hashes unchanged. It does not regenerate a whole-file fence.
+
+## Verified correction metadata — 2026-11-16
+
+- Actual database readback: `2026-11-16T15:43:13.045Z`; 15 corrected rows / 45 hint cells, all 567 business rows verified. The other 552 rows, 31,761 legacy rows and 968 learning rows retain their independently checked signatures.
+- Public correction record SHA-256: `4958a1f3457f984f0f8e878a67bf47cba8bbfc9472ac92635ccaefa15603c4ff`.
+- Public readback SHA-256: `01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6`. Its `sourceReceiptSha256` is `0b8ebd7a0e2a1c868cd47e198240b667816e1f5b5d5aaa9195f838f85e0c35da`, the independently verified private transaction/readback proof retained by Root. No private database rows or hint text are copied here.
+- The generated catalog and client snapshot now carry the validated correction overlay. Historical v1 readiness/receipts, PDF/native/manifest identities, learning catalog and worksheet routing are unchanged. Additional-edition activation is still disabled and needs its own real evidence.
+- These files describe an executed database correction; they do not claim that this site candidate has been merged or published, or that all 567 hints received a new semantic review.

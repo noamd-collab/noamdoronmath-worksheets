@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './ext-sml-afr-pdf-reviewed.json';
+import { beforeRamziActivationCopy } from './ramzi-activation-copy-20261119';
 
 export { reviewed as reviewedExtSmlAfr };
 export const reviewedExtSmlAfrIds = reviewed.additions.map(a => a.editionId);
@@ -35,6 +36,8 @@ export function beforeExtSmlAfrRegistry<T>(registry: T): T {
 
 /** Require every reviewed new value before reversing its exact baseline field. */
 export function beforeExtSmlAfrCopy<T>(slug: string, page: T): T {
+  // The landing copy after the additional Ramzi activation (19.11) is newer: unwind it first.
+  page = beforeRamziActivationCopy(slug, page);
   const d = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!d) return page;
   const restored: any = structuredClone(page);

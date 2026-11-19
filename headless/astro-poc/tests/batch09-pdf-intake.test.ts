@@ -14,6 +14,8 @@ import { beforeBatch09Catalog, beforeBatch09Copy, beforeBatch09Registry,
 import { createRequire } from 'node:module';
 import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 import { beforeBatch10Registry } from './fixtures/batch10-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -23,8 +25,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = beforeBatch09Catalog(raw) as ReturnType<typeof loadCatalog>;
 const previousSsr: any = structuredClone(catalog);
 for (const addition of reviewed.additions) {
@@ -190,7 +192,8 @@ test('six landing routes add only reviewed PDF copy and preserve their complete 
     for (const block of delta.appendedSection.blocks) {
       assert.equal(flow.filter(item => item.type === 'paragraph' && item.text?.replace(/[⁦-⁩]/g, '') === block.text).length, 1);
     }
-    const faq = extractJsonLdFaq(loaded.jsonLd).map(item => ({
+    // The 19.11 copy after the additional Ramzi activation is newer than batch 9: compare without it.
+    const faq = extractJsonLdFaq((beforeRamziActivationCopy(slug, loaded) as any).jsonLd).map(item => ({
       question: item.question.replace(/[⁦-⁩]/g, ''), answer: item.answer.replace(/[⁦-⁩]/g, ''),
     }));
     const baselineFaq = extractJsonLdFaq((beforeBatch09Copy(slug, loaded) as any).jsonLd).map(item => ({

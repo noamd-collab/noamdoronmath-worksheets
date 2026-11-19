@@ -11,7 +11,10 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeBatch11Catalog, beforeBatch11Copy, beforeBatch11Registry,
   reviewedBatch11 as reviewed, reviewedBatch11Ids as ids } from './fixtures/batch11-pdf';
+import { beforeBatch12Registry } from './fixtures/batch12-pdf';
 import { createRequire } from 'node:module';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -21,8 +24,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = beforeBatch11Catalog(raw) as ReturnType<typeof loadCatalog>;
 const previousSsr: any = structuredClone(catalog);
 for (const addition of reviewed.additions) {
@@ -35,6 +38,8 @@ for (const addition of reviewed.additions) {
   }
 }
 const registry = read('headless/catalog/worksheet-editions.v1.json');
+// Batch 12 (19.11) is newer: its row comes after batch 11's.
+const batch11Registry = beforeBatch12Registry(registry);
 const priorRegistry = beforeBatch11Registry(registry);
 const receipt = read('docs/batch11-pdf-first-20261118.json');
 const expectedIds = ["ms-20261118-qfr-01-r1", "ms-20261118-dgm-01-r1", "ms-20261118-ang-01-r1", "ms-20261118-ang-04-r1"];
@@ -88,9 +93,9 @@ test('four additive editions recover the pinned baseline after batch 10 (143d3d5
   assert.equal(receipt.status, 'REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED');
   assert.equal(receipt.sitePublicationClaimed, false);
   assert.deepEqual(receipt.scope, { packages: 4, pdfs: 12, pages: 143, landingRoutes: 4 });
-  assert.equal(registry.editions.length, priorRegistry.editions.length + 4);
-  assert.deepEqual(registry.editions.slice(0, -4), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(-4), reviewed.additions.map(a => a.edition));
+  assert.equal(batch11Registry.editions.length, priorRegistry.editions.length + 4);
+  assert.deepEqual(batch11Registry.editions.slice(0, -4), priorRegistry.editions);
+  assert.deepEqual(batch11Registry.editions.slice(-4), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // batch 11 adds no base topic
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991);
 
@@ -158,8 +163,9 @@ test('four landing routes add only reviewed PDF copy and preserve their complete
     assert.equal(page.title, restored.title);
     assert.deepEqual(page.catalogCta, restored.catalogCta);
     assert.deepEqual(page.catalogCtas, restored.catalogCtas);
-    assert.deepEqual(page.sections.at(-1), delta.appendedSection);
-    const loaded = loadTopicPage(slug)!;
+    // The 19.11 copy after the additional Ramzi activation edits this section's closing note; compare without it.
+    assert.deepEqual((beforeRamziActivationCopy(slug, page) as any).sections.at(-1), delta.appendedSection);
+    const loaded = beforeRamziActivationCopy(slug, loadTopicPage(slug)!);
     const sections = loaded.sections.filter(section => section.heading === delta.appendedSection.heading);
     assert.equal(sections.length, 1);
     assert.ok(sections[0].blocks.some(block => /רמה א׳/.test(block.text ?? '')));

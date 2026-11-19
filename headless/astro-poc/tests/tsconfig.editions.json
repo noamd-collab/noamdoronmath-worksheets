@@ -30,7 +30,9 @@
     "landing-corrections-20261118.test.ts",
     "batch10-pdf-intake.test.ts",
     "batch11-pdf-intake.test.ts",
-    "percentages-landing.test.ts"
+    "batch12-pdf-intake.test.ts",
+    "percentages-landing.test.ts",
+    "ramzi-activation-copy-20261119.test.ts"
   ],
   "exclude": []
 }

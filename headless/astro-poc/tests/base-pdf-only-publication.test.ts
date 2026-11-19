@@ -13,6 +13,7 @@ import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
 import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import { worksheetHref } from '../../../noam-ai/site-companion/retrieve.js';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog, buildCatalog, validateCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -30,7 +31,7 @@ delete withoutNewTopic.DATA[9].links[47];
 delete withoutNewTopic.SEARCH_TERMS[9][47];
 
 test('RAT01 is one new real topic with three PDF actions and no viewer or hint claim', () => {
-  const catalog = loadCatalog();
+  const catalog = beforeReviewedRamziActivation(loadCatalog());
   const grade = catalog.grades.find(grade => grade.grade === 9)!;
   const topic = grade.topics.find(topic => topic.id === 47)!;
   assert.equal(topic.title, 'משוואות רציונליות');

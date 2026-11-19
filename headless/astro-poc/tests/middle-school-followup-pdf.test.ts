@@ -26,17 +26,19 @@ import { reviewedBatch08Ids } from './fixtures/batch08-pdf';
 import { reviewedBatch09Ids } from './fixtures/batch09-pdf';
 import { reviewedBatch10Ids } from './fixtures/batch10-pdf';
 import { reviewedBatch11Ids } from './fixtures/batch11-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { reviewedBatch12Ids } from './fixtures/batch12-pdf';
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const registry = read('../../catalog/worksheet-editions.v1.json');
-const catalog = read('../src/data/catalog.v1.json') as CatalogV1;
+const catalog = beforeReviewedRamziActivation(read('../src/data/catalog.v1.json')) as CatalogV1;
 const evidence = read('../../../docs/middle-school-followup-pdf-20261113.json');
 const ids = ['ms-20261113-par-02-r1', 'ms-20261113-par-03-r1'];
 const additions = registry.editions.filter((row: any) => ids.includes(row.editionId));
 const activation = readFirst567Activation();
 assert.deepEqual(catalog.ramziActivation, activation.ready);
 const previous = mergeWorksheetEditions(catalog, { version: 1,
-  editions: registry.editions.filter((row: any) => !ids.includes(row.editionId)) }, activation.ready);
+  editions: registry.editions.filter((row: any) => !ids.includes(row.editionId)) }, activation.ready, activation.hintCorrection);
 const topic = (value: CatalogV1) => value.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 7)!;
 
 test('six follow-up PDF files retain frozen provenance and are separate from PR456', () => {
@@ -131,7 +133,7 @@ test('manifest sync omits unactivated PDFs while retaining legacy and verified e
   // later algebra and frequency PDFs, which must not gain viewer/hint activation.
   const algebraId = 'ms-20261115-alg-01-r1';
   const frequencyId = 'ms-20261115-frq-01-r1';
-  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids, ...reviewedBatch02aIds, ...reviewedBatch03Ids, ...probabilityNineIds, ...reviewedBatch04Ids, ...reviewedBatch05Ids, ...reviewedBatch06Ids, ...reviewedBatch07Ids, ...reviewedBatch08Ids, ...reviewedBatch09Ids, ...reviewedBatch10Ids, ...reviewedBatch11Ids].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
+  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids, ...reviewedBatch02aIds, ...reviewedBatch03Ids, ...probabilityNineIds, ...reviewedBatch04Ids, ...reviewedBatch05Ids, ...reviewedBatch06Ids, ...reviewedBatch07Ids, ...reviewedBatch08Ids, ...reviewedBatch09Ids, ...reviewedBatch10Ids, ...reviewedBatch11Ids, ...reviewedBatch12Ids].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
   // The three grade-9 probability series (G9-PRC-01, G9-PRT-01, G9-PRW-01) are exactly the reviewed rows: nine PDF-only levels.
   const probabilityNine = allPdfOnly.filter((e: any) => probabilityNineIds.includes(e.editionId));
   assert.deepEqual(probabilityNine, reviewedProbabilityNine.additions.map(a => a.edition));

@@ -14,6 +14,7 @@ import { loadGradeHub } from '../src/lib/gradeHubs';
 import { topicLandingLoop } from '../src/lib/landingLoops';
 import { LESSON_LOOPS } from '../src/lib/lessonLoops';
 import { beforeEqnSgnFacCatalog } from './fixtures/eqn-sgn-fac-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -32,7 +33,7 @@ const additions = [
     receipt: 'docs/g9-rec01-pdf-first-20261115.json',
     pdfs: ['d9db352e798e4dc78df2602580adef0b', 'ea3bd0b483644b61bb001e56b8bba09d', 'e5c9abeff29046cd87e733db0b4debc9'] },
 ];
-const catalog = loadCatalog();
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = structuredClone(catalog);
 previous.grades.find(g => g.grade === 9)!.topics = previous.grades.find(g => g.grade === 9)!.topics.filter(t => t.id !== 48);
 delete previous.searchTerms['9']['48'];

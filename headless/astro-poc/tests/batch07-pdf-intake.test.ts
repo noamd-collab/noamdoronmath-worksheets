@@ -13,6 +13,8 @@ import { beforeBatch07Catalog, beforeBatch07Copy, beforeBatch07Registry,
   reviewedBatch07 as reviewed, reviewedBatch07Ids as ids } from './fixtures/batch07-pdf';
 import { createRequire } from 'node:module';
 import { beforeBatch08Registry } from './fixtures/batch08-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -22,8 +24,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = beforeBatch07Catalog(raw) as ReturnType<typeof loadCatalog>;
 const previousSsr: any = structuredClone(catalog);
 for (const addition of reviewed.additions) {
@@ -154,8 +156,9 @@ test('three landing routes add only reviewed PDF copy and preserve their complet
     assert.equal(page.title, restored.title);
     assert.deepEqual(page.catalogCta, restored.catalogCta);
     assert.deepEqual(page.catalogCtas, restored.catalogCtas);
-    assert.deepEqual(page.sections.at(-1), delta.appendedSection);
-    const loaded = loadTopicPage(slug)!;
+    // The 19.11 copy after the additional Ramzi activation edits this section's closing note; compare without it.
+    assert.deepEqual((beforeRamziActivationCopy(slug, page) as any).sections.at(-1), delta.appendedSection);
+    const loaded = beforeRamziActivationCopy(slug, loadTopicPage(slug)!);
     const sections = loaded.sections.filter(section => section.heading === delta.appendedSection.heading);
     assert.equal(sections.length, 1);
     assert.ok(sections[0].blocks.some(block => /רמה א׳/.test(block.text ?? '')));

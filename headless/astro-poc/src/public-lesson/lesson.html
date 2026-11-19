@@ -43,8 +43,19 @@ button[data-primary]:focus-visible{outline-color:#f0b429}
 .head{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .step-chip{flex:none;white-space:nowrap;font-size:12.5px;font-weight:700;background:#f1f5f9;border-radius:999px;padding:6px 12px;color:#17233f}
 .score-chip{display:flex;align-items:center;gap:5px;background:#fef8eb;border:1.5px solid #f0d48a;border-radius:999px;padding:4px 12px;font-family:"Secular One",sans-serif;font-size:14px;color:#8a5a00}
-#soundBtn{width:40px;height:40px;border-radius:12px;border:0;background:transparent;font-size:20px;cursor:pointer;display:grid;place-items:center}
+#soundBtn{width:44px;height:44px;border-radius:12px;border:0;background:transparent;font-size:20px;cursor:pointer;display:grid;place-items:center}
 @media (hover:hover){#soundBtn:hover{background:#f1f5f9}}
+#next{min-height:44px}
+.kb-row{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;direction:ltr}
+.kb-btn{min-width:56px;min-height:48px;padding:6px 16px;border-radius:14px;border:2px solid #e8e5db;background:#fff;color:#17233f;font-family:"Secular One",sans-serif;font-size:22px;line-height:1;cursor:pointer;box-shadow:0 2px 0 #e8e5db}
+.kb-btn:disabled{opacity:.45;cursor:not-allowed}
+.kb-btn:focus-visible{outline:3px solid #1a8a80;outline-offset:3px}
+.kb-tile{font-size:18px}
+#handle:focus{outline:none}
+#focusRing{display:none;pointer-events:none}
+#handle:focus-visible #focusRing{display:inline}
+[data-tile]:focus{outline:none}
+[data-tile]:focus-visible rect{stroke:#1a8a80;stroke-width:4px}
 .track{height:5px;background:#e2e8f0;border-radius:5px;overflow:hidden}
 #progressFill{height:100%;width:0;background:linear-gradient(90deg,#32b5a7,#1a8a80);border-radius:5px;transition:width .4s cubic-bezier(.2,.8,.2,1)}
 #grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:14px 26px;align-items:center}
@@ -65,7 +76,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
 #sub{font-size:clamp(13px,3.5vw,15px);color:#64748b;text-align:center}
 #opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .opt{font-family:"Secular One",sans-serif;font-size:19px;min-height:52px;padding:10px 12px;border-radius:14px;border:2px solid #e8e5db;background:#fff;color:#17233f;cursor:pointer;box-shadow:0 2px 0 #e8e5db;direction:ltr;unicode-bidi:isolate;white-space:nowrap;transition:background .2s,border-color .2s,color .2s,box-shadow .2s}
-#hintBtn{align-self:flex-start;font-family:"Secular One",sans-serif;font-size:15px;padding:8px 20px;border-radius:50px;cursor:pointer;background:#f0b429;color:#17233f;border:2px solid #d4930d;box-shadow:0 3px 0 #d4930d}
+#hintBtn{align-self:flex-start;min-height:44px;font-family:"Secular One",sans-serif;font-size:15px;padding:8px 20px;border-radius:50px;cursor:pointer;background:#f0b429;color:#17233f;border:2px solid #d4930d;box-shadow:0 3px 0 #d4930d}
 #hintBox{background:#fef8eb;border:1.5px solid #e0b84a;border-radius:12px;padding:9px 14px;font-size:14px;font-weight:700;line-height:1.55;color:#6b4a00;text-wrap:pretty}
 #fb{border-radius:12px;padding:9px 14px;font-weight:700;font-size:14.5px;line-height:1.5}
 #home{min-height:86px}
@@ -93,7 +104,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
 .skill{background:#fff;border:1.5px solid #e8e5db;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;text-align:right}
 .bar{height:8px;background:#eef2f6;border-radius:8px;overflow:hidden}
 .bar>i{display:block;height:100%;border-radius:8px;transform-origin:right center}
-.retry{align-self:flex-start;font-family:"Secular One",sans-serif;font-size:13.5px;padding:6px 16px;border-radius:50px;border:2px solid #1a8a80;background:#fff;color:#1a8a80;cursor:pointer}
+.retry{align-self:flex-start;min-height:44px;min-width:44px;font-family:"Secular One",sans-serif;font-size:13.5px;padding:6px 16px;border-radius:50px;border:2px solid #1a8a80;background:#fff;color:#1a8a80;cursor:pointer}
 .formula{background:#fff;border:2.5px solid #1a8a80;border-radius:16px;padding:14px 20px;font-family:"Secular One",sans-serif;font-size:clamp(20px,5.4vw,26px);color:#17233f;box-shadow:0 8px 20px rgba(26,138,128,.12);text-align:center}
 /* Inline math stays one LTR run. A trailing ? lives inside the run so it
    does not jump to the left of the opening parenthesis. */
@@ -156,6 +167,8 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         <div id="panelSquare" class="panel">
           <div id="squareFrame"><svg id="square" viewBox="0 0 402 322" preserveAspectRatio="xMidYMid meet" dir="ltr" role="img" aria-label="ריבוע (a+b) מחולק לארבעה חלקים"></svg></div>
           <div id="slots" data-full dir="ltr" hidden></div>
+          <div id="stepper" class="kb-row" hidden><button id="minusBtn" class="kb-btn" type="button" aria-label="הקטן את a והגדל את b">−</button><span id="stepperTxt" role="status" aria-live="polite" style="font-family:'Secular One',sans-serif;font-size:16px;min-width:96px;text-align:center;direction:ltr">a = 6 , b = 4</span><button id="plusBtn" class="kb-btn" type="button" aria-label="הגדל את a והקטן את b">+</button></div>
+          <div id="tileBtns" class="kb-row" hidden></div>
         </div>
         <div id="strip" data-enter dir="ltr" hidden></div>
         <div id="synth" data-enter role="status" aria-live="polite" hidden></div>
@@ -264,7 +277,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
   const WRONG = ['אופס! הריבוע לא מסכים.', 'כמעט. בוא נסתכל שוב על הציור.', 'טעות טובה. ממנה לומדים.'];
   const STEPS = [
     { mode: 'intro', tA: 'למה ', tM: '(a + b)² ≠ a² + b²', tB: '?', sub: 'זו הטעות הכי נפוצה.', tip: 'הרבה חושבים שרק מעלים בריבוע. בוא נראה למה זה לא נכון.', btn: 'בוא נחקור ←', cue: 'לחץ כדי להתחיל' },
-    { mode: 'explore', tA: 'בנה את הריבוע', sub: 'גרור את העיגול. שנה את ' + m('a') + ' ו־' + m('b') + '.', tip: 'הצלע כולה היא ' + m('a + b') + '. שים לב לשני המלבנים הצהובים.', btn: 'הבנתי ←', cue: 'גרור את העיגול כדי להמשיך', cueDone: 'כל הכבוד! אפשר להמשיך ←' },
+    { mode: 'explore', tA: 'בנה את הריבוע', sub: 'שנה את ' + m('a') + ' ו־' + m('b') + ' בגרירה, בכפתורים או בחיצים.', tip: 'הצלע כולה היא ' + m('a + b') + '. שים לב לשני המלבנים הצהובים.', btn: 'הבנתי ←', cue: 'שנה את המספרים כדי להמשיך', cueDone: 'כל הכבוד! אפשר להמשיך ←' },
     { mode: 'quiz', tA: 'מה שטח הריבוע הטורקיז?', sub: 'החלק למעלה־שמאל.', tip: 'צלע ' + m('a') + ' לאורך ולרוחב. מה השטח?', hl: ['a2'], btn: 'המשך ←', win: 'יש! צלע כפול צלע.',
       opts: [
         { t: 'a²', c: true, f: 'נכון! ' + m('a · a = a²') + '.' },
@@ -740,7 +753,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       const S = STEPS[this.state.idx]; if (S.mode !== 'explore' && S.mode !== 'quiz') return;
       this.nudgeT = setTimeout(() => {
         const st = this.state, S2 = STEPS[st.idx];
-        if (S2.mode === 'explore' && !st.dragged) this.point('handle', 'העיגול הלבן מחכה לך. נסה לגרור אותו.');
+        if (S2.mode === 'explore' && !st.dragged) this.point('handle', 'העיגול הלבן מחכה לך. גרור אותו, או לחץ על הכפתורים.');
         else if (S2.mode === 'quiz' && !st.done) {
           if (st.hint < 2) this.point('hint', 'אולי אתה רוצה רמז?');
           else this.say('חבר את מה שהרמזים אמרו. אתה קרוב.', { attn: true, mood: 'think' });
@@ -821,6 +834,17 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       this.tgt = Math.round((this.tgt != null ? this.tgt : this.state.split) / 25) * 25; this.ease();
       if (moved) { const a = Math.round(this.tgt / 25), b = 10 - a; this.say(m(a * a + ' + ' + (2 * a * b) + ' + ' + (b * b) + ' = 100') + '. תמיד 100, כי ' + m('10² = 100') + '.'); }
     },
+    nudgeSplit(dir) {
+      if (STEPS[this.state.idx].mode !== 'explore' || this.drag) return;
+      const base = this.easeRaf && this.tgt != null ? this.tgt : this.state.split;
+      const a0 = Math.round(base / 25);
+      const a = Math.max(2, Math.min(8, Math.abs(dir) > 1 ? (dir < 0 ? 2 : 8) : a0 + dir)), b = 10 - a;
+      this.armNudge(); this.goHome();
+      if (!this.state.dragged) { this.setState({ dragged: true, mood: 'happy' }); this.sfx('correct'); this.burst(18); this.later(() => this.an($('next'), [{ transform: 'scale(.95)' }, { transform: 'scale(1.04)' }, { transform: 'scale(1)' }], { duration: 450 }), 30); }
+      if (a === a0) { this.tgt = a * 25; return; }
+      this.tgt = a * 25; this.ease();
+      this.say(m(a * a + ' + ' + (2 * a * b) + ' + ' + (b * b) + ' = 100') + '. תמיד 100, כי ' + m('10² = 100') + '.');
+    },
     ease() {
       if (this.easeRaf) return;
       const step = () => {
@@ -863,7 +887,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         const dx = D[id][0] * gp / 2, dy = D[id][1] * gp / 2 + sy;
         this.demoAnims.push(this.tileMotion(g, dx, dy, 0, o));
       });
-      this.later(() => { this.setState({ demoJoined: true }); this.say('גרור כל חלק למקום שלו למטה.', { attn: true, mood: 'think' }); }, this.rm ? 50 : 2000);
+      this.later(() => { this.setState({ demoJoined: true }); this.say('שים כל חלק במקום שלו למטה: בגרירה או בכפתורים.', { attn: true, mood: 'think' }); }, this.rm ? 50 : 2000);
     },
     returnDemo() {
       const as = this.demoAnims; this.demoAnims = [];
@@ -932,12 +956,25 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       h += '</g>';
       h += '<rect id="demoAnchor" data-demo-anchor fill="transparent" style="pointer-events:none"></rect>';
       h += '<g id="demoPill" style="pointer-events:none"><rect id="demoPillRect" width="210" height="30" rx="12"></rect><text id="demoText" data-lbl="demo" text-anchor="middle" dominant-baseline="central"></text></g>';
-      h += '<g id="handle" data-handle="1"><circle id="ring" r="15" fill="none" stroke="#1a8a80" stroke-width="3"></circle><circle id="shadow" r="16" fill="rgba(23,35,63,.2)"></circle><circle id="knob" r="15" fill="#fff" stroke="#17233f" stroke-width="4"></circle><circle r="5" fill="#1a8a80" id="dot"></circle><circle r="30" fill="transparent"></circle></g>';
+      h += '<g id="handle" data-handle="1" tabindex="0" role="slider" aria-label="העיגול הלבן: שנה את a ואת b" aria-valuemin="2" aria-valuemax="8" aria-valuenow="6" aria-valuetext="a = 6 , b = 4"><circle id="focusRing" r="24" fill="none" stroke="#f0b429" stroke-width="4"></circle><circle id="ring" r="15" fill="none" stroke="#1a8a80" stroke-width="3"></circle><circle id="shadow" r="16" fill="rgba(23,35,63,.2)"></circle><circle id="knob" r="15" fill="#fff" stroke="#17233f" stroke-width="4"></circle><circle r="5" fill="#1a8a80" id="dot"></circle><circle r="30" fill="transparent"></circle></g>';
       svg.innerHTML = h;
       svg.addEventListener('pointermove', (e) => app.onMove(e));
       svg.addEventListener('pointerup', () => app.onUp());
       svg.addEventListener('pointercancel', () => app.onUp());
       $('handle').addEventListener('pointerdown', (e) => app.onDown(e));
+      $('handle').addEventListener('keydown', (e) => {
+        const k = e.key, d = (k === 'ArrowRight' || k === 'ArrowUp') ? 1 : (k === 'ArrowLeft' || k === 'ArrowDown') ? -1 : 0;
+        if (d) { e.preventDefault(); app.nudgeSplit(d); }
+        else if (k === 'Home') { e.preventDefault(); app.nudgeSplit(-9); }
+        else if (k === 'End') { e.preventDefault(); app.nudgeSplit(9); }
+      });
+      ids.forEach((id) => { const g = $('tile-' + id); g.setAttribute('role', 'button'); g.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); app.tapTile(id); }
+        else if (e.key.indexOf('Arrow') === 0) { e.preventDefault(); const list = ids.filter((x) => $('tile-' + x).hasAttribute('tabindex')); const i = list.indexOf(id), dd = (e.key === 'ArrowRight' || e.key === 'ArrowDown') ? 1 : -1; if (list.length) $('tile-' + list[(i + dd + list.length) % list.length]).focus(); }
+      }); });
+      $('minusBtn').addEventListener('click', () => app.nudgeSplit(-1));
+      $('plusBtn').addEventListener('click', () => app.nudgeSplit(1));
+      $('tileBtns').addEventListener('click', (e) => { const b = e.target.closest('[data-tb]'); if (b) app.tapTile(b.getAttribute('data-tb')); });
       ids.forEach((id) => { $('tile-' + id).addEventListener('pointerdown', (e) => app.dragTile(id, e)); });
     },
     show(el, on) { if (!el) return; el.hidden = !on; },
@@ -1157,8 +1194,21 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
       sideH.style.fill = sideV.style.fill = '#e11d48';
       sideH.style.animation = sideV.style.animation = flName + ' 1.7s ease forwards';
       const handle = $('handle'); handle.style.display = isExp ? 'inline' : 'none'; handle.style.cursor = st.dragging ? 'grabbing' : 'grab';
-      ['ring', 'shadow', 'knob', 'dot'].forEach((id) => { const n = $(id); n.setAttribute('cx', PL + s); n.setAttribute('cy', id === 'shadow' ? PT + s + 2.5 : PT + s); });
+      ['ring', 'shadow', 'knob', 'dot', 'focusRing'].forEach((id) => { const n = $(id); n.setAttribute('cx', PL + s); n.setAttribute('cy', id === 'shadow' ? PT + s + 2.5 : PT + s); });
       $('knob').setAttribute('r', st.dragging ? 17 : 15);
+      { const ka = Math.round(s / 25), kb = 10 - ka, hh = $('handle');
+        hh.setAttribute('aria-valuenow', ka); hh.setAttribute('aria-valuetext', 'a = ' + ka + ' , b = ' + kb);
+        hh.setAttribute('aria-label', 'העיגול הלבן: שנה את a ואת b. החיצים מזיזים אותו');
+        if (isExp) hh.setAttribute('tabindex', '0'); else hh.removeAttribute('tabindex');
+        $('stepper').hidden = !isExp;
+        $('stepperTxt').textContent = 'a = ' + ka + ' , b = ' + kb; $('minusBtn').disabled = ka <= 2; $('plusBtn').disabled = ka >= 8;
+        const tl = { a2: 'a²', ab1: 'ba', ab2: 'ab', b2: 'b²' }, rvl = st.revealed || [], can = isFull && st.demoJoined;
+        ['a2', 'ab2', 'ab1', 'b2'].forEach((id) => { const g = $('tile-' + id), ok = can && !rvl.includes(id);
+          if (ok) { g.setAttribute('tabindex', '0'); g.setAttribute('aria-label', 'החלק ' + tl[id] + '. לחיצה על Enter מניחה אותו במקומו'); } else { g.removeAttribute('tabindex'); g.removeAttribute('aria-label'); } });
+        const tb = $('tileBtns'), want = can ? ['a2', 'ab2', 'ab1', 'b2'].filter((id) => !rvl.includes(id)) : [];
+        tb.hidden = !want.length;
+        const key = want.join(',');
+        if (tb.getAttribute('data-k') !== key) { tb.setAttribute('data-k', key); tb.innerHTML = want.map((id) => '<button type="button" class="kb-btn kb-tile" data-tb="' + id + '" aria-label="הנח את ' + tl[id] + ' במקומו">' + tl[id] + '</button>').join(''); } }
       $('ring').style.display = st.dragged ? 'none' : 'inline';
       $('ring').style.animation = 'ringPulse 1.2s ease-out infinite';
       $('ring').style.transformBox = 'fill-box'; $('ring').style.transformOrigin = 'center';
