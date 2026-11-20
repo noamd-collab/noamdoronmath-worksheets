@@ -1,3 +1,10 @@
+## 2026-11-19 — batch 13 (renewal): ten grade 8 pages get their first reviewed PDF edition (candidate)
+
+- Ten non-default pdf-only editions (30 PDFs, 264 pages) on ten existing grade 8 topic pages that until now had only their old worksheets: G8-PRP-01 (8/6, percent-representations-grade-8), G8-PCH-01 (8/8, percent-change-grade-8), G8-SPC-01 (8/9, successive-percent-changes-grade-8), G8-SQR-01 (8/10, square-root-grade-8; edition id `ms-20261119-g8-sqr-01-r1`, because `sqr-01` is already the grade 9 series), G8-FCN-01 (8/19, function-concept-grade-8), G8-FNT-01 (8/20, function-notation-grade-8), G8-ROC-01 (8/27, rate-of-change-grade-8), G8-SLO-01 (8/28, slope-line-through-origin-grade-8), G8-AXI-01 (8/30, axis-intercepts-grade-8) and G8-EQL-01 (8/31, equation-of-a-line-grade-8). The legacy default and the old worksheets stay in place on every page.
+- Renewal task approved by Noam on 19.11.2026 (hub issue 2, comment 7006849598). Authored by the Claude production agent (skill 7.3.3); every package passed an independent Google Antigravity full review and a blind numbers review. Two media readbacks per PDF match.
+- Each landing gets one short section (two paragraphs checked claim by claim against all three PDFs by two independent checkers, plus the approved note). None of the ten pages named Noam AI as the hint tool, so no legacy sentence changed; meta descriptions are unchanged.
+- Fences: `tests/fixtures/batch13-pdf.ts` reverses only batch 13; the batch 12 fence calls it first, then the reviewed Ramzi activation, so every older fence keeps its pinned state. Proof: `docs/batch13-pdf-first-20261119.json`.
+
 ## 2026-11-19 — batch 12: G7-ANG-02, the last required program package (candidate)
 
 - G7-ANG-02 (7/12, adjacent-vertical-angles-grade-7, after G7-ANG-03): angle bisector, and sum and difference of angles. Three pdf-only PDFs, non-default; the landing gets a second short PDF section, whose note starts with "גם לסדרה זו" so the page repeats no paragraph.
