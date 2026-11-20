@@ -417,7 +417,9 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
   });
 
   it('M22 circle-area keeps paragraph-only self-check under single combined H2', () => {
-    const page = loadTopicPage('circle-area-circumference-grade-8');
+    // Batch 10 (18.11) appends one PDF section (G8-CRC-01); the migrated page is checked without it.
+    const page = beforeNext21Copy('circle-area-circumference-grade-8', loadTopicPage('circle-area-circumference-grade-8'));
+    assert.equal(loadTopicPage('circle-area-circumference-grade-8').sections.length, 2);
     assert.equal(page.sections.length, 1);
     assert.ok(!page.sections.some((s) => hasSelfCheckHeading(s.heading)));
     assert.ok(hasParagraphSelfCheck(page));

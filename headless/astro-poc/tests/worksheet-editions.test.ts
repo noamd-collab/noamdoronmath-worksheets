@@ -15,11 +15,13 @@ import { buildIndex } from '../src/lib/siteSearch/buildIndex';
 import { prepareIndex, search } from '../src/lib/siteSearch/engine';
 import { editionFixture, middleEditionFixture } from './fixtures/worksheet-editions';
 import { mergeWorksheetEditions, worksheetLearningId } from '../../../scripts/lib/worksheet-editions.cjs';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const activation = readFirst567Activation();
-const committed = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')) as CatalogV1;
-const { ramziActivation: _activationSummary, ...committedWithoutActivation } = committed;
+// The receipt-backed additional Ramzi activation is a separate, newer layer above these editions.
+const committed = beforeReviewedRamziActivation(JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'))) as CatalogV1;
+const { ramziActivation: _activationSummary, ramziHintCorrection: _hintCorrection, ...committedWithoutActivation } = committed;
 // Synthetic registries start from legacy fields, regardless of which real
 // editions are currently published. Do not use the merger itself as this oracle.
 const base: CatalogV1 = { ...committedWithoutActivation, grades: committed.grades.map(g => ({
@@ -35,7 +37,7 @@ const registry = () => editionFixture();
 test('empty registry preserves all 169 elementary topics and 507 legacy links byte-for-byte', () => {
   const actual = JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8'));
   const merged = mergeWorksheetEditions(base, { version: 1, editions: [] });
-  const production = mergeWorksheetEditions(base, actual, activation.ready);
+  const production = mergeWorksheetEditions(base, actual, activation.ready, activation.hintCorrection);
   assert.deepEqual(production, committed, 'the committed snapshot must include the actual registry');
   for (const g of base.grades) for (const t of g.topics) assert.deepEqual(topic(production, g.grade, t.id).levels, t.levels);
   assert.equal(JSON.stringify(merged), JSON.stringify(base));
@@ -145,7 +147,7 @@ test('new and previous elementary editions open their own PDF without AI or data
 test('middle-school native identities remain separate from topic IDs and preserve every existing edition', () => {
   const actual = JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json', import.meta.url), 'utf8'));
   const middle = middleEditionFixture();
-  const merged = mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] }, activation.ready);
+  const merged = mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] }, activation.ready, activation.hintCorrection);
   assert.deepEqual(elementary(merged), elementary(committed));
   for (const g of committed.grades) for (const t of g.topics) {
     assert.deepEqual(topic(merged, g.grade, t.id).levels, t.levels);
@@ -163,9 +165,9 @@ test('middle-school native identities remain separate from topic IDs and preserv
         base.config.pdfBase + level.pdfId + '.pdf');
     }
   }
-  assert.deepEqual(mergeWorksheetEditions(merged, actual, activation.ready), committed, 'withdrawing only the middle editions restores the prior catalog');
+  assert.deepEqual(mergeWorksheetEditions(merged, actual, activation.ready, activation.hintCorrection), committed, 'withdrawing only the middle editions restores the prior catalog');
   middle.editions.forEach(row => { row.status = 'reviewed'; });
-  assert.deepEqual(mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] }, activation.ready), committed);
+  assert.deepEqual(mergeWorksheetEditions(committed, { version: 1, editions: [...actual.editions, ...middle.editions] }, activation.ready, activation.hintCorrection), committed);
 });
 
 test('middle-school rows reject missing or cross-grade native provenance before publication', () => {

@@ -9,6 +9,7 @@ import { TOPIC_PAGE_SLUGS, loadTopicPage, updatedLineIsoDate } from '../src/lib/
 import { learningResourceJsonLd } from '../src/lib/structuredData.ts';
 import { topicTextParts } from '../src/lib/topicTextParts.ts';
 import { isolateMathRuns } from '../src/lib/mathDirection.ts';
+import { reviewedBatch03 } from './fixtures/batch03-pdf';
 
 type Node = Record<string, unknown>;
 const graph = (jsonLd: Node): Node[] => (jsonLd['@graph'] as Node[] | undefined) || [];
@@ -79,7 +80,10 @@ describe('quadratic-equations-grade-9 explains the quadratic formula', () => {
   });
 
   it('shows the new update date', () => {
-    assert.equal(page.updatedLine, 'נועם דורון מתמטיקה · עודכן 2.11.2026');
+    // Batch 03 appended a PDF series on 17.11.2026 and moved the visible date; 2.11 is its pinned baseline.
+    assert.equal(page.updatedLine, 'נועם דורון מתמטיקה · עודכן 17.11.2026');
+    const delta = reviewedBatch03.landingDeltas.find((d) => d.slug === 'quadratic-equations-grade-9')!;
+    assert.equal(delta.fields.find((f) => f.path[0] === 'updatedLine')!.before, 'נועם דורון מתמטיקה · עודכן 2.11.2026');
   });
 });
 

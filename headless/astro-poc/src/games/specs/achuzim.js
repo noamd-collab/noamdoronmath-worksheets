@@ -18,6 +18,38 @@
   function pct(n) { return m(n + '%'); }
   function shekel(n) { return m(n + ' ₪'); }
 
+  function stepperHtml(items) {
+    return '<div class="stepper" dir="ltr" style="align-self:stretch;justify-content:center">'
+      + items.map(function (it) {
+        return '<button type="button" data-d="' + it[0] + '" aria-label="' + it[1]
+          + '" style="min-height:44px;min-width:44px">' + it[2] + '</button>';
+      }).join('') + '</div>';
+  }
+  function focusStyle(id) {
+    return '<style>#' + id + ':focus-visible{stroke:' + INK + ';stroke-width:4}</style>';
+  }
+  function a11yAttrs(label, min, max, now) {
+    return ' tabindex="0" role="slider" aria-label="' + label + '" aria-valuemin="' + min
+      + '" aria-valuemax="' + max + '" aria-valuenow="' + now + '"';
+  }
+  function wireControls(el, box, step, big, change) {
+    el.addEventListener('keydown', function (event) {
+      var k = event.key, d = 0;
+      if (k === 'ArrowRight' || k === 'ArrowUp') d = step;
+      else if (k === 'ArrowLeft' || k === 'ArrowDown') d = -step;
+      else if (k === 'PageUp') d = big;
+      else if (k === 'PageDown') d = -big;
+      else if (k === 'Home') d = -1e9;
+      else if (k === 'End') d = 1e9;
+      else return;
+      event.preventDefault();
+      change(d);
+    });
+    [].forEach.call(box.querySelectorAll('[data-d]'), function (b) {
+      b.addEventListener('click', function () { change(Number(b.getAttribute('data-d'))); });
+    });
+  }
+
   /* ---------- step 1: paint the hundred grid ---------- */
   function gridScene(ctx) {
     var N = 100, SUM = 200, CS = 23, OX = 86, OY = 38;
@@ -29,8 +61,8 @@
         + '" height="' + (CS - 2) + '" rx="3" fill="' + SOFT + '" stroke="' + LINE + '" stroke-width="1.2"/>';
     }
     ctx.draw(
-      '<g id="cells">' + cells + '</g>'
-      + '<rect id="grab" x="' + OX + '" y="' + OY + '" width="' + (CS * 10) + '" height="' + (CS * 10)
+      focusStyle('grab') + '<g id="cells">' + cells + '</g>'
+      + '<rect id="grab"' + a11yAttrs('הרשת: מספר המשבצות הצבועות. חצים משנים משבצת אחת, ועמוד למעלה או למטה עשר', 0, 100, 0) + ' x="' + OX + '" y="' + OY + '" width="' + (CS * 10) + '" height="' + (CS * 10)
       + '" fill="transparent" style="cursor:crosshair;touch-action:none"/>'
     );
     var rects = [].slice.call(ctx.el('cells').children);
@@ -40,10 +72,13 @@
       + '<div><b>אחוז</b><span data-v="p" dir="ltr">0%</span></div>'
       + '<div><b>מתוך 200 ₪</b><span data-v="a" dir="ltr">0 ₪</span></div>'
       + '</div>'
+      + stepperHtml([['-10', 'הפחת עשר משבצות', '−10'], ['-1', 'הפחת משבצת אחת', '−1'],
+        ['1', 'הוסף משבצת אחת', '+1'], ['10', 'הוסף עשר משבצות', '+10']])
     );
     ctx.register('grid', ctx.el('grab'));
     function render() {
       for (var k = 0; k < N; k++) rects[k].setAttribute('fill', k < count ? MAIN : SOFT);
+      ctx.el('grab').setAttribute('aria-valuenow', count);
       box.querySelector('[data-v="n"]').textContent = String(count);
       box.querySelector('[data-v="p"]').textContent = count + '%';
       box.querySelector('[data-v="a"]').textContent = (count * SUM / N) + ' ₪';
@@ -56,10 +91,7 @@
       var n = r * 10 + c + 1;
       if (n !== count) { count = n; ctx.sfx('tick'); render(); }
     }
-    ctx.drag(ctx.el('grab'), {
-      start: at,
-      move: at,
-      end: function () {
+    function finish() {
         if (done || count !== 25) return;
         done = true;
         ctx.sfx('correct');
@@ -69,8 +101,14 @@
         ctx.say('כל משבצת היא אחוז אחד, וכל אחוז הוא ' + shekel(2) + ' מתוך ' + shekel(200) + '.',
           { mood: 'happy', attn: true });
         ctx.solved();
-      }
-    });
+    }
+    function change(d) {
+      var n = Math.max(0, Math.min(100, count + d));
+      if (n !== count) { count = n; ctx.sfx('tick'); render(); }
+      finish();
+    }
+    wireControls(ctx.el('grab'), box, 1, 10, change);
+    ctx.drag(ctx.el('grab'), { start: at, move: at, end: finish });
     render();
   }
 
@@ -108,7 +146,7 @@
       + '<g id="knobG" style="cursor:ew-resize"><circle id="knob" cx="' + TX + '" cy="' + TY + '" r="13" fill="'
       + INK + '"/><text id="arrow" x="' + TX + '" y="' + (TY + 5) + '" font-size="14" fill="#fff"'
       + ' text-anchor="middle" font-family="Secular One, sans-serif">↔</text></g>'
-      + '<rect id="grab" x="' + (TX - 20) + '" y="' + (TY - 30) + '" width="' + (TW + 40)
+      + focusStyle('grab') + '<rect id="grab"' + a11yAttrs('סרגל ההנחה באחוזים. חצים משנים בחמישה אחוזים', 0, 50, 0) + ' x="' + (TX - 20) + '" y="' + (TY - 30) + '" width="' + (TW + 40)
       + '" height="60" fill="transparent" style="touch-action:none"/>'
     );
     var box = ctx.extra(
@@ -117,6 +155,7 @@
       + '<div><b>אתה חוסך</b><span data-v="s" dir="ltr">0 ₪</span></div>'
       + '<div><b>אתה משלם</b><span data-v="a" dir="ltr">150 ₪</span></div>'
       + '</div>'
+      + stepperHtml([['-5', 'הקטן את ההנחה בחמישה אחוזים', '−5%'], ['5', 'הגדל את ההנחה בחמישה אחוזים', '+5%']])
     );
     ctx.register('slider', ctx.el('grab'));
     function render() {
@@ -132,6 +171,7 @@
       ctx.el('fill').setAttribute('x2', kx);
       ctx.el('knob').setAttribute('cx', kx);
       ctx.el('arrow').setAttribute('x', kx);
+      ctx.el('grab').setAttribute('aria-valuenow', p);
       box.querySelector('[data-v="p"]').textContent = p + '%';
       box.querySelector('[data-v="s"]').textContent = save + ' ₪';
       box.querySelector('[data-v="a"]').textContent = pay + ' ₪';
@@ -145,10 +185,7 @@
       var np = Math.max(0, Math.min(50, Math.round(raw / 5) * 5));
       if (np !== p) { p = np; ctx.sfx('tick'); render(); }
     }
-    ctx.drag(ctx.el('grab'), {
-      start: at,
-      move: at,
-      end: function () {
+    function finish() {
         if (done || p !== 20) return;
         done = true;
         ctx.sfx('correct');
@@ -156,8 +193,14 @@
         ctx.note(pct(20) + ' מ־' + shekel(150) + ' הם ' + shekel(30) + '. לכן אתה משלם ' + shekel(120) + '.', 'good');
         ctx.say('מצאת. המחיר שירד הוא החלק הכתום, והכחול הוא מה שנשאר לשלם.', { mood: 'happy', attn: true });
         ctx.solved();
-      }
-    });
+    }
+    function change(d) {
+      var n = Math.max(0, Math.min(50, p + d));
+      if (n !== p) { p = n; ctx.sfx('tick'); render(); }
+      finish();
+    }
+    wireControls(ctx.el('grab'), box, 5, 10, change);
+    ctx.drag(ctx.el('grab'), { start: at, move: at, end: finish });
     render();
   }
 
@@ -204,7 +247,7 @@
       + '<g style="cursor:ew-resize"><circle id="knob" cx="' + SX + '" cy="' + SY + '" r="13" fill="' + INK + '"/>'
       + '<text id="arrow" x="' + SX + '" y="' + (SY + 5) + '" font-size="14" fill="#fff" text-anchor="middle"'
       + ' font-family="Secular One, sans-serif">↔</text></g>'
-      + '<rect id="grab" x="' + (SX - 20) + '" y="' + (SY - 30) + '" width="' + (SW + 40)
+      + focusStyle('grab') + '<rect id="grab"' + a11yAttrs('סרגל האחוז. חצים משנים בחמישה אחוזים', 0, 100, 0) + ' x="' + (SX - 20) + '" y="' + (SY - 30) + '" width="' + (SW + 40)
       + '" height="60" fill="transparent" style="touch-action:none"/>'
     );
     var dotEls = [].slice.call(ctx.el('dots').children);
@@ -215,6 +258,7 @@
       + '<div><b>תלמידים צבועים</b><span data-v="s">0</span></div>'
       + '<div><b>מתוך</b><span data-v="t">60</span></div>'
       + '</div>'
+      + stepperHtml([['-5', 'הקטן את האחוז בחמישה', '−5%'], ['5', 'הגדל את האחוז בחמישה', '+5%']])
     );
     ctx.register('slider', ctx.el('grab'));
     function render() {
@@ -226,6 +270,7 @@
       ctx.el('fill').setAttribute('x2', kx);
       ctx.el('knob').setAttribute('cx', kx);
       ctx.el('arrow').setAttribute('x', kx);
+      ctx.el('grab').setAttribute('aria-valuenow', p);
       box.querySelector('[data-v="p"]').textContent = p + '%';
       box.querySelector('[data-v="s"]').textContent = String(s);
       ctx.caption(m(String(s)) + ' מתוך ' + m(String(TOTAL)) + ' = ' + m(p + '%'));
@@ -238,10 +283,7 @@
       var np = Math.max(0, Math.min(100, Math.round(raw / 5) * 5));
       if (np !== p) { p = np; ctx.sfx('tick'); render(); }
     }
-    ctx.drag(ctx.el('grab'), {
-      start: at,
-      move: at,
-      end: function () {
+    function finish() {
         if (done || p !== 25) return;
         done = true;
         ctx.sfx('correct');
@@ -250,8 +292,14 @@
         ctx.say('כשהכיתה מחולקת לארבע קבוצות שוות, כל קבוצה היא רבע. וזה בדיוק ' + pct(25) + '.',
           { mood: 'happy', attn: true });
         ctx.solved();
-      }
-    });
+    }
+    function change(d) {
+      var n = Math.max(0, Math.min(100, p + d));
+      if (n !== p) { p = n; ctx.sfx('tick'); render(); }
+      finish();
+    }
+    wireControls(ctx.el('grab'), box, 5, 25, change);
+    ctx.drag(ctx.el('grab'), { start: at, move: at, end: finish });
     render();
   }
 
@@ -270,14 +318,14 @@
     {
       mode: 'scene',
       tA: 'מאה משבצות',
-      sub: 'גרור על הרשת כדי לצבוע משבצות. כל משבצת היא אחוז אחד.',
+      sub: 'צבע משבצות בגרירה, בכפתורים או בחיצים. כל משבצת היא אחוז אחד.',
       tip: 'הרשת הזאת היא ' + m('100') + ' משבצות, וכל משבצת היא אחוז אחד. צבע ' + pct(25) + ' ממנה.',
       cue: 'צבע בדיוק 25 משבצות',
       cueDone: 'יפה. אפשר להמשיך ←',
       btn: 'המשך ←',
       aspect: [W, H],
-      alt: 'רשת של עשר על עשר משבצות שאפשר לצבוע בגרירה',
-      nudge: { target: 'grid', text: 'גרור באצבע או בעכבר על הרשת כדי לצבוע.' },
+      alt: 'רשת של עשר על עשר משבצות שאפשר לצבוע בגרירה, בכפתורים או בחיצים',
+      nudge: { target: 'grid', text: 'גרור על הרשת, או לחץ על הכפתורים שמתחת לה.' },
       setup: gridScene
     },
     {
@@ -302,14 +350,14 @@
     {
       mode: 'scene',
       tA: 'תווית מחיר',
-      sub: 'גרור את הסרגל וראה איך המחיר מתקצר כשההנחה גדלה.',
+      sub: 'הזז את הסרגל בגרירה, בכפתורים או בחיצים, וראה איך המחיר מתקצר.',
       tip: 'בנעליים יש תווית של ' + shekel(150) + '. הזז את ההנחה עד ' + pct(20) + ' וראה כמה תשלם.',
-      cue: 'גרור עד הנחה של 20%',
+      cue: 'הגע להנחה של 20%',
       cueDone: 'מצוין. אפשר להמשיך ←',
       btn: 'המשך ←',
       aspect: [W, H],
       alt: 'פס מחיר של מאה וחמישים שקלים עם סרגל הנחה נגרר בין אפס לחמישים אחוז',
-      nudge: { target: 'slider', text: 'גרור את העיגול השחור ימינה כדי להגדיל את ההנחה.' },
+      nudge: { target: 'slider', text: 'הזז את העיגול השחור ימינה, או לחץ על הכפתורים, כדי להגדיל את ההנחה.' },
       setup: priceScene
     },
     {
@@ -334,14 +382,14 @@
     {
       mode: 'scene',
       tA: 'הכיוון ההפוך',
-      sub: 'אתה יודע כמה תלמידים בחרו, ועכשיו תגלה איזה אחוז הם. גרור את הסרגל עד שהצבע מכסה את מי שבחר.',
-      tip: 'בכיתה יש ' + m('60') + ' תלמידים, ו־' + m('15') + ' מהם בחרו פיצה. גרור כדי למצוא איזה אחוז הם.',
-      cue: 'גרור עד שתתאים לעיגולים הכתומים',
+      sub: 'אתה יודע כמה תלמידים בחרו, ועכשיו תגלה איזה אחוז הם. הזז את הסרגל עד שהצבע מכסה את מי שבחר.',
+      tip: 'בכיתה יש ' + m('60') + ' תלמידים, ו־' + m('15') + ' מהם בחרו פיצה. הזז את הסרגל כדי למצוא איזה אחוז הם.',
+      cue: 'הגע לאחוז שמתאים לעיגולים הכתומים',
       cueDone: 'נהדר. אפשר להמשיך ←',
       btn: 'המשך ←',
       aspect: [W, H],
       alt: 'שישים תלמידים ומאה משבצות, וסרגל שגורר אחוז משותף לשניהם',
-      nudge: { target: 'slider', text: 'גרור את העיגול השחור ימינה והסתכל על העיגולים הכתומים.' },
+      nudge: { target: 'slider', text: 'הזז את העיגול השחור ימינה, בגרירה או בכפתורים, והסתכל על העיגולים הכתומים.' },
       setup: reverseScene
     },
     {

@@ -9,14 +9,24 @@ const { validateHintCorrection, hintCorrectionScope } = require('../scripts/lib/
 const { hintCorrectionBuildScope, validateHintCorrectionRows } = require('../scripts/lib/worksheet-hint-correction-build.cjs');
 const { exportCatalog, loadIndexCatalog } = require('../scripts/lib/headless-catalog.cjs');
 const { buildLearningCatalog } = require('../scripts/build-learning-catalog.cjs');
+const { mergeReviewedCatalog } = require('../scripts/lib/reviewed-ramzi-activation.mjs');
+const { loadAdditionalEvidence } = require('../scripts/lib/reviewed-ramzi-activation-build.cjs');
+// The committed, receipt-backed additional activation is independent of the hint correction.
+const additional = loadAdditionalEvidence(catalogDir, pub);
 const registry = JSON.parse(fs.readFileSync(path.join(catalogDir, 'worksheet-editions.v1.json')));
 const catalog = JSON.parse(fs.readFileSync(path.join(catalogDir, 'catalog.v1.json')));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const bytes = value => JSON.stringify(value, null, 2) + '\n';
 const clone = value => JSON.parse(JSON.stringify(value));
-function baseline() { return loadRamziActivationEvidence(catalogDir, pub); }
+function deployedEvidence() { return loadRamziActivationEvidence(catalogDir, pub); }
+function baseline() {
+  const evidence = deployedEvidence();
+  delete evidence.hintCorrection; delete evidence.hintCorrectionRows;
+  return evidence;
+}
 // Synthetic transaction/readback only, constructed in memory or a temp directory.
-// The private proposal hashes are real pinned proposals, not executed transactions.
+// These synthetic receipts exercise the historical validator; they do not replace
+// the separate real correction metadata now committed in the production catalog.
 // This fixture never creates an applied correction file in the production catalog.
 function fixture() {
   const b = baseline(), scope = hintCorrectionBuildScope();
@@ -35,15 +45,37 @@ function rejectedEverywhere(b) {
   assert.throws(() => mergeWorksheetEditions(catalog, registry, b.ready, b.hintCorrection), /Hint correction|Ramzi readiness/);
 }
 
-test('absent correction preserves baseline evidence, catalog bytes and all learning rows', () => {
+test('explicitly absent correction preserves historical evidence and all learning rows', () => {
   const b = baseline(); assert(!Object.hasOwn(b, 'hintCorrection'));
   assert.equal(validateHintCorrection(b.ready, undefined), undefined);
-  assert.deepEqual(mergeWorksheetEditions(catalog, registry, b.ready), catalog);
-  assert.equal(exportCatalog({ indexPath: path.join(root, 'index.html') }).text,
-    fs.readFileSync(path.join(catalogDir, 'catalog.v1.json'), 'utf8'));
-  const learning = buildLearningCatalog(loadIndexCatalog(path.join(root, 'index.html')), registry, b);
+  const historical = mergeWorksheetEditions(catalog, registry, b.ready);
+  assert(!Object.hasOwn(historical, 'ramziHintCorrection'));
+  assert.deepEqual(exportCatalog({ indexPath: path.join(root, 'index.html'), ramziActivation: b, dryRun: true }).catalog,
+    mergeReviewedCatalog(historical, registry, b.ready, undefined, catalog.reviewedRamziActivations, additional.trust));
+  const learning = buildLearningCatalog(loadIndexCatalog(path.join(root, 'index.html')), registry, b, additional);
   assert.equal('/* Generated from index.html; do not edit by hand. */\nwindow.NOAM_LEARNING_CATALOG=' + JSON.stringify(learning) + ';\n',
     fs.readFileSync(path.join(root, 'noam-learning-catalog.js'), 'utf8'));
+});
+test('committed real15/45 correction loads exact independently verified readback into build and SSR', () => {
+  const b = deployedEvidence(), bundle = b.hintCorrection;
+  assert(bundle, 'actual committed correction required');
+  assert.equal(hash(fs.readFileSync(path.join(catalogDir, 'worksheet-ramzi-hint-correction.v2.json'))),
+    '4958a1f3457f984f0f8e878a67bf47cba8bbfc9472ac92635ccaefa15603c4ff');
+  assert.equal(bundle.record.readbackReceiptSha256, '01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6');
+  assert.equal(bundle.readback.sourceReceiptSha256, '0b8ebd7a0e2a1c868cd47e198240b667816e1f5b5d5aaa9195f838f85e0c35da');
+  assert.equal(bundle.readback.observedAt, '2026-11-16T15:43:13.045Z');
+  assert.equal(bundle.record.effectivePayloadSha256, '1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee');
+  assert.equal(validateHintCorrectionRows(b.hintCorrectionRows).length, 15);
+  const checked = validateRamziActivation(registry, b);
+  assert.equal(checked.size, 12);
+  const out = exportCatalog({ indexPath: path.join(root, 'index.html'), dryRun: true });
+  assert.equal(out.validation.ok, true);
+  assert.equal(out.text, fs.readFileSync(path.join(catalogDir, 'catalog.v1.json'), 'utf8'));
+  assert.deepEqual(out.catalog.ramziHintCorrection, bundle);
+  assert.deepEqual(mergeReviewedCatalog(out.catalog, registry, b.ready, bundle, out.catalog.reviewedRamziActivations, additional.trust), out.catalog);
+  for (const ready of checked.values()) assert.equal(ready.payloadSha256, bundle.record.effectivePayloadSha256);
+  assert.deepEqual(buildLearningCatalog(loadIndexCatalog(path.join(root, 'index.html')), registry, b),
+    buildLearningCatalog(loadIndexCatalog(path.join(root, 'index.html')), registry, baseline()));
 });
 test('synthetic exact15/45 correction is shared by build and SSR while keeping source/v1/learning unchanged', () => {
   const b = fixture(), saved = bytes(b.ready), old = mergeWorksheetEditions(catalog, registry, b.ready);
@@ -178,7 +210,7 @@ test('regeneration carries exact correction evidence into a snapshot accepted by
   assert.equal(out.validation.ok, true);
   const snapshot = JSON.parse(out.text);
   assert.deepEqual(snapshot.ramziHintCorrection, b.hintCorrection);
-  assert.deepEqual(mergeWorksheetEditions(snapshot, registry, snapshot.ramziActivation, snapshot.ramziHintCorrection), snapshot);
+  assert.deepEqual(mergeReviewedCatalog(snapshot, registry, snapshot.ramziActivation, snapshot.ramziHintCorrection, snapshot.reviewedRamziActivations, additional.trust), snapshot);
   assert.deepEqual(snapshot.grades.map(g => g.topics.map(t => t.levels)), catalog.grades.map(g => g.topics.map(t => t.levels)));
 });
 

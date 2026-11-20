@@ -46,7 +46,9 @@ function runSuite(name, files) {
     encoding: 'utf8',
     env: { ...process.env, NODE_OPTIONS: nodeOptions },
     maxBuffer: 32 * 1024 * 1024,
-    timeout: 30 * 60 * 1000,
+    // The deterministic suite (with its real-browser motion audits) takes about 27 minutes on
+    // the CI runner; 30 minutes left no margin and killed the run without a summary.
+    timeout: 45 * 60 * 1000,
   });
   const output = `${r.stdout || ''}${r.stderr || ''}`;
   const logPath = join(outDir, `${name}.tap.log`);

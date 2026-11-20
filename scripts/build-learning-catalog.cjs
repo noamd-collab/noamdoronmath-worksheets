@@ -3,10 +3,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { loadIndexCatalog, buildCatalog, EDITIONS_PATH } = require('./lib/headless-catalog.cjs');
 const { mergeWorksheetEditions } = require('./lib/worksheet-editions.cjs');
+const { mergeReviewedCatalog } = require('./lib/reviewed-ramzi-activation.mjs');
+const { loadAdditionalEvidence, validateAdditionalEvidence } = require('./lib/reviewed-ramzi-activation-build.cjs');
 const { isPdfOnlyTopic } = require('./lib/base-worksheet-publication.mjs');
 const { loadRamziActivationEvidence, validateRamziActivation } = require('./lib/worksheet-ramzi-activation.cjs');
 
-function buildLearningCatalog(raw, registry, activationEvidence) {
+function buildLearningCatalog(raw, registry, activationEvidence, additional = {trust:{version:1,scopes:[]},bundle:undefined}) {
   // Validate base publication modes even when this generator runs independently.
   const baseCatalog = buildCatalog(raw);
   const items = [];
@@ -23,8 +25,14 @@ function buildLearningCatalog(raw, registry, activationEvidence) {
     });
   }
   validateRamziActivation(registry, activationEvidence);
-  const catalog = mergeWorksheetEditions(baseCatalog, registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
-  for (const g of catalog.grades) for (const t of g.topics) for (const edition of t.editions || []) {
+  const initial = mergeWorksheetEditions(baseCatalog, registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
+  const projection = validateAdditionalEvidence(initial, registry, additional.bundle);
+  const catalog = mergeReviewedCatalog(initial, registry, activationEvidence?.ready, activationEvidence?.hintCorrection, projection, additional.trust);
+  // Keep every previously emitted row in its original position. Append only
+  // the additional reviewed editions after the complete historical catalog.
+  const historicalIds = new Set(initial.grades.flatMap(g => g.topics.flatMap(t => (t.editions || []).filter(e => e.routing.usesViewer).map(e => e.editionId))));
+  const editionRows = catalog.grades.flatMap(g => g.topics.flatMap(t => [...(t.editions || []), ...(t.reviewedBaseBinding ? [t.reviewedBaseBinding] : [])].map(edition => ({g,t,edition}))));
+  for (const {g,t,edition} of [...editionRows.filter(x => historicalIds.has(x.edition.editionId)), ...editionRows.filter(x => !historicalIds.has(x.edition.editionId))]) {
     // Static PDF editions have no deployed progress identities. Do not expose
     // account controls whose worksheet IDs would require a database rollout.
     if (!edition.routing.usesViewer) continue;
@@ -43,7 +51,8 @@ function buildLearningCatalog(raw, registry, activationEvidence) {
 function main() {
   const root = path.join(__dirname, '..');
   const evidence = loadRamziActivationEvidence(path.dirname(EDITIONS_PATH), path.join(root, 'headless/astro-poc/public'));
-  const items = buildLearningCatalog(loadIndexCatalog(), JSON.parse(fs.readFileSync(EDITIONS_PATH, 'utf8')), evidence);
+  const additional = loadAdditionalEvidence(path.dirname(EDITIONS_PATH), path.join(root, 'headless/astro-poc/public'));
+  const items = buildLearningCatalog(loadIndexCatalog(), JSON.parse(fs.readFileSync(EDITIONS_PATH, 'utf8')), evidence, additional);
   const text = '/* Generated from index.html; do not edit by hand. */\nwindow.NOAM_LEARNING_CATALOG=' + JSON.stringify(items) + ';\n';
   const output = path.join(root, 'noam-learning-catalog.js');
   if (process.argv.includes('--check')) {

@@ -99,7 +99,8 @@ export function buildWorksheetHref(input: WorksheetLinkInput): string {
   viewerUrl.searchParams.set('lv', viewerLevel);
   viewerUrl.searchParams.set('pdf', level.pdfId);
   viewerUrl.searchParams.set('t', routing.sourceTitle || topic.title);
-  if (isNewEdition) viewerUrl.searchParams.set('edition', edition.editionId);
+  const viewerEditionId = edition.viewerEditionId || (isNewEdition ? edition.editionId : undefined);
+  if (viewerEditionId) viewerUrl.searchParams.set('edition', viewerEditionId);
 
   const siblings = routing.siblingPdfQuery || {};
   for (const key of ['pa', 'pb', 'pc', 'pc2'] as const) {

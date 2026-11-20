@@ -1,0 +1,117 @@
+{
+  "schema": "noam-reviewed-additional-requests/v1",
+  "batches": [
+    {
+      "scopeId": "ms-20261115-rat-01-r1",
+      "scopeSha256": "18d244ff49c27f5a53fda3f209bf92faaa74148834c115e992d706ff3a144dd0",
+      "assetReceiptSha256": "7a860079fde0a45f3217c0cc782785890888450dcc595d9147368154dce0d79e",
+      "dbReadbackReceiptSha256": "114f75357421ef26bded825ba8cf89993ed9fba2cdc143732d93b171118b618d",
+      "learningReceiptSha256": "4df5ed705926b4dfff9bbe9aee3aec01cb8a5df65ea14087530ac411942909ce",
+      "scopeEnforcementReceiptSha256": "5bba2ff0d1aa0594984071371cd28ecc4cdf14863e1fcfcef08bcf0888666316"
+    },
+    {
+      "scopeId": "ms-20261115-frq-01-r1",
+      "scopeSha256": "8ea0c61c47a7848b7d17a38ffe214d89ca10e228ebb6b6e444dc1df77cf182cf",
+      "assetReceiptSha256": "544b426026e0e5f40e6e3c44e0df74d3b8544c54322ca50198f6a61f9c3627ac",
+      "dbReadbackReceiptSha256": "05623df8e674c4555cc1cda080c47c83969d8e6c1393be77c8b03b8f738aad2b",
+      "learningReceiptSha256": "c3db19975b98865cadc7f4d18172e7352695ca9b999a52ef0e2ef67738d207ad",
+      "scopeEnforcementReceiptSha256": "0872e83a77a7d66fc501adf4031f9373e5a2b3623e13a52acea27a75f701acaf"
+    },
+    {
+      "scopeId": "ms-20261115-sgn-01-r1",
+      "scopeSha256": "2f900d1b6934235d75fabdfccbb40c2c1f9958fd97dee15144e62a50fa7c2b50",
+      "assetReceiptSha256": "8c87a60dab01348e0e0dab304331ea0451ef9ced318d9d4c76bac26663aecf75",
+      "dbReadbackReceiptSha256": "142a662d5f6a6d3733e1c00fdbc0b4d37973b8e2a50a080a6ba8756d96182bbc",
+      "learningReceiptSha256": "4375062cc7d9046d77fac6b4a6d75c0a3828f3f70346553367a483255184f31b",
+      "scopeEnforcementReceiptSha256": "31c61ec43d8caac03e145a57f13f07079bfa31986125cdc9dbb2530017c0433b"
+    },
+    {
+      "scopeId": "ms-20261115-alg-01-r1",
+      "scopeSha256": "dbd71dae7b538fa217a49685f34b4efd0be02639cd923012978324953ad2c840",
+      "assetReceiptSha256": "3fa26213e736b764b0a693fd217f2fb5fcb26093ddcdf54e79e6364adede966e",
+      "dbReadbackReceiptSha256": "d76b79edcd0b62fdf1ef918550a0dfb564c1cffa02607292299243dc1f5124e0",
+      "learningReceiptSha256": "aa1c4b9cf0b7a84f5f91bbb84b13d35db252e68701b719328d320eb2c421ea5e",
+      "scopeEnforcementReceiptSha256": "a075e6bc18b554cb3012b02343d223d37eb149cf4535e2620eabef6e94e72ac6"
+    },
+    {
+      "scopeId": "ms-20261115-eqn-01-r1",
+      "scopeSha256": "eef09e681e9ce2bf009fbeba93b3629c1749cd3fd805dcdfe8e86a73bc4512eb",
+      "assetReceiptSha256": "3f5769e39a437b0d8a16a864d61331b79f67782cb4d3f509aace3c2ba7136335",
+      "dbReadbackReceiptSha256": "3eabd28f8af741cdff63ae3402bf46f9ec4d0bd2ef8d8b617488f219972f6d3d",
+      "learningReceiptSha256": "414c7bd066db37e7ab4b9e36368a027d9ab92a6413bc96ffee4ed9c70a055d28",
+      "scopeEnforcementReceiptSha256": "b7f2af81f6f74099de3e779e2803b1c69adb8cd9a73ca7aa962eb2e7e1d4e772"
+    },
+    {
+      "scopeId": "ms-20261115-prb-01-r1",
+      "scopeSha256": "d570b1da51eb442df240274ba356b272a303f3a51cc600fd2eb9ea147de6661c",
+      "assetReceiptSha256": "509fb8e80a1ab4c029b2b7c5e96cb551dbcfa5b5a8b6db0dcf5495e136eb4760",
+      "dbReadbackReceiptSha256": "c835328e0771262f0e5dd79ad9f14619230e60779dd34a49cf094522a4fc2039",
+      "learningReceiptSha256": "e941cb6da357a6b1046fd3bdc520da79177dcde2d3ee1a1a8ad48a3b9e1cdd38",
+      "scopeEnforcementReceiptSha256": "aeb1556dc5f00ecb9a14515fed710059f2b9d35d4950be7972cc2c1d023820ba"
+    },
+    {
+      "scopeId": "ms-20261115-grw-01-r1",
+      "scopeSha256": "e09a4a348f5301b084d9d29c632943e17dae27745aba61390267fccc9f3e5125",
+      "assetReceiptSha256": "2d938a0da6dd4881734ad897c862edd42b5d1058ce008c5de2c03e70620d7c6c",
+      "dbReadbackReceiptSha256": "1b83ed340beb4f6a7285e0cb4f34b0df12682808b9fdefe24507eeb2ca74684f",
+      "learningReceiptSha256": "15b8f3b25b6ca8e8ca7011a27a2e18a80ba3530fe280c75c44d96b9d7ea7ec95",
+      "scopeEnforcementReceiptSha256": "c6761247732aff937be5ea369f88bec246f461b0d50ebcb6ff3f48e66d885fa7"
+    },
+    {
+      "scopeId": "ms-20261115-ext-01-r1",
+      "scopeSha256": "4164362c055f57ed906965ff1e267b8ee1aa7090dc0bfcee65fe3904a11bac9f",
+      "assetReceiptSha256": "d3abde832bfe49e3322390221ce0c1581612ce57a3a3b3d414f149b2a6f3bd82",
+      "dbReadbackReceiptSha256": "8f09034ac41597269f259bfcc4093ac545aace664070376ee592982d5b4bcc0e",
+      "learningReceiptSha256": "ece7566fc497d0650e9b408c32badbaebf3f4e7d7b1d30f02b575ba319a202dd",
+      "scopeEnforcementReceiptSha256": "6044101e341a8312b1270823edc194c8b6ff234dd119784042830bdf009abe44"
+    },
+    {
+      "scopeId": "ms-20261115-sml-01-r1",
+      "scopeSha256": "d23830f3241af08426fcbca5b3a09be17bcb7a74e4b427e5009406b66baceb04",
+      "assetReceiptSha256": "05f6592c202ddc58ee092fa267fff278ea415384a7a31a425122aac6b7abbbc8",
+      "dbReadbackReceiptSha256": "420edcde7eee75c18807e6524f2421f4a7812ac4403be5fcbba3e76bc6ea60ec",
+      "learningReceiptSha256": "c1bc459846a16d1fb8a6a7079cb03305803494bab316b66bb74b59662c48c036",
+      "scopeEnforcementReceiptSha256": "233d3c66add3003ee4231f10de278b0f1d1196e6c2f97b722803747b296c516d"
+    },
+    {
+      "scopeId": "ms-20261115-afr-01-r1",
+      "scopeSha256": "8067515c983ad3d8b1f076dc2914096461efda745717d41f0839e3bc46dc1407",
+      "assetReceiptSha256": "12ceec765f55e7e1f85949743c0dfc26b79492c20fb552bb432c75432cc1075b",
+      "dbReadbackReceiptSha256": "d9701384069eb511d8045f42246304870b1149fbbdc5a28d6b5d4c2efe07c702",
+      "learningReceiptSha256": "a25f8aeca353820ab33d186b53d2445fcb72e1036be83f3c8eec07680d04027d",
+      "scopeEnforcementReceiptSha256": "39774926ebdcd08508973ebbf32a373773c8b4236e15a7489df4840d0ce82374"
+    },
+    {
+      "scopeId": "ms-20261115-fac-01-r1",
+      "scopeSha256": "d8a67bd9dbe0320e9a1969552978d6ca3c903e43d35cc7957b62b1d1d895d169",
+      "assetReceiptSha256": "d7d02e9c06abf3e9cdae49ec4bc4b784eae08855c5f6ac06d3ab67dd5635707c",
+      "dbReadbackReceiptSha256": "e311648ffcbfc2e277a14356413c383e0be19cab9e06b500ea9b2dd67211931c",
+      "learningReceiptSha256": "e4b67504c79b2990efdf4b79077d02d0dc2a03228435d4580709d5679dd59584",
+      "scopeEnforcementReceiptSha256": "b9dc4277dec66d1e210ea449bc4f1d4d297bb1e4647aae932695d6a54fbc6afe"
+    },
+    {
+      "scopeId": "ms-20261113-par-02-r1",
+      "scopeSha256": "1eea3028df288028e5e404df7e2db17998686a6a6191d1256eba6b7e2f4fda2d",
+      "assetReceiptSha256": "e114fd2856a304eaa64c755b375b9dcade9450b3a24d0ceb2824958d1b061c48",
+      "dbReadbackReceiptSha256": "3e27d1d37dad2a45ef16376ae3eea51bee14e9bc253df5a63d34a42a28b1ab01",
+      "learningReceiptSha256": "f064923fd8f9944e5b8cf153706ba831ac9f1f83fa2086bce15211ba46c12e10",
+      "scopeEnforcementReceiptSha256": "23111f32d366624dfa068b6033dda35e0ee24bbf91be3232aef738b10159891e"
+    },
+    {
+      "scopeId": "ms-20261113-par-03-r1",
+      "scopeSha256": "3464e824c4ed8fbcd1302b1824acab2eb05edb733b056c674f4cdb9b46abbe79",
+      "assetReceiptSha256": "b770f65f7540ed4b3c7d52423e7ae4039ad6a1a85801636bbcaae650783ae930",
+      "dbReadbackReceiptSha256": "68f65c671c031d67886afff13b8d2c45642312da27ab6ee41f471d77c45fe229",
+      "learningReceiptSha256": "7910ad6ed139b551e5df77807a4e4f3415db6e0a60b6bb12d92c654ef4bc5143",
+      "scopeEnforcementReceiptSha256": "850c0e2e2f2ae7f22ca5e7bace526a444d9274b9028af7808906eeeb07977d94"
+    },
+    {
+      "scopeId": "ms-20261113-par-04-r1",
+      "scopeSha256": "3278891af3a0da66979085868c037d373e3779448f13f7ed4c1ccdb38e1af75a",
+      "assetReceiptSha256": "3b2d2e7e1f64b50688a40170bd76298a538b5477aa2b03480d68d4e32a8d8a58",
+      "dbReadbackReceiptSha256": "447ae20232d4b7a700a4be4a1aabe217ca41ffb3ed55e667e7258fe6f09a627d",
+      "learningReceiptSha256": "6ff7bee2b504c4a4c9249f75c3dc5587218b7f5c84772eeab7b08d3ec5b7561e",
+      "scopeEnforcementReceiptSha256": "29b306259e4f782dd6bf64433f4ab1e6f2a95ac49e67b424f0878c09033148bb"
+    }
+  ]
+}

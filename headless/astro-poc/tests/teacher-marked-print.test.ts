@@ -223,11 +223,19 @@ describe('teacher catalog picker', () => {
     const basePdfOnly = catalog.grades.flatMap(grade => grade.topics
       .filter(topic => topic.publicationMode === 'pdf-only')
       .map(topic => ({ grade: grade.grade, topicId: topic.id, pdfIds: topic.levels.map(level => level.pdfId) })));
-    assert.deepEqual(basePdfOnly, [{ grade: 9, topicId: 47, pdfIds: [
+    assert.deepEqual(basePdfOnly, [
+    { grade: 8, topicId: 68, pdfIds: ['afaa5abcd06844629f6916203a910dce', '3910adaab83f48698e496177a24a3416', '4f585164428346d8972abf102c1f61a7'] },
+    { grade: 9, topicId: 47, pdfIds: [
       '04786c9d5ed04b30a67480e192b4706f',
       '54ed203698a141cda131ccf08f274a2c',
       '1bbc10333cf74e6fa251ed34575e6320',
-    ] }, { grade: 9, topicId: 48, pdfIds: ['eb99b4fb3e4d47f5b96e4f2dcfb10bf2', '703b2b73edb949e4a06efa8a02d7476e', 'ce41b853212749c09efc3d466a8e9ddf'] }], 'Only the exact RAT and MED base topics are PDF-only; every old exercise-ready topic retains teacher access');
+    ] }, { grade: 9, topicId: 48, pdfIds: ['eb99b4fb3e4d47f5b96e4f2dcfb10bf2', '703b2b73edb949e4a06efa8a02d7476e', 'ce41b853212749c09efc3d466a8e9ddf'] },
+    { grade: 9, topicId: 50, pdfIds: ['221e8bbea775437bbe4ab68b4ef870fd', 'c273ce799c22473ea9baaf67404e0803', 'c68c316690dd4ea485e0b24bdbd677fb'] },
+    { grade: 9, topicId: 51, pdfIds: ['69f6ddca043f42a4bfba28ebb4914b35', 'dc02a54d258e4e55990640ca1b850193', 'a808a520c70c499e94d0d1654b4c4692'] },
+    { grade: 9, topicId: 52, pdfIds: ['4b17f470a73c4aa481c37ed580475f64', '19fe882096f24455b25d132832048557', '956a9a595952409ab7c5bc92aba46515'] },
+    { grade: 9, topicId: 53, pdfIds: ['51d9de626e314f26b2f6652b63424aea', 'afdc0fde19884fb99efcee39eca6758a', '6a1f274d04494ab1ac5393811845c7ac'] },
+    { grade: 9, topicId: 49, pdfIds: ['53fb5318e99546a6a6b12c06e118ba59', 'f5d9e89adee948768e456876b8e087cf', '038d9928b68942ca91f3a17ac6cf92b3'] }],
+    'Only the exact RAT, MED, EQM, NEW4 and PCM53 base topics are PDF-only; every old exercise-ready topic retains teacher access');
     const pdfOnly = catalog.grades.flatMap(grade => grade.topics.flatMap(topic => [
       ...(topic.publicationMode === 'pdf-only' ? topic.levels : []),
       ...(topic.editions || []).filter(edition => edition.publicationMode === 'pdf-only').flatMap(edition => edition.levels),

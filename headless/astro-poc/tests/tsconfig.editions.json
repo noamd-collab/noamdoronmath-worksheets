@@ -14,7 +14,26 @@
     "sao-wpc-pdf-intake.test.ts",
     "extra15-pdf-integration.test.ts",
     "next12-pdf-intake.test.ts",
-    "next21-pdf-intake.test.ts"
+    "next21-pdf-intake.test.ts",
+    "batch01-pdf-intake.test.ts",
+    "batch02a-pdf-intake.test.ts",
+    "batch03-pdf-intake.test.ts",
+    "probability-nine-pdf-intake.test.ts",
+    "batch04-pdf-intake.test.ts",
+    "batch05-pdf-intake.test.ts",
+    "batch06-pdf-intake.test.ts",
+    "batch07-pdf-intake.test.ts",
+    "batch08-pdf-intake.test.ts",
+    "batch09-pdf-intake.test.ts",
+    "equations-numeric-denominator-landing.test.ts",
+    "new-topics-four-landing.test.ts",
+    "landing-corrections-20261118.test.ts",
+    "batch10-pdf-intake.test.ts",
+    "batch11-pdf-intake.test.ts",
+    "batch12-pdf-intake.test.ts",
+    "batch13-pdf-intake.test.ts",
+    "percentages-landing.test.ts",
+    "ramzi-activation-copy-20261119.test.ts"
   ],
   "exclude": []
 }

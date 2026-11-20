@@ -6,10 +6,11 @@ const {buildLearningCatalog}=require('../scripts/build-learning-catalog.cjs');
 const {fixture}=require('./fixtures/ramzi-activation-evidence.cjs');
 const root=path.resolve(__dirname,'..'),registry=JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/worksheet-editions.v1.json')));
 
-test('real activation audit reconstructs the generated snapshot and all979 learning rows',async()=>{
+test('real activation audit reconstructs the generated snapshot and all1021 learning rows',async()=>{
  const result=await runAudit({root,pdf:'off'});
  assert.deepEqual(result.findings.filter(f=>f.severity==='error'),[]);
- assert.equal(result.coverage.learningItems,979);
+ // 979 historical rows plus the 42 rows of the receipt-backed additional activation.
+ assert.equal(result.coverage.learningItems,1021);
  assert(result.inputs.some(input=>input.path==='headless/catalog/worksheet-ramzi-ready.v1.json'&&/^[0-9a-f]{64}$/.test(input.sha256)));
 });
 test('independent learning reconstruction uses the same validated evidence as the writer',()=>{

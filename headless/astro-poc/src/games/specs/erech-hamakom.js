@@ -63,8 +63,8 @@
     }
     var CAP = { '-1': '4.7 ÷ 10 = 0.47', '0': '4.7', '1': '4.7 × 10 = 47', '2': '4.7 × 10 × 10 = 470' };
 
-    var mul = ctx.button('כפול בעשר ' + m('×10'), function () { go(1); }, { target: 'mul' });
-    var div = ctx.button('חלק בעשר ' + m('÷10'), function () { go(-1); }, { ghost: true, target: 'div' });
+    var mul = ctx.button('כפול בעשר ' + m('×10'), function () { go(1); }, { target: 'mul', id: 'mulBtn' });
+    var div = ctx.button('חלק בעשר ' + m('÷10'), function () { go(-1); }, { ghost: true, target: 'div', id: 'divBtn' });
     ctx.register('mul', mul);
     ctx.register('div', div);
 
@@ -159,7 +159,7 @@
       return true;
     }
 
-    function render() {
+    var render = function () {
       var count = 0, S = 0, cc, k;
       for (cc = 0; cc < 10; cc++) {
         var full = colFull(cc);
@@ -190,7 +190,7 @@
       } else {
         ctx.note('עכשיו זה ' + m(dec(count)) + '. אפשר לחזור ל־' + m('0.35') + ' או להמשיך הלאה.', 'good');
       }
-    }
+    };
 
     function toggleCell(idx) {
       filled[idx] = !filled[idx];
@@ -214,6 +214,54 @@
         ctx.el('t' + cc).addEventListener('click', function () { toggleCol(cc); });
       }(c));
     }
+    function stepMarkup(key, label, minusLabel, plusLabel) {
+      return '<div class="unit" dir="ltr" style="direction:ltr"><span class="var">' + label + '</span>'
+        + '<button type="button" id="' + key + 'Minus" aria-label="' + minusLabel + '">−</button>'
+        + '<bdi class="var math" dir="ltr" data-v="' + key + '" style="min-width:30px" aria-live="polite">0</bdi>'
+        + '<button type="button" id="' + key + 'Plus" aria-label="' + plusLabel + '">+</button></div>';
+    }
+    var steppers = strip;
+    steppers.insertAdjacentHTML('beforeend', '<div class="stepper" dir="ltr" style="direction:ltr;align-self:stretch;margin-top:8px">'
+      + stepMarkup('strip', 'רצועות', 'הסר רצועה של עשיריות', 'הוסף רצועה של עשיריות')
+      + stepMarkup('sq', 'משבצות', 'הסר משבצת אחת', 'הוסף משבצת אחת') + '</div>');
+    function stepCount() {
+      var cc, k, S = 0, n = 0;
+      for (cc = 0; cc < 10; cc++) { if (colFull(cc)) S++; for (k = 0; k < 10; k++) if (filled[cc * 10 + k]) n++; }
+      return { S: S, L: n - S * 10 };
+    }
+    var baseRender = render;
+    render = function () {
+      baseRender();
+      var q = stepCount();
+      steppers.querySelector('[data-v="strip"]').textContent = String(q.S);
+      steppers.querySelector('[data-v="sq"]').textContent = String(q.L);
+      steppers.querySelector('#stripPlus').disabled = q.S >= 10;
+      steppers.querySelector('#stripMinus').disabled = q.S <= 0;
+      steppers.querySelector('#sqPlus').disabled = q.S >= 10 || (q.S * 10 + q.L) >= 99;
+      steppers.querySelector('#sqMinus').disabled = q.L <= 0;
+    };
+    function addStrip() {
+      for (var cc = 0; cc < 10; cc++) if (!colFull(cc)) { toggleCol(cc); return; }
+    }
+    function removeStrip() {
+      for (var cc = 9; cc >= 0; cc--) if (colFull(cc)) { toggleCol(cc); return; }
+    }
+    function addSquare() {
+      for (var cc = 0; cc < 10; cc++) {
+        if (colFull(cc)) continue;
+        for (var k = 0; k < 10; k++) if (!filled[cc * 10 + k]) { toggleCell(cc * 10 + k); return; }
+      }
+    }
+    function removeSquare() {
+      for (var cc = 9; cc >= 0; cc--) {
+        if (colFull(cc)) continue;
+        for (var k = 9; k >= 0; k--) if (filled[cc * 10 + k]) { toggleCell(cc * 10 + k); return; }
+      }
+    }
+    steppers.querySelector('#stripPlus').addEventListener('click', addStrip);
+    steppers.querySelector('#stripMinus').addEventListener('click', removeStrip);
+    steppers.querySelector('#sqPlus').addEventListener('click', addSquare);
+    steppers.querySelector('#sqMinus').addEventListener('click', removeSquare);
     ctx.button('נקה הכול', function () {
       for (var k = 0; k < 100; k++) filled[k] = false;
       ctx.sfx('click');
@@ -229,7 +277,8 @@
     function xOf(h) { return X0 + LEN * h / 100; }
     function lensX(h) { return 60 + (h - 40) * 28; }
 
-    var svg = '<polygon points="' + xOf(40) + ',138 ' + xOf(50) + ',138 340,196 60,196"'
+    var svg = '<style>#dA:focus-visible #dAr,#dB:focus-visible #dBr{stroke:' + INK + '}#dA:focus,#dB:focus{outline:none}</style>'
+      + '<polygon points="' + xOf(40) + ',138 ' + xOf(50) + ',138 340,196 60,196"'
       + ' fill="' + WARM_SOFT + '" stroke="' + WARM + '" stroke-width="1.4"/>'
       + '<rect x="' + xOf(40) + '" y="123" width="' + (xOf(50) - xOf(40)) + '" height="14" fill="' + WARM + '" opacity="0.45"/>'
       + '<line x1="' + X0 + '" y1="' + AY + '" x2="' + (X0 + LEN) + '" y2="' + AY + '" stroke="' + INK + '"'
@@ -260,17 +309,26 @@
       + '<circle cx="246" cy="52" r="12" fill="' + WARM + '"/>'
       + '<text x="246" y="57" font-size="14" text-anchor="middle" fill="#fff" font-family="' + FONT + '">ב</text>'
       + '<text id="rB" x="266" y="58" font-size="20" direction="ltr" fill="' + WARM + '" font-family="' + FONT + '">0.8</text>'
-      + '<g id="dB" style="cursor:ew-resize"><circle id="dBc" cx="' + xOf(vB) + '" cy="' + AY + '" r="13" fill="' + WARM + '" stroke="#fff" stroke-width="2"/>'
+      + '<g id="dB" tabindex="0" role="slider" aria-label="נקודה ב; הזז בעזרת מקשי החצים" style="cursor:ew-resize"><circle id="dBr" cx="' + xOf(vB) + '" cy="' + AY + '" r="29" fill="transparent" stroke="transparent" stroke-width="3"/><circle id="dBc" cx="' + xOf(vB) + '" cy="' + AY + '" r="13" fill="' + WARM + '" stroke="#fff" stroke-width="2"/>'
       + '<text id="dBt" x="' + xOf(vB) + '" y="' + (AY + 5) + '" font-size="14" text-anchor="middle" fill="#fff" font-family="' + FONT + '" pointer-events="none">ב</text></g>'
-      + '<g id="dA" style="cursor:ew-resize"><circle id="dAc" cx="' + xOf(vA) + '" cy="' + AY + '" r="13" fill="' + MAIN + '" stroke="#fff" stroke-width="2"/>'
+      + '<g id="dA" tabindex="0" role="slider" aria-label="נקודה א; הזז בעזרת מקשי החצים" style="cursor:ew-resize"><circle id="dAr" cx="' + xOf(vA) + '" cy="' + AY + '" r="29" fill="transparent" stroke="transparent" stroke-width="3"/><circle id="dAc" cx="' + xOf(vA) + '" cy="' + AY + '" r="13" fill="' + MAIN + '" stroke="#fff" stroke-width="2"/>'
       + '<text id="dAt" x="' + xOf(vA) + '" y="' + (AY + 5) + '" font-size="14" text-anchor="middle" fill="#fff" font-family="' + FONT + '" pointer-events="none">א</text></g>'
       + '<rect id="hit" x="20" y="92" width="362" height="72" fill="transparent" style="cursor:ew-resize"/>';
     ctx.draw(svg);
     ctx.register('dots', ctx.el('hit'));
 
+    var lineBox = null;
     function setDot(key, h) {
       var x = xOf(h);
       ctx.el('d' + key + 'c').setAttribute('cx', x);
+      ctx.el('d' + key + 'r').setAttribute('cx', x);
+      if (lineBox) {
+        lineBox.querySelector('[data-v="' + key + '"]').textContent = dec(h);
+        lineBox.querySelector('#' + key + 'M1').disabled = h <= 0;
+        lineBox.querySelector('#' + key + 'M10').disabled = h <= 0;
+        lineBox.querySelector('#' + key + 'P1').disabled = h >= 100;
+        lineBox.querySelector('#' + key + 'P10').disabled = h >= 100;
+      }
       ctx.el('d' + key + 't').setAttribute('x', x);
       ctx.el('r' + key).textContent = dec(h);
       var inLens = h >= 40 && h <= 50;
@@ -283,7 +341,7 @@
 
     function describe() {
       if (vA === vB) {
-        ctx.note('שתי הנקודות באותו מקום, אז המספרים שווים. גרור אחת מהן.');
+        ctx.note('שתי הנקודות באותו מקום, אז המספרים שווים. הזז אחת מהן.');
         return;
       }
       var big = vA > vB ? vA : vB, small = vA > vB ? vB : vA;
@@ -313,6 +371,11 @@
       },
       end: function () {
         active = null;
+        finish();
+      }
+    });
+
+    function finish() {
         if (done || vA !== 50 || vB !== 45) return;
         done = true;
         ctx.sfx('correct');
@@ -321,13 +384,45 @@
           + m('0.45') + ' הוא ארבע עשיריות וחמש מאיות. לכן ' + m('0.5') + ' גדול יותר.', 'good');
         ctx.say('ארבעים וחמש מאיות פחות מחמישים מאיות. אורך המספר לא קובע.', { mood: 'happy', attn: true });
         ctx.solved();
+    }
+
+    function nudge(key, d) {
+      var cur = key === 'A' ? vA : vB;
+      var h = Math.max(0, Math.min(100, cur + d));
+      if (h === cur) return;
+      if (key === 'A') vA = h; else vB = h;
+      ctx.sfx('tick');
+      setDot(key, h);
+      describe();
+      finish();
+    }
+    function unit(key, label) {
+      function b(id, t, aria) {
+        return '<button type="button" id="' + key + id + '" aria-label="' + aria + '" style="width:auto;min-width:48px;min-height:44px;padding:0 4px;font-size:13px"><bdi dir="ltr">' + t + '</bdi></button>';
       }
+      return '<div class="unit" dir="ltr" style="direction:ltr;gap:4px;padding:6px 6px"><span class="var">' + label + '</span>'
+        + b('M10', '−0.1', 'הקטן את ' + label + ' בעשירית') + b('M1', '−0.01', 'הקטן את ' + label + ' במאית')
+        + '<bdi class="var math" dir="ltr" data-v="' + key + '" style="min-width:34px" aria-live="polite">0</bdi>'
+        + b('P1', '+0.01', 'הגדל את ' + label + ' במאית') + b('P10', '+0.1', 'הגדל את ' + label + ' בעשירית') + '</div>';
+    }
+    lineBox = ctx.extra('<div class="stepper" dir="ltr" style="direction:ltr;align-self:stretch">' + unit('A', 'א') + unit('B', 'ב') + '</div>');
+    ['A', 'B'].forEach(function (key) {
+      lineBox.querySelector('#' + key + 'M10').addEventListener('click', function () { nudge(key, -10); });
+      lineBox.querySelector('#' + key + 'M1').addEventListener('click', function () { nudge(key, -1); });
+      lineBox.querySelector('#' + key + 'P1').addEventListener('click', function () { nudge(key, 1); });
+      lineBox.querySelector('#' + key + 'P10').addEventListener('click', function () { nudge(key, 10); });
+      ctx.el('d' + key).addEventListener('keydown', function (event) {
+        var d = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1, PageUp: 10, PageDown: -10, Home: -100, End: 100 }[event.key];
+        if (d === undefined) return;
+        event.preventDefault();
+        nudge(key, d);
+      });
     });
 
     setDot('A', vA);
     setDot('B', vB);
     ctx.caption(m('0.5 > 0.45'));
-    ctx.note('גרור את ' + 'א' + ' ל־' + m('0.5') + ' ואת ב ל־' + m('0.45') + '. הנקודות קופצות בקפיצות של מאית.');
+    ctx.note('גרור או לחץ על הכפתורים: ' + 'א' + ' ל־' + m('0.5') + ' ואת ב ל־' + m('0.45') + '. הנקודות קופצות בקפיצות של מאית.');
   }
 
   /** The place value board as a still picture for a question. */
@@ -443,14 +538,14 @@
     {
       mode: 'scene',
       tA: 'מי גדול יותר על הציר?',
-      sub: 'גרור את שתי הנקודות למקומן והשתמש בזכוכית המגדלת.',
+      sub: 'הזז את שתי הנקודות בגרירה, בכפתורים או בחיצים, והשתמש בזכוכית המגדלת.',
       tip: 'אצל מספרים עשרוניים לא מספיק להסתכל על האורך. בוא נשים אותם על ציר.',
-      cue: 'גרור את א אל 0.5 ואת ב אל 0.45',
+      cue: 'הבא את א אל 0.5 ואת ב אל 0.45',
       cueDone: 'מצוין. אפשר להמשיך ←',
       btn: 'המשך ←',
       aspect: [W, H],
       alt: 'ציר מספרים בין 0 ל־1 עם שתי נקודות נגררות וזכוכית מגדלת שמחלקת את הקטע בין 0.4 ל־0.5 למאיות',
-      nudge: { target: 'dots', text: 'גרור את אחת הנקודות לאורך הציר.' },
+      nudge: { target: 'dots', text: 'הזז את אחת הנקודות לאורך הציר, בגרירה או בכפתורים.' },
       setup: lineScene
     },
     {

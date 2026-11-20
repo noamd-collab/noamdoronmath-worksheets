@@ -1305,6 +1305,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/isometric-transformations-grade-8",
+      "title": "טרנספורמציות איזומטריות וצורות חופפות לכיתה ח׳",
+      "linkedTopic": "topic:8:68",
+      "linkedTitle": "טרנספורמציות איזומטריות וצורות חופפות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/counting-grade-1",
       "title": "מונים בלי לפספס לכיתה א׳",
       "linkedTopic": "topic:1:1",
@@ -2677,6 +2685,46 @@
       "title": "משולש ישר זווית — התיכון ליתר לכיתה ט׳",
       "linkedTopic": "topic:9:48",
       "linkedTitle": "משולש ישר־זווית — התיכון ליתר",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equations-numeric-denominator-grade-9",
+      "title": "משוואות עם מכנה מספרי לכיתה ט׳ מצומצמת",
+      "linkedTopic": "topic:9:49",
+      "linkedTitle": "משוואות עם מכנה מספרי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/parallel-lines-angles-grade-9",
+      "title": "ישרים מקבילים: זוויות מתאימות ומתחלפות לכיתה ט׳",
+      "linkedTopic": "topic:9:50",
+      "linkedTitle": "ישרים מקבילים — זוויות מתאימות ומתחלפות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/co-interior-angles-grade-9",
+      "title": "זוויות חד־צדדיות בין ישרים מקבילים לכיתה ט׳",
+      "linkedTopic": "topic:9:51",
+      "linkedTitle": "זוויות חד־צדדיות בין ישרים מקבילים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/math-literacy-tasks-grade-9",
+      "title": "משימות אוריינות במתמטיקה לכיתה ט׳",
+      "linkedTopic": "topic:9:52",
+      "linkedTitle": "משימות אוריינות — מודל מתמטי בהקשר מציאותי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/percentages-grade-9",
+      "title": "אחוזים: חלק מהשלם, הגדלה והקטנה לכיתה ט׳ מצומצמת",
+      "linkedTopic": "topic:9:53",
+      "linkedTitle": "אחוזים: חלק מהשלם, הגדלה והקטנה",
       "verified": true,
       "reason": "links to the topic, same grade, shared title word"
     },

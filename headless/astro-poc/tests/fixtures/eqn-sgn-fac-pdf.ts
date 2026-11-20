@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './eqn-sgn-fac-pdf-reviewed.json';
 import { beforeExtra15Catalog } from './extra15-pdf';
+import { beforeRamziActivationCopy } from './ramzi-activation-copy-20261119';
 
 export { reviewed as reviewedEqnSgnFac };
 export const reviewedEqnSgnFacIds = reviewed.additions.map(a => a.editionId);
@@ -27,6 +28,8 @@ export function beforeEqnSgnFacCatalog<T>(catalog: T): T {
 
 /** Keep historical landing fixtures; accept only exact new scope and copy fields. */
 export function beforeEqnSgnFacCopy<T>(slug: string, page: T): T {
+  // The landing copy after the additional Ramzi activation (19.11) is newer: unwind it first.
+  page = beforeRamziActivationCopy(slug, page);
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);

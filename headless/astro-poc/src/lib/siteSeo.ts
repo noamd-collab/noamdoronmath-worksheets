@@ -65,9 +65,20 @@ export function robotsContent(hostname: string, env: SiteIndexEnv = readSiteInde
 }
 
 /**
+ * Keep one URL out of the index while crawlers still follow its links
+ * (unknown catalog topic ids on /worksheets). Preview and non-indexable
+ * hosts stay noindex,nofollow, exactly as robotsContent decides for them.
+ */
+export function noindexFollowRobots(hostname: string, env: SiteIndexEnv = readSiteIndexEnv()): string {
+  return robotsContent(hostname, env) === 'index,follow' ? 'noindex,follow' : 'noindex,nofollow';
+}
+
+/**
  * robots.txt body. Sitemap always points at the production origin.
  * Wix reserves /sitemap.xml (generatedBy="WIX", preview host on preview).
  * The index this app serves, on www, is /sitemap-index.xml.
+ * On www, Wix serves its own /robots.txt instead of this body; see
+ * src/pages/robots.txt.ts and scripts/check-live-robots.mjs.
  */
 export function renderRobotsTxt(indexable: boolean): string {
   const lines = indexable
@@ -77,6 +88,7 @@ export function renderRobotsTxt(indexable: boolean): string {
     '',
     `Sitemap: ${SITE_CANONICAL_ORIGIN}/sitemap-index.xml`,
     `# ${SITE_CANONICAL_ORIGIN}/llms.txt`,
+    `# LLM index: ${SITE_CANONICAL_ORIGIN}/llms-full.txt`,
     '',
   );
   return lines.join('\n');

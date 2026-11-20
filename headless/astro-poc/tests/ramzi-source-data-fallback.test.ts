@@ -6,6 +6,7 @@ import { runInNewContext } from 'node:vm';
 import { it } from 'node:test';
 import { parseHTML } from 'linkedom';
 const root=new URL('../../../',import.meta.url),pub=new URL('../public/',import.meta.url),c:any={};c.window=c;
+const reviewedManifestPins=new Map<string,string>(JSON.parse(readFileSync(new URL('headless/catalog/ramzi-additional-trust.v1.json',root),'utf8')).scopes.flatMap((s:any)=>s.batch.units.map((u:any)=>[u.pdfId,u.manifestSha256])));
 for(const name of ['noam-native-visual.js','noam-authored-geometry.js','noam-authored-visual.js','noam-visual-data.js','noam-visual-plan.js','noam-source-data-visual.js'])runInNewContext(readFileSync(new URL(name,root),'utf8'),c);
 const options={studentMessage:'אפשר רמז 1?',helpKind:'hint',drawCurrentStep:true,answer:'רמז שלא מוסיף נתונים.'};
 function fixture(pdf:string,q:number,part:string){const manifest=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+pdf+'.json',pub),'utf8'));const bytes=readFileSync(new URL(manifest.nativeExportUrl.slice(1),pub));assert.equal(createHash('sha256').update(bytes).digest('hex'),manifest.nativeExportSha256);c.input=JSON.stringify({manifest,data:JSON.parse(bytes.toString())});runInNewContext('var fixtureData=JSON.parse(input)',c);const m=c.fixtureData.manifest,data=c.fixtureData.data,e=m.exercises.find((e:any)=>e.q===q&&e.part===part);return {manifest:m,data,exercise:e,context:c.NoamNativeVisual.authoredContext(data,e,'')};}
@@ -53,14 +54,35 @@ for(const name of ['worksheet-viewer-noam.html','headless/astro-poc/public/works
  const visual=await s.noamPrepareSourceVisual(f.exercise,options);assert.equal(visual.presentation,'typed-operations');assert.equal(visual.options.drawCurrentStep,true);assert.ok(s.noamRenderSourceVisual(JSON.parse(JSON.stringify(visual))));const saved=JSON.parse(JSON.stringify(visual));cache=null;assert.equal(s.noamRenderSourceVisual(saved),null);await Promise.resolve();assert.equal(refresh,1);assert.ok(s.noamRenderSourceVisual(saved));identity='another-source';assert.equal(s.noamRenderSourceVisual(saved),null);identity='sha-exact';saved.options.drawCurrentStep=false;assert.equal(s.noamRenderSourceVisual(saved),null);
  const t=worked('ג'),table=s.noamSourcePresentation({data:t.data,svgText:''},t.exercise,options);assert.equal(table.kind,'source-context');assert.match(table.figure.textContent,/טבלת השלבים המקורית/);const row=rowTable('ג'),rowView=s.noamSourcePresentation({data:row.data,svgText:''},row.exercise,options);assert.equal(rowView.kind,'source-context');assert.match(rowView.figure.textContent,/השורה הראשונה נשמרה כדוגמה המקורית/);assert.equal(s.noamSourcePresentation({data:f.data,svgText:''},f.exercise,{...options,drawCurrentStep:false}),null);s.NoamSourceDataVisual=undefined;assert.equal(s.noamSourcePresentation({data:f.data,svgText:''},f.exercise,options),null);
 });
-it('whole corpus preserves412 legacy manifests and independently bounds12 evidence-gated measured additions',()=>{
+it('whole corpus preserves412 legacy,12 evidence-gated measured and42 explicitly disabled source additions',()=>{
  const phase=readFirst567Activation();
  const measuredPaths=new Set(['G7-T86','G8-T84','G8-T87','G9-T85'].flatMap(prefix=>['a','b','c'].map(level=>`/noam-ai/native/${prefix}/${level}/noam-ai.json`)));
- const legacy={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},measured={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},seen:string[]=[];
+ // An explicit scoped inventory, never a blanket exclusion of inactive manifests.
+ const passiveEditions=[['G7-T61','ms-20261115-grw-01-r1'],['G7-T87','ms-20261115-alg-01-r1'],
+  ['G7-T88','ms-20261115-frq-01-r1'],['G7-T89','ms-20261115-prb-01-r1'],['G7-T90','ms-20261115-eqn-01-r1'],
+  ['G7-T91','ms-20261115-sgn-01-r1'],['G9-T70','ms-20261115-ext-01-r1'],['G9-T71','ms-20261115-sml-01-r1'],
+  ['G9-T72','ms-20261115-afr-01-r1'],['G9-T87','ms-20261115-fac-01-r1'],['G9-T88','ms-20261113-par-02-r1'],
+  ['G9-T89','ms-20261113-par-03-r1'],['G9-T90','ms-20261113-par-04-r1'],['G9-T93','ms-20261115-rat-01-r1']];
+ const passivePaths=new Map(passiveEditions.flatMap(([prefix,editionId])=>['a','b','c'].map(level=>
+  [`/noam-ai/native/${prefix}/${level}/noam-ai.json`,{prefix,editionId}] as const)));
+ const legacy={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},measured={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},passive={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},seen:string[]=[],passiveSeen:string[]=[],passivePins:string[]=[];
  for(const file of readdirSync(new URL('noam-ai/manifests/',pub))){
-   const m=JSON.parse(readFileSync(new URL('noam-ai/manifests/'+file,pub),'utf8'));if(!m.nativeExportUrl||m.questionPagesIdenticalTo)continue;
-   const isMeasured=measuredPaths.has(m.nativeExportUrl),group=isMeasured?measured:legacy;
+   const manifestBytes=readFileSync(new URL('noam-ai/manifests/'+file,pub));
+   const m=JSON.parse(manifestBytes.toString());if(!m.nativeExportUrl||m.questionPagesIdenticalTo)continue;
+   const isMeasured=measuredPaths.has(m.nativeExportUrl),binding=passivePaths.get(m.nativeExportUrl),group=isMeasured?measured:binding?passive:legacy;
    if(isMeasured){seen.push(m.nativeExportUrl);assertFirst567Phase(m,readFileSync(new URL('noam-ai/manifests/'+file,pub)),phase);assert.equal(m.geometryContract,'measured-v1');}
+   if(binding){
+    // The receipt-backed activation publishes each staged source with exactly three
+    // flags flipped. Retained PAR sources set nativeExportPublished false; newly
+    // measured sources omitted it. The staged pins below remain the #499 values.
+    assert.equal(m.publishable,true);assert.equal(m.reviewRequired,false);assert.equal(m.nativeExportPublished,true);
+    assert.equal(createHash('sha256').update(manifestBytes).digest('hex'),reviewedManifestPins.get(m.pdfHash),'trusted final manifest bytes');
+    const staged={...m,publishable:false,reviewRequired:true};
+    if(['G9-T88','G9-T89','G9-T90'].includes(binding.prefix))staged.nativeExportPublished=false;else delete staged.nativeExportPublished;
+    assert.equal(m.geometryContract,'measured-v1');assert.equal(m.prefix,binding.prefix);assert.equal(m.editionId,binding.editionId);
+    assert.equal(file,m.pdfHash+'.json');passiveSeen.push(m.nativeExportUrl);
+    passivePins.push(file+':'+createHash('sha256').update(JSON.stringify(staged,null,2)+'\n').digest('hex')+':'+m.nativeExportSha256);
+   }
    group.manifests++;const bytes=readFileSync(new URL(m.nativeExportUrl.slice(1),pub));assert.equal(createHash('sha256').update(bytes).digest('hex'),m.nativeExportSha256,file);
    c.raw=bytes.toString();const d=runInNewContext('JSON.parse(raw)',c);
    // Exercise the source-only resolver for every manifest, including staged assets;
@@ -77,5 +99,8 @@ it('whole corpus preserves412 legacy manifests and independently bounds12 eviden
  const tableParts=[['G7-T86-A-Q08','אבגד'],['G7-T86-B-Q05','אבגדהו'],['G7-T86-E-Q09','אבגדה'],['G8-T84-A-Q10','אבגד'],['G8-T84-B-Q02','אבגד'],['G8-T84-E-Q02','אבגד'],['G8-T84-E-Q06','אבגדהו'],['G9-T85-E-Q06','אבגד']];
  assert.deepEqual(measured.affected.sort(),tableParts.flatMap(([question,parts])=>[...parts].map(part=>question+part)).sort());
  assert.equal(legacy.manifests+measured.manifests,424);assert.equal(legacy.parts+measured.parts,31539);
+ assert.deepEqual(passiveSeen.sort(),[...passivePaths.keys()].sort());assert.equal(passive.manifests,42);assert.equal(passive.parts,1066);
+ assert.equal(createHash('sha256').update(passivePins.sort().join('\n')).digest('hex'),'7d754c932071385aae894029f5c9a7239821e03bb4bbe5f5e4dcb6f05d71bcf8');
+ assert.equal(legacy.manifests+measured.manifests+passive.manifests,466);assert.equal(legacy.parts+measured.parts+passive.parts,32605);
  assert.equal(readFileSync(new URL('noam-source-data-visual.js',root),'utf8'),readFileSync(new URL('noam-source-data-visual.js',pub),'utf8'));
 });

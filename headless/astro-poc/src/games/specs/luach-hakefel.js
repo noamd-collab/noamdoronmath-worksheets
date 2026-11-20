@@ -155,13 +155,16 @@
     ctx.draw(
       '<g id="cells">' + gridCells(rows, cols, cs, o.x, o.y, function () { return SOFT; }) + '</g>'
       + labels(rows, cols, cs, o.x, o.y)
-      + '<g id="cut" style="cursor:ew-resize">'
+      + '<style>#cut:focus-visible{outline:3px solid ' + MAIN + ';outline-offset:2px}</style>'
+      + '<g id="cut" style="cursor:ew-resize" tabindex="0" role="slider"'
+      + ' aria-label="קו החיתוך. החצים ימינה ושמאלה מזיזים אותו עמודה אחת"'
+      + ' aria-valuemin="1" aria-valuemax="' + (cols - 1) + '" aria-valuenow="1">'
       + '<line id="cutLine" x1="0" y1="' + splitY0 + '" x2="0" y2="' + splitY1 + '"'
       + ' stroke="' + INK + '" stroke-width="3" stroke-linecap="round"/>'
       + '<circle id="cutKnob" cx="0" cy="' + (o.y + rows * cs + 16) + '" r="11" fill="' + INK + '"/>'
       + '<text id="cutArrow" x="0" y="' + (o.y + rows * cs + 21) + '" font-size="13" fill="#fff"'
       + ' text-anchor="middle" font-family="Secular One, sans-serif">↔</text>'
-      + '<rect id="cutGrab" x="0" y="' + (o.y - 10) + '" width="40"'
+      + '<rect id="cutGrab" x="0" y="' + (o.y - 10) + '" width="60"'
       + ' height="' + (rows * cs + 40) + '" fill="transparent"/></g>'
     );
     var cells = [].slice.call(ctx.el('cells').children);
@@ -174,7 +177,10 @@
       ctx.el('cutLine').setAttribute('x2', splitX);
       ctx.el('cutKnob').setAttribute('cx', splitX);
       ctx.el('cutArrow').setAttribute('x', splitX);
-      ctx.el('cutGrab').setAttribute('x', splitX - 20);
+      ctx.el('cutGrab').setAttribute('x', splitX - 30);
+      ctx.el('cut').setAttribute('aria-valuenow', String(k));
+      if (lessBtn) lessBtn.disabled = k <= 1;
+      if (moreBtn) moreBtn.disabled = k >= cols - 1;
       ctx.caption(m('7 × 8 = 7 × ' + k + ' + 7 × ' + (cols - k)));
       ctx.note('החלק הכחול הוא ' + m('7 × ' + k + ' = ' + (7 * k))
         + ', החלק הכתום הוא ' + m('7 × ' + (cols - k) + ' = ' + (7 * (cols - k))) + '.',
@@ -186,6 +192,23 @@
         if (nk !== k) { k = nk; ctx.sfx('tick'); render(); }
       },
       end: function () { check(); }
+    });
+    function nudgeCut(d) {
+      var nk = Math.max(1, Math.min(cols - 1, k + d));
+      if (nk !== k) { k = nk; ctx.sfx('tick'); render(); }
+      check();
+    }
+    var moreBtn = ctx.button('עמודה ימינה ▶', function () { nudgeCut(1); }, { target: 'cutRight', id: 'cutRight' });
+    var lessBtn = ctx.button('◀ עמודה שמאלה', function () { nudgeCut(-1); }, { target: 'cutLeft', id: 'cutLeft' });
+    ctx.el('cut').addEventListener('keydown', function (e) {
+      var d = 0;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') d = 1;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') d = -1;
+      else if (e.key === 'Home') d = -cols;
+      else if (e.key === 'End') d = cols;
+      else return;
+      e.preventDefault();
+      nudgeCut(d);
     });
     function check() {
       if (done || k !== 5) return;
@@ -291,14 +314,14 @@
     {
       mode: 'scene',
       tA: 'חותכים את המלבן',
-      sub: 'גרור את הקו השחור וחתוך את המלבן לשני חלקים קלים.',
+      sub: 'הזז את הקו השחור בגרירה, בכפתורים או בחיצים, וחתוך את המלבן לשני חלקים קלים.',
       tip: 'עכשיו הקטע היפה. אפשר לחתוך את המלבן לשני חלקים נוחים.',
-      cue: 'גרור את הקו עד שבחלק הכחול יהיו 5 עמודות',
+      cue: 'הזז את הקו עד שבחלק הכחול יהיו 5 עמודות',
       cueDone: 'מצוין. אפשר להמשיך ←',
       btn: 'המשך ←',
       aspect: [W, H],
-      alt: 'מלבן של שבע שורות ושמונה עמודות עם קו חיתוך נגרר',
-      nudge: { target: 'scene', text: 'גרור את העיגול השחור ימינה או שמאלה.' },
+      alt: 'מלבן של שבע שורות ושמונה עמודות עם קו חיתוך שזז בגרירה, בכפתורים או בחיצים',
+      nudge: { target: 'scene', text: 'הזז את העיגול השחור ימינה או שמאלה, בגרירה או בכפתורים.' },
       setup: cutScene
     },
     {

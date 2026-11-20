@@ -12,6 +12,9 @@ import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/t
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeEqnSgnFacCatalog, beforeEqnSgnFacCopy, reviewedEqnSgnFac as reviewed, reviewedEqnSgnFacIds as ids } from './fixtures/eqn-sgn-fac-pdf';
+import { beforeBatch09Copy, reviewedBatch09 } from './fixtures/batch09-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -22,8 +25,8 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = { ...registry, editions: beforeExtra15Registry(registry).editions.filter((e: any) => !ids.includes(e.editionId)) };
-const catalog = loadCatalog();
-const rawCatalog = read('headless/astro-poc/src/data/catalog.v1.json');
+const catalog = beforeReviewedRamziActivation(loadCatalog());
+const rawCatalog = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
 const previous = beforeEqnSgnFacCatalog(rawCatalog);
 const receipt = read('docs/eqn-sgn-fac-pdf-first-20261115.json');
 
@@ -49,7 +52,8 @@ test('nine exact additional PDFs preserve every preceding catalog and registry b
     assert.equal(edition.publicationMode, 'pdf-only'); assert.equal(edition.routing.usesViewer, false);
     assert.equal(edition.routing.aiHintShown, false);
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId]);
+    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId,
+      ...reviewedBatch09.additions.filter(x => x.grade === a.grade && x.topicId === a.topicId).map(x => x.editionId)]);
     assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`)[0]);
     assert.deepEqual(groups[1].levels.map(l => l.href), a.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
     for (const level of edition.levels) {
@@ -84,11 +88,11 @@ test('landing additions describe actual scope, retain all old CTAs and keep FAQ 
   for (const a of reviewed.additions) {
     const raw = read(`headless/astro-poc/src/data/topic-pages/${a.slug}.json`);
     const page = loadTopicPage(a.slug);
-    const restored = beforeEqnSgnFacCopy(a.slug, raw);
+    const restored = beforeEqnSgnFacCopy(a.slug, beforeBatch09Copy(a.slug, raw));
     assert.equal(raw.updatedLine, 'נועם דורון מתמטיקה · עודכן 15.11.2026');
     assert.deepEqual(raw.catalogCta, restored.catalogCta); assert.deepEqual(raw.catalogCtas, restored.catalogCtas);
     assert.equal(raw.h1, restored.h1); assert.equal(raw.title, restored.title);
-    const added = raw.sections.at(-1);
+    const added = (beforeBatch09Copy(a.slug, raw) as any).sections.at(-1);
     const flow = synthesizeBodyFlow(page);
     const plain = (text: string | undefined) => text?.replace(/[\u2066-\u2069]/g, '');
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text) === added.heading).length, 1);
@@ -106,8 +110,11 @@ test('landing additions describe actual scope, retain all old CTAs and keep FAQ 
   assert.deepEqual(equations.catalogCtas.map(c => c.catalogTopicId), [23, 34, 32]);
   assert.match(equations.sections.at(-1)!.blocks[0].text!, /משמעות הפתרון/);
   const factoring = loadTopicPage('factoring-grade-9');
-  assert.match(factoring.intro, /בדפים שנפתחים עם רמזי אפשר לקבל רמזים/);
-  assert.match(factoring.intro.replace(/[\u2066-\u2069]/g, ''), /קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה/);
+  // The 19.11 copy after the additional Ramzi activation names the series that now opens with Ramzi.
+  const factoringBefore = beforeRamziActivationCopy('factoring-grade-9', factoring) as typeof factoring;
+  assert.match(factoringBefore.intro, /בדפים שנפתחים עם רמזי אפשר לקבל רמזים/);
+  assert.match(factoringBefore.intro.replace(/[\u2066-\u2069]/g, ''), /קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה/);
+  assert.match(factoring.intro.replace(/[\u2066-\u2069]/g, ''), /מהדורת ה־PDF הנוספת נפתחים באתר עם רמזי/);
   const graph = factoring.jsonLd['@graph'] as Array<{ description: string }>;
   assert.equal(graph[0].description, factoring.description);
   assert.equal(graph[1].description, factoring.description);
