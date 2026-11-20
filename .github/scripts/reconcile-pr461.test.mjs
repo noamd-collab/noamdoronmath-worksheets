@@ -312,7 +312,7 @@ test('historical incident workflow used the SAME publish lock, before unchanged 
   assert.match(ci, /node --test .*production-release\.test\.mjs .*reconcile-production\.test\.mjs .*reconcile-pr461\.test\.mjs/);
 });
 
-const ACTIVE_RELEASE_TARGET = 'e0a39c18b8d86593ff8048da5a551784f8afb8c4';
+const ACTIVE_RELEASE_TARGET = '958293f650ad9098cd3f688d0b30333d40dace3f';
 const COMPLETED_INCIDENT_COMMENTS = "# Merge only after PR #463 and Noam's approval of this pin and its one-time\n# PR #461 metadata reconciliation. The reconciliation runs under the publish lock.\n";
 const COMPLETED_INCIDENT_HOOK = "      - name: Reconcile the verified PR461 local publication under the release lock\n        # PR461 / target PR463 only. Remove this step in the separately approved\n        # controller PR for a future target after reconciliation; keep the guard/lock.\n        env:\n          GITHUB_TOKEN: ${{ github.token }}\n          SITE_DIR: ${{ github.workspace }}/site\n        run: node controller/.github/scripts/reconcile-pr461.mjs --write\n\n";
 
