@@ -161,6 +161,16 @@ body.nl-page .exact-nav-drop a{
 body.nl-page .exact-nav-drop a:hover{
   background:rgba(42,124,122,.12);
 }
+/* Same per-letter games label as SiteHeader / exact-site.css (PR 537). */
+body.nl-page .exact-nav-tools__btn .exact-nav-rainbow{font-size:1.2em;font-weight:800;letter-spacing:.01em;}
+body.nl-page .exact-nav-rainbow>span:nth-child(4n+1){color:#c92f55;}
+body.nl-page .exact-nav-rainbow>span:nth-child(4n+2){color:#b85513;}
+body.nl-page .exact-nav-rainbow>span:nth-child(4n+3){color:#3f7f2a;}
+body.nl-page .exact-nav-rainbow>span:nth-child(4n+4){color:#2a60a7;}
+body.nl-page .exact-nav-drop a.exact-nav-game{font-size:17px;font-weight:700;}
+body.nl-page .exact-nav-drop a.exact-nav-game--pink{color:#c92f55;}
+body.nl-page .exact-nav-drop a.exact-nav-game--orange{color:#b85513;}
+body.nl-page .exact-nav-drop a.exact-nav-game--green{color:#3f7f2a;}
 @media(hover:hover){
   body.nl-page .exact-nav-tools:hover .exact-nav-drop{opacity:1;visibility:visible;pointer-events:auto;}
 }
@@ -234,8 +244,9 @@ body.nl-page .exact-nav-search-mobile{display:none!important;}
 @media (min-width: 900px) and (max-width: 1023.98px) {
   body.nl-page .nl-header__row {gap:6px!important;padding-inline:6px!important;}
   body.nl-page .nl-primary-nav {font-size:12px!important;}
+  /* 1.2em rainbow label needs 1px less padding here so למורים does not cover הלמידה שלי. */
   body.nl-page .nl-primary-nav > a,
-  body.nl-page .exact-nav-tools__btn {padding:6px 5px!important;}
+  body.nl-page .exact-nav-tools__btn {padding:6px 4px!important;}
   body.nl-page .exact-header__learn {padding:8px 8px!important;font-size:12px!important;}
 }
 @media (min-width: 1100px) and (max-width: 1279px) {
