@@ -11536,7 +11536,68 @@
               "pb": "54deb34c469f4ece9a2fa5093a877c5e",
               "pc": "73d8fa5657d64c55be52820cda5c0841"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261119-prp-01-r1",
+              "label": "אחוזים — ייצוגים: שבר, מספר עשרוני ואחוז; אחוז מכמות והשלם · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "1e28316f67af410d998cc45597fa7db7",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g8-t6-a-e-ms-20261119-prp-01-r1",
+                  "nativeExportSha256": "703059e8cf1e9592cf593ae6e4716bc89d1412f8592a075c8db837b2a7b60029",
+                  "pdfSha256": "d889ecfe852c4c2a7e3be1a0809b6093cc0efdb15e49f8bca718efbda7a2fdaa",
+                  "revision": 1,
+                  "sourceSha256": "9f4db05cec8121c0c97c55eb43449e8afd97e1ea7fea19eeb547c274df21d79b",
+                  "worksheetId": "ms-g8-prp-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "cc8bd95bc004435b88c227280b25fac1",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g8-t6-b-e-ms-20261119-prp-01-r1",
+                  "nativeExportSha256": "6206b67a4eb499fa41cfc728f3223a2b7ba91732f7441a9d5a6e64545feb8c6c",
+                  "pdfSha256": "b8ef3b7e7344c26acaa5221168d53f1482579364b47db4c69a31d0e11c171925",
+                  "revision": 1,
+                  "sourceSha256": "ef4db4fa54b1dbee9e8548462068a530f89703d8bbc0d414c09033afe4f8955f",
+                  "worksheetId": "ms-g8-prp-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "dbc84ab5251c4b9f8e75493f664f7e9d",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g8-t6-c-e-ms-20261119-prp-01-r1",
+                  "nativeExportSha256": "711f9c76a4292a244a1a09e487509263fe5dc5a78248b076844d934a491fbc2b",
+                  "pdfSha256": "6de5da34c4e57d9426c6afa9cc147e25fd1ab371094969512542202c541dbebd",
+                  "revision": 1,
+                  "sourceSha256": "1110d1eef45ce83209fce29d2b34800e8eaec54695d1f4f2c4c0e31def9b88f4",
+                  "worksheetId": "ms-g8-prp-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G8-T120",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "1e28316f67af410d998cc45597fa7db7",
+                  "pb": "cc8bd95bc004435b88c227280b25fac1",
+                  "pc": "dbc84ab5251c4b9f8e75493f664f7e9d"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 7,
@@ -11675,7 +11736,68 @@
               "pb": "e5bdc917e16441df9503097d9be73742",
               "pc": "ccbe1eb738b14d3b93a272282090a21e"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261119-pch-01-r1",
+              "label": "שינוי באחוזים: עלייה וירידה, אחוז השינוי והערך ההתחלתי · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "8f43dd5c101f426d9ed4feb998af1b0c",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g8-t8-a-e-ms-20261119-pch-01-r1",
+                  "nativeExportSha256": "c60edb8d42fb17b00347c09747a02a3c7a0855aaf358eddaeadef06683dd5cc9",
+                  "pdfSha256": "d76b0bd34b91ce58c888ad9157bda979099de9e58248733ee340c86b54f21e17",
+                  "revision": 1,
+                  "sourceSha256": "b7f2e81f9065f73200b16c9c828ab22fcf0eb2981d932454af50815b42185802",
+                  "worksheetId": "ms-g8-pch-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "d1de7b88fec54888a6a9ed437cde2e04",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g8-t8-b-e-ms-20261119-pch-01-r1",
+                  "nativeExportSha256": "b3553f9f6476456c8afcf122421166cfa18d02c8f781630d82a808c77c2da28e",
+                  "pdfSha256": "94292de5894eceac6e182bdb7597a7dbbce7f4d248f2d3b74a36009566842bb7",
+                  "revision": 1,
+                  "sourceSha256": "5bd2f7b5ea00136d3a3d8328d99e9510dc66df0856d9e397cc8d1f2f32060613",
+                  "worksheetId": "ms-g8-pch-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "7151a0cbf8324f148aca828bd7a39d72",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g8-t8-c-e-ms-20261119-pch-01-r1",
+                  "nativeExportSha256": "e0231c927e42a2edbc8d5da3ea595f5a160f8373dbbdbcdc5dbbea7393a20c47",
+                  "pdfSha256": "782eb8e7fd73fdf273c270ecc62e9c04fdf87b50749b7d40fd3656de7444c9b7",
+                  "revision": 1,
+                  "sourceSha256": "8e7b33da589a2863ce3c035f131067a7b615ee00f29aaf59cc4394ee0dc61ba8",
+                  "worksheetId": "ms-g8-pch-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G8-T121",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "8f43dd5c101f426d9ed4feb998af1b0c",
+                  "pb": "d1de7b88fec54888a6a9ed437cde2e04",
+                  "pc": "7151a0cbf8324f148aca828bd7a39d72"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 9,
@@ -11714,7 +11836,68 @@
               "pb": "09a92f73a25a4602b2d8d77a2cae6f13",
               "pc": "4087b7a14e684835973ca6de0c0d0e31"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261119-spc-01-r1",
+              "label": "שינויים עוקבים באחוזים: המכפיל הכולל, אחוז השינוי הכולל וחזרה לערך שבהתחלה · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "4c8e26d4b4ba4e1e8b0130b463949cb9",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g8-t9-a-e-ms-20261119-spc-01-r1",
+                  "nativeExportSha256": "89738423ba056d713318099819692028ae51e7208b245b295e639e2939055402",
+                  "pdfSha256": "c5c9cbcd8a55f892477557ec4138a608720de6773181fa07b10afeb2a0e59614",
+                  "revision": 1,
+                  "sourceSha256": "0c5c50920bb31b25d0098957c193ad1123f045b3e4e7a2ae2d6e0dedacfce727",
+                  "worksheetId": "ms-g8-spc-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "258b984315d646b8a8b124148d0bb339",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g8-t9-b-e-ms-20261119-spc-01-r1",
+                  "nativeExportSha256": "fbde251fda4131eaa59164a78d099a0eca6935bd3f599efab7ab7df746f05cde",
+                  "pdfSha256": "8a5ef195c7a88bbd7e65d0c2301f32b85030c81683984af9bcd3296d92d66fd8",
+                  "revision": 1,
+                  "sourceSha256": "a5b973d9180f24ec8615ae1015c285f681b6f7674e1d462be33a2d992718266d",
+                  "worksheetId": "ms-g8-spc-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "f3bbc77cd34542949eb6dedea60dc41e",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g8-t9-c-e-ms-20261119-spc-01-r1",
+                  "nativeExportSha256": "f16480a8daa85f778c94fc7d229df16c35dddad805a5301a489a635450498940",
+                  "pdfSha256": "7c76f8617129f115668979367b1e744947433226f2f457a25206426eed2800d9",
+                  "revision": 1,
+                  "sourceSha256": "54c9f3c12352bf0cde3e13126f96490c38855ef9e67021a118942b5c70197184",
+                  "worksheetId": "ms-g8-spc-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G8-T122",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "4c8e26d4b4ba4e1e8b0130b463949cb9",
+                  "pb": "258b984315d646b8a8b124148d0bb339",
+                  "pc": "f3bbc77cd34542949eb6dedea60dc41e"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 10,
@@ -11753,7 +11936,68 @@
               "pb": "60f35183946a43b4b718b6863df0eb9a",
               "pc": "f498c239da564057983ee1c8e67dc316"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261119-g8-sqr-01-r1",
+              "label": "שורש ריבועי: משמעות השורש, אומדן, פעולות בסיסיות ומספרים שריבועם נתון · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "5d5734b7529b4e2189919c59e6db7fa3",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g8-t10-a-e-ms-20261119-g8-sqr-01-r1",
+                  "nativeExportSha256": "a12245ae30b41840ddd23cd999b551a12ad742ac1dbaaa953fbba4e408f4d579",
+                  "pdfSha256": "996fd42594cca6b0d541a649fd93cb46828438c7c8ce4c369886e288dc1dabae",
+                  "revision": 1,
+                  "sourceSha256": "fd4fe5a75c4e5bc45aded3bc6e9ec09e62ba2fd95e4ce04d339d8f6c8ba8e06b",
+                  "worksheetId": "ms-g8-sqr-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "471888d922744ae28c27430977f56ca3",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g8-t10-b-e-ms-20261119-g8-sqr-01-r1",
+                  "nativeExportSha256": "fee384ddb4d6f05a6982ef0333ab066df310f0e9ac39b786079d863677daf7f5",
+                  "pdfSha256": "a5fadf4673ceadc9da68750b8a0baa87a0bc4cd40c4214e8ae36a6032c4aa860",
+                  "revision": 1,
+                  "sourceSha256": "45d8598e70a6bc9c1b144c1a793cc8bc18c504be86d46324ff2b6a69d7801f70",
+                  "worksheetId": "ms-g8-sqr-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "3ea6f3dc9fc341f68c73a66d15998195",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g8-t10-c-e-ms-20261119-g8-sqr-01-r1",
+                  "nativeExportSha256": "7d4426787a96fab486deb30af82cf6adedbeb43576786e55ac86944a8d9846a9",
+                  "pdfSha256": "6e6af201bc43eefbdf2c9d7f74465adeff0142eccef753598be2b60ae5da8fca",
+                  "revision": 1,
+                  "sourceSha256": "1c7e2f6fca2fe3b24e6153c2e21953b74f6f83864aef7ca41490e5b712b34050",
+                  "worksheetId": "ms-g8-sqr-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G8-T123",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "5d5734b7529b4e2189919c59e6db7fa3",
+                  "pb": "471888d922744ae28c27430977f56ca3",
+                  "pc": "3ea6f3dc9fc341f68c73a66d15998195"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 11,
@@ -12514,7 +12758,68 @@
               "pb": "baa03272b80f4ec0b428156dd41d337d",
               "pc": "45e83202136044d3871b45eefca0a8fb"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261119-fcn-01-r1",
+              "label": "מושג הפונקציה: משתנה תלוי ובלתי תלוי והתאמה חד־ערכית · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "9d5f7c0bb9304c058786dfd028703bdc",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g8-t19-a-e-ms-20261119-fcn-01-r1",
+                  "nativeExportSha256": "8a9f5646ecab68f93a0406985727cbd339be7cac829bde09e14699147069083f",
+                  "pdfSha256": "206112c00ccbc5a4065d270027dec26da7f954faefba0dfea07da13ea47ea055",
+                  "revision": 1,
+                  "sourceSha256": "25d145daf64a8bf58727391472c22cac63599a804506bb459d85404b62a8bbf4",
+                  "worksheetId": "ms-g8-fcn-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "1f9ada791ad84cac9647921e03314f56",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g8-t19-b-e-ms-20261119-fcn-01-r1",
+                  "nativeExportSha256": "a3a31234faffc963fefa4f5a32e92d94a0fa1cc8110bb24c535bc29719b179c7",
+                  "pdfSha256": "b7194e69392e26b5cbbb1ad98f92c65f41f64fb2ee51a2cfe30ee9d55df72049",
+                  "revision": 1,
+                  "sourceSha256": "66c5025c93e5a7db39f080757b45ccb9d23739dcaedf90392ca604d1a4b80ee9",
+                  "worksheetId": "ms-g8-fcn-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "1d08e6ab67f84475b75b165d6b001098",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g8-t19-c-e-ms-20261119-fcn-01-r1",
+                  "nativeExportSha256": "6caca40ba0e793a94ab52025de076a6a8e786293bd679c5ae820b9d6444f96c8",
+                  "pdfSha256": "303a6f0fe4779cf508ab2201898f2a20cee737d2a2af7d8d41b92a680a7a3e5a",
+                  "revision": 1,
+                  "sourceSha256": "0dc450a6fa265957913ec195c004dbd3b7abb17c7f8d72afcaa18d8608c51c3f",
+                  "worksheetId": "ms-g8-fcn-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G8-T124",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "9d5f7c0bb9304c058786dfd028703bdc",
+                  "pb": "1f9ada791ad84cac9647921e03314f56",
+                  "pc": "1d08e6ab67f84475b75b165d6b001098"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 20,
@@ -12553,7 +12858,68 @@
               "pb": "8bea76e18dac4e2094313407e207141f",
               "pc": "57a8838fe82a4bad8efddd3053027d9e"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261119-fnt-01-r1",
+              "label": "סימון פונקציה: חישוב ערך הפונקציה, מציאת קלט לפי פלט וקריאת ערכים מגרף · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "ee71facd8acc4906870339ad17786217",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g8-t20-a-e-ms-20261119-fnt-01-r1",
+                  "nativeExportSha256": "c7ca78d69052933972f513a043a15a07c82c1fafcfde1c392d95114fdb740736",
+                  "pdfSha256": "d196d21b3bbb99ba4718cb371771ef27c7079e40016fd732ff7121d9d8e1919f",
+                  "revision": 1,
+                  "sourceSha256": "03e35b22cce1316f39b9577c0e7d0bcef52f4f63e4385350c9e8df2c5b9c86d3",
+                  "worksheetId": "ms-g8-fnt-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "d39496f7752440e9b58ddb3465e3db2d",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g8-t20-b-e-ms-20261119-fnt-01-r1",
+                  "nativeExportSha256": "56062d28feff8920145ec7c77b9a786e7373827f022844bfec9d2d1b74d32fed",
+                  "pdfSha256": "a65b55eb41005b897c7d2a660856dc415a61cf1127a8724fa6769842f5df8459",
+                  "revision": 1,
+                  "sourceSha256": "d57dd28a2e4e370cd4cb9d624afbfd9a7f111a4f532577ae78cd959162323a4e",
+                  "worksheetId": "ms-g8-fnt-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "151f734aa99443b9964a25079cebd3de",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g8-t20-c-e-ms-20261119-fnt-01-r1",
+                  "nativeExportSha256": "bc5ab07e46d4ccc972891fe4c93e88e74e427de73270e2c52f900c3c922e9ef4",
+                  "pdfSha256": "2cc065831248f0ef089f651e35fb4ab54d7efab0c5972311c3f5273151d5d6f0",
+                  "revision": 1,
+                  "sourceSha256": "d4f60dc233b25a7881af6662b9e755d88c2c7f913ae13c4645b889e3f3318ebb",
+                  "worksheetId": "ms-g8-fnt-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G8-T125",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "ee71facd8acc4906870339ad17786217",
+                  "pb": "d39496f7752440e9b58ddb3465e3db2d",
+                  "pc": "151f734aa99443b9964a25079cebd3de"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 21,
@@ -12929,7 +13295,68 @@
               "pb": "93be3da0abc94f6dbc606aa837e1aab2",
               "pc": "c000c5af666b47758a8e83b792dc1c0d"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261119-roc-01-r1",
+              "label": "קצב השתנות: שינוי אחיד ולא אחיד, חישוב הקצב מטבלה ומגרף ומשמעותו בהקשר · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "ad5170003410480b98489ff7967a3f92",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g8-t27-a-e-ms-20261119-roc-01-r1",
+                  "nativeExportSha256": "c655a8ae1eb5c53c73610742a811a493bd22003131c577d8a431340df083db75",
+                  "pdfSha256": "1a12e3cb37e5da10163891ba81b18c7926fad94f44df537bbe6b266452976eb1",
+                  "revision": 1,
+                  "sourceSha256": "55a08cb7104c2b5610f74c2fcacd3da2241822e61264bcf986e5e5742498b03a",
+                  "worksheetId": "ms-g8-roc-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "9b597d180a3745bbb929cdfba06c4557",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g8-t27-b-e-ms-20261119-roc-01-r1",
+                  "nativeExportSha256": "faa051f1c614d65b64a753df9d5f474e197f2d1d5dc4af3999cf6f00958a7813",
+                  "pdfSha256": "37f3829035f4188596dd7786e3b4463ce414009497d8ed00e09790ac365b0ff6",
+                  "revision": 1,
+                  "sourceSha256": "c3dbed44ed5b72de757120fc99aa75da6c190b3c68d8886c7dfb08083afd0d15",
+                  "worksheetId": "ms-g8-roc-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "314fb7586ab34ae6a3923279434104cd",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g8-t27-c-e-ms-20261119-roc-01-r1",
+                  "nativeExportSha256": "20cf01fa58ff8cf17904fc72c9554c8e8e67363b28ca6c1b7be3cbaed5af0808",
+                  "pdfSha256": "9366f221748a874f8683931180e100b9ca86bdfc2d23b2b5ae1f8439e85eb1de",
+                  "revision": 1,
+                  "sourceSha256": "0f845dc71ac884f3d2ecfd62057fc8555ebe337db8ce2fe8062fee65bab30063",
+                  "worksheetId": "ms-g8-roc-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G8-T126",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "ad5170003410480b98489ff7967a3f92",
+                  "pb": "9b597d180a3745bbb929cdfba06c4557",
+                  "pc": "314fb7586ab34ae6a3923279434104cd"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 28,
@@ -12968,7 +13395,68 @@
               "pb": "82bdf30b0a4d4e2f9fb57b80ed22f26f",
               "pc": "9a1159da9cfa425795c48947f91d805a"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261119-slo-01-r1",
+              "label": "שיפוע של ישר וישר העובר בראשית הצירים · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "a4530cc5013a48ddace0448e2006bc15",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g8-t28-a-e-ms-20261119-slo-01-r1",
+                  "nativeExportSha256": "b857dcd6f40c3ff035f547e193238c80f4a2e050637f44898dba8a656d320c15",
+                  "pdfSha256": "337ee2a7367cdbb6df608f5f98f8dc06db8ca1b8449d050dc1e349cb186841f4",
+                  "revision": 1,
+                  "sourceSha256": "63c84989fc45c0e6263ef6eb2b2c60489539567fbe9e842af48e64df79a6fd80",
+                  "worksheetId": "ms-g8-slo-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "6290d714f59943bfbfa4bb66afe7d110",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g8-t28-b-e-ms-20261119-slo-01-r1",
+                  "nativeExportSha256": "bad2d167c4f521fab929e7db77aa9628163cc5bf55cceb81eb34eaca26cd0f9b",
+                  "pdfSha256": "891fa72acd0df86b170706dc8038c07a58b6b189aa34f6cefb3353869a6dfd49",
+                  "revision": 1,
+                  "sourceSha256": "b31bac4cfccc2b78c7a3e6200efc3525e022926faf3556581c7774e6a6f80da9",
+                  "worksheetId": "ms-g8-slo-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "c36c8fd8c3a64b958dd217f25b3854d0",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g8-t28-c-e-ms-20261119-slo-01-r1",
+                  "nativeExportSha256": "2e39c4a3bbc418537de0183237ccd6edbfbd8312a468a75e31293b5e8413e994",
+                  "pdfSha256": "d704bfd444e9bb1fa7384d5a9354d942e2cc8cf1930475b8ade9dc9ae26b48db",
+                  "revision": 1,
+                  "sourceSha256": "a915e228adc90ce2da9ecacc716623844d70dd4af5015be7197c7cff241043ad",
+                  "worksheetId": "ms-g8-slo-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G8-T127",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "a4530cc5013a48ddace0448e2006bc15",
+                  "pb": "6290d714f59943bfbfa4bb66afe7d110",
+                  "pc": "c36c8fd8c3a64b958dd217f25b3854d0"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 29,
@@ -13107,7 +13595,68 @@
               "pb": "3c7379ea9ff84bdd81be78dfb86e1ff3",
               "pc": "a27fc25991a040b3a837ed2654639cbe"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261119-axi-01-r1",
+              "label": "חיתוך ישר עם הצירים: נקודות חיתוך, תחומי חיוביות ושליליות, עלייה וירידה · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "ab6f44cc731940abb0f0923c8cb08c06",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g8-t30-a-e-ms-20261119-axi-01-r1",
+                  "nativeExportSha256": "7d0035b3f6bf1c8052e7f6d24b16cc7a9a973949cfe520c7735896c503302ee2",
+                  "pdfSha256": "b15af3efca685918302dca71908d86428b96c23f1223b10aa9f5597270cbe53d",
+                  "revision": 1,
+                  "sourceSha256": "23fc737464a15077978fa90c8982967fe0e80abf2fcd484a41dfb28ee7aa2f92",
+                  "worksheetId": "ms-g8-axi-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "fe812d051f10433ca01889d1cafda4f8",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g8-t30-b-e-ms-20261119-axi-01-r1",
+                  "nativeExportSha256": "8cb721ca2cfea9f34fffca7974be7ec2a0df4e8f3b6bbd947a23a23de2b057a3",
+                  "pdfSha256": "ac50fe0fb79e58a70f8297397e3d670ef27b5e4b57592161797c31ba5d067b91",
+                  "revision": 1,
+                  "sourceSha256": "e4f02993a2629f73c28b6d79a95217290d28f3fe3520551bc49e0b3ceb4da02e",
+                  "worksheetId": "ms-g8-axi-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "8fe99f247e854e3cab2ba3c5c5590695",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g8-t30-c-e-ms-20261119-axi-01-r1",
+                  "nativeExportSha256": "adb2f56f1f4e2cb6cbc3581b7a48b2edd991e5757e31092dd03055389befb29e",
+                  "pdfSha256": "bd2353480c3d886c50135eba540c5ce34a19a9fbc2f0c729c565f4bad197b066",
+                  "revision": 1,
+                  "sourceSha256": "d231aba356f05f16a4724563dc35bb01ca22c6ca780bcaa1b3612077e2aee203",
+                  "worksheetId": "ms-g8-axi-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G8-T128",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "ab6f44cc731940abb0f0923c8cb08c06",
+                  "pb": "fe812d051f10433ca01889d1cafda4f8",
+                  "pc": "8fe99f247e854e3cab2ba3c5c5590695"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 31,
@@ -13146,7 +13695,68 @@
               "pb": "e42b5fa2c8d44a0bb5a585f4debfe425",
               "pc": "19ac66cf7499433693310f589f18d3b7"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "editionId": "ms-20261119-eql-01-r1",
+              "label": "משוואת ישר: לפי נקודה ושיפוע, לפי שתי נקודות ובדיקה אם נקודה נמצאת על הישר · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "214dac653b9745b38483d1fdeb35c7ac",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g8-t31-a-e-ms-20261119-eql-01-r1",
+                  "nativeExportSha256": "fedc524271a2f7a60c83ee79e767a9dfd65e8943f7401159e779edd3ad2ab550",
+                  "pdfSha256": "789e2eb9f6a76dded77c0399baab15b8120779992814161cc986dd7d0be2eae8",
+                  "revision": 1,
+                  "sourceSha256": "3e08e6390321a2ad20d5fc1e7b5116b50b95ba1535b24ab544a92aacd884ec63",
+                  "worksheetId": "ms-g8-eql-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "3eefe9bcc1184374bee5a62ce6c80c3d",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g8-t31-b-e-ms-20261119-eql-01-r1",
+                  "nativeExportSha256": "856d82dc56c695cdf4211af93640fc9e6cefe982195b9ab8e74b77247ced9d38",
+                  "pdfSha256": "ae30c1d23df9da04cac9f5729c7c0ee63497d33434216a82a5ecf39978e591ff",
+                  "revision": 1,
+                  "sourceSha256": "3438d7df7d83007856b73d4c1ee2652f91904589505b9aff031ca219e6510ff6",
+                  "worksheetId": "ms-g8-eql-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "b0ebca48fe3943f4bf717d3973317657",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g8-t31-c-e-ms-20261119-eql-01-r1",
+                  "nativeExportSha256": "98a4203e703287bd2d8ff3a686b4d17bb69dc00343bd972b021ef53359fafb89",
+                  "pdfSha256": "a9a8aee06071a44e673b85fa2c593bb7e8bcd29833e1a34a664d5588d61eae08",
+                  "revision": 1,
+                  "sourceSha256": "aaa693419632d30d368faa26bfcf3e39ea74bc9176809167720e03d0a019f639",
+                  "worksheetId": "ms-g8-eql-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G8-T129",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "214dac653b9745b38483d1fdeb35c7ac",
+                  "pb": "3eefe9bcc1184374bee5a62ce6c80c3d",
+                  "pc": "b0ebca48fe3943f4bf717d3973317657"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 32,
