@@ -11,6 +11,7 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeBatch12Catalog, beforeBatch12Copy, beforeBatch12Registry,
   reviewedBatch12 as reviewed, reviewedBatch12Ids as ids } from './fixtures/batch12-pdf';
+import { beforeBatch13Registry } from './fixtures/batch13-pdf';
 import { createRequire } from 'node:module';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
@@ -37,6 +38,8 @@ for (const addition of reviewed.additions) {
   }
 }
 const registry = read('headless/catalog/worksheet-editions.v1.json');
+// Batch 13 (renewal, 19.11) is newer: its rows come after batch 12's.
+const batch12Registry = beforeBatch13Registry(registry);
 const priorRegistry = beforeBatch12Registry(registry);
 const receipt = read('docs/batch12-pdf-first-20261118.json');
 const expectedIds = ["ms-20261118-ang-02-r1"];
@@ -72,9 +75,9 @@ test('one additive edition recovers the pinned baseline after the Ramzi sources 
   assert.equal(receipt.status, 'REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED');
   assert.equal(receipt.sitePublicationClaimed, false);
   assert.deepEqual(receipt.scope, { packages: 1, pdfs: 3, pages: 27, landingRoutes: 1 });
-  assert.equal(registry.editions.length, priorRegistry.editions.length + 1);
-  assert.deepEqual(registry.editions.slice(0, -1), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(-1), reviewed.additions.map(a => a.edition));
+  assert.equal(batch12Registry.editions.length, priorRegistry.editions.length + 1);
+  assert.deepEqual(batch12Registry.editions.slice(0, -1), priorRegistry.editions);
+  assert.deepEqual(batch12Registry.editions.slice(-1), reviewed.additions.map(a => a.edition));
   assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // batch 12 adds no base topic
   assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991);
 
