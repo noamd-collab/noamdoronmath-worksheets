@@ -1,3 +1,4 @@
+import { beforeNovember21Catalog } from './fixtures/middle-090-091-094';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -97,7 +98,8 @@ test('new PDFs cannot enter previous teacher, learning, viewer or Ramzi banks', 
   assert.deepEqual(collectViewerPdfIds(catalog), collectViewerPdfIds(previous));
   const activation = loadRamziActivationEvidence(new URL('headless/catalog/', root).pathname, new URL('headless/astro-poc/public/', root).pathname);
   assert.deepEqual(buildLearningCatalog(loadIndexCatalog(), registry, activation), buildLearningCatalog(loadIndexCatalog(), priorRegistry, activation));
-  for (const topicId of [21, 46]) assert.deepEqual(catalog.grades.find(g => g.grade === 7)!.topics.find(t => t.id === topicId), previous.grades.find(g => g.grade === 7)!.topics.find(t => t.id === topicId));
+  const atPublication = beforeReviewedRamziActivation(beforeNovember21Catalog(loadCatalog()));
+  for (const topicId of [21, 46]) assert.deepEqual(atPublication.grades.find(g => g.grade === 7)!.topics.find(t => t.id === topicId), previous.grades.find(g => g.grade === 7)!.topics.find(t => t.id === topicId));
 });
 
 test('seven scoped landing updates retain titles and CTA order and synchronize visible sections and FAQ schema', () => {
