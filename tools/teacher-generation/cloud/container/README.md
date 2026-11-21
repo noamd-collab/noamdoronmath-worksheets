@@ -16,7 +16,7 @@ when the orchestrator starts the container. Do not use build arguments for them.
 - Official `python:3.12-slim-bookworm` Linux/amd64 manifest digest
   `sha256:0f086103b026048cc50cb5da25ec435c023c5241a83fc44daea593377abc61c4`,
   queried from Docker's official registry on 2026-11-14: Python **3.12.16**.
-- All 29 runtime Python packages in `requirements-linux-amd64.lock` have exact
+- All 31 runtime Python packages in `requirements-linux-amd64.lock` have exact
   versions and Linux wheel SHA-256 hashes. Their versions match the reviewed
   Mac runtime, including all transitives. `python-wheels.json` records filenames.
   Docker installs with `--require-hashes --only-binary=:all:` and `pip check`.
@@ -75,7 +75,7 @@ The script uses the configured buildx builder, loads the single Linux/amd64 imag
 as `noam-teacher-generation:test`, and sets/verifies the OCI revision label from
 `SOURCE_SHA` (40 lowercase hex characters; defaults to Git HEAD). Provenance/SBOM
 attestations are disabled for this single-manifest export. It runs runtime unit tests in `--network none`, then
-runs all three full skill pipelines without model keys or database credentials.
+runs the three legacy pipelines and the hash-pinned general-source fixtures without model keys or database credentials.
 It checks original parameter derivation, lesson bounds, quality policy, every
 renderer gate, original/final Word provenance and two delivered artifacts. It
 also exercises the installed Chromium fallback on the trusted elementary HTML.
@@ -104,3 +104,41 @@ To rebuild skill archives, pass the two explicit trusted source paths to
 `skill_bundle.py --elementary ... --middle ... --output NEW_DIRECTORY` and
 compare with `skills/skill-archives.json`. It refuses to overwrite an existing
 archive. Do not install or alter the user's skill trees to make the image pass.
+# General skill runtime dependencies
+
+The all-topic compiler adds hashlocked `sympy==1.14.0` and `mpmath==1.3.0` wheels.
+Their bytes and SHA256 values were checked against official PyPI release metadata.
+The existing signed Debian snapshot is unchanged. Its matching package index
+pins Tesseract5.3.0-2, English/OSD data1:4.1.0-2, libtesseract5 and liblept5; APT
+still verifies the Debian signatures. Native package metadata is in
+`native-pins.json`; transitive packages resolve only against that frozen snapshot.
+
+Linux uses the executable `/opt/noam/app/wspec_ocr_tesseract.py` through the
+skill-supported `WSPEC_OCR` variable. This is raster-only OCR: no expected label
+is sent to the engine, and no G79 gate is disabled or patched. `offline_smoke.py`
+now mandates `qualify_ocr.py`, which runs the unchanged pinned WSPEC reader,
+bridge and real Tesseract on visible Latin/digit labels plus blank/invisible
+rasters. It records actual text/confidence, image/reader/helper hashes and fails
+the image qualification on mismatch. Missing Linux/Tesseract is a failure, never
+a skipped success. Per-worksheet geometry gates and visual reviews remain required.
+
+Run the existing `Teacher generation cloud qualification` GitHub workflow on the
+exact candidate SHA (the PR path trigger already includes all these files), or
+on an available isolated Linux host with Docker:
+
+```sh
+bash tools/teacher-generation/cloud/container/ci_check.sh /absolute/new/evidence
+```
+
+The containers run with `--network none` and no runtime secrets. No image push,
+deployment, provider call, DB claim or owner trial is part of qualification.
+An installed Mac development Python cannot qualify this Linux image. Inspect
+`qualification/ocr/qualification.json` and the full render artifacts before
+requesting release; host tests alone do not prove OCR or image readiness.
+
+General fixtures report `PASS`, `REVIEW`, or `FAIL` separately. A documented
+REVIEW-only didactic draft may qualify for private owner inspection only when
+the independent reconciliation verifies the original report and every output
+hash, preserves all findings, and no other step or gate fails. It never becomes
+`automatedChecksPassed: true`. Review findings remain in the qualification
+report; representative fixtures do not approve all 232 topics.

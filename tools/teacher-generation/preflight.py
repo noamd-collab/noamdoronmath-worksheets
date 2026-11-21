@@ -6,6 +6,7 @@ from importlib.metadata import version
 import json
 import os
 import re
+import shutil
 import sys
 from pathlib import Path
 from validation import GenerationError
@@ -13,6 +14,7 @@ from runner import verify_skill
 from provider import qwen_chat_url, verified_tls_context
 
 PACKAGES={'weasyprint':'weasyprint','PyMuPDF':'pymupdf','matplotlib':'matplotlib','fonttools':'fontTools','python-docx':'docx','beautifulsoup4':'bs4','lxml':'lxml','numpy':'numpy','certifi':'certifi'}
+PACKAGES.update({'sympy':'sympy','mpmath':'mpmath'})
 EXPECTED=dict(line.strip().split('==',1) for line in Path(__file__).with_name('requirements.txt').read_text().splitlines() if '==' in line and not line.lstrip().startswith('#'))
 
 
@@ -39,6 +41,17 @@ def check(require_provider=False):
             result['skills'][kind]={'status':'PASS','version':pin['version'],'sha256':pin['sha256']}
         except GenerationError as e:
             result['ready']=False;result['skills'][kind]={'status':'FAIL','reason':e.code}
+    try:
+        from runtime_catalog import catalog, PROFILE
+        from general_source import authoring_schema, validate_source
+        from general_adapters import compile_source
+        topics=catalog()
+        result['authoring']={'status':'PASS','profile':PROFILE,'topics':len(topics.topics),
+                             'curriculumSha256':topics.sha256}
+        if sys.platform=='linux' and not shutil.which('tesseract'):
+            raise RuntimeError('Tesseract is required for the geometry reader')
+    except Exception:
+        result['ready']=False;result['authoring']={'status':'FAIL','reason':'GENERAL_AUTHORING_RUNTIME_MISSING'}
     key=os.environ.get('QWEN_API_KEY') or os.environ.get('DASHSCOPE_API_KEY')
     base=os.environ.get('QWEN_BASE_URL');model=os.environ.get('QWEN_MODEL')
     if key and base and model:

@@ -1,7 +1,7 @@
 """Image qualification without credentials, queue access or model calls.
 
-Run the image with --network none. All three inputs are reviewed synthetic
-fixtures; successful automatic checks still do not mean human visual approval.
+Run the image with --network none. Inputs are reviewed synthetic
+legacy and general-source fixtures; successful automatic checks still do not mean human visual approval.
 """
 import argparse
 import hashlib
@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
 import shutil
 import subprocess
 import sys
@@ -40,7 +41,8 @@ def native_preflight():
     versions = {}
     for executable, flags in [('pdfinfo', ['-v']), ('pdffonts', ['-v']),
                               ('pdftotext', ['-v']), ('pdftoppm', ['-v']),
-                              ('chromium', ['--version']), ('tini', ['--version'])]:
+                              ('chromium', ['--version']), ('tini', ['--version']),
+                              ('tesseract', ['--version'])]:
         if not shutil.which(executable):
             raise RuntimeError('Missing required native helper: ' + executable)
         p = subprocess.run([executable] + flags, capture_output=True, text=True, timeout=10, check=True)
@@ -53,8 +55,64 @@ def native_preflight():
     font = subprocess.check_output(['fc-match', '-f', '%{family}', 'David Libre'], text=True)
     if 'David Libre' not in font:
         raise RuntimeError('David Libre font substitution is not permitted')
+    if os.environ.get('WSPEC_OCR') != '/opt/noam/app/wspec_ocr_tesseract.py':
+        raise RuntimeError('Linux WSPEC reader must use the reviewed raster-only bridge')
+    import sympy, mpmath
+    if (sympy.__version__, mpmath.__version__) != ('1.14.0', '1.3.0'):
+        raise RuntimeError('Exact symbolic math runtime differs from the lock')
     return {'ready': True, 'providerCalled': False, 'queueTouched': False,
             'python': result['python'], 'skills': result['skills'], 'helpers': versions}
+
+
+def general_cases(output):
+    """Real representative renders. Fixture coverage is not all-topic proof."""
+    root = HERE / 'fixtures/general'
+    manifest = json.loads((root / 'manifest.json').read_text())
+    cases = manifest.get('cases')
+    if (manifest.get('version') != 1 or not isinstance(cases, list) or not cases
+            or len(cases) != len(set(cases))
+            or any(not isinstance(name, str) or not re.fullmatch(r'[a-z0-9-]{1,60}', name) for name in cases)):
+        raise RuntimeError('Reviewed general fixtures are required')
+    expected = {name + '/' + kind + '.json' for name in cases for kind in ('lesson', 'model-output')}
+    if set(manifest.get('files', {})) != expected:
+        raise RuntimeError('General fixture manifest must cover exactly its inputs')
+    for name in expected:
+        data = (root / name).read_bytes()
+        entry = manifest['files'][name]
+        if len(data) != entry['bytes'] or hashlib.sha256(data).hexdigest() != entry['sha256']:
+            raise RuntimeError('General fixture checksum mismatch')
+    results = []
+    # No paid generation or automatic retry can occur during render qualification.
+    with patch('provider.author_lesson', side_effect=AssertionError('Offline only')), \
+            patch('general_provider.author_general_lesson', side_effect=AssertionError('Offline only')):
+        for case in cases:
+            fixture = root / case
+            lesson = json.loads((fixture / 'lesson.json').read_text())
+            source = json.loads((fixture / 'model-output.json').read_text())
+            if lesson.get('version') != 3 or source.get('version') != 4:
+                raise RuntimeError('General fixtures must exercise the new intake and source contracts')
+            validate_model(lesson, source)
+            rendered = render_job(lesson, source, output / case)
+            automated = (rendered['automatedChecksPassed'] is True
+                         and all(step['status'] == 'PASS' for step in rendered['steps']))
+            review_only = (rendered.get('renderingChecksPassed') is True
+                           and isinstance(rendered.get('reviewFindings'), list)
+                           and bool(rendered['reviewFindings'])
+                           and any(step['status'] == 'REVIEW' for step in rendered['steps']))
+            qualified = ((automated or review_only)
+                      and rendered['status'] == 'needs_review'
+                      and rendered.get('authoringProfile') == 'general-skill-source/v1'
+                      and all(step['status'] in ('PASS', 'REVIEW') for step in rendered['steps'])
+                      and {a['kind'] for a in rendered['artifacts']} == {'pdf', 'docx'})
+            results.append({'case': case, 'topicId': lesson['topicId'],
+                            'status': 'PASS' if qualified and automated else 'REVIEW' if qualified else 'FAIL',
+                            'automatedChecksPassed': automated,
+                            'reviewFindings': rendered.get('reviewFindings', []),
+                            'manifest': 'general/' + case + '/manifest.json'})
+            if not qualified:
+                raise RuntimeError('General skill pipeline failed: ' + case)
+    return {'cases': results, 'coverage': 'representative fixtures only; not 232-topic pedagogical approval',
+            'providerCalled': False, 'humanVisualReview': 'PENDING'}
 
 
 def main():
@@ -67,6 +125,9 @@ def main():
         print(json.dumps(report, ensure_ascii=False))
         return
     args.out.mkdir(parents=True, exist_ok=False)
+    from qualify_ocr import qualify
+    report['rasterOcr'] = qualify(args.out / 'ocr')
+    report['generalSkillSource'] = general_cases(args.out / 'general')
     manifest = json.loads((HERE / 'fixtures/manifest.json').read_text())
     for name, entry in manifest['files'].items():
         data = (HERE / 'fixtures' / name).read_bytes()

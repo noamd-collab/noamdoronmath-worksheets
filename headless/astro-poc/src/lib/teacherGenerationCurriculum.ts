@@ -1,5 +1,5 @@
-import { parseTeacherGenerationCurriculum, type TeacherGenerationCurriculum } from './teacherGenerationContract';
-export const GENERATION_CURRICULUM_SHA256 = '57adca1891cbc2ef333709a6adee18045da23035f9e981f091673d2f8547527b';
+import { parseTeacherGenerationCurriculum, GENERATION_CURRICULUM_SHA256, type TeacherGenerationCurriculum } from './teacherGenerationContract';
+export { GENERATION_CURRICULUM_SHA256 } from './teacherGenerationContract';
 let cached: TeacherGenerationCurriculum | undefined;
 /** Curriculum is a static, non-personal asset. Its exact hash pins the server
  * validation without putting the full catalog in the size-limited Wix worker. */

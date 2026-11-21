@@ -75,7 +75,7 @@ test('the authorized owner still receives the complete generation flow', async (
   assert.equal(response.status, 200);
   assert.equal(document.querySelectorAll('#generation-form').length, 1);
   assert.equal(document.querySelectorAll('#create-button').length, 1);
-  assert.equal(document.querySelectorAll('script[src="/teachers/generation.js"]').length, 1);
+  assert.equal(document.querySelectorAll('script[src="/teachers/generation-v3.js"]').length, 1);
   assert.equal(document.querySelectorAll('#coming-soon-title').length, 0);
 });
 
