@@ -5373,7 +5373,7 @@
     {
       "grade": 7,
       "topicId": 25,
-      "editionId": "ms-20261121-frq-02-r1",
+      "editionId": "ms-20261121-frq-02-r4",
       "label": "טבלת שכיחות, שכיח ודיאגרמת נקודות · PDF",
       "nativePrefix": "G7-T136",
       "publicationMode": "pdf-only",
@@ -5383,32 +5383,32 @@
         {
           "key": "a",
           "viewerLevel": "A",
-          "pdfId": "870d7dcbfd2740019e0ad9f0f75ec323",
-          "pdfSha256": "a8b92fb15298a1676d8e8e9873d15bee155b0dfcee77afe38f8e5005521749d5",
-          "sourceSha256": "9a8ee3d38adbabb52e8b9519f57d57b9c2eacbceb49a5486cbfa3c9f014cd3f2",
-          "nativeExportSha256": "610795b13feb4e8755b5541fab899ea7d382a6e0a18ce4953dc580f8ed1680bc",
-          "worksheetId": "ms-g7-frq-02-a-r1",
-          "revision": 1
+          "pdfId": "d1c095409f6b44c5b4b2b80493a5ec50",
+          "pdfSha256": "9b10e77d9654ca1e6b106c276718c281293200c10edcaa59dbde4bbb4dcb70bb",
+          "sourceSha256": "1403997ffc82cfeb476fb0744c33689e87c1e4ef11a31260f70b14f97b907a6a",
+          "nativeExportSha256": "8a74c1904761f2008460c2a041befe75b0ab5ef8fc78bea45df55ba9477adf03",
+          "worksheetId": "ms-g7-frq-02-a-r4",
+          "revision": 4
         },
         {
           "key": "b",
           "viewerLevel": "B",
-          "pdfId": "b726a5baebda4923878f7f2e80078be3",
-          "pdfSha256": "0654d84c0507d5334e57ba183a3ee6bbef7aaa29656566429f62a00b15655649",
-          "sourceSha256": "d36df47c66712d352959734b452c0630b54c4e728055fd8bc5b669eb7ed1bacf",
-          "nativeExportSha256": "96a253237b1d199839a3a1228c697dc5297cb529b147eb38a6003dbc3fc2402c",
-          "worksheetId": "ms-g7-frq-02-b-r1",
-          "revision": 1
+          "pdfId": "e1a2834fb3a14ca1be9d8fd85219100f",
+          "pdfSha256": "bd8b06a12136d96c2101d91a6ff1ec7e8f6cf321a35f6ff9b68440899922cd95",
+          "sourceSha256": "0b6d06da34142483d2773a2cd19098aa58077024d4c370368513b3de55b71dc8",
+          "nativeExportSha256": "16562bc9c16ed0e8d55aaabda99123b5d019043ada3d8efa94d8ff1abab15750",
+          "worksheetId": "ms-g7-frq-02-b-r4",
+          "revision": 4
         },
         {
           "key": "c",
           "viewerLevel": "E",
-          "pdfId": "a8a2c1df667b47e586878626e54bf59d",
-          "pdfSha256": "d712643555d259d6724f79197aeb812ef09ef952658a6621b596bfccf345649d",
-          "sourceSha256": "7da5b2a30bd5de20345af4fc4b4e8b989b22a4e2cc379e997be8f73e2745ed41",
-          "nativeExportSha256": "7d1058c2137de5aa1defa45013054747f28e5edd7c3ed36b1678c123e80a06bd",
-          "worksheetId": "ms-g7-frq-02-c-r1",
-          "revision": 1
+          "pdfId": "b2ac6fabde404b3d87570154b77c7b34",
+          "pdfSha256": "375984472e2a596da4a40626caa0ae25889e6fbd7ab6b9d84f6744b57e0cbb5e",
+          "sourceSha256": "482852e309f1672146d631f3d2e8ed0f36c491534b99dd4abc890d18eaf09c1e",
+          "nativeExportSha256": "57fa917fa8d60adc5eaa20c6bc179f7d1e9bfd335e1b7997756276aea559cc18",
+          "worksheetId": "ms-g7-frq-02-c-r4",
+          "revision": 4
         }
       ]
     },

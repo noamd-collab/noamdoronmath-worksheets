@@ -13,102 +13,96 @@
       "topicId": 25,
       "slug": "frequency-grade-7",
       "producerPackage": "G7-T136",
-      "studentRevision": "r03",
+      "studentRevision": "r04",
       "author": "Codex",
       "skillVersion": "7.3.3",
-      "freezeSha256": "6f1a74923c89b3e8a643f9dc575e52642e2e58b2613d31375c615883d178c422",
+      "producerFreezeSha256": "7c6f304b46cb028eb29a9e04afe2f3a9ab75e3f59efee5a58ce204107a8fe57f",
+      "sourceBinding": {
+        "kind": "independently-reviewed-student-pdfs",
+        "sha256": "beeda59e4bd6f63293bac3907a4b7fbfbe2b552cce1a47a011f0520a58a7c5f1"
+      },
       "reviewReceipts": [
         {
-          "role": "Independent blind solutions and comparison, r01",
-          "path": "reports/CODEX-INDEPENDENT-G7-FRQ-02-r01-20261121/review.json",
-          "sha256": "dd8f9ed20e4ab89987b0947b9a33327d0376afd8a97ac539c41890c4fa610b32"
+          "role": "Independent Claude full review of superseded r01: HOLD for topic scope and answer clarity",
+          "path": "reports/CLAUDE-INDEPENDENT-G7-FRQ-02-r01-20261121/review.json",
+          "sha256": "a8072755e27e51fb5295c9812f7542e2a090246e8b0ba06097517bf00e43b3ba"
         },
         {
-          "role": "Blind solve commitment, r01",
-          "path": "reports/CODEX-INDEPENDENT-G7-FRQ-02-r01-20261121/blind-commitment.json",
-          "sha256": "5ea4a3b77833b25ea7dcbc7d03aabe6e2431f190b03f9146b27d6be1912e7100"
-        },
-        {
-          "role": "Exact r02 delta check",
-          "path": "reports/CODEX-SITE-090-091-094-20261121/090-r02-delta-data.json",
-          "sha256": "caaab2de492db3b502c1b2142cc730015d42a66f1519f710d2ab96306740ee8b"
-        },
-        {
-          "role": "Frozen source and layout parity checks, r02",
-          "path": "submissions/Codex/MS-PROD-CODEX-090-r02/reports/revision-parity.json",
-          "sha256": "5cbac8440e2dd96422e8199272348a88fb819c5808f1a2af83067c42358996e5"
-        },
-        {
-          "role": "Independent Claude blind verification of 108 items, prior to exact corrections",
+          "role": "Independent blind numerical review of superseded r01, 108 checked and 107 unequivocally correct",
           "path": "reports/CLAUDE-INDEPENDENT-G7-FRQ-02-r01-20261121/numbers-blind.json",
-          "sha256": "c5f13cc2b3c322c6697f19d74508502163a54952a8f9a292f5d2f6a573c0e1d7"
+          "sha256": "eb3748675e8d3ef042fa37f4d69eb727f92f944339008262f858be888f15ea77"
         },
         {
-          "role": "Final r03 corrected wording and solution, parity with independently checked math and re-rendered pages",
-          "path": "submissions/Codex/MS-PROD-CODEX-090-r03/reports/revision-parity.json",
-          "sha256": "0a92e8aaa9ded9fd679e57f59c6681c0456359d0fbfbce5a4de1fb963af1545d"
+          "role": "Independent final Claude review, PASS_STUDENT_PDF_ESSENTIALS on all three exact r04 student PDFs: 108 of 108 answers verified",
+          "path": "reports/CLAUDE-INDEPENDENT-G7-FRQ-02-r04-20261121/review.json",
+          "sha256": "85eb516772f503807f558d006e82906e3df91a7c2ff81902fd50c020e11b5728"
+        },
+        {
+          "role": "Final r04 frozen-release verification and independent numerical check on the published PDF bytes",
+          "path": "reports/CODEX-SITE-090-091-094-20261121/090-r04-final-review.json",
+          "sha256": "b33efa52c80978da9363271fd9838742cb2dcc3316f9df1149a7d153c8759ade"
         }
       ],
       "studentFiles": [
         {
           "key": "a",
           "pages": 9,
-          "bytes": 76622,
-          "source": "submissions/Codex/MS-PROD-CODEX-090-r03/release/documents/G7-FRQ-02/a/sheet.pdf",
-          "sha256": "a8b92fb15298a1676d8e8e9873d15bee155b0dfcee77afe38f8e5005521749d5",
+          "bytes": 72814,
+          "source": "submissions/Codex/MS-PROD-CODEX-090-r04/release/documents/G7-FRQ-02/a/sheet.pdf",
+          "sha256": "9b10e77d9654ca1e6b106c276718c281293200c10edcaa59dbde4bbb4dcb70bb",
           "downloads": [
             {
-              "url": "https://static.wixstatic.com/ugd/d8e7ad_870d7dcbfd2740019e0ad9f0f75ec323.pdf",
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_d1c095409f6b44c5b4b2b80493a5ec50.pdf",
               "status": 200,
-              "sha256": "a8b92fb15298a1676d8e8e9873d15bee155b0dfcee77afe38f8e5005521749d5",
+              "sha256": "9b10e77d9654ca1e6b106c276718c281293200c10edcaa59dbde4bbb4dcb70bb",
               "match": true
             },
             {
-              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_870d7dcbfd2740019e0ad9f0f75ec323.pdf",
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_d1c095409f6b44c5b4b2b80493a5ec50.pdf",
               "status": 200,
-              "sha256": "a8b92fb15298a1676d8e8e9873d15bee155b0dfcee77afe38f8e5005521749d5",
+              "sha256": "9b10e77d9654ca1e6b106c276718c281293200c10edcaa59dbde4bbb4dcb70bb",
               "match": true
             }
           ]
         },
         {
           "key": "b",
-          "pages": 9,
-          "bytes": 76623,
-          "source": "submissions/Codex/MS-PROD-CODEX-090-r03/release/documents/G7-FRQ-02/b/sheet.pdf",
-          "sha256": "0654d84c0507d5334e57ba183a3ee6bbef7aaa29656566429f62a00b15655649",
+          "pages": 8,
+          "bytes": 72820,
+          "source": "submissions/Codex/MS-PROD-CODEX-090-r04/release/documents/G7-FRQ-02/b/sheet.pdf",
+          "sha256": "bd8b06a12136d96c2101d91a6ff1ec7e8f6cf321a35f6ff9b68440899922cd95",
           "downloads": [
             {
-              "url": "https://static.wixstatic.com/ugd/d8e7ad_b726a5baebda4923878f7f2e80078be3.pdf",
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_e1a2834fb3a14ca1be9d8fd85219100f.pdf",
               "status": 200,
-              "sha256": "0654d84c0507d5334e57ba183a3ee6bbef7aaa29656566429f62a00b15655649",
+              "sha256": "bd8b06a12136d96c2101d91a6ff1ec7e8f6cf321a35f6ff9b68440899922cd95",
               "match": true
             },
             {
-              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b726a5baebda4923878f7f2e80078be3.pdf",
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_e1a2834fb3a14ca1be9d8fd85219100f.pdf",
               "status": 200,
-              "sha256": "0654d84c0507d5334e57ba183a3ee6bbef7aaa29656566429f62a00b15655649",
+              "sha256": "bd8b06a12136d96c2101d91a6ff1ec7e8f6cf321a35f6ff9b68440899922cd95",
               "match": true
             }
           ]
         },
         {
           "key": "c",
-          "pages": 9,
-          "bytes": 77535,
-          "source": "submissions/Codex/MS-PROD-CODEX-090-r03/release/documents/G7-FRQ-02/c/sheet.pdf",
-          "sha256": "d712643555d259d6724f79197aeb812ef09ef952658a6621b596bfccf345649d",
+          "pages": 8,
+          "bytes": 74351,
+          "source": "submissions/Codex/MS-PROD-CODEX-090-r04/release/documents/G7-FRQ-02/c/sheet.pdf",
+          "sha256": "375984472e2a596da4a40626caa0ae25889e6fbd7ab6b9d84f6744b57e0cbb5e",
           "downloads": [
             {
-              "url": "https://static.wixstatic.com/ugd/d8e7ad_a8a2c1df667b47e586878626e54bf59d.pdf",
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b2ac6fabde404b3d87570154b77c7b34.pdf",
               "status": 200,
-              "sha256": "d712643555d259d6724f79197aeb812ef09ef952658a6621b596bfccf345649d",
+              "sha256": "375984472e2a596da4a40626caa0ae25889e6fbd7ab6b9d84f6744b57e0cbb5e",
               "match": true
             },
             {
-              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a8a2c1df667b47e586878626e54bf59d.pdf",
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b2ac6fabde404b3d87570154b77c7b34.pdf",
               "status": 200,
-              "sha256": "d712643555d259d6724f79197aeb812ef09ef952658a6621b596bfccf345649d",
+              "sha256": "375984472e2a596da4a40626caa0ae25889e6fbd7ab6b9d84f6744b57e0cbb5e",
               "match": true
             }
           ]
@@ -140,7 +134,7 @@
       "edition": {
         "grade": 7,
         "topicId": 25,
-        "editionId": "ms-20261121-frq-02-r1",
+        "editionId": "ms-20261121-frq-02-r4",
         "label": "טבלת שכיחות, שכיח ודיאגרמת נקודות · PDF",
         "nativePrefix": "G7-T136",
         "publicationMode": "pdf-only",
@@ -150,36 +144,36 @@
           {
             "key": "a",
             "viewerLevel": "A",
-            "pdfId": "870d7dcbfd2740019e0ad9f0f75ec323",
-            "pdfSha256": "a8b92fb15298a1676d8e8e9873d15bee155b0dfcee77afe38f8e5005521749d5",
-            "sourceSha256": "9a8ee3d38adbabb52e8b9519f57d57b9c2eacbceb49a5486cbfa3c9f014cd3f2",
-            "nativeExportSha256": "610795b13feb4e8755b5541fab899ea7d382a6e0a18ce4953dc580f8ed1680bc",
-            "worksheetId": "ms-g7-frq-02-a-r1",
-            "revision": 1
+            "pdfId": "d1c095409f6b44c5b4b2b80493a5ec50",
+            "pdfSha256": "9b10e77d9654ca1e6b106c276718c281293200c10edcaa59dbde4bbb4dcb70bb",
+            "sourceSha256": "1403997ffc82cfeb476fb0744c33689e87c1e4ef11a31260f70b14f97b907a6a",
+            "nativeExportSha256": "8a74c1904761f2008460c2a041befe75b0ab5ef8fc78bea45df55ba9477adf03",
+            "worksheetId": "ms-g7-frq-02-a-r4",
+            "revision": 4
           },
           {
             "key": "b",
             "viewerLevel": "B",
-            "pdfId": "b726a5baebda4923878f7f2e80078be3",
-            "pdfSha256": "0654d84c0507d5334e57ba183a3ee6bbef7aaa29656566429f62a00b15655649",
-            "sourceSha256": "d36df47c66712d352959734b452c0630b54c4e728055fd8bc5b669eb7ed1bacf",
-            "nativeExportSha256": "96a253237b1d199839a3a1228c697dc5297cb529b147eb38a6003dbc3fc2402c",
-            "worksheetId": "ms-g7-frq-02-b-r1",
-            "revision": 1
+            "pdfId": "e1a2834fb3a14ca1be9d8fd85219100f",
+            "pdfSha256": "bd8b06a12136d96c2101d91a6ff1ec7e8f6cf321a35f6ff9b68440899922cd95",
+            "sourceSha256": "0b6d06da34142483d2773a2cd19098aa58077024d4c370368513b3de55b71dc8",
+            "nativeExportSha256": "16562bc9c16ed0e8d55aaabda99123b5d019043ada3d8efa94d8ff1abab15750",
+            "worksheetId": "ms-g7-frq-02-b-r4",
+            "revision": 4
           },
           {
             "key": "c",
             "viewerLevel": "E",
-            "pdfId": "a8a2c1df667b47e586878626e54bf59d",
-            "pdfSha256": "d712643555d259d6724f79197aeb812ef09ef952658a6621b596bfccf345649d",
-            "sourceSha256": "7da5b2a30bd5de20345af4fc4b4e8b989b22a4e2cc379e997be8f73e2745ed41",
-            "nativeExportSha256": "7d1058c2137de5aa1defa45013054747f28e5edd7c3ed36b1678c123e80a06bd",
-            "worksheetId": "ms-g7-frq-02-c-r1",
-            "revision": 1
+            "pdfId": "b2ac6fabde404b3d87570154b77c7b34",
+            "pdfSha256": "375984472e2a596da4a40626caa0ae25889e6fbd7ab6b9d84f6744b57e0cbb5e",
+            "sourceSha256": "482852e309f1672146d631f3d2e8ed0f36c491534b99dd4abc890d18eaf09c1e",
+            "nativeExportSha256": "57fa917fa8d60adc5eaa20c6bc179f7d1e9bfd335e1b7997756276aea559cc18",
+            "worksheetId": "ms-g7-frq-02-c-r4",
+            "revision": 4
           }
         ]
       },
-      "generatedEditionSha256": "f7cde069a1b27a42a945fac885048745ff2ebdc8ce61c54822c111c771e52bbb"
+      "generatedEditionSha256": "412076b0ea25dc3d594d7bcc19edc498fb7158ac3a8c5f26973637f89b976490"
     },
     {
       "number": 91,
@@ -191,7 +185,11 @@
       "studentRevision": "r02",
       "author": "Codex",
       "skillVersion": "7.3.3",
-      "freezeSha256": "5c727aa7f42c8591ae708bbf672a9da25d1f2d4b57c66285210f5314b8ccbc37",
+      "producerFreezeSha256": "5c727aa7f42c8591ae708bbf672a9da25d1f2d4b57c66285210f5314b8ccbc37",
+      "sourceBinding": {
+        "kind": "producer-freeze",
+        "sha256": "5c727aa7f42c8591ae708bbf672a9da25d1f2d4b57c66285210f5314b8ccbc37"
+      },
       "reviewReceipts": [
         {
           "role": "Independent Claude worksheet review, r01",
@@ -212,6 +210,11 @@
           "role": "Frozen r02 visual and revision review",
           "path": "submissions/Codex/MS-PROD-CODEX-091-r02/reports/revision-review.json",
           "sha256": "4d0cd2a7b13ad75768084f93bb138d8644ac70106ba692b6322766110dc1af5a"
+        },
+        {
+          "role": "Independent Claude approval of final r02 PDFs and all three frozen SHA-256 values",
+          "path": "reports/CLAUDE-DELTA-REVIEW-G7-PRI-01-r02-20261121/review.json",
+          "sha256": "484293dd18f88ffe739f2818f1a7e16c80ebb51721863bb4148557fb55446a27"
         }
       ],
       "studentFiles": [
@@ -356,7 +359,11 @@
       "studentRevision": "r02",
       "author": "Codex",
       "skillVersion": "7.3.3",
-      "freezeSha256": "d2a1e510854a447b25462181028e53bbaa9b1ee8aec482ceacea4ff2be6f41f4",
+      "producerFreezeSha256": "d2a1e510854a447b25462181028e53bbaa9b1ee8aec482ceacea4ff2be6f41f4",
+      "sourceBinding": {
+        "kind": "producer-freeze",
+        "sha256": "d2a1e510854a447b25462181028e53bbaa9b1ee8aec482ceacea4ff2be6f41f4"
+      },
       "reviewReceipts": [
         {
           "role": "Independent Claude worksheet review, r01",
@@ -377,6 +384,11 @@
           "role": "Rendered student and Word document visual review, r02",
           "path": "submissions/Codex/MS-PROD-CODEX-094-r02/selfqa/visual.json",
           "sha256": "dc10417bec0b42da45b502f9e983f400080ac32964e4983be368af6bf584d771"
+        },
+        {
+          "role": "Independent Claude approval of final r02 PDFs and all three frozen SHA-256 values",
+          "path": "reports/CLAUDE-DELTA-REVIEW-G9-DOS-01-r02-20261121/review.json",
+          "sha256": "9c5c8f20a3dfa8e0417382ab6a6b1912148aa91f8db114c4a32f092f681b484d"
         }
       ],
       "studentFiles": [

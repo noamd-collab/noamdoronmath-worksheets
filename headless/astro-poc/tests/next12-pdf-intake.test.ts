@@ -1,3 +1,4 @@
+import { beforeNovember21Catalog } from './fixtures/middle-090-091-094';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -61,7 +62,9 @@ test('four exact editions add twelve verified PDFs and preserve the complete pre
       assert.ok(p.downloadChecks.every((d: any) => d.status === 200 && d.sha256 === (l as any).pdfSha256));
     }
   }
-  assert.deepEqual(catalog.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 45), previous.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 45));
+  // The November 21 edition was appended to the November 15 topic.
+  const preceding = beforeNovember21Catalog(catalog);
+  assert.deepEqual(preceding.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 45), previous.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 45));
 });
 
 test('all old teacher/learning/viewer sources stay identical and no additional PDF enters those banks', () => {
