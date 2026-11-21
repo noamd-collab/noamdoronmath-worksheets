@@ -383,6 +383,165 @@ export const ENGINE_GAMES: EliyahuGame[] = [
     theme: INDIGO,
     kind: 'engine',
     playPath: '/games/maabadat-haparabolot/play'
+  },
+  {
+    slug: 'chok-hasimanim',
+    title: 'משחק חוק הסימנים עם אליהו | נועם דורון',
+    h1: 'משחק חוק הסימנים עם אליהו',
+    description: 'שיעור קצר עם אליהו: למה מינוס כפול מינוס יוצא פלוס, איך סופרים סימנים במכפלה ובחילוק ומה קורה בביטוי עם סוגריים.',
+    short: 'סופרים כמה מינוסים יש, ויודעים מראש מה הסימן.',
+    grade: 'כיתה ז׳',
+    gradeOrder: 7,
+    emoji: '➖',
+    links: [
+      { href: '/multiplying-signed-numbers-grade-7', label: 'כפל מספרים מכוונים לכיתה ז׳' },
+      { href: '/dividing-signed-numbers-grade-7', label: 'חילוק מספרים מכוונים לכיתה ז׳' },
+      { href: '/order-of-operations-signed-numbers-grade-7', label: 'סדר פעולות במספרים מכוונים לכיתה ז׳' }
+    ],
+    topics: [
+      { grade: 7, topic: 3, coverage: 'full' },
+      { grade: 7, topic: 4, coverage: 'full' },
+      { grade: 7, topic: 5, coverage: 'partial' }
+    ],
+    theme: EMBER,
+    kind: 'engine',
+    playPath: '/games/chok-hasimanim/play'
+  },
+  {
+    slug: 'migdal-hechezkot',
+    title: 'משחק החזקות והשורש הריבועי עם אליהו | נועם דורון',
+    h1: 'משחק החזקות והשורש הריבועי עם אליהו',
+    description: 'שיעור קצר עם אליהו: בונים ריבוע מאריחים, רואים מה עושה המעריך, ולומדים איך השורש הריבועי מחזיר אותנו אל הצלע.',
+    short: 'בונים ריבוע מאריחים, וחוזרים ממנו אל הצלע.',
+    grade: 'כיתה ז׳',
+    gradeOrder: 7,
+    emoji: '🧱',
+    links: [
+      { href: '/powers-grade-7', label: 'חזקות לכיתה ז׳' },
+      { href: '/square-root-grade-7', label: 'שורש ריבועי לכיתה ז׳' }
+    ],
+    topics: [
+      { grade: 7, topic: 6, coverage: 'full' },
+      { grade: 7, topic: 7, coverage: 'full' }
+    ],
+    theme: AMBER,
+    kind: 'engine',
+    playPath: '/games/migdal-hechezkot/play'
+  },
+  {
+    slug: 'schum-hazaviyot',
+    title: 'משחק סכום הזוויות במשולש ובמרובע עם אליהו | נועם דורון',
+    h1: 'משחק סכום הזוויות במשולש ובמרובע עם אליהו',
+    description: 'שיעור קצר עם אליהו: מצמידים את שלוש פינות המשולש לקו ישר, מגלים את הזווית החיצונית ומחלקים מרובע לשני משולשים.',
+    short: 'שלוש הפינות של המשולש מתיישרות לקו אחד.',
+    grade: 'כיתה ז׳',
+    gradeOrder: 7,
+    emoji: '📐',
+    links: [{ href: '/triangle-quadrilateral-angle-sum-grade-7', label: 'סכום הזוויות במשולש ובמרובע לכיתה ז׳' }],
+    topics: [{ grade: 7, topic: 14, coverage: 'full' }],
+    theme: TEAL,
+    kind: 'engine',
+    playPath: '/games/schum-hazaviyot/play'
+  },
+  {
+    slug: 'maznayim-2',
+    title: 'משחק המשוואות בשני שלבים עם אליהו | נועם דורון',
+    h1: 'משחק המשוואות בשני שלבים עם אליהו',
+    description: 'שיעור קצר עם אליהו: מורידים את אותו דבר משני הצדדים, מבודדים את הנעלם גם כשהוא בשני האגפים, ובודקים את הפתרון.',
+    short: 'אותו דבר משני הצדדים, עד ש־x נשאר לבד.',
+    grade: 'כיתה ז׳',
+    gradeOrder: 7,
+    emoji: '⚖️',
+    links: [
+      { href: '/two-step-equations-grade-7', label: 'משוואות דו־שלביות לכיתה ז׳' },
+      { href: '/equations-both-sides-word-problems-grade-7', label: 'הנעלם בשני האגפים לכיתה ז׳' }
+    ],
+    topics: [
+      { grade: 7, topic: 35, coverage: 'full' },
+      { grade: 7, topic: 39, coverage: 'full' }
+    ],
+    theme: OCEAN,
+    kind: 'engine',
+    playPath: '/games/maznayim-2/play'
+  },
+  {
+    slug: 'maabadat-hakubiyot',
+    title: 'משחק ההסתברות והקובייה עם אליהו | נועם דורון',
+    h1: 'משחק ההסתברות והקובייה עם אליהו',
+    description: 'שיעור קצר עם אליהו: בונים את מרחב התוצאות, מטילים קובייה שוב ושוב ורואים איך השכיחות היחסית מתקרבת אל ההסתברות.',
+    short: 'מטילים הרבה פעמים, והמספרים מתיישבים.',
+    grade: 'כיתה ז׳',
+    gradeOrder: 7,
+    emoji: '🎲',
+    links: [
+      { href: '/probability-introduction-grade-7', label: 'הסתברות לכיתה ז׳' },
+      { href: '/relative-frequency-experiments-grade-7', label: 'שכיחות יחסית וניסויים לכיתה ז׳' }
+    ],
+    topics: [
+      { grade: 7, topic: 28, coverage: 'full' },
+      { grade: 7, topic: 27, coverage: 'full' },
+      { grade: 7, topic: 26, coverage: 'partial' }
+    ],
+    theme: CYAN,
+    kind: 'engine',
+    playPath: '/games/maabadat-hakubiyot/play'
+  },
+  {
+    slug: 'mechonat-hapunktsiyot',
+    title: 'משחק מכונת הפונקציות עם אליהו | נועם דורון',
+    h1: 'משחק מכונת הפונקציות עם אליהו',
+    description: 'שיעור קצר עם אליהו: מכניסים מספר למכונה, מגלים את הכלל, כותבים אותו בסימון f(x) ובודקים מה כן פונקציה ומה לא.',
+    short: 'מכניסים מספר, מקבלים תוצאה, ומגלים את הכלל.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '⚙️',
+    links: [
+      { href: '/function-concept-grade-8', label: 'מושג הפונקציה לכיתה ח׳' },
+      { href: '/function-notation-grade-8', label: 'סימון פונקציה לכיתה ח׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 19, coverage: 'full' },
+      { grade: 8, topic: 20, coverage: 'full' }
+    ],
+    theme: PLUM,
+    kind: 'engine',
+    playPath: '/games/mechonat-hapunktsiyot/play'
+  },
+  {
+    slug: 'shnei-yesharim',
+    title: 'משחק מערכת שתי המשוואות עם אליהו | נועם דורון',
+    h1: 'משחק מערכת שתי המשוואות עם אליהו',
+    description: 'שיעור קצר עם אליהו: מזיזים שני ישרים עד שהם נפגשים, קוראים את נקודת החיתוך ומוצאים אותה שוב בדרך האלגברית.',
+    short: 'שני ישרים, נקודה אחת שמתאימה לשניהם.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '🎯',
+    links: [
+      { href: '/systems-of-equations-grade-8', label: 'מערכת משוואות לכיתה ח׳' },
+      { href: '/systems-algebraic-solution-grade-8', label: 'פתרון אלגברי של מערכת לכיתה ח׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 47, coverage: 'full' },
+      { grade: 8, topic: 48, coverage: 'partial' }
+    ],
+    theme: SLATE,
+    kind: 'engine',
+    playPath: '/games/shnei-yesharim/play'
+  },
+  {
+    slug: 'nuschat-hashorashim',
+    title: 'משחק המשוואה הריבועית ונוסחת השורשים עם אליהו | נועם דורון',
+    h1: 'משחק המשוואה הריבועית ונוסחת השורשים עם אליהו',
+    description: 'שיעור קצר עם אליהו: רואים איפה הפרבולה חותכת את הציר, מציבים בנוסחת השורשים ובודקים מה הדיסקרימיננטה מספרת.',
+    short: 'הדיסקרימיננטה מגלה כמה פתרונות יש, עוד לפני החישוב.',
+    grade: 'כיתה ט׳',
+    gradeOrder: 9,
+    emoji: '🔎',
+    links: [{ href: '/quadratic-equations-grade-9', label: 'משוואות ריבועיות לכיתה ט׳' }],
+    topics: [{ grade: 9, topic: 6, coverage: 'full' }],
+    theme: ROSE,
+    kind: 'engine',
+    playPath: '/games/nuschat-hashorashim/play'
   }
 ];
 

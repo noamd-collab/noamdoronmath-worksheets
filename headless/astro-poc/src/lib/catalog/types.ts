@@ -103,7 +103,15 @@ export interface CatalogGrade {
   topics: CatalogTopic[];
 }
 
+export interface ElementaryPrintTopic {
+  grade: number;
+  topicId: number;
+  slug: string;
+  levels: string[];
+}
+
 export interface CatalogV1 {
+  elementaryPrintTopics?: ElementaryPrintTopic[];
   /** Build-verified, public-only activation proof summary; revalidated against registry at load. */
   ramziActivation?: unknown;
   /** Optional applied correction evidence; the original activation remains historical and immutable. */

@@ -14,9 +14,9 @@ import { GradeNav } from './GradeNav';
 import { catalogSearch, matchingTopicIds } from '../lib/siteSearch/catalogFilter';
 import { searchHref } from '../lib/siteSearch/url';
 import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
-import { buildWorksheetHref } from '../lib/worksheetLinks';
+import { topicWorksheetEditionLinks, type TopicWorksheetEditionLinks } from '../lib/topicWorksheetEditions';
 import { isDirectWorksheetPdf, worksheetActionLabel } from '../lib/worksheetActions';
-import { resolveEdition, topicEditions, worksheetEditionNote, worksheetTopicHintLabel } from '../lib/catalog/editions';
+import { worksheetTopicHintLabel } from '../lib/catalog/editions';
 import {
   buildWorksheetsHref,
   parseWorksheetsUrlState,
@@ -318,19 +318,12 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
 
   const backPath = worksheetsBackPath(catalogState);
 
-  function renderLevelButtons(topic: CatalogTopic, gNum: number, editionId = 'legacy') {
-    return resolveEdition(topic, editionId).levels.map((level) => {
-      const href = buildWorksheetHref({
-        catalog,
-        grade: gNum,
-        topic,
-        levelKey: level.key,
-        editionId,
-        backPath,
-      });
+  function renderLevelButtons(topic: CatalogTopic, edition: TopicWorksheetEditionLinks) {
+    return edition.levels.map((level) => {
+      const href = level.href;
       return (
         <a
-          key={topic.id + '-' + level.key + '-' + gNum + '-' + editionId}
+          key={topic.id + '-' + level.key + '-' + edition.editionId}
           className={`${levelClass(level.key)}${isDirectWorksheetPdf(href) ? ' lvl--pdf' : ''}`}
           href={href}
           target="_blank"
@@ -344,18 +337,18 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   }
 
   function renderEditionButtons(topic: CatalogTopic, gNum: number) {
-    const editions = topicEditions(topic);
-    if (editions.length === 1) return renderLevelButtons(topic, gNum);
-    const selected = resolveEdition(topic);
+    const [selected, ...otherEditions] = topicWorksheetEditionLinks(catalog, gNum, topic.id, backPath);
+    if (!selected) return null;
+    if (!otherEditions.length) return renderLevelButtons(topic, selected);
     return <div className="worksheet-editions">
       <strong className="worksheet-edition-label">{selected.label}</strong>
-      {worksheetEditionNote(selected) && <p className="note">{worksheetEditionNote(selected)}</p>}
-      <div className="worksheet-links">{renderLevelButtons(topic, gNum, selected.editionId)}</div>
-      {editions.filter(e => e.editionId !== selected.editionId).map(edition => (
+      {selected.note && <p className="note">{selected.note}</p>}
+      <div className="worksheet-links">{renderLevelButtons(topic, selected)}</div>
+      {otherEditions.map(edition => (
         <details className="more-worksheets" key={edition.editionId}>
           <summary>{edition.label}</summary>
-          {worksheetEditionNote(edition) && <p className="note">{worksheetEditionNote(edition)}</p>}
-          <div className="worksheet-links">{renderLevelButtons(topic, gNum, edition.editionId)}</div>
+          {edition.note && <p className="note">{edition.note}</p>}
+          <div className="worksheet-links">{renderLevelButtons(topic, edition)}</div>
         </details>
       ))}
     </div>;

@@ -191,7 +191,33 @@ function beforeAdditionalProjection(file: string, content: string): string {
   return content;
 }
 
+// The elementary print index adds one import and wraps the existing catalog result.
+function beforeElementaryPrintIndex(content: string): string {
+  assert.equal(sha256(content), '5dbfd7f47122d9316dcac9176f49c0d57e97e95a0d0ae20d60e41e7cd1082ab5', 'reviewed elementary print loader');
+  const merge = 'mergeReviewedCatalog(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection, data.reviewedRamziActivations, additionalTrust) as CatalogV1;';
+  const hunks: [string, string][] = [
+    ["import printFiles from '../../data/elementary-print-worksheets.json';\n", ''],
+    [
+      `  const catalog = ${merge}
+  return {
+    ...catalog,
+    elementaryPrintTopics: printFiles.map(({ grade, topicId, slug, levels }) =>
+      ({ grade, topicId, slug, levels: Object.keys(levels) })),
+  };`,
+      `  return ${merge}`,
+    ],
+  ];
+  for (const [after, before] of hunks) {
+    const parts = content.split(after);
+    assert.equal(parts.length, 2, 'one exact elementary print loader hunk');
+    content = parts.join(before);
+  }
+  assert.equal(sha256(content), 'f7ebb9c4ac4330e14835875a37601f8c94dd9c94e6752b17131f6dcbddbb97a3', 'catalog loader before elementary print index');
+  return content;
+}
+
 function beforeActivation(file: string, content: string): string {
+  if (file === 'src/lib/catalog/loadCatalog.ts') content = beforeElementaryPrintIndex(content);
   content = beforeAdditionalProjection(file, content);
   content = beforeLegalPrivacy(file, beforeWhatsappRemoval(file, content));
   if (file === 'src/lib/catalog/loadCatalog.ts') {
@@ -230,6 +256,8 @@ it('additional package loader and base links preserve all original fences', () =
 it('hint-correction loader reversal preserves all earlier exact fences', () => {
   const file = 'src/lib/catalog/loadCatalog.ts', current = read(file);
   assert.doesNotThrow(() => beforeActivation(file, current));
+  assert.throws(() => beforeActivation(file, current.replace('elementary-print-worksheets.json', 'other-print-worksheets.json')));
+  assert.throws(() => beforeActivation(file, current.replace('Object.keys(levels)', 'Object.values(levels)')));
   assert.throws(() => beforeActivation(file, current.replace('data.ramziHintCorrection', 'data.unreviewedCorrection')));
   assert.throws(() => beforeActivation(file, current + '\n'));
 });
