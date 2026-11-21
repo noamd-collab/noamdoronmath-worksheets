@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { isolateMathRuns } from '../../src/lib/mathDirection';
 import { createHash } from 'node:crypto';
 import reviewed from '../../../../docs/middle-090-091-094-pdf-20261121.json';
 
@@ -52,6 +53,14 @@ export function beforeNovember21Copy<T>(slug: string, page: T): T {
   const item = release?.packages.find(p => p.slug === slug);
   if (!release || !item) return page;
   const result: any = structuredClone(page);
+  if ('priorCopyEdits' in item) {
+    for (const edit of item.priorCopyEdits) {
+      const parent = edit.path.slice(0, -1).reduce((node: any, key) => node[key], result);
+      const key = edit.path.at(-1)!;
+      assert.equal(strip(parent[key]), edit.after, slug);
+      parent[key] = parent[key] === edit.after ? edit.before : isolateMathRuns(edit.before);
+    }
+  }
   const section = result.sections.pop();
   assert.equal(strip(section.heading), item.section.heading, slug);
   assert.deepEqual(section.blocks.map((b: any) => strip(b.text)), item.section.blocks.map(b => b.text), slug);
