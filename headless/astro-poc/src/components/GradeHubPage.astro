@@ -137,6 +137,13 @@ const gradePool = buildGradeLoopPool(grade);
           )
         }
         {
+          hub.teachersLink && (
+            <p class="grade-hub__track-link">
+              <a href={hub.teachersLink.href} data-peek="teachers">{hub.teachersLink.label}</a>
+            </p>
+          )
+        }
+        {
           grade === 9 && (
             <p class="grade-hub__track-link">
               <a href={REDUCED_HUB_PATH}>כיתה ט׳ מצומצמת — דפי עבודה לפי הפריסה</a>
