@@ -32,14 +32,23 @@ def integer(value, low, high, where):
 
 
 def capabilities():
-    return json.loads((HERE / "capabilities.json").read_text(encoding="utf-8"))
+    from runtime_catalog import general_capabilities
+    return general_capabilities(json.loads((HERE / "capabilities.json").read_text(encoding="utf-8")))
 
 
 def capability(lesson):
     if not isinstance(lesson,dict): reject("INVALID_LESSON", "Expected a lesson object")
-    if type(lesson.get("gradeNumber")) is not int or type(lesson.get("version")) is not int or lesson.get("version") not in (1, 2):
+    if type(lesson.get("gradeNumber")) is not int or type(lesson.get("version")) is not int or lesson.get("version") not in (1, 2, 3):
         reject("INVALID_LESSON", "Expected a supported intake version and integer gradeNumber")
-    for cap in capabilities()["topics"]:
+    if lesson['version'] == 3:
+        from runtime_catalog import scope_for_lesson, topic_capability
+        from curriculum_scope import CurriculumScopeError
+        try:
+            scope = scope_for_lesson(lesson)
+            return topic_capability({**scope['topic'], 'levels': scope['levels']})
+        except CurriculumScopeError as exc:
+            reject('INVALID_LESSON_BOUNDARY', str(exc))
+    for cap in json.loads((HERE / 'capabilities.json').read_text(encoding='utf-8'))['topics']:
         if cap["topicId"] == lesson.get("topicId") and cap["gradeNumber"] == lesson["gradeNumber"]:
             if not cap.get("enabled"):
                 reject("UNSUPPORTED_TOPIC", "Adapter candidate is not enabled until its complete end-to-end gates pass")
@@ -72,7 +81,9 @@ def calculate(left, op, right):
 
 def validate_lesson(lesson, *, allow_legacy=False):
     cap = capability(lesson)
-    validated_boundary(lesson, allow_legacy=allow_legacy)
+    general = lesson['version'] == 3
+    if not general:
+        validated_boundary(lesson, allow_legacy=allow_legacy)
     if lesson.get("level") not in ("a", "b", "e"):
         reject("INVALID_LESSON", "Expected level a, b or e")
     if lesson["level"] not in cap.get("levels", []):
@@ -96,6 +107,13 @@ def validate_lesson(lesson, *, allow_legacy=False):
         reject("INVALID_LESSON", "Invalid alreadyLearned")
     if not all(isinstance(v, str) and len(v) <= 120 for v in lesson["alreadyLearned"]):
         reject("INVALID_LESSON", "Invalid alreadyLearned item")
+    if general:
+        from authoring_context import _teacher_context, AuthoringContextError
+        from runtime_catalog import scope_for_lesson
+        try:
+            _teacher_context(lesson, scope_for_lesson(lesson))
+        except AuthoringContextError as exc:
+            reject('INVALID_LESSON', str(exc))
     # Free-text progress is context for authoring, never an authorization to add tools.
     if lesson.get("taughtThroughTopicId") not in (None, lesson["topicId"]):
         reject("UNSUPPORTED_PROGRESS", "This pilot requires the selected topic as the taught-through boundary")
@@ -108,6 +126,14 @@ def validate_lesson(lesson, *, allow_legacy=False):
 
 def validate_model(lesson, payload, *, allow_legacy=False):
     cap = validate_lesson(lesson, allow_legacy=allow_legacy)
+    if lesson['version'] == 3:
+        from general_source import validate_source, GeneralSourceError
+        from runtime_catalog import scope_for_lesson
+        try:
+            validate_source(lesson, payload, scope_for_lesson(lesson))
+        except GeneralSourceError as exc:
+            reject(exc.code, str(exc))
+        return cap
     boundary = validated_boundary(lesson, allow_legacy=allow_legacy)
     if len(json.dumps(payload, ensure_ascii=False).encode()) > MAX_JSON_BYTES:
         reject("INVALID_MODEL_OUTPUT", "Model output too large")

@@ -4,7 +4,8 @@ FROM --platform=linux/amd64 python:3.12-slim-bookworm@sha256:0f086103b026048cc50
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONNOUSERSITE=1 \
     LANG=C.UTF-8 LC_ALL=C.UTF-8 HOME=/home/worker \
     ELEMENTARY_SKILL_PATH=/opt/noam/skills/elementary \
-    MIDDLE_SKILL_PATH=/opt/noam/skills/middle
+    MIDDLE_SKILL_PATH=/opt/noam/skills/middle \
+    WSPEC_OCR=/opt/noam/app/wspec_ocr_tesseract.py
 
 # Frozen signed Debian indexes pin all native transitives, not just direct libs.
 # Only expiry is waived for reproducibility; archive signature verification stays on.
@@ -16,6 +17,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libharfbuzz-subset0=6.0.0+dfsg-3 fontconfig=2.14.1-4 \
     fonts-dejavu-core=2.37-6 poppler-utils=22.12.0-2+deb12u3 \
     chromium=156.0.8078.79-1~deb12u1 tini=0.19.0-1+b3 \
+    tesseract-ocr=5.3.0-2 tesseract-ocr-eng=1:4.1.0-2 \
+    tesseract-ocr-osd=1:4.1.0-2 libtesseract5=5.3.0-2 liblept5=1.82.0-3+b3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Dockerfile.dockerignore is an explicit source allowlist, not the user's cwd.
@@ -24,6 +27,7 @@ RUN python -m pip --isolated install --no-cache-dir --index-url https://pypi.org
     --require-hashes --only-binary=:all: \
     -r /opt/noam/app/cloud/container/requirements-linux-amd64.lock \
     && python -m pip check \
+    && chmod 0755 /opt/noam/app/wspec_ocr_tesseract.py \
     && python /opt/noam/app/cloud/container/skill_bundle.py --install /opt/noam/skills \
     && mkdir -p /usr/local/share/fonts/noam /work/jobs /home/worker \
     && cp /opt/noam/skills/elementary/assets/DavidLibre-*.ttf /usr/local/share/fonts/noam/ \

@@ -939,6 +939,13 @@ Moved the exact 15-row source/old/new hash proof to a required content-addressed
 
 - 2026-11-16: PR499 test-only follow-up fixes the protected-design catalog fence to compare each correction phase against its exact receipt; historical hashes unchanged. Full frozen run 2534/2535, drawing 8/8, SSR 4/4; repaired focused checks 41/41. Draft deferred for PDF-first work; no further full run or deployment.
 
+## 2026-11-16 — יצירה פרטית לפי קטלוג הסקילים
+
+- הוכנה תמיכה בטיוטות עבור 232 נושאי א׳–ט׳, כולל שני מסלולי ט׳, עם בחירת מושגים שנלמדו ומקום העצירה. יצירה חדשה נשארת לבעלים בלבד; כלי המורים הרגילים נשארים זמינים לכל חשבון Google מאומת.
+- מקור מובנה של Qwen עובר אימות, חישוב מדויק והפקת PDF ו־Word דרך הסקילים הנעולים. כשל חוסם אינו מקבל קובץ להורדה. טיוטת REVIEW נשארת מסומנת לבדיקה אנושית, עם הרשאות אחסון פרטיות.
+- ארבע הפקות מייצגות נבדקו: ניקוד בכיתה ב׳, שברים בד׳, משוואות ריבועיות וקריאת גרפים בט׳. זו בדיקת מנגנון ולא אישור פדגוגי לכל דף אפשרי ב־232 הנושאים. מסלול החטיבה הוא דף רחב; שערי תתי־נושאים ייעודיים מסומנים SKIP ולא PASS.
+- הפרסום, תמונת Linux והמיגרציה מתואמים באותה חבילת שחרור. בזמן הכנת הרשומה טרם פורסם השינוי; הראיות והאישור המדויקים יופיעו ב־PR ובקבלת הפריסה. אין הוספת דפים ציבוריים או דפי נחיתה במסגרת הטיוטות הפרטיות.
+
 ### 2026-11-21 — elementary print worksheets for 39 topics
 
 This candidate adds 107 individually reviewed student PDFs (1,006 printed pages, including final answers). The grade 1–6 counts are 38, 6, 45, 6, 9 and 3. Each file is linked from its grade's catalog card and its existing topic landing page. Site search selects the new PDF for each available level. The PDF hashes and grade/topic/level associations are recorded in `headless/astro-poc/src/data/elementary-print-worksheets.json`.

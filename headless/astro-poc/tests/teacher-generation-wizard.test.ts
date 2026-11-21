@@ -5,15 +5,15 @@ import { join } from 'node:path';
 import test from 'node:test';
 import puppeteer from 'puppeteer-core';
 import { resolveTestBrowser } from './helpers/chromium';
+import { GENERATION_CURRICULUM_SHA256, parseTeacherGenerationCurriculum, getTeacherGenerationMinimumQuestionCount } from '../src/lib/teacherGenerationContract';
 
 const source = readFileSync(new URL('../src/pages/teachers/generate.astro', import.meta.url), 'utf8');
 const markup = source.match(/<main[\s\S]*?<\/main>/)![0];
 const css = readFileSync(new URL('../public/teachers/generation.css', import.meta.url), 'utf8');
-const script = readFileSync(new URL('../public/teachers/generation.js', import.meta.url), 'utf8');
-const topics = [
-  { topicId: 'ג10', gradeNumber: 3, title: 'חילוק', enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [12] },
-  { topicId: 'g7:equations', gradeNumber: 7, title: 'משוואות', enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [20] },
-];
+const script = readFileSync(new URL('../public/teachers/generation-v3.js', import.meta.url), 'utf8');
+const catalog=readFileSync(new URL('../public/teachers/generation-curriculum.json',import.meta.url),'utf8');
+const topics=parseTeacherGenerationCurriculum(JSON.parse(catalog)).topics.map(t=>({...t,enabled:true,readiness:'private_draft',e2eVerified:false,
+ levels:t.topicId.startsWith('g9m:')?['b']:t.topicId.startsWith('g9r:')?['a','e']:['b','a','e'],questionCounts:[getTeacherGenerationMinimumQuestionCount(t.gradeNumber)]}));
 
 test('desktop and phone wizard use native keyboard validation with one visible question and no live requests', { timeout: 60000 }, async t => {
   for (const viewport of [{ width: 1366, height: 768 }, { width: 390, height: 844 }]) {
@@ -29,8 +29,9 @@ test('desktop and phone wizard use native keyboard validation with one visible q
       if (url.origin !== 'https://wizard.test') return void request.abort();
       if (url.pathname === '/') return void request.respond({ status: 200, contentType: 'text/html',
         body: `<!doctype html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;font-family:Arial,sans-serif;background:#fafbf8}${css}</style></head><body>${markup}<script>${script}</script></body></html>` });
+      if(url.pathname==='/teachers/generation-curriculum.json')return void request.respond({status:200,contentType:'application/json',body:catalog});
       if (url.pathname === '/api/teacherGeneration' && request.method() === 'GET') return void request.respond({ status: 200, contentType: 'application/json', body: JSON.stringify({
-        ok: true, online: true, capabilities: { topics }, jobs: [{ id: 'old-job', status: 'needs_review', phase: 'needs_review',
+        ok: true, online: true, capabilities: {profile:'general-skill-source/v1',curriculumSha256:GENERATION_CURRICULUM_SHA256,acceptedIntakeVersions:[2,3],topics }, jobs: [{ id: 'old-job', status: 'needs_review', phase: 'needs_review',
           created_at: '2026-11-13T00:00:00Z', lesson: { topicId: 'ג10', lastLesson: 'דף קודם' }, result: { automatedChecksPassed: true } }],
       }) });
       return void request.respond({ status: 204, body: '' });
@@ -53,14 +54,27 @@ test('desktop and phone wizard use native keyboard validation with one visible q
     }
     await next(); await screen('grade-title');
     assert.equal(await page.evaluate(() => document.activeElement?.id), 'generation-grade');
+    for (const [index, count] of [21, 26, 25, 30, 31, 27, 13, 17, 42].entries()) {
+      const grade = index + 1;
+      await page.select('[name=gradeNumber]', String(grade));
+      await next(); await screen('topic-title');
+      const available = await page.$$eval('[name=topicId] option', options =>
+        options.filter(option => option.value && !option.disabled).map(option => option.value));
+      assert.equal(available.length, count, `grade ${grade}`);
+      assert.deepEqual(available, topics.filter(topic => topic.gradeNumber === grade).map(topic => topic.topicId));
+      assert.equal(await page.$eval('[name=topicId]', el => (el as HTMLSelectElement).value), '');
+      await next(); await screen('topic-title');
+      await page.select('[name=topicId]', available[0]); await next(); await screen('level-title');
+      assert.equal(await page.$eval('[name=level]', el => (el as HTMLSelectElement).value), '');
+      await page.click('#wizard-back'); await page.click('#wizard-back');
+    }
     await page.select('[name=gradeNumber]', '3'); await next(); await screen('topic-title');
     assert.equal(await page.evaluate(() => document.activeElement?.id), 'topic-title');
     await next(); await screen('topic-title');
     await page.select('[name=topicId]', 'ג10'); await next(); await screen('level-title');
     await next(); await screen('level-title');
     await page.select('[name=level]', 'b'); await next(); await screen('lesson-title');
-    await page.click('[name=learnedDivisor][value="2"]'); await page.click('[name=learnedDivisor][value="5"]');
-    await page.type('[name=boundaryMaxDividend]', '100');
+    await page.click('[name=learnedConcept][value="ג10#0"]');
     await next(); await screen('lesson-title');
     assert.equal(await page.evaluate(() => document.activeElement?.id), 'generation-last-lesson');
     await page.type('[name=lastLesson]', 'תרגלנו חילוק ללא שארית בתחום לוח הכפל');
@@ -74,21 +88,26 @@ test('desktop and phone wizard use native keyboard validation with one visible q
     assert.equal(await page.$eval('[name=topicId]', el => (el as HTMLSelectElement).value), 'ג10');
     assert.equal(await page.$eval('[name=level]', el => (el as HTMLSelectElement).value), 'b');
     await page.select('[name=gradeNumber]', '9'); await next(); await screen('topic-title');
-    assert.equal(await page.$eval('#topic-unavailable', el => (el as HTMLElement).hidden), false);
-    assert.equal(await page.$eval('#plan-button', el => (el as HTMLButtonElement).disabled), true);
+    assert.equal(await page.$eval('#topic-unavailable', el => (el as HTMLElement).hidden), true);
+    assert.equal(await page.$eval('#plan-button', el => (el as HTMLButtonElement).disabled), false);
+    assert.equal(await page.$$eval('[name=topicId] option',els=>els.length),43);
     assert.equal(await page.$eval('[name=level]', el => (el as HTMLSelectElement).value), '');
-    await page.click('#wizard-back'); await page.select('[name=gradeNumber]', '7'); await next();
-    await page.select('[name=topicId]', 'g7:equations'); await next(); await page.select('[name=level]', 'b'); await next();
+    await page.click('#wizard-back'); await page.select('[name=gradeNumber]', '8'); await next();
+    await page.select('[name=topicId]', 'g8:congruence'); await next(); await page.select('[name=level]', 'b'); await next();
     assert.equal(await page.$eval('[name=lastLesson]', el => (el as HTMLTextAreaElement).value), 'תרגלנו חילוק ללא שארית בתחום לוח הכפל');
     assert.equal(await page.$eval('[name=minutes]', el => (el as HTMLInputElement).value), '45');
-    await page.select('[name=boundarySignedNumbers]', 'no');
-    await page.$eval('[name=lastLesson]', el => { (el as HTMLTextAreaElement).value = 'תרגלנו משוואות עם פתרונות שלמים ומספרים מכוונים'; });
+    await page.click('[name=learnedConcept][value="g8:congruence#0"]');
+    await page.$eval('[name=lastLesson]', el => { (el as HTMLTextAreaElement).value = 'תרגלנו זיהוי משולשים חופפים'; });
+    await page.click('#refresh-generation');
+    assert.equal(await page.$eval('[name=topicId]',el=>(el as HTMLSelectElement).value),'g8:congruence');
+    assert.equal(await page.$eval('[name=learnedConcept][value="g8:congruence#0"]',el=>(el as HTMLInputElement).checked),true);
+    if (process.env.TEACHER_WIZARD_CAPTURE_DIR) await page.screenshot({ path: join(process.env.TEACHER_WIZARD_CAPTURE_DIR, `concepts-${viewport.width}.png`), fullPage: true });
     await next();
     assert.equal(await page.$eval('#generation-form', el => (el as HTMLElement).hidden), true);
     assert.equal(await page.$eval('#generation-plan', el => (el as HTMLElement).hidden), false);
     assert.equal(await page.evaluate(() => document.activeElement?.id), 'plan-title');
     assert.match(await page.$eval('#plan-details', el => el.textContent || ''), /20 שאלות · 45 דקות/);
-    assert.match(await page.$eval('#plan-details', el => el.textContent || ''), /ללא מספרים שליליים/);
+    assert.match(await page.$eval('#plan-details', el => el.textContent || ''), /חפיפה|חופפים/);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     assert.ok((await page.$$eval('button,summary,.generation-top>a', elements => elements.filter(el => (el as HTMLElement).offsetParent !== null).map(el => el.getBoundingClientRect().height))).every(height => height >= 44));
     if (process.env.TEACHER_WIZARD_CAPTURE_DIR) await page.screenshot({ path: join(process.env.TEACHER_WIZARD_CAPTURE_DIR, `review-${viewport.width}.png`), fullPage: true });

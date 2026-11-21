@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import {
   getTeacherGenerationMinimumQuestionCount, getTeacherGenerationTopic, getTeacherGenerationTopics,
   parseTeacherGenerationCurriculum, validateTeacherGenerationIntake, type TeacherGenerationIntake,
+  GENERATION_CURRICULUM_SHA256,
 } from '../src/lib/teacherGenerationContract';
 
 const json = readFileSync(new URL('../public/teachers/generation-curriculum.json', import.meta.url), 'utf8');
@@ -14,6 +15,24 @@ const valid = (changes: Record<string, unknown> = {}) => ({
   minutes: 45, questionCount: 12, explicitShortSheet: false, ...changes,
 });
 const check = (changes: Record<string, unknown> = {}) => validateTeacherGenerationIntake(valid(changes), curriculum, { allowLegacy: true });
+
+test('version3 accepts every pinned topic with explicit concepts and compatible grade9 levels',()=>{
+ for(const topic of curriculum.topics) {
+  const result=check({version:3,gradeNumber:topic.gradeNumber,topicId:topic.topicId,level:topic.topicId.startsWith('g9r:')?'a':'b',
+   alreadyLearned:[],questionCount:getTeacherGenerationMinimumQuestionCount(topic.gradeNumber),
+   lessonBoundary:{version:1,kind:'curriculum_scope',curriculumSha256:GENERATION_CURRICULUM_SHA256,conceptIds:[`${topic.topicId}#0`]}});
+  assert.equal(result.ok,true,JSON.stringify({topic:topic.topicId,result}));
+  if(result.ok)assert.equal(result.value.version,3);
+ }
+});
+test('version3 rejects unpinned, empty, duplicate, cross-topic, out-of-range and extra scope fields',()=>{
+ const boundary={version:1,kind:'curriculum_scope',curriculumSha256:GENERATION_CURRICULUM_SHA256,conceptIds:['ג10#0']};
+ for(const change of [{curriculumSha256:'0'.repeat(64)},{conceptIds:[]},{conceptIds:['ג10#0','ג10#0']},{conceptIds:['g8:congruence#0']},{conceptIds:['ג10#999']},{conceptIds:[0]},{selectedConcepts:['model supplied']},{version:2}]) {
+  assert.equal(check({version:3,lessonBoundary:{...boundary,...change}}).ok,false,JSON.stringify(change));
+ }
+ assert.equal(check({version:3,gradeNumber:4,lessonBoundary:boundary}).ok,false);
+ assert.equal(check({version:3,gradeNumber:9,topicId:'g9m:equations',level:'a',questionCount:20,lessonBoundary:{...boundary,conceptIds:['g9m:equations#0']}}).ok,false);
+});
 function rejects(changes: Record<string, unknown>, code: string) {
   const result = check(changes);
   assert.equal(result.ok, false, JSON.stringify(changes));

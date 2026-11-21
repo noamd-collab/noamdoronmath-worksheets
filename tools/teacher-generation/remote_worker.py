@@ -74,7 +74,7 @@ def check_transport(remote):
 
 def heartbeat(remote):
     remote.call('/rest/v1/noam_teacher_generation_workers?on_conflict=id','POST',
-                {'id':'primary','updated_at':utc().isoformat(),'capabilities':{**capabilities(), 'acceptedIntakeVersions':[2]}},prefer='resolution=merge-duplicates')
+                {'id':'primary','updated_at':utc().isoformat(),'capabilities':capabilities()},prefer='resolution=merge-duplicates')
 
 def update_job(remote, job, values):
     for key in ('id','lease_token'):
@@ -137,7 +137,7 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         elapsed = metadata.get('elapsedSeconds')
         if type(elapsed) in (int, float) and 0 <= elapsed <= 86400: record['elapsedSeconds'] = round(elapsed, 3)
         record['usage'] = safe_usage(metadata.get('usage'))
-        if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3'):
+        if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4'):
             record['authorContract'] = metadata['authorContract']
         derivation = metadata.get('derivation')
         if isinstance(derivation, dict) and type(derivation.get('performed')) is bool:
@@ -191,7 +191,7 @@ def process_job(remote, job, root):
         # One model invocation per claimed job. Failures require a new owner request.
         metadata = {}; author_failure = None
         try:
-            payload=author_lesson(lesson, metadata=metadata)
+            payload=author_lesson(lesson, metadata=metadata, **({'timeout':300} if lesson.get('version')==3 else {}))
         except Exception as exc:
             author_failure = exc
             raise
@@ -203,8 +203,10 @@ def process_job(remote, job, root):
         manifest=render_job(lesson,payload,target)
         if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
         artifacts=manifest.get('artifacts',[])
-        passed=manifest.get('status')=='needs_review' and manifest.get('automatedChecksPassed') is True
-        passed=passed and bool(manifest.get('steps')) and all(s.get('status')=='PASS' for s in manifest['steps'])
+        general=lesson.get('version')==3 and manifest.get('authoringProfile')=='general-skill-source/v1'
+        passed=manifest.get('status')=='needs_review' and (manifest.get('automatedChecksPassed') is True
+            or (general and manifest.get('renderingChecksPassed') is True))
+        passed=passed and bool(manifest.get('steps')) and all(s.get('status') in (('PASS','REVIEW') if general else ('PASS',)) for s in manifest['steps'])
         if not passed or {a.get('kind') for a in artifacts}!={'pdf','docx'} or len(artifacts)!=2:
             raise GenerationError('QUALITY_GATE_FAILED','A required output gate failed')
         check_transport(remote)
@@ -220,8 +222,12 @@ def process_job(remote, job, root):
             published.append({'kind':item['kind'],'sha256':item['sha256'],'bytes':len(blob)})
         # Paths/logs/model source stay on the private worker; browser gets only
         # bounded provenance and the exact two artifacts, never public URLs.
-        result={'version':1,'automatedChecksPassed':True,'humanReviewRequired':True,'skill':manifest['skill'],
+        result={'version':1,'automatedChecksPassed':manifest.get('automatedChecksPassed') is True,'humanReviewRequired':True,'skill':manifest['skill'],
                 'artifacts':published,'checks':[{'name':s['name'],'status':s['status']} for s in manifest['steps']]}
+        if general:
+            result.update(authoringProfile='general-skill-source/v1',renderingChecksPassed=True,
+                          reviewFindings=[{'code':r['code'],'count':r['count']} for r in manifest.get('reviewFindings',[])
+                                          if r.get('code')=='DIDACTIC_REVIEW' and type(r.get('count')) is int and 0<r['count']<=2000])
         if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
         stop.set();thread.join(timeout=3)
         update_job(remote,job,{'status':'needs_review','phase':'needs_review','result':result,'lease_token':None,'lease_until':None})

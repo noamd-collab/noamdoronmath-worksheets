@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "cases": [
+    "grade2-vocalized",
+    "grade4-fractions",
+    "grade9-quadratic",
+    "grade9-coordinate-triangles"
+  ],
+  "files": {
+    "grade2-vocalized/lesson.json": {
+      "bytes": 511,
+      "sha256": "05514b614fda35e689531c1c32a28f5fc1376a52d661182ae831272071266997"
+    },
+    "grade2-vocalized/model-output.json": {
+      "bytes": 43529,
+      "sha256": "7a893c36b677d21986084c455989aed10fa8d1f7d19b9ed1bfdbf1bfc61c77a7"
+    },
+    "grade4-fractions/lesson.json": {
+      "bytes": 588,
+      "sha256": "2a4163104fbdcf753d1185e2b79ad03f088e93725e742966cdcf3cd54e62d8ac"
+    },
+    "grade4-fractions/model-output.json": {
+      "bytes": 29536,
+      "sha256": "3333f24bbb3f0e2f4bd176c77ac163caddf4aacb70230bee07f8e2ca9c98586a"
+    },
+    "grade9-quadratic/lesson.json": {
+      "bytes": 678,
+      "sha256": "cf08aa8612b7145c169ae7e81ff42b02ff090dec2f73d4ed734bb48d10cf66a4"
+    },
+    "grade9-quadratic/model-output.json": {
+      "bytes": 114754,
+      "sha256": "381006eec27791a9ba86533a35117617a329592784a14a2ba9a1dfd16a90d358"
+    },
+    "grade9-coordinate-triangles/lesson.json": {
+      "bytes": 634,
+      "sha256": "aefbf452f409cbc47788027bcae9ff1404020eb6894309b90004bfef9a280689"
+    },
+    "grade9-coordinate-triangles/model-output.json": {
+      "bytes": 49224,
+      "sha256": "5dac02b9c8379d35a77bdcc2574f2564f614ee44af68d3925700ed81cea3d7f1"
+    }
+  }
+}
