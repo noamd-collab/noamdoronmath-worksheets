@@ -1,3 +1,7 @@
+## 2026-11-22 — Grade 9 special triangles review
+
+Grade 9 topic 21 lists the three current grade 7 topic 15 worksheets as grade 7 review. Each level opens its existing G7-T15 PDF, exercises and Supabase hints.
+
 ## 2026-11-19 — batch 13 (renewal): ten grade 8 pages get their first reviewed PDF edition (candidate)
 
 ## 2026-11-21 — middle-school packages 090, 091 and 094

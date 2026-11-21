@@ -36,11 +36,19 @@
  function viewerLearningItem(params){
   var edition=params.has('edition')?params.get('edition'):'legacy';
   if(!edition)return undefined;
-  return catalog.find(function(item){
+  var direct=catalog.find(function(item){
    if((item.editionId||'legacy')!==edition||item.g!==Number(params.get('g'))||item.pdf!==params.get('pdf')||(item.l!==params.get('lv')&&item.l!=='one'))return false;
    // A new edition never borrows another package's progress identity.
    return edition==='legacy'||(item.sourcePrefix||item.x)===params.get('x');
   });
+  var topic=Number(params.get('topic'));
+  if(!direct || edition!=='legacy' || !topic || direct.parent===topic || direct.x!==params.get('x'))return direct;
+  // A review topic opens the source PDF while keeping progress in the selected topic.
+  var placements=catalog.filter(function(item){
+   return !item.editionId && item.parent===topic && item.sourceGrade===direct.g &&
+    item.sourcePrefix===direct.x && item.pdf===direct.pdf && item.l===direct.l;
+  });
+  return placements.length===1?placements[0]:direct;
  }
  function controls(item){var box=el('div',undefined,'nl-controls');box.dataset.learningId=item.id;box.setAttribute('role','group');box.setAttribute('aria-label',item.title+' — '+item.label+' — מצב עבודה');
   Object.keys(Core.states).forEach(function(s){var b=button(Core.states[s],function(){engine.change(item.id,s).then(function(){tell(engine.snapshot().user?'המצב נשמר בחשבון.':'המצב נשמר במכשיר הזה. אין צורך להתחבר.');}).catch(fail);});b.dataset.status=s;b.setAttribute('aria-pressed','false');box.append(b);});

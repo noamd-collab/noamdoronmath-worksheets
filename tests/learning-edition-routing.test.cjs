@@ -37,13 +37,41 @@ for(const rel of ['noam-learning.js','headless/astro-poc/public/noam-learning.js
    q.set('edition','edition-one');assert.equal(f.viewerLearningItem(q),undefined);
   }
  });
+ test(rel+': repeated grade-7 PDFs use grade-9 progress when opened from the grade-9 review', () => {
+  const env = {window: {}};
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'noam-learning-catalog.js'), 'utf8'), env);
+  const rows = env.window.NOAM_LEARNING_CATALOG;
+  const viewer = functions(source, rows);
+  for (const level of ['a', 'b', 'c']) {
+   const current = rows.find(row => row.id === `g7-t15-${level}`);
+   const review = rows.find(row => row.id === `g9-t21-${level}`);
+   assert.ok(current && review);
+   assert.equal(review.pdf, current.pdf);
+   const query = new URL(viewer.openPdf(review)).searchParams;
+   assert.equal(query.get('g'), '7');
+   assert.equal(query.get('x'), 'G7-T15');
+   assert.equal(query.get('topic'), '21');
+   assert.equal(query.get('lv'), level);
+   assert.equal(viewer.viewerLearningItem(query)?.id, review.id);
+   for (const [param, unrelated] of [['x', 'G9-T14'], ['topic', '23'], ['pdf', 'unknown']]) {
+    const invalid = new URLSearchParams(query);
+    invalid.set(param, unrelated);
+    assert.notEqual(viewer.viewerLearningItem(invalid)?.id, review.id);
+   }
+   assert.equal(viewer.viewerLearningItem(new URL(viewer.openPdf(current)).searchParams)?.id, current.id);
+   query.delete('topic');
+   assert.equal(viewer.viewerLearningItem(query)?.id, current.id);
+  }
+ });
  test(rel+': every existing learning row preserves its baseline open URL',()=>{
   const script=fs.readFileSync(path.join(root,'noam-learning-catalog.js'),'utf8');const env={window:{}};vm.runInNewContext(script,env);const current=env.window.NOAM_LEARNING_CATALOG;
   const baselineEnv={window:{}};vm.runInNewContext(cp.execFileSync('git',['show','36910380:noam-learning-catalog.js'],{cwd:root,encoding:'utf8'}),baselineEnv);
   const rows=baselineEnv.window.NOAM_LEARNING_CATALOG;
   assert.equal(rows.length,967);assert.equal(new Set(rows.map(r=>r.id)).size,967);
-  assert.equal(JSON.stringify(current.slice(0,rows.length)),JSON.stringify(rows),'all pre-activation catalog rows stay exact');
-  const extras=current.slice(rows.length);assert([0,12,54].includes(extras.length));
+  const restored = new Set(['g9-t21-a','g9-t21-b','g9-t21-c']);
+  const priorCatalog = current.filter(row => !restored.has(row.id));
+  assert.equal(JSON.stringify(priorCatalog.slice(0,rows.length)),JSON.stringify(rows),'all pre-activation catalog rows stay exact');
+  const extras=priorCatalog.slice(rows.length);assert([0,12,54].includes(extras.length));
   if(extras.length){const approved=new Set(['ms-20261113-trn-r1','ms-20261113-cyl-r1','ms-20261113-con-r1','ms-20261113-par-r1']);assert(extras.slice(0,12).every(r=>approved.has(r.editionId)));assert.equal(new Set(extras.map(r=>r.id)).size,extras.length);
    // The receipt-backed additional activation appends only its trusted reviewed scopes.
    const reviewed=new Set(JSON.parse(fs.readFileSync(path.join(root,'headless/catalog/ramzi-additional-trust.v1.json'),'utf8')).scopes.map(s=>s.scopeId));assert(extras.slice(12).every(r=>reviewed.has(r.editionId)));}

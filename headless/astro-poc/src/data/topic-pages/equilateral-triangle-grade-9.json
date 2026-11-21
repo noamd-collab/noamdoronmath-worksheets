@@ -120,6 +120,12 @@
       "type": "paragraph",
       "text": "התשובה היא משולש שווה־צלעות, ו־∠LKM = 60°. KL = KM, ולכן ∠KML = ∠KLM = 60°, וגם ∠LKM = 180° − 60° − 60° = 60°.",
       "role": "body"
+    },
+    {
+      "type": "cta",
+      "label": "חזרה מכיתה ז׳ על משולשים מיוחדים",
+      "href": "/worksheets?grade=9&topic=21",
+      "catalogTopicId": 21
     }
   ],
   "updatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
@@ -225,6 +231,14 @@
       "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=22",
       "catalogTopicId": 22,
       "catalogTopicTitle": "משולש שווה־צלעות — העמקה ורשות — לכיתה ט׳"
+    },
+    {
+      "label": "חזרה מכיתה ז׳ על משולשים מיוחדים",
+      "href": "/worksheets?grade=9&topic=21",
+      "catalogTopicId": 21,
+      "source": "catalog-g9-t21",
+      "productionHref": "https://www.noamdoronmath.co.il/worksheets?grade=9&topic=21",
+      "catalogTopicTitle": "משולשים מיוחדים — חזרה מכיתה ז׳"
     }
   ],
   "gradeHubHref": "/grade-9",
