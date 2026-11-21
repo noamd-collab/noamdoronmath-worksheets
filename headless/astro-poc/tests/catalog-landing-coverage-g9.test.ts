@@ -46,7 +46,18 @@ describe(`grade ${GRADE} catalog landing coverage`, () => {
       const page = loadTopicPage(slug);
       assert.equal(page.grade, GRADE, slug);
       assert.match(page.verifiedVia ?? '', /^authored-catalog-gap/, slug);
-      assert.equal(page.catalogCtas.length, 1, slug);
+      if (slug === 'equilateral-triangle-grade-9') {
+        assert.deepEqual(page.catalogCtas.map(cta => cta.catalogTopicId), [22, 21]);
+        const [primary, review] = page.catalogCtas;
+        assert.deepEqual(page.catalogCta, primary);
+        assert.equal(review.href, '/worksheets?grade=9&topic=21');
+        assert.equal(review.catalogTopicTitle, topics.get(21)!.title);
+        assert.match(review.label, /חזרה מכיתה ז׳/);
+        assert.deepEqual(topics.get(21)!.levels.map(level => level.key), ['a', 'b', 'c']);
+        assert.equal(topics.get(21)!.routing.sourcePrefix, 'G7-T15');
+      } else {
+        assert.equal(page.catalogCtas.length, 1, slug);
+      }
       const topicId = page.catalogCtas[0].catalogTopicId!;
       assert.equal(page.catalogCtas[0].href, `/worksheets?grade=${GRADE}&topic=${topicId}`, slug);
       const topic = topics.get(topicId);

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { isolateMathRuns } from '../../src/lib/mathDirection';
 import { createHash } from 'node:crypto';
+import { beforeGrade9SpecialTrianglesReview } from '../helpers/beforeGrade9SpecialTrianglesReview';
 import reviewed from '../../../../docs/middle-090-091-094-pdf-20261121.json';
 
 import seven from '../../../../docs/middle-b18-seven-pdf-20261122.json';
@@ -20,7 +21,7 @@ const strip = (text: string) => text.replace(/[⁦-⁩]/g, '');
 
 /** Recover the catalog before the November 21–22 PDF editions, while checking each exact overlay. */
 export function beforeNovember21Catalog<T>(catalog: T): T {
-  const result: any = structuredClone(catalog);
+  const result: any = beforeGrade9SpecialTrianglesReview(catalog);
   for (const item of allPackages) {
     const topic = result.grades.find((g: any) => g.grade === item.grade)?.topics.find((t: any) => t.id === item.topicId);
     assert.ok(topic, item.slug);

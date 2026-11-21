@@ -46,13 +46,13 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
 
   const s = result.stats;
   assert.equal(s.grades, 9);
-  assert.equal(s.topics, 339);
-  assert.equal(s.levels, 991);
+  assert.equal(s.topics, 340);
+  assert.equal(s.levels, 994);
   assert.equal(s.uniquePdfIds, 960);
   assert.equal(s.childTopics, 3);
-  // Restored G8-T66 adds three levels; 31 declared source-grade reuses share PDFs.
-  assert.equal(s.withNoamTopicId, 158);
-  assert.equal(s.searchEntries, 128);
+  // Grade 9 topic 21 reuses all three PDFs from grade 7 topic 15.
+  assert.equal(s.withNoamTopicId, 159);
+  assert.equal(s.searchEntries, 129);
   assert.equal(s.iconKeys, 80);
 
   // Exact current inventory: restored G8-T66 and retained RAT47, plus MED48 and EQM49
@@ -60,7 +60,7 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
   // G8 t68 and G9 t50, t51 (new group geopar) and t52, and batch 10's G9 t53 (month group r9nov).
   // The next-nine intake test also reverses MED/PRB/REC to the exact prior catalog.
   // Exact per-grade topic counts from DATA
-  const expected = { 1: 23, 2: 29, 3: 25, 4: 30, 5: 35, 6: 27, 7: 50, 8: 68, 9: 52 };
+  const expected = { 1: 23, 2: 29, 3: 25, 4: 30, 5: 35, 6: 27, 7: 50, 8: 68, 9: 53 };
   for (const g of catalog.grades) {
     assert.equal(g.topics.length, expected[g.grade], 'grade ' + g.grade + ' topic count');
   }

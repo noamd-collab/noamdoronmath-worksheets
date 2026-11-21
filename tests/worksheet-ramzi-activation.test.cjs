@@ -45,8 +45,8 @@ for(const [name,mutate]of [
 ])test('rejects '+name,()=>{const b=fixture();mutate(b);assert.throws(()=>validateRamziActivation(registry,b),/Ramzi activation/);});
 test('all 967 learning rows remain exact, only twelve reviewed edition identities are added',()=>{
  const raw=loadIndexCatalog(path.join(root,'index.html')),old=buildLearningCatalog(raw,registry),next=buildLearningCatalog(raw,registry,fixture());
- assert.equal(old.length,967);assert.equal(next.length,979);assert.deepEqual(next.slice(0,old.length),old);
- assert.equal(new Set(next.map(r=>r.id)).size,979);assert(next.slice(old.length).every(r=>scope.includes(r.x)&&r.editionId&&r.id.endsWith('-e-'+r.editionId)));
+ assert.equal(old.length,970);assert.equal(next.length,982);assert.deepEqual(next.slice(0,old.length),old);
+ assert.equal(new Set(next.map(r=>r.id)).size,982);assert(next.slice(old.length).every(r=>scope.includes(r.x)&&r.editionId&&r.id.endsWith('-e-'+r.editionId)));
 });
 test('native mismatch is rejected even when caller updates local manifest hash',()=>{
  const b=fixture(),u=b.ready.units[0],m=JSON.parse(b.manifests[u.pdfId]);m.exercises[0].nativeItemId='q99z';const raw=JSON.stringify(m);b.manifests[u.pdfId]=raw;u.manifestSha256=hash(raw);

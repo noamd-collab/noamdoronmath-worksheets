@@ -6,7 +6,7 @@ import { join, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { test } from 'node:test';
 import { parseHTML } from 'linkedom';
-import { buildTeacherCatalog, catalogSheets, sheetFromManifest } from '../scripts/build-teacher-catalog.mjs';
+import { buildTeacherCatalog, catalogSheets, sheetFromManifest, teacherMeasurementSources } from '../scripts/build-teacher-catalog.mjs';
 import { prepareMeasuredManifestDraft } from '../scripts/lib/measured-worksheet.mjs';
 import { editionFixture } from './fixtures/worksheet-editions';
 import { groupWholeQuestions, expandToWholeQuestionKeys } from '../public/teachers/teacher-question-pick.js';
@@ -32,6 +32,17 @@ function definition(name: string) {
 }
 const built = () => buildTeacherCatalog(raw, editionFixture());
 
+test('a grade-9 review shares one measured grade-7 worksheet per level', () => {
+  const placements = catalogSheets(buildTeacherCatalog(committed));
+  const grade7 = placements.filter(sheet => sheet.grade === 7 && sheet.topicId === 15);
+  const grade9 = placements.filter(sheet => sheet.grade === 9 && sheet.topicId === 21);
+  assert.deepEqual(grade9.map(sheet => sheet.level), ['a', 'b', 'c']);
+  assert.deepEqual(grade9.map(sheet => sheet.pdfId), grade7.map(sheet => sheet.pdfId));
+  assert.ok(grade9.every(sheet => sheet.sourceGrade === 7 && sheet.sourcePrefix === 'G7-T15'));
+  assert.deepEqual(teacherMeasurementSources([...grade9, ...grade7]), grade7);
+  assert.throws(() => teacherMeasurementSources([grade9[0]]), /Missing source placement/);
+});
+
 test('the published teacher snapshot matches the real registry and can withdraw its overlays', () => {
   const registry = JSON.parse(read('../../catalog/worksheet-editions.v1.json'));
   const current = buildTeacherCatalog(committed);
@@ -50,7 +61,7 @@ test('teacher catalog appends only published editions and leaves every legacy fi
     assert.deepEqual({...topic,sheets:topic.sheets.filter((s: any)=>!s.editionId)}, before);
     legacy += before.sheets.length; added += topic.sheets.filter((s: any)=>s.editionId).length;
   }));
-  assert.equal(legacy, 967); assert.equal(added, 3); // legacy +3: grade 8 topic 67 (2026-11-09)
+  assert.equal(legacy, 970); assert.equal(added, 3);
   const sheets = catalogSheets(next).filter((s: any)=>s.editionId);
   assert.deepEqual(sheets.map((s: any)=>s.level), ['a','b','c']);
   for (const s of sheets) { assert.equal(s.editionLabel,'דפים חדשים'); assert.equal(s.prefix,'G1-T05'); assert.match(s.learningId,/-e-test-renewal-r1$/); assert.ok(s.title.endsWith(' · דפים חדשים')); }

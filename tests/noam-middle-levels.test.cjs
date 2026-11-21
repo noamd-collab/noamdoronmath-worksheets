@@ -60,7 +60,7 @@ function renderedLinks(markup) {
 
 test("approved middle-school level mappings cannot silently disappear or change PDF", () => {
   // Includes restored G8-T66 and both existing c2 slots.
-  assert.deepEqual(approved.expectedLinkCounts, { 7: 148, 8: 182, 9: 127 });
+  assert.deepEqual(approved.expectedLinkCounts, { 7: 148, 8: 182, 9: 130 });
   for (const [grade, topics] of Object.entries(approved.grades)) {
     const count = topics.reduce((total, topic) => total + Object.keys(topic.links).length, 0);
     assert.equal(count, approved.expectedLinkCounts[grade], `Incomplete approved grade ${grade} fixture`);
