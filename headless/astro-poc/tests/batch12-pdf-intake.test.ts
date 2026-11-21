@@ -1,3 +1,4 @@
+import { beforeNovember21Registry } from './fixtures/middle-090-091-094';
 import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -40,7 +41,7 @@ for (const addition of reviewed.additions) {
 }
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 // Batch 13 (renewal, 19.11) is newer: its rows come after batch 12's.
-const batch12Registry = beforeBatch13Registry(registry);
+const batch12Registry = beforeBatch13Registry(beforeNovember21Registry(registry));
 const priorRegistry = beforeBatch12Registry(registry);
 const receipt = read('docs/batch12-pdf-first-20261118.json');
 const expectedIds = ["ms-20261118-ang-02-r1"];
