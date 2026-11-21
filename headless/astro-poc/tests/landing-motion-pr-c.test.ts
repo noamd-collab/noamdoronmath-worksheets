@@ -96,6 +96,9 @@ const ALL = { ...SECTION_3, ...MISSED, ...SECTION_4, ...INTEGRATED };
 const SAME_MOTION: Record<string, string> = {
   'congruence-theorems-grade-8': 'the copy slid before too, but was not congruent',
   'triangle-congruence-proofs-grade-8': 'the copy slid before too, but was not congruent',
+  'rectangle-square-area-grade-7': 'reuses the existing area loop; there is no older picture',
+  'parallelogram-trapezoid-area-grade-7': 'reuses the existing area-para loop; there is no older picture',
+  'triangular-prism-volume-grade-7': 'reuses the existing prism-vol loop; there is no older picture',
 };
 
 const points = (block: RegExp) => {
