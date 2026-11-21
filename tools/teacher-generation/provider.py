@@ -202,6 +202,48 @@ def derive_author_parameters(lesson, cap, payload):
     return result
 
 
+
+def request_author_json(target, key, body, measured, timeout):
+    """One bounded TLS authoring call, shared by pilot and skill-source contracts."""
+    req=Request(target,data=json.dumps(body).encode(),headers={'Authorization':'Bearer '+key,'Content-Type':'application/json'},method='POST')
+    started=time.monotonic()
+    try:
+        with build_opener(NoRedirects(),HTTPSHandler(context=verified_tls_context())).open(req,timeout=timeout) as response:
+            raw=response.read(MAX_JSON_BYTES+100_001)
+        if len(raw)>MAX_JSON_BYTES+100_000: reject('PROVIDER_OUTPUT_TOO_LARGE','Provider response exceeded limit')
+        envelope=json.loads(raw)
+        measured['responseReceived']=True
+        measured['usage']=safe_usage(envelope.get('usage'))
+        returned_model=envelope.get('model')
+        if isinstance(returned_model,str) and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,127}',returned_model):measured['responseModel']=returned_model
+        choice=envelope['choices'][0]
+        if choice.get('finish_reason')!='stop': reject('PROVIDER_INCOMPLETE','Provider did not finish its JSON output')
+        text=choice['message']['content']
+        if not isinstance(text,str) or len(text.encode())>MAX_JSON_BYTES: reject('PROVIDER_OUTPUT_TOO_LARGE','Invalid provider content')
+        def pairs(values):
+            result={}
+            for k,v in values:
+                if k in result: reject('INVALID_MODEL_OUTPUT','Duplicate model JSON key')
+                result[k]=v
+            return result
+        payload=json.loads(text,object_pairs_hook=pairs,parse_constant=lambda _: reject('INVALID_MODEL_OUTPUT','Nonfinite number'))
+    except HTTPError as exc:
+        measured['httpStatus']=exc.code
+        reject('PROVIDER_HTTP_ERROR',f'Provider returned HTTP {exc.code}; body omitted')
+    except URLError as exc:
+        if isinstance(exc.reason,ssl.SSLError):reject('PROVIDER_TLS_ERROR','Verified TLS handshake failed; certificate verification remains enabled')
+        reject('PROVIDER_UNAVAILABLE','Provider network request failed; retry requires the job policy')
+    except ssl.SSLError:
+        reject('PROVIDER_TLS_ERROR','Verified TLS handshake failed; certificate verification remains enabled')
+    except TimeoutError:
+        reject('PROVIDER_UNAVAILABLE','Provider request timed out; retry requires the job policy')
+    except (ValueError,KeyError,TypeError,IndexError) as exc:
+        if isinstance(exc,GenerationError): raise
+        reject('PROVIDER_INVALID_RESPONSE','Provider response did not match the expected JSON envelope')
+    finally:
+        measured['elapsedSeconds']=round(time.monotonic()-started,3)
+    return payload
+
 def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None, allow_legacy=False):
     """One explicitly requested, billed authoring call; never called by render_job.
 
@@ -214,6 +256,10 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
     received usage, because such calls may still be billable.
     """
     cap=validate_lesson(lesson,allow_legacy=allow_legacy)
+    if lesson['version'] == 3:
+        from general_provider import author_general_lesson
+        return author_general_lesson(lesson, api_key=api_key, base_url=base_url, model=model,
+                                     timeout=timeout, metadata=metadata)
     key=api_key or os.environ.get('QWEN_API_KEY') or os.environ.get('DASHSCOPE_API_KEY')
     base=base_url or os.environ.get('QWEN_BASE_URL')
     chosen=model or os.environ.get('QWEN_MODEL')
@@ -288,48 +334,12 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
             system += (' For missing_right questions, the taught domain contains only one divisor; use that divisor. '
                 'The requirement for two distinct divisors does not apply to this single-divisor boundary.')
     body={'model':chosen,'messages':[{'role':'system','content':system},{'role':'user','content':json.dumps({'lesson':lesson,'capability':cap,'questionPlan':plan},ensure_ascii=False)}],'response_format':{'type':'json_schema','json_schema':{'name':'worksheet_author_data','strict':True,'schema':author_schema(lesson,cap)}},'enable_thinking':False,'max_tokens':14000,'temperature':0.35}
-    req=Request(target,data=json.dumps(body).encode(),headers={'Authorization':'Bearer '+key,'Content-Type':'application/json'},method='POST')
     measured=metadata if isinstance(metadata,dict) else {}
     measured.update({'purpose':'authoring','requestedModel':chosen,'validated':False,'responseReceived':False,
                      'authorContract':f'worksheet-parameters/{version}',
                      'derivation':{'canonicalVersion':1,'performed':False,
                                    'rule':('b=questionIndex*3+itemIndex+1; c=a*solution+b' if positive_equations(lesson,cap) else 'slot=questionIndex*6+itemIndex; b=alternatingSignedOffset(slot); c=a*solution+b') if version==3 else 'left=divisor*quotient; right=divisor; answer=quotient'}})
-    started=time.monotonic()
-    try:
-        with build_opener(NoRedirects(),HTTPSHandler(context=verified_tls_context())).open(req,timeout=timeout) as response:
-            raw=response.read(MAX_JSON_BYTES+100_001)
-        if len(raw)>MAX_JSON_BYTES+100_000: reject('PROVIDER_OUTPUT_TOO_LARGE','Provider response exceeded limit')
-        envelope=json.loads(raw)
-        measured['responseReceived']=True
-        measured['usage']=safe_usage(envelope.get('usage'))
-        returned_model=envelope.get('model')
-        if isinstance(returned_model,str) and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,127}',returned_model):measured['responseModel']=returned_model
-        choice=envelope['choices'][0]
-        if choice.get('finish_reason')!='stop': reject('PROVIDER_INCOMPLETE','Provider did not finish its JSON output')
-        text=choice['message']['content']
-        if not isinstance(text,str) or len(text.encode())>MAX_JSON_BYTES: reject('PROVIDER_OUTPUT_TOO_LARGE','Invalid provider content')
-        def pairs(values):
-            result={}
-            for k,v in values:
-                if k in result: reject('INVALID_MODEL_OUTPUT','Duplicate model JSON key')
-                result[k]=v
-            return result
-        payload=json.loads(text,object_pairs_hook=pairs,parse_constant=lambda _: reject('INVALID_MODEL_OUTPUT','Nonfinite number'))
-    except HTTPError as exc:
-        measured['httpStatus']=exc.code
-        reject('PROVIDER_HTTP_ERROR',f'Provider returned HTTP {exc.code}; body omitted')
-    except URLError as exc:
-        if isinstance(exc.reason,ssl.SSLError):reject('PROVIDER_TLS_ERROR','Verified TLS handshake failed; certificate verification remains enabled')
-        reject('PROVIDER_UNAVAILABLE','Provider network request failed; retry requires the job policy')
-    except ssl.SSLError:
-        reject('PROVIDER_TLS_ERROR','Verified TLS handshake failed; certificate verification remains enabled')
-    except TimeoutError:
-        reject('PROVIDER_UNAVAILABLE','Provider request timed out; retry requires the job policy')
-    except (ValueError,KeyError,TypeError,IndexError) as exc:
-        if isinstance(exc,GenerationError): raise
-        reject('PROVIDER_INVALID_RESPONSE','Provider response did not match the expected JSON envelope')
-    finally:
-        measured['elapsedSeconds']=round(time.monotonic()-started,3)
+    payload=request_author_json(target,key,body,measured,timeout)
     try:
         if payload=={'version':version,'questions':[]}:
             reject('AUTHOR_UNSUPPORTED','Author could not meet the requested topic/progress boundary')

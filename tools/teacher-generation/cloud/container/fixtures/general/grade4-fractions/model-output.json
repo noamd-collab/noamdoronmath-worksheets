@@ -1,0 +1,1052 @@
+{
+  "version": 4,
+  "title": "השוואת שברים בעלי מונים או מכנים שווים",
+  "rule": [
+    {
+      "kind": "text",
+      "text": "עבדו לפי הסדר ובדקו את התוצאות."
+    }
+  ],
+  "sections": [
+    {
+      "title": "השוואת שברים בעלי מונים או מכנים שווים",
+      "conceptIds": [
+        "ד12#1"
+      ],
+      "questions": [
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו את השברים בשורה הראשונה."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 3
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 3
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו את השברים בשורה הראשונה."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 3
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 3
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו את השברים בשורה הראשונה."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 3
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 3
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בחרו את הסימן המתאים בין השברים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 4
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 5
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בחרו את הסימן המתאים בין השברים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 4
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 5
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בחרו את הסימן המתאים בין השברים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 4
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 5
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "קבעו איזה שבר גדול יותר."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 5
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 5
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "קבעו איזה שבר גדול יותר."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 5
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 5
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "קבעו איזה שבר גדול יותר."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 5
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 5
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בדקו אם השברים שווים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 6
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 8
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בדקו אם השברים שווים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 6
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 8
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בדקו אם השברים שווים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 6
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 8
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בעזרת משמעות המכנה."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 8
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 8
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בעזרת משמעות המכנה."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 8
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 8
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בעזרת משמעות המכנה."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 8
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 8
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": true,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "התייחסו למספר החלקים השווים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 10
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 12
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "התייחסו למספר החלקים השווים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 10
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 12
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "התייחסו למספר החלקים השווים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 10
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 12
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בין כמויות שוות של חלקים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 12
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 12
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בין כמויות שוות של חלקים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 12
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 12
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בין כמויות שוות של חלקים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 12
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 12
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בדקו את חלקי השלם שבכל שבר."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 16
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 20
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בדקו את חלקי השלם שבכל שבר."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 16
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 20
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בדקו את חלקי השלם שבכל שבר."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 16
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 20
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בין המונים כאשר המכנה משותף."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 20
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 20
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בין המונים כאשר המכנה משותף."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 20
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 20
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בין המונים כאשר המכנה משותף."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 20
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 20
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "קבעו מהו הסדר בין השברים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 24
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 25
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "קבעו מהו הסדר בין השברים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 24
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 25
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "קבעו מהו הסדר בין השברים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 24
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 25
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בין השברים ללא כתיבה עשרונית."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 25
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 25
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בין השברים ללא כתיבה עשרונית."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 25
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 25
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "השוו בין השברים ללא כתיבה עשרונית."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 25
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 25
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו סימן השוואה מתאים."
+            }
+          ],
+          "star": true,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בדקו את היחס בין שני השברים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 30
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 3
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בדקו את היחס בין שני השברים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 30
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 3
+                  }
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "בדקו את היחס בין שני השברים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "compare",
+                  "left": {
+                    "type": "number",
+                    "numerator": 3,
+                    "denominator": 30
+                  },
+                  "right": {
+                    "type": "number",
+                    "numerator": 1,
+                    "denominator": 3
+                  }
+                },
+                "unit": ""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
