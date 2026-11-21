@@ -64,7 +64,15 @@ describe('grade hub routes (HEADLESS-MIGRATION-16/17)', () => {
     }
     for (const g of ELEMENTARY_GRADE_HUBS) {
       const hub = loadGradeHub(g);
-      assert.equal(hub.faq.length, 0);
+      // Grade 4 carries an authored FAQ and a teachers link (Noam, 19.11.2026).
+      if (g === 4) {
+        assert.equal(hub.faq.length, 4);
+        assert.ok(hub.faqHeading && hub.faqHeading.includes('שאלות'));
+        assert.equal(hub.teachersLink?.href, '/teachers');
+      } else {
+        assert.equal(hub.faq.length, 0);
+        assert.equal(hub.teachersLink, undefined);
+      }
       assert.equal(hub.topicLinks.length, 0);
       assert.ok(hub.faqNote || hub.topicLinksNote);
       assert.equal(hub.whatsapp, undefined); // WhatsApp group removed (Noam, 2026-11-15)
