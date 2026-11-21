@@ -113,14 +113,16 @@ class WorkerTests(unittest.TestCase):
         self.assertIn('/rpc/claim_teacher_generation_job', self.remote.calls[2][0])
         self.assertIn('noam_teacher_generation_workers', self.remote.calls[3][0])
         self.assertEqual(self.root.stat().st_mode & 0o777, 0o700)
-        self.assertEqual(self.remote.calls[3][2]['capabilities']['acceptedIntakeVersions'], [2])
+        self.assertEqual(self.remote.calls[3][2]['capabilities']['acceptedIntakeVersions'], [2, 3])
         advertised = self.remote.calls[3][2]['capabilities']['topics']
         enabled = {cap['topicId']: cap for cap in advertised if cap.get('enabled')}
-        self.assertEqual(set(enabled), {'ג10', 'g7:equations'})
+        self.assertEqual(len(enabled), 232)
+        self.assertFalse(any(t.get('e2eVerified') for t in advertised))
+        self.assertTrue(all(t['readiness']=='private_draft' for t in advertised))
         for topic, count in [('ג10', 12), ('g7:equations', 20)]:
-            self.assertIs(enabled[topic]['e2eVerified'], True)
-            self.assertEqual(enabled[topic]['levels'], ['b'])
-            self.assertEqual(enabled[topic]['questionCounts'], [count])
+            self.assertIs(enabled[topic]['legacy']['e2eVerified'], True)
+            self.assertEqual(enabled[topic]['legacy']['levels'], ['b'])
+            self.assertEqual(enabled[topic]['legacy']['questionCounts'], [count])
 
     def test_check_only_reads_transport_without_claim_heartbeat_model_or_work_directory(self):
         work = self.root / 'must-not-exist'

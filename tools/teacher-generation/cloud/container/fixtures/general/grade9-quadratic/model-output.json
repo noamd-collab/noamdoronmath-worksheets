@@ -1,0 +1,3619 @@
+{
+  "version": 4,
+  "title": "פתרון משוואות ריבועיות",
+  "rule": [
+    {
+      "kind": "text",
+      "text": "עבדו לפי הסדר ובדקו את התוצאות."
+    }
+  ],
+  "sections": [
+    {
+      "title": "פתרון משוואות ריבועיות",
+      "conceptIds": [
+        "g9r:quad_func_and_eq#7",
+        "g9r:quad_func_and_eq#9"
+      ],
+      "questions": [
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "פתרו את המשוואות."
+            }
+          ],
+          "star": true,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "subtract",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 2,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "subtract",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 3,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "subtract",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 4,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "מצאו את הפתרונות ובדקו אותם בהצבה."
+            }
+          ],
+          "star": true,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "subtract",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 5,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "subtract",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 6,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "subtract",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 7,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו את קבוצת הפתרונות של כל משוואה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 1,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 10,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 2,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 11,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 3,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 12,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "פתרו את המשוואות."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 10,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 11,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 12,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "מצאו את הפתרונות ובדקו אותם בהצבה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 1,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 5,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 5,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 5,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו את קבוצת הפתרונות של כל משוואה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 1,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 37,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 2,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 38,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 3,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 39,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "פתרו את המשוואות."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 19,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 20,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 21,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "מצאו את הפתרונות ובדקו אותם בהצבה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 1,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 8,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 8,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 8,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו את קבוצת הפתרונות של כל משוואה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 1,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 82,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 2,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 83,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 3,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 84,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "פתרו את המשוואות."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 28,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 29,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 30,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "מצאו את הפתרונות ובדקו אותם בהצבה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 1,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 11,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 11,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 11,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו את קבוצת הפתרונות של כל משוואה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 1,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 145,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 2,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 146,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 3,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 147,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "פתרו את המשוואות."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 37,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 38,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 39,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "מצאו את הפתרונות ובדקו אותם בהצבה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 1,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 14,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 14,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 14,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו את קבוצת הפתרונות של כל משוואה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 1,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 226,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 2,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 227,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 3,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 228,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "פתרו את המשוואות."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 46,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 47,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 48,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "מצאו את הפתרונות ובדקו אותם בהצבה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 1,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 17,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 17,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 17,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "כתבו את קבוצת הפתרונות של כל משוואה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 1,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 325,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 2,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 326,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "power",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 3,
+                        "denominator": 1
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 327,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "פתרו את המשוואות."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 55,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 56,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "operation",
+                            "op": "power",
+                            "args": [
+                              {
+                                "type": "symbol",
+                                "name": "x"
+                              },
+                              {
+                                "type": "number",
+                                "numerator": 2,
+                                "denominator": 1
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "multiply",
+                        "args": [
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          },
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 57,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "מצאו את הפתרונות ובדקו אותם בהצבה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 1,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 20,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 2,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 20,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "מצאו את כל הפתרונות הממשיים."
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "solve",
+                  "lhs": {
+                    "type": "operation",
+                    "op": "multiply",
+                    "args": [
+                      {
+                        "type": "operation",
+                        "op": "subtract",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 3,
+                            "denominator": 1
+                          }
+                        ]
+                      },
+                      {
+                        "type": "operation",
+                        "op": "add",
+                        "args": [
+                          {
+                            "type": "symbol",
+                            "name": "x"
+                          },
+                          {
+                            "type": "number",
+                            "numerator": 20,
+                            "denominator": 1
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "rhs": {
+                    "type": "number",
+                    "numerator": 0,
+                    "denominator": 1
+                  },
+                  "variable": "x"
+                },
+                "unit": ""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

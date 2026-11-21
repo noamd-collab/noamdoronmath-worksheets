@@ -2,10 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { handleTeacherGeneration, type GenerationDependencies } from '../src/lib/teacherGeneration';
 import { createGenerationStore, GenerationStoreError, generationSessionToken } from '../src/lib/teacherGenerationStore';
 import { loadGenerationCurriculum } from '../src/lib/teacherGenerationCurriculum';
-import { parseTeacherGenerationCurriculum } from '../src/lib/teacherGenerationContract';
+import { parseTeacherGenerationCurriculum, GENERATION_CURRICULUM_SHA256 } from '../src/lib/teacherGenerationContract';
 import { authorizeTeacherRequest, TEACHER_SESSION_COOKIE, TEACHER_PRIVATE_HEADERS } from '../src/lib/teacherAccess';
 import { TEACHER_ACCESS_CONFIG } from '../src/lib/teacherAccessConfig';
 import { createTeacherWorkerWake } from '../src/lib/teacherWorkerWake';
@@ -51,6 +53,57 @@ async function code(response: Response, status: number, expected: string) {
   assert.equal(body.code ?? body.error, expected);
   assert.match(response.headers.get('cache-control')!, /no-store/);
 }
+
+test('version3 grade8 uses pinned general profile and explicit scope without claiming e2e verification',async()=>{
+ const f=fixture(),lesson3={...lesson,version:3,gradeNumber:8,topicId:'g8:congruence',questionCount:20,alreadyLearned:[],
+  lessonBoundary:{version:1,kind:'curriculum_scope',curriculumSha256:GENERATION_CURRICULUM_SHA256,conceptIds:['g8:congruence#0']}};
+ const capabilities={profile:'general-skill-source/v1',curriculumSha256:GENERATION_CURRICULUM_SHA256,acceptedIntakeVersions:[2,3],
+  topics:[{topicId:lesson3.topicId,gradeNumber:8,enabled:true,e2eVerified:false,readiness:'private_draft',levels:['b','a','e'],questionCounts:[20]}]};
+ f.store.health=async()=>({online:true,capabilities}) as any;
+ assert.equal((await handleTeacherGeneration(post(input({lesson:lesson3})),f.deps)).status,202);
+ assert.equal(f.calls.filter(x=>x==='bot').length,1);assert.equal(f.calls.filter(x=>x==='enqueue').length,1);
+ for(const mutation of [(c:any)=>{c.profile='unknown';},(c:any)=>{c.curriculumSha256='0'.repeat(64);},(c:any)=>{c.acceptedIntakeVersions=[2];},
+  (c:any)=>{c.topics[0].enabled=false;},(c:any)=>{c.topics[0].readiness='planned';},(c:any)=>{c.topics[0].gradeNumber=7;},
+  (c:any)=>{c.topics[0].levels=['a'];},(c:any)=>{c.topics[0].questionCounts=[21];}]) {
+  const invalid=structuredClone(capabilities);mutation(invalid);f.calls.length=0;
+  f.store.health=async()=>({online:true,capabilities:invalid}) as any;
+  await code(await handleTeacherGeneration(post(input({lesson:lesson3})),f.deps),422,'TOPIC_NOT_SUPPORTED_YET');
+  assert.ok(!f.calls.includes('enqueue')&&!f.calls.includes('bot'));
+ }
+});
+
+test('actual Python general heartbeat agrees with API admission for all232 source topics and retains v2 bounds',async()=>{
+ const capabilities=JSON.parse(execFileSync('python3',['-c',"import json; from pathlib import Path; from runtime_catalog import general_capabilities; print(json.dumps(general_capabilities(json.loads(Path('capabilities.json').read_text()))))"],{
+  cwd:fileURLToPath(new URL('../../../tools/teacher-generation/',import.meta.url)),encoding:'utf8'}));
+ assert.equal(capabilities.topics.length,232);assert.equal(capabilities.profile,'general-skill-source/v1');
+ for(const cap of capabilities.topics) {
+  const f=fixture();f.store.health=async()=>({online:true,capabilities});
+  const topicLesson={...lesson,version:3,gradeNumber:cap.gradeNumber,topicId:cap.topicId,level:cap.levels[0],questionCount:cap.questionCounts[0],alreadyLearned:[],
+   lessonBoundary:{version:1,kind:'curriculum_scope',curriculumSha256:GENERATION_CURRICULUM_SHA256,conceptIds:[cap.topicId+'#0']}};
+  assert.equal((await handleTeacherGeneration(post(input({lesson:topicLesson})),f.deps)).status,202,cap.topicId);
+ }
+ const f=fixture();f.store.health=async()=>({online:true,capabilities});
+ assert.equal((await handleTeacherGeneration(post(),f.deps)).status,202,'legacy v2 supported draft');
+ f.calls.length=0;await code(await handleTeacherGeneration(post(input({lesson:{...lesson,level:'a',questionCount:20}})),f.deps),422,'TOPIC_NOT_SUPPORTED_YET');
+ assert.ok(!f.calls.includes('enqueue')&&!f.calls.includes('bot'));
+});
+
+test('owner can download an explicit general review draft only with successful rendering and no failed checks',async()=>{
+ const result={authoringProfile:'general-skill-source/v1',automatedChecksPassed:false,renderingChecksPassed:true,humanReviewRequired:true,
+  checks:[{name:'render',status:'PASS'},{name:'didactic',status:'REVIEW'}],reviewFindings:[{code:'DIDACTIC_REVIEW',count:1}]};
+ const url=origin+'/api/teacherGeneration?id='+jobId+'&file=pdf';
+ const f=fixture();f.store.get=async()=>({...job,status:'needs_review',result});
+ assert.equal((await handleTeacherGeneration(new Request(url),f.deps)).status,200);
+ for(const change of [{authoringProfile:'unknown'},{renderingChecksPassed:false},{humanReviewRequired:false},{checks:[]},{checks:[{status:'FAIL'}]},{checks:[{status:'SKIP'}]},{automatedChecksPassed:true,checks:[{status:'FAIL'}]}]) {
+  f.calls.length=0;f.store.get=async()=>({...job,status:'needs_review',result:{...result,...change}});
+  await code(await handleTeacherGeneration(new Request(url),f.deps),409,'DRAFT_NOT_AVAILABLE');
+  assert.ok(!f.calls.includes('download'));
+ }
+ for(const status of [401,403] as const) {
+  f.calls.length=0;f.deps.authorize=async()=>({ok:false,status,code:status===401?'TEACHER_SIGN_IN_REQUIRED':'TEACHER_ACCESS_DENIED'});
+  assert.equal((await handleTeacherGeneration(new Request(url),f.deps)).status,status);assert.deepEqual(f.calls,[]);
+ }
+});
 
 test('anonymous and non-owner requests never wake cloud compute, including health GET', async () => {
   for (const status of [401, 403] as const) for (const request of [post(), new Request(origin + '/api/teacherGeneration')]) {
