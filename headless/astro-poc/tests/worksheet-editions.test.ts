@@ -1,3 +1,5 @@
+import type { WorksheetsClientProps } from '../src/components/WorksheetsClient';
+import { topicPageHrefByCatalogTopic } from '../src/lib/elementaryTopicNav';
 import { readFirst567Activation } from './helpers/first567Activation';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
@@ -222,14 +224,31 @@ async function renderer() {
   const bundle = await build({ stdin: { contents: `
     import { createElement } from 'react'; import { renderToStaticMarkup } from 'react-dom/server';
     import { WorksheetsClient } from './src/components/WorksheetsClient';
-    export function render(catalog, grade) { const entry = catalog.grades.find(g => g.grade === grade);
-      return renderToStaticMarkup(createElement(WorksheetsClient, {catalog, grade, gradeEntry: entry, familyGrades: [entry]})); }`,
+    export function render(catalog, grade, options = {}) { const entry = catalog.grades.find(g => g.grade === grade);
+      return renderToStaticMarkup(createElement(WorksheetsClient, {catalog, grade, gradeEntry: entry, familyGrades: [entry], ...options})); }`,
     resolveDir: process.cwd(), loader: 'ts' }, bundle: true, platform: 'node', format: 'cjs',
     packages: 'external', write: false, loader: { '.css': 'empty' }, logLevel: 'silent' });
   const module = { exports: {} as any };
   new Function('module', 'exports', 'require', bundle.outputFiles[0].text)(module, module.exports, require);
-  return module.exports.render as (catalog: CatalogV1, grade: number) => string;
+  return module.exports.render as (catalog: CatalogV1, grade: number,
+    options?: Pick<WorksheetsClientProps, 'initialUrlState' | 'highlightTopicId' | 'topicPageHrefs'>) => string;
 }
+
+test('the reduced grade-nine catalog links to its three geometry practice pages and retains filters', async () => {
+  const render = await renderer();
+  const topicPageHrefs = topicPageHrefByCatalogTopic();
+  const nav = (track: 'red' | 'reg', q = '') => {
+    const html = render(committed, 9, { topicPageHrefs, initialUrlState: { track, q } });
+    return parseHTML(html).document.querySelector('nav.reduced-geometry-practice');
+  };
+  const practice = nav('red');
+  assert.ok(practice);
+  assert.deepEqual(Array.from(practice.querySelectorAll('a'), a => a.getAttribute('href')), [
+    '/pythagoras-basics-grade-9', '/pythagoras-applications-grade-9', '/rectangle-square-area-grade-9',
+  ]);
+  assert.equal(nav('reg'), null);
+  assert.equal(nav('red', 'שורשים'), null);
+});
 
 test('catalog UI renders new and previous links, and no technical metadata or unpublished set', async () => {
   const render = await renderer();
