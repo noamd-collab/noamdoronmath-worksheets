@@ -44,6 +44,13 @@ export interface WorksheetsClientProps {
   initialNeedsGradeChoice?: boolean;
 }
 
+// These geometry topics also have worksheets aligned to the grade-nine reduced curriculum.
+const reducedGeometryPractice = [
+  { topic: 24, label: 'משפט פיתגורס וחישוב צלעות' },
+  { topic: 25, label: 'שימושים במשפט פיתגורס' },
+  { topic: 26, label: 'שטח והיקף של מלבן וריבוע' },
+];
+
 function levelClass(key: string): string {
   if (key === 'c' || key === 'c2') return 'lvl lvl--c';
   if (key === 'b') return 'lvl lvl--b';
@@ -111,6 +118,13 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   const gradeLabel = gradeEntry.label;
 
   const showTrack = grade === 9;
+  const practiceLinks = showTrack && track === 'red' && topicPin == null && !q.trim() && group === 'all'
+    ? reducedGeometryPractice.flatMap(({ topic, label }) => {
+        const href = topicPageHrefs[`9:${topic}`];
+        return href ? [{ href, label }] : [];
+      })
+    : [];
+
 
   const catalogState: WorksheetsUrlState = useMemo(
     () => ({
@@ -632,6 +646,17 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
           </div>
         ) : null}
       </div>
+
+      {practiceLinks.length > 0 && (
+        <nav className="reduced-geometry-practice" aria-label="תרגול גיאומטריה לתוכנית המצומצמת">
+          <strong>תרגול גיאומטריה לתוכנית המצומצמת</strong>
+          <div className="chips">
+            {practiceLinks.map(({ href, label }) => (
+              <a className="chip" href={href} key={href}>{label}</a>
+            ))}
+          </div>
+        </nav>
+      )}
 
       <div className="cross">
         <label htmlFor={crossId}>
