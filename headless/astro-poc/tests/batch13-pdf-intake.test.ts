@@ -1,3 +1,4 @@
+import { beforeNovember21Catalog, beforeNovember21Registry } from './fixtures/middle-090-091-094';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -23,8 +24,8 @@ const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 // Batch 13 is newer than the additional reviewed Ramzi activation (19.11): its baseline keeps that activation.
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeNovember21Catalog(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeNovember21Catalog(loadCatalog());
 const previous = beforeBatch13Catalog(raw) as ReturnType<typeof loadCatalog>;
 const previousSsr: any = structuredClone(catalog);
 for (const addition of reviewed.additions) {
@@ -36,7 +37,7 @@ for (const addition of reviewed.additions) {
     delete topic.defaultEditionId;
   }
 }
-const registry = read('headless/catalog/worksheet-editions.v1.json');
+const registry = beforeNovember21Registry(read('headless/catalog/worksheet-editions.v1.json'));
 const priorRegistry = beforeBatch13Registry(registry);
 const receipt = read('docs/batch13-pdf-first-20261119.json');
 const expectedIds = ["ms-20261119-prp-01-r1", "ms-20261119-pch-01-r1", "ms-20261119-spc-01-r1", "ms-20261119-g8-sqr-01-r1", "ms-20261119-fcn-01-r1", "ms-20261119-fnt-01-r1", "ms-20261119-roc-01-r1", "ms-20261119-slo-01-r1", "ms-20261119-axi-01-r1", "ms-20261119-eql-01-r1"];
@@ -312,8 +313,8 @@ test('preservation fences reject catalog, registry and landing substitutions and
   // The batch 12 fence calls this fence first, so it never reverses batch 13 twice; with batch 13
   // present, it still refuses a substitution in its own edition.
   assert.throws(() => beforeBatch12Catalog(previous), (error: any) => error instanceof assert.AssertionError
-    && error.message.includes('ms-20261119-prp-01-r1: only reviewed appended editions'), 'never reverses twice');
-  const batch12Substituted = structuredClone(raw);
+    && error.message.includes('frequency-grade-7'), 'never reverses the November 21 overlay twice');
+  const batch12Substituted = read('headless/astro-poc/src/data/catalog.v1.json');
   batch12Substituted.grades.find((g: any) => g.grade === 7).topics.find((t: any) => t.id === 12)
     .editions.at(-1).levels[0].pdfSha256 = '0'.repeat(64);
   assert.throws(() => beforeBatch12Catalog(batch12Substituted), assert.AssertionError);

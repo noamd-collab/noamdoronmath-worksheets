@@ -1,3 +1,4 @@
+import { beforeNovember21Catalog, beforeNovember21Copy, beforeNovember21Registry } from './middle-090-091-094';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from './batch12-pdf-reviewed.json';
@@ -17,7 +18,7 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 export function beforeBatch12Catalog<T>(catalog: T): T {
   // Newer layers first, exactly once each: batch 13 (renewal, 19.11), then the additional reviewed
   // Ramzi activation (19.11).
-  const restored: any = structuredClone(beforeReviewedRamziActivation(beforeBatch13Catalog(catalog)));
+  const restored: any = structuredClone(beforeReviewedRamziActivation(beforeBatch13Catalog(beforeNovember21Catalog(catalog))));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;
@@ -47,7 +48,7 @@ export function beforeBatch12Catalog<T>(catalog: T): T {
 /** Validate exact registry rows before removing batch 12. */
 export function beforeBatch12Registry<T>(registry: T): T {
   // Batch 13 (renewal, 19.11) is newer: reverse it first.
-  const restored: any = structuredClone(beforeBatch13Registry(registry));
+  const restored: any = structuredClone(beforeBatch13Registry(beforeNovember21Registry(registry)));
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -60,7 +61,7 @@ export function beforeBatch12Registry<T>(registry: T): T {
 export function beforeBatch12Copy<T>(slug: string, page: T): T {
   // Newer layers first, for every slug: batch 13 (renewal, 19.11), then the landing copy after the
   // additional Ramzi activation (19.11). Older tests never call beforeBatch13Copy themselves.
-  page = beforeRamziActivationCopy(slug, beforeBatch13Copy(slug, page));
+  page = beforeRamziActivationCopy(slug, beforeBatch13Copy(slug, beforeNovember21Copy(slug, page)));
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);

@@ -1,0 +1,515 @@
+{
+  "schema": "middle-school-reviewed-pdf/v1",
+  "date": "2026-11-21",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+  "baseline": "958293f650ad9098cd3f688d0b30333d40dace3f",
+  "baselineCatalogSha256": "5cf95909559ffa6c2daddbdc982c5db8ce2c58e73c1fb6dff250d844dd6dc330",
+  "baselineRegistrySha256": "bb64896f8140b0a3aac46b68fcf2b3350f37b1f1ee9f6154226a30897bc02de3",
+  "packages": [
+    {
+      "number": 90,
+      "sheetId": "G7-FRQ-02",
+      "grade": 7,
+      "topicId": 25,
+      "slug": "frequency-grade-7",
+      "producerPackage": "G7-T136",
+      "studentRevision": "r03",
+      "author": "Codex",
+      "skillVersion": "7.3.3",
+      "freezeSha256": "6f1a74923c89b3e8a643f9dc575e52642e2e58b2613d31375c615883d178c422",
+      "reviewReceipts": [
+        {
+          "role": "Independent blind solutions and comparison, r01",
+          "path": "reports/CODEX-INDEPENDENT-G7-FRQ-02-r01-20261121/review.json",
+          "sha256": "dd8f9ed20e4ab89987b0947b9a33327d0376afd8a97ac539c41890c4fa610b32"
+        },
+        {
+          "role": "Blind solve commitment, r01",
+          "path": "reports/CODEX-INDEPENDENT-G7-FRQ-02-r01-20261121/blind-commitment.json",
+          "sha256": "5ea4a3b77833b25ea7dcbc7d03aabe6e2431f190b03f9146b27d6be1912e7100"
+        },
+        {
+          "role": "Exact r02 delta check",
+          "path": "reports/CODEX-SITE-090-091-094-20261121/090-r02-delta-data.json",
+          "sha256": "caaab2de492db3b502c1b2142cc730015d42a66f1519f710d2ab96306740ee8b"
+        },
+        {
+          "role": "Frozen source and layout parity checks, r02",
+          "path": "submissions/Codex/MS-PROD-CODEX-090-r02/reports/revision-parity.json",
+          "sha256": "5cbac8440e2dd96422e8199272348a88fb819c5808f1a2af83067c42358996e5"
+        },
+        {
+          "role": "Independent Claude blind verification of 108 items, prior to exact corrections",
+          "path": "reports/CLAUDE-INDEPENDENT-G7-FRQ-02-r01-20261121/numbers-blind.json",
+          "sha256": "c5f13cc2b3c322c6697f19d74508502163a54952a8f9a292f5d2f6a573c0e1d7"
+        },
+        {
+          "role": "Final r03 corrected wording and solution, parity with independently checked math and re-rendered pages",
+          "path": "submissions/Codex/MS-PROD-CODEX-090-r03/reports/revision-parity.json",
+          "sha256": "0a92e8aaa9ded9fd679e57f59c6681c0456359d0fbfbce5a4de1fb963af1545d"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 9,
+          "bytes": 76622,
+          "source": "submissions/Codex/MS-PROD-CODEX-090-r03/release/documents/G7-FRQ-02/a/sheet.pdf",
+          "sha256": "a8b92fb15298a1676d8e8e9873d15bee155b0dfcee77afe38f8e5005521749d5",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_870d7dcbfd2740019e0ad9f0f75ec323.pdf",
+              "status": 200,
+              "sha256": "a8b92fb15298a1676d8e8e9873d15bee155b0dfcee77afe38f8e5005521749d5",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_870d7dcbfd2740019e0ad9f0f75ec323.pdf",
+              "status": 200,
+              "sha256": "a8b92fb15298a1676d8e8e9873d15bee155b0dfcee77afe38f8e5005521749d5",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 9,
+          "bytes": 76623,
+          "source": "submissions/Codex/MS-PROD-CODEX-090-r03/release/documents/G7-FRQ-02/b/sheet.pdf",
+          "sha256": "0654d84c0507d5334e57ba183a3ee6bbef7aaa29656566429f62a00b15655649",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b726a5baebda4923878f7f2e80078be3.pdf",
+              "status": 200,
+              "sha256": "0654d84c0507d5334e57ba183a3ee6bbef7aaa29656566429f62a00b15655649",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b726a5baebda4923878f7f2e80078be3.pdf",
+              "status": 200,
+              "sha256": "0654d84c0507d5334e57ba183a3ee6bbef7aaa29656566429f62a00b15655649",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 9,
+          "bytes": 77535,
+          "source": "submissions/Codex/MS-PROD-CODEX-090-r03/release/documents/G7-FRQ-02/c/sheet.pdf",
+          "sha256": "d712643555d259d6724f79197aeb812ef09ef952658a6621b596bfccf345649d",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a8a2c1df667b47e586878626e54bf59d.pdf",
+              "status": 200,
+              "sha256": "d712643555d259d6724f79197aeb812ef09ef952658a6621b596bfccf345649d",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a8a2c1df667b47e586878626e54bf59d.pdf",
+              "status": 200,
+              "sha256": "d712643555d259d6724f79197aeb812ef09ef952658a6621b596bfccf345649d",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "טבלת שכיחות ודיאגרמת נקודות — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "קוראים טבלאות שכיחות ודיאגרמות נקודות. לכל ערך סופרים כמה פעמים התקבל, ומזהים את הערך השכיח או כמה ערכים בעלי אותה שכיחות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "משווים בין רשימת תוצאות לייצוג שלה ובוחנים כיצד שינוי בתצפית משפיע על הנתונים. למשל, ברמה ב׳ מתקנים דיאגרמה שבה נקודה סומנה מעל ערך שגוי.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "להורדה ולהדפסה עומדים לרשותכם שלושה דפי PDF, לרמה א׳, לרמה ב׳ ולמצוינות. בסוף כל דף מופיעות התשובות הסופיות. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "c66f5050dc25ee1b0728577005876793ea1b6dcd70bab7c0b8eaead1fca9f744",
+      "priorTopicSha256": "18b3603586e0897d925f263248da4ca650ba2d864f1afa5406621b31087e0327",
+      "edition": {
+        "grade": 7,
+        "topicId": 25,
+        "editionId": "ms-20261121-frq-02-r1",
+        "label": "טבלת שכיחות, שכיח ודיאגרמת נקודות · PDF",
+        "nativePrefix": "G7-T136",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "870d7dcbfd2740019e0ad9f0f75ec323",
+            "pdfSha256": "a8b92fb15298a1676d8e8e9873d15bee155b0dfcee77afe38f8e5005521749d5",
+            "sourceSha256": "9a8ee3d38adbabb52e8b9519f57d57b9c2eacbceb49a5486cbfa3c9f014cd3f2",
+            "nativeExportSha256": "610795b13feb4e8755b5541fab899ea7d382a6e0a18ce4953dc580f8ed1680bc",
+            "worksheetId": "ms-g7-frq-02-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "b726a5baebda4923878f7f2e80078be3",
+            "pdfSha256": "0654d84c0507d5334e57ba183a3ee6bbef7aaa29656566429f62a00b15655649",
+            "sourceSha256": "d36df47c66712d352959734b452c0630b54c4e728055fd8bc5b669eb7ed1bacf",
+            "nativeExportSha256": "96a253237b1d199839a3a1228c697dc5297cb529b147eb38a6003dbc3fc2402c",
+            "worksheetId": "ms-g7-frq-02-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "a8a2c1df667b47e586878626e54bf59d",
+            "pdfSha256": "d712643555d259d6724f79197aeb812ef09ef952658a6621b596bfccf345649d",
+            "sourceSha256": "7da5b2a30bd5de20345af4fc4b4e8b989b22a4e2cc379e997be8f73e2745ed41",
+            "nativeExportSha256": "7d1058c2137de5aa1defa45013054747f28e5edd7c3ed36b1678c123e80a06bd",
+            "worksheetId": "ms-g7-frq-02-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "f7cde069a1b27a42a945fac885048745ff2ebdc8ce61c54822c111c771e52bbb"
+    },
+    {
+      "number": 91,
+      "sheetId": "G7-PRI-01",
+      "grade": 7,
+      "topicId": 28,
+      "slug": "probability-introduction-grade-7",
+      "producerPackage": "G7-T137",
+      "studentRevision": "r02",
+      "author": "Codex",
+      "skillVersion": "7.3.3",
+      "freezeSha256": "5c727aa7f42c8591ae708bbf672a9da25d1f2d4b57c66285210f5314b8ccbc37",
+      "reviewReceipts": [
+        {
+          "role": "Independent Claude worksheet review, r01",
+          "path": "reports/CLAUDE-INDEPENDENT-G7-PRI-01-20261121/review.json",
+          "sha256": "d03cfd038176729ee7b99419de8f6750ad045d0e934ee7cd4e76531f8acef744"
+        },
+        {
+          "role": "Independent Claude blind numerical verification, r01",
+          "path": "reports/CLAUDE-INDEPENDENT-G7-PRI-01-20261121/numbers-blind.json",
+          "sha256": "3c9670befd095ada0fb2c6c134745fc9c7a05cb7ecac049386cd9d264a3d9cf5"
+        },
+        {
+          "role": "Exact r02 independent delta check",
+          "path": "reports/CODEX-SITE-090-091-094-20261121/091-r02-codex-delta.json",
+          "sha256": "40d62e8fecad1573ced5155600533c4fdd76b4d65c996f5e9c781085f29f9537"
+        },
+        {
+          "role": "Frozen r02 visual and revision review",
+          "path": "submissions/Codex/MS-PROD-CODEX-091-r02/reports/revision-review.json",
+          "sha256": "4d0cd2a7b13ad75768084f93bb138d8644ac70106ba692b6322766110dc1af5a"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 5,
+          "bytes": 37970,
+          "source": "submissions/Codex/MS-PROD-CODEX-091-r02/release/documents/G7-PRI-01/a/sheet.pdf",
+          "sha256": "3ac4f72dde9939d58484ce6e61900282452223c34af7ea105c9053191cf8fa61",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_1b11ff7dc82e4b05a85ea3a5dce99af5.pdf",
+              "status": 200,
+              "sha256": "3ac4f72dde9939d58484ce6e61900282452223c34af7ea105c9053191cf8fa61",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_1b11ff7dc82e4b05a85ea3a5dce99af5.pdf",
+              "status": 200,
+              "sha256": "3ac4f72dde9939d58484ce6e61900282452223c34af7ea105c9053191cf8fa61",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 5,
+          "bytes": 37389,
+          "source": "submissions/Codex/MS-PROD-CODEX-091-r02/release/documents/G7-PRI-01/b/sheet.pdf",
+          "sha256": "5f6df3c4e08a83724e5546a1d0a93800d3715b7820d04866b49fe9365ca10dd8",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b3be66e753874bdfa561d965dc62b63e.pdf",
+              "status": 200,
+              "sha256": "5f6df3c4e08a83724e5546a1d0a93800d3715b7820d04866b49fe9365ca10dd8",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b3be66e753874bdfa561d965dc62b63e.pdf",
+              "status": 200,
+              "sha256": "5f6df3c4e08a83724e5546a1d0a93800d3715b7820d04866b49fe9365ca10dd8",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 6,
+          "bytes": 39692,
+          "source": "submissions/Codex/MS-PROD-CODEX-091-r02/release/documents/G7-PRI-01/c/sheet.pdf",
+          "sha256": "7defaded91f4295411f066acf415d45bb6dc594b9fe027af0c1bfb5f81248db9",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ae3bc69e774149e7befd969c4949b4a8.pdf",
+              "status": 200,
+              "sha256": "7defaded91f4295411f066acf415d45bb6dc594b9fe027af0c1bfb5f81248db9",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_ae3bc69e774149e7befd969c4949b4a8.pdf",
+              "status": 200,
+              "sha256": "7defaded91f4295411f066acf415d45bb6dc594b9fe027af0c1bfb5f81248db9",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "הסתברות בבחירה אקראית מתוך רשומות — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בוחרים רשומה באקראי מתוך יומן או רשימה. מחשבים את הסיכוי למאורע בעזרת מספר הרשומות המתאימות ומספר הרשומות הכולל.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "משווים סיכויים בקבוצות שגודלן שונה. למשל, במצוינות בודקים כיצד שכפול הרשומות של ספרייה אחת משנה את הסיכוי לבחור בקשה לספר שירה מתוך מאגר משותף.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "להורדה ולהדפסה עומדים לרשותכם שלושה דפי PDF, לרמה א׳, לרמה ב׳ ולמצוינות. בסוף כל דף מופיעות התשובות הסופיות. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "39b53b3201425567303d54d92d85f96885688f8d384d48b78806c843abaaaf6d",
+      "priorTopicSha256": "fcbaa575f227e493afa3d24c70d711bc250aeebd4daa8f5091c0bb9b3f83f3fc",
+      "edition": {
+        "grade": 7,
+        "topicId": 28,
+        "editionId": "ms-20261121-pri-01-r1",
+        "label": "הסתברות — היכרות דרך שכיחות יחסית · PDF",
+        "nativePrefix": "G7-T137",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "1b11ff7dc82e4b05a85ea3a5dce99af5",
+            "pdfSha256": "3ac4f72dde9939d58484ce6e61900282452223c34af7ea105c9053191cf8fa61",
+            "sourceSha256": "6a2070b8640ad3392e50acf596a6fea818d979d06bdbca9622ddff4065b15826",
+            "nativeExportSha256": "495becdf44b5661ece271954eb8985dd25478552e09688dde8404bf3fe7140e7",
+            "worksheetId": "ms-g7-pri-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "b3be66e753874bdfa561d965dc62b63e",
+            "pdfSha256": "5f6df3c4e08a83724e5546a1d0a93800d3715b7820d04866b49fe9365ca10dd8",
+            "sourceSha256": "61125cd1d9aa00f525806888e58eafad5171807f0cbc2bc18b5f6f99280d0678",
+            "nativeExportSha256": "4658cb2d481d9e4debb09e2aabed12144d716afcb0b8c39284c03f553370938a",
+            "worksheetId": "ms-g7-pri-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "ae3bc69e774149e7befd969c4949b4a8",
+            "pdfSha256": "7defaded91f4295411f066acf415d45bb6dc594b9fe027af0c1bfb5f81248db9",
+            "sourceSha256": "a548382ee96db838f742fd227fab6bca50d9c79024cd85a76b4ebe0d1e77ad92",
+            "nativeExportSha256": "2d916533ce5a8c5b3deed94998eb99da2e644c5344d158f6dced78a8c61b429f",
+            "worksheetId": "ms-g7-pri-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "3eee7f4652f85707eec5738f90cd676a1565102d7171399a56d82e6beeb8f702"
+    },
+    {
+      "number": 94,
+      "sheetId": "G9-DOS-01",
+      "grade": 9,
+      "topicId": 45,
+      "slug": "difference-of-squares-grade-9",
+      "producerPackage": "G9-T120",
+      "studentRevision": "r02",
+      "author": "Codex",
+      "skillVersion": "7.3.3",
+      "freezeSha256": "d2a1e510854a447b25462181028e53bbaa9b1ee8aec482ceacea4ff2be6f41f4",
+      "reviewReceipts": [
+        {
+          "role": "Independent Claude worksheet review, r01",
+          "path": "reports/CLAUDE-INDEPENDENT-G9-DOS-01-20261121/review.json",
+          "sha256": "0942006b3853c4357fe6e88ebbce04453d3d804cded11b7426829d810dd4ead3"
+        },
+        {
+          "role": "Independent Claude blind numerical verification, r01",
+          "path": "reports/CLAUDE-INDEPENDENT-G9-DOS-01-20261121/numbers-blind.json",
+          "sha256": "f1f47e7450fed7df331c72b9e82d29011c20e7772c8e6e48ff8c91818d1ad20f"
+        },
+        {
+          "role": "Frozen r02 visual and revision review",
+          "path": "submissions/Codex/MS-PROD-CODEX-094-r02/reports/revision-review.json",
+          "sha256": "0967c1f363c85a31922aa3765000068a281fad21083e8cac11dec114c299caf2"
+        },
+        {
+          "role": "Rendered student and Word document visual review, r02",
+          "path": "submissions/Codex/MS-PROD-CODEX-094-r02/selfqa/visual.json",
+          "sha256": "dc10417bec0b42da45b502f9e983f400080ac32964e4983be368af6bf584d771"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 5,
+          "bytes": 38263,
+          "source": "submissions/Codex/MS-PROD-CODEX-094-r02/release/documents/G9-DOS-01/a/sheet.pdf",
+          "sha256": "afac1fec8863c8236099e59c06357d40b18216582ba952a2ae16b14b737e3c4b",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c85df46d489745bdb9952848ee80b4b1.pdf",
+              "status": 200,
+              "sha256": "afac1fec8863c8236099e59c06357d40b18216582ba952a2ae16b14b737e3c4b",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_c85df46d489745bdb9952848ee80b4b1.pdf",
+              "status": 200,
+              "sha256": "afac1fec8863c8236099e59c06357d40b18216582ba952a2ae16b14b737e3c4b",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 5,
+          "bytes": 38111,
+          "source": "submissions/Codex/MS-PROD-CODEX-094-r02/release/documents/G9-DOS-01/b/sheet.pdf",
+          "sha256": "8c2857105d1c0027928bb982d207f8cff3fd909a95bc220a1635216b3fef30a9",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_e57535cfc0ea4fef8dc2dddbf0723ddf.pdf",
+              "status": 200,
+              "sha256": "8c2857105d1c0027928bb982d207f8cff3fd909a95bc220a1635216b3fef30a9",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_e57535cfc0ea4fef8dc2dddbf0723ddf.pdf",
+              "status": 200,
+              "sha256": "8c2857105d1c0027928bb982d207f8cff3fd909a95bc220a1635216b3fef30a9",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 5,
+          "bytes": 38556,
+          "source": "submissions/Codex/MS-PROD-CODEX-094-r02/release/documents/G9-DOS-01/c/sheet.pdf",
+          "sha256": "07fc670dc6344fb38067373a902ac5894f135de5a834cb70eec0475ca5acf6b0",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_1e15d9a0147b439180b7b7a04f4b2ba7.pdf",
+              "status": 200,
+              "sha256": "07fc670dc6344fb38067373a902ac5894f135de5a834cb70eec0475ca5acf6b0",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_1e15d9a0147b439180b7b7a04f4b2ba7.pdf",
+              "status": 200,
+              "sha256": "07fc670dc6344fb38067373a902ac5894f135de5a834cb70eec0475ca5acf6b0",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "הפרש ריבועים בפירוק לגורמים ובכפל — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "משתמשים בזהות להפרש ריבועים בשני הכיוונים. עוברים בין מכפלה של סכום והפרש לבין הפרש של שני ריבועים, ובוחרים את הצורה שמקלה על החישוב.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מיישמים את הקשר גם בבעיות על מידות ושטחים. למשל, ברמה א׳ מחשבים את מספר התאים במגש שתילה מלבני, ובמצוינות משווים שטחים של מלבנים שהיקפיהם שווים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "להורדה ולהדפסה עומדים לרשותכם שלושה דפי PDF, לרמה א׳, לרמה ב׳ ולמצוינות. בסוף כל דף מופיעות התשובות הסופיות. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 15.11.2026",
+      "priorPageSha256": "8dfaebeb158c9912f39c4e8c66cf0561d57a582d7e5ed7a1881312ac921dac0d",
+      "priorTopicSha256": "d3ea00a8f12d2c20975e9f87cd53528b1f8cc3d6769b87ad01c754607ba53ff4",
+      "edition": {
+        "grade": 9,
+        "topicId": 45,
+        "editionId": "ms-20261121-dos-01-r1",
+        "label": "הפרש ריבועים: זיהוי, פירוק וכפל · PDF",
+        "nativePrefix": "G9-T120",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "c85df46d489745bdb9952848ee80b4b1",
+            "pdfSha256": "afac1fec8863c8236099e59c06357d40b18216582ba952a2ae16b14b737e3c4b",
+            "sourceSha256": "edcaf13143c27a14ea0600ecdf7f11d87a557d056369caadb43da4e58aa80517",
+            "nativeExportSha256": "7958e3dde8e608429150f1af827724c29f9ab949a70448329167fd4d3ab54c22",
+            "worksheetId": "ms-g9-dos-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "e57535cfc0ea4fef8dc2dddbf0723ddf",
+            "pdfSha256": "8c2857105d1c0027928bb982d207f8cff3fd909a95bc220a1635216b3fef30a9",
+            "sourceSha256": "8adee35d8b9894a2ae2d416a14b2c7748db82d092b7d9def42ff5e47f6c24635",
+            "nativeExportSha256": "81e76b96605cdb37fc903435f5ae76c6368ddc4e335b4923965a11e319647080",
+            "worksheetId": "ms-g9-dos-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "1e15d9a0147b439180b7b7a04f4b2ba7",
+            "pdfSha256": "07fc670dc6344fb38067373a902ac5894f135de5a834cb70eec0475ca5acf6b0",
+            "sourceSha256": "c3e92b0d7990a838c84f15645b140dc1dc610da6170e130b6d3856b6caa0065b",
+            "nativeExportSha256": "3a9febe580659e92ef9c5057590b9773dd69aefaf7e277d66a123195d3814aac",
+            "worksheetId": "ms-g9-dos-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "9dbbd7eecf1173d039c4b2df44d925cab9fef5afa6c42746e5bdf6349c2de984"
+    }
+  ]
+}
