@@ -1,5 +1,5 @@
 /** Shapes of the site search index (src/data/search-index.v1.json) and its answers. */
-import type { CatalogEdition } from '../catalog/types';
+import type { CatalogEdition, ElementaryPrintTopic } from '../catalog/types';
 
 export type SearchKind = 'topic' | 'page' | 'post';
 
@@ -46,6 +46,7 @@ export interface SearchDoc {
 }
 
 export interface SearchIndex {
+  elementaryPrintTopics?: ElementaryPrintTopic[];
   version: 1;
   /** Catalog config needed to build worksheet links (buildWorksheetHref). */
   config: { pdfBase: string; viewer: { enabled: boolean; path: string }; middleGrades: number[] };

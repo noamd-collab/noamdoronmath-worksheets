@@ -1,0 +1,382 @@
+[
+  {
+    "grade": 1,
+    "topicId": 1,
+    "slug": "counting-grade-1",
+    "levels": {
+      "a": "fdba61eb66e1e7476bc087f51e9c09025b40a48706c258a78d18434336a46a06",
+      "b": "c37e5cfe891fa7538e8cb9cd371d4f8eecaaf27d2920b6136665164a917c06a6",
+      "c": "58fa360b1312d004d2d2daa56ab9093f09a9d05f62409867c724a07bc35e8dc8"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 2,
+    "slug": "numbers-to-100-grade-1",
+    "levels": {
+      "a": "466e32af7a8d0795507cce04ea61304279263fb55ce43e0151e7dd52b4d6f323",
+      "c": "eadfa2b87d7cac5bffe9c9e64984ff524f350cde8f8166328063cc25533b4e29"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 3,
+    "slug": "number-neighbors-grade-1",
+    "levels": {
+      "b": "cb2ac782a1d2e28a6671295c02be2b26fa7e37ecf6cbbd417d96a2a3450b4837",
+      "c": "ec490178814fdc73d4f4ce51fd5a6dacbca2f8b023ed6e46ada694dd01230076"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 4,
+    "slug": "compose-decompose-10-grade-1",
+    "levels": {
+      "a": "eb7ed79e9460178c96d777e565c1d2d45a77e0abb06f921c2b15129e76332f74",
+      "b": "d41371141845832c9426a7fc196d2920f63b0cbdb6f7753319048840b27d209e"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 5,
+    "slug": "addition-to-10-grade-1",
+    "levels": {
+      "a": "e23e8e16934bea9cfb5d6a162b502010f4eaa3c35b6ced18a4cebcde3f96e364",
+      "b": "917c827a07110193844dc1e8d41f4b178e57de4b490eabcb8bf5267ecbe62602",
+      "c": "6dc2a5b0d08e730cf00ef8350e159821376aa57ee3154d83178f779214629e67"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 6,
+    "slug": "subtraction-to-10-grade-1",
+    "levels": {
+      "a": "2b49d7ff123b4394bc24afa09d6366790158eeee693033110018fe872d486036",
+      "b": "048207478eef4a8308cd78704ae7b49174d25e8c15f9c564afd9d5d7017081c2",
+      "c": "5eeae8ef7562a73f7047f1daddcf3032e2d718dfb4a43c2ccf16965a0048cf39"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 7,
+    "slug": "making-20-via-10-grade-1",
+    "levels": {
+      "a": "9d9bbacbcd0fe3e64f19ac9ab012d429273307a2aac4cd74a1220a5bddd2b448",
+      "b": "c3e7fd23b44c64967f16ec0377aef224a7c30c2c272617748dfc7363491fb556",
+      "c": "7a08e750889c3ab0094f4b4f72de47f61509f7de4a8e22e14cc3b61494542cd7"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 8,
+    "slug": "addition-to-20-grade-1",
+    "levels": {
+      "a": "bf9b6e09d25cf2d33269f2a397988eb2a704ab46e6e597b0e016c3c83ee043d0",
+      "b": "214854e1e4868810df0e4bb95d385ec933d199edbc8501e23919a645e64a572a",
+      "c": "e90abe5add4a1c7ef065d82f13e67fde0a3eba6a30efe6a8b53c61adad52754e"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 9,
+    "slug": "subtraction-to-20-grade-1",
+    "levels": {
+      "a": "7a8eb641c903ae397c675c99519a012b2d4c2ba415c820682aca524d980c8895",
+      "c": "c6e9cad89405e8fc9e9d4ef47f49ced8de6a2bbbc7435840c072558e6bf35df4"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 10,
+    "slug": "equality-missing-number-grade-1",
+    "levels": {
+      "a": "a007c1c107a238e3e539bedc582f756bc38b5d39773d296b49df139dac41b238",
+      "b": "c89a95fcd44b174071f89bf22bf4a666f34e7f6e4f292e041c32512bf8236cf2",
+      "c": "93b02ac48bd832857f7563a9ccd9751326875abc11efa2e4b4435b143e55a691"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 13,
+    "slug": "number-chains-pyramids-grade-1",
+    "levels": {
+      "a": "5896254db28de5c59731f111786064afae9635b500efca11484265a92b84fb7f",
+      "b": "ea928fdb951ccc65c99d50aa0b3b3b49cfefd2dad1765d4aab0cc1a27a4695e5",
+      "c": "3e07a3b2b3d36ffafced32f5bfbbb55a61997c49be07b3b008b1790728792475"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 16,
+    "slug": "equal-groups-repeated-addition-grade-1",
+    "levels": {
+      "a": "53625f7c5df4ec6374767859ae1fcefeb6780a4da27a3e3b0852f9e83cbf4242",
+      "b": "7284a84df3b791077d86cd3acf9780bbabc17f240605e790f182bbb5138db006",
+      "c": "8d30b3f76512ac5919e797d5156d1136f767d21993f6b69db08c09f22f9d76bd"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 17,
+    "slug": "polygons-grade-1",
+    "levels": {
+      "a": "92e3051750f7d2d790bde0d17cd049a5e81430f40176ace66fd71bb0d76ba59a",
+      "b": "2aa1ddb3e5d8fd64f29a846871e530cf16c40fdf5c3cd133c6a20f5123bccb12",
+      "c": "39be527a6507a82e70b803d444195c40b4994d621e1c5e962211957252f94763"
+    }
+  },
+  {
+    "grade": 1,
+    "topicId": 21,
+    "slug": "data-grade-1",
+    "levels": {
+      "a": "a24c3e19c1be9f10a39821aab99f2fea4856d2f33ce511e0d315094730fb09ea",
+      "b": "b63300486303339ba03a417e0ceeb5f9c8214faae0153628db1503cc8f976971",
+      "c": "f303833881f448ab77dff0a9a81250f5bd8b5c96dc9713386b6deedf8a16c092"
+    }
+  },
+  {
+    "grade": 2,
+    "topicId": 1,
+    "slug": "number-bonds-10-20-grade-2",
+    "levels": {
+      "a": "978eb563a4350408d3615535cbc32e023eff594fc720eb55f7b6ebf9f7038f52",
+      "b": "ca350b251cf49e8f7ad93176ab53eb6678213defb4707f48395d42d12f9c34b9",
+      "c": "23bf3c59435e7515d2776c2239a44903ba564d5379f5903758ac99f87a733aec"
+    }
+  },
+  {
+    "grade": 2,
+    "topicId": 28,
+    "slug": "shapes-vs-solids-grade-2",
+    "levels": {
+      "a": "bad5a89c7facb90a2790ff8a062ba6203eb62686940644dfa112081d775fe80b",
+      "b": "6231d5064dbf76195e42002f3b1716739cb3ab34788ec2c7005f1b6c592727a6",
+      "c": "d93901a1ef8103850ecc83de1c91f637752169ae65e5fb4b198ed4001fb0de7c"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 1,
+    "slug": "place-value-grade-3",
+    "levels": {
+      "a": "d7d581517754f722b9385c380140c5ade5af89c35a105d6898f4f6a069e298c4",
+      "b": "3613be667681768742bcde01e45246cdab5ecd14243caf207d10b4ac54d3ae1b",
+      "c": "c8ae782f3b461691ab64b1acaaa685b5f31bfccda3bf6d2dada744d544a2e647"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 3,
+    "slug": "sequences-find-mistake-grade-3",
+    "levels": {
+      "a": "0ab55e10b6b0644a156fcfa59374b5a7d053fc85423944f4fd4b2ec49629cc2e",
+      "b": "b90f97010cac697972034189c5821cd12a2c6dd3ff4728cff8efbbd3784053d8",
+      "c": "251b77079aeca26b87efdd391a9a0c3b237b0ed52f7c80119542606d3ae04461"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 4,
+    "slug": "thousands-grade-3",
+    "levels": {
+      "a": "6300171cb5ef7b7c760569fd88017cfa0e701128a27a4f88fd9536e4df17333f",
+      "b": "81733f557c2a2c92cacef6919efff43fa2419506f1aa0c48ac2f525560a4822c",
+      "c": "65a51c4b6b20c89f1272b365907dad89e464a256f1c80d1d66c7214f2150b794"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 5,
+    "slug": "estimation-close-numbers-grade-3",
+    "levels": {
+      "a": "21e0b53d7027e34621cd35e18386e00f058f39cded6b466ac0b83918d8169e5b",
+      "b": "2ef840523395ef60aaa90f29f31b829d8c9589f394a70cc87fa678c35c2a4644",
+      "c": "f1a2680c9b829a69e71e9dff45b110c6f1e49b01835a1cce788c226d94a73942"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 6,
+    "slug": "column-addition-carrying-grade-3",
+    "levels": {
+      "a": "dce1cb3a229df95518d64bf7d0cc357387ebb1722654d26fd365e1e1a41eff53",
+      "b": "b5e9d38f0d1aaddaa5ed57671a278f9b9ade85342b7a65638d491e96d05742b4",
+      "c": "cf66fd53e85793fe3752237356337162ae91d8bdf831eb83637b627a94b5526a"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 7,
+    "slug": "column-subtraction-borrowing-grade-3",
+    "levels": {
+      "a": "61fc98dc10ae6337aeab600de2f543069dafe342a52edfa8a091d4c9c36c5e3a",
+      "b": "7798177b2fc0139465fff0d98160b155b18b1519fcf81ee5610bcacc2006fe5e",
+      "c": "79eec572eca8b337c5acb8cc14bd785c38e2ad3632632122e2f9384629993a6a"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 8,
+    "slug": "word-problems-grade-3",
+    "levels": {
+      "a": "c481ff6a8bec97c154fd5cf439e5c0dcad0316a07ddfe1f7e86a2094d74b7876",
+      "b": "09087ea21d4324c06e7d595777064acdb3770b72d902106c4459fb83307e9509",
+      "c": "940fe946c49f8c149ad17bb143b30cd82740ba8b1204bd31f82506476daa7d04"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 9,
+    "slug": "multiplication-facts-arrays-grade-3",
+    "levels": {
+      "a": "2100623a49e95da393c4990295fef4424ea06313e82e9a8ffea990449fd80d86",
+      "b": "bd52c921b0534bfad8dafa3806f50be1b5e3e9e2ad97eebfb1e7169c12a2ccff",
+      "c": "cb21b0a58914013072d55f9688df76492e7f6aa39bc18196e887a0d9ee4e95dd"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 11,
+    "slug": "unit-fractions-part-of-whole-grade-3",
+    "levels": {
+      "a": "ca186a3c1d2dcb1a9e15e6b9ed09ac727e3d6c85c06889162bad8bf985fb1c44",
+      "b": "bd8a38049b5f697bd8db937da72def134fa2f9036617ea219807259fd7d4ed68",
+      "c": "d9334144597e094c7f767dc632944a0300642fe016d7aa4721a0b1527ba7bd09"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 12,
+    "slug": "angles-types-grade-3",
+    "levels": {
+      "a": "8024a37bc4600d138e1ef37a1e2cf695306610e3081a3c17badd4d0f363179d6",
+      "b": "076d34b769abdc933198147b706d1c8cbfed0426a611c96e98f6b179125cd18e",
+      "c": "ef5e5be21326645a0f5b36a2923b40b80bb1f5fbe5a6c419fbfc4e23872c91f8"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 13,
+    "slug": "lines-angles-shapes-grade-3",
+    "levels": {
+      "a": "b09ca209060b48a68512729c46a3d569a6b667c8176c3e6b9cb3eb25f02f2b0e",
+      "b": "d5bfe1caa6b10c8a9555b7f9c1386509be06ab4c95f27a4d9c81888c2260fccb",
+      "c": "5910e16d2ba404ba7770d23ed07af81f7c9ec03ddfc4955aaf3edd532274726c"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 14,
+    "slug": "polygons-sides-vertices-grade-3",
+    "levels": {
+      "a": "60e826f396c4c85a99d586773030373661e38ca276219bc850778c72ed8a530a",
+      "b": "c09da349f8ba394b68f7243aed956f2bba5daa9ef2c1dea742c237a8dcb8ab5d",
+      "c": "f4af4b0861f603f6e3869136eba65c0a164b8fe02530baf6b4d40572efe439a9"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 15,
+    "slug": "perimeter-polygons-grade-3",
+    "levels": {
+      "a": "26bdd9460bc94baf030d7fadf4db75f57e90fdc06fbc11606288544b939d0070",
+      "b": "8d8f6319e60414747d37bb546aa801708f12ef06d91555b2e801d6a3be311b6a"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 16,
+    "slug": "classify-triangles-grade-3",
+    "levels": {
+      "c": "b3e51a92737c27c37d9258c04b306dbac0541e11d4a06245c9972d66722e580e"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 17,
+    "slug": "quadrilaterals-properties-grade-3",
+    "levels": {
+      "a": "e75ec290c8a8b64fbfdf187a0647469cbcceaec577013144f76aa0197a4cdd38",
+      "b": "3a2cff4cf26bf7b891981cfc53a4b230528751c2b7adc18f7e44921c4557745f",
+      "c": "c9bff64f5049f5141b5cb1268efaf83babc536206da8077fa5ed1b855d50bc56"
+    }
+  },
+  {
+    "grade": 3,
+    "topicId": 18,
+    "slug": "shapes-on-grid-grade-3",
+    "levels": {
+      "a": "d90714538dd36a92171dff2078b9e5e8dd30b93cdba9b887263f97a78293759b",
+      "b": "a30518d0de64faf6f463ca168bc04b014a1eaea676d19f6cefbc61c6ccd489ef",
+      "c": "4b3038e52eba09e8f037be0d1a9d087804e5821f1a116397fbaa37936b31cedd"
+    }
+  },
+  {
+    "grade": 4,
+    "topicId": 2,
+    "slug": "order-rounding-million-grade-4",
+    "levels": {
+      "a": "46ba9391bde0c6cafa2d6b220b60a0835907b23bac4dea667b78a45a548a6f4d",
+      "b": "f21ab33273ebe854cef95fee61019ae15eda2139babbcba4a853ea0489dcf7aa"
+    }
+  },
+  {
+    "grade": 4,
+    "topicId": 4,
+    "slug": "multi-digit-subtraction-grade-4",
+    "levels": {
+      "c": "7585dcf28dc2007838ebef17b036cf43c24111cf7e315f5a02d0a52953607f25"
+    }
+  },
+  {
+    "grade": 4,
+    "topicId": 18,
+    "slug": "rectangles-squares-grade-4",
+    "levels": {
+      "a": "e66993aa28e41737ef70a7dc90fa860ee5152f2a4c6017aaf28eca7c13fc2640",
+      "b": "7ad4701e181b1311d32f46ca4b486d03ac8246f9c1a57d07e9c3508b72405512",
+      "c": "47f6d1cdba3a63ef58430eba184749092f14a831ac6822378692e7e8af9f40e8"
+    }
+  },
+  {
+    "grade": 5,
+    "topicId": 1,
+    "slug": "number-sense-tens-hundreds-grade-5",
+    "levels": {
+      "a": "75a815cafb5dc9bdeb861affdd3b0e125204a158a3f8bd350e399225a27228cc",
+      "b": "4a3c20a1869aa89b6b41152b89c10e9349c61a5817ff4248a664b2978aa23181",
+      "c": "2b85d87d5a8983caa316a8cd325a2107846954fdb51aaf7f4a4761de5859ecbf"
+    }
+  },
+  {
+    "grade": 5,
+    "topicId": 2,
+    "slug": "big-numbers-rounding-grade-5",
+    "levels": {
+      "a": "86be489c4825066e3e68494b13dc43146b303e75a63b7302dddc48ad01e791f5",
+      "b": "6c743daaf064ac50a8e9059c4d6f1a783e1e9bc5447741312f4c5785ec5955c9",
+      "c": "3569b81d05ed625443dc66a95a8a03a01c0a6d777b6c1e78c6ba0dd3c5dbfbf6"
+    }
+  },
+  {
+    "grade": 5,
+    "topicId": 3,
+    "slug": "multiplication-multi-digit-grade-5",
+    "levels": {
+      "a": "0c0cdfda2ba57d8fc45fac208163c0b55ce320a0c94242318a8349178c42f42d",
+      "b": "2503ce154b5c6c5c2974e349b840fcaca608489d725d232e65b4d7ee86b4aecd",
+      "c": "71bf1dd1ad21ba60cf0301763b3b07a7f0d6920243f1fc8ddebeb555d0e2a64c"
+    }
+  },
+  {
+    "grade": 6,
+    "topicId": 12,
+    "slug": "boxes-nets-grade-6",
+    "levels": {
+      "a": "d2c83cd2dde139c1142e5716ed90cc0e6b40543faa0723add70f743b0b0d567e",
+      "b": "7278a60719c95bc186717ea73c4607a07b0f35dadda65eb59b75de8534e94bd9",
+      "c": "8ad31a30c8e245cf8d0a7a1f3e89eed054aa4fc39ce969c6cddcfeb1d3efef08"
+    }
+  }
+]
