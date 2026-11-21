@@ -25,5 +25,17 @@ import post22 from './soro-2026-11-06.json';
 import post23 from './soro-2026-11-07.json';
 import post24 from './soro-2026-11-08.json';
 import post25 from './soro-2026-11-09.json';
+import post26 from './soro-2026-11-10.json';
+import post27 from './soro-2026-11-11.json';
+import post28 from './soro-2026-11-12.json';
+import post29 from './soro-2026-11-13.json';
+import post30 from './soro-2026-11-14.json';
+import post31 from './soro-2026-11-15.json';
+import post32 from './soro-2026-11-16.json';
+import post33 from './soro-2026-11-17.json';
+import post34 from './soro-2026-11-18.json';
+import post35 from './soro-2026-11-19.json';
+import post36 from './soro-2026-11-20.json';
+import post37 from './soro-2026-11-21.json';
 
-export const SYNCED_BLOG_POSTS = [post0, post1, post2, post3, post4, post5, post6, post7, post8, post9, post10, post11, post12, post13, post14, post15, post16, post17, post18, post19, post20, post21, post22, post23, post24, post25];
+export const SYNCED_BLOG_POSTS = [post0, post1, post2, post3, post4, post5, post6, post7, post8, post9, post10, post11, post12, post13, post14, post15, post16, post17, post18, post19, post20, post21, post22, post23, post24, post25, post26, post27, post28, post29, post30, post31, post32, post33, post34, post35, post36, post37];
