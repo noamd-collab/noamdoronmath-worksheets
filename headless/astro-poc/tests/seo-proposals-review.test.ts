@@ -1,3 +1,4 @@
+import { seven } from './fixtures/middle-090-091-094';
 import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
@@ -262,6 +263,15 @@ describe('seo proposals – generator and coverage', () => {
       assert.ok(['trapezoid-grade-9', 'two-data-sources-grade-8'].includes(entry.slug), entry.slug);
       if (row.description === row.currentDescription) row.description = corrected;
       row.currentDescription = corrected;
+    }
+    // The reviewed grade-nine descriptions now distinguish downloadable PDFs from older hint-enabled sheets.
+    for (const item of seven.packages) {
+      const edit = item.priorCopyEdits.find(e => e.path.length === 1 && e.path[0] === 'description');
+      if (!edit) continue;
+      const row = expected.find(entry => entry.path === '/' + item.slug)!;
+      assert.equal(row.currentDescription, edit.before);
+      if (row.description === row.currentDescription) row.description = edit.after;
+      row.currentDescription = edit.after;
     }
     assert.deepEqual(proposals, expected);
   });

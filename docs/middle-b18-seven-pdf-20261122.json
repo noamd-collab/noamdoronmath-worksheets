@@ -1,0 +1,1270 @@
+{
+  "schema": "middle-school-reviewed-pdf/v1",
+  "date": "2026-11-22",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 22.11.2026",
+  "baseline": "2cd23d79f535a3c512f0c11e3ac320b2ef094bba",
+  "baselineCatalogSha256": "3e2428f170dfffbd263c713c8bdaa633b72a125e6dc18beb5cb1fcf896eb2038",
+  "baselineRegistrySha256": "0f8c9fd12d6b0e4f44e3c6645521fc6fdb0bd0264063a29a3459e2895adf6cb9",
+  "packages": [
+    {
+      "number": 92,
+      "sheetId": "G7-CPL-01",
+      "grade": 7,
+      "topicId": 46,
+      "slug": "area-parallelogram-trapezoid-composite-grade-7",
+      "producerPackage": "G7-T138",
+      "studentRevision": "r01",
+      "skillVersion": "7.3.3",
+      "producerFreezeSha256": "3ac2cc6738d2b4dd09aaad7e709afd1162fd4ae4139737a2f9d84ec1ce34633d",
+      "reviewReceipts": [
+        {
+          "name": "Independent mathematical review of the frozen source or verified revision",
+          "path": "reports/CODEX-INDEPENDENT-G7-CPL-01-r01-20261121/review.json",
+          "sha256": "78951c86158279eb4f0530dcb749a342602e9b363f1407c869bb892887f01019",
+          "verdict": "PASS_NUMBERS"
+        },
+        {
+          "name": "Exact independent prepublication check on the signed student PDFs",
+          "path": "reports/CODEX-SITE-B18-REMAINDER-20261122/review.json",
+          "sha256": "632d99f2053918eda87ed6a68606b4863f19ce64d2fad4009de97bf73aad79b6",
+          "verdict": "PASS_PREPUBLICATION_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 6,
+          "bytes": 76833,
+          "source": "submissions/Codex/MS-PROD-CODEX-092-r01/release/documents/G7-CPL-01/a/sheet.pdf",
+          "sha256": "f81b71a6b098673957adebd4460b998dc37456e91332ec99eeb26bd5a81c8524",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_da6fdc37015b4f41993f1d44f2f8393a.pdf",
+              "status": 200,
+              "sha256": "f81b71a6b098673957adebd4460b998dc37456e91332ec99eeb26bd5a81c8524",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_da6fdc37015b4f41993f1d44f2f8393a.pdf",
+              "status": 200,
+              "sha256": "f81b71a6b098673957adebd4460b998dc37456e91332ec99eeb26bd5a81c8524",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 6,
+          "bytes": 79677,
+          "source": "submissions/Codex/MS-PROD-CODEX-092-r01/release/documents/G7-CPL-01/b/sheet.pdf",
+          "sha256": "0dad53f5db65de20aac0fbd9c0ffba2663c0e58ab8d999333dea3de0c6c6b753",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_bba06ae82c54499a8c6e53a49935ab70.pdf",
+              "status": 200,
+              "sha256": "0dad53f5db65de20aac0fbd9c0ffba2663c0e58ab8d999333dea3de0c6c6b753",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_bba06ae82c54499a8c6e53a49935ab70.pdf",
+              "status": 200,
+              "sha256": "0dad53f5db65de20aac0fbd9c0ffba2663c0e58ab8d999333dea3de0c6c6b753",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 7,
+          "bytes": 83253,
+          "source": "submissions/Codex/MS-PROD-CODEX-092-r01/release/documents/G7-CPL-01/c/sheet.pdf",
+          "sha256": "c21b22bff43a77c8d667e7d2ae4d7dda34c79473a331ebae7f65cba4bf1e8caf",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_58b4e6d6fd1a4a808b6c114d0c5c409e.pdf",
+              "status": 200,
+              "sha256": "c21b22bff43a77c8d667e7d2ae4d7dda34c79473a331ebae7f65cba4bf1e8caf",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_58b4e6d6fd1a4a808b6c114d0c5c409e.pdf",
+              "status": 200,
+              "sha256": "c21b22bff43a77c8d667e7d2ae4d7dda34c79473a331ebae7f65cba4bf1e8caf",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "שטחים של מצולעים מורכבים — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מפרקים צורה מורכבת למלבנים ולמשולשים, או משלימים אותה למלבן ומחסרים את השטחים החסרים. בדף הראשון מחשבים בין השאר את השטח של לוח תצוגה בצורת מדרגה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 15.11.2026",
+      "priorPageSha256": "094b56fc878d5b183423763721390a1ed16d1e430fb2688007cefb066019eee4",
+      "priorTopicSha256": "08888fd12085e9acd5bd8aa810904040f8c9fe895ccd9623692d84d86cbcf3dc",
+      "edition": {
+        "grade": 7,
+        "topicId": 46,
+        "editionId": "ms-20261122-g7-cpl-01-r1",
+        "label": "שטחים של מצולעים מורכבים · PDF",
+        "nativePrefix": "G7-T138",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "da6fdc37015b4f41993f1d44f2f8393a",
+            "pdfSha256": "f81b71a6b098673957adebd4460b998dc37456e91332ec99eeb26bd5a81c8524",
+            "sourceSha256": "b2657de2e7d074a2908af5299e2921ee866e494a79c3005244e7e286112eca83",
+            "nativeExportSha256": "7439792408f6319a841b4e608bb6521ec3c3b291bb37fa06f1641272506b8696",
+            "worksheetId": "ms-g7-cpl-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "bba06ae82c54499a8c6e53a49935ab70",
+            "pdfSha256": "0dad53f5db65de20aac0fbd9c0ffba2663c0e58ab8d999333dea3de0c6c6b753",
+            "sourceSha256": "e4e7a9163b39b46d0263a6dbad56f69d5d522f15b15c4e21b2cb61591ac31d7c",
+            "nativeExportSha256": "b3477deefa17a8a2d4c35e8c66bd11a53b43a3f599a52ed9c935a1189bd8563d",
+            "worksheetId": "ms-g7-cpl-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "58b4e6d6fd1a4a808b6c114d0c5c409e",
+            "pdfSha256": "c21b22bff43a77c8d667e7d2ae4d7dda34c79473a331ebae7f65cba4bf1e8caf",
+            "sourceSha256": "dbe5e6ec287f0a9cf9f3387de596f47ec92bd763e534341e2bfebdb0055d601e",
+            "nativeExportSha256": "6a73a2778fdf6373943f86749788a982503634481ed129fa736ac4166fef2765",
+            "worksheetId": "ms-g7-cpl-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "177b2b01db0ca062009f083e92c16ef47255125d8d50a3541d8eb6b57c144801",
+      "priorCopyEdits": []
+    },
+    {
+      "number": 93,
+      "sheetId": "G7-TPV-01",
+      "grade": 7,
+      "topicId": 47,
+      "slug": "solids-box-cube-prism-grade-7",
+      "producerPackage": "G7-T139",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3",
+      "producerFreezeSha256": "85fd7e168d3602af22bda0893e8670c13b918034a12b77f9d95015cd6f6ebc99",
+      "reviewReceipts": [
+        {
+          "name": "Independent mathematical review of the frozen source or verified revision",
+          "path": "reports/CODEX-INDEPENDENT-G7-TPV-01-r02-20261121/review.json",
+          "sha256": "281049a848da02d1ec4afc4db7af00b0c6fe6f2c581de4124216df277df6ee9e",
+          "verdict": "PASS"
+        },
+        {
+          "name": "Exact independent prepublication check on the signed student PDFs",
+          "path": "reports/CODEX-SITE-B18-REMAINDER-20261122/review.json",
+          "sha256": "632d99f2053918eda87ed6a68606b4863f19ce64d2fad4009de97bf73aad79b6",
+          "verdict": "PASS_PREPUBLICATION_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 7,
+          "bytes": 64969,
+          "source": "submissions/Codex/MS-PROD-CODEX-093-r02/release/documents/G7-TPV-01/a/sheet.pdf",
+          "sha256": "15503c02b579d92499f7c8d5688d42fd617b68c349089f5271ed8e2591746785",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_88be7002006f45e885e400988b092e7b.pdf",
+              "status": 200,
+              "sha256": "15503c02b579d92499f7c8d5688d42fd617b68c349089f5271ed8e2591746785",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_88be7002006f45e885e400988b092e7b.pdf",
+              "status": 200,
+              "sha256": "15503c02b579d92499f7c8d5688d42fd617b68c349089f5271ed8e2591746785",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 6,
+          "bytes": 63496,
+          "source": "submissions/Codex/MS-PROD-CODEX-093-r02/release/documents/G7-TPV-01/b/sheet.pdf",
+          "sha256": "3dc192cdcf84b1a5eed4088abb4fc90b0342c593735c1fa40772d8570900cff1",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_20926dd5bdf3482098cf42e96a8b921e.pdf",
+              "status": 200,
+              "sha256": "3dc192cdcf84b1a5eed4088abb4fc90b0342c593735c1fa40772d8570900cff1",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_20926dd5bdf3482098cf42e96a8b921e.pdf",
+              "status": 200,
+              "sha256": "3dc192cdcf84b1a5eed4088abb4fc90b0342c593735c1fa40772d8570900cff1",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 7,
+          "bytes": 64823,
+          "source": "submissions/Codex/MS-PROD-CODEX-093-r02/release/documents/G7-TPV-01/c/sheet.pdf",
+          "sha256": "d3bcb7a7f34492e5c099f02c91fa760808d88dd632e737300ce16c0228b579de",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_48e82fb6f5aa430f91f6c172e1ec11c9.pdf",
+              "status": 200,
+              "sha256": "d3bcb7a7f34492e5c099f02c91fa760808d88dd632e737300ce16c0228b579de",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_48e82fb6f5aa430f91f6c172e1ec11c9.pdf",
+              "status": 200,
+              "sha256": "d3bcb7a7f34492e5c099f02c91fa760808d88dd632e737300ce16c0228b579de",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "מנסרה משולשת ישרה — מבנה ונפח — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מזהים את שני הבסיסים המשולשים ואת המקצועות המחברים ביניהם. מבחינים בין גובה המשולש לגובה המנסרה ומשתמשים בשטח הבסיס לחישוב הנפח.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 17.11.2026",
+      "priorPageSha256": "c4c7bf6100284e877cf741e49c7892c52e2c4942df7f2d7319aae9e3b05d295f",
+      "priorTopicSha256": "e3e9e51fd6347cd33e6d9040ec71875ecc129e48a31bfdc7dee8876c2cbb1587",
+      "edition": {
+        "grade": 7,
+        "topicId": 47,
+        "editionId": "ms-20261122-g7-tpv-01-r1",
+        "label": "מנסרה משולשת ישרה — מבנה ונפח · PDF",
+        "nativePrefix": "G7-T139",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "88be7002006f45e885e400988b092e7b",
+            "pdfSha256": "15503c02b579d92499f7c8d5688d42fd617b68c349089f5271ed8e2591746785",
+            "sourceSha256": "543d83cac97478e162742d7da5ba9238f77765a9880c7aba9bca49661fac152a",
+            "nativeExportSha256": "e9417b2c398c7e12818b383f1e4ca2e563e9a9047ae662b453f8b0ee046fc7c3",
+            "worksheetId": "ms-g7-tpv-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "20926dd5bdf3482098cf42e96a8b921e",
+            "pdfSha256": "3dc192cdcf84b1a5eed4088abb4fc90b0342c593735c1fa40772d8570900cff1",
+            "sourceSha256": "c5d52528ef33dde4c005a2c318476a624326249d4824e6bb7b12f4313df8ef6d",
+            "nativeExportSha256": "42901d612d5490c6a605b4c1c646d343504b3902c39709164b1f477e7b3446b7",
+            "worksheetId": "ms-g7-tpv-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "48e82fb6f5aa430f91f6c172e1ec11c9",
+            "pdfSha256": "d3bcb7a7f34492e5c099f02c91fa760808d88dd632e737300ce16c0228b579de",
+            "sourceSha256": "6f5604ee1440d50142908b43a7d6996b4f124fefd04ba3b8b60a6113a222eb30",
+            "nativeExportSha256": "8a244e3e7b1b1e57092bf99e2987f70fb0621322d4cb31080a1fe4acdf39424c",
+            "worksheetId": "ms-g7-tpv-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "e48a432d16298462d8e51c17f8b76fd35951240cc5b691789ada9a9e77a1864c",
+      "priorCopyEdits": []
+    },
+    {
+      "number": 95,
+      "sheetId": "G9-AGM-01",
+      "grade": 9,
+      "topicId": 15,
+      "slug": "analytic-geometry-grade-9",
+      "producerPackage": "G9-T121",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3",
+      "producerFreezeSha256": "20e89481bd701d86e7a866606dfeccaf8237c6c46628161279d284409f4b0a66",
+      "reviewReceipts": [
+        {
+          "name": "Independent mathematical review of the frozen source or verified revision",
+          "path": "reports/CODEX-INDEPENDENT-G9-AGM-01-r02-20261121/review.json",
+          "sha256": "2eedd0baad4a2f1601171a6c7bf3d4d1d0b441d0231f4e2b17b67a18fb4c10d6",
+          "verdict": "PASS_NUMBERS"
+        },
+        {
+          "name": "Exact independent prepublication check on the signed student PDFs",
+          "path": "reports/CODEX-SITE-B18-REMAINDER-20261122/review.json",
+          "sha256": "632d99f2053918eda87ed6a68606b4863f19ce64d2fad4009de97bf73aad79b6",
+          "verdict": "PASS_PREPUBLICATION_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 6,
+          "bytes": 64050,
+          "source": "submissions/Codex/MS-PROD-CODEX-095-r02/release/documents/G9-AGM-01/a/sheet.pdf",
+          "sha256": "0b2fc5c8408f66e66aced0a6e9c82491cd9fc61bfdbfb93d49c5846fe3be9236",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_edbb369095254f6490653fe1a35ff4af.pdf",
+              "status": 200,
+              "sha256": "0b2fc5c8408f66e66aced0a6e9c82491cd9fc61bfdbfb93d49c5846fe3be9236",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_edbb369095254f6490653fe1a35ff4af.pdf",
+              "status": 200,
+              "sha256": "0b2fc5c8408f66e66aced0a6e9c82491cd9fc61bfdbfb93d49c5846fe3be9236",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 6,
+          "bytes": 63663,
+          "source": "submissions/Codex/MS-PROD-CODEX-095-r02/release/documents/G9-AGM-01/b/sheet.pdf",
+          "sha256": "67709b79630e5d1d202fd738a6d1acba280cf29e754719056573250e2d042cb8",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_defdbd05f82e4f5886ae92bd34554393.pdf",
+              "status": 200,
+              "sha256": "67709b79630e5d1d202fd738a6d1acba280cf29e754719056573250e2d042cb8",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_defdbd05f82e4f5886ae92bd34554393.pdf",
+              "status": 200,
+              "sha256": "67709b79630e5d1d202fd738a6d1acba280cf29e754719056573250e2d042cb8",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 6,
+          "bytes": 68156,
+          "source": "submissions/Codex/MS-PROD-CODEX-095-r02/release/documents/G9-AGM-01/c/sheet.pdf",
+          "sha256": "2692c5adad2003fb202e9100649252a7d1e03a909fd8144c058d4a46a291edcf",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b78501cc2efa40c3835483fa7727e323.pdf",
+              "status": 200,
+              "sha256": "2692c5adad2003fb202e9100649252a7d1e03a909fd8144c058d4a46a291edcf",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b78501cc2efa40c3835483fa7727e323.pdf",
+              "status": 200,
+              "sha256": "2692c5adad2003fb202e9100649252a7d1e03a909fd8144c058d4a46a291edcf",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "גיאומטריה אנליטית במפות ובתכנון — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "קוראים נקודות במערכת צירים ומחשבים מרחק, אמצע קטע ושיפוע. באחד התרגילים קצותיו של קיר זכוכית מסומנים על מפה, וצריך לקבוע היכן נמצא מרכז הקיר.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 12.9.2026",
+      "priorPageSha256": "cf74e80e0ca3ae985083d1ff46fe23b5e54464733a68791a1f6522c1fa25d67f",
+      "priorTopicSha256": "5902f9297af22964dc3dcfa3c40336f5c621e3f543e71f714ad27847ed3a595e",
+      "edition": {
+        "grade": 9,
+        "topicId": 15,
+        "editionId": "ms-20261122-g9-agm-01-r1",
+        "label": "גיאומטריה אנליטית במפות ובתכנון · PDF",
+        "nativePrefix": "G9-T121",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "edbb369095254f6490653fe1a35ff4af",
+            "pdfSha256": "0b2fc5c8408f66e66aced0a6e9c82491cd9fc61bfdbfb93d49c5846fe3be9236",
+            "sourceSha256": "a53909d0f1c147933651f56d8962373d7f925ca0a038eb995d7e7039daa79b25",
+            "nativeExportSha256": "08274cfe4b986286c7754740ab0c912729e0377992f7d89b2fbc384409274bc0",
+            "worksheetId": "ms-g9-agm-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "defdbd05f82e4f5886ae92bd34554393",
+            "pdfSha256": "67709b79630e5d1d202fd738a6d1acba280cf29e754719056573250e2d042cb8",
+            "sourceSha256": "02399f853c0b268a19c1a15a0dc17bf098a704abc70ebafbd834244a1fb62b13",
+            "nativeExportSha256": "8a3027edde1ae762f44fa8720965afe5e200a870df553ec8a2de16c73c16dbd0",
+            "worksheetId": "ms-g9-agm-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "b78501cc2efa40c3835483fa7727e323",
+            "pdfSha256": "2692c5adad2003fb202e9100649252a7d1e03a909fd8144c058d4a46a291edcf",
+            "sourceSha256": "d01a04fda3a18bf0ead561d2e0abe42392ed1aaf705a0b7051a5b56b5dee7801",
+            "nativeExportSha256": "cd1c20ebf74355933add79599a301695998552f273717c21e36dc0e7e94133d2",
+            "worksheetId": "ms-g9-agm-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "145e31d034540481e24db8202ea61de7ac3e2f38fba86344fb9854fed4bc84ff",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "כאן תרגלו שליטה במיקומי נקודות, חישובי אורך קטע ומציאת שיפועים במרחב הדו־ממדי. חומרי הלימוד מותאמים לכלל הרמות ופתוחים לכולם. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "כאן תרגלו שליטה במיקומי נקודות, חישובי אורך קטע ומציאת שיפועים במרחב הדו־ממדי. חומרי הלימוד מותאמים לכלל הרמות ופתוחים לכולם. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים. דפי ה־PDF החדשים מיועדים להדפסה וכוללים תשובות סופיות."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "כאן תרגלו שליטה במיקומי נקודות, חישובי אורך קטע ומציאת שיפועים במרחב הדו־ממדי. חומרי הלימוד מותאמים לכלל הרמות ופתוחים לכולם. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "כאן תרגלו שליטה במיקומי נקודות, חישובי אורך קטע ומציאת שיפועים במרחב הדו־ממדי. חומרי הלימוד מותאמים לכלל הרמות ופתוחים לכולם. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים. דפי ה־PDF החדשים מיועדים להדפסה וכוללים תשובות סופיות."
+        }
+      ]
+    },
+    {
+      "number": 96,
+      "sheetId": "G9-SRT-01",
+      "grade": 9,
+      "topicId": 17,
+      "slug": "square-roots-grade-9",
+      "producerPackage": "G9-T122",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3",
+      "producerFreezeSha256": "685ff7d724991305e06aecd71c14602420819a895791fb488c20729eade23a8c",
+      "reviewReceipts": [
+        {
+          "name": "Independent mathematical review of the frozen source or verified revision",
+          "path": "reviews/CODEX-BLIND-096r02-099r01-20261121/096-r02-review.json",
+          "sha256": "959cce805662283d2a802b5dc824d863480fc73d2b95c169c304f16c0ca47c42",
+          "verdict": "PASS_REVIEWED"
+        },
+        {
+          "name": "Exact independent prepublication check on the signed student PDFs",
+          "path": "reports/CODEX-SITE-B18-REMAINDER-20261122/review.json",
+          "sha256": "632d99f2053918eda87ed6a68606b4863f19ce64d2fad4009de97bf73aad79b6",
+          "verdict": "PASS_PREPUBLICATION_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 5,
+          "bytes": 77179,
+          "source": "submissions/Codex/MS-PROD-CODEX-096-r02/release/documents/G9-SRT-01/a/sheet.pdf",
+          "sha256": "15f298311490cac0250c8ebac5ee2cf7ef1286ad4bf4f65ecef5ba8ed4694e3e",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_fc9daf9ad1fc4f1488efb9a0bc76c4d8.pdf",
+              "status": 200,
+              "sha256": "15f298311490cac0250c8ebac5ee2cf7ef1286ad4bf4f65ecef5ba8ed4694e3e",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_fc9daf9ad1fc4f1488efb9a0bc76c4d8.pdf",
+              "status": 200,
+              "sha256": "15f298311490cac0250c8ebac5ee2cf7ef1286ad4bf4f65ecef5ba8ed4694e3e",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 5,
+          "bytes": 76886,
+          "source": "submissions/Codex/MS-PROD-CODEX-096-r02/release/documents/G9-SRT-01/b/sheet.pdf",
+          "sha256": "8a4d6ab93f81032868596c695a86701b3135d910f768fef3e8a459cb5e96e0db",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_9a0bd982f22e4f7488d7479a389831b2.pdf",
+              "status": 200,
+              "sha256": "8a4d6ab93f81032868596c695a86701b3135d910f768fef3e8a459cb5e96e0db",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_9a0bd982f22e4f7488d7479a389831b2.pdf",
+              "status": 200,
+              "sha256": "8a4d6ab93f81032868596c695a86701b3135d910f768fef3e8a459cb5e96e0db",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 5,
+          "bytes": 83071,
+          "source": "submissions/Codex/MS-PROD-CODEX-096-r02/release/documents/G9-SRT-01/c/sheet.pdf",
+          "sha256": "c2ede9a287f7192e8fa8e7a59e22973bc6e10d84f36a7740f849540835c38642",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_63ff2d1e09be48718caa2837acacbe0e.pdf",
+              "status": 200,
+              "sha256": "c2ede9a287f7192e8fa8e7a59e22973bc6e10d84f36a7740f849540835c38642",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_63ff2d1e09be48718caa2837acacbe0e.pdf",
+              "status": 200,
+              "sha256": "c2ede9a287f7192e8fa8e7a59e22973bc6e10d84f36a7740f849540835c38642",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "שורשים ריבועיים — חישוב, אומדן ומשוואות — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מחשבים שורשים מדויקים ואומדים שורשים בין שני שלמים. מבחינים בין השורש הריבועי של מספר לבין כל המספרים שהריבוע שלהם שווה לו.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": null,
+      "priorPageSha256": "c9b3825a96543e9ee380349390a372e9d0947ef6f8cda630ab31d9186827c7f7",
+      "priorTopicSha256": "e597ff007a66edeaee3af3b2f72c71e4163b3869b177107164caa36293356a37",
+      "edition": {
+        "grade": 9,
+        "topicId": 17,
+        "editionId": "ms-20261122-g9-srt-01-r1",
+        "label": "שורשים ריבועיים — חישוב, אומדן ומשוואות · PDF",
+        "nativePrefix": "G9-T122",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "fc9daf9ad1fc4f1488efb9a0bc76c4d8",
+            "pdfSha256": "15f298311490cac0250c8ebac5ee2cf7ef1286ad4bf4f65ecef5ba8ed4694e3e",
+            "sourceSha256": "4c7986484eddad0414409767b0641dec1cdc3cfecce5907c293f4493b2bf954f",
+            "nativeExportSha256": "69ffb336b863da0f965fb27ecfe3e700f28fde03ebc1adfa51b34fe5360a9571",
+            "worksheetId": "ms-g9-srt-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "9a0bd982f22e4f7488d7479a389831b2",
+            "pdfSha256": "8a4d6ab93f81032868596c695a86701b3135d910f768fef3e8a459cb5e96e0db",
+            "sourceSha256": "d2feca50b00f887f494eb02b04517e02f00852386d311729ca73e235b19fd2b0",
+            "nativeExportSha256": "4799ef7d51e3e50fc12a34fb00c30b967fcab36788b1906a225f79b3d51ebc11",
+            "worksheetId": "ms-g9-srt-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "63ff2d1e09be48718caa2837acacbe0e",
+            "pdfSha256": "c2ede9a287f7192e8fa8e7a59e22973bc6e10d84f36a7740f849540835c38642",
+            "sourceSha256": "12c2d683ac14f690c9bf16e6216547a660cdf99716ba8664d986a2050b858596",
+            "nativeExportSha256": "d08c6d7a3a2929bd571e36aba97b228d1e4fc0b5052f052b6d529423611626b0",
+            "worksheetId": "ms-g9-srt-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "6f3341ce9dfe137f36980581b2b225601e5c08a1f1e4357ba31d5ca8b0403a77",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "שורשים לכיתה ט׳: תרגול שורש ריבועי ופישוט ביטויים עם שורשים. דפי עבודה חינמיים ברמה א׳, רמה ב׳ ומצוינות, ללא הרשמה, עם דוגמאות ורמזים של נועם AI.",
+          "after": "שורשים ריבועיים לכיתה ט׳, מחישוב ואומדן לפישוט ביטויים ולמשוואות. שלושה דפי עבודה להדפסה עם תשובות סופיות, ברמות א׳, ב׳ ומצוינות."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "בדף זה לומדים לזהות שורש ריבועי, לפשט ביטויים ולבדוק מתי לשורש יש ערך ממשי. דפי העבודה מחולקים לשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "בדף זה לומדים לזהות שורש ריבועי, לפשט ביטויים ולבדוק מתי לשורש יש ערך ממשי. דפי העבודה מחולקים לשלוש רמות — א׳, ב׳ ומצוינות — בחינם וללא הרשמה. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים. דפי ה־PDF החדשים מיועדים להדפסה וכוללים תשובות סופיות."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "שורשים לכיתה ט׳: תרגול שורש ריבועי ופישוט ביטויים עם שורשים. דפי עבודה חינמיים ברמה א׳, רמה ב׳ ומצוינות, ללא הרשמה, עם דוגמאות ורמזים של נועם AI.",
+          "after": "שורשים ריבועיים לכיתה ט׳, מחישוב ואומדן לפישוט ביטויים ולמשוואות. שלושה דפי עבודה להדפסה עם תשובות סופיות, ברמות א׳, ב׳ ומצוינות."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "שורשים לכיתה ט׳: תרגול שורש ריבועי ופישוט ביטויים עם שורשים. דפי עבודה חינמיים ברמה א׳, רמה ב׳ ומצוינות, ללא הרשמה, עם דוגמאות ורמזים של נועם AI.",
+          "after": "שורשים ריבועיים לכיתה ט׳, מחישוב ואומדן לפישוט ביטויים ולמשוואות. שלושה דפי עבודה להדפסה עם תשובות סופיות, ברמות א׳, ב׳ ומצוינות."
+        }
+      ]
+    },
+    {
+      "number": 97,
+      "sheetId": "G9-PYB-01",
+      "grade": 9,
+      "topicId": 24,
+      "slug": "pythagoras-basics-grade-9",
+      "producerPackage": "G9-T123",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3",
+      "producerFreezeSha256": "ab031ebc842bbea892bf994577850409f6b21b85e69d24b821595b243fb432e1",
+      "reviewReceipts": [
+        {
+          "name": "Independent mathematical review of the frozen source or verified revision",
+          "path": "reports/CODEX-INDEPENDENT-G9-PYB-01-r02-20261121/review.json",
+          "sha256": "31d1e22d596c2cecd65e8dbc4a81f21fe582e0fed52a1b5da4b08c77c821a27c",
+          "verdict": "PASS"
+        },
+        {
+          "name": "Exact independent prepublication check on the signed student PDFs",
+          "path": "reports/CODEX-SITE-B18-REMAINDER-20261122/review.json",
+          "sha256": "632d99f2053918eda87ed6a68606b4863f19ce64d2fad4009de97bf73aad79b6",
+          "verdict": "PASS_PREPUBLICATION_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 6,
+          "bytes": 67741,
+          "source": "submissions/Codex/MS-PROD-CODEX-097-r02/release/documents/G9-PYB-01/a/sheet.pdf",
+          "sha256": "8213aa8551ea56279d2758270b789a94c08ecc9a6fb8fb549e7df693f3e5a385",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_67fc61b1801b44c1a6a4f8ca369ea2f7.pdf",
+              "status": 200,
+              "sha256": "8213aa8551ea56279d2758270b789a94c08ecc9a6fb8fb549e7df693f3e5a385",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_67fc61b1801b44c1a6a4f8ca369ea2f7.pdf",
+              "status": 200,
+              "sha256": "8213aa8551ea56279d2758270b789a94c08ecc9a6fb8fb549e7df693f3e5a385",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 6,
+          "bytes": 65865,
+          "source": "submissions/Codex/MS-PROD-CODEX-097-r02/release/documents/G9-PYB-01/b/sheet.pdf",
+          "sha256": "80fdc93b68d0fe003263633b0106c56decadca4a6fd796ee0d870e1b263546a5",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_529039366a6e4843a4412c99f6101cba.pdf",
+              "status": 200,
+              "sha256": "80fdc93b68d0fe003263633b0106c56decadca4a6fd796ee0d870e1b263546a5",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_529039366a6e4843a4412c99f6101cba.pdf",
+              "status": 200,
+              "sha256": "80fdc93b68d0fe003263633b0106c56decadca4a6fd796ee0d870e1b263546a5",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 7,
+          "bytes": 71003,
+          "source": "submissions/Codex/MS-PROD-CODEX-097-r02/release/documents/G9-PYB-01/c/sheet.pdf",
+          "sha256": "4ab3d9b9f014a379bf3a70d4e6f112018c7b45e49803f10277f26640ba50a284",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c436bb4a33ea46e8b0ba681b8bbdae1f.pdf",
+              "status": 200,
+              "sha256": "4ab3d9b9f014a379bf3a70d4e6f112018c7b45e49803f10277f26640ba50a284",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_c436bb4a33ea46e8b0ba681b8bbdae1f.pdf",
+              "status": 200,
+              "sha256": "4ab3d9b9f014a379bf3a70d4e6f112018c7b45e49803f10277f26640ba50a284",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "משפט פיתגורס — חישוב צלעות ובדיקת זווית ישרה — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מסמנים את היתר מול הזווית הישרה ובוחרים כיצד לחשב צלע חסרה. בכיוון ההפוך בודקים בעזרת אורכי שלוש הצלעות אם המשולש ישר־זווית.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": null,
+      "priorPageSha256": "33b4f23817cdbb7af06bb302018371fa74caf94362fbc211d2be586a8b9f9bca",
+      "priorTopicSha256": "38015f71e0332477ef2f5a4754965ac21642da2876c9590a2e3f3ff378135545",
+      "edition": {
+        "grade": 9,
+        "topicId": 24,
+        "editionId": "ms-20261122-g9-pyb-01-r1",
+        "label": "משפט פיתגורס — חישוב צלעות ובדיקת זווית ישרה · PDF",
+        "nativePrefix": "G9-T123",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "67fc61b1801b44c1a6a4f8ca369ea2f7",
+            "pdfSha256": "8213aa8551ea56279d2758270b789a94c08ecc9a6fb8fb549e7df693f3e5a385",
+            "sourceSha256": "24525ad3a1b627c70aee78101b10845a37d1d3c8e466ac431e473581b7f0dd92",
+            "nativeExportSha256": "e3e89a74836c7e4cc8c742f2b28a35eb75db2bee23bb4418b6de432b64798c8b",
+            "worksheetId": "ms-g9-pyb-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "529039366a6e4843a4412c99f6101cba",
+            "pdfSha256": "80fdc93b68d0fe003263633b0106c56decadca4a6fd796ee0d870e1b263546a5",
+            "sourceSha256": "f7cbb536466e54749d19f33dd03c6596905fde60f1064ebe372025bc1e00ef95",
+            "nativeExportSha256": "5dc44db3f8c23229b88a82aa6d4d5ac69dfd9b183d8a9450f22ac8eac4c31a76",
+            "worksheetId": "ms-g9-pyb-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "c436bb4a33ea46e8b0ba681b8bbdae1f",
+            "pdfSha256": "4ab3d9b9f014a379bf3a70d4e6f112018c7b45e49803f10277f26640ba50a284",
+            "sourceSha256": "d086eaae9aacb0ad96ced89635b111ca5e0ffbec7cd4d7ef18652afd9f24c216",
+            "nativeExportSha256": "490ba5fe5aecada1fa05f509bcd7fa0e597b5492d1062da810420100c9de533d",
+            "worksheetId": "ms-g9-pyb-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "36c2f14e0bdc2ac76d8dcd1160d996d2b93ad48df1d39310f82f6297346af710",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "דפי עבודה למשפט פיתגורס לכיתה ט׳: מזהים יתר וניצבים, מחשבים צלע חסרה בעזרת המשפט ומתרגלים בשלוש רמות א׳, ב׳ ומצוינות. בחינם, ללא הרשמה ועם רמזים של נועם AI.",
+          "after": "משפט פיתגורס לכיתה ט׳. מזהים את היתר, מחשבים צלע חסרה ובודקים אם משולש ישר־זווית. דפי עבודה להדפסה בשלוש רמות כוללים תשובות סופיות."
+        },
+        {
+          "path": [
+            "sections",
+            2,
+            "blocks",
+            1,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "אפשר לבחור דף PDF להדפסה לפי הרמה. לקבלת רמזים פותחים אחד מהדפים הקודמים שנפתחים עם רמזי."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            8,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "אפשר לבחור דף PDF להדפסה לפי הרמה. לקבלת רמזים פותחים אחד מהדפים הקודמים שנפתחים עם רמזי."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "דפי עבודה למשפט פיתגורס לכיתה ט׳: מזהים יתר וניצבים, מחשבים צלע חסרה בעזרת המשפט ומתרגלים בשלוש רמות א׳, ב׳ ומצוינות. בחינם, ללא הרשמה ועם רמזים של נועם AI.",
+          "after": "משפט פיתגורס לכיתה ט׳. מזהים את היתר, מחשבים צלע חסרה ובודקים אם משולש ישר־זווית. דפי עבודה להדפסה בשלוש רמות כוללים תשובות סופיות."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "דפי עבודה למשפט פיתגורס לכיתה ט׳: מזהים יתר וניצבים, מחשבים צלע חסרה בעזרת המשפט ומתרגלים בשלוש רמות א׳, ב׳ ומצוינות. בחינם, ללא הרשמה ועם רמזים של נועם AI.",
+          "after": "משפט פיתגורס לכיתה ט׳. מזהים את היתר, מחשבים צלע חסרה ובודקים אם משולש ישר־זווית. דפי עבודה להדפסה בשלוש רמות כוללים תשובות סופיות."
+        }
+      ]
+    },
+    {
+      "number": 98,
+      "sheetId": "G9-PYA-01",
+      "grade": 9,
+      "topicId": 25,
+      "slug": "pythagoras-applications-grade-9",
+      "producerPackage": "G9-T124",
+      "studentRevision": "r01",
+      "skillVersion": "7.3.3",
+      "producerFreezeSha256": "8d3cd2a2700f1b81bb0ce1c93d4ef9d421d3322ef9e00f186ecb3b66178128fa",
+      "reviewReceipts": [
+        {
+          "name": "Independent mathematical review of the frozen source or verified revision",
+          "path": "reports/CODEX-INDEPENDENT-G9-PYA-01-r01-20261121/review.json",
+          "sha256": "ea7a15b682b329691010248d81b4644f5dfd2e6baa5bc416fc4a0bd87f865d55",
+          "verdict": "PASS"
+        },
+        {
+          "name": "Exact independent prepublication check on the signed student PDFs",
+          "path": "reports/CODEX-SITE-B18-REMAINDER-20261122/review.json",
+          "sha256": "632d99f2053918eda87ed6a68606b4863f19ce64d2fad4009de97bf73aad79b6",
+          "verdict": "PASS_PREPUBLICATION_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 7,
+          "bytes": 72198,
+          "source": "submissions/Codex/MS-PROD-CODEX-098-r01/release/documents/G9-PYA-01/a/sheet.pdf",
+          "sha256": "294ad30e324eb14f2d5f774bcfcb43daff89c1bd214921567ff6fa074d669dd5",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3028ca3c9e3d4160979de0cbe1df72a2.pdf",
+              "status": 200,
+              "sha256": "294ad30e324eb14f2d5f774bcfcb43daff89c1bd214921567ff6fa074d669dd5",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3028ca3c9e3d4160979de0cbe1df72a2.pdf",
+              "status": 200,
+              "sha256": "294ad30e324eb14f2d5f774bcfcb43daff89c1bd214921567ff6fa074d669dd5",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 7,
+          "bytes": 84425,
+          "source": "submissions/Codex/MS-PROD-CODEX-098-r01/release/documents/G9-PYA-01/b/sheet.pdf",
+          "sha256": "2db83cf8d1ca83c8cfa05dd55d9b7e9c485cbb83a1e03ecf9d269434c53564ca",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a3372068df104d64a72129ed11a2bdc8.pdf",
+              "status": 200,
+              "sha256": "2db83cf8d1ca83c8cfa05dd55d9b7e9c485cbb83a1e03ecf9d269434c53564ca",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a3372068df104d64a72129ed11a2bdc8.pdf",
+              "status": 200,
+              "sha256": "2db83cf8d1ca83c8cfa05dd55d9b7e9c485cbb83a1e03ecf9d269434c53564ca",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 7,
+          "bytes": 80191,
+          "source": "submissions/Codex/MS-PROD-CODEX-098-r01/release/documents/G9-PYA-01/c/sheet.pdf",
+          "sha256": "a267cba93e7e7df777da044517dacae4457e351cad843b5efc0a1ecd592b8ee1",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_32015b8fe73544d6b3c82c9794de45cf.pdf",
+              "status": 200,
+              "sha256": "a267cba93e7e7df777da044517dacae4457e351cad843b5efc0a1ecd592b8ee1",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_32015b8fe73544d6b3c82c9794de45cf.pdf",
+              "status": 200,
+              "sha256": "a267cba93e7e7df777da044517dacae4457e351cad843b5efc0a1ecd592b8ee1",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "יישומי משפט פיתגורס — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מאתרים משולשים ישרי־זווית בתוך מלבנים, טרפזים וחתכי גגות. למשל, כדי לבחור פס חיזוק למסגרת מלבנית מחשבים את אורך האלכסון שלה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": null,
+      "priorPageSha256": "401fcc3d3e4d6cf3db72574a91e5fdc14efcc52e71ec44e87dfa4e27ffec9e37",
+      "priorTopicSha256": "bd723549945b9e8eeecbacd27b65be4f3dfd48edc237f81d8ce3a303ee0e91c3",
+      "edition": {
+        "grade": 9,
+        "topicId": 25,
+        "editionId": "ms-20261122-g9-pya-01-r1",
+        "label": "יישומי משפט פיתגורס · PDF",
+        "nativePrefix": "G9-T124",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "3028ca3c9e3d4160979de0cbe1df72a2",
+            "pdfSha256": "294ad30e324eb14f2d5f774bcfcb43daff89c1bd214921567ff6fa074d669dd5",
+            "sourceSha256": "c0c6673321b349379deb602be81aea34c2736ef72f3d6418111ce88d2cfb0df6",
+            "nativeExportSha256": "647d60b44df59c5b046035d018c72032480fc2acd60575ad88d0f74457c333c4",
+            "worksheetId": "ms-g9-pya-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "a3372068df104d64a72129ed11a2bdc8",
+            "pdfSha256": "2db83cf8d1ca83c8cfa05dd55d9b7e9c485cbb83a1e03ecf9d269434c53564ca",
+            "sourceSha256": "83f6566a6631f327883b858e3c3599dc51935c2e15e6189e6ed483e3059b31d3",
+            "nativeExportSha256": "23dc75dd3f6d0331e0fe162d6ffed4f77dc6cf221bdfc7146fd28f58e162b333",
+            "worksheetId": "ms-g9-pya-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "32015b8fe73544d6b3c82c9794de45cf",
+            "pdfSha256": "a267cba93e7e7df777da044517dacae4457e351cad843b5efc0a1ecd592b8ee1",
+            "sourceSha256": "2ec8a9c5c33cccd74e696b190604105e2d67ef9c990aef163e7be9f35d94be18",
+            "nativeExportSha256": "3439e1c8a713d081e3a13d68864db59f7e382ec8bd2825d2a56d1387948aec53",
+            "worksheetId": "ms-g9-pya-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "4b5d84e394122c8a679d78711fb384a188ec34b71af3a6a9d3fa630b0321993b",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "דפי עבודה על שימושים במשפט פיתגורס לכיתה ט׳: אלכסוני מלבן וריבוע, גבהים ומרחקים בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "יישומי משפט פיתגורס לכיתה ט׳. מחשבים אלכסונים, גבהים ומרחקים. שלושה דפי עבודה להדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "sections",
+            2,
+            "blocks",
+            1,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "אפשר לבחור דף PDF להדפסה לפי הרמה. לקבלת רמזים פותחים אחד מהדפים הקודמים שנפתחים עם רמזי."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            8,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "אפשר לבחור דף PDF להדפסה לפי הרמה. לקבלת רמזים פותחים אחד מהדפים הקודמים שנפתחים עם רמזי."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "דפי עבודה על שימושים במשפט פיתגורס לכיתה ט׳: אלכסוני מלבן וריבוע, גבהים ומרחקים בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "יישומי משפט פיתגורס לכיתה ט׳. מחשבים אלכסונים, גבהים ומרחקים. שלושה דפי עבודה להדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "דפי עבודה על שימושים במשפט פיתגורס לכיתה ט׳: אלכסוני מלבן וריבוע, גבהים ומרחקים בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "יישומי משפט פיתגורס לכיתה ט׳. מחשבים אלכסונים, גבהים ומרחקים. שלושה דפי עבודה להדפסה ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות."
+        }
+      ]
+    },
+    {
+      "number": 99,
+      "sheetId": "G9-RSA-01",
+      "grade": 9,
+      "topicId": 26,
+      "slug": "rectangle-square-area-grade-9",
+      "producerPackage": "G9-T125",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3",
+      "producerFreezeSha256": "556f7f87890def625e9f4e0234d4817e36facabc8e0247492c5d05a498a39e5a",
+      "reviewReceipts": [
+        {
+          "name": "Independent mathematical review of the frozen source or verified revision",
+          "path": "reviews/CODEX-BLIND-096r02-099r01-20261121/099-r02-review.json",
+          "sha256": "bf1e0a73fb140f02e8032249067329aa2a50938135659a2aeb112e52f516af10",
+          "verdict": "PASS_REVIEWED"
+        },
+        {
+          "name": "Exact independent prepublication check on the signed student PDFs",
+          "path": "reports/CODEX-SITE-B18-REMAINDER-20261122/review.json",
+          "sha256": "632d99f2053918eda87ed6a68606b4863f19ce64d2fad4009de97bf73aad79b6",
+          "verdict": "PASS_PREPUBLICATION_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 7,
+          "bytes": 55464,
+          "source": "submissions/Codex/MS-PROD-CODEX-099-r02/release/documents/G9-RSA-01/a/sheet.pdf",
+          "sha256": "a7cb01e1a7de3d5b1d01956cf4d968237f3a107d3ab3336bbf60cda9ca31967c",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_93830b9facc14c5f981eea9b567b7bb2.pdf",
+              "status": 200,
+              "sha256": "a7cb01e1a7de3d5b1d01956cf4d968237f3a107d3ab3336bbf60cda9ca31967c",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_93830b9facc14c5f981eea9b567b7bb2.pdf",
+              "status": 200,
+              "sha256": "a7cb01e1a7de3d5b1d01956cf4d968237f3a107d3ab3336bbf60cda9ca31967c",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 7,
+          "bytes": 59861,
+          "source": "submissions/Codex/MS-PROD-CODEX-099-r02/release/documents/G9-RSA-01/b/sheet.pdf",
+          "sha256": "a6c66e3c8c85e0688b437fc30961adf47f87db11f9092b66280296db8c26e6a5",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_1ff631391a35427ea4199bae77806dee.pdf",
+              "status": 200,
+              "sha256": "a6c66e3c8c85e0688b437fc30961adf47f87db11f9092b66280296db8c26e6a5",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_1ff631391a35427ea4199bae77806dee.pdf",
+              "status": 200,
+              "sha256": "a6c66e3c8c85e0688b437fc30961adf47f87db11f9092b66280296db8c26e6a5",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 7,
+          "bytes": 59117,
+          "source": "submissions/Codex/MS-PROD-CODEX-099-r02/release/documents/G9-RSA-01/c/sheet.pdf",
+          "sha256": "ca1f7dbe84e8afcc89621b01ffbd4b906afc7420d3001dcb343c215021696ab5",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_850840e969c046228e01e4f4c722fc7f.pdf",
+              "status": 200,
+              "sha256": "ca1f7dbe84e8afcc89621b01ffbd4b906afc7420d3001dcb343c215021696ab5",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_850840e969c046228e01e4f4c722fc7f.pdf",
+              "status": 200,
+              "sha256": "ca1f7dbe84e8afcc89621b01ffbd4b906afc7420d3001dcb343c215021696ab5",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "שטח והיקף של מלבן וריבוע — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מחשבים שטח והיקף ומוצאים צלע חסרה בעזרת נתוני השטח. התרגילים משלבים המרות יחידות ופירוק צורות, ובהם חישוב מידות של לוח מודעות ושל שלט ריבועי.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": null,
+      "priorPageSha256": "a67553865e53e106935ebb613cdcfd3dca25a42ab0053680c06114166785c83e",
+      "priorTopicSha256": "35174083a5018d2bec424097e2b4bb8aa7707d9feb8f372157c9fdc469c47421",
+      "edition": {
+        "grade": 9,
+        "topicId": 26,
+        "editionId": "ms-20261122-g9-rsa-01-r1",
+        "label": "שטח והיקף של מלבן וריבוע · PDF",
+        "nativePrefix": "G9-T125",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "93830b9facc14c5f981eea9b567b7bb2",
+            "pdfSha256": "a7cb01e1a7de3d5b1d01956cf4d968237f3a107d3ab3336bbf60cda9ca31967c",
+            "sourceSha256": "22186f17ac736293eead9f77c9bbde869b775242cfb56819fa2cdbd1aeb1fbf3",
+            "nativeExportSha256": "c06117dc4ce35ca338b183c19146d5d1c71db09655abb1dca23957b744872614",
+            "worksheetId": "ms-g9-rsa-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "1ff631391a35427ea4199bae77806dee",
+            "pdfSha256": "a6c66e3c8c85e0688b437fc30961adf47f87db11f9092b66280296db8c26e6a5",
+            "sourceSha256": "65294589d2747c51654435004b5d73027ab63a28dc5e69cc542ddb63ef72f5f7",
+            "nativeExportSha256": "590835f3da52df52e8b3baf18ea4c5f7e6ab55c7e431e323bcd8335ed33a5d2b",
+            "worksheetId": "ms-g9-rsa-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "850840e969c046228e01e4f4c722fc7f",
+            "pdfSha256": "ca1f7dbe84e8afcc89621b01ffbd4b906afc7420d3001dcb343c215021696ab5",
+            "sourceSha256": "0b25ee4b545cac8388dad814333fb74a491de6b28fa05a4df27fd3a4a82e08af",
+            "nativeExportSha256": "2a48824cbbec2a3402a50a875f9507e1743a9804e9eb345a048d4284983e3f65",
+            "worksheetId": "ms-g9-rsa-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "91ce603283b39acfc88646740acb550ce4058bbceca5cb77e060b75d7ccd39f9",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "דפי עבודה על שטח מלבן וריבוע לכיתה ט׳: נוסחאות, שילוב ביטויים אלגבריים ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "שטח והיקף של מלבן וריבוע לכיתה ט׳. מתרגלים חישוב מידות, המרות יחידות ופירוק צורות בשלוש רמות. בסוף כל דף להדפסה מופיעות תשובות סופיות."
+        },
+        {
+          "path": [
+            "sections",
+            2,
+            "blocks",
+            1,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "אפשר לבחור דף PDF להדפסה לפי הרמה. לקבלת רמזים פותחים אחד מהדפים הקודמים שנפתחים עם רמזי."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            8,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "אפשר לבחור דף PDF להדפסה לפי הרמה. לקבלת רמזים פותחים אחד מהדפים הקודמים שנפתחים עם רמזי."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "דפי עבודה על שטח מלבן וריבוע לכיתה ט׳: נוסחאות, שילוב ביטויים אלגבריים ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "שטח והיקף של מלבן וריבוע לכיתה ט׳. מתרגלים חישוב מידות, המרות יחידות ופירוק צורות בשלוש רמות. בסוף כל דף להדפסה מופיעות תשובות סופיות."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "דפי עבודה על שטח מלבן וריבוע לכיתה ט׳: נוסחאות, שילוב ביטויים אלגבריים ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "שטח והיקף של מלבן וריבוע לכיתה ט׳. מתרגלים חישוב מידות, המרות יחידות ופירוק צורות בשלוש רמות. בסוף כל דף להדפסה מופיעות תשובות סופיות."
+        }
+      ]
+    }
+  ]
+}

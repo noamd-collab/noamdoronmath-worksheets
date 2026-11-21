@@ -340,6 +340,9 @@
 .exact-catalog .empty p { margin: 0; color: #4a5478; }
 /* Existing production features absent from the sample remain visible. */
 .exact-catalog .cross { margin: 0 0 14px; font-size: 14px; color: #5a6588; }
+.exact-catalog .reduced-geometry-practice { margin-block: 0 20px; }
+.exact-catalog .reduced-geometry-practice .chips { margin-block: 6px 0; }
+.exact-catalog .reduced-geometry-practice a { display: inline-flex; align-items: center; min-height: 44px; }
 .exact-catalog .trackbar { display: flex; flex-wrap: wrap; gap: 6px; }
 .exact-catalog .tracknote { color: #5a6588; font-weight: 400; }
 .exact-catalog .more-worksheets { margin: 0; }

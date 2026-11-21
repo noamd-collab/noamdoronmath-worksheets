@@ -1,3 +1,4 @@
+import { beforeNovember21Copy } from './fixtures/middle-090-091-094';
 import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -301,7 +302,7 @@ test('four landing updates keep titles and CTAs and describe the actual series i
       // Grade 8 teaches the AA similarity theorem only; no page here names SAS or SSS similarity.
       for (const banned of ['צ.ז.צ', 'צ.צ.צ']) assert.ok(!text.includes(banned), `${delta.slug}: ${banned}`);
     }
-    const page = beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug)), flow = synthesizeBodyFlow(page);
+    const page = beforeLandingCorrections(delta.slug, beforeNovember21Copy(delta.slug, loadTopicPage(delta.slug))), flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text || '') === added.heading).length, 1);
     for (const block of added.blocks) assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text || '') === block.text).length, 1);
     const faq = extractJsonLdFaq(page.jsonLd).map(f => ({ question: plain(f.question), answer: plain(f.answer) }));

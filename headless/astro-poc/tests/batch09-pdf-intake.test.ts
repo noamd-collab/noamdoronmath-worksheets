@@ -1,3 +1,4 @@
+import { beforeNovember21Copy } from './fixtures/middle-090-091-094';
 import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -171,15 +172,17 @@ test('six landing routes add only reviewed PDF copy and preserve their complete 
   for (const delta of reviewed.landingDeltas) {
     assert.ok(delta.slug);
     const slug = delta.slug;
-    const page = (beforeLandingCorrections(slug, read(`headless/astro-poc/src/data/topic-pages/${slug}.json`)) as any);
-    const restored = beforeBatch09Copy(slug, page);
+    const currentPage = (beforeLandingCorrections(slug, read(`headless/astro-poc/src/data/topic-pages/${slug}.json`)) as any);
+    const restored = beforeBatch09Copy(slug, currentPage);
+    const page = beforeNovember21Copy(slug, currentPage);
     assert.equal(digest(restored), delta.baselineSha256, `${delta.slug}: exact previous page`);
     assert.equal(page.h1, restored.h1);
     assert.equal(page.title, restored.title);
     assert.deepEqual(page.catalogCta, restored.catalogCta);
     assert.deepEqual(page.catalogCtas, restored.catalogCtas);
     assert.deepEqual(page.sections.at(-1), delta.appendedSection);
-    const loaded = beforeLandingCorrections(slug, loadTopicPage(slug)!);
+    const currentLoaded = beforeLandingCorrections(slug, loadTopicPage(slug)!);
+    const loaded = beforeNovember21Copy(slug, currentLoaded);
     const sections = loaded.sections.filter(section => section.heading === delta.appendedSection.heading);
     assert.equal(sections.length, 1);
     assert.ok(sections[0].blocks.some(block => /רמה א׳/.test(block.text ?? '')));
@@ -198,7 +201,7 @@ test('six landing routes add only reviewed PDF copy and preserve their complete 
     const faq = extractJsonLdFaq((beforeRamziActivationCopy(slug, loaded) as any).jsonLd).map(item => ({
       question: item.question.replace(/[⁦-⁩]/g, ''), answer: item.answer.replace(/[⁦-⁩]/g, ''),
     }));
-    const baselineFaq = extractJsonLdFaq((beforeBatch09Copy(slug, loaded) as any).jsonLd).map(item => ({
+    const baselineFaq = extractJsonLdFaq((beforeBatch09Copy(slug, currentLoaded) as any).jsonLd).map(item => ({
       question: item.question.replace(/[⁦-⁩]/g, ''), answer: item.answer.replace(/[⁦-⁩]/g, ''),
     }));
     assert.deepEqual(faq, baselineFaq, `${slug}: FAQ schema unchanged by batch 9`);
