@@ -21,6 +21,7 @@ function buildLearningCatalog(raw, registry, activationEvidence, additional = {t
       label: l === 'one' ? (row.oneLabel || 'כל הרמות') : (t[l + 'Label'] || ({ a: 'רמה א׳', b: 'רמה ב׳', c: 'מצוינות', c2: 'מצוינות 2' })[l]),
       pdf: row[l], ...(row.viewerLevel ? { viewerLevel: row.viewerLevel } : {}),
       ...(row.sourceGrade ? { sourceGrade: row.sourceGrade, sourcePrefix: row.sourcePrefix, sourceTitle: row.sourceTitle } : {}),
+      ...(row.trackPlacementProgress === true ? { trackPlacementProgress: true } : {}),
       x: t.x || (raw.NOAM_PREFIX_FALLBACK[g] || {})[t.id] || '',
     });
   }

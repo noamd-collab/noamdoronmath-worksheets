@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { createRequire } from 'node:module';
+import { beforeGrade9SpecialTrianglesReview } from './beforeGrade9SpecialTrianglesReview';
 
 const root = new URL('../../../../', import.meta.url), require = createRequire(import.meta.url);
 const { validateAdditionalProjection } = require('../../../../scripts/lib/reviewed-ramzi-activation.mjs');
@@ -16,7 +17,7 @@ const evidence = () => (evidenceCache ??= { registry: read('headless/catalog/wor
  * Older intake tests use this to keep asserting their own pre-activation state.
  * Never use the catalog merger as the rollback oracle. */
 export function beforeReviewedRamziActivation<T>(catalog: T): T {
-  const restored: any = structuredClone(catalog);
+  const restored: any = beforeGrade9SpecialTrianglesReview(catalog);
   if (!Object.hasOwn(restored, 'reviewedRamziActivations')) {
     // Nothing was activated: prove it instead of silently passing a partial projection.
     for (const g of restored.grades) for (const t of g.topics) {

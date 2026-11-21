@@ -42,6 +42,7 @@ for(const rel of ['noam-learning.js','headless/astro-poc/public/noam-learning.js
   vm.runInNewContext(fs.readFileSync(path.join(root, 'noam-learning-catalog.js'), 'utf8'), env);
   const rows = env.window.NOAM_LEARNING_CATALOG;
   const viewer = functions(source, rows);
+  assert.deepEqual(Array.from(rows.filter(row => row.trackPlacementProgress === true), row => row.id), ['g9-t21-a', 'g9-t21-b', 'g9-t21-c']);
   for (const level of ['a', 'b', 'c']) {
    const current = rows.find(row => row.id === `g7-t15-${level}`);
    const review = rows.find(row => row.id === `g9-t21-${level}`);
@@ -61,6 +62,13 @@ for(const rel of ['noam-learning.js','headless/astro-poc/public/noam-learning.js
    assert.equal(viewer.viewerLearningItem(new URL(viewer.openPdf(current)).searchParams)?.id, current.id);
    query.delete('topic');
    assert.equal(viewer.viewerLearningItem(query)?.id, current.id);
+  }
+  const existingReviews = rows.filter(row => row.sourceGrade && !row.trackPlacementProgress);
+  assert.equal(existingReviews.length, 31);
+  for (const row of existingReviews) {
+   const original = rows.find(item => item.g === row.sourceGrade && item.x === row.sourcePrefix && item.pdf === row.pdf && item.l === row.l);
+   assert.ok(original, row.id);
+   assert.equal(viewer.viewerLearningItem(new URL(viewer.openPdf(row)).searchParams)?.id, original.id, row.id);
   }
  });
  test(rel+': every existing learning row preserves its baseline open URL',()=>{

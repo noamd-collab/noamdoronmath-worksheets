@@ -67,7 +67,7 @@
   if(!direct || edition!=='legacy' || !topic || direct.parent===topic || direct.x!==params.get('x'))return direct;
   // A review topic opens the source PDF while keeping progress in the selected topic.
   var placements=catalog.filter(function(item){
-   return !item.editionId && item.parent===topic && item.sourceGrade===direct.g &&
+   return item.trackPlacementProgress===true && !item.editionId && item.parent===topic && item.sourceGrade===direct.g &&
     item.sourcePrefix===direct.x && item.pdf===direct.pdf && item.l===direct.l;
   });
   return placements.length===1?placements[0]:direct;
