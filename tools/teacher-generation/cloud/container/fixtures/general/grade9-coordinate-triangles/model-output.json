@@ -1,0 +1,1808 @@
+{
+  "version": 4,
+  "title": "משולשים במערכת צירים",
+  "rule": [
+    {
+      "kind": "text",
+      "text": "קראו את שיעורי הקודקודים לפי יחידות הצירים. בכתיבת זוג סדור מופיע תחילה השיעור האופקי ואחריו השיעור האנכי."
+    }
+  ],
+  "sections": [
+    {
+      "title": "קריאה וסרטוט של משולשים",
+      "conceptIds": [
+        "g9m:computational_triangle#3"
+      ],
+      "questions": [
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": -3,
+                "y": -3
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 3
+              },
+              {
+                "name": "C",
+                "x": -3,
+                "y": 3
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": -2,
+                "y": -3
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 2
+              },
+              {
+                "name": "C",
+                "x": -2,
+                "y": 2
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": -1,
+                "y": -3
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 1
+              },
+              {
+                "name": "C",
+                "x": -1,
+                "y": 1
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "wide"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": 0,
+                "y": -3
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 0
+              },
+              {
+                "name": "C",
+                "x": 0,
+                "y": 0
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": 1,
+                "y": -3
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": -1
+              },
+              {
+                "name": "C",
+                "x": 1,
+                "y": -1
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": 2,
+                "y": -3
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 3
+              },
+              {
+                "name": "C",
+                "x": 2,
+                "y": 3
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": true,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": -3,
+                "y": -2
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 2
+              },
+              {
+                "name": "C",
+                "x": -3,
+                "y": 2
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "wide"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": -2,
+                "y": -2
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 1
+              },
+              {
+                "name": "C",
+                "x": -2,
+                "y": 1
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": -1,
+                "y": -2
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 0
+              },
+              {
+                "name": "C",
+                "x": -1,
+                "y": 0
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": 0,
+                "y": -2
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": -1
+              },
+              {
+                "name": "C",
+                "x": 0,
+                "y": -1
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": 1,
+                "y": -2
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 3
+              },
+              {
+                "name": "C",
+                "x": 1,
+                "y": 3
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "wide"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": 2,
+                "y": -2
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 2
+              },
+              {
+                "name": "C",
+                "x": 2,
+                "y": 2
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": -3,
+                "y": -1
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 1
+              },
+              {
+                "name": "C",
+                "x": -3,
+                "y": 1
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": -2,
+                "y": -1
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 0
+              },
+              {
+                "name": "C",
+                "x": -2,
+                "y": 0
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": true,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": -1,
+                "y": -1
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": -1
+              },
+              {
+                "name": "C",
+                "x": -1,
+                "y": 4
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "wide"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
+            }
+          ],
+          "star": false,
+          "figure": {
+            "kind": "coordinate_plane",
+            "xr": [
+              -5,
+              5
+            ],
+            "yr": [
+              -5,
+              5
+            ],
+            "points": [
+              {
+                "name": "A",
+                "x": 0,
+                "y": -1
+              },
+              {
+                "name": "B",
+                "x": 3,
+                "y": 3
+              },
+              {
+                "name": "C",
+                "x": 0,
+                "y": 3
+              }
+            ],
+            "segments": [
+              [
+                "A",
+                "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
+              ]
+            ],
+            "placement": "side"
+          },
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
+                "unit": ""
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "סרטטו מערכת צירים, סמנו את שלוש הנקודות המתוארות וחברו אותן למשולש."
+            }
+          ],
+          "star": false,
+          "drawingFromWords": true,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות ימינה מראשית הצירים ושלוש יחידות מעל לציר האופקי."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות ימינה מראשית הצירים ושלוש יחידות מעל לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                  }
+                ]
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מעל לציר האופקי."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מעל לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                  }
+                ]
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מתחת לציר האופקי. חברו את שלושת הקודקודים."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מתחת לציר האופקי, לפי יחידות האורך שבחרתם לצירים. שלושת הקטעים המחברים את הנקודות יוצרים משולש ישר זווית."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "סרטטו מערכת צירים, סמנו את שלוש הנקודות המתוארות וחברו אותן למשולש."
+            }
+          ],
+          "star": false,
+          "drawingFromWords": true,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מעל לציר האופקי."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מעל לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                  }
+                ]
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מתחת לציר האופקי."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מתחת לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                  }
+                ]
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות ימינה מראשית הצירים ושלוש יחידות מתחת לציר האופקי. חברו את שלושת הקודקודים."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות ימינה מראשית הצירים ושלוש יחידות מתחת לציר האופקי, לפי יחידות האורך שבחרתם לצירים. שלושת הקטעים המחברים את הנקודות יוצרים משולש ישר זווית."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "סרטטו מערכת צירים, סמנו את שלוש הנקודות המתוארות וחברו אותן למשולש."
+            }
+          ],
+          "star": false,
+          "drawingFromWords": true,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מתחת לציר האופקי."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מתחת לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                  }
+                ]
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות ימינה מראשית הצירים ושלוש יחידות מתחת לציר האופקי."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות ימינה מראשית הצירים ושלוש יחידות מתחת לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                  }
+                ]
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות ימינה מראשית הצירים ושלוש יחידות מעל לציר האופקי. חברו את שלושת הקודקודים."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות ימינה מראשית הצירים ושלוש יחידות מעל לציר האופקי, לפי יחידות האורך שבחרתם לצירים. שלושת הקטעים המחברים את הנקודות יוצרים משולש ישר זווית."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "סרטטו מערכת צירים, סמנו את שלוש הנקודות המתוארות וחברו אותן למשולש."
+            }
+          ],
+          "star": false,
+          "drawingFromWords": true,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות ימינה מראשית הצירים ושלוש יחידות מתחת לציר האופקי."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות ימינה מראשית הצירים ושלוש יחידות מתחת לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                  }
+                ]
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות ימינה מראשית הצירים ושלוש יחידות מעל לציר האופקי."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות ימינה מראשית הצירים ושלוש יחידות מעל לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                  }
+                ]
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "סמנו נקודה הנמצאת שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מעל לציר האופקי. חברו את שלושת הקודקודים."
+                }
+              ],
+              "answer": {
+                "kind": "review",
+                "text": [
+                  {
+                    "kind": "text",
+                    "text": "יש לסמן נקודה במרחק שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מעל לציר האופקי, לפי יחידות האורך שבחרתם לצירים. שלושת הקטעים המחברים את הנקודות יוצרים משולש ישר זווית."
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

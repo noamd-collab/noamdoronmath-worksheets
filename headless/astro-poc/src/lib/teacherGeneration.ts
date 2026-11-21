@@ -1,7 +1,7 @@
 import { requireOwnerTeacher, teacherAccessFailure, TEACHER_PRIVATE_HEADERS, type TeacherAccessResult } from './teacherAccess';
 import { sameOriginTeacherMutation } from './teacherSession';
-import { createGenerationStore, generationSessionToken, GenerationStoreError, uuid, workerAcceptsCurrentIntake } from './teacherGenerationStore';
-import { validateTeacherGenerationIntake, type TeacherGenerationCurriculum } from './teacherGenerationContract';
+import { createGenerationStore, generationSessionToken, GenerationStoreError, uuid, workerAcceptsCurrentIntake, workerAcceptsCurriculumIntake } from './teacherGenerationStore';
+import { validateTeacherGenerationIntake, isTeacherGenerationDraftReady, type TeacherGenerationCurriculum } from './teacherGenerationContract';
 import type { TeacherWorkerWake } from './teacherWorkerWake';
 
 const reply = (body: unknown, status = 200) => Response.json(body, { status, headers: TEACHER_PRIVATE_HEADERS });
@@ -55,7 +55,7 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
       const kind = query.get('file');
       if (!kind) return reply({ ok: true, job });
       if (kind !== 'pdf' && kind !== 'docx') return error('INVALID_FILE');
-      if (job.status !== 'needs_review' || job.result?.automatedChecksPassed !== true) return error('DRAFT_NOT_AVAILABLE', 409);
+      if (job.status !== 'needs_review' || !isTeacherGenerationDraftReady(job.result)) return error('DRAFT_NOT_AVAILABLE', 409);
       const file = await store.download(access.userId, id, kind);
       if (!file.ok) return error('DRAFT_NOT_AVAILABLE', 503);
       const length = Number(file.headers.get('content-length'));
@@ -85,7 +85,14 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
     const health = await workerReadiness(store, deps.wake);
     if (!health.online) return error(health.waking ? 'GENERATOR_WAKING' : 'GENERATOR_OFFLINE', 503);
     const capability = health.capabilities?.topics?.find((t: any) => t.topicId === checked.value.topicId && t.gradeNumber === checked.value.gradeNumber);
-    if (!capability || capability.enabled !== true || capability.e2eVerified !== true ||
+    const legacyCapability = capability?.legacy?.intakeVersion === 2 ? capability.legacy : capability;
+    const compatible = checked.value.version === 3
+      ? workerAcceptsCurriculumIntake(health.capabilities) && capability?.readiness === 'private_draft'
+      : health.capabilities?.acceptedIntakeVersions?.includes(2) && legacyCapability?.e2eVerified === true && checked.value.level === 'b' &&
+        legacyCapability.levels?.includes(checked.value.level) && legacyCapability.questionCounts?.includes(checked.value.questionCount) &&
+        ((checked.value.topicId === 'ג10' && checked.value.gradeNumber === 3 && checked.value.questionCount === 12) ||
+         (checked.value.topicId === 'g7:equations' && checked.value.gradeNumber === 7 && checked.value.questionCount === 20));
+    if (!capability || capability.enabled !== true || !compatible ||
       !Array.isArray(capability.levels) || !capability.levels.includes(checked.value.level) ||
       !Array.isArray(capability.questionCounts) || !capability.questionCounts.includes(checked.value.questionCount) ||
       !['practice', 'review'].includes(checked.value.lessonGoal) || checked.value.explicitShortSheet) return error('TOPIC_NOT_SUPPORTED_YET', 422);

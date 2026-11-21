@@ -1,6 +1,6 @@
 # Guarded Cloudflare teacher-worker release
 
-This is a separate initial-rollout controller for the private worksheet worker.
+This is a separate rollout and active-cloud upgrade controller for the private worksheet worker.
 It does not publish the Wix website, alter its `RELEASE_SHA`, or use the
 `wix-production` deployment ledger. The default Wix path in `release.sh` is
 unchanged. There is no automatic trigger or purchase in this controller.
@@ -199,8 +199,8 @@ the Mac worker, or claim that the cloud worker is disabled: an activation may
 have committed despite a response failure. Inspect exact Worker/DO state and
 prepare a reviewed recovery action first.
 
-This initial controller intentionally refuses a new rollout after state
-`active`; a subsequent upgrade requires a reviewed drain/release procedure.
+The initial `preflight` phase intentionally refuses replacement after state
+`active`. Use the separately reviewed upgrade phases below for that transition.
 The local ledger is distinct from Cloudflare's state and the Wix ledger. It
 records controller evidence, not comprehensive protection against another
 operator deploying directly.
@@ -215,3 +215,74 @@ Official references: [Containers deployment](https://developers.cloudflare.com/c
 [pricing](https://developers.cloudflare.com/containers/platform/pricing/).
 
 Image transport references: [crane OCI directory push](https://github.com/google/go-containerregistry/blob/main/cmd/crane/doc/crane_push.md), [official verified installation](https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md), [temporary Cloudflare registry grants](https://developers.cloudflare.com/workers/wrangler/commands/containers/).
+
+## Active cloud upgrade (no Mac worker)
+
+The existing cloud worker remains the production source until an approved drain.
+There is no Mac fallback. An upgrade does not purchase a plan, edit the database,
+cancel/requeue a job, reset owner quota, change idempotency keys, or invoke a model.
+All commands still go through `RELEASE_TARGET=teacher-cloudflare tools/release/release.sh`.
+
+First qualify and publish the new immutable image using `image-push`. Image receipts
+now use `teacher-cloudflare-image-IDENTITY_HASH.json` in the same private state
+directory. The legacy receipt is reused for its exact identity; successful and
+uncertain receipts are never overwritten to make room for an upgrade.
+
+Each upgrade plan contains the same nine common fields as the initial plan, plus
+exactly `previousRuntime`, with the currently live `sourceSha`, digest-pinned
+`imageRef`, `versionId`, and `doId`. The common source/image fields describe the
+new version. Both source and image must change. All three plans must keep the
+same new identity and previous runtime, and each phase has its own fingerprint
+and explicit operator approval:
+
+1. `upgrade-drain` requires the existing ledger to be `active`, with the exact
+   previous identity. It checks the live deployment and supervisor, durably
+   records `in_progress` before `/operator/deactivate`, then records
+   `upgrade_draining`. Deactivate prevents new Cron starts but does not kill an
+   active render or provider request. A still-running container is an expected
+   drain result, not permission to deploy.
+2. `upgrade-preflight` requires `upgrade_draining`, the same old Worker version,
+   the same DO, disabled mode and a stopped container. A fresh independent DB
+   read must also show zero active leases. It records pending state before
+   deploying the new digest and runtime secrets, preserves the verified origin
+   and DO ID, runs the existing nonclaim preflight, and records
+   `upgrade_preflight_verified`. Old proof or a changed DO cannot qualify.
+3. `upgrade-activate` rechecks the exact new Worker version, DO and nonclaim
+   preflight (maximum15 minutes old), rereads fresh cutover context, then records
+   pending state before activation. It calls no tick. Cron resumes the normal
+   consumer after activation; the DB remains authoritative for job outcomes.
+
+For the last two phases the context must include `activeJobs: 0` and
+`queueCheckedAt` at most90 seconds old. Here `activeJobs` counts every outstanding
+claim/lease, including a lease whose process is gone; do not equate a stopped
+container with an expired DB lease. It also needs `jobsSnapshotSha256` and
+`ownerQuotaSnapshotSha256` from the same independent read. Hash canonical,
+deterministically ordered complete job records (including status, lease and
+idempotency fields), and the owner's quota record separately. Do not put their
+raw contents in release plans or logs. Activation requires those fingerprints
+to equal the preflight fingerprints. If a user submits a new job or the data
+changes, stop and review the changed state; do not manufacture an old snapshot.
+The controller checks these operator attestations; it does not obtain a wider
+DB key or pretend its cloud status proves database integrity.
+
+Every upgrade phase retains the complete predecessor receipt and its SHA256.
+Atomic state replacement also fsyncs the containing directory before a provider
+mutation. Any failure after pending state becomes `uncertain`; do not retry that
+phase, clear the ledger, restore an older success or start a local worker. The
+existing recovery procedure needs a separately reviewed action. A failed
+read-only precondition leaves the previous ledger intact.
+
+For a read-only observation, pass `--observe` (never together with `--apply`),
+the reviewed plan and `--state-dir`. It uses the verified origin in the ledger,
+calls only deployment status and `/operator/status`, and emits bounded public
+identity/mode/running fields. It does not read runtime secrets, write the release
+ledger, invoke preflight, mutate provider state or consume the owner's trial.
+The local private Wrangler config/lock can be created for the observation.
+
+Offline release tests include busy drains, outstanding/freshly changed leases,
+snapshot drift, stale/changed identity, lost transport replies, changed DOs,
+predecessor retention and a no-mutation observation:
+
+```sh
+python3 -m unittest discover -s tools/release/tests -p 'test_teacher_cloudflare_*.py' -v
+```
