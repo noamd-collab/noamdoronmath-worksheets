@@ -940,3 +940,9 @@ Moved the exact 15-row source/old/new hash proof to a required content-addressed
 - מקור מובנה של Qwen עובר אימות, חישוב מדויק והפקת PDF ו־Word דרך הסקילים הנעולים. כשל חוסם אינו מקבל קובץ להורדה. טיוטת REVIEW נשארת מסומנת לבדיקה אנושית, עם הרשאות אחסון פרטיות.
 - ארבע הפקות מייצגות נבדקו: ניקוד בכיתה ב׳, שברים בד׳, משוואות ריבועיות וקריאת גרפים בט׳. זו בדיקת מנגנון ולא אישור פדגוגי לכל דף אפשרי ב־232 הנושאים. מסלול החטיבה הוא דף רחב; שערי תתי־נושאים ייעודיים מסומנים SKIP ולא PASS.
 - הפרסום, תמונת Linux והמיגרציה מתואמים באותה חבילת שחרור. בזמן הכנת הרשומה טרם פורסם השינוי; הראיות והאישור המדויקים יופיעו ב־PR ובקבלת הפריסה. אין הוספת דפים ציבוריים או דפי נחיתה במסגרת הטיוטות הפרטיות.
+
+### 2026-11-21 — elementary print worksheets for 39 topics
+
+This candidate adds 107 individually reviewed student PDFs (1,006 printed pages, including final answers). The grade 1–6 counts are 38, 6, 45, 6, 9 and 3. Each file is linked from its grade's catalog card and its existing topic landing page. Site search selects the new PDF for each available level. The PDF hashes and grade/topic/level associations are recorded in `headless/astro-poc/src/data/elementary-print-worksheets.json`.
+
+Five PDFs were rebuilt. The grade 1 counting and data excellence sheets have darker writing lines. Grade 1 addition to 20 (level B) and equality (excellence) have more balanced exercise pagination. The grade 3 quadrilateral-properties excellence answer key keeps the unit with the answer to 8ב. The exact final PDFs were checked against the source answer ledgers. Earlier worksheets remain available in the catalog and on the topic pages.

@@ -1,3 +1,4 @@
+import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -100,6 +101,7 @@ test('six additive editions recover the pinned baseline after batch 8 (c45a033c)
   assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 18);
   const expectedSsr = structuredClone(raw);
   expectedSsr.config.pdfBase = 'https://static.wixstatic.com/ugd/d8e7ad_';
+  expectedSsr.elementaryPrintTopics = expectedElementaryPrintTopics;
   assert.deepEqual(catalog, expectedSsr);
   assert.equal(receipt.status, 'REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED');
   assert.equal(receipt.sitePublicationClaimed, false);

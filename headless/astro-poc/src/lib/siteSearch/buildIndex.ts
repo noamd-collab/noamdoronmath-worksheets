@@ -293,6 +293,7 @@ export function buildIndex(input: BuildInput): { index: SearchIndex; report: Bui
   }
 
   const index: SearchIndex = {
+    ...(catalog.elementaryPrintTopics?.length && { elementaryPrintTopics: catalog.elementaryPrintTopics }),
     version: 1,
     config: {
       pdfBase: catalog.config.pdfBase,
