@@ -9,6 +9,8 @@ from unittest.mock import patch
 HERE=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(HERE))
 import provider
+import no_carry_addition as addition
+from general_source import GeneralSourceError, validate_source
 from runtime_catalog import catalog, question_floor, scope_for_lesson, CURRICULUM_SHA256
 from validation import validate_lesson, validate_model, GenerationError, capabilities
 
@@ -111,6 +113,90 @@ class GeneralRuntimeTests(unittest.TestCase):
         self.assertRegex(measured['requestSchemaSha256'],r'^[a-f0-9]{64}$')
         self.assertRegex(measured['requestBodySha256'],r'^[a-f0-9]{64}$')
         self.assertNotIn('synthetic-fixture-key',json.dumps(body))
+
+    def test_singleton_table_cells_from_provider_are_validated_without_changing_math(self):
+        payload = source(self.lesson)
+        cell = {"kind":"math","expression":{"type":"number","numerator":3,"denominator":1}}
+        question = payload["sections"][0]["questions"][0]
+        question["table"] = {"head":[{"kind":"text","text":"כמות"}, "מחיר"], "rows":[[cell, [cell]]]}
+        scope = scope_for_lesson(self.lesson)
+        with self.assertRaisesRegex(GeneralSourceError, "table.head.1"):
+            validate_source(self.lesson, payload, scope)
+        untouched = copy.deepcopy(payload)
+        with patch('general_provider.build_authoring_context',return_value={}), patch('provider.request_author_json',return_value=payload) as author:
+            corrected = provider.author_lesson(self.lesson, **self.config)
+        author.assert_called_once()
+        table = corrected["sections"][0]["questions"][0]["table"]
+        self.assertEqual(table["rows"], [[[cell], [cell]]])
+        self.assertEqual(table["head"], [[{"kind":"text","text":"כמות"}], [{"kind":"text","text":"מחיר"}]])
+        validate_source(self.lesson, corrected, scope)
+        self.assertEqual(payload, untouched)
+        for invalid in (None, [], "", {}, [{"kind":"unknown"}], "סכום 3+4", "כמות <תג>", "כמות ≤ אחת",
+                        {"kind":"math","expression": {"type":"number","numerator":1,"denominator":0}}):
+            with self.subTest(invalid=invalid), self.assertRaises(GeneralSourceError):
+                question["table"]["head"][0] = invalid
+                validate_source(self.lesson, payload, scope, provider=True)
+
+    def test_addition_choices_author_original_pairs_and_complete_verified_prompts(self):
+        topic = next(t for t in catalog().topics if t["topicId"] == "ב05")
+        lesson = intake(topic)
+        lesson["lessonBoundary"]["conceptIds"] = ["ב05#1"]
+        lesson["level"] = "b"
+        for count in range(8, 13):
+            lesson["questionCount"] = count
+            scope = scope_for_lesson(lesson)
+            plan = addition.parameter_plan(count)
+            authored = {"version":1, "questions":[{"theme":(q % 10)+1, "choices":[(i + q) % 4 + 1 for i in range(5)]}
+                                                 for q in range(count)]}
+            measured = {}
+            with patch('general_provider.build_authoring_context',return_value={}), patch('provider.request_author_json',return_value=authored) as author:
+                result = provider.author_lesson(lesson, metadata=measured, **self.config)
+                body = author.call_args.args[2]
+            author.assert_called_once()
+            self.assertEqual(measured["authorContract"], "no-carry-addition/1")
+            self.assertTrue(measured["validated"])
+            sent = json.loads(body["messages"][1]["content"])
+            wire_schema = body["response_format"]["json_schema"]
+            self.assertEqual(len(sent["additionPlan"]), count)
+            self.assertEqual(sent["sourceSchema"], wire_schema["schema"])
+            self.assertEqual(wire_schema["name"], "worksheet_authoring_choice")
+            evidence = validate_source(lesson, result, scope)["evidence"]["computations"]
+            self.assertEqual(len(evidence), 5 * count)
+            seen = set()
+            for qi, question in enumerate(result["sections"][0]["questions"]):
+                self.assertEqual(question["star"], qi >= count-3)
+                for sub, item in enumerate(question["items"]):
+                    options = plan[qi]["options"][sub]
+                    for a,b in options:
+                        self.assertTrue(10 <= min(a,b) and a+b < 100 and a%10+b%10 < 10)
+                        self.assertNotIn(tuple(sorted((a,b))), seen)
+                        seen.add(tuple(sorted((a,b))))
+                    a,b = options[authored["questions"][qi]["choices"][sub]-1]
+                    args = item["answer"]["task"]["expression"]["args"]
+                    self.assertEqual([value["numerator"] for value in args], [a,b])
+                    self.assertEqual(evidence[qi*5+sub]["computed"]["result"]["value"], {"type":"number","numerator":a+b,"denominator":1})
+                    self.assertEqual(addition.states_entire_task(lesson,qi,sub,item),
+                                     plan[qi]["kind"] in ("combine","increase","days","digits","choose"))
+                    incomplete = {**item, "prompt":[{"kind":"text", "text":"חַשְּׁבוּ."}]}
+                    self.assertFalse(addition.states_entire_task(lesson,qi,sub,incomplete))
+            for bad_row in ({"theme":1, "choices":[0]*5}, {"theme":True, "choices":[1]*5}, {"theme":1, "choices":[1]*5,"answer":0}):
+                with self.subTest(row=bad_row), self.assertRaises(GeneralSourceError):
+                    addition.build_source(lesson,{**authored,"questions":[bad_row]+authored["questions"][1:]},plan)
+
+    def test_addition_teacher_specific_alternative_keeps_original_source_in_one_call(self):
+        fixture = HERE / 'cloud/container/fixtures/general/grade2-vocalized'
+        lesson = json.loads((fixture/'lesson.json').read_text())
+        lesson["lastLesson"] = "הכינו רק שאלות עם ספרים ובלי מדבקות"
+        payload = json.loads((fixture/'model-output.json').read_text())
+        for i,q in enumerate(payload["sections"][0]["questions"]):
+            q["star"] = i >= lesson["questionCount"]-3
+        with patch('general_provider.build_authoring_context',return_value={}), patch('provider.request_author_json',return_value=payload) as author:
+            self.assertEqual(provider.author_lesson(lesson, **self.config), payload)
+        author.assert_called_once()
+        self.assertEqual(json.loads(author.call_args.args[2]["messages"][1]["content"])["teacherStoppingPoint"], lesson["lastLesson"])
+        for override in ({"level":"a"}, {"lessonGoal":"review"}, {"questionCount":13},
+                         {"lessonBoundary":{"conceptIds":["ב05#0","ב05#1"]}}):
+            self.assertFalse(addition.compatible({**lesson, **override}))
 
     def test_bad_general_response_never_retries_or_becomes_approved(self):
         envelope={'choices':[{'finish_reason':'stop','message':{'content':'{"version":4,"approved":true}'}}]}
