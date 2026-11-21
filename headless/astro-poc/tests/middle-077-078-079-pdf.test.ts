@@ -35,6 +35,10 @@ test('grade 7 algebra PDFs preserve existing grades, catalog groups and the prec
     assert.deepEqual(p.edition.levels.map(l => [l.key, l.viewerLevel]), [['a','A'], ['b','B'], ['c','E']]);
     const topic = previous.grades.find((g: any) => g.grade === p.grade).topics.find((t: any) => t.id === p.topicId);
     assert.deepEqual(topic.editions.map((e: any) => e.editionId), [p.edition.editionId]);
+    const routing = topic.editions[0].routing;
+    assert.equal(routing.resolvedNoamPrefix, p.producerPackage);
+    assert.equal(routing.usesViewer, false);
+    assert.equal(routing.aiHintShown, false);
     delete topic.editions;
     delete topic.defaultEditionId;
 
@@ -46,6 +50,7 @@ test('grade 7 algebra PDFs preserve existing grades, catalog groups and the prec
     assert.deepEqual(groups.map(g => g.editionId), ['legacy', p.edition.editionId]);
     assert.equal(groups[0].pdfOnly, false);
     assert.equal(groups[1].pdfOnly, true);
+    assert.equal(groups[1].note, 'קובצי PDF להדפסה');
     const parts = topicPagePdfParts(catalog, p.grade, [p.topicId]).parts;
     for (const [i, file] of p.studentFiles.entries()) {
       const level = p.edition.levels[i];
