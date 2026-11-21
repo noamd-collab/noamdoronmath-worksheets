@@ -53,9 +53,9 @@ test('saved grade 7 and current grade 9 sections keep independent context when t
   assert.equal(current[0].source.gradeLabel, 'כיתה ט׳', 'A later scope change cannot alter a prepared grade 9 section');
 });
 
-test('all 31 reused sources keep their requested grade and topic in returned links', () => {
+test('all reused sources keep their requested grade and topic in returned links', () => {
   const reused = index.filter((sheet: any) => records.some((record: any) => record.pdfId === sheet.pdfId && record.grade !== sheet.grade) && sheet.grade === 9);
-  assert.equal(reused.length, 31, 'Exercise the real shared-source routes restored in the live catalog');
+  assert.equal(reused.length, 34, 'Exercise the real shared-source routes restored in the live catalog');
   for (const sheet of reused) {
     const record = records.find((item: any) => item.pdfId === sheet.pdfId && item.grade === sheet.grade && String(item.topicId) === sheet.topicId && item.levelKey === sheet.level);
     assert.ok(record, `${sheet.grade}:${sheet.topicId}:${sheet.level}`);
