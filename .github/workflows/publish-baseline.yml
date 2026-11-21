@@ -9,7 +9,7 @@ name: publish-baseline
 # not republish the site. Manual retries use the same approved pin on main.
 
 env:
-  RELEASE_SHA: Warning: truncated output (original token count: 109)
+  RELEASE_SHA: 456c8ac46362c795be706cf0e7e18b4086f66e20
 
 on:
   workflow_dispatch:
