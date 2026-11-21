@@ -2729,6 +2729,126 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/rectangle-square-area-grade-7",
+      "title": "שטח מלבן וריבוע לכיתה ז׳ — העמקה",
+      "linkedTopic": "topic:7:18",
+      "linkedTitle": "שטח מלבן וריבוע — העמקה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/algebraic-language-grade-7",
+      "title": "משתנים וביטויים אלגבריים לכיתה ז׳",
+      "linkedTopic": "topic:7:22",
+      "linkedTitle": "משתנים וביטויים אלגבריים — שפה ומידול",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/number-patterns-grade-7",
+      "title": "חוקיות בסדרות לכיתה ז׳",
+      "linkedTopic": "topic:7:21",
+      "linkedTitle": "חוקיות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/box-and-cube-grade-7",
+      "title": "תיבה וקובייה לכיתה ז׳",
+      "linkedTopic": "topic:7:20",
+      "linkedTitle": "תיבה וקובייה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equation-solution-grade-7",
+      "title": "מהו פתרון של משוואה לכיתה ז׳",
+      "linkedTopic": "topic:7:32",
+      "linkedTitle": "מהו פתרון של משוואה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/one-step-equations-grade-7",
+      "title": "משוואות חד־שלביות לכיתה ז׳",
+      "linkedTopic": "topic:7:34",
+      "linkedTitle": "משוואות חד־שלביות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/simplify-then-solve-grade-7",
+      "title": "מפשטים ואז פותרים לכיתה ז׳",
+      "linkedTopic": "topic:7:36",
+      "linkedTitle": "מפשטים ואז פותרים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equations-parentheses-grade-7",
+      "title": "משוואות עם סוגריים ושקילות לכיתה ז׳",
+      "linkedTopic": "topic:7:37",
+      "linkedTitle": "משוואות ופתרונן חלק 2 — סוגריים ושקילות",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/unknown-both-sides-grade-7",
+      "title": "הנעלם בשני האגפים לכיתה ז׳",
+      "linkedTopic": "topic:7:39",
+      "linkedTitle": "הנעלם בשני האגפים",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/equation-representations-grade-7",
+      "title": "שלושה ייצוגים לפתרון משוואה לכיתה ז׳",
+      "linkedTopic": "topic:7:40",
+      "linkedTitle": "שלושה ייצוגים לפתרון משוואה",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/parallelogram-trapezoid-area-grade-7",
+      "title": "שטח מקבילית וטרפז לכיתה ז׳",
+      "linkedTopic": "topic:7:45",
+      "linkedTitle": "שטחים ב׳ חלק 1 — מקבילית וטרפז",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/triangular-prism-volume-grade-7",
+      "title": "מנסרה משולשת — מבנה ונפח לכיתה ז׳",
+      "linkedTopic": "topic:7:47",
+      "linkedTitle": "מנסרה משולשת חלק 1 — מבנה ונפח",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
+      "key": "page:/common-factor-grade-9",
+      "title": "הוצאת גורם משותף לכיתה ט׳",
+      "linkedTopic": "topic:9:41",
+      "linkedTitle": "",
+      "verified": false,
+      "reason": "not a catalog card (sub-topic or missing)"
+    },
+    {
+      "key": "page:/factoring-identities-grade-9",
+      "title": "נוסחאות הכפל המקוצר וטרינום לכיתה ט׳",
+      "linkedTopic": "topic:9:42",
+      "linkedTitle": "",
+      "verified": false,
+      "reason": "not a catalog card (sub-topic or missing)"
+    },
+    {
+      "key": "page:/complete-factoring-grade-9",
+      "title": "פירוק מלא, משוואות ושברים אלגבריים לכיתה ט׳",
+      "linkedTopic": "topic:9:43",
+      "linkedTitle": "",
+      "verified": false,
+      "reason": "not a catalog card (sub-topic or missing)"
+    },
+    {
       "key": "page:/games/eliyahu-pythagoras",
       "title": "משחק משפט פיתגורס עם אליהו",
       "linkedTopic": "topic:8:11",
