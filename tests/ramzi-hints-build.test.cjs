@@ -461,7 +461,7 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
   }
 });
 
-for(const [grade,coverage,sharedCoverage] of [[7,11942,0],[8,13688,0],[9,6055,2445]])test("every current grade "+grade+" part has a ladder bound to its exact PDF, native revision and selected text",()=>{
+for(const [grade,coverage,sharedCoverage] of [[7,11942,0],[8,13688,0],[9,6055,2690]])test("every current grade "+grade+" part has a ladder bound to its exact PDF, native revision and selected text",()=>{
   const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json")));
   const byId=new Map(rows.map(row=>[row.exercise_id,row]));
   const expected=new Map();

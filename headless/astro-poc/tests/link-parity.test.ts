@@ -102,7 +102,12 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
   it('declared grade-9 reuse opens the matching grade-7 source while returning to grade 9', () => {
     const grade = catalog.grades.find((entry) => entry.grade === 9)!;
     const reused = grade.topics.filter((topic) => topic.routing.sourceGrade !== undefined);
-    assert.equal(reused.length, 11);
+    assert.equal(reused.length, 12);
+    const review = reused.find(topic => topic.id === 21);
+    assert.ok(review);
+    assert.equal(review.title, 'משולשים מיוחדים — חזרה מכיתה ז׳');
+    assert.equal(review.routing.resolvedNoamPrefix, 'G9-T14');
+    assert.equal(review.routing.sourcePrefix, 'G7-T15');
     for (const topic of reused) {
       const source = catalog.grades.find((entry) => entry.grade === topic.routing.sourceGrade)!;
       const sourceTopic = source.topics.find((entry) => entry.routing.resolvedNoamPrefix === topic.routing.sourcePrefix)!;
@@ -114,7 +119,7 @@ describe('astro-poc buildWorksheetHref parity (representative)', () => {
         assert.equal(url.searchParams.get('x'), sourceTopic.routing.resolvedNoamPrefix);
         assert.equal(url.searchParams.get('t'), topic.routing.sourceTitle);
         assert.equal(url.searchParams.get('pdf'), level.pdfId);
-        assert.ok(sourceTopic.levels.some((sourceLevel) => sourceLevel.pdfId === level.pdfId));
+        assert.equal(sourceTopic.levels.find(sourceLevel => sourceLevel.key === level.key)?.pdfId, level.pdfId);
         assert.equal(url.searchParams.get('lv'), level.viewerLevel || level.key);
         assert.equal(url.searchParams.get('back'), '/worksheets?grade=9');
         assert.equal(url.searchParams.get('topic'), String(topic.parent ?? topic.id));

@@ -1,3 +1,4 @@
+import { beforeGrade9SpecialTrianglesReview } from './helpers/beforeGrade9SpecialTrianglesReview';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
@@ -169,7 +170,7 @@ test('the grade hub links the new reduced-track topic once, beside the other equ
 });
 
 test('the EQM49 fence reverses exactly the reviewed addition and rejects substitutions, moves, duplicates and edits', () => {
-  const fullRaw = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
+  const fullRaw = beforeGrade9SpecialTrianglesReview(JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')));
   // Topic 9/53 and its month group r9nov (batch 10) are newer than EQM49 and change trackGroups: reverse them first.
   const raw = beforePcm53Catalog(fullRaw);
   const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');

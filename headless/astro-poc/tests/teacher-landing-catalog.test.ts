@@ -32,8 +32,8 @@ test('landing follows every source grade/topic in order without mutating the can
     topics: grade.topics.map(topic => ({ id: topic.id, title: topic.title })) })),
   teacher.grades.map((grade: any) => ({ grade: grade.grade, label: grade.label,
     topics: grade.topics.map((topic: any) => ({ id: topic.id, title: topic.title })) })));
-  assert.deepEqual(projection.counts, { grades: 9, topics: 331, catalogEntries: 982,
-    uniquePdfIds: 951, validScopes: 1325, topicsWithPublishedDefaultEdition: 5 });
+  assert.deepEqual(projection.counts, { grades: 9, topics: 332, catalogEntries: 985,
+    uniquePdfIds: 951, validScopes: 1329, topicsWithPublishedDefaultEdition: 5 });
 });
 
 test('all emitted scopes round-trip and select exactly the actual teacher-tool PDFs', () => {
@@ -132,7 +132,7 @@ test('inline picker data includes only default editions and selectable levels, w
   assert.deepEqual(picker.defaultScope, projection.defaultScope);
   assert.equal(picker.defaultTeacherPath, projection.defaultTeacherPath);
   assert.equal(picker.grades.length, 9);
-  assert.equal(picker.grades.flatMap(grade => grade.topics).length, 331);
+  assert.equal(picker.grades.flatMap(grade => grade.topics).length, 332);
   for (const grade of picker.grades) for (const topic of grade.topics) {
     const full = projection.grades.find(row => row.grade === grade.grade)!.topics.find(row => row.id === topic.id)!;
     assert.deepEqual(Object.keys(topic), ['id', 'title', 'edition', 'defaultLevel', 'levels']);
