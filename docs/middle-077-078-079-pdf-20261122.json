@@ -2,9 +2,9 @@
   "schema": "middle-school-reviewed-pdf/v1",
   "date": "2026-11-22",
   "updatedLine": "נועם דורון מתמטיקה · עודכן 22.11.2026",
-  "baseline": "7f7d79e6f2380725a334d57d3d543f9faa08330b",
+  "baseline": "f25bd4798bb4c5177e4f1819213c6dc874212c21",
   "baselineRegistrySha256": "d0b8a36353daad82c27a23f8ffe8cef3da88279161b704c082a995c5941e7e1b",
-  "baselineCatalogSha256": "f3d20d08925890f9084db70f7e98b8f809e955f06af4eff58211c0b7f88f5e83",
+  "baselineCatalogSha256": "a1c31f1e6dc42b92d04a2f8bef53205be259e514ad3aebb4019e44a5cef01087",
   "packages": [
     {
       "number": 77,

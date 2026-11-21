@@ -28,6 +28,11 @@ test('grade 7 algebra PDFs preserve existing grades, catalog groups and the prec
   assert.equal(checksum(preWave), three.baselineRegistrySha256);
   const previous = read('headless/catalog/catalog.v1.json');
   const catalog = loadCatalog();
+  const gradeNineReview = previous.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 21);
+  assert.equal(gradeNineReview.noamTopicId, 'G9-T14');
+  assert.equal(gradeNineReview.title, 'משולשים מיוחדים — חזרה מכיתה ז׳');
+  const reviewLinks = topicWorksheetEditionLinks(catalog, 9, 21, '/worksheets?grade=9&topic=21');
+  assert.deepEqual(reviewLinks.map(group => group.editionId), ['legacy']);
   const files = new Set<string>();
   for (const p of three.packages) {
     assert.equal(p.skillVersion, '7.3.3');
