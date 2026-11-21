@@ -10,6 +10,27 @@ export interface TopicWorksheetEditionLinks {
   levels: Array<{ key: string; label: string; href: string }>;
 }
 
+const printLevelLabels = { a: 'רמה א׳', b: 'רמה ב׳', c: 'מצוינות' } as const;
+
+/** Reviewed elementary PDFs hosted alongside their topic landing pages. */
+export function elementaryPrintEdition(catalog: CatalogV1, grade: number, topicId: number): TopicWorksheetEditionLinks | undefined {
+  const row = catalog.elementaryPrintTopics?.find(row => row.grade === grade && row.topicId === topicId);
+  if (!row) return;
+  return {
+    editionId: 'elementary-print-20261121',
+    label: 'דפי עבודה חדשים',
+    pdfOnly: true,
+    note: null,
+    levels: (Object.keys(printLevelLabels) as Array<keyof typeof printLevelLabels>)
+      .filter(key => row.levels.includes(key))
+      .map(key => ({
+        key,
+        label: printLevelLabels[key],
+        href: `/worksheet-pdfs/elementary/${row.slug}/level-${key}.pdf`,
+      })),
+  };
+}
+
 /** The catalog topic behind a topic page's level buttons, or null when there is none. */
 export function findCatalogTopic(
   catalog: CatalogV1,
@@ -35,7 +56,7 @@ export function topicWorksheetEditionLinks(
 ): TopicWorksheetEditionLinks[] {
   const topic = findCatalogTopic(catalog, grade, topicId);
   if (!topic) return [];
-  return topicEditionsSelectedFirst(topic).map(edition => ({
+  const editions = topicEditionsSelectedFirst(topic).map(edition => ({
     editionId: edition.editionId,
     label: edition.label,
     pdfOnly: edition.publicationMode === 'pdf-only',
@@ -47,4 +68,6 @@ export function topicWorksheetEditionLinks(
         editionId: edition.editionId, backPath }),
     })),
   }));
+  const print = elementaryPrintEdition(catalog, grade, topic.id);
+  return print ? [print, ...editions] : editions;
 }

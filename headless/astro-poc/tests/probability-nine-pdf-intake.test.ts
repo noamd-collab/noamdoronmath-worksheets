@@ -1,3 +1,4 @@
+import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -101,6 +102,7 @@ test('three fixed probability editions add nine frozen PDFs and recover the inde
   assert.equal(receipt.review.allGatesPass, false);
   assert.equal(receipt.review.nativeOrHintsAcceptance, false);
   const expectedSsr = structuredClone(raw);
+  expectedSsr.elementaryPrintTopics = expectedElementaryPrintTopics;
   expectedSsr.config.pdfBase = 'https://static.wixstatic.com/ugd/d8e7ad_';
   assert.deepEqual(catalog, expectedSsr);
 });

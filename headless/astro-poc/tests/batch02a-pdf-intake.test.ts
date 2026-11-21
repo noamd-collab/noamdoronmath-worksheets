@@ -1,3 +1,4 @@
+import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -156,6 +157,7 @@ test('sixteen fixed mappings add forty-eight frozen PDFs and recover the indepen
   assert.equal(receipt.review.nativeOrHintsAcceptance, false);
   const expectedSsr = structuredClone(raw);
   expectedSsr.config.pdfBase = 'https://static.wixstatic.com/ugd/d8e7ad_';
+  expectedSsr.elementaryPrintTopics = expectedElementaryPrintTopics;
   assert.deepEqual(catalog, expectedSsr);
 });
 
