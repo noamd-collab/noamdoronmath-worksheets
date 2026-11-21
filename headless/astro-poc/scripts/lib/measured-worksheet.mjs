@@ -63,7 +63,7 @@ export function prepareMeasuredManifestDraft(draft, layoutBytes, media) {
 export function validateMeasuredManifest(manifest, { allowDraft = false } = {}) {
   assert.equal(manifest?.geometryContract, 'measured-v1', 'MEASURED_VERSION');
   assert.ok(/^[a-z0-9][a-z0-9-]{0,63}$(?![\s\S])/.test(manifest.editionId || '') && manifest.editionId !== 'legacy', 'MEASURED_EDITION');
-  assert.ok(/^G[1-9]-T\d{2}$/.test(manifest.prefix || '') && /^(?:[ABE]|E2)$/.test(manifest.levelCode || ''), 'MEASURED_WORKSHEET_ID');
+  assert.ok(/^(?:G[1-9]-T[0-9]{2}|G[7-9]-T[1-9][0-9]{2})$(?![\s\S])/.test(manifest.prefix || '') && /^(?:[ABE]|E2)$/.test(manifest.levelCode || ''), 'MEASURED_WORKSHEET_ID');
   assert.ok(MEDIA.test(manifest.pdfHash || ''), 'MEASURED_MEDIA_ID');
   for (const key of ['sourceSha256', 'canonicalSourceSha256', 'layoutSha256']) assert.match(manifest[key] || '', SHA, 'MEASURED_SHA');
   if (!allowDraft) {

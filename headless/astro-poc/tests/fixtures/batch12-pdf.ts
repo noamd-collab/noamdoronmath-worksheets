@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import reviewed from './batch12-pdf-reviewed.json';
 import { beforeReviewedRamziActivation } from '../helpers/beforeReviewedRamziActivation';
 import { beforeRamziActivationCopy } from './ramzi-activation-copy-20261119';
+import { beforeBatch13Catalog, beforeBatch13Copy, beforeBatch13Registry } from './batch13-pdf';
 
 export { reviewed as reviewedBatch12 };
 export const reviewedBatch12Ids = reviewed.additions.map(a => a.editionId);
@@ -14,8 +15,9 @@ const plain = (value: unknown): unknown => typeof value === 'string' ? value.rep
 
 /** Undo only batch 12's reviewed overlays and return the exact earlier state. */
 export function beforeBatch12Catalog<T>(catalog: T): T {
-  // The additional reviewed Ramzi activation (19.11) is newer than batch 12: reverse it first.
-  const restored: any = structuredClone(beforeReviewedRamziActivation(catalog));
+  // Newer layers first, exactly once each: batch 13 (renewal, 19.11), then the additional reviewed
+  // Ramzi activation (19.11).
+  const restored: any = structuredClone(beforeReviewedRamziActivation(beforeBatch13Catalog(catalog)));
   const groups = new Map<string, typeof reviewed.additions>();
   for (const addition of reviewed.additions) {
     const key = `${addition.grade}:${addition.topicId}`;
@@ -44,7 +46,8 @@ export function beforeBatch12Catalog<T>(catalog: T): T {
 
 /** Validate exact registry rows before removing batch 12. */
 export function beforeBatch12Registry<T>(registry: T): T {
-  const restored: any = structuredClone(registry);
+  // Batch 13 (renewal, 19.11) is newer: reverse it first.
+  const restored: any = structuredClone(beforeBatch13Registry(registry));
   for (const addition of reviewed.additions) {
     const matches = restored.editions.filter((e: any) => e.editionId === addition.editionId);
     assert.deepEqual(matches, [addition.edition], `${addition.editionId}: exact reviewed registry row`);
@@ -55,8 +58,9 @@ export function beforeBatch12Registry<T>(registry: T): T {
 
 /** Verify batch 12's exact changed fields and recover the earlier landing. */
 export function beforeBatch12Copy<T>(slug: string, page: T): T {
-  // The landing copy after the additional Ramzi activation (19.11) is newer: unwind it first, for every slug.
-  page = beforeRamziActivationCopy(slug, page);
+  // Newer layers first, for every slug: batch 13 (renewal, 19.11), then the landing copy after the
+  // additional Ramzi activation (19.11). Older tests never call beforeBatch13Copy themselves.
+  page = beforeRamziActivationCopy(slug, beforeBatch13Copy(slug, page));
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);
