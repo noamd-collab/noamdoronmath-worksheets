@@ -234,10 +234,15 @@ describe('SEO-1: /worksheets canonical points at the page that should rank', () 
     assert.equal(toLanding + toParent + toHub, catalog.grades.reduce((sum, entry) => sum + entry.topics.length, 0));
     assert.ok(toLanding >= 300, `topics with a landing canonical: ${toLanding}`);
     const factoring = catalog.grades.find((g) => g.grade === 9)!.topics;
-    for (const topicId of [41, 42, 43]) {
+    const factoringOwn = {
+      41: '/common-factor-grade-9',
+      42: '/factoring-identities-grade-9',
+      43: '/complete-factoring-grade-9',
+    };
+    for (const topicId of [41, 42, 43] as const) {
       assert.equal(
         worksheetsSeo({ grade: 9, gradeExplicit: true, topics: factoring, topicId, topicPageHrefs: hrefs }).canonicalPath,
-        '/factoring-grade-9',
+        factoringOwn[topicId],
       );
     }
     const kite = worksheetsSeo({
@@ -322,8 +327,8 @@ describe('SEO-1: /worksheets canonical points at the page that should rank', () 
       grade: 9, gradeLabel: nine.label,
       seo: worksheetsSeo({ grade: 9, gradeExplicit: true, topics: nine.topics, topicId: 41, topicPageHrefs: hrefs }),
     });
-    assert.deepEqual(factoring.crumbs[3], { name: 'פירוק לגורמים', path: '/factoring-grade-9' });
-    assert.deepEqual(factoring.resource, { name: `פירוק לגורמים · ${nine.label}`, path: '/factoring-grade-9' });
+    assert.deepEqual(factoring.crumbs[3], { name: 'פירוק לגורמים 1 — הוצאת גורם משותף', path: '/common-factor-grade-9' });
+    assert.deepEqual(factoring.resource, { name: `פירוק לגורמים 1 — הוצאת גורם משותף · ${nine.label}`, path: '/common-factor-grade-9' });
     const gradeOnly = worksheetsStructuredData({
       grade: 9, gradeLabel: nine.label,
       seo: worksheetsSeo({ grade: 9, gradeExplicit: true, topics: nine.topics, topicId: null, topicPageHrefs: hrefs }),

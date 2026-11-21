@@ -330,6 +330,21 @@ import endOfYearDiagnosticGrade8 from '../data/topic-pages/end-of-year-diagnosti
 import interpolationExtrapolationGrade8 from '../data/topic-pages/interpolation-extrapolation-grade-8.json';
 import assessmentTask1Grade8 from '../data/topic-pages/assessment-task-1-grade-8.json';
 import twoDataSourcesGrade8 from '../data/topic-pages/two-data-sources-grade-8.json';
+import rectangleSquareAreaGrade7 from '../data/topic-pages/rectangle-square-area-grade-7.json';
+import algebraicLanguageGrade7 from '../data/topic-pages/algebraic-language-grade-7.json';
+import numberPatternsGrade7 from '../data/topic-pages/number-patterns-grade-7.json';
+import boxAndCubeGrade7 from '../data/topic-pages/box-and-cube-grade-7.json';
+import equationSolutionGrade7 from '../data/topic-pages/equation-solution-grade-7.json';
+import oneStepEquationsGrade7 from '../data/topic-pages/one-step-equations-grade-7.json';
+import simplifyThenSolveGrade7 from '../data/topic-pages/simplify-then-solve-grade-7.json';
+import equationsParenthesesGrade7 from '../data/topic-pages/equations-parentheses-grade-7.json';
+import unknownBothSidesGrade7 from '../data/topic-pages/unknown-both-sides-grade-7.json';
+import equationRepresentationsGrade7 from '../data/topic-pages/equation-representations-grade-7.json';
+import parallelogramTrapezoidAreaGrade7 from '../data/topic-pages/parallelogram-trapezoid-area-grade-7.json';
+import triangularPrismVolumeGrade7 from '../data/topic-pages/triangular-prism-volume-grade-7.json';
+import commonFactorGrade9 from '../data/topic-pages/common-factor-grade-9.json';
+import factoringIdentitiesGrade9 from '../data/topic-pages/factoring-identities-grade-9.json';
+import completeFactoringGrade9 from '../data/topic-pages/complete-factoring-grade-9.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, gradeHubRelatedTopic, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -643,6 +658,29 @@ export const TOPIC_PAGE_G9_AUTHORED_SLUGS = [
   'percentages-grade-9',
 ] as const;
 
+/**
+ * Catalog topics that only appeared inside a parent landing (21.11.2026).
+ * Each one now has its own page. Loops are existing family or slug films;
+ * no new animation is introduced here.
+ */
+export const TOPIC_PAGE_OWN_LANDING_SLUGS = [
+  'rectangle-square-area-grade-7',
+  'algebraic-language-grade-7',
+  'number-patterns-grade-7',
+  'box-and-cube-grade-7',
+  'equation-solution-grade-7',
+  'one-step-equations-grade-7',
+  'simplify-then-solve-grade-7',
+  'equations-parentheses-grade-7',
+  'unknown-both-sides-grade-7',
+  'equation-representations-grade-7',
+  'parallelogram-trapezoid-area-grade-7',
+  'triangular-prism-volume-grade-7',
+  'common-factor-grade-9',
+  'factoring-identities-grade-9',
+  'complete-factoring-grade-9',
+] as const;
+
 export const TOPIC_PAGE_G5_SLUGS = [
   'big-numbers-rounding-grade-5',
   'number-sense-tens-hundreds-grade-5',
@@ -785,6 +823,7 @@ export const TOPIC_PAGE_AUTHORED_SLUGS = [
   ...TOPIC_PAGE_G5_SLUGS,
   ...TOPIC_PAGE_G6_SLUGS,
   ...TOPIC_PAGE_G9_AUTHORED_SLUGS,
+  ...TOPIC_PAGE_OWN_LANDING_SLUGS,
 ] as const;
 
 export const TOPIC_PAGE_SLUGS = [
@@ -805,6 +844,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_G5_SLUGS,
   ...TOPIC_PAGE_G6_SLUGS,
   ...TOPIC_PAGE_G9_AUTHORED_SLUGS,
+  ...TOPIC_PAGE_OWN_LANDING_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -1087,6 +1127,21 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'interpolation-extrapolation-grade-8': interpolationExtrapolationGrade8 as TopicPageContent,
   'assessment-task-1-grade-8': assessmentTask1Grade8 as TopicPageContent,
   'two-data-sources-grade-8': twoDataSourcesGrade8 as TopicPageContent,
+  'rectangle-square-area-grade-7': rectangleSquareAreaGrade7 as TopicPageContent,
+  'algebraic-language-grade-7': algebraicLanguageGrade7 as TopicPageContent,
+  'number-patterns-grade-7': numberPatternsGrade7 as TopicPageContent,
+  'box-and-cube-grade-7': boxAndCubeGrade7 as TopicPageContent,
+  'equation-solution-grade-7': equationSolutionGrade7 as TopicPageContent,
+  'one-step-equations-grade-7': oneStepEquationsGrade7 as TopicPageContent,
+  'simplify-then-solve-grade-7': simplifyThenSolveGrade7 as TopicPageContent,
+  'equations-parentheses-grade-7': equationsParenthesesGrade7 as TopicPageContent,
+  'unknown-both-sides-grade-7': unknownBothSidesGrade7 as TopicPageContent,
+  'equation-representations-grade-7': equationRepresentationsGrade7 as TopicPageContent,
+  'parallelogram-trapezoid-area-grade-7': parallelogramTrapezoidAreaGrade7 as TopicPageContent,
+  'triangular-prism-volume-grade-7': triangularPrismVolumeGrade7 as TopicPageContent,
+  'common-factor-grade-9': commonFactorGrade9 as TopicPageContent,
+  'factoring-identities-grade-9': factoringIdentitiesGrade9 as TopicPageContent,
+  'complete-factoring-grade-9': completeFactoringGrade9 as TopicPageContent,
   // Elementary authored pages (G1, catalog order)
   'counting-grade-1': countingGrade1 as TopicPageContent,
   'numbers-to-100-grade-1': numbersTo100Grade1 as TopicPageContent,
@@ -1298,7 +1353,45 @@ function isolateRelatedLabel(rel: FamilyRelatedTopic): FamilyRelatedTopic {
 /** Classified related block for rendering. Captured links stay on sourceRelatedTopics. */
 const AUTHORED_RELATED_SLUGS = new Set<string>(['median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9',
   'isometric-transformations-grade-8', 'parallel-lines-angles-grade-9', 'co-interior-angles-grade-9', 'math-literacy-tasks-grade-9',
-  'percentages-grade-9']);
+  'percentages-grade-9',
+  ...TOPIC_PAGE_OWN_LANDING_SLUGS]);
+
+/** Links from a parent landing to a topic that now has its own page. */
+const CHILD_LANDING_LINKS: Record<string, readonly FamilyRelatedTopic[]> = {
+  'area-rectangle-perimeter-grade-7': [
+    { path: '/rectangle-square-area-grade-7', label: 'שטח מלבן וריבוע — העמקה', productionHref: 'https://www.noamdoronmath.co.il/rectangle-square-area-grade-7' },
+  ],
+  'algebraic-expressions-grade-7': [
+    { path: '/algebraic-language-grade-7', label: 'משתנים וביטויים אלגבריים', productionHref: 'https://www.noamdoronmath.co.il/algebraic-language-grade-7' },
+  ],
+  'patterns-and-graphs-grade-7': [
+    { path: '/number-patterns-grade-7', label: 'חוקיות בסדרות', productionHref: 'https://www.noamdoronmath.co.il/number-patterns-grade-7' },
+  ],
+  'solids-box-cube-prism-grade-7': [
+    { path: '/box-and-cube-grade-7', label: 'תיבה וקובייה', productionHref: 'https://www.noamdoronmath.co.il/box-and-cube-grade-7' },
+    { path: '/triangular-prism-volume-grade-7', label: 'נפח מנסרה משולשת', productionHref: 'https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7' },
+  ],
+  'equations-basics-grade-7': [
+    { path: '/equation-solution-grade-7', label: 'מהו פתרון של משוואה', productionHref: 'https://www.noamdoronmath.co.il/equation-solution-grade-7' },
+    { path: '/one-step-equations-grade-7', label: 'משוואות חד־שלביות', productionHref: 'https://www.noamdoronmath.co.il/one-step-equations-grade-7' },
+  ],
+  'equations-advanced-grade-7': [
+    { path: '/simplify-then-solve-grade-7', label: 'מפשטים ואז פותרים', productionHref: 'https://www.noamdoronmath.co.il/simplify-then-solve-grade-7' },
+    { path: '/equations-parentheses-grade-7', label: 'משוואות עם סוגריים', productionHref: 'https://www.noamdoronmath.co.il/equations-parentheses-grade-7' },
+  ],
+  'equations-both-sides-word-problems-grade-7': [
+    { path: '/unknown-both-sides-grade-7', label: 'הנעלם בשני האגפים', productionHref: 'https://www.noamdoronmath.co.il/unknown-both-sides-grade-7' },
+    { path: '/equation-representations-grade-7', label: 'שלושה ייצוגים למשוואה', productionHref: 'https://www.noamdoronmath.co.il/equation-representations-grade-7' },
+  ],
+  'area-parallelogram-trapezoid-composite-grade-7': [
+    { path: '/parallelogram-trapezoid-area-grade-7', label: 'שטח מקבילית וטרפז', productionHref: 'https://www.noamdoronmath.co.il/parallelogram-trapezoid-area-grade-7' },
+  ],
+  'factoring-grade-9': [
+    { path: '/common-factor-grade-9', label: 'הוצאת גורם משותף', productionHref: 'https://www.noamdoronmath.co.il/common-factor-grade-9' },
+    { path: '/factoring-identities-grade-9', label: 'כפל מקוצר וטרינום', productionHref: 'https://www.noamdoronmath.co.il/factoring-identities-grade-9' },
+    { path: '/complete-factoring-grade-9', label: 'פירוק מלא', productionHref: 'https://www.noamdoronmath.co.il/complete-factoring-grade-9' },
+  ],
+};
 
 function presentRelatedTopics(data: TopicPageContent): FamilyRelatedTopic[] {
   const classified = familyRelatedTopics(data.slug, data.grade);
@@ -1315,7 +1408,10 @@ function presentRelatedTopics(data: TopicPageContent): FamilyRelatedTopic[] {
       (data.slug === 'rectangle-grade-9' && rel.path === '/median-to-hypotenuse-grade-9')) &&
       !rows.some((row) => row.path === rel.path)
   );
-  return [...rows, ...extra].map(isolateRelatedLabel);
+  const children = (CHILD_LANDING_LINKS[data.slug] || []).filter(
+    (rel) => !rows.some((row) => row.path === rel.path) && !extra.some((row) => row.path === rel.path)
+  );
+  return [...rows, ...extra, ...children].map(isolateRelatedLabel);
 }
 
 function isolateJsonLdFaq(jsonLd: Record<string, unknown>): Record<string, unknown> {

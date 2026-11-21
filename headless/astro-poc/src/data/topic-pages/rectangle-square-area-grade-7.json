@@ -1,0 +1,293 @@
+{
+  "slug": "rectangle-square-area-grade-7",
+  "path": "/rectangle-square-area-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-7",
+  "fetchedAt": "2026-11-21T00:00:00.000Z",
+  "verifiedVia": "authored-own-landing-20261121",
+  "title": "שטח מלבן וריבוע לכיתה ז׳ — העמקה | דף עבודה חינם",
+  "description": "שטח מלבן הוא אורך כפול רוחב, ושטח ריבוע הוא צלע כפול צלע. בדפי ההעמקה מוצאים צלע חסרה ומשווים בין מלבנים.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "שטח מלבן וריבוע לכיתה ז׳ — העמקה",
+  "intro": "שטח מלבן הוא אורך כפול רוחב, ושטח ריבוע הוא צלע כפול צלע. בדפי ההעמקה מוצאים צלע חסרה ומשווים בין מלבנים בעלי אותו שטח. הדפים זמינים בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שטח מלבן מתקבל מכפל האורך ברוחב. בריבוע האורך והרוחב שווים, ולכן כופלים את הצלע בעצמה.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מלבן שאורכו 8 ס״מ ורוחבו 3 ס״מ. השטח הוא 24 סמ״ר.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מערבבים בין שטח להיקף: היקף הוא סכום הצלעות, והשטח הוא מידת הפנים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שוכחים יחידות שטח ומשיבים במספר בלי לציין שמדובר בסמ״ר.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מלבן ששטחו 24 סמ״ר ואורכו 6 ס״מ. מה רוחבו?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 4 ס״מ, כי 6 כפול 4 שווה 24.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "שטח מלבן הוא אורך כפול רוחב, ושטח ריבוע הוא צלע כפול צלע. בדפי ההעמקה מוצאים צלע חסרה ומשווים בין מלבנים בעלי אותו שטח. הדפים זמינים בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "שטח מלבן וריבוע — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=18",
+      "catalogTopicId": 18
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "שטח מלבן מתקבל מכפל האורך ברוחב. בריבוע האורך והרוחב שווים, ולכן כופלים את הצלע בעצמה.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מלבן שאורכו 8 ס״מ ורוחבו 3 ס״מ. השטח הוא 24 סמ״ר.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מערבבים בין שטח להיקף: היקף הוא סכום הצלעות, והשטח הוא מידת הפנים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שוכחים יחידות שטח ומשיבים במספר בלי לציין שמדובר בסמ״ר.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "מלבן ששטחו 24 סמ״ר ואורכו 6 ס״מ. מה רוחבו?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 4 ס״מ, כי 6 כפול 4 שווה 24.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "איך מחשבים שטח של מלבן?",
+      "answer": "כופלים אורך ברוחב. בריבוע כופלים את הצלע בעצמה."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "איך מחשבים שטח של מלבן?",
+          "answer": "כופלים אורך ברוחב. בריבוע כופלים את הצלע בעצמה."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/area-rectangle-perimeter-grade-7",
+      "label": "שטח והיקף של מלבן וצורות מורכבות",
+      "productionHref": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7"
+    },
+    {
+      "path": "/triangle-area-grade-7",
+      "label": "שטח משולש",
+      "productionHref": "https://www.noamdoronmath.co.il/triangle-area-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "שטח מלבן וריבוע — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=18",
+    "source": "catalog-g7-t18",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=18",
+    "catalogTopicId": 18,
+    "catalogTopicTitle": "שטח מלבן וריבוע — העמקה"
+  },
+  "catalogCtas": [
+    {
+      "label": "שטח מלבן וריבוע — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=18",
+      "source": "catalog-g7-t18",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=18",
+      "catalogTopicId": 18,
+      "catalogTopicTitle": "שטח מלבן וריבוע — העמקה"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-7",
+        "name": "שטח מלבן וריבוע לכיתה ז׳ — העמקה | דף עבודה חינם",
+        "description": "שטח מלבן הוא אורך כפול רוחב, ושטח ריבוע הוא צלע כפול צלע. בדפי ההעמקה מוצאים צלע חסרה ומשווים בין מלבנים.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-7#learning-resource",
+        "name": "שטח מלבן וריבוע לכיתה ז׳ — העמקה",
+        "url": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-7",
+        "description": "שטח מלבן הוא אורך כפול רוחב, ושטח ריבוע הוא צלע כפול צלע. בדפי ההעמקה מוצאים צלע חסרה ומשווים בין מלבנים.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "שטח מלבן, שטח ריבוע ומציאת צלע חסרה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "איך מחשבים שטח של מלבן?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כופלים אורך ברוחב. בריבוע כופלים את הצלע בעצמה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

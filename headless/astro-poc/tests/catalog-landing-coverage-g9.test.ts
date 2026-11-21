@@ -26,12 +26,19 @@ describe(`grade ${GRADE} catalog landing coverage`, () => {
     assert.equal(catalogLandingCoverage(GRADE).length, loadCatalog().grades.find((g) => g.grade === GRADE)!.topics.length);
   });
 
-  it('t41–t43 are child topics of t2 and covered by factoring-grade-9, not by new pages', () => {
+  it('t41–t43 keep parent topic 2 and now have their own landings', () => {
     const rows = new Map(catalogLandingCoverage(GRADE).map((row) => [row.topicId, row]));
     assert.ok(rows.get(2)!.slugs.includes('factoring-grade-9'));
-    for (const id of [41, 42, 43]) {
-      assert.equal(rows.get(id)!.coveredByParent, 2, `t${id}`);
-      assert.deepEqual(rows.get(id)!.slugs, [], `t${id}`);
+    const own = {
+      41: 'common-factor-grade-9',
+      42: 'factoring-identities-grade-9',
+      43: 'complete-factoring-grade-9',
+    };
+    const topics = loadCatalog().grades.find((g) => g.grade === GRADE)!.topics;
+    for (const id of [41, 42, 43] as const) {
+      assert.equal(topics.find((topic) => topic.id === id)!.parent, 2, `t${id}`);
+      assert.equal(rows.get(id)!.coveredByParent, null, `t${id}`);
+      assert.deepEqual(rows.get(id)!.slugs, [own[id]], `t${id}`);
     }
   });
 
