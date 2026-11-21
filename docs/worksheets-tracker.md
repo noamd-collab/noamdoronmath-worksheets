@@ -2,6 +2,20 @@
 
 Grade 9 topic 21 lists the three current grade 7 topic 15 worksheets as grade 7 review. Each level opens its existing G7-T15 PDF, exercises and Supabase hints.
 
+## 2026-11-22 — seven additional middle-school worksheet packages
+
+| Package | Grade and catalog topic | Subject |
+| --- | --- | --- |
+| 092 r01 | 7 / 46 | Areas of composite polygons |
+| 093 r02 | 7 / 47 | Triangular prism structure and volume |
+| 095 r02 | 9 / 15 | Analytic geometry on maps and plans |
+| 096 r02 | 9 / 17 | Square roots |
+| 097 r02 | 9 / 24 | The Pythagorean theorem |
+| 098 r01 | 9 / 25 | Applications of the Pythagorean theorem |
+| 099 r02 | 9 / 26 | Area and perimeter of rectangles and squares |
+
+Each package contains three student PDFs with final answers. These seven downloadable editions use the middle-school worksheet skill 7.3.3.
+
 ## 2026-11-19 — batch 13 (renewal): ten grade 8 pages get their first reviewed PDF edition (candidate)
 
 ## 2026-11-21 — middle-school packages 090, 091 and 094
