@@ -12,6 +12,7 @@
  * M36: pdfBase is normalized to Wix Media CDN so PDF links survive DNS cutover
  * (legacy snapshot may still say www…/_files/ugd/…).
  */
+import printFiles from '../../data/elementary-print-worksheets.json';
 import raw from '../../data/catalog.v1.json';
 import type { CatalogV1 } from './types';
 import { normalizePdfBase } from '../wixMedia';
@@ -29,7 +30,12 @@ export function loadCatalog(): CatalogV1 {
     ...data.config,
     pdfBase: normalizePdfBase(data.config.pdfBase),
   };
-  return mergeReviewedCatalog(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection, data.reviewedRamziActivations, additionalTrust) as CatalogV1;
+  const catalog = mergeReviewedCatalog(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection, data.reviewedRamziActivations, additionalTrust) as CatalogV1;
+  return {
+    ...catalog,
+    elementaryPrintTopics: printFiles.map(({ grade, topicId, slug, levels }) =>
+      ({ grade, topicId, slug, levels: Object.keys(levels) })),
+  };
 }
 
 export type { CatalogV1 };

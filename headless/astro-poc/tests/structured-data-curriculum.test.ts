@@ -11,6 +11,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, it } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import elementaryPrintWorksheets from '../src/data/elementary-print-worksheets.json';
+import { SITE_CANONICAL_ORIGIN } from '../src/lib/siteSeo.ts';
 import alignmentFile from '../src/data/curriculum-alignment.v1.json';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog.ts';
 import { loadAllGradeHubs } from '../src/lib/gradeHubs.ts';
@@ -330,6 +332,10 @@ describe('topic-page JSON-LD (SEO-4)', () => {
       for (const id of ids) {
         const topic = topics.find((t) => t.id === id);
         if (!topic) continue;
+        const printed = elementaryPrintWorksheets.find(row => row.grade === page.grade && row.topicId === id);
+        if (printed) for (const key of Object.keys(printed.levels)) {
+          expected.add(`${SITE_CANONICAL_ORIGIN}/worksheet-pdfs/elementary/${printed.slug}/level-${key}.pdf`);
+        }
         const levels = [...topic.levels, ...(topic.editions || []).flatMap((e) => e.levels)];
         for (const level of levels) expected.add(`${catalog.config.pdfBase}${level.pdfId}.pdf`);
       }
@@ -338,7 +344,13 @@ describe('topic-page JSON-LD (SEO-4)', () => {
       if (parts.length) withParts += 1;
       for (const part of parts) {
         assert.equal(part.encodingFormat, 'application/pdf');
-        assert.match(String(part.contentUrl), /^https:\/\/static\.wixstatic\.com\/ugd\/[^/]+\.pdf$/);
+        const file = new URL(String(part.contentUrl));
+        if (file.origin === SITE_CANONICAL_ORIGIN) {
+          assert.match(file.pathname, /^\/worksheet-pdfs\/elementary\/[a-z0-9-]+\/level-[abc]\.pdf$/);
+        } else {
+          assert.equal(file.origin, 'https://static.wixstatic.com');
+          assert.match(file.pathname, /^\/ugd\/[^/]+\.pdf$/);
+        }
         assert.doesNotMatch(String(part.name), /PDF$/);
       }
     }
@@ -349,8 +361,11 @@ describe('topic-page JSON-LD (SEO-4)', () => {
     const template = readFileSync(new URL('../src/components/TopicPage.astro', import.meta.url), 'utf8');
     assert.match(template, /const ctaWalk = topicPageCtaWalk\(page, bodyFlow, hasDemo\);/);
     assert.match(template, /topicPageJsonLdBlocks\(page, catalog, ctaWalk\)/);
-    const pdfId = (url: string) =>
-      (/[?&]pdf=(?:d8e7ad_)?([0-9a-f]{32})/.exec(url) || /\/ugd\/(?:d8e7ad_)?([0-9a-f]{32})\.pdf/.exec(url))?.[1];
+    const pdfId = (url: string) => {
+      const file = new URL(url, SITE_CANONICAL_ORIGIN);
+      if (file.pathname.startsWith('/worksheet-pdfs/elementary/')) return file.pathname;
+      return (/[?&]pdf=(?:d8e7ad_)?([0-9a-f]{32})/.exec(url) || /\/ugd\/(?:d8e7ad_)?([0-9a-f]{32})\.pdf/.exec(url))?.[1];
+    };
     for (const page of pages) {
       const ids = topicPageCatalogTopicIds(page);
       const linked = ids.flatMap((id) => topicWorksheetEditionLinks(catalog, page.grade, id, page.path)

@@ -11,6 +11,7 @@
  *   of the title the query covers, so an exact title beats a passing mention.
  */
 import type { CatalogLevelKey, CatalogTopic, CatalogV1 } from '../catalog/types';
+import { elementaryPrintEdition } from '../topicWorksheetEditions';
 import { buildWorksheetHref } from '../worksheetLinks';
 import { resolveEdition } from '../catalog/editions';
 import { analyzeWord, buildLexicon, normalizeText, tokenize, type Lexicon } from './normalize';
@@ -68,6 +69,7 @@ export function prepareIndex(index: SearchIndex): PreparedIndex {
     for (const k of keys) df.set(k, (df.get(k) || 0) + 1);
   }
   const catalogShell: CatalogV1 = {
+    elementaryPrintTopics: index.elementaryPrintTopics,
     contractVersion: 1,
     sourceOfTruth: { path: 'search-index', authoritative: false },
     config: {
@@ -252,10 +254,11 @@ function levelLinks(doc: SearchDoc, p: PreparedIndex): LevelLink[] {
   const grade = doc.grade;
   const links = (topic: CatalogTopic, of?: string): LevelLink[] => {
     const edition = resolveEdition(topic);
+    const print = elementaryPrintEdition(p.catalogShell, grade, topic.id);
     return edition.levels.map((l) => ({
       key: l.key,
       label: l.label,
-      href: buildWorksheetHref({ catalog: p.catalogShell, grade, topic, levelKey: l.key, editionId: edition.editionId }),
+      href: print?.levels.find(level => level.key === l.key)?.href ?? buildWorksheetHref({ catalog: p.catalogShell, grade, topic, levelKey: l.key, editionId: edition.editionId }),
       ...(of ? { of } : {}),
     }));
   };

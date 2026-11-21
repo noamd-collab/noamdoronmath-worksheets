@@ -933,3 +933,9 @@ Moved the exact 15-row source/old/new hash proof to a required content-addressed
 - Regression checks now distinguish the exact applied first15 metadata from the frozen historical catalog, and inventory the 42 disabled source levels separately from the 412 legacy and 12 active measured manifests. The regenerated search index changes only the two verified payload/readback hashes on those 12 already active levels; PDF links, search text and routing stay unchanged.
 
 - 2026-11-16: PR499 test-only follow-up fixes the protected-design catalog fence to compare each correction phase against its exact receipt; historical hashes unchanged. Full frozen run 2534/2535, drawing 8/8, SSR 4/4; repaired focused checks 41/41. Draft deferred for PDF-first work; no further full run or deployment.
+
+### 2026-11-21 — elementary print worksheets for 39 topics
+
+This candidate adds 107 individually reviewed student PDFs (1,006 printed pages, including final answers). The grade 1–6 counts are 38, 6, 45, 6, 9 and 3. Each file is linked from its grade's catalog card and its existing topic landing page. Site search selects the new PDF for each available level. The PDF hashes and grade/topic/level associations are recorded in `headless/astro-poc/src/data/elementary-print-worksheets.json`.
+
+Five PDFs were rebuilt. The grade 1 counting and data excellence sheets have darker writing lines. Grade 1 addition to 20 (level B) and equality (excellence) have more balanced exercise pagination. The grade 3 quadrilateral-properties excellence answer key keeps the unit with the answer to 8ב. The exact final PDFs were checked against the source answer ledgers. Earlier worksheets remain available in the catalog and on the topic pages.

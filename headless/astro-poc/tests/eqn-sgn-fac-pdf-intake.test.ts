@@ -1,3 +1,4 @@
+import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import { beforeExtra15Registry } from './fixtures/extra15-pdf';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -35,7 +36,8 @@ test('nine exact additional PDFs preserve every preceding catalog and registry b
   assert.equal(catalog.config.pdfBase, 'https://static.wixstatic.com/ugd/d8e7ad_');
   const expectedSsr = structuredClone(rawCatalog);
   expectedSsr.config.pdfBase = 'https://static.wixstatic.com/ugd/d8e7ad_';
-  assert.deepEqual(catalog, expectedSsr, 'SSR preserves all values except its existing CDN-base normalization');
+  expectedSsr.elementaryPrintTopics = expectedElementaryPrintTopics;
+  assert.deepEqual(catalog, expectedSsr, 'SSR preserves the raw catalog and supplies the reviewed elementary links and normalized CDN base');
   assert.equal(digest(beforeEqnSgnFacCatalog(read('headless/astro-poc/src/data/catalog.v1.json'))), reviewed.baselineCatalogSha256);
   assert.equal(digest(priorRegistry), reviewed.baselineRegistrySha256);
   assert.deepEqual(registry.editions.filter((e: any) => ids.includes(e.editionId)), reviewed.additions.map(a => a.edition));
