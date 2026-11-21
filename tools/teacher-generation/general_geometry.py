@@ -53,13 +53,6 @@ def solve_figure_task(figure, operation_name, point=None):
             if operation_name=="vertex_count":expr=number(vertices)
             elif operation_name=="edge_count":expr=number(edges)
             elif operation_name=="face_count":expr=number(2-vertices+edges)
-    elif kind=="clock":
-        if operation_name=="hour":expr=number(figure["hour"])
-        elif operation_name=="minute":expr=number(figure["minute"])
-    elif kind=="bar_chart":
-        if operation_name=="total":expr=number(sum(figure["values"]))
-        elif operation_name=="maximum":expr=number(max(figure["values"]))
-        elif operation_name=="minimum":expr=number(min(figure["values"]))
     elif kind=="shape":
         p=figure["parameters"];shape=figure["shape"]
         if operation_name=="area":
@@ -87,8 +80,7 @@ def solve_figure_task(figure, operation_name, point=None):
     return result
 
 
-FIGURE_OPERATIONS=("area","perimeter","volume","face_count","edge_count","vertex_count","hour","minute","total","maximum","minimum","diameter","side_count","x_coordinate","y_coordinate")
-FIGURE_PROMPTS={"area":"חשבו את השטח.","perimeter":"חשבו את ההיקף.","volume":"חשבו את הנפח.","hour":"כתבו איזו שעה מציין מחוג השעות.","minute":"כתבו כמה דקות מציין מחוג הדקות.","total":"חשבו את הסכום הכולל של הערכים בגרף.","maximum":"כתבו את הערך הגבוה ביותר בגרף.","minimum":"כתבו את הערך הנמוך ביותר בגרף.","diameter":"חשבו את קוטר המעגל.","side_count":"כתבו כמה צלעות יש למצולע."}
+FIGURE_OPERATIONS=("area","perimeter","volume","face_count","edge_count","vertex_count","maximum","minimum","diameter","side_count","x_coordinate","y_coordinate")
 
 
 def _measure_solid_svg(figure, root):
@@ -179,7 +171,7 @@ def _measure_solid_svg(figure, root):
 def measure_elementary_svg(figure, svg):
     """Measure emitted SVG, not the requested input, before a figure_assert.
 
-    Only the pinned grid/clock/bar/solid constructors have a measurement contract.
+    Only the pinned grid and solid constructors have a measurement contract.
     Unknown constructors fail closed; their presence is not geometric proof.
     """
     root=ET.fromstring(svg);nodes=list(root.iter())
@@ -197,25 +189,4 @@ def measure_elementary_svg(figure, svg):
         perimeter=solve_figure_task(figure,'perimeter')['result']['value']['numerator']
         holds=holds and close(measured,perimeter)
         return holds,{'method':'measured cell rectangles and drawn boundary lines','filledCells':sum(e.get('fill')=='#D7F0ED' for e in rects),'boundaryUnits':measured}
-    if figure['kind']=='clock':
-        circles=[e for e in nodes if kind(e)=='circle' and close(e.get('r',0),44)]
-        if len(circles)!=1:return False,{'reason':'clock rim missing'}
-        cx,cy=(float(circles[0].get(k)) for k in ('cx','cy'));measured={}
-        for hand,width in [('hour','3.2'),('minute','2')]:
-            lines=[e for e in nodes if kind(e)=='line' and e.get('stroke-width')==width]
-            if len(lines)!=1:return False,{'reason':'clock hand missing'}
-            e=lines[0]
-            if not close(e.get('x1'),cx) or not close(e.get('y1'),cy):return False,{'reason':'hand does not start at centre'}
-            measured[hand]=math.degrees(math.atan2(float(e.get('x2'))-cx,cy-float(e.get('y2'))))%360
-        expected={'hour':((figure['hour']%12)+figure['minute']/60)*30,'minute':figure['minute']*6}
-        holds=all(abs((measured[k]-expected[k]+180)%360-180)<0.4 for k in expected)
-        return holds,{'method':'angles of drawn hand endpoints from clock centre','degrees':measured}
-    if figure['kind']=='bar_chart':
-        rects=[e for e in nodes if kind(e)=='rect' and e.get('stroke-width')=='1.6']
-        ticks=[e for e in nodes if kind(e)=='text' and e.get('text-anchor')=='end']
-        if len(rects)!=len(figure['values']) or len(ticks)<2:return False,{'reason':'bar or axis tick missing'}
-        a,b=ticks[:2];dy=float(a.get('y'))-float(b.get('y'));dv=float(''.join(b.itertext()))-float(''.join(a.itertext()))
-        if dy<=0 or dv<=0:return False,{'reason':'invalid numeric axis scale'}
-        scale=dy/dv;actual=[float(e.get('height'))/scale for e in sorted(rects,key=lambda e:float(e.get('x')))]
-        return all(close(a,b) for a,b in zip(actual,figure['values'])),{'method':'bar heights divided by actual labelled axis scale','values':actual}
     return False,{'reason':'No measured-SVG assertion implemented for this elementary constructor'}

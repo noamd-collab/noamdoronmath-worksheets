@@ -16,8 +16,8 @@
 !tools/teacher-generation/cloud/container/fixtures/general/grade2-vocalized/model-output.json
 !tools/teacher-generation/cloud/container/fixtures/general/grade4-fractions/lesson.json
 !tools/teacher-generation/cloud/container/fixtures/general/grade4-fractions/model-output.json
-!tools/teacher-generation/cloud/container/fixtures/general/grade9-graph-reading/lesson.json
-!tools/teacher-generation/cloud/container/fixtures/general/grade9-graph-reading/model-output.json
+!tools/teacher-generation/cloud/container/fixtures/general/grade9-coordinate-triangles/lesson.json
+!tools/teacher-generation/cloud/container/fixtures/general/grade9-coordinate-triangles/model-output.json
 !tools/teacher-generation/cloud/container/fixtures/general/grade9-quadratic/lesson.json
 !tools/teacher-generation/cloud/container/fixtures/general/grade9-quadratic/model-output.json
 !tools/teacher-generation/cloud/container/fixtures/general/manifest.json

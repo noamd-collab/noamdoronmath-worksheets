@@ -10,7 +10,7 @@ import { GENERATION_CURRICULUM_SHA256, parseTeacherGenerationCurriculum, getTeac
 const source = readFileSync(new URL('../src/pages/teachers/generate.astro', import.meta.url), 'utf8');
 const markup = source.match(/<main[\s\S]*?<\/main>/)![0];
 const css = readFileSync(new URL('../public/teachers/generation.css', import.meta.url), 'utf8');
-const script = readFileSync(new URL('../public/teachers/generation.js', import.meta.url), 'utf8');
+const script = readFileSync(new URL('../public/teachers/generation-v3.js', import.meta.url), 'utf8');
 const catalog=readFileSync(new URL('../public/teachers/generation-curriculum.json',import.meta.url),'utf8');
 const topics=parseTeacherGenerationCurriculum(JSON.parse(catalog)).topics.map(t=>({...t,enabled:true,readiness:'private_draft',e2eVerified:false,
  levels:t.topicId.startsWith('g9m:')?['b']:t.topicId.startsWith('g9r:')?['a','e']:['b','a','e'],questionCounts:[getTeacherGenerationMinimumQuestionCount(t.gradeNumber)]}));
@@ -54,6 +54,20 @@ test('desktop and phone wizard use native keyboard validation with one visible q
     }
     await next(); await screen('grade-title');
     assert.equal(await page.evaluate(() => document.activeElement?.id), 'generation-grade');
+    for (const [index, count] of [21, 26, 25, 30, 31, 27, 13, 17, 42].entries()) {
+      const grade = index + 1;
+      await page.select('[name=gradeNumber]', String(grade));
+      await next(); await screen('topic-title');
+      const available = await page.$$eval('[name=topicId] option', options =>
+        options.filter(option => option.value && !option.disabled).map(option => option.value));
+      assert.equal(available.length, count, `grade ${grade}`);
+      assert.deepEqual(available, topics.filter(topic => topic.gradeNumber === grade).map(topic => topic.topicId));
+      assert.equal(await page.$eval('[name=topicId]', el => (el as HTMLSelectElement).value), '');
+      await next(); await screen('topic-title');
+      await page.select('[name=topicId]', available[0]); await next(); await screen('level-title');
+      assert.equal(await page.$eval('[name=level]', el => (el as HTMLSelectElement).value), '');
+      await page.click('#wizard-back'); await page.click('#wizard-back');
+    }
     await page.select('[name=gradeNumber]', '3'); await next(); await screen('topic-title');
     assert.equal(await page.evaluate(() => document.activeElement?.id), 'topic-title');
     await next(); await screen('topic-title');

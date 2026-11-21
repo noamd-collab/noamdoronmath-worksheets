@@ -4,7 +4,7 @@
     "grade2-vocalized",
     "grade4-fractions",
     "grade9-quadratic",
-    "grade9-graph-reading"
+    "grade9-coordinate-triangles"
   ],
   "files": {
     "grade2-vocalized/lesson.json": {
@@ -31,13 +31,13 @@
       "bytes": 114754,
       "sha256": "381006eec27791a9ba86533a35117617a329592784a14a2ba9a1dfd16a90d358"
     },
-    "grade9-graph-reading/lesson.json": {
-      "bytes": 595,
-      "sha256": "43ff2259fa3d734a608b85ea77bf82253a89872427182801b263c64adcbcc90e"
+    "grade9-coordinate-triangles/lesson.json": {
+      "bytes": 634,
+      "sha256": "aefbf452f409cbc47788027bcae9ff1404020eb6894309b90004bfef9a280689"
     },
-    "grade9-graph-reading/model-output.json": {
-      "bytes": 44227,
-      "sha256": "4e910ba03a5c3fb7d3f49aabc9e4a862fe3b73fb00e87f0dbe5e438e814dc76f"
+    "grade9-coordinate-triangles/model-output.json": {
+      "bytes": 49224,
+      "sha256": "5dac02b9c8379d35a77bdcc2574f2564f614ee44af68d3925700ed81cea3d7f1"
     }
   }
 }

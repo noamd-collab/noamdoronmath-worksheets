@@ -32,7 +32,7 @@ Computed answers are derived from the same typed task printed in the question.
 Prose, reasoning and pedagogical correspondence still require human review.
 
 `general_adapters.py` compiles only trusted templates. Typed figures are
-restricted to geometry and the expressly allowed clock/graph-reading topics.
+restricted to geometry and analytic geometry.
 Measurement figures print their givens; read-off figures do not reveal the
 answer. All plain text is escaped. No model-selected file, URL, shell command,
 Python program, SVG or approval flag is accepted.
@@ -83,7 +83,7 @@ python3 tools/teacher-generation/cloud/container/test_packaging.py
 The hash-pinned Linux image includes SymPy/mpmath, fonts, Chromium, Poppler and
 a fixed Tesseract OCR bridge. The cloud qualification workflow runs without
 network or secrets: three legacy fixtures, four general fixtures (grade-2
-niqqud, grade-4 fractions, grade-9 quadratic equations and graph reading), real
+niqqud, grade-4 fractions, grade-9 quadratic equations and triangles in the coordinate plane), real
 raster OCR, and the existing Chromium fallback. Fixture coverage is not
 232-topic pedagogical certification. Inspect the generated PDFs and Word files.
 

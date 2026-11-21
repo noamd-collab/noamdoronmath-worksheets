@@ -112,7 +112,7 @@ def _task_text(solved, grade, H=None):
     kind = task["kind"]
     if kind == "figure_measure":
         figure=task["figure"]
-        # Read-off tasks must not print the requested coordinate/time/value.
+        # Read-off tasks must not print the requested coordinate.
         # Shape measurements, however, need visible dimensions: the pinned
         # shapekit marks types but does not label constructor measurements.
         # Bind these givens directly to the same typed constructor values.
@@ -130,10 +130,6 @@ def _task_text(solved, grade, H=None):
         if figure["kind"]=="coordinate_plane" and task["operation"] in ("x_coordinate","y_coordinate"):
             axis="x" if task["operation"]=="x_coordinate" else "y"
             return "קראו את שיעור ה־"+wrap(axis)+" של הנקודה "+wrap(task["point"])+"."
-        if figure["kind"]=="clock":
-            if grade in ("א","ב",1,2):
-                return "כִּתְבוּ אֵיזוֹ שָׁעָה מְצַיֵּן מְחוֹג הַשָּׁעוֹת." if task["operation"]=="hour" else "כִּתְבוּ כַּמָּה דַּקּוֹת מְצַיֵּן מְחוֹג הַדַּקּוֹת."
-            return "כתבו איזו שעה מציין מחוג השעות." if task["operation"]=="hour" else "כתבו כמה דקות מציין מחוג הדקות."
         return ""
     if kind == "solve":
         return wrap(render(task["lhs"]) + " = " + render(task["rhs"]))
@@ -201,16 +197,13 @@ def _figure(fig, elementary, index, work):
     """Invoke only explicit trusted skill constructors with validated fields."""
     kind = fig["kind"]
     if elementary:
-        import svg_elementary as SE
         import svg_elementary_ext as SX
         if kind == "grid_shape":
             svg = SX.area_grid_shape(fig["cells"])
         elif kind == "solid":
             svg = SX.polyhedron_3d(kind="triangular_prism" if fig["shape"] == "prism" else fig["shape"], dims=tuple(fig["dimensions"]))
-        elif kind == "clock":
-            svg = SE.clock_face(fig["hour"], fig["minute"])
         else:
-            svg = SE.bar_chart(fig["labels"], fig["values"])
+            raise ValueError("Unsupported elementary geometry figure")
     elif kind=="coordinate_plane":
         from figkit_plus import plane, wide
         points={p["name"]:(p["x"],p["y"]) for p in fig["points"]}
@@ -365,8 +358,8 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
                 source_items.append({"id": item_id, "label": LETTERS[j-1], "text": body, "answer": answer, "task": computed["question"] if computed else None, "verification": "typed task only" if computed else "unverified prose/proof; owner review required"})
             qs.append(q); answers.append([n, answer_items, question["star"]])
             canon.append({"id":f"q{n}", "n":n, "intro":intro, "section":section["title"], "conceptIds":section["conceptIds"], "items":source_items, "table":question.get("table"), "figure":question.get("figure")})
-    from general_source import diagram_permission
-    figure_topic = True if diagram_permission(scope,"shape") or diagram_permission(scope,"coordinate_plane") else [False, "הנושא אינו גיאומטריה; הוראת נועם אוסרת שרטוטים בנושא זה"]
+    from general_source import geometry_topic
+    figure_topic = True if geometry_topic(scope) else [False, "הנושא אינו גיאומטריה; הוראת נועם אוסרת שרטוטים בנושא זה"]
     level = {"level": LEVELS[lesson["level"]], "key": {"a":"a", "b":"b", "e":"c"}[lesson["level"]], "grade": str(lesson["gradeNumber"]), "keep_questions": True, "figure_topic": figure_topic, "title": source["title"], "rule": rich_text(source["rule"], lesson["gradeNumber"]), "questions": qs, "answers": answers, "curriculum": {"topic":scope["topic"]["sourceTopicId"], "track":scope["topic"]["sourceTrack"]}}
     if words_share:
         # JSON object keys are strings; trusted bridge restores integer ids

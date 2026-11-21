@@ -97,6 +97,31 @@ class SourceTests(unittest.TestCase):
         with self.assertRaisesRegex(GeneralSourceError,"does not permit"):
             validate_source(lesson,payload,scope)
 
+    def test_clock_graph_and_arithmetic_topics_exclude_drawings(self):
+        cases = [
+            ("ב25", 2, {"kind": "clock", "hour": 3, "minute": 30}),
+            ("ב12", 2, {"kind": "bar_chart", "labels": ["א", "ב"], "values": [1, 2]}),
+            ("g9m:graph_reading", 9, {"kind": "coordinate_plane"}),
+            ("g7:coordinate_system", 7, {"kind": "coordinate_plane"}),
+            ("ד11", 4, {"kind": "grid_shape", "cells": [[1]]}),
+        ]
+        for topic, grade, figure in cases:
+            with self.subTest(topic=topic):
+                lesson, payload, scope = self.source(topic, grade)
+                lesson["level"] = "b"
+                schema = authoring_schema(lesson, scope)
+                props = schema["properties"]["sections"]["items"]["properties"]["questions"]["items"]["properties"]
+                self.assertNotIn("figure", props)
+                self.assertNotIn("drawingFromWords", props)
+                self.assertIn("table", props)
+                question = payload["sections"][0]["questions"][0]
+                for key, value in (("figure", figure), ("drawingFromWords", True)):
+                    question[key] = value
+                    with self.assertRaises(GeneralSourceError) as raised:
+                        validate_source(lesson, payload, scope)
+                    self.assertEqual(raised.exception.code, "DRAWING_POLICY")
+                    del question[key]
+
     def test_impossible_middle_triangle_rejected(self):
         lesson,payload,scope=self.source("g8:congruence",8)
         payload["sections"][0]["questions"][0]["figure"]={"kind":"shape","shape":"triangle","parameters":{"a":1,"b":2,"c":3},"names":"ABC","rotate":0}
@@ -165,14 +190,15 @@ class SourceTests(unittest.TestCase):
         rectangle={"kind":"shape","shape":"rectangle","parameters":{"w":3,"h":4},"names":"ABCD","rotate":0}
         visible=_task_text(solve_figure_task(rectangle,"area"),8)
         self.assertIn("$3$",visible);self.assertIn("$4$",visible);self.assertNotIn("$12$",visible)
-        clock={"kind":"clock","hour":3,"minute":30}
-        prompt=_task_text(solve_figure_task(clock,"hour"),2)
-        self.assertIn("מְחוֹג",prompt);self.assertNotIn("3",prompt);self.assertNotIn("30",prompt)
+        coordinate = {"kind": "coordinate_plane", "points": [{"name": "A", "x": 4, "y": 7}]}
+        prompt = _task_text(solve_figure_task(coordinate, "y_coordinate", "A"), 9)
+        self.assertIn("$y$", prompt)
+        self.assertIn("$A$", prompt)
+        self.assertNotIn("7", prompt)
 
     @unittest.skipUnless((ELEMENTARY/"scripts/svg_elementary_ext.py").is_file(),"Pinned elementary skill unavailable")
-    def test_grid_figure_measurement_rejects_changed_svg_and_clock_hands(self):
+    def test_grid_figure_measurement_rejects_changed_svg(self):
         sys.path[:0]=[str(ELEMENTARY/"scripts")]
-        import svg_elementary as SE
         import svg_elementary_ext as SX
         fig={"kind":"grid_shape","cells":[[1,1],[1,0]]}
         svg=SX.area_grid_shape(fig["cells"])
@@ -180,9 +206,6 @@ class SourceTests(unittest.TestCase):
         self.assertEqual(solve_figure_task(fig,"perimeter")["result"]["value"],number(8))
         self.assertTrue(measure_elementary_svg(fig,svg)[0])
         self.assertFalse(measure_elementary_svg(fig,svg.replace('fill="#D7F0ED"','fill="#FFFFFF"',1))[0])
-        clock={"kind":"clock","hour":3,"minute":30}
-        self.assertTrue(measure_elementary_svg(clock,SE.clock_face(3,30))[0])
-        self.assertFalse(measure_elementary_svg(clock,SE.clock_face(4,30))[0])
 
     def test_all_three_new_task_families_render_typed_answers(self):
         from general_adapters import _answer_text,_task_text

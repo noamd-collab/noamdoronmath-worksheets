@@ -8,7 +8,7 @@ import { GENERATION_CURRICULUM_SHA256, parseTeacherGenerationCurriculum, getTeac
 
 const pageSource = readFileSync(new URL('../src/pages/teachers/generate.astro', import.meta.url), 'utf8');
 const markup = pageSource.match(/<main[\s\S]*?<\/main>/)![0];
-const shipped = readFileSync(new URL('../public/teachers/generation.js', import.meta.url), 'utf8');
+const shipped = readFileSync(new URL('../public/teachers/generation-v3.js', import.meta.url), 'utf8');
 const topic = { topicId: 'ג10', gradeNumber: 3, title: 'חילוק', enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [12] };
 const middle = { ...topic, topicId: 'g7:equations', gradeNumber: 7, title: 'משוואות', questionCounts: [20] };
 const disabled = { ...topic, topicId: 'candidate', gradeNumber: 3, enabled: false };
@@ -18,9 +18,9 @@ const generalCapabilities={profile:'general-skill-source/v1',curriculumSha256:GE
  topics:curriculum.topics.map(t=>({...t,enabled:true,readiness:'private_draft',e2eVerified:false,
   levels:t.topicId.startsWith('g9m:')?['b']:t.topicId.startsWith('g9r:')?['a','e']:['b','a','e'],
   questionCounts:Array.from({length:31-getTeacherGenerationMinimumQuestionCount(t.gradeNumber)!},(_,i)=>getTeacherGenerationMinimumQuestionCount(t.gradeNumber)!+i)}))};
-type Reply = { ok?: boolean; body?: any; error?: Error };
+type Reply = { ok?: boolean; status?: number; body?: any; error?: Error };
 
-function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; captcha?: boolean; emptyCapabilities?: boolean; general?: boolean; catalogMismatch?: boolean } = {}) {
+function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; captcha?: boolean; emptyCapabilities?: boolean; general?: boolean; catalogMismatch?: boolean; firstHealth?: Promise<Reply> } = {}) {
   const { document, window } = parseHTML(`<!doctype html><html><head></head><body>${markup}</body></html>`);
   const form = document.getElementById('generation-form') as any;
   (window.HTMLInputElement.prototype as any).checkValidity=()=>true;
@@ -58,7 +58,7 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
   class LocalDate extends Date { static now() { return now; } }
   const timers = new Map<number, { callback: () => unknown; delay: number }>();
   const calls: { url: string; init: any }[] = [], posts: any[] = [], pendingReplies: Reply[] = [], pendingReads: Reply[] = [];
-  let tokenPromise: Promise<string> | null = null;
+  let tokenPromise: Promise<string> | null = null, firstHealth=options.firstHealth;
   const verification = { ready: (cb: () => void) => cb(), execute: () => tokenPromise || Promise.resolve('local-verification-token') };
   (window as any).grecaptcha = options.captcha !== false ? verification : undefined;
   const fetchLocal = async (url: string, init: any = {}) => {
@@ -72,9 +72,10 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
       if (reply.error) throw reply.error;
       return { ok: reply.ok ?? true, json: async () => reply.body || { ok: true } };
     }
-    const reply = pendingReads.shift() || {};
+    const initial=firstHealth;firstHealth=undefined;
+    const reply = initial ? await initial : pendingReads.shift() || {};
     if (reply.error) throw reply.error;
-    return { ok: reply.ok ?? true, json: async () => reply.body || ({ ok: true, online, waking, jobs: structuredClone(jobs), capabilities: options.general?{...generalCapabilities,topics:emptyCapabilities?[]:generalCapabilities.topics}:{ acceptedIntakeVersions:[2],topics: emptyCapabilities ? [] : [topic, middle, disabled] } }) };
+    return { ok: reply.ok ?? true, status:reply.status, json: async () => reply.body || ({ ok: true, online, waking, jobs: structuredClone(jobs), capabilities: options.general?{...generalCapabilities,topics:emptyCapabilities?[]:generalCapabilities.topics}:{ acceptedIntakeVersions:[2],topics: emptyCapabilities ? [] : [topic, middle, disabled] } }) };
   };
   vm.runInNewContext(shipped, {
     document, window, TextDecoder, fetch: fetchLocal, crypto: { subtle:webcrypto.subtle,randomUUID: () => `00000000-0000-4000-8000-${String(++uuid).padStart(12, '0')}` },
@@ -119,6 +120,58 @@ test('offline state permits planning but emits no creation or verification reque
   assert.equal(app.form.hidden, true);
   assert.equal(app.posts.length, 0);
   assert.equal(app.calls.some(c => c.url === '/api/noamBotConfig'), false);
+});
+
+test('a slow or failing first health request never blocks topic selection or loses a catalog plan', async () => {
+  let finishHealth!: (reply: Reply) => void;
+  const firstHealth = new Promise<Reply>(resolve => { finishHealth = resolve; });
+  const app = harness({ general: true, firstHealth });
+  await app.flush(); await app.choose('8', 'g8:congruence');
+  app.field('questionCount').value = '24';
+  finishHealth({ error: new Error('Worker unavailable') }); await app.flush();
+  await app.submit();
+  assert.equal(app.form.hidden, true);
+  assert.match(app.element('plan-details').textContent, /24 שאלות/);
+  assert.equal(app.element('create-button').disabled, true);
+  await app.click('create-button'); assert.equal(app.posts.length, 0);
+  await app.click('refresh-generation');
+  assert.equal(app.element('create-button').disabled, false);
+  assert.equal(app.field('topicId').value, 'g8:congruence');
+  assert.equal(app.form.querySelector('[name=learnedConcept]:checked')?.value, 'g8:congruence#0');
+  assert.equal(app.posts.length, 0);
+});
+
+test('worker changes preserve supported levels and counts and require an explicit choice after a level expires', async () => {
+  const app = harness({ general: true }); await app.flush(); await app.choose();
+  app.field('questionCount').value = '19';
+  await app.click('refresh-generation');
+  assert.equal(app.field('questionCount').value, '19');
+  assert.equal(app.field('level').value, 'b');
+  await app.click('wizard-back');
+  app.field('level').value = 'e'; await app.dispatch(app.field('level'), 'change'); await app.submit();
+  app.pendingReads.push({ body: { ok: true, online: true, capabilities: { acceptedIntakeVersions: [2], topics: [topic] } } });
+  await app.click('refresh-generation');
+  assert.equal(app.field('topicId').value, 'ג10');
+  assert.equal(app.field('questionCount').value, '12');
+  assert.equal(app.field('questionCount').readOnly, true);
+  assert.equal(app.field('level').value, '');
+  assert.equal(app.field('level').options.find((o:any) => o.value === 'e').disabled, true);
+  assert.equal(app.focused(), 'level-title');
+  await app.click('refresh-generation');
+  assert.equal(app.field('questionCount').max, '30');
+  assert.equal(app.field('questionCount').readOnly, false);
+  assert.equal(app.field('level').options.find((o:any) => o.value === 'e').disabled, false);
+});
+
+test('an initial access refusal locks planning even if the public catalog finishes loading', async () => {
+  for (const status of [401,403]) {
+    const app = harness({ firstHealth: Promise.resolve({status, ok:false, body:{ok:false}}) });
+    await app.flush(); await app.choose('8', 'g8:congruence');
+    assert.equal(app.element('plan-button').disabled, true);
+    assert.match(app.element('wizard-progress').textContent, /שלב 1/);
+    assert.equal(app.timers.size, 0);
+    assert.equal(app.posts.length, 0);
+  }
 });
 
 test('cold wake polls only health for at most90 seconds, then requires explicit manual retry', async () => {

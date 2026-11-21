@@ -1,24 +1,24 @@
 {
   "version": 4,
-  "title": "קריאת נקודות בגרפים",
+  "title": "משולשים במערכת צירים",
   "rule": [
     {
       "kind": "text",
-      "text": "קראו כל שאלה ובדקו את יחידות הצירים."
+      "text": "קראו את שיעורי הקודקודים לפי יחידות הצירים. בכתיבת זוג סדור מופיע תחילה השיעור האופקי ואחריו השיעור האנכי."
     }
   ],
   "sections": [
     {
-      "title": "קריאה וסרטוט של נקודות",
+      "title": "קריאה וסרטוט של משולשים",
       "conceptIds": [
-        "g9m:graph_reading#0"
+        "g9m:computational_triangle#3"
       ],
       "questions": [
         {
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -42,12 +42,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 3
+              },
+              {
+                "name": "C",
+                "x": -3,
+                "y": 3
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -57,7 +70,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
@@ -71,13 +84,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "A",
+                "point": "B",
                 "unit": ""
               }
             },
@@ -85,13 +98,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "B",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -101,7 +114,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -125,12 +138,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 2
+              },
+              {
+                "name": "C",
+                "x": -2,
+                "y": 2
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -140,41 +166,41 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "x_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
                 "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -184,7 +210,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -208,12 +234,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 1
+              },
+              {
+                "name": "C",
+                "x": -1,
+                "y": 1
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "wide"
@@ -223,7 +262,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
@@ -237,13 +276,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "A",
+                "point": "B",
                 "unit": ""
               }
             },
@@ -251,13 +290,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "B",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -267,7 +306,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -291,12 +330,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 0
+              },
+              {
+                "name": "C",
+                "x": 0,
+                "y": 0
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -306,41 +358,41 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "x_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
                 "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -350,7 +402,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -374,12 +426,25 @@
                 "name": "B",
                 "x": 3,
                 "y": -1
+              },
+              {
+                "name": "C",
+                "x": 1,
+                "y": -1
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -389,7 +454,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
@@ -403,13 +468,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "A",
+                "point": "B",
                 "unit": ""
               }
             },
@@ -417,13 +482,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "B",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -433,7 +498,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -457,12 +522,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 3
+              },
+              {
+                "name": "C",
+                "x": 2,
+                "y": 3
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -472,41 +550,41 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "x_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
                 "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -516,7 +594,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": true,
@@ -540,12 +618,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 2
+              },
+              {
+                "name": "C",
+                "x": -3,
+                "y": 2
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "wide"
@@ -555,7 +646,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
@@ -569,13 +660,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "A",
+                "point": "B",
                 "unit": ""
               }
             },
@@ -583,13 +674,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "B",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -599,7 +690,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -623,12 +714,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 1
+              },
+              {
+                "name": "C",
+                "x": -2,
+                "y": 1
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -638,41 +742,41 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "x_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
                 "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -682,7 +786,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -706,12 +810,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 0
+              },
+              {
+                "name": "C",
+                "x": -1,
+                "y": 0
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -721,7 +838,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
@@ -735,13 +852,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "A",
+                "point": "B",
                 "unit": ""
               }
             },
@@ -749,13 +866,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "B",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -765,7 +882,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -789,12 +906,25 @@
                 "name": "B",
                 "x": 3,
                 "y": -1
+              },
+              {
+                "name": "C",
+                "x": 0,
+                "y": -1
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -804,41 +934,41 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "x_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
                 "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -848,7 +978,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -872,12 +1002,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 3
+              },
+              {
+                "name": "C",
+                "x": 1,
+                "y": 3
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "wide"
@@ -887,7 +1030,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
@@ -901,13 +1044,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "A",
+                "point": "B",
                 "unit": ""
               }
             },
@@ -915,13 +1058,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "B",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -931,7 +1074,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -955,12 +1098,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 2
+              },
+              {
+                "name": "C",
+                "x": 2,
+                "y": 2
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -970,41 +1126,41 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "x_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
                 "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -1014,7 +1170,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -1038,12 +1194,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 1
+              },
+              {
+                "name": "C",
+                "x": -3,
+                "y": 1
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -1053,7 +1222,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
@@ -1067,13 +1236,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "A",
+                "point": "B",
                 "unit": ""
               }
             },
@@ -1081,13 +1250,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "B",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -1097,7 +1266,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -1121,12 +1290,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 0
+              },
+              {
+                "name": "C",
+                "x": -2,
+                "y": 0
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -1136,41 +1318,41 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "x_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
                 "point": "B",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -1180,7 +1362,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": true,
@@ -1204,12 +1386,25 @@
                 "name": "B",
                 "x": 3,
                 "y": -1
+              },
+              {
+                "name": "C",
+                "x": -1,
+                "y": 4
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "wide"
@@ -1219,7 +1414,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
@@ -1233,13 +1428,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "A",
+                "point": "B",
                 "unit": ""
               }
             },
@@ -1247,13 +1442,13 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "y_coordinate",
-                "point": "B",
+                "point": "C",
                 "unit": ""
               }
             }
@@ -1263,7 +1458,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "הקטע בגרף מחבר בין שתי נקודות. קראו את שיעוריהן."
+              "text": "לפניכם משולש במערכת צירים. מצאו את השיעורים המבוקשים של קודקודיו."
             }
           ],
           "star": false,
@@ -1287,12 +1482,25 @@
                 "name": "B",
                 "x": 3,
                 "y": 3
+              },
+              {
+                "name": "C",
+                "x": 0,
+                "y": 3
               }
             ],
             "segments": [
               [
                 "A",
                 "B"
+              ],
+              [
+                "B",
+                "C"
+              ],
+              [
+                "C",
+                "A"
               ]
             ],
             "placement": "side"
@@ -1302,43 +1510,43 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "y_coordinate",
+                "point": "A",
+                "unit": ""
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
                 }
               ],
               "answer": {
                 "kind": "figure",
                 "operation": "x_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
-                "point": "A",
-                "unit": ""
-              }
-            },
-            {
-              "prompt": [
-                {
-                  "kind": "text",
-                  "text": "קראו מן הגרף את הנתון המבוקש."
-                }
-              ],
-              "answer": {
-                "kind": "figure",
-                "operation": "y_coordinate",
                 "point": "B",
                 "unit": ""
               }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "היעזרו בסימוני הצירים."
+                }
+              ],
+              "answer": {
+                "kind": "figure",
+                "operation": "x_coordinate",
+                "point": "C",
+                "unit": ""
+              }
             }
           ]
         },
@@ -1346,7 +1554,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "סרטטו מערכת צירים וסמנו בה את הנקודות המתוארות."
+              "text": "סרטטו מערכת צירים, סמנו את שלוש הנקודות המתוארות וחברו אותן למשולש."
             }
           ],
           "star": false,
@@ -1390,7 +1598,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "סמנו נקודה הנמצאת שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מתחת לציר האופקי."
+                  "text": "סמנו נקודה הנמצאת שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מתחת לציר האופקי. חברו את שלושת הקודקודים."
                 }
               ],
               "answer": {
@@ -1398,7 +1606,7 @@
                 "text": [
                   {
                     "kind": "text",
-                    "text": "יש לסמן נקודה במרחק שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מתחת לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                    "text": "יש לסמן נקודה במרחק שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מתחת לציר האופקי, לפי יחידות האורך שבחרתם לצירים. שלושת הקטעים המחברים את הנקודות יוצרים משולש ישר זווית."
                   }
                 ]
               }
@@ -1409,7 +1617,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "סרטטו מערכת צירים וסמנו בה את הנקודות המתוארות."
+              "text": "סרטטו מערכת צירים, סמנו את שלוש הנקודות המתוארות וחברו אותן למשולש."
             }
           ],
           "star": false,
@@ -1453,7 +1661,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "סמנו נקודה הנמצאת שתי יחידות ימינה מראשית הצירים ושלוש יחידות מתחת לציר האופקי."
+                  "text": "סמנו נקודה הנמצאת שתי יחידות ימינה מראשית הצירים ושלוש יחידות מתחת לציר האופקי. חברו את שלושת הקודקודים."
                 }
               ],
               "answer": {
@@ -1461,7 +1669,7 @@
                 "text": [
                   {
                     "kind": "text",
-                    "text": "יש לסמן נקודה במרחק שתי יחידות ימינה מראשית הצירים ושלוש יחידות מתחת לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                    "text": "יש לסמן נקודה במרחק שתי יחידות ימינה מראשית הצירים ושלוש יחידות מתחת לציר האופקי, לפי יחידות האורך שבחרתם לצירים. שלושת הקטעים המחברים את הנקודות יוצרים משולש ישר זווית."
                   }
                 ]
               }
@@ -1472,7 +1680,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "סרטטו מערכת צירים וסמנו בה את הנקודות המתוארות."
+              "text": "סרטטו מערכת צירים, סמנו את שלוש הנקודות המתוארות וחברו אותן למשולש."
             }
           ],
           "star": false,
@@ -1516,7 +1724,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "סמנו נקודה הנמצאת שתי יחידות ימינה מראשית הצירים ושלוש יחידות מעל לציר האופקי."
+                  "text": "סמנו נקודה הנמצאת שתי יחידות ימינה מראשית הצירים ושלוש יחידות מעל לציר האופקי. חברו את שלושת הקודקודים."
                 }
               ],
               "answer": {
@@ -1524,7 +1732,7 @@
                 "text": [
                   {
                     "kind": "text",
-                    "text": "יש לסמן נקודה במרחק שתי יחידות ימינה מראשית הצירים ושלוש יחידות מעל לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                    "text": "יש לסמן נקודה במרחק שתי יחידות ימינה מראשית הצירים ושלוש יחידות מעל לציר האופקי, לפי יחידות האורך שבחרתם לצירים. שלושת הקטעים המחברים את הנקודות יוצרים משולש ישר זווית."
                   }
                 ]
               }
@@ -1535,7 +1743,7 @@
           "intro": [
             {
               "kind": "text",
-              "text": "סרטטו מערכת צירים וסמנו בה את הנקודות המתוארות."
+              "text": "סרטטו מערכת צירים, סמנו את שלוש הנקודות המתוארות וחברו אותן למשולש."
             }
           ],
           "star": false,
@@ -1579,7 +1787,7 @@
               "prompt": [
                 {
                   "kind": "text",
-                  "text": "סמנו נקודה הנמצאת שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מעל לציר האופקי."
+                  "text": "סמנו נקודה הנמצאת שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מעל לציר האופקי. חברו את שלושת הקודקודים."
                 }
               ],
               "answer": {
@@ -1587,7 +1795,7 @@
                 "text": [
                   {
                     "kind": "text",
-                    "text": "יש לסמן נקודה במרחק שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מעל לציר האופקי, לפי יחידות האורך שבחרתם לצירים."
+                    "text": "יש לסמן נקודה במרחק שתי יחידות שמאלה מראשית הצירים ושלוש יחידות מעל לציר האופקי, לפי יחידות האורך שבחרתם לצירים. שלושת הקטעים המחברים את הנקודות יוצרים משולש ישר זווית."
                   }
                 ]
               }

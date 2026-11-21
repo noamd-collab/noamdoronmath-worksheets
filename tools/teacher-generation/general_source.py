@@ -83,23 +83,13 @@ def rich(value, grade):
     return deepcopy(value)
 
 
-def diagram_permission(scope, figure_kind):
-    """Never infer drawing permission from model prose or a student request."""
-    topic = scope["topic"]
-    domain = topic["domain"]
-    if "גיאומטר" in domain or "גאומטר" in domain or domain in ("geometry", "analytic_geometry"):
-        return figure_kind not in ("clock", "bar_chart")
-    # Noam explicitly allowed clocks/graphs only in their reading topics.
-    title = topic["title"]
-    if figure_kind == "clock":
-        return topic["skillId"] == "elementary" and any(s in title for s in ("שעון", "שעה שלמה", "חצי שעה", "רבע שעה"))
-    if figure_kind in ("bar_chart","coordinate_plane"):
-        return any(s in title for s in ("קריאת גרפ", "קריאת דיאגרמ"))
-    return False
+def geometry_topic(scope):
+    """Only a geometry domain in the pinned curriculum permits drawings."""
+    return scope["topic"]["domain"] in ("geometry", "analytic_geometry", "גיאומטרי", "גאומטרי")
 
 
 def validate_figure(fig, scope):
-    if type(fig) is not dict or not diagram_permission(scope, fig.get("kind")):
+    if type(fig) is not dict or not geometry_topic(scope):
         bad("DRAWING_POLICY", "This topic does not permit this figure")
     kind = fig["kind"]
     middle = scope["topic"]["skillId"] == "middle"
@@ -154,17 +144,6 @@ def validate_figure(fig, scope):
             bounded_int(value, 1, 8)
         if fig["shape"]=="cube" and len(set(fig["dimensions"]))!=1:
             bad("SOURCE_FIGURE","Cube dimensions must all be equal")
-    elif kind == "clock" and not middle:
-        exact(fig, ("kind", "hour", "minute")); bounded_int(fig["hour"], 1, 12); bounded_int(fig["minute"], 0, 59)
-    elif kind == "bar_chart" and not middle:
-        exact(fig, ("kind", "labels", "values"))
-        if type(fig["labels"]) is not list or type(fig["values"]) is not list or not 2 <= len(fig["labels"]) == len(fig["values"]) <= 6:
-            bad("SOURCE_FIGURE", "Chart needs two to six labels and corresponding values")
-        for label in fig["labels"]:
-            text(label, 30)
-        for value in fig["values"]:
-            bounded_int(value, 0, 100)
-        if max(fig["values"])==0:bad("SOURCE_FIGURE","A bar chart needs a positive axis extent")
     else:
         bad("SOURCE_FIGURE", "Figure constructor is not supported by this pinned skill")
     return deepcopy(fig)
@@ -226,7 +205,7 @@ def _validate_source(lesson, payload, scope):
             if "figure" in question:
                 validate_figure(question["figure"], scope)
             if "drawingFromWords" in question:
-                if type(question["drawingFromWords"]) is not bool or not (diagram_permission(scope,"shape") or diagram_permission(scope,"coordinate_plane")):
+                if type(question["drawingFromWords"]) is not bool or not geometry_topic(scope):
                     bad("DRAWING_POLICY","Drawing-from-words is permitted only in an authorized figure topic")
                 if question["drawingFromWords"] and "figure" in question:
                     bad("SOURCE_FIGURE","A drawing-from-words task must leave the requested figure blank")
@@ -311,18 +290,12 @@ def authoring_schema(lesson, scope):
         answers.append(obj({"kind": {"const": "review"}, "text": rt}))
     answer = {"oneOf": answers}
     figures = []
-    if scope["topic"]["skillId"] == "middle" and diagram_permission(scope, "shape"):
+    if scope["topic"]["skillId"] == "middle" and geometry_topic(scope):
         for shape, keys in SHAPES.items():
             figures.append(obj({"kind": {"const": "shape"}, "shape": {"const": shape}, "parameters": obj({k: {"type": "integer", "minimum": 0 if k == "dx" else 1, "maximum": 179 if k == "angle" else 100} for k in sorted(keys)}), "names": {"type": "string", "pattern": "^[A-Z]{1,8}$"}, "rotate": {"type": "integer", "minimum": -180, "maximum": 180}}))
-    if scope["topic"]["skillId"] == "middle" and diagram_permission(scope,"coordinate_plane"):
         figures.append(obj({"kind":{"const":"coordinate_plane"},"xr":arr({"type":"integer","minimum":-10,"maximum":10},2,2),"yr":arr({"type":"integer","minimum":-10,"maximum":10},2,2),"points":arr(obj({"name":{"type":"string","pattern":"^[A-Z]$"},"x":{"type":"integer","minimum":-10,"maximum":10},"y":{"type":"integer","minimum":-10,"maximum":10}}),1,8),"segments":arr(arr({"type":"string","pattern":"^[A-Z]$"},2,2),0,10),"placement":{"enum":["side","wide"]}},["kind","xr","yr","points","segments"]))
-    elif scope["topic"]["skillId"] == "elementary":
-        if diagram_permission(scope, "grid_shape"):
-            figures += [obj({"kind": {"const": "grid_shape"}, "cells": arr(arr({"enum": [0, 1]}, 1, 10), 1, 8)}), obj({"kind": {"const": "solid"}, "shape": {"enum": ["box", "cube", "prism", "pyramid"]}, "dimensions": arr({"type": "integer", "minimum": 1, "maximum": 8}, 3, 3)})]
-        if diagram_permission(scope, "clock"):
-            figures.append(obj({"kind": {"const": "clock"}, "hour": {"type": "integer", "minimum": 1, "maximum": 12}, "minute": {"type": "integer", "minimum": 0, "maximum": 59}}))
-        if diagram_permission(scope, "bar_chart"):
-            figures.append(obj({"kind": {"const": "bar_chart"}, "labels": arr(st, 2, 6), "values": arr({"type": "integer", "minimum": 0, "maximum": 100}, 2, 6)}))
+    elif scope["topic"]["skillId"] == "elementary" and geometry_topic(scope):
+        figures += [obj({"kind": {"const": "grid_shape"}, "cells": arr(arr({"enum": [0, 1]}, 1, 10), 1, 8)}), obj({"kind": {"const": "solid"}, "shape": {"enum": ["box", "cube", "prism", "pyramid"]}, "dimensions": arr({"type": "integer", "minimum": 1, "maximum": 8}, 3, 3)})]
     props = {"intro": rt, "star": {"type": "boolean"}, "items": arr(obj({"prompt": rt, "answer": answer}), 5 if lesson["gradeNumber"]<=2 else 3, 9), "table": obj({"head": arr(rt, 2, 6), "rows": arr(arr(rt, 2, 6), 1, 12)})}
     if figures:
         props["figure"] = {"oneOf": figures}
