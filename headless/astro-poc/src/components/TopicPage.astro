@@ -101,7 +101,7 @@ function editionsForTopicId(catTopicId: number | null | undefined, backHref?: st
 }
 
 function levelsForTopicId(catTopicId: number | null | undefined, backHref?: string) {
-  return editionsForTopicId(catTopicId, backHref)[0]?.levels || [];
+  return editionsForTopicId(catTopicId, backHref).flatMap(edition => edition.levels);
 }
 
 const topicEditions = editionsForTopicId(topicId, page.catalogCta?.href);
