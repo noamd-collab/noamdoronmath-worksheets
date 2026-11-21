@@ -73,6 +73,8 @@ export interface GradeHubContent {
   topicLinks: GradeHubTopicLink[];
   topicLinksNote?: string;
   catalogCta: GradeHubCatalogCta | null;
+  /** Optional same-origin link to the teachers area (grade 4, Noam 19.11.2026). */
+  teachersLink?: { label: string; href: string };
   faqHeading: string | null;
   faq: GradeHubFaqItem[];
   faqNote?: string;
@@ -143,6 +145,9 @@ function assertHub(grade: GradeHubGrade, data: GradeHubContent): GradeHubContent
     if (!link.productionHref.startsWith('https://www.noamdoronmath.co.il/')) {
       throw new Error(`Grade hub ${grade}: topic link not production: ${link.path}`);
     }
+  }
+  if (data.teachersLink && (data.teachersLink.href !== '/teachers' || !data.teachersLink.label.trim())) {
+    throw new Error(`Grade hub ${grade}: teachers link must be a labelled same-origin /teachers link`);
   }
   if (data.catalogCta && !data.catalogCta.href.startsWith('/worksheets?grade=')) {
     throw new Error(`Grade hub ${grade}: catalog CTA must be same-origin worksheets`);
