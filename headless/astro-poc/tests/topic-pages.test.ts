@@ -1,3 +1,4 @@
+import { beforeNovember21Copy } from './fixtures/middle-090-091-094';
 import { beforeNext21Copy } from './fixtures/next21-pdf';
 import { beforeExtSmlAfrCopy } from './fixtures/ext-sml-afr-pdf';
 /**
@@ -387,7 +388,8 @@ describe('topic page routes (HEADLESS-MIGRATION-18/19/20)', () => {
   });
 
   it('difference-of-squares: paragraph-only self-check exact text, topic 45, no invented H2', () => {
-    const page = beforeExtSmlAfrCopy('difference-of-squares-grade-9', loadTopicPage('difference-of-squares-grade-9'));
+    const slug = 'difference-of-squares-grade-9';
+    const page = beforeExtSmlAfrCopy(slug, beforeNovember21Copy(slug, loadTopicPage(slug)));
     assert.equal(page.catalogCtas[0].catalogTopicId, 45);
     assert.equal(page.sections.length, 1);
     assert.ok(!page.sections.some((s) => hasSelfCheckHeading(s.heading)));

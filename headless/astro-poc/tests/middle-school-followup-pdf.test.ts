@@ -1,3 +1,4 @@
+import { renewalIds } from './fixtures/middle-090-091-094';
 import { reviewedNext12Ids } from './fixtures/next12-pdf';
 import { reviewedNext21Ids } from './fixtures/next21-pdf';
 import { reviewedBatch01Ids } from './fixtures/batch01-pdf';
@@ -134,7 +135,7 @@ test('manifest sync omits unactivated PDFs while retaining legacy and verified e
   // later algebra and frequency PDFs, which must not gain viewer/hint activation.
   const algebraId = 'ms-20261115-alg-01-r1';
   const frequencyId = 'ms-20261115-frq-01-r1';
-  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids, ...reviewedBatch02aIds, ...reviewedBatch03Ids, ...probabilityNineIds, ...reviewedBatch04Ids, ...reviewedBatch05Ids, ...reviewedBatch06Ids, ...reviewedBatch07Ids, ...reviewedBatch08Ids, ...reviewedBatch09Ids, ...reviewedBatch10Ids, ...reviewedBatch11Ids, ...reviewedBatch12Ids, ...reviewedBatch13Ids].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
+  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids, ...reviewedBatch02aIds, ...reviewedBatch03Ids, ...probabilityNineIds, ...reviewedBatch04Ids, ...reviewedBatch05Ids, ...reviewedBatch06Ids, ...reviewedBatch07Ids, ...reviewedBatch08Ids, ...reviewedBatch09Ids, ...reviewedBatch10Ids, ...reviewedBatch11Ids, ...reviewedBatch12Ids, ...reviewedBatch13Ids, ...renewalIds].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
   // The three grade-9 probability series (G9-PRC-01, G9-PRT-01, G9-PRW-01) are exactly the reviewed rows: nine PDF-only levels.
   const probabilityNine = allPdfOnly.filter((e: any) => probabilityNineIds.includes(e.editionId));
   assert.deepEqual(probabilityNine, reviewedProbabilityNine.additions.map(a => a.edition));

@@ -1,3 +1,4 @@
+import { beforeNovember21Copy } from './fixtures/middle-090-091-094.ts';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
@@ -29,7 +30,7 @@ test('every corrected page is exactly the reviewed correction of its exact earli
   assert.equal(reviewed.pages.reduce((n, page) => n + page.replacements.length, 0), 23);
   for (const entry of reviewed.pages) {
     const raw = readPage(entry.slug);
-    assertRamziActivationCopyRawPage(entry.slug, raw);
+    assertRamziActivationCopyRawPage(entry.slug, beforeNovember21Copy(entry.slug, raw));
     for (const r of entry.replacements) {
       assert.notEqual(r.before, r.after);
       assert.equal(plain(at(raw, r.path)).split(r.after).length, 2, `${entry.slug}: ${r.path.join('.')}`);

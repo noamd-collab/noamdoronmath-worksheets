@@ -1,3 +1,4 @@
+import { beforeNovember21Catalog } from './fixtures/middle-090-091-094';
 import { beforeExtra15Catalog, beforeExtra15Registry } from './fixtures/extra15-pdf';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -64,7 +65,9 @@ test('three exact editions add nine verified PDFs and preserve the complete prec
       assert.ok(p.downloadChecks.every((d: any) => d.status === 200 && d.sha256 === (l as any).pdfSha256));
     }
   }
-  assert.deepEqual(catalog.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 45), previous.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 45));
+  // Topic 45 received its own three-level edition on November 21.
+  const preceding = beforeNovember21Catalog(catalog);
+  assert.deepEqual(preceding.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 45), previous.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 45));
 });
 
 test('all old teacher/learning/viewer sources stay identical and no additional PDF enters those banks', () => {
