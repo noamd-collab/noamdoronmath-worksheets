@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Guard the initial Cloudflare teacher-worker rollout; never publish Wix.
+"""Guard Cloudflare teacher-worker rollout and drained upgrades; never publish Wix.
 
 Without --apply this validates and prints a plan fingerprint only. No credentials,
 provider calls, queue claims, image builds or purchases are performed in plan mode.
@@ -34,6 +34,7 @@ CLOUD_DIRECTORY = Path('tools/teacher-generation/cloud/cloudflare')
 PLAN_KEYS = {'version', 'target', 'phase', 'sourceSha', 'accountId', 'workerName',
              'imageRef', 'doClass', 'singletonName'}
 IMAGE_PLAN_KEYS = {'buildRunId', 'archiveSha256', 'archiveBytes', 'craneSha256'}
+UPGRADE_PHASES = ('upgrade-drain', 'upgrade-preflight', 'upgrade-activate')
 RECOVERY_PLAN_KEYS = {'controllerSha', 'priorLedgerSha256', 'workerOrigin',
                       'expectedVersionId', 'expectedDoId'}
 USER_AGENT = 'NoamTeacherRelease/1.0 (+https://www.noamdoronmath.co.il)'
@@ -77,10 +78,11 @@ def fresh(value, seconds, now=None):
 def validate_plan(plan, expected_sha, controller_sha=None):
     require(isinstance(plan, dict), 'INVALID_PLAN_FIELDS')
     extra = {'image-push': IMAGE_PLAN_KEYS, 'recover-preflight': RECOVERY_PLAN_KEYS}
+    extra.update(dict.fromkeys(UPGRADE_PHASES, {'previousRuntime'}))
     fields = PLAN_KEYS | extra.get(plan.get('phase'), set())
     require(set(plan) == fields, 'INVALID_PLAN_FIELDS')
     require(plan['version'] == 1 and plan['target'] == 'teacher-cloudflare', 'INVALID_TARGET')
-    require(plan['phase'] in ('image-push', 'preflight', 'activate', 'recover-preflight'), 'INVALID_PHASE')
+    require(plan['phase'] in ('image-push', 'preflight', 'activate', 'recover-preflight') + UPGRADE_PHASES, 'INVALID_PHASE')
     require(isinstance(expected_sha, str) and re.fullmatch(r'[a-f0-9]{40}', expected_sha), 'INVALID_SOURCE_SHA')
     require(plan['sourceSha'] == expected_sha, 'PLAN_SOURCE_MISMATCH')
     require(plan['accountId'] == ACCOUNT, 'WRONG_CLOUDFLARE_ACCOUNT')
@@ -91,6 +93,18 @@ def validate_plan(plan, expected_sha, controller_sha=None):
     require('..' not in plan['imageRef'] and '//' not in plan['imageRef'], 'INVALID_IMAGE_REPOSITORY')
     require(plan['doClass'] == 'TeacherGenerationContainer', 'INVALID_DO_CLASS')
     require(plan['singletonName'] == 'primary', 'INVALID_SINGLETON_NAME')
+    if plan['phase'] in UPGRADE_PHASES:
+        prior = plan['previousRuntime']
+        require(isinstance(prior, dict) and set(prior) == {'sourceSha', 'imageRef', 'versionId', 'doId'},
+                'INVALID_PREVIOUS_RUNTIME')
+        prior_plan = {**{k: plan[k] for k in PLAN_KEYS}, 'phase': 'preflight',
+                      'sourceSha': prior['sourceSha'], 'imageRef': prior['imageRef']}
+        validate_plan(prior_plan, prior['sourceSha'])
+        require(isinstance(prior['versionId'], str) and re.fullmatch(r'[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}', prior['versionId'])
+                and isinstance(prior['doId'], str) and re.fullmatch(r'[a-f0-9]{64}', prior['doId']),
+                'INVALID_PREVIOUS_RUNTIME')
+        require(prior['sourceSha'] != plan['sourceSha'] and prior['imageRef'] != plan['imageRef'],
+                'UPGRADE_REQUIRES_NEW_SOURCE_AND_IMAGE')
     if plan['phase'] == 'image-push':
         require(type(plan['buildRunId']) is int and plan['buildRunId'] > 0, 'INVALID_BUILD_RUN')
         require(type(plan['archiveBytes']) is int and 0 < plan['archiveBytes'] <= 4*1024**3, 'INVALID_ARCHIVE_SIZE')
@@ -132,6 +146,12 @@ def validate_context(context, plan, plan_sha, now=None):
         require(type(context.get('activeJobs')) is int and context['activeJobs'] == 0, 'QUEUE_NOT_EMPTY')
         require(context.get('oldWorkerStopped') is True, 'OLD_WORKER_MUST_BE_STOPPED')
         fresh(context.get('oldWorkerStoppedCheckedAt'), 90, now)
+    if plan['phase'] in ('upgrade-preflight', 'upgrade-activate'):
+        fresh(context.get('queueCheckedAt'), 90, now)
+        require(type(context.get('activeJobs')) is int and context['activeJobs'] == 0, 'LEASES_NOT_DRAINED')
+        for field in ('jobsSnapshotSha256', 'ownerQuotaSnapshotSha256'):
+            require(isinstance(context.get(field), str) and re.fullmatch(r'[a-f0-9]{64}', context[field]),
+                    'QUEUE_AND_OWNER_QUOTA_SNAPSHOT_REQUIRED')
     if plan['phase'] == 'recover-preflight':
         require(context.get('recoveryApproved') is True, 'EXPLICIT_RECOVERY_GO_REQUIRED')
         validate_controller_context(context, plan['controllerSha'])
@@ -342,6 +362,134 @@ def validate_previous(previous, plan):
     require(previous.get('identity') == identity(plan), 'ACTIVATION_CHANGED_REVIEWED_IDENTITY')
 
 
+def private_ledger(path):
+    _, value = private_json_bytes(path)
+    require(value.get('target') == 'teacher-cloudflare', 'WRONG_LEDGER_TARGET')
+    return value
+
+
+def runtime_matches(status, expected, *, mode, stopped=False):
+    require(isinstance(status, dict) and status.get('schemaVersion') == 1, 'MISSING_RUNTIME_PROOF')
+    require(all(status.get(key) == expected[key] for key in ('sourceSha', 'imageRef', 'versionId', 'doId')),
+            'RUNTIME_IDENTITY_MISMATCH')
+    require(status.get('mode') == mode and type(status.get('running')) is bool, 'RUNTIME_MODE_MISMATCH')
+    if stopped:
+        require(status['running'] is False, 'OLD_CLOUD_STILL_DRAINING')
+    if status['running']:
+        require(status.get('observedImage') == expected['imageRef'], 'OBSERVED_IMAGE_MISMATCH')
+    if mode == 'active':
+        approved = status.get('approved') or {}
+        require(all(approved.get(key) == expected[key] for key in ('sourceSha', 'imageRef', 'versionId')),
+                'ACTIVATION_APPROVAL_IDENTITY_MISMATCH')
+    else:
+        require(status.get('approved') is None, 'DISABLED_RUNTIME_STILL_APPROVED')
+
+
+def execute_upgrade(plan, context, adapter, ledger_path, *, now=None):
+    """Drain an active cloud singleton; never reset DB jobs, quota or leases.
+
+    Each separately approved phase retains its complete predecessor. Failed
+    provider actions stay uncertain. Drain does not kill or requeue any work.
+    A stopped container is not enough: cutover also needs fresh zero DB leases.
+    """
+    plan_sha = validate_plan(plan, plan['sourceSha'])
+    validate_context(context, plan, plan_sha, now)
+    previous = private_ledger(ledger_path)
+    phase = plan['phase']
+    prior = plan['previousRuntime']
+    expected_state = {'upgrade-drain': 'active', 'upgrade-preflight': 'upgrade_draining',
+                      'upgrade-activate': 'upgrade_preflight_verified'}[phase]
+    require(previous.get('state') == expected_state, 'UPGRADE_SEQUENCE_OR_RECOVERY_REQUIRED')
+    if phase == 'upgrade-drain':
+        require(all((previous.get('identity') or {}).get(k) == prior[k] for k in ('sourceSha', 'imageRef'))
+                and all((previous.get('proof') or {}).get(k) == prior[k] for k in ('versionId', 'doId')),
+                'PREVIOUS_LEDGER_IDENTITY_MISMATCH')
+    else:
+        require(previous.get('identity') == identity(plan) and previous.get('previousRuntime') == prior,
+                'UPGRADE_IDENTITY_CHANGED')
+    origin = previous['workerOrigin']
+    adapter.use_origin(origin, plan)
+    version = adapter.active_version(plan)
+    observed = adapter.status(plan)
+    if phase in ('upgrade-drain', 'upgrade-preflight'):
+        require(version == prior['versionId'], 'OLD_VERSION_CHANGED')
+        runtime_matches(observed, prior, mode='active' if phase == 'upgrade-drain' else 'disabled',
+                        stopped=phase == 'upgrade-preflight')
+    else:
+        proof = validate_proof(observed, plan, version, max_age=900, now=now)
+        require(proof['doId'] == prior['doId'] and proof['versionId'] == previous['proof']['versionId'],
+                'DEPLOYMENT_OR_DURABLE_OBJECT_CHANGED')
+    fresh_context = adapter.fresh_context(context)
+    validate_context(fresh_context, plan, plan_sha, now)
+    snapshots = {key: fresh_context[key] for key in ('jobsSnapshotSha256', 'ownerQuotaSnapshotSha256')
+                 if key in fresh_context}
+    if phase == 'upgrade-activate':
+        require(snapshots == previous.get('preservedData'), 'JOBS_OR_OWNER_QUOTA_CHANGED')
+    record = {'target': 'teacher-cloudflare', 'state': 'in_progress', 'phase': phase,
+              'identity': identity(plan), 'previousRuntime': prior, 'planSha256': plan_sha,
+              'workerOrigin': origin, 'startedAt': utcnow().isoformat(),
+              'predecessor': previous, 'predecessorSha256': digest(previous),
+              'controllerSha': fresh_context.get('controllerSha')}
+    atomic_json(ledger_path, record)
+    try:
+        if phase == 'upgrade-drain':
+            drained = adapter.deactivate(plan)
+            runtime_matches(drained, prior, mode='disabled')
+            require(adapter.active_version(plan) == prior['versionId'], 'VERSION_CHANGED_DURING_DRAIN')
+            record.update(state='upgrade_draining', containerRunningAtDrain=drained['running'])
+        elif phase == 'upgrade-preflight':
+            require(adapter.deploy_disabled(plan) == origin, 'UPGRADE_WORKER_ORIGIN_CHANGED')
+            version = adapter.active_version(plan)
+            require(version != prior['versionId'], 'UPGRADE_VERSION_NOT_CHANGED')
+            proof = validate_proof(adapter.preflight(plan), plan, version, now=now)
+            require(proof['doId'] == prior['doId'], 'UPGRADE_DURABLE_OBJECT_CHANGED')
+            require(adapter.active_version(plan) == version, 'VERSION_CHANGED_DURING_PREFLIGHT')
+            record.update(state='upgrade_preflight_verified', proof=proof, preservedData=snapshots)
+        else:
+            active = adapter.activate(plan, version)
+            runtime_matches(active, {**proof}, mode='active')
+            require(adapter.active_version(plan) == version, 'VERSION_CHANGED_DURING_ACTIVATION')
+            record.update(state='active', proof=proof, preservedData=snapshots,
+                          activatedAt=active['approved'].get('activatedAt'))
+        record['completedAt'] = utcnow().isoformat()
+        atomic_json(ledger_path, record)
+        return record
+    except Exception:
+        record.update(state='uncertain', failedAt=utcnow().isoformat())
+        atomic_json(ledger_path, record)
+        raise
+
+
+def observe_runtime(plan, adapter, ledger_path):
+    """Read-only provider calls; never advance the ledger or invoke a cycle."""
+    previous = private_ledger(ledger_path)
+    adapter.use_origin(previous['workerOrigin'], plan)
+    version = adapter.active_version(plan)
+    status = adapter.status(plan)
+    require(isinstance(status, dict) and status.get('schemaVersion') == 1, 'MISSING_RUNTIME_PROOF')
+    require(status.get('versionId') == version, 'DEPLOYED_VERSION_MISMATCH')
+    require(status.get('mode') in ('active', 'disabled') and type(status.get('running')) is bool,
+            'RUNTIME_MODE_MISMATCH')
+    for key, pattern in (('sourceSha', r'[a-f0-9]{40}'), ('versionId', r'[a-f0-9-]{36}'),
+                         ('doId', r'[a-f0-9]{64}'),
+                         ('imageRef', r'[A-Za-z0-9._:/-]+@sha256:[a-f0-9]{64}')):
+        require(isinstance(status.get(key), str) and re.fullmatch(pattern, status[key]), 'INVALID_STATUS_IDENTITY')
+    return {key: status[key] for key in ('schemaVersion', 'sourceSha', 'imageRef', 'versionId', 'doId', 'mode', 'running')}
+
+
+def image_ledger_path(state_dir, plan):
+    candidate = state_dir / ('teacher-cloudflare-image-' + digest(identity(plan)) + '.json')
+    legacy = state_dir / 'teacher-cloudflare-image-ledger.json'
+    require(not candidate.is_symlink() and not legacy.is_symlink(), 'IMAGE_LEDGER_SYMLINK_DENIED')
+    if legacy.exists():
+        _, old = private_json_bytes(legacy)
+        # Do not circumvent an old uncertain receipt by changing its filename.
+        if old.get('identity') == identity(plan):
+            require(not candidate.exists(), 'DUPLICATE_IMAGE_LEDGERS_REQUIRE_REVIEW')
+            return legacy
+    return candidate
+
+
 def execute(plan, context, adapter, ledger_path, *, now=None):
     """Initial rollout only: deploy disabled, verify, then separately activate.
 
@@ -454,7 +602,7 @@ class WranglerAdapter:
         if plan['phase'] != 'image-push':
             require(re.fullmatch(r'[a-f0-9]{64}', token), 'OPERATOR_KEY_MUST_BE_LOWER_HEX_64')
         self._token = token
-        self._runtime_secrets = runtime_secrets(runtime_secrets_file, self.repo, token) if plan['phase'] == 'preflight' else None
+        self._runtime_secrets = runtime_secrets(runtime_secrets_file, self.repo, token) if plan['phase'] in ('preflight', 'upgrade-preflight') else None
         self._http = build_opener(HTTPSHandler(), NoRedirect())
         package = json.loads((self.cloud / 'package.json').read_text())
         pinned = package.get('devDependencies', {}).get('wrangler')
@@ -489,8 +637,8 @@ class WranglerAdapter:
         self.env = wrangler_environment(os.environ)
 
     def command(self, *args):
-        if self.plan['phase'] == 'recover-preflight':
-            require(args == ('deployments', 'status', '--json'), 'RECOVERY_CLI_READ_ONLY')
+        if self.plan['phase'] in ('recover-preflight', 'observe'):
+            require(args == ('deployments', 'status', '--json'), 'STATUS_CLI_READ_ONLY')
         result = subprocess.run([self.node, str(self.cli), *args, '--config', str(self.config)],
                                 cwd=self.cloud, env=self.env, capture_output=True, text=True, timeout=600)
         require(result.returncode == 0, 'WRANGLER_COMMAND_FAILED')
@@ -504,7 +652,7 @@ class WranglerAdapter:
         self.origin = origin
 
     def deploy_disabled(self, plan):
-        require(plan['phase'] == 'preflight', 'DEPLOY_REQUIRES_INITIAL_PREFLIGHT')
+        require(plan['phase'] in ('preflight', 'upgrade-preflight'), 'DEPLOY_REQUIRES_PREFLIGHT')
         # Account is also fixed in config; whoami is a read-only authorization
         # check, not a request to create/grant a new API token.
         require(ACCOUNT in self.command('whoami'), 'AUTHENTICATED_ACCOUNT_NOT_CONFIRMED')
@@ -533,8 +681,12 @@ class WranglerAdapter:
         return versions[0].get('version_id')
 
     def request(self, path, body=None):
-        require(path in ('/operator/status', '/operator/preflight', '/operator/activate'), 'OPERATOR_PATH_DENIED')
+        require(path in ('/operator/status', '/operator/preflight', '/operator/activate')
+                or (path == '/operator/deactivate' and self.plan['phase'] == 'upgrade-drain' and body == {}),
+                'OPERATOR_PATH_DENIED')
         require(self.origin is not None, 'VERIFIED_ORIGIN_REQUIRED')
+        if self.plan['phase'] == 'observe':
+            require(path == '/operator/status' and body is None, 'OBSERVATION_REQUIRES_STATUS_GET')
         if self.plan['phase'] == 'recover-preflight':
             require((path == '/operator/status' and body is None)
                     or (path == '/operator/preflight' and body == {}), 'RECOVERY_HTTP_OPERATION_DENIED')
@@ -557,6 +709,9 @@ class WranglerAdapter:
 
     def status(self, plan):
         return self.request('/operator/status')
+
+    def deactivate(self, plan):
+        return self.request('/operator/deactivate', {})
 
     def activate(self, plan, version):
         result = self.request('/operator/activate', {'sourceSha': plan['sourceSha'],
@@ -658,7 +813,9 @@ def main():
     parser.add_argument('--crane', type=Path)
     parser.add_argument('--runtime-secrets-file', type=Path)
     parser.add_argument('--apply', action='store_true')
+    parser.add_argument('--observe', action='store_true', help='Observe the existing worker without changing its state')
     args = parser.parse_args()
+    require(not (args.apply and args.observe), 'OBSERVE_CANNOT_APPLY')
     plan = json.loads(args.plan.read_text()); plan_sha = validate_plan(plan, args.source_sha, args.controller_sha)
     controller_repo = Path(__file__).resolve().parents[2]
     check_controller(controller_repo, args.controller_sha, require_main=args.apply)
@@ -671,6 +828,22 @@ def main():
         from teacher_cloudflare_image import inspect_archive
         inspect_archive(args.oci_archive, archive_sha=plan['archiveSha256'], archive_bytes=plan['archiveBytes'],
                         image_digest=plan['imageRef'].split('@')[1], source_sha=plan['sourceSha'])
+    if args.observe:
+        require(plan['phase'] in UPGRADE_PHASES, 'OBSERVATION_REQUIRES_UPGRADE_PLAN')
+        require(args.state_dir is not None and args.state_dir.is_dir() and not args.state_dir.is_symlink(),
+                'PRIVATE_LEDGER_REQUIRED')
+        require(args.runtime_secrets_file is None and args.context is None and args.oci_archive is None
+                and args.crane is None, 'OBSERVATION_PROHIBITS_RELEASE_INPUTS')
+        state_dir = args.state_dir.resolve()
+        require(not state_dir.is_relative_to(args.repo.resolve()) and not state_dir.is_relative_to(controller_repo),
+                'LEDGER_MUST_BE_OUTSIDE_CHECKOUT')
+        with ledger_lock(state_dir) as ledger:
+            # Observation needs the operator key, but never provisions runtime secrets.
+            observer = WranglerAdapter(args.repo, {**plan, 'phase': 'observe'}, None, state_dir)
+            status = observe_runtime(plan, observer, ledger)
+        print(canonical_json({'target': 'teacher-cloudflare', 'observed': status,
+                              'providerMutation': False, 'ledgerChanged': False}))
+        return
     if not args.apply:
         print(canonical_json({'target': 'teacher-cloudflare', 'phase': plan['phase'], 'planSha256': plan_sha,
                               'sourceSha': args.source_sha, 'controllerSha': args.controller_sha,
@@ -687,7 +860,7 @@ def main():
     with ledger_lock(state_dir) as ledger:
         adapter = WranglerAdapter(args.repo, plan, args.context, state_dir, args.runtime_secrets_file,
                                   controller_sha=args.controller_sha)
-        image_ledger = state_dir / 'teacher-cloudflare-image-ledger.json'
+        image_ledger = image_ledger_path(state_dir, plan)
         if plan['phase'] == 'image-push':
             require(args.crane is not None, 'REVIEWED_CRANE_REQUIRED')
             proof = verify_ci_image(plan)
@@ -697,7 +870,8 @@ def main():
             record = execute_recovery(plan, context, adapter, ledger, image_ledger)
         else:
             verified_image_ledger(image_ledger, plan)
-            record = execute(plan, context, adapter, ledger)
+            operation = execute_upgrade if plan['phase'] in UPGRADE_PHASES else execute
+            record = operation(plan, context, adapter, ledger)
     print(canonical_json({'target': 'teacher-cloudflare', 'state': record['state'],
                           'sourceSha': args.source_sha, 'ledger': str(ledger),
                           'modelCalledByReleaseController': False}))
