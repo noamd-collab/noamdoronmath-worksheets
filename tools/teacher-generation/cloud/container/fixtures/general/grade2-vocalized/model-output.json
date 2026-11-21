@@ -1,0 +1,1348 @@
+{
+  "version": 4,
+  "title": "חִבּוּר לְלֹא הֲמָרָה",
+  "rule": [
+    {
+      "kind": "text",
+      "text": "עִבְדוּ לְפִי הַסֵּדֶר."
+    }
+  ],
+  "sections": [
+    {
+      "title": "חִבּוּר שְׁנֵי מִסְפָּרִים",
+      "conceptIds": [
+        "ב05#1"
+      ],
+      "questions": [
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "בְּכָל סְעִיף מְחַבְּרִים שְׁתֵּי קְבוּצוֹת. הַתַּרְגִּיל מַצִּיג אֶת מִסְפַּר הַפְּרִיטִים בְּכָל קְבוּצָה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה סְפָרִים יֵשׁ יַחַד בִּשְׁתֵּי קֻפְסָאוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 10,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 10,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "סְפָרִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה סְפָרִים יֵשׁ יַחַד בִּשְׁתֵּי שַׂקִּיּוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 11,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 11,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "סְפָרִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה סְפָרִים יֵשׁ יַחַד עַל שְׁנֵי מַדָּפִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 12,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 12,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "סְפָרִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה סְפָרִים יֵשׁ יַחַד בִּשְׁנֵי תָּאִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 13,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 13,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "סְפָרִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה סְפָרִים יֵשׁ יַחַד בִּשְׁנֵי סַלִּים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 14,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 14,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "סְפָרִים"
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "בְּכָל סְעִיף מְחַבְּרִים שְׁתֵּי קְבוּצוֹת. הַתַּרְגִּיל מַצִּיג אֶת מִסְפַּר הַפְּרִיטִים בְּכָל קְבוּצָה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה מַחְבָּרוֹת יֵשׁ יַחַד בִּשְׁתֵּי קֻפְסָאוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 20,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 10,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "מַחְבָּרוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה מַחְבָּרוֹת יֵשׁ יַחַד בִּשְׁתֵּי שַׂקִּיּוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 21,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 11,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "מַחְבָּרוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה מַחְבָּרוֹת יֵשׁ יַחַד עַל שְׁנֵי מַדָּפִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 22,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 12,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "מַחְבָּרוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה מַחְבָּרוֹת יֵשׁ יַחַד בִּשְׁנֵי תָּאִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 23,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 13,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "מַחְבָּרוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה מַחְבָּרוֹת יֵשׁ יַחַד בִּשְׁנֵי סַלִּים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 24,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 14,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "מַחְבָּרוֹת"
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "בְּכָל סְעִיף מְחַבְּרִים שְׁתֵּי קְבוּצוֹת. הַתַּרְגִּיל מַצִּיג אֶת מִסְפַּר הַפְּרִיטִים בְּכָל קְבוּצָה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה עֶפְרוֹנוֹת יֵשׁ יַחַד בִּשְׁתֵּי קֻפְסָאוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 30,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 10,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "עֶפְרוֹנוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה עֶפְרוֹנוֹת יֵשׁ יַחַד בִּשְׁתֵּי שַׂקִּיּוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 31,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 11,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "עֶפְרוֹנוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה עֶפְרוֹנוֹת יֵשׁ יַחַד עַל שְׁנֵי מַדָּפִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 32,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 12,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "עֶפְרוֹנוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה עֶפְרוֹנוֹת יֵשׁ יַחַד בִּשְׁנֵי תָּאִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 33,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 13,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "עֶפְרוֹנוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה עֶפְרוֹנוֹת יֵשׁ יַחַד בִּשְׁנֵי סַלִּים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 34,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 14,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "עֶפְרוֹנוֹת"
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "בְּכָל סְעִיף מְחַבְּרִים שְׁתֵּי קְבוּצוֹת. הַתַּרְגִּיל מַצִּיג אֶת מִסְפַּר הַפְּרִיטִים בְּכָל קְבוּצָה."
+            }
+          ],
+          "star": true,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה כַּדּוּרִים יֵשׁ יַחַד בִּשְׁתֵּי קֻפְסָאוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 40,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 10,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "כַּדּוּרִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה כַּדּוּרִים יֵשׁ יַחַד בִּשְׁתֵּי שַׂקִּיּוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 41,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 11,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "כַּדּוּרִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה כַּדּוּרִים יֵשׁ יַחַד עַל שְׁנֵי מַדָּפִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 42,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 12,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "כַּדּוּרִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה כַּדּוּרִים יֵשׁ יַחַד בִּשְׁנֵי תָּאִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 43,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 13,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "כַּדּוּרִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה כַּדּוּרִים יֵשׁ יַחַד בִּשְׁנֵי סַלִּים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 44,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 14,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "כַּדּוּרִים"
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "בְּכָל סְעִיף מְחַבְּרִים שְׁתֵּי קְבוּצוֹת. הַתַּרְגִּיל מַצִּיג אֶת מִסְפַּר הַפְּרִיטִים בְּכָל קְבוּצָה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה פְּקָקִים יֵשׁ יַחַד בִּשְׁתֵּי קֻפְסָאוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 50,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 10,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "פְּקָקִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה פְּקָקִים יֵשׁ יַחַד בִּשְׁתֵּי שַׂקִּיּוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 51,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 11,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "פְּקָקִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה פְּקָקִים יֵשׁ יַחַד עַל שְׁנֵי מַדָּפִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 52,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 12,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "פְּקָקִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה פְּקָקִים יֵשׁ יַחַד בִּשְׁנֵי תָּאִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 53,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 13,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "פְּקָקִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה פְּקָקִים יֵשׁ יַחַד בִּשְׁנֵי סַלִּים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 54,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 14,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "פְּקָקִים"
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "בְּכָל סְעִיף מְחַבְּרִים שְׁתֵּי קְבוּצוֹת. הַתַּרְגִּיל מַצִּיג אֶת מִסְפַּר הַפְּרִיטִים בְּכָל קְבוּצָה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה חֲרוּזִים יֵשׁ יַחַד בִּשְׁתֵּי קֻפְסָאוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 60,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 10,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "חֲרוּזִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה חֲרוּזִים יֵשׁ יַחַד בִּשְׁתֵּי שַׂקִּיּוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 61,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 11,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "חֲרוּזִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה חֲרוּזִים יֵשׁ יַחַד עַל שְׁנֵי מַדָּפִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 62,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 12,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "חֲרוּזִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה חֲרוּזִים יֵשׁ יַחַד בִּשְׁנֵי תָּאִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 63,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 13,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "חֲרוּזִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה חֲרוּזִים יֵשׁ יַחַד בִּשְׁנֵי סַלִּים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 64,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 14,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "חֲרוּזִים"
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "בְּכָל סְעִיף מְחַבְּרִים שְׁתֵּי קְבוּצוֹת. הַתַּרְגִּיל מַצִּיג אֶת מִסְפַּר הַפְּרִיטִים בְּכָל קְבוּצָה."
+            }
+          ],
+          "star": false,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה כַּרְטִיסִים יֵשׁ יַחַד בִּשְׁתֵּי קֻפְסָאוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 70,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 10,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "כַּרְטִיסִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה כַּרְטִיסִים יֵשׁ יַחַד בִּשְׁתֵּי שַׂקִּיּוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 71,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 11,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "כַּרְטִיסִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה כַּרְטִיסִים יֵשׁ יַחַד עַל שְׁנֵי מַדָּפִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 72,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 12,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "כַּרְטִיסִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה כַּרְטִיסִים יֵשׁ יַחַד בִּשְׁנֵי תָּאִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 73,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 13,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "כַּרְטִיסִים"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה כַּרְטִיסִים יֵשׁ יַחַד בִּשְׁנֵי סַלִּים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 74,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 14,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "כַּרְטִיסִים"
+              }
+            }
+          ]
+        },
+        {
+          "intro": [
+            {
+              "kind": "text",
+              "text": "בְּכָל סְעִיף מְחַבְּרִים שְׁתֵּי קְבוּצוֹת. הַתַּרְגִּיל מַצִּיג אֶת מִסְפַּר הַפְּרִיטִים בְּכָל קְבוּצָה."
+            }
+          ],
+          "star": true,
+          "items": [
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה מַדְבֵּקוֹת יֵשׁ יַחַד בִּשְׁתֵּי קֻפְסָאוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 80,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 10,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "מַדְבֵּקוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה מַדְבֵּקוֹת יֵשׁ יַחַד בִּשְׁתֵּי שַׂקִּיּוֹת?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 81,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 11,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "מַדְבֵּקוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה מַדְבֵּקוֹת יֵשׁ יַחַד עַל שְׁנֵי מַדָּפִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 82,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 12,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "מַדְבֵּקוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה מַדְבֵּקוֹת יֵשׁ יַחַד בִּשְׁנֵי תָּאִים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 83,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 13,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "מַדְבֵּקוֹת"
+              }
+            },
+            {
+              "prompt": [
+                {
+                  "kind": "text",
+                  "text": "כַּמָּה מַדְבֵּקוֹת יֵשׁ יַחַד בִּשְׁנֵי סַלִּים?"
+                }
+              ],
+              "answer": {
+                "kind": "computed",
+                "task": {
+                  "kind": "evaluate",
+                  "expression": {
+                    "type": "operation",
+                    "op": "add",
+                    "args": [
+                      {
+                        "type": "number",
+                        "numerator": 84,
+                        "denominator": 1
+                      },
+                      {
+                        "type": "number",
+                        "numerator": 14,
+                        "denominator": 1
+                      }
+                    ]
+                  }
+                },
+                "unit": "מַדְבֵּקוֹת"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
