@@ -2,8 +2,12 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import reviewed from '../../../../docs/middle-090-091-094-pdf-20261121.json';
 
-export { reviewed };
-export const renewalIds = reviewed.packages.map(item => item.edition.editionId);
+import seven from '../../../../docs/middle-b18-seven-pdf-20261122.json';
+
+export { reviewed, seven };
+const releases = [reviewed, seven];
+const allPackages = [...reviewed.packages, ...seven.packages];
+export const renewalIds = allPackages.map(item => item.edition.editionId);
 // The SSR loader normalizes property insertion order without changing data.
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, (_key, item) => {
   if (!item || typeof item !== 'object' || Array.isArray(item)) return item;
@@ -11,10 +15,10 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 })).digest('hex');
 const strip = (text: string) => text.replace(/[⁦-⁩]/g, '');
 
-/** Recover the catalog before the three first public editions, while checking each exact overlay. */
+/** Recover the catalog before the November 21–22 PDF editions, while checking each exact overlay. */
 export function beforeNovember21Catalog<T>(catalog: T): T {
   const result: any = structuredClone(catalog);
-  for (const item of reviewed.packages) {
+  for (const item of allPackages) {
     const topic = result.grades.find((g: any) => g.grade === item.grade)?.topics.find((t: any) => t.id === item.topicId);
     assert.ok(topic, item.slug);
     assert.deepEqual(topic.editions?.map((e: any) => e.editionId), [item.edition.editionId], item.slug);
@@ -28,26 +32,29 @@ export function beforeNovember21Catalog<T>(catalog: T): T {
 
 export function beforeNovember21Registry<T>(registry: T): T {
   const result: any = structuredClone(registry);
-  assert.deepEqual(result.editions.slice(-renewalIds.length), reviewed.packages.map(item => item.edition));
+  assert.deepEqual(result.editions.slice(-renewalIds.length), allPackages.map(item => item.edition));
   result.editions.splice(-renewalIds.length);
   return result;
 }
 
 export function beforeNovember21Copy<T>(slug: string, page: T): T {
-  const item = reviewed.packages.find(p => p.slug === slug);
-  if (!item) return page;
+  const release = releases.find(batch => batch.packages.some(p => p.slug === slug));
+  const item = release?.packages.find(p => p.slug === slug);
+  if (!release || !item) return page;
   const result: any = structuredClone(page);
   const section = result.sections.pop();
   assert.equal(strip(section.heading), item.section.heading, slug);
   assert.deepEqual(section.blocks.map((b: any) => strip(b.text)), item.section.blocks.map(b => b.text), slug);
-  const tail = result.bodyFlow.splice(-1 - section.blocks.length);
-  assert.deepEqual(tail.map((b: any) => strip(b.text)), [item.section.heading, ...item.section.blocks.map(b => b.text)], slug);
-  assert.equal(result.updatedLine, reviewed.updatedLine, slug);
+  if (result.bodyFlow) {
+    const tail = result.bodyFlow.splice(-1 - section.blocks.length);
+    assert.deepEqual(tail.map((b: any) => strip(b.text)), [item.section.heading, ...item.section.blocks.map(b => b.text)], slug);
+  }
+  assert.equal(result.updatedLine, item.priorUpdatedLine ? release.updatedLine : null, slug);
   result.updatedLine = item.priorUpdatedLine;
-  const originalDate = item.priorUpdatedLine.match(/(\d+)\.(\d+)\.(\d+)$/);
-  assert.ok(originalDate, slug);
+  const originalDate = item.priorUpdatedLine?.match(/(\d+)\.(\d+)\.(\d+)$/);
   for (const node of result.jsonLd?.['@graph'] || []) {
-    if (['WebPage', 'LearningResource'].includes(node['@type']) && node.dateModified === reviewed.date) {
+    if (['WebPage', 'LearningResource'].includes(node['@type']) && node.dateModified === release.date) {
+      assert.ok(originalDate, slug);
       node.dateModified = [originalDate[3], originalDate[2].padStart(2, '0'), originalDate[1].padStart(2, '0')].join('-');
     }
   }
