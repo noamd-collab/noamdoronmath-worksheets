@@ -330,7 +330,11 @@ const protectedFiles: Record<string, string> = {
   // HeroLoop.astro is the homepage shell (which loops are emitted). The engine
   // above stays byte-identical; the home hero may lazy-load existing loops.
   // One readout line only: S = (a · h) : 2 school notation, PR #40 via PR #41.
-  'src/components/TriangleAreaExplorer.astro': 'b2760424b5735dcf4340e5fe95aa306d19e2dd7043e841c5d12092c0fa6a01b6',
+  // 2026-11-21 accessibility round: the apex handle becomes a focusable slider and
+  // three 44 px buttons move it, so the explorer also works without a pointer. The
+  // drawing, the readout line and the maths are untouched; triangle-explorer tests
+  // cover the new routes. Reviewed on purpose, not a design regen.
+  'src/components/TriangleAreaExplorer.astro': '6ac6caf049461a1d9bd1ae170fc539d51997263fbbdeb247d7e29a3bc5fb8128',
   // Noam, 2026-11-15: WhatsApp group removed from homePage.ts, home-page.json and
   // learning.html; beforeWhatsappRemoval reverses only those reviewed hunks.
   'src/lib/homePage.ts': '26a884245860716a5b6dd3aa6189c9d07fcd99e21dc50fca8cf70116a3ba67fb',

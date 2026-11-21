@@ -47,6 +47,17 @@ body.exact-site {
 .exact-header .exact-nav-drop a.exact-nav-game--orange {color:#b85513;}
 .exact-header .exact-nav-drop a.exact-nav-game--green {color:#3f7f2a;}
 .exact-nav-drop a:focus-visible {outline:3px solid #2a7c7a;outline-offset:2px;}
+/* 44px tap targets (project rule). The header row is 90px tall on desktop and the
+   dropdown is a vertical stack, so real box height is used — never a hit overlay. */
+.exact-header nav[data-nav-panel] > a,
+.exact-header .exact-nav-tools__btn,
+.exact-header__learn {
+  display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;
+  min-height:44px;min-width:44px;
+}
+.exact-header .exact-nav-drop a {
+  display:flex;align-items:center;box-sizing:border-box;min-height:44px;
+}
 @media (hover:hover) {
   .exact-nav-tools:hover:not([data-shut]) .exact-nav-drop {opacity:1;visibility:visible;pointer-events:auto;}
 }
