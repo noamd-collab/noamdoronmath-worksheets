@@ -80,4 +80,33 @@ try{
   }
   assert.equal((await query("select relrowsecurity from pg_class where oid='public.noam_worksheet_edition_hints'::regclass"))[0].relrowsecurity,true);
  });
+
+ await test('three-digit migration preserves rows, grants and policies and is idempotent',async()=>{
+  const migration=await readFile(path.join(root,'supabase/migrations/20261120013000_edition_hints_three_digit_topics.sql'),'utf8');
+  const future={edition_id:'future-fixture',exercise_id:'G8-T142-A-Q01א',canonical_item_id:'future-q1a',source_pdf_hash:'9'.repeat(32)};
+  await assert.rejects(insert(future));
+  const snapshot=async()=>({
+   rows:await query('select * from public.noam_worksheet_edition_hints order by edition_id,exercise_id'),
+   policies:await query("select * from pg_policies where tablename='noam_worksheet_edition_hints' order by policyname"),
+   columns:await query("select * from information_schema.column_privileges where table_schema='public' and table_name='noam_worksheet_edition_hints' order by grantee,column_name,privilege_type"),
+   table:await query("select relrowsecurity,relacl from pg_class where oid='public.noam_worksheet_edition_hints'::regclass"),
+   constraints:await query("select conname,pg_get_constraintdef(oid) definition from pg_constraint where conrelid='public.noam_worksheet_edition_hints'::regclass and conname <> 'noam_worksheet_edition_hints_exercise_id_check' order by conname"),
+   historic:await oldState()
+  });
+  const before=await snapshot();
+  await db.exec(migration);assert.deepEqual(await snapshot(),before);
+  await db.exec(migration);assert.deepEqual(await snapshot(),before);
+  await insert(future);
+  for(const [i,id] of ['G7-T120-B-Q02ב','G9-T134-E-Q09ג','G8-T142-E2-Q01א'].entries())await insert({...future,exercise_id:id,canonical_item_id:'part-'+i});
+  for(const id of ['G8-T1-A-Q01א','G8-T1420-A-Q01א','G1-T142-A-Q01א','G6-T999-E-Q01א','G9-T001-A-Q01א','G0-T142-A-Q01א','G10-T142-A-Q01א','G8-T142-C-Q01א','G8-T142-A-Q1א','G8-T142-A-Q01א\n'])await assert.rejects(insert({...future,exercise_id:id,canonical_item_id:'invalid'}));
+  for(const role of ['anon','authenticated']){
+   await db.exec('set role '+role);
+   assert.equal((await query("select exercise_id from public.noam_worksheet_edition_hints where edition_id='future-fixture'")).length,0);
+   await denied("insert into public.noam_worksheet_edition_hints(edition_id) values('not-allowed')");
+  }
+  await db.exec('reset role');
+  await db.exec("alter table public.noam_worksheet_edition_hints drop constraint noam_worksheet_edition_hints_exercise_id_check;alter table public.noam_worksheet_edition_hints add constraint noam_worksheet_edition_hints_exercise_id_check check (char_length(exercise_id)>3)");
+  await assert.rejects(db.exec(migration),/Unexpected edition-hints/);await db.exec('rollback');
+  assert.ok((await query("select pg_get_constraintdef(oid) definition from pg_constraint where conrelid='public.noam_worksheet_edition_hints'::regclass and conname='noam_worksheet_edition_hints_exercise_id_check'"))[0].definition.includes('char_length'));
+ });
 }finally{await db.close();}

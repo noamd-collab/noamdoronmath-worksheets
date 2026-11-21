@@ -23,7 +23,7 @@
   function editionScope(manifest){
     if(!manifest||!EDITION.test(manifest.editionId||"")||manifest.editionId==="legacy"||
       manifest.geometryContract!=="measured-v1"||manifest.publishable!==true||manifest.reviewRequired!==false||
-      manifest.syntheticTestFixture===true||!/^G[1-9]-T\d{2}$/.test(manifest.prefix||"")||
+      manifest.syntheticTestFixture===true||!/^(?:G[1-9]-T[0-9]{2}|G[7-9]-T[1-9][0-9]{2})$(?![\s\S])/.test(manifest.prefix||"")||
       !/^(?:[ABE]|E2)$/.test(manifest.levelCode||"")||!/^[a-f0-9]{32}$/.test(manifest.pdfHash||"")||
       !SHA.test(manifest.sourceSha256||"")||!SHA.test(manifest.canonicalSourceSha256||"")||
       !Array.isArray(manifest.exercises)||!manifest.exercises.length){return null;}
