@@ -1,0 +1,2139 @@
+{
+  "schema": "noam-student-pdf-publication-evidence/v1",
+  "status": "REVIEWED_MEDIA_SITE_CANDIDATE_NOT_PUBLISHED",
+  "preparedDate": "2026-11-18",
+  "publicationMode": "pdf-only",
+  "sitePublicationClaimed": false,
+  "scope": {
+    "packages": 5,
+    "pdfs": 15,
+    "pages": 139,
+    "landingRoutes": 5
+  },
+  "baselineCommit": "6e94a9799e3b9102e89effca9308f210b671709b",
+  "baselineCatalogSha256": "d76a6961eaca4fda1c942fe7029e96e03862423bf33396f5289e091b2f963764",
+  "baselineRegistrySha256": "a31ca0a9104de110a830cacd811dd23ca9f88957bf3a31671093cea0a0e14c91",
+  "mediaReadback": {
+    "path": "submissions/Claude/MANAGER-20261116/batch-09/media-cdn-readback.json",
+    "sha256": "2b829a74ab29e479cb354cb9b52cfe83a116e7e25a23d36b0ee511f6865c61a5",
+    "reads": 30
+  },
+  "packages": [
+    {
+      "sheetId": "G7-SOL-01",
+      "producerPackage": "G7-T92",
+      "title": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח",
+      "author": "Astra",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "original independent review (Claude; the author is Astra) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/CLAUDE-INDEPENDENT-G7-SOL-01-20261116/review.json",
+          "sha256": "5971266b88a1990604b828a9c1172884f199140dbbc8d00756c0317f08d079ab"
+        }
+      ],
+      "track": "ז",
+      "grade": 7,
+      "topicId": 20,
+      "landing": "/solids-box-cube-prism-grade-7",
+      "editionId": "ms-20261118-sol-01-r1",
+      "label": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "f55d140f6b1a4dc2ad748cf517f330e4",
+          "pdfSha256": "b8cf86b5a1ae29ef9d6c9a09aeaf03ff9f94e4f2e0ac35e01ee5c28a3a913be9",
+          "sourceSha256": "d33e59c3a522e72f94994000f85aa9bb995c155b9ff5f7f213fd457ee6e071b2",
+          "nativeExportSha256": "48530698cbdb1f913287b372612928d9172330d3676278aaa0c3cbf1a2f76a8b",
+          "worksheetId": "ms-g7-sol-01-a-r1",
+          "revision": 1,
+          "pages": 10,
+          "bytes": 67870,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f55d140f6b1a4dc2ad748cf517f330e4.pdf",
+              "status": 200,
+              "sha256": "b8cf86b5a1ae29ef9d6c9a09aeaf03ff9f94e4f2e0ac35e01ee5c28a3a913be9",
+              "bytes": 67870,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f55d140f6b1a4dc2ad748cf517f330e4.pdf",
+              "status": 200,
+              "sha256": "b8cf86b5a1ae29ef9d6c9a09aeaf03ff9f94e4f2e0ac35e01ee5c28a3a913be9",
+              "bytes": 67870,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "df43b2fd2f1a403a9aa23a03546f8056",
+          "pdfSha256": "b09f90d8409cb304259f0bffd4c30239fd84504713583b0a2cc0968f294a80be",
+          "sourceSha256": "2ea1dc1d03a19487f37010ede128c63640a5eb2f1008692df97a30790c4e154c",
+          "nativeExportSha256": "ee195118f9a49a8e2f929e8257afc32e385e76931ab67482994429d6c43a5674",
+          "worksheetId": "ms-g7-sol-01-b-r1",
+          "revision": 1,
+          "pages": 10,
+          "bytes": 67203,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_df43b2fd2f1a403a9aa23a03546f8056.pdf",
+              "status": 200,
+              "sha256": "b09f90d8409cb304259f0bffd4c30239fd84504713583b0a2cc0968f294a80be",
+              "bytes": 67203,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_df43b2fd2f1a403a9aa23a03546f8056.pdf",
+              "status": 200,
+              "sha256": "b09f90d8409cb304259f0bffd4c30239fd84504713583b0a2cc0968f294a80be",
+              "bytes": 67203,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "2ef19184204d42f1872b63251560d7fc",
+          "pdfSha256": "286fa9eff549d678fbfece88ab139a96cdbded2f15579a75d07870139bf29ca5",
+          "sourceSha256": "bbd2076d40b03bc78077006e2e5ce38b31224d15dd21b0ad977ba403c46592b8",
+          "nativeExportSha256": "c47cdcd4a04022b7505a1ef40fd87170cf0536c550f21c1831367ff0e2d7fa04",
+          "worksheetId": "ms-g7-sol-01-c-r1",
+          "revision": 1,
+          "pages": 10,
+          "bytes": 67209,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_2ef19184204d42f1872b63251560d7fc.pdf",
+              "status": 200,
+              "sha256": "286fa9eff549d678fbfece88ab139a96cdbded2f15579a75d07870139bf29ca5",
+              "bytes": 67209,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_2ef19184204d42f1872b63251560d7fc.pdf",
+              "status": 200,
+              "sha256": "286fa9eff549d678fbfece88ab139a96cdbded2f15579a75d07870139bf29ca5",
+              "bytes": 67209,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G8-DAT-01",
+      "producerPackage": "G8-T96",
+      "title": "ארגון מידע, שכיחות יחסית, טווח ומדדי מרכז",
+      "author": "Google Antigravity (Gemini 4 Carbon High); fix r01 by Claude",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review of the published PDFs (Kimi Work; neither author nor fix author) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/KIMI-INDEPENDENT-G8-DAT-01-20261118/review.json",
+          "sha256": "2ab4491836f9139425d29823872561943c1a4d397077b25e6afc87bb0e91c4c8"
+        }
+      ],
+      "track": "ח",
+      "grade": 8,
+      "topicId": 67,
+      "landing": "/statistics-data-frequency-grade-8",
+      "editionId": "ms-20261118-g8-dat-01-r1",
+      "label": "ארגון מידע, שכיחות יחסית, טווח ומדדי מרכז · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "23c731fa942843519f2cfc1232e3d503",
+          "pdfSha256": "c44668dc4e00b7076b10c097a15ef75c23f9d98e41b15c1ebdc343dea67cb788",
+          "sourceSha256": "beac4b340b1ff58002711284219f3024476a157543f5bfbf14a7ebabe0238337",
+          "nativeExportSha256": "b81f50870f1131bbd7971664fac81f5882e1acf163000851804a2eef22ce0d0a",
+          "worksheetId": "ms-g8-dat-01-a-r1",
+          "revision": 1,
+          "pages": 10,
+          "bytes": 126617,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_23c731fa942843519f2cfc1232e3d503.pdf",
+              "status": 200,
+              "sha256": "c44668dc4e00b7076b10c097a15ef75c23f9d98e41b15c1ebdc343dea67cb788",
+              "bytes": 126617,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_23c731fa942843519f2cfc1232e3d503.pdf",
+              "status": 200,
+              "sha256": "c44668dc4e00b7076b10c097a15ef75c23f9d98e41b15c1ebdc343dea67cb788",
+              "bytes": 126617,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "b4226383875b4715b7a38203c2ab479a",
+          "pdfSha256": "43debd9c31c47f20e8e218582e8969e645de6f785673267ebd60367bf2b2b35e",
+          "sourceSha256": "fba1f88a4c2d78832f8f28a99af84a3dac0e7e0459af0e5ec54be61cd6e6c5f2",
+          "nativeExportSha256": "749dde264d9b9459337564e922f19e1837fd2d0dce2acedfbe18ef5459239eaa",
+          "worksheetId": "ms-g8-dat-01-b-r1",
+          "revision": 1,
+          "pages": 10,
+          "bytes": 126273,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b4226383875b4715b7a38203c2ab479a.pdf",
+              "status": 200,
+              "sha256": "43debd9c31c47f20e8e218582e8969e645de6f785673267ebd60367bf2b2b35e",
+              "bytes": 126273,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b4226383875b4715b7a38203c2ab479a.pdf",
+              "status": 200,
+              "sha256": "43debd9c31c47f20e8e218582e8969e645de6f785673267ebd60367bf2b2b35e",
+              "bytes": 126273,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "e416913b10484b6289d5479818749755",
+          "pdfSha256": "d1d959c3d719c425b714b1d587ca7333f6dc47d6c0a7e731dcc7475d9376d46d",
+          "sourceSha256": "8fdea6b3cc68d0f9592fe8149b993b95c7988a46f6533ae1680a4d1c1ae179fc",
+          "nativeExportSha256": "01e3380bbb2a5cc6e95654c1e34c1d6ac96071d799e8a05d1e9bb0a36c9a83a4",
+          "worksheetId": "ms-g8-dat-01-c-r1",
+          "revision": 1,
+          "pages": 13,
+          "bytes": 135855,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_e416913b10484b6289d5479818749755.pdf",
+              "status": 200,
+              "sha256": "d1d959c3d719c425b714b1d587ca7333f6dc47d6c0a7e731dcc7475d9376d46d",
+              "bytes": 135855,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_e416913b10484b6289d5479818749755.pdf",
+              "status": 200,
+              "sha256": "d1d959c3d719c425b714b1d587ca7333f6dc47d6c0a7e731dcc7475d9376d46d",
+              "bytes": 135855,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G8-RAT-01",
+      "producerPackage": "G8-T94",
+      "title": "יחס וחלוקה ביחס נתון, פרופורציה ויחס ישר וקנה מידה",
+      "author": "Google Antigravity (Gemini 4 Carbon High); fix r01 by Claude",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review of the published PDFs (Kimi Work; neither author nor fix author) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/KIMI-INDEPENDENT-G8-RAT-01-20261118/review.json",
+          "sha256": "d681126134fb74526514187e7cfa50c4c1c83ef6c3a6f1a6940ebd075313af22"
+        }
+      ],
+      "track": "ח",
+      "grade": 8,
+      "topicId": 4,
+      "landing": "/ratio-proportion-grade-8",
+      "editionId": "ms-20261118-rat-01-r1",
+      "label": "יחס וחלוקה ביחס נתון, פרופורציה וקנה מידה · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "eb5c82cdae23439192002a2ae5a09987",
+          "pdfSha256": "c888827e47c5cc329a7bf7c0cb72067a7e4ca50b7bc7b2c49696961b9f8b2998",
+          "sourceSha256": "ff099fe8f3dd2787ef0c41b934e3a2beceb0445ef3c5085c78c1979099376d76",
+          "nativeExportSha256": "6e2ded9e676ed97bbbd9f5539e134d7c2ab603296b80d7ebcf19f9685aee122f",
+          "worksheetId": "ms-g8-rat-01-a-r1",
+          "revision": 1,
+          "pages": 7,
+          "bytes": 68318,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_eb5c82cdae23439192002a2ae5a09987.pdf",
+              "status": 200,
+              "sha256": "c888827e47c5cc329a7bf7c0cb72067a7e4ca50b7bc7b2c49696961b9f8b2998",
+              "bytes": 68318,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_eb5c82cdae23439192002a2ae5a09987.pdf",
+              "status": 200,
+              "sha256": "c888827e47c5cc329a7bf7c0cb72067a7e4ca50b7bc7b2c49696961b9f8b2998",
+              "bytes": 68318,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "51ca7fa23d764c71adbbcaa24586e3c7",
+          "pdfSha256": "8e776b88352adb6a6df79080063b296d9664a29ea03776c5ce3bad8300b8870a",
+          "sourceSha256": "4e8024a64f5852feba1dee61dac10b17b1de13d4b1dcc0acd35ed60c65c951b7",
+          "nativeExportSha256": "bb4cbab21e1280301314a3c58670ceda008473a2c94a85edf728ec402ba3171b",
+          "worksheetId": "ms-g8-rat-01-b-r1",
+          "revision": 1,
+          "pages": 7,
+          "bytes": 64018,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_51ca7fa23d764c71adbbcaa24586e3c7.pdf",
+              "status": 200,
+              "sha256": "8e776b88352adb6a6df79080063b296d9664a29ea03776c5ce3bad8300b8870a",
+              "bytes": 64018,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_51ca7fa23d764c71adbbcaa24586e3c7.pdf",
+              "status": 200,
+              "sha256": "8e776b88352adb6a6df79080063b296d9664a29ea03776c5ce3bad8300b8870a",
+              "bytes": 64018,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "0ea79c5b38184007a3d7862c1339164b",
+          "pdfSha256": "94bfccbd90b7c79c697f0cb26cd6aeb5e922db8b7b60e43fe749783c8eb65ec3",
+          "sourceSha256": "6bfb7e1b052ab783254c5b7e9bbd9fa2fa0b8fb82762a8d75c53cd413ff93388",
+          "nativeExportSha256": "f0f41f58626084d748508aa61576e200c29dba816f09bd5e331b644fc2dc2a4b",
+          "worksheetId": "ms-g8-rat-01-c-r1",
+          "revision": 1,
+          "pages": 8,
+          "bytes": 70222,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_0ea79c5b38184007a3d7862c1339164b.pdf",
+              "status": 200,
+              "sha256": "94bfccbd90b7c79c697f0cb26cd6aeb5e922db8b7b60e43fe749783c8eb65ec3",
+              "bytes": 70222,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_0ea79c5b38184007a3d7862c1339164b.pdf",
+              "status": 200,
+              "sha256": "94bfccbd90b7c79c697f0cb26cd6aeb5e922db8b7b60e43fe749783c8eb65ec3",
+              "bytes": 70222,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ],
+      "gateWaiver": {
+        "gate": "G82-figref",
+        "result": "FAIL in the build report (levels a, b, c)",
+        "decision": "waived",
+        "reason": "The trigger is the word 'בסרטוט' inside the verbatim scale definition in the question 11 reminder, which has no figure; the independent reviewer judged it a false positive."
+      }
+    },
+    {
+      "sheetId": "G9-RHM-01",
+      "producerPackage": "G9-T81",
+      "title": "מעוין: תכונות, אלכסונים מאונכים ושטח עם משפט פיתגורס",
+      "author": "Google Antigravity (Carbon wave 5)",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review of the published PDFs (Kimi Work; not the author) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/KIMI-INDEPENDENT-G9-RHM-01-20261118/review.json",
+          "sha256": "e45676b2916d532599efdde62c43c91d322a971709c4ca7d2ea66a23f78898d9"
+        }
+      ],
+      "track": "ט_מצומצמת",
+      "grade": 9,
+      "topicId": 13,
+      "landing": "/rhombus-grade-9",
+      "editionId": "ms-20261118-rhm-01-r1",
+      "label": "ט׳ מצומצמת · מעוין: תכונות, אלכסונים ושטח עם משפט פיתגורס · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "7a2d0143a74942f187edb0e517722367",
+          "pdfSha256": "6071bcd72dc646f392c4f0f3e3a82e7e524f3470350f334f6181b8dfb60391f4",
+          "sourceSha256": "62532a08cc180f70ae0bf18c2daaf07dea6a9df9c92ad8ae536ffe86bba78073",
+          "nativeExportSha256": "bb64ed0482311c35274d0912d6d63ff8e4cf3482917a1a9765cc241d05b7a5da",
+          "worksheetId": "ms-g9-rhm-01-a-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 98165,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7a2d0143a74942f187edb0e517722367.pdf",
+              "status": 200,
+              "sha256": "6071bcd72dc646f392c4f0f3e3a82e7e524f3470350f334f6181b8dfb60391f4",
+              "bytes": 98165,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7a2d0143a74942f187edb0e517722367.pdf",
+              "status": 200,
+              "sha256": "6071bcd72dc646f392c4f0f3e3a82e7e524f3470350f334f6181b8dfb60391f4",
+              "bytes": 98165,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "0011a1c0893c4a0d84a92efb3d8f4dc8",
+          "pdfSha256": "ee457f36b8a2375399b4d69bd3342b342e4c667fa974b58ddee4fd24526512b7",
+          "sourceSha256": "9fe22d06fa94d8db442e098de63f9044085cadd52703e7edfe34020be6fb1d75",
+          "nativeExportSha256": "bf9a29a1013bba816f6c56d6ee2e7a79dc7201e92973e2461fb309f3f3c69747",
+          "worksheetId": "ms-g9-rhm-01-b-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 99374,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_0011a1c0893c4a0d84a92efb3d8f4dc8.pdf",
+              "status": 200,
+              "sha256": "ee457f36b8a2375399b4d69bd3342b342e4c667fa974b58ddee4fd24526512b7",
+              "bytes": 99374,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_0011a1c0893c4a0d84a92efb3d8f4dc8.pdf",
+              "status": 200,
+              "sha256": "ee457f36b8a2375399b4d69bd3342b342e4c667fa974b58ddee4fd24526512b7",
+              "bytes": 99374,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "fc1da3d14c5549d28f1f49411ca13fea",
+          "pdfSha256": "3407efffccd2fdae0a6b769e8c2d4277d3639e1aba190df53c9817979c109e32",
+          "sourceSha256": "b195bfe98f595f8158b3441de28bb82a84167b7ae79a0531c4009210539346fb",
+          "nativeExportSha256": "617b48889c7b28bd9a95e5581775a6e0f6543bc3e5f53a223a43a3447e3a519b",
+          "worksheetId": "ms-g9-rhm-01-c-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 103857,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_fc1da3d14c5549d28f1f49411ca13fea.pdf",
+              "status": 200,
+              "sha256": "3407efffccd2fdae0a6b769e8c2d4277d3639e1aba190df53c9817979c109e32",
+              "bytes": 103857,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_fc1da3d14c5549d28f1f49411ca13fea.pdf",
+              "status": 200,
+              "sha256": "3407efffccd2fdae0a6b769e8c2d4277d3639e1aba190df53c9817979c109e32",
+              "bytes": 103857,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sheetId": "G9-SQM-01",
+      "producerPackage": "G9-T84",
+      "title": "ריבוע: תכונות, אלכסונים, שטח ומשפט פיתגורס",
+      "author": "Google Antigravity (Carbon wave 5)",
+      "reviewVerdict": "PASS_STUDENT_PDF_ESSENTIALS",
+      "reviewReceipts": [
+        {
+          "role": "independent review of the published PDFs (Kimi Work; not the author) (verdict PASS_STUDENT_PDF_ESSENTIALS)",
+          "path": "reports/KIMI-INDEPENDENT-G9-SQM-01-20261118/review.json",
+          "sha256": "7f7cbb11cfffe02aaefdb77c3b7dd1c9df159670aa51c513ea475956cc3a75d3"
+        }
+      ],
+      "track": "ט_מצומצמת",
+      "grade": 9,
+      "topicId": 14,
+      "landing": "/square-grade-9",
+      "editionId": "ms-20261118-sqm-01-r1",
+      "label": "ט׳ מצומצמת · ריבוע: תכונות, אלכסונים, שטח ומשפט פיתגורס · PDF",
+      "isDefault": false,
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "334c469b45ec4819a94e1f7ea2dfcb36",
+          "pdfSha256": "6e617c57f71bf31eba278d47f25198b7382cf7858c41549e2be51fc4d1388f94",
+          "sourceSha256": "3cfd88b970883e66c997044511fe4f9a3418a8c22b018bc4b0e7a5ab92415f59",
+          "nativeExportSha256": "97402a00cbe0a5b88c2bf0998cbc8bd2694c332d5dc6df5f7b60115d818eb53e",
+          "worksheetId": "ms-g9-sqm-01-a-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 95934,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_334c469b45ec4819a94e1f7ea2dfcb36.pdf",
+              "status": 200,
+              "sha256": "6e617c57f71bf31eba278d47f25198b7382cf7858c41549e2be51fc4d1388f94",
+              "bytes": 95934,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_334c469b45ec4819a94e1f7ea2dfcb36.pdf",
+              "status": 200,
+              "sha256": "6e617c57f71bf31eba278d47f25198b7382cf7858c41549e2be51fc4d1388f94",
+              "bytes": 95934,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "ff70835c7aac44fc93237bcf0025886d",
+          "pdfSha256": "11d9e3eeecf61ca480881e0e21b59fe321e17b7b4dca36b301704c8412d4a8cd",
+          "sourceSha256": "c9b223d978d75c5c7adb0a3bba21d8d96a503ce1d174bb43ea1c53fd6cda1cc9",
+          "nativeExportSha256": "17beb201f9a81a22a4010813369819755c2471665fc57b10cf2ff7a62c3291af",
+          "worksheetId": "ms-g9-sqm-01-b-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 96576,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ff70835c7aac44fc93237bcf0025886d.pdf",
+              "status": 200,
+              "sha256": "11d9e3eeecf61ca480881e0e21b59fe321e17b7b4dca36b301704c8412d4a8cd",
+              "bytes": 96576,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ff70835c7aac44fc93237bcf0025886d.pdf",
+              "status": 200,
+              "sha256": "11d9e3eeecf61ca480881e0e21b59fe321e17b7b4dca36b301704c8412d4a8cd",
+              "bytes": 96576,
+              "matchesFrozenPdf": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "37d77b5f26ee4055ad294e15dc1f4c0c",
+          "pdfSha256": "00f0faedf4e2025b7bb2253fb6c8fb8503fb54ac0a61613e36fbb008bf2bc907",
+          "sourceSha256": "6e0a88a04d6bac8e0df3f5b6ecff371c9e8715a662b6dd954aad1848edd2ae49",
+          "nativeExportSha256": "c30e7eea9d5957bde6a28a5be24cd626dd0a59b6fc73ec97ab65915082e5ab61",
+          "worksheetId": "ms-g9-sqm-01-c-r1",
+          "revision": 1,
+          "pages": 9,
+          "bytes": 97256,
+          "downloadChecks": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_37d77b5f26ee4055ad294e15dc1f4c0c.pdf",
+              "status": 200,
+              "sha256": "00f0faedf4e2025b7bb2253fb6c8fb8503fb54ac0a61613e36fbb008bf2bc907",
+              "bytes": 97256,
+              "matchesFrozenPdf": true
+            },
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_37d77b5f26ee4055ad294e15dc1f4c0c.pdf",
+              "status": 200,
+              "sha256": "00f0faedf4e2025b7bb2253fb6c8fb8503fb54ac0a61613e36fbb008bf2bc907",
+              "bytes": 97256,
+              "matchesFrozenPdf": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "landingDeltas": [
+    {
+      "slug": "solids-box-cube-prism-grade-7",
+      "grade": 7,
+      "topicId": 20,
+      "editionIds": [
+        "ms-20261118-sol-01-r1"
+      ],
+      "baselineSha256": "ffa7b9e64342da0955f9f9596fdb1eb60f9d3605033f5be02f45458624667c62",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "נפח תיבה = אורך×רוחב×גובה. בקובייה: נפח = צלע³. במנסרה משולשת, הנפח הוא שטח הבסיס המשולש כפול גובה המנסרה. שטח הפנים הוא סכום שטחי כל הפאות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תיבה 2×3×4: נפח 24. קובייה צלע 3: נפח 27.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: לערבב בין שטח פנים לנפח, או לשכוח פאה בפריסה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קובייה צלע 5. מה הנפח?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 125.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מנסרה משולשת ישרה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מכירים את המבנה של מנסרה משולשת ישרה: שני בסיסים משולשים זהים ושלוש פאות מלבניות, ומבחינים בין גובה המשולש שבבסיס לבין גובה המנסרה. מחשבים את שטח הבסיס, את הנפח, את שטח המעטפת ואת שטח הפנים הכולל, וקוראים מידות מתוך פריסה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות כותבים ביטויים אלגבריים לנפח ולשטח הפנים, עובדים עם בסיס משולש שמשורטט במערכת צירים, ומוצאים פי כמה גדלים השטח והנפח כשכל המקצועות ארוכים פי 2 או פי 3. בסוף משרטטים פריסה לפי תיאור במילים. ברמה ב׳ ובמצוינות מחשבים גם בכיוון ההפוך: מוצאים את גובה המנסרה או את הנעלם מתוך נפח או שטח נתונים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "נפח תיבה = אורך×רוחב×גובה. בקובייה: נפח = צלע³. במנסרה משולשת, הנפח הוא שטח הבסיס המשולש כפול גובה המנסרה. שטח הפנים הוא סכום שטחי כל הפאות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תיבה 2×3×4: נפח 24. קובייה צלע 3: נפח 27.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "טעות נפוצה: לערבב בין שטח פנים לנפח, או לשכוח פאה בפריסה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קובייה צלע 5. מה הנפח?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 125.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מנסרה משולשת ישרה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מכירים את המבנה של מנסרה משולשת ישרה: שני בסיסים משולשים זהים ושלוש פאות מלבניות, ומבחינים בין גובה המשולש שבבסיס לבין גובה המנסרה. מחשבים את שטח הבסיס, את הנפח, את שטח המעטפת ואת שטח הפנים הכולל, וקוראים מידות מתוך פריסה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות כותבים ביטויים אלגבריים לנפח ולשטח הפנים, עובדים עם בסיס משולש שמשורטט במערכת צירים, ומוצאים פי כמה גדלים השטח והנפח כשכל המקצועות ארוכים פי 2 או פי 3. בסוף משרטטים פריסה לפי תיאור במילים. ברמה ב׳ ובמצוינות מחשבים גם בכיוון ההפוך: מוצאים את גובה המנסרה או את הנעלם מתוך נפח או שטח נתונים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מזהים את המבנה של תיבה וקובייה, מתאימים בין גוף לפריסה שלו ומחשבים שטח פנים ונפח של תיבה וקובייה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בשאלות השילוב עוברים מפריסה לתיבה ובונים גופים מקוביות, ומבחינים בין ס״מ, סמ״ר וסמ״ק.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "מזהים מבנה ופריסה, מחשבים נפח ושטח פנים של תיבה, קובייה ומנסרה משולשת. בנושא מנסרה משולשת נוספו קובצי PDF על מבנה, פריסה, שטח פנים ונפח של מנסרה משולשת ישרה, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "מנסרה משולשת — שטח פנים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=48",
+              "catalogTopicId": 48
+            },
+            {
+              "type": "cta",
+              "label": "מנסרה משולשת — נפח — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=47",
+              "catalogTopicId": 47
+            },
+            {
+              "type": "cta",
+              "label": "תיבה וקובייה — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=20",
+              "catalogTopicId": 20
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "נפח תיבה = אורך×רוחב×גובה. בקובייה: נפח = צלע³. במנסרה משולשת, הנפח הוא שטח הבסיס המשולש כפול גובה המנסרה. שטח הפנים הוא סכום שטחי כל הפאות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תיבה 2×3×4: נפח 24. קובייה צלע 3: נפח 27.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: לערבב בין שטח פנים לנפח, או לשכוח פאה בפריסה.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "קובייה צלע 5. מה הנפח?",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מנסרה משולשת ישרה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מכירים את המבנה של מנסרה משולשת ישרה: שני בסיסים משולשים זהים ושלוש פאות מלבניות, ומבחינים בין גובה המשולש שבבסיס לבין גובה המנסרה. מחשבים את שטח הבסיס, את הנפח, את שטח המעטפת ואת שטח הפנים הכולל, וקוראים מידות מתוך פריסה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל הרמות כותבים ביטויים אלגבריים לנפח ולשטח הפנים, עובדים עם בסיס משולש שמשורטט במערכת צירים, ומוצאים פי כמה גדלים השטח והנפח כשכל המקצועות ארוכים פי 2 או פי 3. בסוף משרטטים פריסה לפי תיאור במילים. ברמה ב׳ ובמצוינות מחשבים גם בכיוון ההפוך: מוצאים את גובה המנסרה או את הנעלם מתוך נפח או שטח נתונים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "מזהים מבנה ופריסה, מחשבים נפח ושטח פנים של תיבה, קובייה ומנסרה משולשת. בנושא מנסרה משולשת נוספו קובצי PDF על מבנה, פריסה, שטח פנים ונפח של מנסרה משולשת ישרה, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "מנסרה משולשת — שטח פנים — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=48",
+              "catalogTopicId": 48
+            },
+            {
+              "type": "cta",
+              "label": "מנסרה משולשת — נפח — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=47",
+              "catalogTopicId": 47
+            },
+            {
+              "type": "cta",
+              "label": "תיבה וקובייה — בחירת דף ורמה",
+              "href": "/worksheets?grade=7&topic=20",
+              "catalogTopicId": 20
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "נפח תיבה = אורך×רוחב×גובה. בקובייה: נפח = צלע³. במנסרה משולשת, הנפח הוא שטח הבסיס המשולש כפול גובה המנסרה. שטח הפנים הוא סכום שטחי כל הפאות.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תיבה 2×3×4: נפח 24. קובייה צלע 3: נפח 27.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "טעות נפוצה: לערבב בין שטח פנים לנפח, או לשכוח פאה בפריסה.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "קובייה צלע 5. מה הנפח?",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מנסרה משולשת ישרה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מכירים את המבנה של מנסרה משולשת ישרה: שני בסיסים משולשים זהים ושלוש פאות מלבניות, ומבחינים בין גובה המשולש שבבסיס לבין גובה המנסרה. מחשבים את שטח הבסיס, את הנפח, את שטח המעטפת ואת שטח הפנים הכולל, וקוראים מידות מתוך פריסה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל הרמות כותבים ביטויים אלגבריים לנפח ולשטח הפנים, עובדים עם בסיס משולש שמשורטט במערכת צירים, ומוצאים פי כמה גדלים השטח והנפח כשכל המקצועות ארוכים פי 2 או פי 3. בסוף משרטטים פריסה לפי תיאור במילים. ברמה ב׳ ובמצוינות מחשבים גם בכיוון ההפוך: מוצאים את גובה המנסרה או את הנעלם מתוך נפח או שטח נתונים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מזהים את המבנה של תיבה וקובייה, מתאימים בין גוף לפריסה שלו ומחשבים שטח פנים ונפח של תיבה וקובייה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בשאלות השילוב עוברים מפריסה לתיבה ובונים גופים מקוביות, ומבחינים בין ס״מ, סמ״ר וסמ״ק.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מזהים את המבנה של תיבה וקובייה, מתאימים בין גוף לפריסה שלו ומחשבים שטח פנים ונפח של תיבה וקובייה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בשאלות השילוב עוברים מפריסה לתיבה ובונים גופים מקוביות, ומבחינים בין ס״מ, סמ״ר וסמ״ק.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "statistics-data-frequency-grade-8",
+      "grade": 8,
+      "topicId": 67,
+      "editionIds": [
+        "ms-20261118-g8-dat-01-r1"
+      ],
+      "baselineSha256": "9b579f57bb015bf38324b1de5167c0a22f6a267f5adc38a07409133e998e09cc",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "איסוף מידע: שואלים שאלה בסקר, סופרים או מודדים, ורושמים את כל התשובות. כדי להסיק מסקנה על כל האוכלוסייה, הקבוצה שנשאלה צריכה לייצג אותה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שכיחות היא מספר הפעמים שערך מסוים מופיע בנתונים. בטבלת שכיחות רושמים כל ערך, מסמנים סימני ספירה וכותבים את השכיחות. סכום כל השכיחויות שווה למספר כל הנתונים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שכיחות יחסית היא השכיחות של הערך חלקי מספר כל הנתונים: ⟨השכיחות של הערך¦מספר כל הנתונים⟩. כותבים אותה כשבר מצומצם או באחוזים, וסכום כל השכיחויות היחסיות הוא 100%.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בסקר השתתפו 24 תלמידים. 9 הגיעו לבית הספר ברגל, 7 באוטובוס, 5 ברכב ו־3 באופניים. השכיחות של ״ברגל״ היא 9, והשכיחות היחסית היא ⟨9¦24⟩ = ⟨3¦8⟩, כלומר 37.5%.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קריאת מידע: בדיאגרמת עמודות גובה העמודה הוא השכיחות. בדיאגרמת תמונות בודקים במקרא כמה מייצג כל ציור. בדיאגרמת עוגה כל גזרה מראה שכיחות יחסית, ובדיאגרמת קו קוראים איך ערך משתנה לאורך זמן.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מחלקים במספר הערכים השונים במקום במספר כל הנתונים. בדוגמה מחלקים ב־24 תלמידים, לא ב־4 דרכי הגעה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מסיקים על כל בית הספר מסקר שנערך רק בשכונה אחת. קבוצה שאינה מייצגת לא מאפשרת להסיק על כולם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כשמספר הנתונים משתנה, גם השכיחות היחסית משתנה, אפילו אם השכיחות עצמה נשארה כמו שהייתה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתוך 60 תלמידים, 15 משתתפים בחוג רובוטיקה. מהי השכיחות היחסית של רובוטיקה, כשבר מצומצם ובאחוזים?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא ⟨1¦4⟩, כלומר 25%, כי ⟨15¦60⟩ = ⟨1¦4⟩.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "איסוף מידע: שואלים שאלה בסקר, סופרים או מודדים, ורושמים את כל התשובות. כדי להסיק מסקנה על כל האוכלוסייה, הקבוצה שנשאלה צריכה לייצג אותה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שכיחות היא מספר הפעמים שערך מסוים מופיע בנתונים. בטבלת שכיחות רושמים כל ערך, מסמנים סימני ספירה וכותבים את השכיחות. סכום כל השכיחויות שווה למספר כל הנתונים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שכיחות יחסית היא השכיחות של הערך חלקי מספר כל הנתונים: ⟨השכיחות של הערך¦מספר כל הנתונים⟩. כותבים אותה כשבר מצומצם או באחוזים, וסכום כל השכיחויות היחסיות הוא 100%.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בסקר השתתפו 24 תלמידים. 9 הגיעו לבית הספר ברגל, 7 באוטובוס, 5 ברכב ו־3 באופניים. השכיחות של ״ברגל״ היא 9, והשכיחות היחסית היא ⟨9¦24⟩ = ⟨3¦8⟩, כלומר 37.5%.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "קריאת מידע: בדיאגרמת עמודות גובה העמודה הוא השכיחות. בדיאגרמת תמונות בודקים במקרא כמה מייצג כל ציור. בדיאגרמת עוגה כל גזרה מראה שכיחות יחסית, ובדיאגרמת קו קוראים איך ערך משתנה לאורך זמן.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מחלקים במספר הערכים השונים במקום במספר כל הנתונים. בדוגמה מחלקים ב־24 תלמידים, לא ב־4 דרכי הגעה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מסיקים על כל בית הספר מסקר שנערך רק בשכונה אחת. קבוצה שאינה מייצגת לא מאפשרת להסיק על כולם.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כשמספר הנתונים משתנה, גם השכיחות היחסית משתנה, אפילו אם השכיחות עצמה נשארה כמו שהייתה.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מתוך 60 תלמידים, 15 משתתפים בחוג רובוטיקה. מהי השכיחות היחסית של רובוטיקה, כשבר מצומצם ובאחוזים?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא ⟨1¦4⟩, כלומר 25%, כי ⟨15¦60⟩ = ⟨1¦4⟩.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "ארגון מידע, שכיחות יחסית, טווח ומדדי מרכז — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "קוראים ומסרטטים גרפי שכיחויות במערכת צירים, עובדים עם טבלאות שכיחויות ומחשבים שכיחות יחסית, טווח ומדדי מרכז: ממוצע, חציון ושכיח.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מוצאים שכיחויות חסרות מתוך שכיחות יחסית או ממוצע נתונים, ובשאלות השילוב מחברים בין גרף או טבלת שכיחויות לבין שכיחות יחסית, טווח ומדדי מרכז.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לאסוף מידע בסקר, לקרוא דיאגרמות עמודות, קו, תמונות ועוגה, לסדר נתונים בטבלת שכיחות ולחשב שכיחות יחסית כשבר וכאחוז. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם דף תשובות בסוף כל דף, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=67",
+              "catalogTopicId": 67
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "איסוף מידע: שואלים שאלה בסקר, סופרים או מודדים, ורושמים את כל התשובות. כדי להסיק מסקנה על כל האוכלוסייה, הקבוצה שנשאלה צריכה לייצג אותה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שכיחות היא מספר הפעמים שערך מסוים מופיע בנתונים. בטבלת שכיחות רושמים כל ערך, מסמנים סימני ספירה וכותבים את השכיחות. סכום כל השכיחויות שווה למספר כל הנתונים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שכיחות יחסית היא השכיחות של הערך חלקי מספר כל הנתונים: ⟨השכיחות של הערך¦מספר כל הנתונים⟩. כותבים אותה כשבר מצומצם או באחוזים, וסכום כל השכיחויות היחסיות הוא 100%.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בסקר השתתפו 24 תלמידים. 9 הגיעו לבית הספר ברגל, 7 באוטובוס, 5 ברכב ו־3 באופניים. השכיחות של ״ברגל״ היא 9, והשכיחות היחסית היא ⟨9¦24⟩ = ⟨3¦8⟩, כלומר 37.5%.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "קריאת מידע: בדיאגרמת עמודות גובה העמודה הוא השכיחות. בדיאגרמת תמונות בודקים במקרא כמה מייצג כל ציור. בדיאגרמת עוגה כל גזרה מראה שכיחות יחסית, ובדיאגרמת קו קוראים איך ערך משתנה לאורך זמן.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "מחלקים במספר הערכים השונים במקום במספר כל הנתונים. בדוגמה מחלקים ב־24 תלמידים, לא ב־4 דרכי הגעה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מסיקים על כל בית הספר מסקר שנערך רק בשכונה אחת. קבוצה שאינה מייצגת לא מאפשרת להסיק על כולם.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כשמספר הנתונים משתנה, גם השכיחות היחסית משתנה, אפילו אם השכיחות עצמה נשארה כמו שהייתה.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתוך 60 תלמידים, 15 משתתפים בחוג רובוטיקה. מהי השכיחות היחסית של רובוטיקה, כשבר מצומצם ובאחוזים?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התשובה היא ⟨1¦4⟩, כלומר 25%, כי ⟨15¦60⟩ = ⟨1¦4⟩.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לאסוף מידע בסקר, לקרוא דיאגרמות עמודות, קו, תמונות ועוגה, לסדר נתונים בטבלת שכיחות ולחשב שכיחות יחסית כשבר וכאחוז. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם דף תשובות בסוף כל דף, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=67",
+              "catalogTopicId": 67
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "איסוף מידע: שואלים שאלה בסקר, סופרים או מודדים, ורושמים את כל התשובות. כדי להסיק מסקנה על כל האוכלוסייה, הקבוצה שנשאלה צריכה לייצג אותה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שכיחות היא מספר הפעמים שערך מסוים מופיע בנתונים. בטבלת שכיחות רושמים כל ערך, מסמנים סימני ספירה וכותבים את השכיחות. סכום כל השכיחויות שווה למספר כל הנתונים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שכיחות יחסית היא השכיחות של הערך חלקי מספר כל הנתונים: ⟨השכיחות של הערך¦מספר כל הנתונים⟩. כותבים אותה כשבר מצומצם או באחוזים, וסכום כל השכיחויות היחסיות הוא 100%.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: בסקר השתתפו 24 תלמידים. 9 הגיעו לבית הספר ברגל, 7 באוטובוס, 5 ברכב ו־3 באופניים. השכיחות של ״ברגל״ היא 9, והשכיחות היחסית היא ⟨9¦24⟩ = ⟨3¦8⟩, כלומר 37.5%.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "קריאת מידע: בדיאגרמת עמודות גובה העמודה הוא השכיחות. בדיאגרמת תמונות בודקים במקרא כמה מייצג כל ציור. בדיאגרמת עוגה כל גזרה מראה שכיחות יחסית, ובדיאגרמת קו קוראים איך ערך משתנה לאורך זמן.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "מחלקים במספר הערכים השונים במקום במספר כל הנתונים. בדוגמה מחלקים ב־24 תלמידים, לא ב־4 דרכי הגעה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מסיקים על כל בית הספר מסקר שנערך רק בשכונה אחת. קבוצה שאינה מייצגת לא מאפשרת להסיק על כולם.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כשמספר הנתונים משתנה, גם השכיחות היחסית משתנה, אפילו אם השכיחות עצמה נשארה כמו שהייתה.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "מתוך 60 תלמידים, 15 משתתפים בחוג רובוטיקה. מהי השכיחות היחסית של רובוטיקה, כשבר מצומצם ובאחוזים?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התשובה היא ⟨1¦4⟩, כלומר 25%, כי ⟨15¦60⟩ = ⟨1¦4⟩.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "ארגון מידע, שכיחות יחסית, טווח ומדדי מרכז — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "קוראים ומסרטטים גרפי שכיחויות במערכת צירים, עובדים עם טבלאות שכיחויות ומחשבים שכיחות יחסית, טווח ומדדי מרכז: ממוצע, חציון ושכיח.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מוצאים שכיחויות חסרות מתוך שכיחות יחסית או ממוצע נתונים, ובשאלות השילוב מחברים בין גרף או טבלת שכיחויות לבין שכיחות יחסית, טווח ומדדי מרכז.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 9.11.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 18.11.2026"
+        }
+      ],
+      "appendedSection": {
+        "heading": "ארגון מידע, שכיחות יחסית, טווח ומדדי מרכז — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "קוראים ומסרטטים גרפי שכיחויות במערכת צירים, עובדים עם טבלאות שכיחויות ומחשבים שכיחות יחסית, טווח ומדדי מרכז: ממוצע, חציון ושכיח.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מוצאים שכיחויות חסרות מתוך שכיחות יחסית או ממוצע נתונים, ובשאלות השילוב מחברים בין גרף או טבלת שכיחויות לבין שכיחות יחסית, טווח ומדדי מרכז.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "ratio-proportion-grade-8",
+      "grade": 8,
+      "topicId": 4,
+      "editionIds": [
+        "ms-20261118-rat-01-r1"
+      ],
+      "baselineSha256": "b4cba1d15e4f3ae5f3c8d4208fae30215f37db69cbfa388ecbdbb7e7298d965a",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "יחס משווה בין שני גדלים או יותר. היחס 6 : 9 שקול ל־2 : 3, כי מחלקים את שני הרכיבים ב־3. יחס מצומצם הוא יחס שלרכיביו אין גורם משותף גדול מ־1.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כדי לחלק כמות לפי יחס סופרים כמה חלקים יש בסך הכול, מוצאים כמה שווה חלק אחד, וכופלים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: מחלקים 117 ק״ג ביחס 7 : 6. יש 7 + 6 = 13 חלקים, וכל חלק הוא 117 : 13 = 9 ק״ג. החלקים הם 63 ק״ג ו־54 ק״ג, ובבדיקה 63 + 54 = 117.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מחלקים את הכמות במספר הרכיבים ולא במספר החלקים. ביחס 7 : 6 יש 13 חלקים, לא 2.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מניחים שיחס נותן כמות. היחס 2 : 7 בין מבוגרים לילדים לא אומר כמה ילדים יש, עד שיודעים כמות אחת לפחות.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "היחס בין האורך לרוחב של מלבן הוא 5 : 3, והיקפו 48 ס״מ. מה האורך ומה הרוחב?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא 15 ס״מ ו־9 ס״מ: חצי ההיקף הוא 24, יש 8 חלקים, וכל חלק 3 ס״מ.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "יחס משווה בין שני גדלים או יותר. היחס 6 : 9 שקול ל־2 : 3, כי מחלקים את שני הרכיבים ב־3. יחס מצומצם הוא יחס שלרכיביו אין גורם משותף גדול מ־1.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "כדי לחלק כמות לפי יחס סופרים כמה חלקים יש בסך הכול, מוצאים כמה שווה חלק אחד, וכופלים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: מחלקים 117 ק״ג ביחס 7 : 6. יש 7 + 6 = 13 חלקים, וכל חלק הוא 117 : 13 = 9 ק״ג. החלקים הם 63 ק״ג ו־54 ק״ג, ובבדיקה 63 + 54 = 117.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מחלקים את הכמות במספר הרכיבים ולא במספר החלקים. ביחס 7 : 6 יש 13 חלקים, לא 2.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מניחים שיחס נותן כמות. היחס 2 : 7 בין מבוגרים לילדים לא אומר כמה ילדים יש, עד שיודעים כמות אחת לפחות.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "היחס בין האורך לרוחב של מלבן הוא 5 : 3, והיקפו 48 ס״מ. מה האורך ומה הרוחב?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "התשובה היא 15 ס״מ ו־9 ס״מ: חצי ההיקף הוא 24, יש 8 חלקים, וכל חלק 3 ס״מ.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "יחס, פרופורציה וקנה מידה — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מצמצמים יחסים, מחלקים כמות ביחס נתון ופותרים פרופורציות ובעיות של יחס ישר.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מחשבים מרחקים ואורכים לפי קנה מידה במפות, בסרטוטים ובמודלים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לצמצם יחס, לבנות יחסים שקולים, לחלק כמות לפי יחס נתון ולפתור בעיות שבהן יחס משולב בשטח, בהיקף או בכמויות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=4",
+              "catalogTopicId": 4
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "יחס משווה בין שני גדלים או יותר. היחס 6 : 9 שקול ל־2 : 3, כי מחלקים את שני הרכיבים ב־3. יחס מצומצם הוא יחס שלרכיביו אין גורם משותף גדול מ־1.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כדי לחלק כמות לפי יחס סופרים כמה חלקים יש בסך הכול, מוצאים כמה שווה חלק אחד, וכופלים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: מחלקים 117 ק״ג ביחס 7 : 6. יש 7 + 6 = 13 חלקים, וכל חלק הוא 117 : 13 = 9 ק״ג. החלקים הם 63 ק״ג ו־54 ק״ג, ובבדיקה 63 + 54 = 117.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "מחלקים את הכמות במספר הרכיבים ולא במספר החלקים. ביחס 7 : 6 יש 13 חלקים, לא 2.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מניחים שיחס נותן כמות. היחס 2 : 7 בין מבוגרים לילדים לא אומר כמה ילדים יש, עד שיודעים כמות אחת לפחות.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "היחס בין האורך לרוחב של מלבן הוא 5 : 3, והיקפו 48 ס״מ. מה האורך ומה הרוחב?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התשובה היא 15 ס״מ ו־9 ס״מ: חצי ההיקף הוא 24, יש 8 חלקים, וכל חלק 3 ס״מ.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לצמצם יחס, לבנות יחסים שקולים, לחלק כמות לפי יחס נתון ולפתור בעיות שבהן יחס משולב בשטח, בהיקף או בכמויות. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=8&topic=4",
+              "catalogTopicId": 4
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "יחס משווה בין שני גדלים או יותר. היחס 6 : 9 שקול ל־2 : 3, כי מחלקים את שני הרכיבים ב־3. יחס מצומצם הוא יחס שלרכיביו אין גורם משותף גדול מ־1.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "כדי לחלק כמות לפי יחס סופרים כמה חלקים יש בסך הכול, מוצאים כמה שווה חלק אחד, וכופלים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: מחלקים 117 ק״ג ביחס 7 : 6. יש 7 + 6 = 13 חלקים, וכל חלק הוא 117 : 13 = 9 ק״ג. החלקים הם 63 ק״ג ו־54 ק״ג, ובבדיקה 63 + 54 = 117.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "מחלקים את הכמות במספר הרכיבים ולא במספר החלקים. ביחס 7 : 6 יש 13 חלקים, לא 2.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מניחים שיחס נותן כמות. היחס 2 : 7 בין מבוגרים לילדים לא אומר כמה ילדים יש, עד שיודעים כמות אחת לפחות.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "היחס בין האורך לרוחב של מלבן הוא 5 : 3, והיקפו 48 ס״מ. מה האורך ומה הרוחב?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "התשובה היא 15 ס״מ ו־9 ס״מ: חצי ההיקף הוא 24, יש 8 חלקים, וכל חלק 3 ס״מ.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "יחס, פרופורציה וקנה מידה — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "מצמצמים יחסים, מחלקים כמות ביחס נתון ופותרים פרופורציות ובעיות של יחס ישר.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מחשבים מרחקים ואורכים לפי קנה מידה במפות, בסרטוטים ובמודלים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        },
+        {
+          "path": [
+            "updatedLine"
+          ],
+          "existedBefore": true,
+          "before": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+          "after": "נועם דורון מתמטיקה · עודכן 18.11.2026"
+        }
+      ],
+      "appendedSection": {
+        "heading": "יחס, פרופורציה וקנה מידה — דפי PDF נוספים",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מצמצמים יחסים, מחלקים כמות ביחס נתון ופותרים פרופורציות ובעיות של יחס ישר.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מחשבים מרחקים ואורכים לפי קנה מידה במפות, בסרטוטים ובמודלים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "rhombus-grade-9",
+      "grade": 9,
+      "topicId": 13,
+      "editionIds": [
+        "ms-20261118-rhm-01-r1"
+      ],
+      "baselineSha256": "5e12828423ea2adfe2a074862f50d9dfe8dfef21879d1f6f06da418f360733f7",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במעוין כל הצלעות שוות. האלכסונים מאונכים זה לזה, חוצים זה את זה וחוצים את זוויות המעוין.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: אם אחת מזוויות המעוין היא 70°, הזווית הנגדית לה היא 70° וכל זווית סמוכה היא 110°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אלכסונים מאונכים לבדם אינם מוכיחים שמרובע הוא מעוין. חשוב להשתמש בנתון המתאים ובמשפט ההפוך הנכון.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במעוין זווית אחת היא 112°. מהן מידות שלוש הזוויות האחרות?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: הזווית הנגדית היא 112° ושתי הזוויות הסמוכות הן 68°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מעוין: תכונות ומשפטים הפוכים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים כדי לחשב אורכים, זוויות, היקף ושטח של מעוין. בעזרת המשפטים ההפוכים קובעים מתי מרובע או מקבילית הם מעוין: מרובע שכל ארבע צלעותיו שוות, או מקבילית שיש בה שתי צלעות סמוכות שוות, אלכסונים מאונכים או אלכסון שחוצה זווית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות יש שאלות במערכת צירים משובצת: מוצאים את נקודת החיתוך של האלכסונים ואת אמצעי האלכסונים, ומחשבים אורכים ושטח. בכל הרמות משרטטים גם סקיצה לפי נתונים. ברמה ב׳ ובמצוינות חלק מהנתונים הם ביטויים אלגבריים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במעוין כל הצלעות שוות. האלכסונים מאונכים זה לזה, חוצים זה את זה וחוצים את זוויות המעוין.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: אם אחת מזוויות המעוין היא 70°, הזווית הנגדית לה היא 70° וכל זווית סמוכה היא 110°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "אלכסונים מאונכים לבדם אינם מוכיחים שמרובע הוא מעוין. חשוב להשתמש בנתון המתאים ובמשפט ההפוך הנכון.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "במעוין זווית אחת היא 112°. מהן מידות שלוש הזוויות האחרות?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: הזווית הנגדית היא 112° ושתי הזוויות הסמוכות הן 68°.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מעוין: תכונות ומשפטים הפוכים — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים כדי לחשב אורכים, זוויות, היקף ושטח של מעוין. בעזרת המשפטים ההפוכים קובעים מתי מרובע או מקבילית הם מעוין: מרובע שכל ארבע צלעותיו שוות, או מקבילית שיש בה שתי צלעות סמוכות שוות, אלכסונים מאונכים או אלכסון שחוצה זווית.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות יש שאלות במערכת צירים משובצת: מוצאים את נקודת החיתוך של האלכסונים ואת אמצעי האלכסונים, ומחשבים אורכים ושטח. בכל הרמות משרטטים גם סקיצה לפי נתונים. ברמה ב׳ ובמצוינות חלק מהנתונים הם ביטויים אלגבריים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "מעוין: תכונות, אלכסונים ושטח עם משפט פיתגורס — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים של המעוין, ובכך שהאלכסונים מאונכים זה לזה.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מחשבים שטח והיקף של מעוין, ובעזרת משפט פיתגורס מוצאים אורכים במשולשים ישרי־הזווית שיוצרים האלכסונים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "path": [
+            "bodyFlow"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לזהות מעוין, להשתמש בתכונות האלכסונים והזוויות ולפתור הוכחות גאומטריות. לצד הדפים הקיימים נוספו קובצי PDF לתכונות המעוין ולמשפטים ההפוכים, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=13",
+              "catalogTopicId": 13
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "במעוין כל הצלעות שוות. האלכסונים מאונכים זה לזה, חוצים זה את זה וחוצים את זוויות המעוין.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: אם אחת מזוויות המעוין היא 70°, הזווית הנגדית לה היא 70° וכל זווית סמוכה היא 110°.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "אלכסונים מאונכים לבדם אינם מוכיחים שמרובע הוא מעוין. חשוב להשתמש בנתון המתאים ובמשפט ההפוך הנכון.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "במעוין זווית אחת היא 112°. מהן מידות שלוש הזוויות האחרות?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: הזווית הנגדית היא 112° ושתי הזוויות הסמוכות הן 68°.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מעוין: תכונות ומשפטים הפוכים — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים כדי לחשב אורכים, זוויות, היקף ושטח של מעוין. בעזרת המשפטים ההפוכים קובעים מתי מרובע או מקבילית הם מעוין: מרובע שכל ארבע צלעותיו שוות, או מקבילית שיש בה שתי צלעות סמוכות שוות, אלכסונים מאונכים או אלכסון שחוצה זווית.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל הרמות יש שאלות במערכת צירים משובצת: מוצאים את נקודת החיתוך של האלכסונים ואת אמצעי האלכסונים, ומחשבים אורכים ושטח. בכל הרמות משרטטים גם סקיצה לפי נתונים. ברמה ב׳ ובמצוינות חלק מהנתונים הם ביטויים אלגבריים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            }
+          ],
+          "after": [
+            {
+              "type": "paragraph",
+              "text": "לומדים לזהות מעוין, להשתמש בתכונות האלכסונים והזוויות ולפתור הוכחות גאומטריות. לצד הדפים הקיימים נוספו קובצי PDF לתכונות המעוין ולמשפטים ההפוכים, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+              "role": "intro"
+            },
+            {
+              "type": "cta",
+              "label": "פתיחת דפי העבודה ובחירת רמה",
+              "href": "/worksheets?grade=9&topic=13",
+              "catalogTopicId": 13
+            },
+            {
+              "type": "heading",
+              "text": "הסבר ודוגמה"
+            },
+            {
+              "type": "paragraph",
+              "text": "במעוין כל הצלעות שוות. האלכסונים מאונכים זה לזה, חוצים זה את זה וחוצים את זוויות המעוין.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "דוגמה: אם אחת מזוויות המעוין היא 70°, הזווית הנגדית לה היא 70° וכל זווית סמוכה היא 110°.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "טעויות נפוצות"
+            },
+            {
+              "type": "paragraph",
+              "text": "אלכסונים מאונכים לבדם אינם מוכיחים שמרובע הוא מעוין. חשוב להשתמש בנתון המתאים ובמשפט ההפוך הנכון.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "בדקו את עצמכם"
+            },
+            {
+              "type": "paragraph",
+              "text": "במעוין זווית אחת היא 112°. מהן מידות שלוש הזוויות האחרות?",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "תשובה: הזווית הנגדית היא 112° ושתי הזוויות הסמוכות הן 68°.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מעוין: תכונות ומשפטים הפוכים — דפי PDF נוספים"
+            },
+            {
+              "type": "paragraph",
+              "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים כדי לחשב אורכים, זוויות, היקף ושטח של מעוין. בעזרת המשפטים ההפוכים קובעים מתי מרובע או מקבילית הם מעוין: מרובע שכל ארבע צלעותיו שוות, או מקבילית שיש בה שתי צלעות סמוכות שוות, אלכסונים מאונכים או אלכסון שחוצה זווית.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "בכל הרמות יש שאלות במערכת צירים משובצת: מוצאים את נקודת החיתוך של האלכסונים ואת אמצעי האלכסונים, ומחשבים אורכים ושטח. בכל הרמות משרטטים גם סקיצה לפי נתונים. ברמה ב׳ ובמצוינות חלק מהנתונים הם ביטויים אלגבריים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+              "role": "body"
+            },
+            {
+              "type": "heading",
+              "text": "מעוין: תכונות, אלכסונים ושטח עם משפט פיתגורס — דפי PDF נוספים בט׳ מצומצמת"
+            },
+            {
+              "type": "paragraph",
+              "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים של המעוין, ובכך שהאלכסונים מאונכים זה לזה.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "מחשבים שטח והיקף של מעוין, ובעזרת משפט פיתגורס מוצאים אורכים במשולשים ישרי־הזווית שיוצרים האלכסונים.",
+              "role": "body"
+            },
+            {
+              "type": "paragraph",
+              "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+              "role": "body"
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "מעוין: תכונות, אלכסונים ושטח עם משפט פיתגורס — דפי PDF נוספים בט׳ מצומצמת",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים של המעוין, ובכך שהאלכסונים מאונכים זה לזה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מחשבים שטח והיקף של מעוין, ובעזרת משפט פיתגורס מוצאים אורכים במשולשים ישרי־הזווית שיוצרים האלכסונים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    },
+    {
+      "slug": "square-grade-9",
+      "grade": 9,
+      "topicId": 14,
+      "editionIds": [
+        "ms-20261118-sqm-01-r1"
+      ],
+      "baselineSha256": "68225de66fe6b36d22d0c0e6213da5e1f78c11b78b86ccc4fe0b60467ba0f98d",
+      "fields": [
+        {
+          "path": [
+            "sections"
+          ],
+          "existedBefore": true,
+          "before": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ריבוע הוא גם מלבן וגם מעוין: כל הצלעות שוות וכל הזוויות ישרות. האלכסונים שווים, מאונכים, חוצים זה את זה וחוצים את הזוויות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בריבוע שאורך צלעו 6 ס״מ, ההיקף הוא 24 ס״מ והשטח הוא 36 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שרטוט שנראה כמו ריבוע אינו הוכחה. צריך להשתמש בנתונים על צלעות שוות, זוויות ישרות או אלכסונים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מהו שטח ריבוע שאורך צלעו 11 ס״מ?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 121 סמ״ר, כי 11×11=121.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "ריבוע: תכונות וזיהוי — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים של הריבוע כדי לחשב היקף, שטח, אורך אלכסון וזוויות. מזהים מתי מלבן, מעוין או מרובע הם ריבוע, ומנמקים לפי המשפטים ההפוכים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות מוצאים ערך של נעלם שעבורו מלבן הוא ריבוע, בודקים במערכת צירים משובצת אם מקבילית או מרובע הם ריבוע, ומשרטטים סקיצה לפי נתונים. ברמה ב׳ ובמצוינות גם זוויות ואלכסונים נתונים בביטויים אלגבריים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            }
+          ],
+          "after": [
+            {
+              "heading": "הסבר ודוגמה",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "ריבוע הוא גם מלבן וגם מעוין: כל הצלעות שוות וכל הזוויות ישרות. האלכסונים שווים, מאונכים, חוצים זה את זה וחוצים את הזוויות.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "דוגמה: בריבוע שאורך צלעו 6 ס״מ, ההיקף הוא 24 ס״מ והשטח הוא 36 סמ״ר.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "טעויות נפוצות",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "שרטוט שנראה כמו ריבוע אינו הוכחה. צריך להשתמש בנתונים על צלעות שוות, זוויות ישרות או אלכסונים.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "בדקו את עצמכם",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "מהו שטח ריבוע שאורך צלעו 11 ס״מ?",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "תשובה: 121 סמ״ר, כי 11×11=121.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "ריבוע: תכונות וזיהוי — דפי PDF נוספים",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים של הריבוע כדי לחשב היקף, שטח, אורך אלכסון וזוויות. מזהים מתי מלבן, מעוין או מרובע הם ריבוע, ומנמקים לפי המשפטים ההפוכים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "בכל הרמות מוצאים ערך של נעלם שעבורו מלבן הוא ריבוע, בודקים במערכת צירים משובצת אם מקבילית או מרובע הם ריבוע, ומשרטטים סקיצה לפי נתונים. ברמה ב׳ ובמצוינות גם זוויות ואלכסונים נתונים בביטויים אלגבריים.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.",
+                  "links": []
+                }
+              ]
+            },
+            {
+              "heading": "ריבוע: תכונות, אלכסונים, שטח ומשפט פיתגורס — דפי PDF נוספים בט׳ מצומצמת",
+              "blocks": [
+                {
+                  "type": "paragraph",
+                  "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים של הריבוע.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "מחשבים היקף ושטח של ריבוע ומקשרים בין הצלע לאלכסון בעזרת משפט פיתגורס.",
+                  "links": []
+                },
+                {
+                  "type": "paragraph",
+                  "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+                  "links": []
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "appendedSection": {
+        "heading": "ריבוע: תכונות, אלכסונים, שטח ומשפט פיתגורס — דפי PDF נוספים בט׳ מצומצמת",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "משתמשים בתכונות הצלעות, הזוויות והאלכסונים של הריבוע.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "מחשבים היקף ושטח של ריבוע ומקשרים בין הצלע לאלכסון בעזרת משפט פיתגורס.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "שלושה קובצי PDF להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם עמוד תשובות סופיות בסוף כל דף; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים.",
+            "links": []
+          }
+        ]
+      }
+    }
+  ],
+  "mediaReadbackSha256": "2b829a74ab29e479cb354cb9b52cfe83a116e7e25a23d36b0ee511f6865c61a5",
+  "note": "G7-ANG-02 (reviewed) waits for a frozen build with its deliver tree (sheet.json and noam-ai.json)."
+}

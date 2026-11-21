@@ -9,6 +9,10 @@ on:
       - 'supabase/migrations/*teacher_generation*.sql'
       - 'headless/astro-poc/src/lib/teacherGenerationContract.ts'
       - 'tests/ramzi-hints-build.test.cjs'
+      - 'tests/ramzi-three-digit-editions.test.cjs'
+      - 'noam-curated-hints.js'
+      - 'headless/astro-poc/public/noam-curated-hints.js'
+      - 'supabase/migrations/*edition*hint*.sql'
       - 'tests/fixtures/ramzi-security-roles.sql'
       - '.github/workflows/ramzi-hints-privacy.yml'
   push:
@@ -20,6 +24,10 @@ on:
       - 'supabase/migrations/*teacher_generation*.sql'
       - 'headless/astro-poc/src/lib/teacherGenerationContract.ts'
       - 'tests/ramzi-hints-build.test.cjs'
+      - 'tests/ramzi-three-digit-editions.test.cjs'
+      - 'noam-curated-hints.js'
+      - 'headless/astro-poc/public/noam-curated-hints.js'
+      - 'supabase/migrations/*edition*hint*.sql'
       - 'tests/fixtures/ramzi-security-roles.sql'
       - '.github/workflows/ramzi-hints-privacy.yml'
   workflow_dispatch:
@@ -37,13 +45,15 @@ jobs:
         with:
           node-version: '22'
       - name: Validate hints, source bindings and seed
-        run: node --test tests/ramzi-hints-build.test.cjs
+        run: node --test tests/ramzi-hints-build.test.cjs tests/ramzi-three-digit-editions.test.cjs
       - name: Install isolated PostgreSQL test runtime
         run: npm install --prefix "$RUNNER_TEMP/ramzi-rls" --no-save --ignore-scripts --no-audit --no-fund @electric-sql/pglite@0.5.14
       - name: Verify permissions in a disposable PostgreSQL database
         env:
           NOAM_PGLITE_MODULE: ${{ runner.temp }}/ramzi-rls/node_modules/@electric-sql/pglite/dist/index.js
-        run: node tools/security/verify-rls-postgres.mjs
+        run: |
+          node tools/security/verify-rls-postgres.mjs
+          node --test tools/security/verify-edition-hints-postgres.mjs
       - name: Verify owner-only worksheet draft downloads
         env:
           NOAM_PGLITE_MODULE: ${{ runner.temp }}/ramzi-rls/node_modules/@electric-sql/pglite/dist/index.js

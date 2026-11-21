@@ -13,6 +13,10 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeNext12Catalog, beforeNext12Registry, beforeNext12Copy,
   reviewedNext12 as reviewed, reviewedNext12Ids as ids } from './fixtures/next12-pdf';
 import { beforeNext21Registry } from './fixtures/next21-pdf';
+import { reviewedBatch03 } from './fixtures/batch03-pdf';
+import { reviewedBatch07 } from './fixtures/batch07-pdf';
+import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -21,8 +25,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (p: string) => JSON.parse(readFileSync(new URL(p, root), 'utf8'));
 const digest = (v: unknown) => createHash('sha256').update(JSON.stringify(v, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = beforeNext12Catalog(raw) as ReturnType<typeof loadCatalog>;
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = beforeNext12Registry(registry);
@@ -41,7 +45,9 @@ test('four exact editions add twelve verified PDFs and preserve the complete pre
     const topic = catalog.grades.find(g => g.grade === a.grade)!.topics.find(t => t.id === a.topicId)!;
     const edition = topic.editions!.find(e => e.editionId === a.editionId)!;
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, '/');
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId]);
+    // Batch 03 appends its own series after this one on 9/39 (ITP-01) and 7/6 (POW-01).
+    const later = [...reviewedBatch03.additions, ...reviewedBatch07.additions].filter(x => x.grade === a.grade && x.topicId === a.topicId).map(x => x.editionId);
+    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId, ...later]);
     assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/')[0]);
     assert.equal(topic.defaultEditionId, 'legacy'); assert.equal(edition.routing.usesViewer, false);
     assert.equal(edition.routing.aiHintShown, false);
@@ -73,13 +79,13 @@ test('all old teacher/learning/viewer sources stay identical and no additional P
 
 test('three exact landing deltas preserve old H1/title/primary CTAs and synchronize visible scope/FAQ', () => {
   for (const delta of reviewed.landingDeltas) {
-    const rawPage = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
+    const rawPage = (beforeLandingCorrections(delta.slug, read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`)) as any);
     const restored = beforeNext12Copy(delta.slug, rawPage) as any;
     assert.equal(digest(restored), delta.baselineSha256);
     assert.equal(rawPage.h1, restored.h1); assert.equal(rawPage.title, restored.title);
     assert.deepEqual(rawPage.catalogCta, restored.catalogCta);
     assert.deepEqual(rawPage.catalogCtas.slice(0, restored.catalogCtas.length), restored.catalogCtas);
-    const page = loadTopicPage(delta.slug);
+    const page = beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug));
     const added = rawPage.sections.at(-1);
     const flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text) === added.heading).length, 1);

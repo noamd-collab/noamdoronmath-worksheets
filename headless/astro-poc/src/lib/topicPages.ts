@@ -283,6 +283,12 @@ import scaleMapsGrade6 from '../data/topic-pages/scale-maps-grade-6.json';
 import equilateralTriangleGrade9 from '../data/topic-pages/equilateral-triangle-grade-9.json';
 import rationalEquationsGrade9 from '../data/topic-pages/rational-equations-grade-9.json';
 import medianToHypotenuseGrade9 from '../data/topic-pages/median-to-hypotenuse-grade-9.json';
+import equationsNumericDenominatorGrade9 from '../data/topic-pages/equations-numeric-denominator-grade-9.json';
+import isometricTransformationsGrade8 from '../data/topic-pages/isometric-transformations-grade-8.json';
+import parallelLinesAnglesGrade9 from '../data/topic-pages/parallel-lines-angles-grade-9.json';
+import coInteriorAnglesGrade9 from '../data/topic-pages/co-interior-angles-grade-9.json';
+import mathLiteracyTasksGrade9 from '../data/topic-pages/math-literacy-tasks-grade-9.json';
+import percentagesGrade9 from '../data/topic-pages/percentages-grade-9.json';
 import statisticsDataFrequencyGrade8 from '../data/topic-pages/statistics-data-frequency-grade-8.json';
 import priorKnowledgeDiagnosticGrade8 from '../data/topic-pages/prior-knowledge-diagnostic-grade-8.json';
 import equationsWithFractionsGrade8 from '../data/topic-pages/equations-with-fractions-grade-8.json';
@@ -542,6 +548,8 @@ export const TOPIC_PAGE_G8_CATALOG_GAP_SLUGS = [
   'interpolation-extrapolation-grade-8',
   'assessment-task-1-grade-8',
   'two-data-sources-grade-8',
+  // t68 (18.11.2026): reviewed PDF-only base topic with its own landing.
+  'isometric-transformations-grade-8',
 ] as const;
 
 export const TOPIC_PAGE_G8_AUTHORED_SLUGS = [
@@ -628,6 +636,11 @@ export const TOPIC_PAGE_G9_AUTHORED_SLUGS = [
   'equilateral-triangle-grade-9',
   'rational-equations-grade-9',
   'median-to-hypotenuse-grade-9',
+  'equations-numeric-denominator-grade-9',
+  'parallel-lines-angles-grade-9',
+  'co-interior-angles-grade-9',
+  'math-literacy-tasks-grade-9',
+  'percentages-grade-9',
 ] as const;
 
 export const TOPIC_PAGE_G5_SLUGS = [
@@ -818,6 +831,12 @@ export interface TopicPageBlock {
 
 export interface TopicPageSection {
   heading: string | null;
+  /**
+   * Optional fragment id for this section's H2 (rendered as <h2 id>), so a
+   * hub can link straight to a layout term: /slug#anchor. Lowercase ASCII
+   * words joined by hyphens; unique per page. Omit it to keep the plain H2.
+   */
+  anchor?: string;
   blocks: TopicPageBlock[];
 }
 
@@ -844,7 +863,7 @@ export interface TopicPageCatalogCta {
 /** Ordered pedagogical body after H1 (intro / headings / paragraphs / CTAs). */
 export type TopicBodyFlowItem =
   | { type: 'paragraph'; text: string; role?: 'intro' | 'self-check' | 'body' }
-  | { type: 'heading'; text: string }
+  | { type: 'heading'; text: string; anchor?: string }
   | {
       type: 'cta';
       label: string;
@@ -1020,6 +1039,12 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'equilateral-triangle-grade-9': equilateralTriangleGrade9 as TopicPageContent,
   'rational-equations-grade-9': rationalEquationsGrade9 as TopicPageContent,
   'median-to-hypotenuse-grade-9': medianToHypotenuseGrade9 as TopicPageContent,
+  'equations-numeric-denominator-grade-9': equationsNumericDenominatorGrade9 as TopicPageContent,
+  'isometric-transformations-grade-8': isometricTransformationsGrade8 as TopicPageContent,
+  'parallel-lines-angles-grade-9': parallelLinesAnglesGrade9 as TopicPageContent,
+  'co-interior-angles-grade-9': coInteriorAnglesGrade9 as TopicPageContent,
+  'math-literacy-tasks-grade-9': mathLiteracyTasksGrade9 as TopicPageContent,
+  'percentages-grade-9': percentagesGrade9 as TopicPageContent,
   'statistics-data-frequency-grade-8': statisticsDataFrequencyGrade8 as TopicPageContent,
   // Grade-8 catalog gaps (כיתה ח׳)
   'prior-knowledge-diagnostic-grade-8': priorKnowledgeDiagnosticGrade8 as TopicPageContent,
@@ -1271,10 +1296,16 @@ function isolateRelatedLabel(rel: FamilyRelatedTopic): FamilyRelatedTopic {
 }
 
 /** Classified related block for rendering. Captured links stay on sourceRelatedTopics. */
+const AUTHORED_RELATED_SLUGS = new Set<string>(['median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9',
+  'isometric-transformations-grade-8', 'parallel-lines-angles-grade-9', 'co-interior-angles-grade-9', 'math-literacy-tasks-grade-9',
+  'percentages-grade-9']);
+
 function presentRelatedTopics(data: TopicPageContent): FamilyRelatedTopic[] {
   const classified = familyRelatedTopics(data.slug, data.grade);
-  // This focused new lesson has authored prerequisite/application links.
-  const rows = data.slug === 'median-to-hypotenuse-grade-9'
+  // These focused new lessons have authored prerequisite/application links
+  // (the reduced-track EQM page links reduced-track and review pages, not the
+  // regular-track algebra family).
+  const rows = AUTHORED_RELATED_SLUGS.has(data.slug)
     ? [gradeHubRelatedTopic(data.grade), ...data.relatedTopics]
     : classified.length ? classified : data.relatedTopics || [];
   // Family blocks replace captured related links. Keep an explicit game link
@@ -1334,6 +1365,23 @@ function withJsonLdDateModified(
 }
 
 /**
+ * Topic path -> dateModified (YYYY-MM-DD) for pages that show a visible
+ * update line. It is the same date TopicPage writes into JSON-LD, so the
+ * sitemap lastmod matches the page. Pages without the line are left out.
+ * Reads the raw JSON only (no validation or text processing), so the
+ * sitemap routes stay cheap.
+ */
+export function topicPageDateModifiedByPath(): Map<string, string> {
+  const out = new Map<string, string>();
+  for (const slug of TOPIC_PAGE_SLUGS) {
+    const data = BY_SLUG[slug];
+    const iso = data ? updatedLineIsoDate(data.updatedLine) : null;
+    if (data && iso) out.set(data.path, iso);
+  }
+  return out;
+}
+
+/**
  * Visible strings TopicPage renders outside bodyFlow (h1, FAQ, related labels).
  * Sections, intro, and stored bodyFlow stay as captured; synthesizeBodyFlow
  * isolates those when the page is rendered.
@@ -1365,9 +1413,97 @@ function withVisibleMathIsolates(data: TopicPageContent): TopicPageContent {
   };
 }
 
+/** Section anchors keyed by heading text (sections without an anchor are skipped). */
+function sectionAnchorsByHeading(page: TopicPageContent): Map<string, string> {
+  const out = new Map<string, string>();
+  for (const section of page.sections || []) {
+    if (section.heading && section.anchor) out.set(section.heading, section.anchor);
+  }
+  return out;
+}
+
+/** A captured bodyFlow heading takes its section's anchor unless it names its own. */
+function withSectionAnchors(flow: TopicBodyFlowItem[], page: TopicPageContent): TopicBodyFlowItem[] {
+  const anchors = sectionAnchorsByHeading(page);
+  if (!anchors.size) return flow;
+  return flow.map((b) => {
+    if (b.type !== 'heading' || b.anchor) return b;
+    const anchor = anchors.get(b.text);
+    return anchor ? { ...b, anchor } : b;
+  });
+}
+
+export const TOPIC_SECTION_ANCHOR_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
+/**
+ * Section anchors must be safe fragment ids, unique on the page, clear of the
+ * ids TopicPage already uses (topic-…), and attached to a rendered H2. Returns
+ * every problem; empty when the page declares no anchor, in which case the
+ * body flow is not synthesized at all.
+ */
+export function topicSectionAnchorProblems(page: TopicPageContent): string[] {
+  const declared = [
+    ...(page.sections || []).filter((s) => s.anchor !== undefined).map((s) => s.anchor as string),
+    ...(page.bodyFlow || [])
+      .filter((b): b is Extract<TopicBodyFlowItem, { type: 'heading' }> => b.type === 'heading' && b.anchor !== undefined)
+      .map((b) => b.anchor as string),
+  ];
+  if (!declared.length) return [];
+  const problems: string[] = [];
+  for (const anchor of declared) {
+    if (typeof anchor !== 'string' || !TOPIC_SECTION_ANCHOR_PATTERN.test(anchor) || anchor.length > 64) {
+      problems.push(`invalid section anchor ${JSON.stringify(anchor)}`);
+    } else if (anchor.startsWith('topic-')) {
+      problems.push(`section anchor ${anchor} uses the reserved topic- prefix`);
+    }
+  }
+  const rendered = synthesizeBodyFlow(page)
+    .filter((b): b is Extract<TopicBodyFlowItem, { type: 'heading' }> => b.type === 'heading' && !!b.anchor)
+    .map((b) => b.anchor as string);
+  const seen = new Set<string>();
+  for (const anchor of rendered) {
+    if (seen.has(anchor)) problems.push(`duplicate section anchor ${anchor}`);
+    seen.add(anchor);
+  }
+  for (const anchor of declared) {
+    if (!seen.has(anchor)) problems.push(`section anchor ${anchor} is not on a rendered heading`);
+  }
+  return problems;
+}
+
+/**
+ * Strict form for tests and tools: throws on the first anchor problem.
+ * Request-time code uses topicSectionAnchorProblems and never throws.
+ */
+export function validateTopicSectionAnchors(page: TopicPageContent): void {
+  const [first] = topicSectionAnchorProblems(page);
+  if (first) throw new Error(`Topic page ${page.slug}: ${first}`);
+}
+
+/** The page with every section anchor removed, so its H2s render without ids. */
+function withoutSectionAnchors(page: TopicPageContent): TopicPageContent {
+  return {
+    ...page,
+    sections: (page.sections || []).map(({ anchor: _anchor, ...section }) => section),
+    ...(page.bodyFlow
+      ? {
+          bodyFlow: page.bodyFlow.map((b) => {
+            if (b.type !== 'heading' || b.anchor === undefined) return b;
+            const { anchor: _anchor, ...heading } = b;
+            return heading;
+          }),
+        }
+      : {}),
+  };
+}
+
+const anchorWarningsLogged = new Set<string>();
+
 /** Build legacy body order when capture predates bodyFlow. */
 export function synthesizeBodyFlow(page: TopicPageContent): TopicBodyFlowItem[] {
-  if (page.bodyFlow && page.bodyFlow.length) return presentBodyFlow(page.bodyFlow);
+  if (page.bodyFlow && page.bodyFlow.length) {
+    return presentBodyFlow(withSectionAnchors(page.bodyFlow, page));
+  }
   const flow: TopicBodyFlowItem[] = [];
   if (page.intro) flow.push({ type: 'paragraph', text: page.intro, role: 'intro' });
   // CTAs that live before H1 on source stay out of post-H1 bodyFlow
@@ -1382,7 +1518,13 @@ export function synthesizeBodyFlow(page: TopicPageContent): TopicBodyFlowItem[] 
     }
   }
   for (const section of page.sections || []) {
-    if (section.heading) flow.push({ type: 'heading', text: section.heading });
+    if (section.heading) {
+      flow.push(
+        section.anchor
+          ? { type: 'heading', text: section.heading, anchor: section.anchor }
+          : { type: 'heading', text: section.heading }
+      );
+    }
     for (const block of section.blocks || []) {
       if (block.type === 'paragraph' && block.text) {
         const role = block.text.includes('בדקו את עצמכם') ? 'self-check' : 'body';
@@ -1497,6 +1639,17 @@ export function loadTopicPage(slug: string): TopicPageContent {
   }
   if (!data.jsonLd) {
     throw new Error(`Topic page ${slug}: missing JSON-LD`);
+  }
+  // A bad section anchor must not take a page or a hub down at request time:
+  // drop the page's anchors and log once. tests/prisa-index.test.ts holds every
+  // topic page to the strict rules, so CI fails instead.
+  const anchorProblems = topicSectionAnchorProblems(data);
+  if (anchorProblems.length) {
+    if (!anchorWarningsLogged.has(slug)) {
+      anchorWarningsLogged.add(slug);
+      console.warn(`[topic-pages] ${slug}: section anchors dropped (${anchorProblems.join('; ')})`);
+    }
+    return withVisibleMathIsolates(withoutSectionAnchors(data));
   }
   return withVisibleMathIsolates(data);
 }

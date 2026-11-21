@@ -43,6 +43,8 @@ export interface CatalogTopic {
   /** Published additions only; levels/routing above keep their legacy meaning. */
   editions?: CatalogEdition[];
   defaultEditionId?: string;
+  /** Build-verified binding for a PDF-only base; original base routing stays unchanged. */
+  reviewedBaseBinding?: CatalogEdition;
 }
 
 /** PDF-only provenance names existing files, not future measured/hint artifacts. */
@@ -56,6 +58,9 @@ export interface CatalogRamziReadiness {
   hintCount: number;
   payloadSha256: string;
   verifiedDbReadbackReceiptSha256: string;
+  /** Additional reviewed packages bind an independently enforced server learning scope. */
+  learningScopeSha256?: string;
+  learningScopeUrl?: string;
 }
 
 export interface CatalogPdfOnlyLevel extends CatalogLevel {
@@ -72,6 +77,7 @@ export interface CatalogPdfOnlyLevel extends CatalogLevel {
 }
 
 interface CatalogEditionBase {
+  viewerEditionId?: string;
   editionId: string;
   label: string;
   status: 'published';
@@ -102,6 +108,7 @@ export interface CatalogV1 {
   ramziActivation?: unknown;
   /** Optional applied correction evidence; the original activation remains historical and immutable. */
   ramziHintCorrection?: unknown;
+  reviewedRamziActivations?: unknown;
   contractVersion: number;
   sourceOfTruth: { path: string; authoritative: boolean; note?: string };
   config: {

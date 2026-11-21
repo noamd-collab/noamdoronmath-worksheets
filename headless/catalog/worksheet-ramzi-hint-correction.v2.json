@@ -1,0 +1,19 @@
+{
+  "schema": "noam-first567-hint-correction/v2",
+  "status": "applied_verified",
+  "beforeSnapshotSha256": "54e03d2cced524d1fc50126c624dcc395239541bb5d1a1eeae589aaa06e53ab1",
+  "baselineReadySha256": "bb9561f9b878f7ddf8c95b64785ba0a2426e53aba531f519b75b2c2809aafc5d",
+  "baselinePayloadSha256": "18556e703b4af97a75e5f27eab32336b6e55290fb0ae8077fd0e2b2a89ff3b22",
+  "baselineDbReadbackReceiptSha256": "bd2f58db3ad0afd5a29291d7a74cc27597be84b403f9183c60202c5b577aff85",
+  "correctedCsvSha256": "161a1f971deb0b6a75697d1a9abb4f4f0145c36cd0ecb1cdc272a3ba231363ca",
+  "semanticReviewSha256": "d4d24d5b351acaac3107cdfd2371823e4134542ab60cf482a37769e7d50ccde1",
+  "rootAcceptanceSha256": "e2f3b99244496aaea513bf558d9d3763e6ced5f335daaabf90c1a670818a78a2",
+  "correctionPayloadSha256": "50d3a0133e94938c5b055d85fd3787fb26ca5b927c10f4a80b5f25a80167591b",
+  "effectivePayloadSha256": "1a90e0be1dc8dced441ff37415de84ebab7f72c964cd633fb4d937ffccfbefee",
+  "authorId": "antigravity-flash",
+  "reviewerId": "codex-root",
+  "rowScopeSha256": "c0374126e3b7b1cfb086ee84e38536dc9c0e3928b733c37dc3b1961c6b23b47f",
+  "rowCount": 15,
+  "hintCount": 45,
+  "readbackReceiptSha256": "01e60d4e1c477c53685bc95ec6e35bbd03520bdc59dce6f7e186e2f395188cf6"
+}

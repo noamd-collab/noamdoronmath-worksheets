@@ -2,6 +2,11 @@ import { reviewedNext12Ids } from './fixtures/next12-pdf';
 import { reviewedNext21Ids } from './fixtures/next21-pdf';
 import { reviewedBatch01Ids } from './fixtures/batch01-pdf';
 import { reviewedBatch02aIds } from './fixtures/batch02a-pdf';
+import { reviewedBatch03Ids } from './fixtures/batch03-pdf';
+import { probabilityNineIds, reviewedProbabilityNine } from './fixtures/probability-nine-pdf';
+import { reviewedBatch04Ids } from './fixtures/batch04-pdf';
+import { reviewedBatch05, reviewedBatch05Ids } from './fixtures/batch05-pdf';
+import { reviewedBatch06Ids } from './fixtures/batch06-pdf';
 import { reviewedSaoWpcIds } from './fixtures/sao-wpc-pdf';
 import { reviewedExtSmlAfrIds } from './fixtures/ext-sml-afr-pdf';
 import assert from 'node:assert/strict';
@@ -16,17 +21,25 @@ import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/teacherLandingCatalog';
 import { readFirst567Activation } from './helpers/first567Activation';
 import { reviewedEqnSgnFacIds } from './fixtures/eqn-sgn-fac-pdf';
+import { reviewedBatch07Ids } from './fixtures/batch07-pdf';
+import { reviewedBatch08Ids } from './fixtures/batch08-pdf';
+import { reviewedBatch09Ids } from './fixtures/batch09-pdf';
+import { reviewedBatch10Ids } from './fixtures/batch10-pdf';
+import { reviewedBatch11Ids } from './fixtures/batch11-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { reviewedBatch12Ids } from './fixtures/batch12-pdf';
+import { reviewedBatch13Ids } from './fixtures/batch13-pdf';
 
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, import.meta.url), 'utf8'));
 const registry = read('../../catalog/worksheet-editions.v1.json');
-const catalog = read('../src/data/catalog.v1.json') as CatalogV1;
+const catalog = beforeReviewedRamziActivation(read('../src/data/catalog.v1.json')) as CatalogV1;
 const evidence = read('../../../docs/middle-school-followup-pdf-20261113.json');
 const ids = ['ms-20261113-par-02-r1', 'ms-20261113-par-03-r1'];
 const additions = registry.editions.filter((row: any) => ids.includes(row.editionId));
 const activation = readFirst567Activation();
 assert.deepEqual(catalog.ramziActivation, activation.ready);
 const previous = mergeWorksheetEditions(catalog, { version: 1,
-  editions: registry.editions.filter((row: any) => !ids.includes(row.editionId)) }, activation.ready);
+  editions: registry.editions.filter((row: any) => !ids.includes(row.editionId)) }, activation.ready, activation.hintCorrection);
 const topic = (value: CatalogV1) => value.grades.find(g => g.grade === 9)!.topics.find(t => t.id === 7)!;
 
 test('six follow-up PDF files retain frozen provenance and are separate from PR456', () => {
@@ -73,7 +86,8 @@ test('parallelogram landing exposes all focused sets without changing legacy def
       previous.grades.find(g => g.grade === grade.grade)!.topics.find(before => before.id === t.id));
   }
   const groups = topicWorksheetEditionLinks(catalog, 9, 7, '/worksheets?grade=9&topic=7');
-  assert.deepEqual(groups.map(g => g.editionId), ['legacy', 'ms-20261113-par-r1', ...ids, 'ms-20261113-par-04-r1']);
+  const laterTopicIds = reviewedBatch05.additions.filter(a => a.grade === 9 && a.topicId === 7).map(a => a.editionId);
+  assert.deepEqual(groups.map(g => g.editionId), ['legacy', 'ms-20261113-par-r1', ...ids, 'ms-20261113-par-04-r1', ...laterTopicIds]);
   assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, 9, 7, '/worksheets?grade=9&topic=7')[0]);
   for (const row of additions) {
     const selected = resolveEdition(currentTopic, row.editionId);
@@ -120,7 +134,12 @@ test('manifest sync omits unactivated PDFs while retaining legacy and verified e
   // later algebra and frequency PDFs, which must not gain viewer/hint activation.
   const algebraId = 'ms-20261115-alg-01-r1';
   const frequencyId = 'ms-20261115-frq-01-r1';
-  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids, ...reviewedBatch02aIds].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
+  assert.equal(allPdfOnly.filter((e: any) => ![algebraId, frequencyId, 'ms-20261115-prb-01-r1', 'ms-20261115-rec-01-r1', 'ms-20261113-par-04-r1', ...reviewedEqnSgnFacIds, ...reviewedExtSmlAfrIds, ...reviewedSaoWpcIds, ...reviewedNext12Ids, ...reviewedNext21Ids, ...reviewedBatch01Ids, ...reviewedBatch02aIds, ...reviewedBatch03Ids, ...probabilityNineIds, ...reviewedBatch04Ids, ...reviewedBatch05Ids, ...reviewedBatch06Ids, ...reviewedBatch07Ids, ...reviewedBatch08Ids, ...reviewedBatch09Ids, ...reviewedBatch10Ids, ...reviewedBatch11Ids, ...reviewedBatch12Ids, ...reviewedBatch13Ids].includes(e.editionId)).flatMap((e: any) => e.levels).length, 18);
+  // The three grade-9 probability series (G9-PRC-01, G9-PRT-01, G9-PRW-01) are exactly the reviewed rows: nine PDF-only levels.
+  const probabilityNine = allPdfOnly.filter((e: any) => probabilityNineIds.includes(e.editionId));
+  assert.deepEqual(probabilityNine, reviewedProbabilityNine.additions.map(a => a.edition));
+  assert.equal(probabilityNine.flatMap((e: any) => e.levels).length, 9);
+  for (const pdfId of probabilityNine.flatMap((e: any) => e.levels.map((l: any) => l.pdfId))) assert.equal(selected.has(pdfId), false, 'probability PDF stays out of viewer sync');
   const algebra = allPdfOnly.filter((e: any) => e.editionId === algebraId);
   assert.equal(algebra.length, 1);
   assert.equal(algebra[0].grade, 7); assert.equal(algebra[0].topicId, 22);

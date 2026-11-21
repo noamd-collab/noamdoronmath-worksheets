@@ -13,6 +13,8 @@ import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/
 import { beforeBatch01Catalog, beforeBatch01Registry, beforeBatch01Copy,
   reviewedBatch01 as reviewed, reviewedBatch01Ids as ids } from './fixtures/batch01-pdf';
 import { beforeBatch02aRegistry } from './fixtures/batch02a-pdf';
+import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -21,8 +23,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = beforeBatch01Catalog(raw) as ReturnType<typeof loadCatalog>;
 // Same SSR normalization as loadCatalog (Wix media CDN) so direct-PDF links compare like for like.
 const previousSsr = { ...previous, config: { ...previous.config, pdfBase: 'https://static.wixstatic.com/ugd/d8e7ad_' } };
@@ -83,7 +85,9 @@ test('four fixed mappings add twelve frozen PDFs and recover the independently p
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 105);
   assert.deepEqual(afterBatch01Registry.editions.slice(0, 35), priorRegistry.editions);
   assert.deepEqual(afterBatch01Registry.editions.slice(35), reviewed.additions.map(a => a.edition));
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
+  // Editions never add base levels; EQM49 (17.11, +3 levels) and NEW4 (18.11, +12 levels) are the later base topics.
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // NEW4 (18.11): four later base topics, +12 levels; batch 10 topic 9/53, +3
+  assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
   assert.deepEqual(receipt.scope, { packages: 4, pdfs: 12, pages: 83, subitems: 372, landingRoutes: 4 });
   assert.deepEqual(receipt.packages.map((p: any) => p.editionId), ids);
   assert.equal(receipt.sitePublicationClaimed, false);
@@ -164,7 +168,7 @@ test('four landing updates keep titles and CTAs and describe the actual series i
   };
   assert.deepEqual(reviewed.landingDeltas.map(d => d.slug), Object.keys(scope));
   for (const delta of reviewed.landingDeltas) {
-    const pageRaw = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
+    const pageRaw = (beforeLandingCorrections(delta.slug, read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`)) as any);
     const restored = beforeBatch01Copy(delta.slug, pageRaw) as any;
     assert.equal(digest(restored), delta.baselineSha256);
     assert.equal(pageRaw.h1, restored.h1); assert.equal(pageRaw.title, restored.title);
@@ -187,7 +191,7 @@ test('four landing updates keep titles and CTAs and describe the actual series i
       assert.ok(!text.includes('/'), `${delta.slug}: no slash fractions`);
       assert.ok(!text.includes('רמה ג׳'), `${delta.slug}: level names`);
     }
-    const page = loadTopicPage(delta.slug), flow = synthesizeBodyFlow(page);
+    const page = beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug)), flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text || '') === added.heading).length, 1);
     for (const block of added.blocks) assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text || '') === block.text).length, 1);
     const faq = extractJsonLdFaq(page.jsonLd).map(f => ({ question: plain(f.question), answer: plain(f.answer) }));

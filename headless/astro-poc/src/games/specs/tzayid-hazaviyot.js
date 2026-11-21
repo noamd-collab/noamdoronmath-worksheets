@@ -135,9 +135,10 @@
       s += '<text id="b' + k + '" x="0" y="0" font-size="15" text-anchor="middle" direction="ltr" font-family="' + FONT + '"'
         + ' fill="' + (k % 2 === 0 ? '#b45309' : MAIN) + '" stroke="#fff" stroke-width="3" style="paint-order:stroke;pointer-events:none"></text>';
     }
-    s += '<g id="knobG" style="cursor:grab"><circle id="knob" cx="0" cy="0" r="12" fill="' + INK + '"/>'
+    s += '<style>#knobG:focus-visible #knob{stroke:' + WARM + ';stroke-width:5}#knobG:focus{outline:none}</style>';
+    s += '<g id="knobG" tabindex="0" role="slider" aria-label="סיבוב הישר; השתמש במקשי החצים" aria-valuemin="12" aria-valuemax="168" aria-valuenow="115" style="cursor:grab"><circle id="knob" cx="0" cy="0" r="12" fill="' + INK + '"/>'
       + '<text id="knobT" x="0" y="0" font-size="13" fill="#fff" text-anchor="middle" font-family="' + FONT + '" style="pointer-events:none">↻</text>'
-      + '<circle id="grab" cx="0" cy="0" r="24" fill="transparent"/></g>';
+      + '<circle id="grab" cx="0" cy="0" r="31" fill="transparent"/></g>';
     ctx.draw(s);
 
     var box = ctx.extra(
@@ -168,27 +169,50 @@
       ctx.el('knobT').setAttribute('x', q[0]); ctx.el('knobT').setAttribute('y', f(q[1] + 4.5));
       sw.textContent = A + '° = ' + A + '°';
       sc.textContent = B + '° = ' + B + '°';
+      ctx.el('knobG').setAttribute('aria-valuenow', A);
+      ctx.el('knobG').setAttribute('aria-valuetext', 'הזווית הכתומה ' + A + ' מעלות');
       ctx.caption(m(A + '° + ' + B + '° = 180°'));
       if (!done) ctx.note('הזווית הכתומה היא ' + m(A + '°') + '. הצמודה לה היא ' + m(B + '°') + '.');
+    }
+
+    function finish() {
+      if (done || rot < 60 || rot > 70) return;
+      done = true;
+      ctx.sfx('correct');
+      ctx.burst(18);
+      ctx.note('הזווית הכתומה היא ' + m(rot + '°') + ', והכחולה ' + m((180 - rot) + '°') + '. שים לב שהזוויות שבאותו צבע תמיד שוות.', 'good');
+      ctx.say('כל שתי זוויות צמודות נותנות ' + m('180°') + ', וזוויות קודקודיות שוות זו לזו.', { mood: 'happy', attn: true });
+      ctx.solved();
+    }
+
+    function setRot(n) {
+      n = Math.max(12, Math.min(168, Math.round(n)));
+      if (n !== rot) { rot = n; ctx.sfx('tick'); render(); }
     }
 
     ctx.drag(ctx.el('knobG'), {
       move: function (x, y) {
         var a = Math.atan2(cy - y, x - cx) * 180 / Math.PI;
         if (a < 0) a += 180;
-        var n = Math.max(12, Math.min(168, Math.round(a)));
-        if (n !== rot) { rot = n; ctx.sfx('tick'); render(); }
+        setRot(a);
       },
-      end: function () {
-        if (done || rot < 60 || rot > 70) return;
-        done = true;
-        ctx.sfx('correct');
-        ctx.burst(18);
-        ctx.note('הזווית הכתומה היא ' + m(rot + '°') + ', והכחולה ' + m((180 - rot) + '°') + '. שים לב שהזוויות שבאותו צבע תמיד שוות.', 'good');
-        ctx.say('כל שתי זוויות צמודות נותנות ' + m('180°') + ', וזוויות קודקודיות שוות זו לזו.', { mood: 'happy', attn: true });
-        ctx.solved();
-      }
+      end: finish
     });
+
+    ctx.el('knobG').addEventListener('keydown', function (event) {
+      var k = event.key, d = 0;
+      if (k === 'ArrowLeft' || k === 'ArrowUp') d = 1;
+      else if (k === 'ArrowRight' || k === 'ArrowDown') d = -1;
+      else if (k === 'Home') { event.preventDefault(); setRot(12); finish(); return; }
+      else if (k === 'End') { event.preventDefault(); setRot(168); finish(); return; }
+      else return;
+      event.preventDefault();
+      setRot(rot + d);
+      finish();
+    });
+
+    ctx.button('− הקטן זווית', function () { setRot(rot - 5); finish(); }, { id: 'rotMinus' });
+    ctx.button('+ הגדל זווית', function () { setRot(rot + 5); finish(); }, { id: 'rotPlus' });
     render();
   }
 
@@ -225,9 +249,7 @@
         ctx.note('אספת ' + m(val + '°') + '. נשארה עוד זווית ידועה אחת.');
       }
     }
-    ctx.el('w0').addEventListener('click', function () { if (!revealed) collect(0, A); });
-    ctx.el('w2').addEventListener('click', function () { if (!revealed) collect(2, C); });
-    ctx.el('w1').addEventListener('click', function () {
+    function reveal() {
       if (revealed) return;
       if (!(got[0] && got[1])) {
         ctx.sfx('error');
@@ -246,7 +268,13 @@
       ctx.note('הזווית החסרה היא ' + m(MID + '°') + '. בדיקה: ' + m(A + ' + ' + MID + ' + ' + C + ' = 180') + '.', 'good');
       ctx.say('שלוש זוויות על ישר נותנות ' + m('180°') + '. אספת את הידועות, והחסרה נשארה לבד.', { mood: 'happy', attn: true });
       ctx.solved();
-    });
+    }
+    ctx.el('w0').addEventListener('click', function () { if (!revealed) collect(0, A); });
+    ctx.el('w2').addEventListener('click', function () { if (!revealed) collect(2, C); });
+    ctx.el('w1').addEventListener('click', reveal);
+    ctx.button('אסוף זווית כחולה שמאלית', function () { if (!revealed) collect(0, A); }, { id: 'pickLeft', ghost: true });
+    ctx.button('אסוף זווית כחולה ימנית', function () { if (!revealed) collect(2, C); }, { id: 'pickRight', ghost: true });
+    ctx.button('חשב את הכתומה', reveal, { id: 'pickMid' });
   }
 
   /* ---------- scene 3: parallel lines ---------- */
@@ -265,7 +293,7 @@
       QS.forEach(function (q) {
         if (isGiven(i, q)) return;
         var id = '' + i + q;
-        ctx.el('s' + id).addEventListener('click', function () {
+        function pick() {
           if (done || found[id]) return;
           var val = qValue(phi, q);
           if (val === phi) {
@@ -297,7 +325,10 @@
             ctx.el('t' + id).setAttribute('fill', BAD);
             ctx.note('זו זווית של ' + m('120°') + ': היא צמודה לזווית של ' + m('60°') + ' ולכן סכומן ' + m('180°') + ', והיא לא שווה לה.');
           }
-        });
+        }
+        ctx.el('s' + id).addEventListener('click', pick);
+        var names = ['ימין למעלה', 'שמאל למעלה', 'שמאל למטה', 'ימין למטה'];
+        ctx.button((i === 0 ? 'עליון: ' : 'תחתון: ') + names[q], pick, { id: 'ang' + id, ghost: true });
       });
     });
   }
@@ -359,14 +390,14 @@
     {
       mode: 'scene',
       tA: 'שני ישרים נחתכים',
-      sub: 'גרור את העיגול השחור וסובב את הישר. ארבע זוויות משתנות יחד.',
+      sub: 'סובב את הישר בגרירה, בכפתורים או בחיצים. ארבע זוויות משתנות יחד.',
       tip: 'שני ישרים נחתכים יוצרים ארבע זוויות. סובב את הישר, ותראה מה נשאר קבוע.',
       cue: 'סובב עד שהזווית הכתומה בין 60 ל־70 מעלות',
       cueDone: 'יפה. אפשר להמשיך ←',
       btn: 'המשך ←',
       aspect: [W, H],
-      alt: 'שני ישרים נחתכים, אחד מהם ניתן לסיבוב בגרירה, וארבע זוויות צבועות בשני צבעים',
-      nudge: { target: 'scene', text: 'גרור את העיגול השחור סביב נקודת החיתוך.' },
+      alt: 'שני ישרים נחתכים, אחד מהם מסתובב בגרירה, בכפתורים או בחיצים, וארבע זוויות צבועות בשני צבעים',
+      nudge: { target: 'scene', text: 'סובב את העיגול השחור סביב נקודת החיתוך, בגרירה או בכפתורים.' },
       setup: crossScene
     },
     {

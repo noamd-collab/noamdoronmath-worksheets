@@ -100,6 +100,11 @@
           "path": "/parallel-lines-angles-grade-8",
           "label": "זוויות בין ישרים מקבילים",
           "productionHref": "https://www.noamdoronmath.co.il/parallel-lines-angles-grade-8"
+        },
+        {
+          "path": "/isometric-transformations-grade-8",
+          "label": "טרנספורמציות איזומטריות וצורות חופפות",
+          "productionHref": "https://www.noamdoronmath.co.il/isometric-transformations-grade-8"
         }
       ]
     },
@@ -474,6 +479,11 @@
       "path": "/parallel-lines-angles-grade-8",
       "label": "זוויות בין ישרים מקבילים",
       "productionHref": "https://www.noamdoronmath.co.il/parallel-lines-angles-grade-8"
+    },
+    {
+      "path": "/isometric-transformations-grade-8",
+      "label": "טרנספורמציות איזומטריות וצורות חופפות",
+      "productionHref": "https://www.noamdoronmath.co.il/isometric-transformations-grade-8"
     },
     {
       "path": "/similar-triangles-grade-8",

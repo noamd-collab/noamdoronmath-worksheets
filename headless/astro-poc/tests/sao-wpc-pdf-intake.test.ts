@@ -12,6 +12,8 @@ import { buildTeacherLandingCatalog, getTeacherLandingScope } from '../src/lib/t
 import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeSaoWpcCatalog, beforeSaoWpcCopy, reviewedSaoWpc as reviewed, reviewedSaoWpcIds as ids } from './fixtures/sao-wpc-pdf';
+import { beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -22,8 +24,8 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = beforeExtra15Registry(registry);
-const catalog = loadCatalog();
-const rawCatalog = read('headless/astro-poc/src/data/catalog.v1.json');
+const catalog = beforeReviewedRamziActivation(loadCatalog());
+const rawCatalog = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
 const previous = beforeExtra15Catalog(rawCatalog);
 const receipt = read('docs/sao-wpc-pdf-first-20261115.json');
 
@@ -49,8 +51,13 @@ test('six exact additional PDFs preserve every preceding catalog and registry by
     assert.equal(edition.publicationMode, 'pdf-only'); assert.equal(edition.routing.usesViewer, false);
     assert.equal(edition.routing.aiHintShown, false);
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId]);
-    assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`)[0]);
+    const laterIds = reviewedBatch05.additions
+      .filter(later => later.grade === a.grade && later.topicId === a.topicId).map(later => later.editionId);
+    const previousGroups = topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`);
+    assert.deepEqual(groups.map(g => g.editionId), [...previousGroups.map(g => g.editionId), a.editionId, ...laterIds]);
+    assert.deepEqual(groups.filter(g => g.editionId !== a.editionId).map(g => g.editionId),
+      [...previousGroups.map(g => g.editionId), ...laterIds]);
+    for (const [index, group] of previousGroups.entries()) assert.deepEqual(groups[index], group);
     assert.deepEqual(groups[1].levels.map(l => l.href), a.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
     for (const level of edition.levels) {
       assert.equal(buildWorksheetHref({ catalog, grade: a.grade, topic, editionId: a.editionId, levelKey: level.key }), `${catalog.config.pdfBase}${level.pdfId}.pdf`);
@@ -84,12 +91,18 @@ test('teacher sources, learning regeneration and viewer dependencies reject all 
 test('SAO/WPC copy preserves old CTAs, visible flow, FAQ and scoped PDF availability', () => {
   for (const a of reviewed.additions) {
     const raw = read(`headless/astro-poc/src/data/topic-pages/${a.slug}.json`);
-    const restored = beforeSaoWpcCopy(a.slug, raw);
+    const restored = beforeSaoWpcCopy(a.slug, beforeBatch05Copy(a.slug, raw));
     const page = loadTopicPage(a.slug);
-    assert.equal(raw.updatedLine, 'נועם דורון מתמטיקה · עודכן 15.11.2026');
+    assert.equal(raw.updatedLine, a.slug === 'equations-both-sides-word-problems-grade-7'
+      ? 'נועם דורון מתמטיקה · עודכן 17.11.2026' : 'נועם דורון מתמטיקה · עודכן 15.11.2026');
     assert.deepEqual(raw.catalogCta, restored.catalogCta); assert.deepEqual(raw.catalogCtas, restored.catalogCtas);
     assert.equal(raw.h1, restored.h1); assert.equal(raw.title, restored.title);
-    const added = raw.sections.at(-1), flow = synthesizeBodyFlow(page);
+    const oldDelta = reviewed.landingDeltas.find(d => d.slug === a.slug)!;
+    const laterDelta = reviewedBatch05.landingDeltas.find(d => d.slug === a.slug);
+    const laterSection = laterDelta?.appendedSection;
+    const added = raw.sections.find((section: any) =>
+      JSON.stringify(section) === JSON.stringify(oldDelta.appendedSection));
+    const flow = synthesizeBodyFlow(page);
     const plain = (text: string | undefined) => text?.replace(/[\u2066-\u2069]/g, '');
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text) === added.heading).length, 1);
     assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text) === added.blocks[0].text).length, 1);
@@ -97,13 +110,22 @@ test('SAO/WPC copy preserves old CTAs, visible flow, FAQ and scoped PDF availabi
     for (const field of reviewed.landingDeltas.find(d => d.slug === a.slug)!.fields) {
       if (field.path[0] === 'bodyFlow') expectedOldFlow[Number(field.path[1])][String(field.path[2])] = field.after;
     }
-    assert.deepEqual(raw.bodyFlow.slice(0, -2), expectedOldFlow);
+    const currentFlow = reviewedBatch05.landingDeltas.find(d => d.slug === a.slug)?.fields
+      .find(field => field.path[0] === 'bodyFlow');
+    const laterFlow = currentFlow
+      ? currentFlow.after.slice(currentFlow.before.length) : [];
+    assert.deepEqual(raw.bodyFlow, [...expectedOldFlow, ...oldDelta.appendedFlow, ...laterFlow]);
+    if (laterSection) {
+      assert.equal(raw.sections.filter((section: any) => JSON.stringify(section) === JSON.stringify(laterSection)).length, 1);
+    }
     assert.deepEqual(extractJsonLdFaq(raw.jsonLd), extractJsonLdFaq(restored.jsonLd));
     assert.match(added.blocks[0].text, /PDF עם תשובות בסוף/);
   }
   const wpc = loadTopicPage('equations-both-sides-word-problems-grade-7');
   assert.deepEqual(wpc.catalogCtas.map(c => c.catalogTopicId), [41, 40, 39]);
-  assert.match(wpc.sections.at(-1)!.blocks[0].text!, /פתרון ובדיקת התאמת התוצאה להקשר/);
+  const wpcDelta = reviewed.landingDeltas.find(d => d.slug === 'equations-both-sides-word-problems-grade-7')!;
+  const wpcSection = wpc.sections.find(section => section.heading === wpcDelta.appendedSection.heading)!;
+  assert.match(wpcSection.blocks[0].text!, /פתרון ובדיקת התאמת התוצאה להקשר/);
   const sao = loadTopicPage('triangle-sides-angles-grade-9');
   assert.match(sao.sections.at(-1)!.blocks[0].text!, /התרגול ממוקד ביחסי הסדר/);
   assert.match(sao.sections[2].blocks[1].text!, /בדפים שנפתחים עם רמזי אפשר לקבל רמזים/);
@@ -111,12 +133,13 @@ test('SAO/WPC copy preserves old CTAs, visible flow, FAQ and scoped PDF availabi
   assert.equal(graph[0].description, sao.description); assert.equal(graph[1].description, sao.description);
 });
 test('review reversal rejects legacy drift, unbound PDF and false hint claims', () => {
+  assert.doesNotThrow(() => beforeExtra15Catalog(rawCatalog));
   const bad = structuredClone(rawCatalog);
   bad.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 38).levels[0].pdfId = 'unreviewed-old-link';
-  assert.throws(() => beforeSaoWpcCatalog(bad));
+  assert.throws(() => beforeExtra15Catalog(bad), assert.AssertionError);
   const moved = structuredClone(rawCatalog);
   moved.grades.find((g: any) => g.grade === 7).topics.find((t: any) => t.id === 41).editions[0].levels[0].pdfId = 'wrong-new-pdf';
-  assert.throws(() => beforeSaoWpcCatalog(moved));
+  assert.throws(() => beforeExtra15Catalog(moved), assert.AssertionError);
   const page = read('headless/astro-poc/src/data/topic-pages/triangle-sides-angles-grade-9.json');
   page.description += ' כל PDF כולל רמזי';
   assert.throws(() => beforeSaoWpcCopy('triangle-sides-angles-grade-9', page));

@@ -9,7 +9,7 @@
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { worksheetHref } from '../../../noam-ai/site-companion/retrieve.js';
+import { worksheetHref, worksheetVariants } from '../../../noam-ai/site-companion/retrieve.js';
 import { buildGradeLoopPool, gradeLoopCopy } from '../src/lib/gradeLoopPools';
 import { cssLoopIdea, topicLandingLoop } from '../src/lib/landingLoops';
 import { PK } from '../src/lib/linkPeek';
@@ -220,28 +220,31 @@ function main() {
     for (const topic of grade.topics || []) {
       const extra = termBucket[String(topic.id)] || '';
       const groupLabel = ((grade.groups || []).find((group: { key: string }) => group.key === topic.group) || {}).label || '';
-      for (const level of topic.levels || []) {
-        if (!/^[0-9a-f]{32}$/i.test(String(level.pdfId || ''))) continue;
-        const manifest = manifests.get(String(level.pdfId).toLowerCase());
-        if (manifest) manifestHits += 1;
-        const href = worksheetHref(catalog, grade, topic, level);
-        const viewer = href.indexOf('worksheet-viewer-noam.html') !== -1;
-        push(records, {
-          id: 'g' + grade.grade + '-t' + topic.id + '-' + level.key,
-          type: 'worksheet',
-          title: topic.title,
-          href,
-          grade: grade.grade,
-          gradeLabel: grade.label,
-          topic: groupLabel,
-          levelKey: level.key,
-          levelLabel: level.label,
-          pdfId: level.pdfId,
-          contains: [level.label, groupLabel, topic.description, countLine(manifest)].filter(Boolean).join(' · '),
-          audience: grade.label,
-          how: viewer ? viewerHow : openHow,
-          terms: extra,
-        });
+      for (const variant of worksheetVariants(catalog, topic)) {
+        const source = variant.topic;
+        for (const level of source.levels || []) {
+          if (!/^[0-9a-f]{32}$/i.test(String(level.pdfId || ''))) continue;
+          const manifest = manifests.get(String(level.pdfId).toLowerCase());
+          if (manifest) manifestHits += 1;
+          const href = worksheetHref(catalog, grade, source, level);
+          const viewer = href.indexOf('worksheet-viewer-noam.html') !== -1;
+          push(records, {
+            id: 'g' + grade.grade + '-t' + topic.id + '-' + level.key + (variant.editionId ? '-e-' + variant.editionId : ''),
+            type: 'worksheet',
+            title: source.title,
+            href,
+            grade: grade.grade,
+            gradeLabel: grade.label,
+            topic: groupLabel,
+            levelKey: level.key,
+            levelLabel: level.label,
+            pdfId: level.pdfId,
+            contains: [level.label, groupLabel, topic.description, countLine(manifest)].filter(Boolean).join(' · '),
+            audience: grade.label,
+            how: viewer ? viewerHow : openHow,
+            terms: variant.editionId ? [extra, 'רמזי רמזים דף עבודה חדש דפי עבודה חדשים מהדורה חדשה מהדורות חדשות'].filter(Boolean).join(' ') : extra,
+          });
+        }
       }
     }
   }

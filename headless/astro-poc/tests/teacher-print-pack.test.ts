@@ -112,6 +112,19 @@ describe('teacher short worksheet pack', () => {
     assert.equal(layoutApi({}).levelPrintName('b', 'רמה ב׳'), 'רמה ב׳');
   });
 
+  it('marks Word download as new without folding the badge into the control name', () => {
+    const buttons = [...pageHtml.matchAll(/<button\b(?=[^>]*\bdata-word-download\b)[^>]*>[\s\S]*?<\/button>/g)].map((match) => match[0]);
+    assert.equal(buttons.length, 2);
+    for (const button of buttons) {
+      assert.match(button, /<span class="word-download-label">הורדה ל־Word לעריכה<\/span><span class="new-badge" aria-hidden="true">חדש<\/span>/);
+      assert.doesNotMatch(button, /aria-label=/);
+    }
+    assert.match(pageHtml, /class="teacher-review-actions print-download-actions"><button type="button" class="primary" id="wizard-print">הדפסה<\/button>/);
+    assert.match(pageHtml, /\.new-badge\{[^}]*background:#C62828;color:#fff/);
+    assert.match(pageHtml, /\.text-btn\[data-word-download\]\{[^}]*white-space:nowrap/);
+    assert.match(pageHtml, /@media\(max-width:600px\)\{\.print-download-actions\{[^}]*flex-wrap:nowrap/);
+  });
+
   it('packs the polygon sample without a sparse page and keeps the house regressions', (t) => {
     const probe = spawnSync('python3', ['-c', 'import pymupdf, numpy'], { encoding: 'utf8' });
     if (probe.status !== 0) {

@@ -29,6 +29,16 @@ const { loadIndexCatalog, buildCatalog, validateCatalog, stableStringify, resolv
 const { mergeWorksheetEditions } = require('../scripts/lib/worksheet-editions.cjs');
 const { isPdfOnlyTopic } = require('../scripts/lib/base-worksheet-publication.mjs');
 const { loadRamziActivationEvidence, validateRamziActivation } = require('../scripts/lib/worksheet-ramzi-activation.cjs');
+const { mergeReviewedCatalog } = require('../scripts/lib/reviewed-ramzi-activation.mjs');
+const { loadAdditionalEvidence, validateAdditionalEvidence } = require('../scripts/lib/reviewed-ramzi-activation-build.cjs');
+
+/** The export's reconstruction; additional reviewed activations apply only when requested. */
+function reconstructCatalog(raw, registry, activationEvidence, additional) {
+  const initial = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
+  if (!additional?.bundle) return { initial, catalog: initial };
+  const projection = validateAdditionalEvidence(initial, registry, additional.bundle);
+  return { initial, catalog: mergeReviewedCatalog(initial, registry, activationEvidence?.ready, activationEvidence?.hintCorrection, projection, additional.trust) };
+}
 
 const SEVERITIES = ['error', 'warning', 'review', 'info'];
 const PDF_ID = /^[0-9a-f]{32}$/;
@@ -367,8 +377,8 @@ function checkTitles(au, topicsByGrade) {
 }
 
 /** Generated copies must equal what their generators would write from index.html today. */
-function checkGenerated(au, raw, rawLegacy, registry, activationEvidence) {
-  const built = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
+function checkGenerated(au, raw, rawLegacy, registry, activationEvidence, additional) {
+  const built = reconstructCatalog(raw, registry, activationEvidence, additional).catalog;
   const v = validateCatalog(built, raw);
   for (const e of v.errors) au.find('error', 'EXPORT_VALIDATION', { source: P.index, evidence: 'scripts/lib/headless-catalog.cjs validateCatalog' }, e);
   for (const w of v.warnings) au.find('warning', 'EXPORT_VALIDATION', { source: P.index, evidence: 'scripts/lib/headless-catalog.cjs validateCatalog' }, w);
@@ -412,7 +422,7 @@ function checkGenerated(au, raw, rawLegacy, registry, activationEvidence) {
   }
 
   // learning catalog (built by scripts/build-learning-catalog.cjs)
-  const { items, learningText, seedText } = learningOutputs(raw, registry, activationEvidence);
+  const { items, learningText, seedText } = learningOutputs(raw, registry, activationEvidence, additional);
   for (const rel of [P.learning, P.learningPublic]) {
     const text = readText(au.root, rel);
     if (text != null && text !== learningText) au.find('error', 'LEARNING_CATALOG_STALE', { source: rel, evidence: describeLearningDiff(text, items) }, `${rel} is not what build-learning-catalog.cjs writes from index.html`);
@@ -423,7 +433,7 @@ function checkGenerated(au, raw, rawLegacy, registry, activationEvidence) {
 }
 
 /** What scripts/build-learning-catalog.cjs writes for this index.html (same algorithm, in memory). */
-function learningOutputs(raw, registry, activationEvidence) {
+function learningOutputs(raw, registry, activationEvidence, additional) {
   validateRamziActivation(registry, activationEvidence);
   const items = [];
   for (const [g, data] of Object.entries(raw.DATA)) {
@@ -452,9 +462,12 @@ function learningOutputs(raw, registry, activationEvidence) {
   // deliberately invalid legacy DATA (checkIndexData reports duplicate IDs).
   // Do not call the writer, which rejects such fixtures before the audit can
   // name the actual defect. Registry identity validation remains strict.
-  const catalog = mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
-  for (const grade of catalog.grades) for (const topic of grade.topics) {
-    for (const edition of topic.editions || []) for (const level of edition.levels) {
+  // Historical viewer editions keep their positions; additional reviewed ones follow.
+  const { initial, catalog } = reconstructCatalog(raw, registry, activationEvidence, additional);
+  const historical = new Set(initial.grades.flatMap((g) => g.topics.flatMap((t) => (t.editions || []).filter((e) => e.routing.usesViewer).map((e) => e.editionId))));
+  const rows = catalog.grades.flatMap((grade) => grade.topics.flatMap((topic) => [...(topic.editions || []), ...(topic.reviewedBaseBinding ? [topic.reviewedBaseBinding] : [])].map((edition) => ({ grade, topic, edition }))));
+  for (const { grade, topic, edition } of [...rows.filter((x) => historical.has(x.edition.editionId)), ...rows.filter((x) => !historical.has(x.edition.editionId))]) {
+    for (const level of edition.levels) {
       if (!edition.routing.usesViewer) continue;
       items.push({
         id: level.learningId, g: grade.grade, t: topic.id, parent: topic.parent || topic.id,
@@ -866,7 +879,7 @@ async function runAudit(options = {}) {
 
   const raw = loadIndexCatalog(path.join(au.root, P.index));
   if (!au.input(P.editions, true)) return finish(au);
-  let registry, activationEvidence, validationStage = 'registry';
+  let registry, activationEvidence, additional, validationStage = 'registry';
   try {
     registry = readJson(au.root, P.editions);
     validationStage = 'activation';
@@ -874,7 +887,10 @@ async function runAudit(options = {}) {
     validateRamziActivation(registry, activationEvidence);
     if (activationEvidence) au.input(P.activation, true);
     validationStage = 'registry';
-    mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready);
+    mergeWorksheetEditions(buildCatalog(raw), registry, activationEvidence?.ready, activationEvidence?.hintCorrection);
+    validationStage = 'activation';
+    additional = loadAdditionalEvidence(path.join(au.root, 'headless/catalog'), path.join(au.root, 'headless/astro-poc/public'));
+    reconstructCatalog(raw, registry, activationEvidence, additional);
   } catch (error) {
     au.find('error', validationStage === 'activation' ? 'RAMZI_ACTIVATION_INVALID' : 'EDITIONS_INVALID',
       { source: validationStage === 'activation' ? P.activation : P.editions }, String(error.message));
@@ -890,7 +906,7 @@ async function runAudit(options = {}) {
   }
   const { topicsByGrade, pdfOwners } = checkIndexData(au, raw);
   checkTitles(au, topicsByGrade);
-  checkGenerated(au, raw, rawLegacy, registry, activationEvidence);
+  checkGenerated(au, raw, rawLegacy, registry, activationEvidence, additional);
   checkMiddleFixture(au, raw);
   checkManifests(au, raw, pdfOwners);
   checkPages(au, raw, topicsByGrade);

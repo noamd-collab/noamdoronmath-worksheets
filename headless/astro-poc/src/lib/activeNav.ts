@@ -62,7 +62,7 @@ export function resolveActiveNav(pathname: string): ActiveNavKey | null {
   }
   if (path === '/learning.html' || path === '/learning') return 'learning';
 
-  if (path === '/worksheets' || /^\/grade-[1-9]$/.test(path)) {
+  if (path === '/worksheets' || /^\/grade-[1-9]$/.test(path) || path === '/grade-9-reduced') {
     return 'worksheets';
   }
   if (TOPIC_PATHS.has(path) || path === '/equations-grade-7') {
@@ -101,7 +101,7 @@ export function resolveWorksheetsNavBand(
   if (level) return level;
 
   const path = normalizeNavPath(pathname);
-  const hub = path.match(/^\/grade-([1-9])$/);
+  const hub = path.match(/^\/grade-([1-9])(?:-reduced)?$/);
   if (hub) return bandFromGrade(Number(hub[1]));
 
   const topicGrade = path.match(/-grade-([1-9])$/);

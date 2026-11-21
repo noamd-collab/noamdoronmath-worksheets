@@ -1,0 +1,91 @@
+---
+/**
+ * SEO-2 — "לפי הפריסה": the official layout units of a grade, by month, on
+ * /grade-7, /grade-8 and /grade-9. Grade 9 gets a רגילה / מצומצמת switch made
+ * of two native radio buttons in a radiogroup named "מסלול", so it works
+ * without JavaScript and both tracks stay in the server-rendered HTML (the
+ * CSS hides the unchecked track's panel). The current school month starts open.
+ */
+import '../styles/prisa-index.css';
+import PrisaUnitList from './PrisaUnitList.astro';
+import {
+  PRISA_SECTION_ID,
+  REDUCED_HUB_PATH,
+  currentPrisaMonthKey,
+  prisaTracksForGrade,
+  unitCountLabel,
+} from '../lib/prisaIndex';
+import { gradeHubLabel, isGradeHubGrade } from '../lib/gradeHubs';
+
+interface Props {
+  grade: number;
+  /** Test hook: the date that decides which month starts open. */
+  now?: Date;
+}
+const { grade, now } = Astro.props;
+const tracks = prisaTracksForGrade(grade);
+const currentMonth = currentPrisaMonthKey(now);
+const gradeLabel = isGradeHubGrade(grade) ? gradeHubLabel(grade) : String(grade);
+const hasSwitch = tracks.length > 1;
+const inputId = (key: string) => `prisa-track-${key}`;
+---
+{
+  tracks.length > 0 && (
+    <section
+      class="prisa-index"
+      id={PRISA_SECTION_ID}
+      aria-labelledby="prisa-heading"
+      data-prisa-index={String(grade)}
+    >
+      <h2 id="prisa-heading" class="grade-hub__section-title">לפי הפריסה</h2>
+      <p class="prisa-index__lead">
+        הנושאים מסודרים לפי פריסת ההוראה של משרד החינוך לכיתה {gradeLabel} (תשפ״ז): כל נושא מופיע
+        בחודש שבו מתחילים ללמוד אותו. נושא שיש לו דף באתר מקשר אליו.
+      </p>
+      {hasSwitch && (
+        <div class="prisa-switch" role="radiogroup" aria-label="מסלול" data-prisa-switch>
+          <span class="prisa-switch__label" aria-hidden="true">מסלול:</span>
+          {tracks.map((track, index) => (
+            <>
+              <input
+                class="prisa-switch__input"
+                type="radio"
+                name={`prisa-track-${grade}`}
+                id={inputId(track.key)}
+                value={track.key}
+                checked={index === 0}
+              />
+              <label class="prisa-switch__option" for={inputId(track.key)} data-track={track.key}>
+                {track.shortLabel}
+              </label>
+            </>
+          ))}
+        </div>
+      )}
+      {tracks.map((track) => (
+        <div class="prisa-index__panel" data-track={track.key}>
+          {track.key === 'g9m' && (
+            <p class="prisa-index__hub-link">
+              <a href={REDUCED_HUB_PATH}>כל נושאי ט׳ מצומצמת בדף אחד</a>
+            </p>
+          )}
+          <div class="prisa-months">
+            {track.months.map((month) => (
+              <details class="prisa-month" id={month.id} open={month.key === currentMonth} data-month={month.key}>
+                <summary>
+                  <span class="prisa-month__label">{month.label}</span>
+                  <span class="prisa-month__count">{unitCountLabel(month.units.length)}</span>
+                  {month.key === currentMonth && <span class="prisa-month__now">החודש</span>}
+                </summary>
+                <PrisaUnitList units={month.units} />
+              </details>
+            ))}
+          </div>
+          <p class="prisa-index__source">
+            מקור: <a href={track.source.url} target="_blank" rel="noopener noreferrer">{track.source.title}</a>, הפיקוח על הוראת המתמטיקה, משרד החינוך.
+          </p>
+        </div>
+      ))}
+    </section>
+  )
+}

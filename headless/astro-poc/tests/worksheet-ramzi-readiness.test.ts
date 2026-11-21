@@ -11,6 +11,7 @@ import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { buildTeacherLandingCatalog } from '../src/lib/teacherLandingCatalog';
 import { buildTeacherCatalog } from '../scripts/build-teacher-catalog.mjs';
 import type { CatalogV1 } from '../src/lib/catalog/types';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 const require=createRequire(import.meta.url);
 const {build}=require('esbuild');
 const Ajv=require('ajv/dist/2020');
@@ -18,7 +19,7 @@ const {fixture}=require('../../../tests/fixtures/ramzi-activation-evidence.cjs')
 const {mergeWorksheetEditions}=require('../../../scripts/lib/worksheet-editions.cjs');
 const {validateRamziActivation}=require('../../../scripts/lib/worksheet-ramzi-activation.cjs');
 const registry=JSON.parse(readFileSync(new URL('../../catalog/worksheet-editions.v1.json',import.meta.url),'utf8'));
-const base=mergeWorksheetEditions(JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json',import.meta.url),'utf8')),registry) as CatalogV1;
+const base=mergeWorksheetEditions(beforeReviewedRamziActivation(JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json',import.meta.url),'utf8'))),registry) as CatalogV1;
 function active(){const b=fixture();validateRamziActivation(registry,b);return mergeWorksheetEditions(base,registry,b.ready) as CatalogV1;}
 
 test('readiness schema and runtime reject malformed records; complete fixture validates',()=>{

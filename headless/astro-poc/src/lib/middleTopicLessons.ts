@@ -5,6 +5,7 @@ const step = (text: string, math: string) => ({ text, math });
 /** Authored demonstrations for the catalog gaps. Each scene teaches this topic,
  * rather than inheriting a nearby topic's picture from a broad family. */
 export const MIDDLE_TOPIC_LESSONS = {
+  'minus-before-fraction': { picture: 'calculation', idea: 'סימן חיסור לפני שבר חל על כל המונה, ולכן אחרי הכפל במכנה המשותף שמים את המונה בסוגריים', steps: [step('המכנים הם 3 ו־4; המכנה המשותף הוא 12', '⟨x¦3⟩ − ⟨x − 2¦4⟩ = 2'), step('כופלים כל איבר ב־12 ושמים את המונה בסוגריים', '4x − 3(x − 2) = 24'), step('פותחים סוגריים ופותרים', 'x + 6 = 24; x = 18')] },
   'hypotenuse-median': { picture: 'calculation', idea: 'במשולש ישר זווית, התיכון ליתר שווה למחצית היתר', steps: [step('הזווית A ישרה; M הוא אמצע היתר BC', '∠A = 90°; BC = 16'), step('לפי משפט התיכון ליתר', 'AM = ⟨BC¦2⟩'), step('מחצית היתר היא אורך התיכון', 'AM = 8')] },
   'rational-domain': { picture: 'calculation', idea: 'פתרון מותר חייב לקיים גם את המשוואה וגם את תחום ההצבה המקורי', steps: [step('קובעים תחום הצבה לפני כל שינוי', '⟨(x²−16)¦(x−4)⟩ = 0; x ≠ 4'), step('אפסי המונה הם מועמדים לפתרון', 'x² − 16 = 0; x = −4, x = 4'), step('הערך 4 אסור; בודקים ומשאירים את הפתרון המותר', 'x = −4')] },
   'equilateral-60': { picture: 'equilateral-topic', idea: 'במשולש שווה־צלעות שלוש הזוויות שוות, ולכן כל אחת 60°', steps: [step('שלוש הצלעות שוות, ולכן שלוש הזוויות שוות', 'a = b = c'), step('סכום הזוויות במשולש הוא 180°', '3α = 180°'), step('מחלקים בשלוש', 'α = 60°')] },
@@ -28,11 +29,22 @@ export const MIDDLE_TOPIC_LESSONS = {
   'system-model': { picture: 'calculation', idea: 'שני תנאים על הכמויות מתורגמים לשתי משוואות באותם נעלמים', steps: [step('b הוא מספר הבנים ו־g מספר הבנות; יחד 32', 'b + g = 32'), step('מספר הבנות גדול ב־6 ממספר הבנים', 'g = b + 6'), step('מציבים ופותרים; בודקים סכום והפרש', 'b = 13; g = 19')] },
   'compare-sources': { picture: 'source-data', idea: 'כששתי מדידות אמינות במידה שווה מתארות אותה כמות, הממוצע נותן הערכה משולבת', steps: [step('שני מקורות ספרו אותה קבוצה', '23, 27'), step('הפער בין הדיווחים הוא ארבעה', '27 − 23 = 4'), step('בהנחת אמינות שווה, ההערכה המשולבת היא 25', '(23 + 27)/2 = 25')] },
   'choose-unknown': { picture: 'calculation', idea: 'בוחרים נעלם אחד וכותבים באמצעותו את שאר הגדלים בסיפור', steps: [step('אורך החבל הקצר x, והארוך גדול ממנו ב־2.4 מטרים', 'x; x + 2.4'), step('סכום האורכים הוא 13.6 מטרים', 'x + (x + 2.4) = 13.6'), step('פותרים וחוזרים לגדלים בסיפור', 'x = 5.6; x + 2.4 = 8')] },
+  'rotation-90-origin': { picture: 'calculation', idea: 'בסיבוב ב־90° נגד כיוון השעון סביב ראשית הצירים הנקודה (x, y) עוברת אל (−y, x), והאורכים נשמרים', steps: [step('הקטע אנכי, ואורכו הפרש השיעורים', 'P(7, 3); Q(7, 8); PQ = 5'), step('מסובבים כל קצה ב־90° נגד כיוון השעון', 'P′(−3, 7); Q′(−8, 7)'), step('התמונה אופקית, והאורך נשמר', 'P′Q′ = −3 − (−8) = 5')] },
+  'corresponding-converse': { picture: 'calculation', idea: 'אם שתי זוויות מתאימות שוות, הישרים מקבילים לפי המשפט ההפוך, ולא לפי מראה הסרטוט', steps: [step('ליד הישר הראשון נתונה זווית', '112°'), step('ליד הישר השני נתונה הזווית הצמודה לזווית המתאימה', '180° − 68° = 112°'), step('שתי זוויות מתאימות שוות, ולכן הישרים מקבילים', '112° = 112°')] },
+  'co-interior-sum': { picture: 'calculation', idea: 'זוויות חד־צדדיות בין ישרים מקבילים משלימות ל־180°, ולכן מחברים אותן ולא משווים ביניהן', steps: [step('מחברים את שתי הזוויות החד־צדדיות, שסכומן 180°', '8x + 20 = 180'), step('מחסרים 20 ומחלקים ב־8', '8x = 160; x = 20'), step('מציבים ובודקים', '104° + 76° = 180°')] },
+  'compare-offers': { picture: 'calculation', idea: 'כותבים ביטוי לכל הצעה, מוצאים מתי המחירים שווים ומחליטים לפי מספר השעות', steps: [step('חברה א׳: 50 ש״ח ועוד 4 ש״ח לשעה; חברה ב׳: 6 ש״ח לשעה', '50 + 4t ; 6t'), step('המחירים שווים כאשר', '50 + 4t = 6t; t = 25'), step('ב־10 שעות חברה ב׳ זולה יותר', '90 > 60')] },
+  'percent-multiplier': { picture: 'calculation', idea: 'הנחה של 45% פירושה שמשלמים 55% מהמחיר, ולכן את המחיר אחרי ההנחה מקבלים בכפל אחד במכפיל 0.55', steps: [step('מחשבים איזה אחוז מהמחיר נשאר לשלם אחרי ההנחה', '100% − 45% = 55%'), step('כותבים את האחוז שמשלמים כמכפיל עשרוני', '55% = 0.55'), step('כופלים את המחיר במכפיל ומקבלים את המחיר החדש', '260 · 0.55 = 143')] },
 } satisfies Record<string, Lesson>;
 
 export const MIDDLE_LESSON_TOPIC_MAP = {
   'rational-equations-grade-9': 'rational-domain',
   'median-to-hypotenuse-grade-9': 'hypotenuse-median',
+  'equations-numeric-denominator-grade-9': 'minus-before-fraction',
+  'isometric-transformations-grade-8': 'rotation-90-origin',
+  'parallel-lines-angles-grade-9': 'corresponding-converse',
+  'co-interior-angles-grade-9': 'co-interior-sum',
+  'math-literacy-tasks-grade-9': 'compare-offers',
+  'percentages-grade-9': 'percent-multiplier',
   'equilateral-triangle-grade-7': 'equilateral-60',
   'equilateral-triangle-grade-9': 'equilateral-60',
   'relative-frequency-experiments-grade-7': 'experimental-frequency',

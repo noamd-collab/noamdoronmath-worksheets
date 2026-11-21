@@ -1,0 +1,91 @@
+{
+  "schema": "noam-prisa-layout/v1",
+  "note": "Month of each unit = the month in which the official prisa table first lists it (continuations are not repeated). Order inside a month follows the table rows (domain I, then domain II, top to bottom). prisaPage is the PDF page; sha256 is the PDF read on 2026-11-12. Input of scripts/build-prisa-units.ts.",
+  "baseUrl": "https://meyda.education.gov.il/files/Pop/0files/matmatika/Chativat-Beynayim/tashpaz/",
+  "monthLabels": {"m09": "ספטמבר", "m10": "אוקטובר", "m11": "נובמבר", "m12": "דצמבר", "m01": "ינואר", "m02": "פברואר", "m03": "מרץ", "m04": "אפריל", "m05": "מאי", "m06": "יוני"},
+  "tracks": [
+    {
+      "key": "g7",
+      "grade": 7,
+      "csvTrack": "ז",
+      "label": "כיתה ז׳",
+      "prefix": "st.g7.",
+      "file": "prisa_7.pdf",
+      "title": "פריסת הוראה כיתה ז׳ — תשפ״ז",
+      "sha256": "9a75dcb554fc69991bdec67b2bb56e1a26ca051bbebe54bb3150580ea677076f",
+      "months": [
+        {"key": "m09", "prisaPage": 2, "units": ["coordinate_system.first_quadrant", "coordinate_system.segments_shapes_q1", "directed_numbers.intro_number_line", "angles.what_is_angle", "angles.naming", "angles.types", "angles.measure"]},
+        {"key": "m10", "prisaPage": 2, "units": ["directed_numbers.opposite_abs", "directed_numbers.addition", "directed_numbers.subtraction", "coordinate_system.four_quadrants", "angles.bisector", "angles.sum_diff", "angles.adjacent", "angles.vertical"]},
+        {"key": "m11", "prisaPage": 2, "units": ["directed_numbers.mul_div", "angles.equilateral", "angles.isosceles", "angles.triangle_sum", "angles.quad_sum", "transformations.congruent_figures", "transformations.isometries"]},
+        {"key": "m12", "prisaPage": 2, "units": ["powers_roots.power_notation", "powers_roots.order_of_operations", "powers_roots.growth_contexts", "powers_roots.signed_base", "powers_roots.square_root", "powers_roots.irrational_estimate", "areas.rect_square", "areas.triangle_ortho_quad", "algebraic_expressions.variables_expressions"]},
+        {"key": "m01", "prisaPage": 3, "units": ["algebraic_expressions.equivalence_identity", "solids.cube_box_elements", "solids.box_surface_volume", "data_frequency.collect_represent"]},
+        {"key": "m02", "prisaPage": 3, "units": ["data_frequency.frequency_relative", "data_frequency.probability_relative_freq", "algebraic_expressions.like_terms", "algebraic_expressions.distributive"]},
+        {"key": "m03", "prisaPage": 3, "units": ["equations.solution_meaning", "equations.linear_solving", "pythagoras.right_triangle_legs", "pythagoras.applications"]},
+        {"key": "m04", "prisaPage": 3, "units": ["areas.parallelogram_trapezoid"]},
+        {"key": "m05", "prisaPage": 3, "units": ["word_problems.modeling_linear", "word_problems.context_problems", "points_on_graph.reading_graph_q1", "areas.perimeters", "solids.triangular_prism"]}
+      ]
+    },
+    {
+      "key": "g8",
+      "grade": 8,
+      "csvTrack": "ח",
+      "label": "כיתה ח׳",
+      "prefix": "st.g8.",
+      "file": "prisa_8.pdf",
+      "title": "פריסת הוראה כיתה ח׳ — תשפ״ז",
+      "sha256": "f80a4876acd304f9405a9e11074ddb3845e8b782d0d5cdc65f313537ebbcedf8",
+      "months": [
+        {"key": "m09", "prisaPage": 2, "units": ["ratio_scale.ratio_division", "ratio_scale.proportion", "ratio_scale.scale", "pythagoras.parallel_angles_completion", "pythagoras.theorem_converse"]},
+        {"key": "m10", "prisaPage": 2, "units": ["percentages.part_whole", "percentages.change_multiplier", "cylinder_cone.circle_review", "cylinder_cone.cylinder", "cylinder_cone.cone", "data_center.freq_relative_review"]},
+        {"key": "m11", "prisaPage": 2, "units": ["transformations.isometries_congruence", "functions_intro.concept_representations", "functions_intro.inc_dec_linear_graphs"]},
+        {"key": "m12", "prisaPage": 3, "units": ["slope_linear.rate_and_slope", "slope_linear.algebraic_linear", "word_problems_eq.special_denominators", "word_problems_eq.motion_percent_problems", "data_center.range_central_tendency"]},
+        {"key": "m01", "prisaPage": 3, "units": ["data_center.two_sources", "inter_extrapolation.estimate_from_trend", "congruence.criteria_sas_asa_sss", "congruence.deductive_proof"]},
+        {"key": "m02", "prisaPage": 3, "units": ["triangle_parts.triangle_inequality", "triangle_parts.median", "systems_basic.graphical_meaning", "systems_basic.algebraic_solving"]},
+        {"key": "m03", "prisaPage": 3, "units": ["triangle_parts.exterior_angle", "triangle_parts.isosceles_properties", "triangle_parts.isosceles_converse", "similarity.similar_polygons_ratio", "similarity.criteria", "probability.sample_space_events", "probability.complementary_event"]},
+        {"key": "m05", "prisaPage": 4, "units": ["pythagoras_3d.space_diagonals", "inequalities.concept_number_line", "inequalities.linear_solving"]}
+      ]
+    },
+    {
+      "key": "g9r",
+      "grade": 9,
+      "csvTrack": "ט_רגילה",
+      "label": "כיתה ט׳ רגילה",
+      "prefix": "st.g9r.",
+      "file": "prisa_9A.pdf",
+      "title": "פריסת הוראה כיתה ט׳ — תשפ״ז",
+      "sha256": "a6832b146c58323bcb427a483235a1af4e6dadf75e1dd5b70cf90f4415c33690",
+      "months": [
+        {"key": "m09", "prisaPage": 2, "units": ["alg_technique.extended_distributive", "alg_technique.short_multiplication", "kite.definition_angles", "kite.main_diagonal_area"]},
+        {"key": "m10", "prisaPage": 2, "units": ["alg_technique.factoring", "alg_technique.algebraic_fractions", "isosceles_converse.theorems_and_coord"]},
+        {"key": "m11", "prisaPage": 3, "units": ["quad_func_and_eq.parabola_intro_qualitative", "quad_func_and_eq.shifts_vertex_form", "quad_func_and_eq.factored_standard_formula", "side_angle_relations.order_theorems", "right_triangle_30_60_90.theorem_and_converse", "parallels_trapezoid.properties", "parallels_trapezoid.alternate_corresponding", "parallels_trapezoid.converse", "parallels_trapezoid.co_interior", "parallels_trapezoid.trapezoid_intro", "parallels_trapezoid.isosceles_trapezoid", "parallels_trapezoid.trapezoid_area_perim"]},
+        {"key": "m12", "prisaPage": 4, "units": ["quad_eq_applications.technique_and_graphs", "quad_inequalities.graphical_parabola", "parallelogram.def_properties", "parallelogram.converse_theorems"]},
+        {"key": "m01", "prisaPage": 5, "units": ["rational_equations.domain_and_solving", "rectangle.def_properties", "rectangle.converse_theorems", "probability.single_stage_complement", "probability.two_stage_representations", "integrative_literacy.real_world_tasks"]},
+        {"key": "m02", "prisaPage": 5, "units": ["system_degree_2.line_parabola_system"]},
+        {"key": "m03", "prisaPage": 6, "units": ["function_properties.graph_features_equations", "function_properties.shifts_reflection", "rhombus.def_properties", "rhombus.converse_theorems", "square.def_properties_converse"]},
+        {"key": "m04", "prisaPage": 7, "units": ["right_triangle_median.theorem_and_quads"]},
+        {"key": "m05", "prisaPage": 7, "units": ["powers.natural_review", "powers.scientific_notation_large", "powers.product_same_base", "powers.quotient_same_base", "powers.power_of_product", "powers.power_of_quotient", "powers.power_of_power", "powers.zero_exponent", "powers.sqrt_laws", "word_problems.quadratic_geometric", "word_problems.motion_percent_literacy", "similarity.area_ratio"]}
+      ]
+    },
+    {
+      "key": "g9m",
+      "grade": 9,
+      "csvTrack": "ט_מצומצמת",
+      "label": "כיתה ט׳ מצומצמת",
+      "prefix": "st.g9m.",
+      "file": "prisa_9B.pdf",
+      "title": "פריסת הוראה כיתה ט׳ מצומצמת — תשפ״ז",
+      "sha256": "f137ce2940e858cc5380a4a27e3634c9a6192a75d36b04a287ffae4db4e23a08",
+      "months": [
+        {"key": "m09", "prisaPage": 2, "units": ["graph_reading.phenomena_axes", "graph_reading.trends_questions", "computational_triangle.angles_and_lines", "computational_triangle.area_perim_coord"]},
+        {"key": "m10", "prisaPage": 2, "units": ["linear_function.slope_rate_meaning", "linear_function.points_intercepts_parallels", "linear_function.line_equation_optional", "alg_technique_basic.distributive_extended", "alg_technique_basic.simple_equations_distributive", "pythagoras.right_triangle_sides", "pythagoras.composite_areas_perim"]},
+        {"key": "m11", "prisaPage": 3, "units": ["statistics.tables_diagrams_freq", "statistics.central_measures_range", "kite_and_isosceles.isosceles_converse", "kite_and_isosceles.kite_properties", "percentages.part_of_whole", "percentages.increase_decrease"]},
+        {"key": "m12", "prisaPage": 4, "units": ["similarity.concept_scale", "similarity.aa_calculations"]},
+        {"key": "m01", "prisaPage": 4, "units": ["parallels_and_parallelogram.review", "parallels_and_parallelogram.parallelogram_def", "parallels_and_parallelogram.parallelogram_props", "parallels_and_parallelogram.parallelogram_identify", "equations.numeric_denominator", "probability.basic_concepts_relative_freq", "probability.events_complement"]},
+        {"key": "m02", "prisaPage": 4, "units": ["rectangle.def_properties", "rectangle.sides_perim_area", "quad_partial.table_and_graph", "quad_partial.quadratic_formula"]},
+        {"key": "m03", "prisaPage": 5, "units": ["word_problems.general_and_quadratic", "rhombus.def_properties", "rhombus.area_pythagoras"]},
+        {"key": "m04", "prisaPage": 5, "units": ["square.def_properties", "square.area_pythagoras"]},
+        {"key": "m05", "prisaPage": 5, "units": ["word_problems_integrative.literacy_contexts", "trapezoid.definition_properties", "trapezoid.area_perimeter", "areas_and_perimeters.polygons_and_circle"]}
+      ]
+    }
+  ]
+}

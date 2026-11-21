@@ -82,22 +82,20 @@
   function stairsScene(ctx) {
     var P = [{ x: -2, y: -1 }, { x: 1, y: 1 }];
     var done = false;
-    var strip = ctx.extra('<div class="sceneStrip" style="grid-template-columns:repeat(3,1fr)">'
-      + stripCell('צעד ימינה', 'run', WARM) + stripCell('עלייה', 'rise', MAIN) + stripCell('שיפוע', 'slope', GOOD) + '</div>');
-    ctx.register('strip', strip);
-    function pointG(id) {
-      return '<g id="' + id + '" style="cursor:grab">'
-        + '<circle r="20" fill="transparent"/>'
+    var strip;
+    function pointG(id, label) {
+      return '<g id="' + id + '" style="cursor:grab" tabindex="0" role="button" aria-label="' + label + '">'
+        + '<circle r="32" fill="transparent"/>'
         + '<circle r="8" fill="' + MAIN + '" stroke="#fff" stroke-width="2.5"/></g>';
     }
-    ctx.draw(base()
+    ctx.draw('<style>#pA:focus-visible,#pB:focus-visible{outline:none}#pA:focus-visible circle+circle,#pB:focus-visible circle+circle{stroke:' + WARM + ';stroke-width:5}</style>' + base()
       + lineSVG('ln', 0, 0, INK, 3)
       + '<polygon id="tri" points="0,0 0,0 0,0" fill="' + WARM_SOFT + '" fill-opacity=".8" stroke="none"/>'
       + '<line id="legRun" x1="0" y1="0" x2="0" y2="0" stroke="' + WARM + '" stroke-width="3.5" stroke-linecap="round"/>'
       + '<line id="legRise" x1="0" y1="0" x2="0" y2="0" stroke="' + MAIN + '" stroke-width="3.5" stroke-linecap="round"/>'
       + '<text id="tRun" x="0" y="0" text-anchor="middle" font-size="15" fill="' + RED + '" font-family="Secular One, sans-serif"></text>'
       + '<text id="tRise" x="0" y="0" text-anchor="start" direction="ltr" font-size="15" fill="' + MAIN + '" font-family="Secular One, sans-serif"></text>'
-      + '<g id="pts">' + pointG('pA') + pointG('pB') + '</g>');
+      + '<g id="pts">' + pointG('pA', 'נקודה כחולה ראשונה. חצים מזיזים אותה') + pointG('pB', 'נקודה כחולה שנייה. חצים מזיזים אותה') + '</g>');
     var gA = ctx.el('pA'), gB = ctx.el('pB');
     function setStrip(k, v) { strip.querySelector('[data-v="' + k + '"]').textContent = v; }
     function render() {
@@ -153,18 +151,76 @@
           render();
         }
       },
-      end: function () {
-        if (done) return;
-        var l = P[0].x < P[1].x ? P[0] : P[1];
-        var r = l === P[0] ? P[1] : P[0];
-        if ((r.y - l.y) / (r.x - l.x) === 2) {
-          done = true;
-          ctx.sfx('correct');
-          ctx.burst(18);
-          ctx.say('מצוין. שיפוע ' + m('2') + ' אומר: על כל צעד ימינה, שני צעדים למעלה.', { mood: 'happy', attn: true });
-          ctx.solved();
-        }
+      end: function () { finish(); }
+    });
+    function finish() {
+      if (done) return;
+      var l = P[0].x < P[1].x ? P[0] : P[1];
+      var r = l === P[0] ? P[1] : P[0];
+      if ((r.y - l.y) / (r.x - l.x) === 2) {
+        done = true;
+        ctx.sfx('correct');
+        ctx.burst(18);
+        ctx.say('מצוין. שיפוע ' + m('2') + ' אומר: על כל צעד ימינה, שני צעדים למעלה.', { mood: 'happy', attn: true });
+        ctx.solved();
       }
+    }
+    function movePoint(idx, dx, dy) {
+      var other = P[1 - idx];
+      var gx = clamp(P[idx].x + dx, -5, 5);
+      var gy = clamp(P[idx].y + dy, -4, 4);
+      if (gx === other.x) gx = clamp(gx + (dx || 1), -5, 5);
+      if (gx === other.x) return;
+      if (gx !== P[idx].x || gy !== P[idx].y) {
+        P[idx].x = gx; P[idx].y = gy;
+        ctx.sfx('tick');
+        render();
+        finish();
+      }
+    }
+    function keyMove(idx, el) {
+      el.addEventListener('keydown', function (e) {
+        var dx = 0, dy = 0;
+        if (e.key === 'ArrowLeft') dx = -1;
+        else if (e.key === 'ArrowRight') dx = 1;
+        else if (e.key === 'ArrowUp') dy = 1;
+        else if (e.key === 'ArrowDown') dy = -1;
+        else return;
+        e.preventDefault();
+        movePoint(idx, dx, dy);
+      });
+    }
+    keyMove(0, gA);
+    keyMove(1, gB);
+    var sel = 0;
+    var both = ctx.extra('<div class="sceneStrip" style="grid-template-columns:repeat(3,1fr)">'
+      + stripCell('צעד ימינה', 'run', WARM) + stripCell('עלייה', 'rise', MAIN) + stripCell('שיפוע', 'slope', GOOD) + '</div>'
+      + '<div class="sceneStrip" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:10px">'
+      + '<button type="button" data-sel="0" aria-pressed="true" style="min-height:44px;min-width:44px">נקודה א</button>'
+      + '<button type="button" data-sel="1" aria-pressed="false" style="min-height:44px;min-width:44px">נקודה ב</button>'
+      + '<button type="button" data-mv="-1,0" aria-label="הזז שמאלה" style="min-height:44px;min-width:44px">←</button>'
+      + '<button type="button" data-mv="0,1" aria-label="הזז למעלה" style="min-height:44px;min-width:44px">↑</button>'
+      + '<button type="button" data-mv="0,-1" aria-label="הזז למטה" style="min-height:44px;min-width:44px">↓</button>'
+      + '<button type="button" data-mv="1,0" aria-label="הזז ימינה" style="min-height:44px;min-width:44px">→</button></div>');
+    strip = both.children[0];
+    ctx.register('strip', strip);
+    var pad = both.children[1];
+    pad.querySelectorAll('[data-sel]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        sel = Number(b.getAttribute('data-sel'));
+        pad.querySelectorAll('[data-sel]').forEach(function (o) {
+          o.setAttribute('aria-pressed', o === b ? 'true' : 'false');
+          o.style.outline = o === b ? '3px solid ' + WARM : 'none';
+        });
+        ctx.sfx('click');
+      });
+    });
+    pad.querySelector('[data-sel="0"]').style.outline = '3px solid ' + WARM;
+    pad.querySelectorAll('[data-mv]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var d = b.getAttribute('data-mv').split(',');
+        movePoint(sel, Number(d[0]), Number(d[1]));
+      });
     });
     render();
   }
@@ -304,14 +360,14 @@
     {
       mode: 'scene',
       tA: 'מדרגות על הישר',
-      sub: 'גרור את שתי הנקודות הכחולות ותראה איך המדרגה משתנה.',
-      tip: 'שתי נקודות על ישר יוצרות מדרגה. גרור אותן עד שהשיפוע יהיה ' + m('2') + '.',
-      cue: 'גרור את הנקודות עד שהשיפוע יהיה 2',
+      sub: 'הזז את שתי הנקודות הכחולות בגרירה, בכפתורים או בחיצים, ותראה איך המדרגה משתנה.',
+      tip: 'שתי נקודות על ישר יוצרות מדרגה. הזז אותן עד שהשיפוע יהיה ' + m('2') + '.',
+      cue: 'הזז את הנקודות עד שהשיפוע יהיה 2',
       cueDone: 'יפה. אפשר להמשיך ←',
       btn: 'המשך ←',
       aspect: [W, H],
       alt: 'מערכת צירים עם ישר, שתי נקודות נגררות ומשולש מדרגות שמראה את הצעד ימינה ואת העלייה',
-      nudge: { target: 'scene', text: 'גרור את אחת הנקודות הכחולות למקום אחר.' },
+      nudge: { target: 'scene', text: 'הזז את אחת הנקודות הכחולות, בגרירה או בכפתורים.' },
       setup: stairsScene
     },
     {

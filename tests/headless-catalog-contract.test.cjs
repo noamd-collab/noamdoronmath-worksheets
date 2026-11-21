@@ -46,19 +46,21 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
 
   const s = result.stats;
   assert.equal(s.grades, 9);
-  assert.equal(s.topics, 333);
-  assert.equal(s.levels, 973);
-  assert.equal(s.uniquePdfIds, 942);
+  assert.equal(s.topics, 339);
+  assert.equal(s.levels, 991);
+  assert.equal(s.uniquePdfIds, 960);
   assert.equal(s.childTopics, 3);
   // Restored G8-T66 adds three levels; 31 declared source-grade reuses share PDFs.
   assert.equal(s.withNoamTopicId, 158);
-  assert.equal(s.searchEntries, 122);
+  assert.equal(s.searchEntries, 128);
   assert.equal(s.iconKeys, 80);
 
-  // Exact current inventory: restored G8-T66 and retained RAT47, plus MED48.
+  // Exact current inventory: restored G8-T66 and retained RAT47, plus MED48 and EQM49
+  // (the first reduced-track topic of the new r9jan month group), and NEW4 (18.11):
+  // G8 t68 and G9 t50, t51 (new group geopar) and t52, and batch 10's G9 t53 (month group r9nov).
   // The next-nine intake test also reverses MED/PRB/REC to the exact prior catalog.
   // Exact per-grade topic counts from DATA
-  const expected = { 1: 23, 2: 29, 3: 25, 4: 30, 5: 35, 6: 27, 7: 50, 8: 67, 9: 47 };
+  const expected = { 1: 23, 2: 29, 3: 25, 4: 30, 5: 35, 6: 27, 7: 50, 8: 68, 9: 52 };
   for (const g of catalog.grades) {
     assert.equal(g.topics.length, expected[g.grade], 'grade ' + g.grade + ' topic count');
   }
@@ -125,9 +127,11 @@ test('parity with index.html: grades, topics, levels, PDF ids, parents, groups, 
   }
 
   // Track groups
-  assert.deepEqual(catalog.config.trackGroups, ['r9oct', 'r9sep']);
+  assert.deepEqual(catalog.config.trackGroups, ['r9jan', 'r9nov', 'r9oct', 'r9sep']);
   const reduced = g9.groups.filter((gr) => gr.reducedProgram).map((gr) => gr.key).sort();
-  assert.deepEqual(reduced, ['r9oct', 'r9sep']);
+  assert.deepEqual(reduced, ['r9jan', 'r9nov', 'r9oct', 'r9sep']);
+  // Month groups stay in calendar order after the regular groups.
+  assert.deepEqual(g9.groups.filter((gr) => gr.reducedProgram).map((gr) => gr.label), ['ספטמבר', 'אוקטובר', 'נובמבר', 'ינואר']);
 
   // BASE / VIEWER
   assert.equal(catalog.config.pdfBase, raw.BASE);

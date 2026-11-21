@@ -7,12 +7,14 @@
 סדר מיזוג מומלץ: #43 → #44 → #45 → #46 → #47 → #48 → #49.  
 כל PR מאוחר כולל את הקומיטים של הקודמים עד שהם מתמזגים.
 
+> **תיקון, 17.11.2026 (SEO-5).** ב-www את `/robots.txt` ואת `/sitemap.xml` מגיש Wix, לא האתר שלנו. ה-`robots.txt` החי מפנה רק אל `/sitemap.xml` של Wix, ושם אין פוסטים של הבלוג וכמעט אין משחקים. מפת האתר המלאה היא `https://www.noamdoronmath.co.il/sitemap-index.xml`. אותה מגישים ב-Google Search Console וב-Bing Webmaster Tools, לא את `/sitemap.xml`. נועם מוסיף ב-Wix (SEO > Robots.txt Editor) את השורה `Sitemap: https://www.noamdoronmath.co.il/sitemap-index.xml` ומשאיר את שורות Wix. הבדיקה: `npm run check:live-robots` ב-`headless/astro-poc`. היא רצה גם בסוף `tools/release/release.sh`, לדיווח בלבד, ולא עוצרת release.
+
 ## שלבים
 
 ### שלב 1 — בסיס טכני
 - סטטוס: מוכן לסקירה
 - PR: https://github.com/noamd-collab/noamdoronmath-worksheets/pull/43
-- נעשה: title אחד, description אחד, canonical אחד אל `https://www.noamdoronmath.co.il`. `lang="he"` ו-`dir="rtl"`. `/sitemap.xml` הוא אינדקס אל `/sitemap-pages.xml` ו-`/sitemap-blog.xml`. `robots.txt` דינמי עם קישור ל-sitemap. Open Graph ו-Twitter ב-layout. עמוד 404 מחזיר סטטוס 404. מתג `SITE_INDEXABLE`: preview תמיד `noindex`. בלי הדגל, רק `www` ו-apex הם `index,follow`.
+- נעשה: title אחד, description אחד, canonical אחד אל `https://www.noamdoronmath.co.il`. `lang="he"` ו-`dir="rtl"`. `/sitemap.xml` הוא אינדקס אל `/sitemap-pages.xml` ו-`/sitemap-blog.xml`. `robots.txt` דינמי עם קישור ל-sitemap. (ב-www, Wix מגיש את `/sitemap.xml` ואת `robots.txt` לפני הנתיבים האלה. ראו את התיקון למעלה.) Open Graph ו-Twitter ב-layout. עמוד 404 מחזיר סטטוס 404. מתג `SITE_INDEXABLE`: preview תמיד `noindex`. בלי הדגל, רק `www` ו-apex הם `index,follow`.
 - פתוח: Wix עדיין מזריק תגיות `[wix-seo-tag="true"]`. הסקריפט ב-layout מוחק אותן אחרי הטעינה. ב-view-source הן עדיין נראות. `SITE_INDEXABLE` לא הוגדר ב-`wix env` (אין הרשאה).
 
 ### שלב 2 — מפת הפניות
@@ -64,7 +66,7 @@
 3. לאשר את ההפניה `/privacy` → `/accessibilityadaptation#privacy-policy`.
 4. להשאיר את `/workflow` בלי הפניה (404 מכוון).
 5. הפניית `/triangle-area-grade-7-worksheets` כבר ל-`/triangle-area-grade-7`. לא לשנות.
-6. אחרי החיבור: להגיש ב-Search Console את `https://www.noamdoronmath.co.il/sitemap.xml`.
+6. אחרי החיבור: להגיש ב-Google Search Console וב-Bing Webmaster Tools את `https://www.noamdoronmath.co.il/sitemap-index.xml`. לא את `/sitemap.xml`: הוא של Wix ואין בו את הבלוג.
 7. למדוד שוב Lighthouse ל-`/blog` ול-`/aboutus` אחרי העלאה ל-preview.
 8. שני דפי נושא חולקים מזהה קטלוג עם דף אחר: `adjacent-vertical-angles-grade-7` ו-`coordinate-plane-four-quadrants-grade-7`.
 9. 328 הוא מספר נושאי הקטלוג. דפי נושא ייעודיים: 95. השאר מקבלים הצעת מטא בלי URL ייעודי.
@@ -73,8 +75,9 @@
 
 ## בדיקות אחרי חיבור הדומיין
 
-- `robots.txt` על www: `Allow: /` ו-`Sitemap: https://www.noamdoronmath.co.il/sitemap.xml`. על preview: `Disallow: /`.
-- `sitemap.xml` מחזיר אינדקס, והילדים כוללים כיתות, נושאים, דפי עבודה ובלוג. אין כתובות preview.
+- `robots.txt` על www הוא הקובץ של Wix. הוא צריך לכלול `Sitemap: https://www.noamdoronmath.co.il/sitemap-index.xml`. בודקים עם `npm run check:live-robots`. על preview: `Disallow: /`.
+- `sitemap-index.xml` מחזיר אינדקס, והילדים (`sitemap-pages.xml`, `sitemap-blog.xml`) כוללים כיתות, נושאים, דפי עבודה ובלוג. אין כתובות preview.
+- `lastmod` של דף נושא הוא תאריך שורת «עודכן» שלו, כמו `dateModified` ב-JSON-LD. דף בלי תאריך כזה יוצא בלי `lastmod`. אף פעם לא תאריך הבנייה.
 - 301 בפועל: `/triangle-area-grade-7-worksheets` → `/triangle-area-grade-7`, ו-`/privacy` → עמוד הנגישות עם העוגן.
-- Search Console: להגיש את sitemap, ולבדוק שה-canonical לא מצביע ל-preview.
+- Search Console: להגיש את `sitemap-index.xml`, ולבדוק שה-canonical לא מצביע ל-preview.
 - view-source מול DOM: לוודא שנשאר title אחד אחרי הסרת תגיות Wix.

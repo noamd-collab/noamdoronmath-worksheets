@@ -46,7 +46,28 @@ const activationDeltas = JSON.parse(activationDeltaText).files;
 const legalPrivacyDeltaText = read('tests/fixtures/legal-privacy-reviewed-delta.json');
 assert.equal(sha256(legalPrivacyDeltaText), '3953c82c1b08b81cf1b2bf76d977f11d6457f0cdeed2c74c2de4cacbe0b38753');
 const legalPrivacyDeltas = JSON.parse(legalPrivacyDeltaText).files;
+// Restore the two intentional edition-reader changes before checking the historic hashes.
+function beforeThreeDigitEditions(content: string): string {
+  const hunks: [string, string][] = [
+  [
+    "// Three-digit topic IDs belong to the reviewed edition path.\nvar okX =\n  (editionRequested ? /^(?:G[1-9]-T[0-9]{2}|G[7-9]-T[1-9][0-9]{2})$(?![\\s\\S])/ : /^G[1-9]-T\\d{2}$/)\n  .test(x) &&\n  x.indexOf(\n    \"G\" + g + \"-\"\n  ) === 0;\n\n",
+    "var okX =\n  /^G[1-9]-T\\d{2}$/\n  .test(x) &&\n  x.indexOf(\n    \"G\" + g + \"-\"\n  ) === 0;\n\n"
+  ],
+  [
+    "noam-curated-hints.js?v=20261120-three-digit-editions",
+    "noam-curated-hints.js?v=20261107-edition-bindings1"
+  ]
+];
+  for (const [current, previous] of hunks) {
+    const sections = content.split(current);
+    assert.equal(sections.length, 2, 'one exact change for three-digit edition IDs');
+    content = sections.join(previous);
+  }
+  return content;
+}
+
 function beforeLegalPrivacy(file: string, content: string): string {
+  if (file === 'public/worksheet-viewer-noam.html') content = beforeThreeDigitEditions(content);
   const delta = legalPrivacyDeltas.find((entry: any) => entry.file === file);
   if (!delta) return content;
   assert.equal(sha256(content), delta.candidateSha256, file + ' exact legal privacy candidate');
@@ -64,7 +85,33 @@ function beforeLegalPrivacy(file: string, content: string): string {
 const whatsappRemovalDeltaText = read('tests/fixtures/whatsapp-removal-reviewed-delta.json');
 assert.equal(sha256(whatsappRemovalDeltaText), '34a79baa893980f0fee9d54f09d1d10ebd195fd89aa8b5775a5a4b95c70ffd6a');
 const whatsappRemovalDeltas = JSON.parse(whatsappRemovalDeltaText).files;
+// Learning header: the same per-letter משחקים label as SiteHeader. Reverse only
+// these exact hunks before the WhatsApp candidate hash; no historical hash changes.
+function beforeLearningNavRainbow(file: string, content: string): string {
+  if (file !== 'public/learning.html') return content;
+  const hunks = [
+    ['noam-learning.css?v=20261118-nav-rainbow-1', 'noam-learning.css?v=20260910-mobile-1'],
+    [
+      'aria-haspopup="true" aria-label="משחקים"><span class="exact-nav-rainbow" aria-hidden="true"><span>מ</span><span>ש</span><span>ח</span><span>ק</span><span>י</span><span>ם</span></span></button>',
+      'aria-haspopup="true">משחקים</button>',
+    ],
+    [
+      '<a class="exact-nav-game exact-nav-game--orange" href="/games/kefel-mekutsar-2">',
+      '<a class="exact-nav-game" href="/games/kefel-mekutsar-2">',
+    ],
+    [
+      '<a class="exact-nav-game exact-nav-game--green" href="/games/eliyahu-pythagoras">',
+      '<a class="exact-nav-game" href="/games/eliyahu-pythagoras">',
+    ],
+  ];
+  for (const [after, before] of hunks) {
+    assert.equal(content.split(after).length, 2, 'one exact learning games rainbow hunk');
+    content = content.replace(after, before);
+  }
+  return content;
+}
 function beforeWhatsappRemoval(file: string, content: string): string {
+  content = beforeLearningNavRainbow(file, content);
   const delta = whatsappRemovalDeltas.find((entry: any) => entry.file === file);
   if (!delta) return content;
   assert.equal(sha256(content), delta.candidateSha256, file + ' exact WhatsApp removal candidate');
@@ -101,7 +148,7 @@ function beforeDrawingControlPause(content: string): string {
 }
 
 it('first567 drawing policy changes only the reviewed line in the root mirror', () => {
-  const current = beforeDrawingControlPause(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8'));
+  const current = beforeDrawingControlPause(beforeThreeDigitEditions(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8')));
   assert.equal(sha256(current), '232f80e06dea7d7f410c2a03ad0c09ffbd6bfb9721bd5542e2a98260d7d2d6a9', 'exact root drawing policy candidate');
   assert.equal(sha256(beforeDrawingPolicy(current)), '91433585be9d6d4ec2bf3887bbafecec5b310f235382f56ebfcbe23de645e05c');
   assert.throws(() => beforeDrawingPolicy(current.replace('G7-T86', 'G7-T99')));
@@ -123,7 +170,29 @@ function beforeReportObserverFix(content: string): string {
   return restored;
 }
 
+// Reverse this exact optional additional-package projection before every prior fence.
+function beforeAdditionalProjection(file: string, content: string): string {
+  const hunks: Record<string, [string, string][]> = {
+    'src/lib/catalog/loadCatalog.ts': [
+      ["import { mergeReviewedCatalog } from '../../../../../scripts/lib/reviewed-ramzi-activation.mjs';\nimport additionalTrust from '../../../../catalog/ramzi-additional-trust.v1.json';\n", ''],
+      ['return mergeReviewedCatalog(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection, data.reviewedRamziActivations, additionalTrust)', 'return mergeWorksheetEditions(data, editionRegistry, data.ramziActivation, data.ramziHintCorrection)'],
+    ],
+    'src/lib/worksheetLinks.ts': [
+      ["  const viewerEditionId = edition.viewerEditionId || (isNewEdition ? edition.editionId : undefined);\n  if (viewerEditionId) viewerUrl.searchParams.set('edition', viewerEditionId);", "  if (isNewEdition) viewerUrl.searchParams.set('edition', edition.editionId);"],
+    ],
+  };
+  if (!hunks[file]) return content;
+  for (const [after, before] of hunks[file]) {
+    assert.equal(content.split(after).length, 2, file + ' one exact additional-package hunk');
+    content = content.replace(after, before);
+  }
+  const original: Record<string,string> = {'src/lib/catalog/loadCatalog.ts': '6c7d53bf766a4fce18dd2e2331c59f15f56ea0a208e0fbba8bc382bf8f687d22', 'src/lib/worksheetLinks.ts': '1ed2a623c2dc08d23b9ecfedc9f89120d240dfd72e01d55b93f84614e670826b'};
+  assert.equal(sha256(content), original[file], 'unchanged pre-additional file');
+  return content;
+}
+
 function beforeActivation(file: string, content: string): string {
+  content = beforeAdditionalProjection(file, content);
   content = beforeLegalPrivacy(file, beforeWhatsappRemoval(file, content));
   if (file === 'src/lib/catalog/loadCatalog.ts') {
     // Reverse only the optional correction argument, then retain the complete
@@ -149,6 +218,14 @@ function beforeActivation(file: string, content: string): string {
   assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside activation');
   return content;
 }
+
+it('additional package loader and base links preserve all original fences', () => {
+  for (const file of ['src/lib/catalog/loadCatalog.ts','src/lib/worksheetLinks.ts']) {
+    assert.doesNotThrow(() => beforeActivation(file, read(file)));
+    assert.throws(() => beforeActivation(file, read(file) + '\n'));
+  }
+  assert.throws(() => beforeActivation('src/lib/worksheetLinks.ts', read('src/lib/worksheetLinks.ts').replace('edition.viewerEditionId ||', 'edition.unreviewedAlias ||')));
+});
 
 it('hint-correction loader reversal preserves all earlier exact fences', () => {
   const file = 'src/lib/catalog/loadCatalog.ts', current = read(file);
@@ -285,7 +362,13 @@ describe('exact-design protected live-baseline boundaries', () => {
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
         // Reverse the exact three additional PDF overlays before all older fences.
-        const catalog = beforeEqnSgnFacCatalog(JSON.parse(content));
+        const publishedCatalog = JSON.parse(content);
+        const activation = readFirst567Activation();
+        assert.deepEqual(publishedCatalog.ramziHintCorrection, activation.hintCorrection,
+          'current snapshot correction matches the verified receipt bundle');
+        const catalog = beforeEqnSgnFacCatalog(publishedCatalog);
+        // beforeEqnSgnFacCatalog's chain first reverses EQM49 (topic 49, its search
+        // terms and the new r9jan month group; tests/fixtures/eqm49-pdf.ts).
         // Reverse only the exact MED01 base topic; retain RAT47 and all older fences.
         const medGrade = catalog.grades.find((g: any) => g.grade === 9);
         const medIndex = medGrade.topics.findIndex((t: any) => t.id === 48);
@@ -314,20 +397,22 @@ describe('exact-design protected live-baseline boundaries', () => {
           'משוואות רציונליות שברים אלגבריים מכנה משתנה פירוק מכנים תחום הצבה קבילות פתרונות פסילת פתרון מכנה משותף');
         ratGrade.topics.splice(ratIndex, 1);
         delete catalog.searchTerms['9']['47'];
-        const activation = readFirst567Activation();
         assert.deepEqual(catalog.ramziActivation, activation.ready, 'snapshot matches the real receipt bundle');
-        assert.deepEqual(catalog.ramziHintCorrection, activation.hintCorrection, 'optional correction matches the verified receipt bundle');
+        assert.equal(Object.hasOwn(catalog, 'ramziHintCorrection'), false,
+          'the strict historical projection already reversed the verified correction');
         if (activation.ready) {
           delete catalog.ramziActivation;
-          // Strip only the correction already verified against its real readback.
-          delete catalog.ramziHintCorrection;
           for (const grade of catalog.grades) for (const topic of grade.topics) for (const edition of topic.editions || []) {
             const readyLevels = edition.levels.filter((level: any) => activation.ramzi.has(edition.editionId + ':' + level.key));
             if (!readyLevels.length) continue;
             assert.equal(readyLevels.length, 3, 'only complete three-level activation');
             assert.equal(edition.routing.usesViewer, true); assert.equal(edition.routing.aiHintShown, true);
             for (const level of readyLevels) {
-              assert.deepEqual(level.ramzi, activation.ramzi.get(edition.editionId + ':' + level.key));
+              assert.deepEqual(level.ramzi, {
+                ...activation.ramzi.get(edition.editionId + ':' + level.key),
+                payloadSha256: activation.ready.payloadSha256,
+                verifiedDbReadbackReceiptSha256: activation.ready.verifiedDbReadbackReceiptSha256,
+              }, 'the projected unit retains the exact pre-correction activation');
               delete level.ramzi;
             }
             // Reverse only the reviewed readiness overlay, retaining every old

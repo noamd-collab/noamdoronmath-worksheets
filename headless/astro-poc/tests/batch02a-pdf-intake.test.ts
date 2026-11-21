@@ -12,6 +12,12 @@ import { collectViewerPdfIds } from '../scripts/sync-github-static.mjs';
 import { loadTopicPage, extractJsonLdFaq, synthesizeBodyFlow } from '../src/lib/topicPages';
 import { beforeBatch02aCatalog, beforeBatch02aRegistry, beforeBatch02aCopy,
   reviewedBatch02a as reviewed, reviewedBatch02aIds as ids } from './fixtures/batch02a-pdf';
+import { reviewedBatch05 as reviewedBatch05 } from './fixtures/batch05-pdf';
+import { beforeBatch03Registry } from './fixtures/batch03-pdf';
+import { beforeBatch08Copy, reviewedBatch08 } from './fixtures/batch08-pdf';
+import { reviewedBatch09 } from './fixtures/batch09-pdf';
+import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
+import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -20,8 +26,8 @@ const { loadRamziActivationEvidence } = require('../../../scripts/lib/worksheet-
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
-const raw = read('headless/astro-poc/src/data/catalog.v1.json');
-const catalog = loadCatalog();
+const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
+const catalog = beforeReviewedRamziActivation(loadCatalog());
 const previous = beforeBatch02aCatalog(raw) as ReturnType<typeof loadCatalog>;
 // Same SSR normalization as loadCatalog (Wix media CDN) so direct-PDF links compare like for like.
 const previousSsr = { ...previous, config: { ...previous.config, pdfBase: 'https://static.wixstatic.com/ugd/d8e7ad_' } };
@@ -133,13 +139,16 @@ test('sixteen fixed mappings add forty-eight frozen PDFs and recover the indepen
   assert.match(reviewed.additions.find(a => a.slug === 'pythagorean-theorem-grade-9')!.edition.label, /תוכנית מצומצמת/);
   assert.equal(new Set(reviewed.additions.flatMap(a => a.pdfIds)).size, 48);
   assert.equal(new Set(reviewed.additions.flatMap(a => a.edition.levels.map(l => l.pdfSha256))).size, 48);
-  assert.equal(registry.editions.length, 55);
-  assert.equal(registry.editions.flatMap((e: any) => e.levels).length, 165);
+  const afterBatch02aRegistry = beforeBatch03Registry(registry);
+  assert.equal(afterBatch02aRegistry.editions.length, 55);
+  assert.equal(afterBatch02aRegistry.editions.flatMap((e: any) => e.levels).length, 165);
   assert.equal(priorRegistry.editions.length, 39);
   assert.equal(priorRegistry.editions.flatMap((e: any) => e.levels).length, 117);
-  assert.deepEqual(registry.editions.slice(0, 39), priorRegistry.editions);
-  assert.deepEqual(registry.editions.slice(39), reviewed.additions.map(a => a.edition));
-  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
+  assert.deepEqual(afterBatch02aRegistry.editions.slice(0, 39), priorRegistry.editions);
+  assert.deepEqual(afterBatch02aRegistry.editions.slice(39), reviewed.additions.map(a => a.edition));
+  // Editions never add base levels; EQM49 (17.11, +3 levels) and NEW4 (18.11, +12 levels) are the later base topics.
+  assert.equal(raw.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 991); // NEW4 (18.11): four later base topics, +12 levels; batch 10 topic 9/53, +3
+  assert.equal(previous.grades.flatMap((g: any) => g.topics.flatMap((t: any) => t.levels)).length, 973);
   assert.deepEqual(receipt.scope, { packages: 16, pdfs: 48, pages: 385, subitems: 1431, landingRoutes: 16 });
   assert.deepEqual(receipt.packages.map((p: any) => p.editionId), ids);
   assert.equal(receipt.sitePublicationClaimed, false);
@@ -163,10 +172,16 @@ test('all forty-eight additions open their own reviewed PDF directly while every
     });
     const back = `/worksheets?grade=${addition.grade}&topic=${addition.topicId}`;
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, back);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', ...addition.baselineEditionIds, addition.editionId]);
-    assert.deepEqual(groups.slice(0, -1), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
-    assert.deepEqual(groups.at(-1)!.levels.map(l => [l.key, l.label]), [['a', 'רמה א׳'], ['b', 'רמה ב׳'], ['c', 'מצוינות']]);
-    assert.equal(groups.at(-1)!.note, 'קובצי PDF להדפסה');
+    const laterIds = [...reviewedBatch05.additions, ...reviewedBatch08.additions, ...reviewedBatch09.additions]
+      .filter(later => later.grade === addition.grade && later.topicId === addition.topicId)
+      .map(later => later.editionId);
+    assert.deepEqual(groups.map(g => g.editionId),
+      ['legacy', ...addition.baselineEditionIds, addition.editionId, ...laterIds]);
+    assert.deepEqual(groups.filter(g => g.editionId !== addition.editionId && !laterIds.includes(g.editionId)),
+      topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
+    const ownGroup = groups.find(g => g.editionId === addition.editionId)!;
+    assert.deepEqual(ownGroup.levels.map(l => [l.key, l.label]), [['a', 'רמה א׳'], ['b', 'רמה ב׳'], ['c', 'מצוינות']]);
+    assert.equal(ownGroup.note, 'קובצי PDF להדפסה');
     assert.deepEqual(topic.levels.map(l => l.key), ['a', 'b', 'c']);
     const proof = receipt.packages.find((p: any) => p.editionId === addition.editionId);
     assert.ok(proof, `${addition.editionId}: public frozen evidence`);
@@ -231,8 +246,10 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
   };
   assert.deepEqual(reviewed.landingDeltas.map(d => d.slug), Object.keys(scope));
   for (const delta of reviewed.landingDeltas) {
-    const pageRaw = read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`);
-    const restored = beforeBatch02aCopy(delta.slug, pageRaw) as any;
+    const pageFile = (beforeLandingCorrections(delta.slug, read(`headless/astro-poc/src/data/topic-pages/${delta.slug}.json`)) as any);
+    const restored = beforeBatch02aCopy(delta.slug, pageFile) as any;
+    // Batch 8 later appends its own section to some of these pages; compare this batch's state.
+    const pageRaw = beforeBatch08Copy(delta.slug, pageFile) as any;
     assert.equal(digest(restored), delta.baselineSha256);
     assert.equal(pageRaw.h1, restored.h1); assert.equal(pageRaw.title, restored.title);
     assert.deepEqual(pageRaw.catalogCta, restored.catalogCta);
@@ -243,9 +260,16 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
     assert.ok([...pageRaw.description].length <= 155, delta.slug);
     for (const term of scope[delta.slug]) assert.ok(pageRaw.description.includes(term), `${delta.slug}: ${term}`);
     assert.match(pageRaw.intro, /בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה\.$/);
-    const added: any = pageRaw.sections.at(-1);
+    const laterSection = reviewedBatch05.landingDeltas.find(d => d.slug === delta.slug)?.appendedSection;
+    const expectedAdditions = [delta.appendedSection, ...(laterSection ? [laterSection] : [])];
+    for (const section of expectedAdditions) {
+      assert.equal(pageRaw.sections.filter((candidate: any) => JSON.stringify(candidate) === JSON.stringify(section)).length, 1);
+    }
+    const added: any = pageRaw.sections.find((candidate: any) =>
+      JSON.stringify(candidate) === JSON.stringify(delta.appendedSection));
     assert.deepEqual(added, delta.appendedSection as any);
-    assert.deepEqual(pageRaw.sections.slice(0, -1), restored.sections);
+    assert.deepEqual(pageRaw.sections.filter((candidate: any) =>
+      !expectedAdditions.some(section => JSON.stringify(candidate) === JSON.stringify(section))), restored.sections);
     assert.equal(added.blocks.at(-1).text, 'שלושה קובצי PDF ברמות א׳, ב׳ ומצוינות, עם תשובות סופיות בסוף כל דף.');
     // TopicPage's setupSelfCheckReveal() hides the second paragraph of a section whose heading
     // looks like a self-check; the new sections are plain copy and must stay fully visible.
@@ -259,7 +283,7 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
         assert.ok(!text.includes(banned), `${delta.slug}: ${banned}`);
       }
     }
-    const page = loadTopicPage(delta.slug), flow = synthesizeBodyFlow(page);
+    const page = beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug)), flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text || '') === added.heading).length, 1);
     for (const block of added.blocks) assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text || '') === block.text).length, 1);
     const faq = extractJsonLdFaq(page.jsonLd).map(f => ({ question: plain(f.question), answer: plain(f.answer) }));
@@ -272,9 +296,15 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
     }
   }
   // The reduced-track series says so; the reviewed copy corrections stay in place.
-  const pyd = read('headless/astro-poc/src/data/topic-pages/pythagorean-theorem-grade-9.json');
+  const pyd = beforeLandingCorrections('pythagorean-theorem-grade-9', read('headless/astro-poc/src/data/topic-pages/pythagorean-theorem-grade-9.json')) as any;
   assert.match(pyd.intro, /סדרת PDF לתוכנית המצומצמת בכיתה ט׳/);
-  const text = (slug: string) => read(`headless/astro-poc/src/data/topic-pages/${slug}.json`).sections.at(-1).blocks.map((b: any) => b.text).join(' ');
+  const text = (slug: string) => {
+    const delta = reviewed.landingDeltas.find(d => d.slug === slug)!;
+    const page = (beforeLandingCorrections(slug, read(`headless/astro-poc/src/data/topic-pages/${slug}.json`)) as any);
+    const section = page.sections.find((candidate: any) => JSON.stringify(candidate) === JSON.stringify(delta.appendedSection));
+    assert.ok(section, `${slug}: reviewed batch-02a section remains present`);
+    return section.blocks.map((block: any) => block.text).join(' ');
+  };
   assert.ok(text('linear-function-grade-8').includes('הייצוג האלגברי של פונקציה קווית'));
   assert.ok(text('triangle-median-grade-8').includes('אורכים שלמים אפשריים לתיכון'));
   assert.ok(text('word-problems-grade-9').startsWith('ברוב השאלות'));

@@ -1,0 +1,11 @@
+{
+  "schema": "noam-reviewed-additional-learning-readback/v1",
+  "status": "verified_exact_readback",
+  "scopeId": "ms-20261113-par-03-r1",
+  "worksheetIds": [
+    "g9-t7-a-e-ms-20261113-par-03-r1",
+    "g9-t7-b-e-ms-20261113-par-03-r1",
+    "g9-t7-c-e-ms-20261113-par-03-r1"
+  ],
+  "sourceReceiptSha256": "1616ccc6d42c205c3eb25bd5970868be51118668ecc7d9e08282e6e61e5ee12f"
+}

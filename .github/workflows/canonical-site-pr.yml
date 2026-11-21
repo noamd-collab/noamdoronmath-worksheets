@@ -51,7 +51,8 @@ jobs:
   unit-tests:
     name: canonical-unit-tests
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    # scripts/run-tests.mjs caps the deterministic suite at 45 minutes.
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

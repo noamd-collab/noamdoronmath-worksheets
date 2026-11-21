@@ -5,8 +5,10 @@
  */
 import viewerHtml from '../../public/worksheet-viewer-noam.html?raw';
 import learningHtml from '../../public/learning.html?raw';
+import { VIEWER_PATH, withViewerSeoHead } from './viewerSeo';
 
 export const PUBLIC_HTML_SHELLS: Record<string, string> = {
-  '/worksheet-viewer-noam.html': viewerHtml,
+  // SEO-1: the served viewer shell carries noindex,follow (no canonical).
+  [VIEWER_PATH]: withViewerSeoHead(viewerHtml),
   '/learning.html': learningHtml,
 };

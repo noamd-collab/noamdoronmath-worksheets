@@ -3,12 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroLoop from '../components/HeroLoop.astro';
 import ExactHeroControls from '../components/ExactHeroControls.astro';
 import GamePromoCard from '../components/GamePromoCard.astro';
+import JuniorHighLaunchBanner from '../components/JuniorHighLaunchBanner.astro';
 import KislevGreeting from '../components/KislevGreeting.astro';
 import { HERO_DEFAULT, heroChip, heroPanel } from '../lib/heroRotation';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
-import { organizationJsonLd } from '../lib/structuredData';
+import { siteIdentityJsonLd } from '../lib/structuredData';
 const home = loadHomePage();
-const homeJsonLd = [...homePageJsonLd(), organizationJsonLd()];
+// One EducationalOrganization and one WebSite, linked by @id (SEO-4).
+const homeJsonLd = [siteIdentityJsonLd(homePageJsonLd())];
 const images = ['paper-boat','snail','curious-cat','kite','geometry-fish','cube-plant'];
 const letters = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ז׳','ח׳','ט׳'];
 const elemGrades = home.grades.slice(0,6).map((grade,i)=>({ ...grade,l:letters[i],img:'/design-exact/assets/doodles/'+images[i]+'.webp',delay:i*70,isSnail:i===1,isCat:i===2,isFish:i===4,isBoat:i===0,isCube:i===5 }));
@@ -17,6 +19,7 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
 <BaseLayout title={home.title} description={home.description} crumbs={[{ name: 'בית', path: '/' }]} activeNav="home" skipHref="#home-main">
   {homeJsonLd.map(block=>(<script type="application/ld+json" set:html={JSON.stringify(block)} />))}
     <main id="home-main" class="exact-home" data-family="home" data-home-page data-screen-label="בית">
+      <JuniorHighLaunchBanner />
       <KislevGreeting />
 
       <!-- HERO -->
@@ -141,6 +144,9 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
             </a>
           ))}
         </div>
+        <p data-home-reduced-track style="margin:16px 0 0;">
+          <a href="/grade-9-reduced" style="display:inline-flex;align-items:center;min-height:44px;padding:8px 20px;background:#fff;color:#22305a;font-weight:700;font-size:17px;border:2px solid #22305a;border-radius:6px 18px 8px 20px / 20px 8px 18px 6px;" data-exact-hover="exact-hover-4">כיתה ט׳ מצומצמת — דפי עבודה לפי הפריסה</a>
+        </p>
       </section>
 
       <!-- LEVELS -->
