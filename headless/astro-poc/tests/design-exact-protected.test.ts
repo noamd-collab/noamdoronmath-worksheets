@@ -217,6 +217,24 @@ function beforeElementaryPrintIndex(content: string): string {
 }
 
 function beforeActivation(file: string, content: string): string {
+  if (file === 'public/noam-learning.js') {
+    // Only the shared worksheet's progress lookup changed for grade 9 review.
+    const selectPlacement = [
+      "  var topic=Number(params.get('topic'));",
+      "  if(!direct || edition!=='legacy' || !topic || direct.parent===topic || direct.x!==params.get('x'))return direct;",
+      "  // A review topic opens the source PDF while keeping progress in the selected topic.",
+      "  var placements=catalog.filter(function(item){",
+      "   return item.trackPlacementProgress===true && !item.editionId && item.parent===topic && item.sourceGrade===direct.g &&",
+      "    item.sourcePrefix===direct.x && item.pdf===direct.pdf && item.l===direct.l;",
+      "  });",
+      "  return placements.length===1?placements[0]:direct;",
+      "",
+    ].join('\n');
+    assert.equal(content.split(selectPlacement).length, 2, 'one exact review placement lookup');
+    const direct = '  var direct=catalog.find(function(item){';
+    assert.equal(content.split(direct).length, 2, 'one direct worksheet lookup');
+    content = content.replace(selectPlacement, '').replace(direct, '  return catalog.find(function(item){');
+  }
   if (file === 'src/lib/catalog/loadCatalog.ts') content = beforeElementaryPrintIndex(content);
   content = beforeAdditionalProjection(file, content);
   content = beforeLegalPrivacy(file, beforeWhatsappRemoval(file, content));

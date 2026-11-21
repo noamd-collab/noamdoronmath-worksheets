@@ -6,7 +6,25 @@ import { beforeFirst15Correction } from './helpers/beforeFirst15Correction';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 import { beforeBatch12Catalog } from './fixtures/batch12-pdf';
 
-const current = beforeReviewedRamziActivation(JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')));
+const live = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
+const current = beforeReviewedRamziActivation(live);
+
+test('historical projection requires the complete grade-9 review placement and its search entry', () => {
+  const grade9 = (catalog: typeof live) => catalog.grades.find((grade: any) => grade.grade === 9);
+  assert.ok(grade9(live).topics.some((topic: any) => topic.id === 21));
+  assert.ok(!grade9(current).topics.some((topic: any) => topic.id === 21));
+  assert.ok(!Object.hasOwn(current.searchTerms['9'], '21'));
+  const changedPdf = structuredClone(live);
+  const placement = grade9(changedPdf).topics.find((topic: any) => topic.id === 21);
+  placement.levels[0].pdfId = placement.levels[1].pdfId;
+  assert.throws(() => beforeReviewedRamziActivation(changedPdf), /placement or source changed/);
+  const missingTerms = structuredClone(live);
+  delete missingTerms.searchTerms['9']['21'];
+  assert.throws(() => beforeReviewedRamziActivation(missingTerms), /search terms changed/);
+  const missingTopic = structuredClone(live);
+  grade9(missingTopic).topics = grade9(missingTopic).topics.filter((topic: any) => topic.id !== 21);
+  assert.throws(() => beforeReviewedRamziActivation(missingTopic), /expected one grade-9/);
+});
 const units = (c: any) => c.grades.flatMap((g: any) => g.topics.flatMap((t: any) =>
   (t.editions || []).flatMap((e: any) => e.levels.filter((l: any) => l.ramzi))));
 const digest = (c: any) => createHash('sha256').update(JSON.stringify(c, null, 2) + '\n').digest('hex');

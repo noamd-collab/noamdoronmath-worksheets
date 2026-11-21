@@ -423,6 +423,17 @@ export function catalogSheets(index) {
   return sheets;
 }
 
+/** Shared placements use the source grade's single measured file, keyed by PDF. */
+export function teacherMeasurementSources(placements) {
+  const native = placements.filter(sheet => !sheet.sourceGrade);
+  for (const alias of placements.filter(sheet => sheet.sourceGrade)) {
+    const matches = native.some(sheet => sheet.grade === alias.sourceGrade &&
+      sheet.pdfId === alias.pdfId && sheet.level === alias.level);
+    if (!matches) throw new Error(`Missing source placement for ${alias.pdfId} in grade ${alias.sourceGrade}`);
+  }
+  return native;
+}
+
 function cachedPdf(pdfId) {
   const path = join(pdfCacheDir, `${pdfId}.pdf`);
   if (existsSync(path) && statSync(path).size > 1000) return path;
@@ -519,13 +530,15 @@ async function writeOutputs({ elementaryOnly = false } = {}) {
   const previous = elementaryOnly
     ? JSON.parse(readFileSync(join(outDir, 'teacher-catalog.json'), 'utf8')) : null;
   const index = elementaryOnly ? mergeElementaryCatalog(builtIndex, previous) : builtIndex;
+  const placements = catalogSheets(index);
+  const sources = teacherMeasurementSources(placements);
   if (!elementaryOnly) rmSync(sheetDir, { recursive: true, force: true });
   mkdirSync(sheetDir, { recursive: true });
   writeFileSync(join(outDir, 'teacher-catalog.json'), JSON.stringify(index));
   let exerciseSheets = 0;
   let questions = 0;
   const pending = [];
-  for (const sheet of catalogSheets(index)) {
+  for (const sheet of sources) {
     if (sheet.mode !== 'exercise' || (elementaryOnly && sheet.band !== 'elementary')) continue;
     exerciseSheets += 1;
     const manifestBytes = readFileSync(join(manifestDir, sheet.pdfId + '.json'));
@@ -583,7 +596,7 @@ async function writeOutputs({ elementaryOnly = false } = {}) {
     writeFileSync(join(sheetDir, job.id + '.json'), JSON.stringify(source));
   }
   applyTeacherAnswerMaps();
-  return { sheets: catalogSheets(index).length, exerciseSheets, questions, measuredTops, fallbacks };
+  return { sheets: placements.length, exerciseSheets, questions, measuredTops, fallbacks };
 }
 
 const isDirectRun = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];

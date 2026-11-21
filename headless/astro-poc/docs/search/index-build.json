@@ -2673,6 +2673,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/equilateral-triangle-grade-9",
+      "title": "משולש שווה־צלעות לכיתה ט׳: זוויות של ⁦60°⁩, צורות מורכבות והיקפים",
+      "linkedTopic": "topic:9:21",
+      "linkedTitle": "משולשים מיוחדים — חזרה מכיתה ז׳",
+      "verified": false,
+      "reason": "already attached to an earlier link"
+    },
+    {
       "key": "page:/rational-equations-grade-9",
       "title": "משוואות רציונליות לכיתה ט׳",
       "linkedTopic": "topic:9:47",

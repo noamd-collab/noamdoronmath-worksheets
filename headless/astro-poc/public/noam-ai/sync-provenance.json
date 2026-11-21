@@ -2298,8 +2298,8 @@
   "legacyIndex": {
     "path": "public/legacy-github/index.html",
     "source": "index.html",
-    "sha256": "3ea71f2da29572c6ff452f9c967ce0b64eb8c0bcdd6838e8788d92881b707146",
-    "bytes": 193352,
+    "sha256": "ea9201fcff8ecc93ecbbf2c65b614d7a7179693a06298c3c3d331a5069c1bf95",
+    "bytes": 194069,
     "note": "Sibling-level discovery fallback when pa/pb/pc are incomplete; not the Astro home route."
   },
   "retainedLegacy": {
