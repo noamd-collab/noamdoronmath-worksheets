@@ -263,6 +263,11 @@ def _validate_source(lesson, payload, scope, *, provider):
         bad("SOURCE_NIQQUD", "Grades three and up use unvocalized prose")
     if grade <= 2 and any(HEBREW.search(s) and not NIQQUD.search(s) for s in _prose_strings(normalized)):
         bad("SOURCE_NIQQUD", "Grades one and two require vocalized prose in every Hebrew text field")
+    if grade == 2 and scope["topic"]["topicId"] == "ב05" and allowed == {"ב05#1"}:
+        from no_carry_addition import validate_topic_math
+        validate_topic_math(normalized)
+    if provider and len(json.dumps(normalized, ensure_ascii=False).encode("utf-8")) > MAX_BYTES:
+        bad("SOURCE_SIZE", "Source exceeds byte budget")
     return {"source": normalized, "evidence": {"version": 1, "computations": evidence,
         "unverifiedAnswers": pending, "reviewRequired": True,
         "verificationScope": "Typed tasks only. Prose-task alignment, chronology, pedagogy, figure claims and visual output require independent review.",

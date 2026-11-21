@@ -169,6 +169,8 @@ class GeneralRuntimeTests(unittest.TestCase):
                     options = plan[qi]["options"][sub]
                     for a,b in options:
                         self.assertTrue(10 <= min(a,b) and a+b < 100 and a%10+b%10 < 10)
+                        if plan[qi]["kind"] == "digits":
+                            self.assertNotEqual(b % 10, b // 10)
                         self.assertNotIn(tuple(sorted((a,b))), seen)
                         seen.add(tuple(sorted((a,b))))
                     a,b = options[authored["questions"][qi]["choices"][sub]-1]
@@ -197,6 +199,35 @@ class GeneralRuntimeTests(unittest.TestCase):
         for override in ({"level":"a"}, {"lessonGoal":"review"}, {"questionCount":13},
                          {"lessonBoundary":{"conceptIds":["ב05#0","ב05#1"]}}):
             self.assertFalse(addition.compatible({**lesson, **override}))
+
+    def test_full_source_alternative_enforces_the_selected_no_regrouping_concept(self):
+        from math_tasks import number, operation
+        fixture = HERE / 'cloud/container/fixtures/general/grade2-vocalized'
+        lesson = json.loads((fixture/'lesson.json').read_text())
+        payload = json.loads((fixture/'model-output.json').read_text())
+        scope = scope_for_lesson(lesson)
+        question = payload['sections'][0]['questions'][0]
+        item = question['items'][0]
+        add = lambda a,b: operation("add", number(a), number(b))
+        valid = add(23, 14)
+        cases = [("evaluate", add(19, 19)), ("evaluate", add(81, 20)),
+                 ("evaluate", operation("multiply", number(12), number(2))),
+                 ("evaluate", operation("add", number(3,2), number(30))),
+                 ("evaluate", number(37)), ("compare", add(19, 19))]
+        for kind, expression in cases:
+            item["answer"]["task"] = ({"kind": kind, "expression":expression} if kind == "evaluate"
+                                      else {"kind":kind, "left":valid, "right":expression})
+            with self.subTest(task=item["answer"]["task"]), self.assertRaises(GeneralSourceError) as error:
+                validate_source(lesson,payload,scope,provider=True)
+            self.assertEqual(error.exception.code,"SOURCE_ADDITION_SCOPE")
+        item["answer"]["task"] = {"kind":"compare","left":valid,"right":number(38)}
+        validate_source(lesson,payload,scope,provider=True)
+        for extra in ({"kind":"math","expression":add(19,19)}, {"kind":"text","text":"כִּתְבוּ 19 + 19"}):
+            item["prompt"].append(extra)
+            with self.assertRaises(GeneralSourceError) as error:
+                validate_source(lesson,payload,scope,provider=True)
+            self.assertEqual(error.exception.code,"SOURCE_ADDITION_SCOPE")
+            item["prompt"].pop()
 
     def test_bad_general_response_never_retries_or_becomes_approved(self):
         envelope={'choices':[{'finish_reason':'stop','message':{'content':'{"version":4,"approved":true}'}}]}

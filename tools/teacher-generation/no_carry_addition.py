@@ -20,7 +20,7 @@ INTROS = {
     "place": "חַבְּרוּ יְחִידוֹת לִיחִידוֹת וַעֲשָׂרוֹת לַעֲשָׂרוֹת.",
     "combine": "בְּכָל סְעִיף יֵשׁ שְׁתֵּי קֻפְסָאוֹת. מִצְאוּ אֶת הַכַּמּוּת בִּשְׁתֵּיהֶן יַחַד.",
     "increase": "קִרְאוּ מָה הָיָה בַּהַתְחָלָה וּמָה נוֹסַף. חַשְּׁבוּ אֶת הַכַּמּוּת הַחֲדָשָׁה.",
-    "days": "אַסְפוּ פְּרִיטִים בְּמֶשֶׁךְ יוֹמַיִם. כַּמָּה אָסְפוּ בִּשְׁנֵי הַיָּמִים?",
+    "days": "אָסְפוּ פְּרִיטִים בְּמֶשֶׁךְ יוֹמַיִם. כַּמָּה אָסְפוּ בִּשְׁנֵי הַיָּמִים?",
     "digits": "קִרְאוּ אֶת תֵּאוּר הַמִּסְפָּר הַשֵּׁנִי בְּכָל סְעִיף. חַבְּרוּ אוֹתוֹ לַמִּסְפָּר הָרִאשׁוֹן.",
     "check": "בִּדְקוּ אֶת הַתְּשׁוּבָה שֶׁהֻצְּעָה בְּכָל סְעִיף. כִּתְבוּ אֶת הַסְּכוּם הַנָּכוֹן.",
     "choose": "קִרְאוּ אֵילוּ פְּרִיטִים מְבַקְּשִׁים לִסְפֹּר. בַּחֲרוּ אֶת שְׁתֵּי הַכַּמּוּיוֹת הַמַּתְאִימוֹת וְחַבְּרוּ.",
@@ -69,6 +69,7 @@ def parameter_plan(count):
                     available = [(a, total - a) for a in range(10, total // 2 + 1)
                                  if a % 10 + (total - a) % 10 < 10
                                  and (kind != "tens" or a % 10 == 0 or (total - a) % 10 == 0)
+                                 and (kind != "digits" or a % 11 != 0 or (total - a) % 11 != 0)
                                  and (a, total - a) not in used]
                     if len(available) >= 2:
                         break
@@ -78,7 +79,11 @@ def parameter_plan(count):
                 for offset in range(2):
                     a, b = available.pop((index + offset * 3) % len(available))
                     used.add((a, b))
-                    options.append((b, a) if (sub + offset) % 2 else (a, b))
+                    if (sub + offset) % 2:
+                        a, b = b, a
+                    if kind == "digits" and b % 11 == 0:
+                        a, b = b, a
+                    options.append((a, b))
             slots.append(options)
         plan.append({"kind": kind, "options": slots})
     return plan
@@ -177,3 +182,64 @@ def states_entire_task(lesson, question_index, sub_index, item):
     other = UNITS[(UNITS.index(unit)+1) % len(UNITS)]
     expected, _ = prompt(kind, sub_index, question_index, unit, other, a, b)
     return item["prompt"] == expected
+
+
+def validate_topic_math(source):
+    """Check the actual arithmetic even for full-source teacher alternatives.
+
+    Exact numeric comparison is useful for checking a proposed answer. Every
+    item must still practice an addition of two two-digit quantities. Place
+    value decompositions can contain smaller numbers, and all intermediate
+    additions must remain inside the same no-regrouping boundary.
+    """
+    def reject():
+        raise GeneralSourceError("SOURCE_ADDITION_SCOPE", "Expected a two-digit addition without regrouping")
+
+    def value(expr):
+        if expr["type"] == "number":
+            n = expr["numerator"]
+            if expr["denominator"] != 1 or not 0 <= n <= 99:
+                reject()
+            return n, False
+        if expr["type"] != "operation" or expr["op"] != "add":
+            reject()
+        children = [value(arg) for arg in expr["args"]]
+        terms = [n for n, _ in children]
+        total = sum(terms)
+        if total > 99 or sum(n % 10 for n in terms) > 9:
+            reject()
+        return total, sum(n >= 10 for n in terms) >= 2 or any(practices for _, practices in children)
+
+    def check_spans(spans):
+        for span in spans:
+            if span["kind"] == "math":
+                value(span["expression"])
+            if span["kind"] == "text" and any(ch.isdigit() or ch in "+=*/×÷−" for ch in span["text"]):
+                reject()
+
+    check_spans(source["rule"])
+    for section in source["sections"]:
+        for question in section["questions"]:
+            check_spans(question["intro"])
+            if "table" in question:
+                for row in [question["table"]["head"], *question["table"]["rows"]]:
+                    for cell in row:
+                        check_spans(cell)
+            for item in question["items"]:
+                check_spans(item["prompt"])
+                answer = item["answer"]
+                if answer["kind"] != "computed":
+                    reject()
+                task = answer["task"]
+                if task["kind"] == "evaluate":
+                    expressions = [task["expression"]]
+                elif task["kind"] == "compare":
+                    expressions = [task["left"], task["right"]]
+                else:
+                    reject()
+                # Evaluate both sides before checking whether either side
+                # contains a taught addition: one valid side cannot mask an
+                # out-of-scope operation on the other.
+                verified = [value(expr) for expr in expressions]
+                if not any(practices for _, practices in verified):
+                    reject()
