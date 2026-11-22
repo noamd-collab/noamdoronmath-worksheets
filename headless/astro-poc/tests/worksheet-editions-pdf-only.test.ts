@@ -204,6 +204,19 @@ test('JSON schema agrees on PDF-only provenance, forbidden future fields and the
   const unmarked: any = pdfOnlyFixture(); delete unmarked.editions[0].publicationMode; invalid.push(unmarked);
   const wrongGrade: any = editionFixture(); wrongGrade.editions[0].publicationMode = 'pdf-only'; invalid.push(wrongGrade);
   const wrongMode: any = pdfOnlyFixture(); wrongMode.editions[0].publicationMode = 'full'; invalid.push(wrongMode);
+  const bridge = actual.editions.find((row: { editionId: string }) => row.editionId === 'ms-20261122-g9-trn-01-r1');
+  assert.ok(bridge);
+  for (const mutate of [
+    (row: typeof bridge) => { row.topicId = 21; },
+    (row: typeof bridge) => { row.grade = 8; },
+    (row: typeof bridge) => { row.levels[0].nativeExportSha256 = row.levels[0].sourceSha256; },
+    (row: typeof bridge) => { delete row.bridgePrintEvidence; },
+    (row: typeof bridge) => { row.isDefault = true; },
+  ]) {
+    const row = structuredClone(bridge);
+    mutate(row);
+    invalid.push({ version: 1, editions: [row] });
+  }
   for (const rows of invalid) {
     assert.equal(validate(rows), false);
     assert.throws(() => mergeWorksheetEditions(base, rows), /Worksheet editions:/);
@@ -232,4 +245,32 @@ test('questions-only assessment binds its three print files and cannot borrow an
   assert.equal(assessment.routing.usesViewer, false);
   assert.equal(assessment.routing.aiHintShown, false);
   assert.ok(assessment.levels.every(l => !Object.hasOwn(l, 'ramzi')));
+});
+
+test('the reviewed Grade 9 transition sources bind only their own three PDFs', () => {
+  const registry = JSON.parse(readFileSync(new URL('../../../headless/catalog/worksheet-editions.v1.json', import.meta.url), 'utf8'));
+  const original = registry.editions.find((row: { editionId: string }) => row.editionId === 'ms-20261122-g9-trn-01-r1');
+  assert.ok(original);
+  const cases = [
+    (row: typeof original) => { delete row.bridgePrintEvidence; },
+    (row: typeof original) => { row.bridgePrintEvidence.stockPrintChecksSha256 = '0'.repeat(64); },
+    (row: typeof original) => { row.bridgePrintEvidence.freezeSha256 = '0'.repeat(64); },
+    (row: typeof original) => { row.bridgePrintEvidence.independentReviewSha256 = '0'.repeat(64); },
+    (row: typeof original) => { row.levels[0].sourceSha256 = row.levels[1].sourceSha256; },
+    (row: typeof original) => { row.levels[0].nativeExportSha256 = row.levels[0].sourceSha256; },
+    (row: typeof original) => { row.nativePrefix = 'G9-T135'; },
+    (row: typeof original) => { row.editionId = 'other-bridge'; },
+    (row: typeof original) => { row.assessmentPdfEvidence = row.bridgePrintEvidence; },
+    (row: typeof original) => { row.isDefault = true; },
+  ];
+  for (const mutate of cases) {
+    const changed = structuredClone(original);
+    mutate(changed);
+    assert.throws(() => mergeWorksheetEditions(base, {version: 1, editions: [changed]}));
+  }
+  const merged = mergeWorksheetEditions(base, {version: 1, editions: [original]});
+  const bridge = topic(merged, 9, 20).editions!.find(e => e.editionId === original.editionId)!;
+  assert.equal(bridge.routing.aiHintShown, false);
+  assert.equal(bridge.routing.usesViewer, false);
+  assert.ok(bridge.levels.every(l => !Object.hasOwn(l, 'nativeExportSha256') && !Object.hasOwn(l, 'ramzi')));
 });

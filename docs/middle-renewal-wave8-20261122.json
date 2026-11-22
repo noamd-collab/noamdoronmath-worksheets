@@ -1,0 +1,181 @@
+{
+  "schema": "middle-school-reviewed-pdf/v1",
+  "date": "2026-11-22",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 22.11.2026",
+  "baseline": "0c9eae843c35961905247af2813e42bd8cf31637",
+  "baselineCatalogSha256": "c60eaf4ace28012d05e98286bacc2452feee34b8063f45daa36b24d4d051e0e0",
+  "baselineRegistrySha256": "bf4a93d1bfe806b814a8a6f67006cff641228c610433f2393c7fcbae8c5e4698",
+  "packages": [
+    {
+      "number": 119,
+      "sheetId": "G9-TRN-01",
+      "grade": 9,
+      "topicId": 20,
+      "slug": "transition-to-high-school-grade-9",
+      "producerPackage": "G9-T134",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "449a3d445c093f5ac3d57e9aa12cc8cd58233680cedb07d8465fdbca6cb180c6",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G9-TRN-01-r02-20261122/review.json",
+          "sha256": "aaa49023317ad51cac5c7f6464c1d58b2c6c6f7448ad29bf79f9622654f44f5b",
+          "verdict": "PASS_STUDENT_PDF"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 11,
+          "items": 60,
+          "bytes": 97827,
+          "source": "submissions/Codex/MS-PROD-CODEX-119-r02/release/documents/G9-TRN-01/a/sheet.pdf",
+          "sha256": "09225ad4f9af07be10729b806f16bc5316cd71c3bbd3ef95b1b54e9f8e50c3c1",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_70ef52d55d6744cfb2bde39541941fed.pdf",
+              "status": 200,
+              "sha256": "09225ad4f9af07be10729b806f16bc5316cd71c3bbd3ef95b1b54e9f8e50c3c1",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_70ef52d55d6744cfb2bde39541941fed.pdf",
+              "status": 200,
+              "sha256": "09225ad4f9af07be10729b806f16bc5316cd71c3bbd3ef95b1b54e9f8e50c3c1",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 13,
+          "items": 60,
+          "bytes": 102343,
+          "source": "submissions/Codex/MS-PROD-CODEX-119-r02/release/documents/G9-TRN-01/b/sheet.pdf",
+          "sha256": "8528d92db0528acb4f3e269462d27ebe9d268ae0b96d8d7405f8c2e491bd461f",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f8263d291bcc4bf884ea661e74e683a5.pdf",
+              "status": 200,
+              "sha256": "8528d92db0528acb4f3e269462d27ebe9d268ae0b96d8d7405f8c2e491bd461f",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_f8263d291bcc4bf884ea661e74e683a5.pdf",
+              "status": 200,
+              "sha256": "8528d92db0528acb4f3e269462d27ebe9d268ae0b96d8d7405f8c2e491bd461f",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 13,
+          "items": 60,
+          "bytes": 105205,
+          "source": "submissions/Codex/MS-PROD-CODEX-119-r02/release/documents/G9-TRN-01/c/sheet.pdf",
+          "sha256": "319f376e80cb8f43787c46329e7ed6313852b4e757cbc2c597591b7d6e71e565",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ece7fe812c574192a3aea4c9f121442b.pdf",
+              "status": 200,
+              "sha256": "319f376e80cb8f43787c46329e7ed6313852b4e757cbc2c597591b7d6e71e565",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_ece7fe812c574192a3aea4c9f121442b.pdf",
+              "status": 200,
+              "sha256": "319f376e80cb8f43787c46329e7ed6313852b4e757cbc2c597591b7d6e71e565",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "מעבר לחטיבה העליונה — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מתכוננים ללימודי ארבע וחמש יחידות בכיתה י׳ בעזרת שאלות על אלגברה, פונקציות, גאומטריה והסתברות. החזרה מבוססת על התוכנית הרגילה לכיתה ט׳.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": null,
+      "priorPageSha256": "15f2712962867c7e0076caa21644c96b1a189f15a4b30448f168788b180d802a",
+      "priorTopicSha256": "b1150e0014a5039469f5bd5490d526c348bbb549cafd0c996128155ffd62a9f5",
+      "edition": {
+        "grade": 9,
+        "topicId": 20,
+        "editionId": "ms-20261122-g9-trn-01-r1",
+        "label": "מעבר לחטיבה העליונה · תוכנית רגילה · PDF",
+        "nativePrefix": "G9-T134",
+        "publicationMode": "pdf-only",
+        "bridgePrintEvidence": {
+          "kind": "regular-grade-9-bridge",
+          "freezeSha256": "449a3d445c093f5ac3d57e9aa12cc8cd58233680cedb07d8465fdbca6cb180c6",
+          "independentReviewSha256": "aaa49023317ad51cac5c7f6464c1d58b2c6c6f7448ad29bf79f9622654f44f5b",
+          "stockPrintChecksSha256": "5bfd14978c567ba7f7409fbe274294791a5a6919576c2675706c2c140e9bcfa9"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "70ef52d55d6744cfb2bde39541941fed",
+            "pdfSha256": "09225ad4f9af07be10729b806f16bc5316cd71c3bbd3ef95b1b54e9f8e50c3c1",
+            "sourceSha256": "89fac340f3e67106fd872117082f100358be16a82049096cc1966fd618c3dfbb",
+            "worksheetId": "ms-g9-trn-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "f8263d291bcc4bf884ea661e74e683a5",
+            "pdfSha256": "8528d92db0528acb4f3e269462d27ebe9d268ae0b96d8d7405f8c2e491bd461f",
+            "sourceSha256": "be935bc7ecf8b6cbfa7f063ddb77d5e5e86d2d7dcb1d3f44436c8b6979fc0f63",
+            "worksheetId": "ms-g9-trn-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "ece7fe812c574192a3aea4c9f121442b",
+            "pdfSha256": "319f376e80cb8f43787c46329e7ed6313852b4e757cbc2c597591b7d6e71e565",
+            "sourceSha256": "3b4b15e81a17944c0fee62a31c023bb3e4cc3aafecd4deccf65a5500bb6e8e8d",
+            "worksheetId": "ms-g9-trn-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "94198821384a9430d60618fd5d0887115d9af56e81ff35e46fe71d56c786f6e7",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "מתרגלים ומרעננים אלגברה, פונקציות וגאומטריה לקראת המעבר לתיכון, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "מתרגלים ומרעננים אלגברה, פונקציות וגאומטריה לקראת המעבר לתיכון, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמז לכל סעיף שיש לצדו כפתור."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "מתרגלים ומרעננים אלגברה, פונקציות וגאומטריה לקראת המעבר לתיכון, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "מתרגלים ומרעננים אלגברה, פונקציות וגאומטריה לקראת המעבר לתיכון, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמז לכל סעיף שיש לצדו כפתור."
+        }
+      ]
+    }
+  ]
+}

@@ -91,15 +91,22 @@ interface AssessmentPdfEvidence {
   freezeSha256: string;
 }
 
-type AssessmentPdfLevel = Omit<CatalogNativePdfOnlyLevel, 'nativeExportSha256' | 'ramzi'> & {
+interface BridgePrintEvidence {
+  kind: 'regular-grade-9-bridge';
+  independentReviewSha256: string;
+  stockPrintChecksSha256: string;
+  freezeSha256: string;
+}
+
+type ReviewedPrintLevel = Omit<CatalogNativePdfOnlyLevel, 'nativeExportSha256' | 'ramzi'> & {
   nativeExportSha256?: never;
   ramzi?: never;
 };
 
-export type CatalogPdfOnlyLevel = CatalogNativePdfOnlyLevel | AssessmentPdfLevel;
+export type CatalogPdfOnlyLevel = CatalogNativePdfOnlyLevel | ReviewedPrintLevel;
 
 export type CatalogEdition = CatalogEditionBase & (
-  | { publicationMode: 'pdf-only'; assessmentPdfEvidence?: AssessmentPdfEvidence; levels: CatalogPdfOnlyLevel[] }
+  | { publicationMode: 'pdf-only'; assessmentPdfEvidence?: AssessmentPdfEvidence; bridgePrintEvidence?: BridgePrintEvidence; levels: CatalogPdfOnlyLevel[] }
   | { publicationMode?: never; levels: CatalogLevel[] }
 );
 

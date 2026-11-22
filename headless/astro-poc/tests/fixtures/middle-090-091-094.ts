@@ -22,9 +22,11 @@ import sixthRenew from '../../../../docs/middle-renewal-wave6-20261122.json';
 
 import seventhRenew from '../../../../docs/middle-renewal-wave7-20261122.json';
 
-export { reviewed, seven, three, renew, nextRenew, thirdRenew, fourthRenew, fifthRenew, sixthRenew, seventhRenew };
-const releases = [seventhRenew, sixthRenew, fifthRenew, fourthRenew, thirdRenew, nextRenew, renew, three, seven, reviewed];
-const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages, ...nextRenew.packages, ...thirdRenew.packages, ...fourthRenew.packages, ...fifthRenew.packages, ...sixthRenew.packages, ...seventhRenew.packages];
+import eighthRenew from '../../../../docs/middle-renewal-wave8-20261122.json';
+
+export { reviewed, seven, three, renew, nextRenew, thirdRenew, fourthRenew, fifthRenew, sixthRenew, seventhRenew, eighthRenew };
+const releases = [eighthRenew, seventhRenew, sixthRenew, fifthRenew, fourthRenew, thirdRenew, nextRenew, renew, three, seven, reviewed];
+const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages, ...nextRenew.packages, ...thirdRenew.packages, ...fourthRenew.packages, ...fifthRenew.packages, ...sixthRenew.packages, ...seventhRenew.packages, ...eighthRenew.packages];
 export const renewalIds = allPackages.map(item => item.edition.editionId);
 // The SSR loader normalizes property insertion order without changing data.
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, (_key, item) => {

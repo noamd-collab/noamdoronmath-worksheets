@@ -23104,7 +23104,71 @@
               "pb": "5f4af33988bf48079a960691ef5cf371",
               "pc": "f7c4144305ba48f6a401d5b69526b295"
             }
-          }
+          },
+          "defaultEditionId": "legacy",
+          "editions": [
+            {
+              "bridgePrintEvidence": {
+                "freezeSha256": "449a3d445c093f5ac3d57e9aa12cc8cd58233680cedb07d8465fdbca6cb180c6",
+                "independentReviewSha256": "aaa49023317ad51cac5c7f6464c1d58b2c6c6f7448ad29bf79f9622654f44f5b",
+                "kind": "regular-grade-9-bridge",
+                "stockPrintChecksSha256": "5bfd14978c567ba7f7409fbe274294791a5a6919576c2675706c2c140e9bcfa9"
+              },
+              "editionId": "ms-20261122-g9-trn-01-r1",
+              "label": "מעבר לחטיבה העליונה · תוכנית רגילה · PDF",
+              "levels": [
+                {
+                  "key": "a",
+                  "label": "רמה א׳",
+                  "pdfId": "70ef52d55d6744cfb2bde39541941fed",
+                  "labelSource": "edition",
+                  "viewerLevel": "A",
+                  "learningId": "g9-t20-a-e-ms-20261122-g9-trn-01-r1",
+                  "pdfSha256": "09225ad4f9af07be10729b806f16bc5316cd71c3bbd3ef95b1b54e9f8e50c3c1",
+                  "revision": 1,
+                  "sourceSha256": "89fac340f3e67106fd872117082f100358be16a82049096cc1966fd618c3dfbb",
+                  "worksheetId": "ms-g9-trn-01-a-r1"
+                },
+                {
+                  "key": "b",
+                  "label": "רמה ב׳",
+                  "pdfId": "f8263d291bcc4bf884ea661e74e683a5",
+                  "labelSource": "edition",
+                  "viewerLevel": "B",
+                  "learningId": "g9-t20-b-e-ms-20261122-g9-trn-01-r1",
+                  "pdfSha256": "8528d92db0528acb4f3e269462d27ebe9d268ae0b96d8d7405f8c2e491bd461f",
+                  "revision": 1,
+                  "sourceSha256": "be935bc7ecf8b6cbfa7f063ddb77d5e5e86d2d7dcb1d3f44436c8b6979fc0f63",
+                  "worksheetId": "ms-g9-trn-01-b-r1"
+                },
+                {
+                  "key": "c",
+                  "label": "מצוינות",
+                  "pdfId": "ece7fe812c574192a3aea4c9f121442b",
+                  "labelSource": "edition",
+                  "viewerLevel": "E",
+                  "learningId": "g9-t20-c-e-ms-20261122-g9-trn-01-r1",
+                  "pdfSha256": "319f376e80cb8f43787c46329e7ed6313852b4e757cbc2c597591b7d6e71e565",
+                  "revision": 1,
+                  "sourceSha256": "3b4b15e81a17944c0fee62a31c023bb3e4cc3aafecd4deccf65a5500bb6e8e8d",
+                  "worksheetId": "ms-g9-trn-01-c-r1"
+                }
+              ],
+              "publicationMode": "pdf-only",
+              "routing": {
+                "resolvedNoamPrefix": "G9-T134",
+                "aiHintShown": false,
+                "usesViewer": false,
+                "viewerPath": "worksheet-viewer-noam.html",
+                "siblingPdfQuery": {
+                  "pa": "70ef52d55d6744cfb2bde39541941fed",
+                  "pb": "f8263d291bcc4bf884ea661e74e683a5",
+                  "pc": "ece7fe812c574192a3aea4c9f121442b"
+                }
+              },
+              "status": "published"
+            }
+          ]
         },
         {
           "id": 21,

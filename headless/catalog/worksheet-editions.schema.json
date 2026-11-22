@@ -17,12 +17,19 @@
       "allOf": [
         { "if": { "properties": { "grade": { "minimum": 7 } } },
           "then": { "required": ["nativePrefix"], "if": { "required": ["assessmentPdfEvidence"] },
-            "then": { "required": ["publicationMode"], "properties": { "grade": { "const": 7 }, "topicId": { "const": 50 },
+            "then": { "required": ["publicationMode"], "properties": { "bridgePrintEvidence": false, "grade": { "const": 7 }, "topicId": { "const": 50 },
               "nativePrefix": { "const": "G7-T141" }, "editionId": { "const": "ms-20261122-g7-ast-01-r1" },
               "publicationMode": { "const": "pdf-only" }, "isDefault": { "const": false },
               "levels": { "items": { "properties": { "nativeExportSha256": false } } } } },
-            "else": { "properties": { "levels": { "items": { "required": ["nativeExportSha256"] } } } } },
-          "else": { "properties": { "nativePrefix": false, "assessmentPdfEvidence": false, "levels": { "items": { "properties": { "nativeExportSha256": false } } } } } },
+            "else": { "if": { "required": ["bridgePrintEvidence"] },
+              "then": { "required": ["publicationMode"], "properties": {
+                "grade": { "const": 9 }, "topicId": { "const": 20 }, "nativePrefix": { "const": "G9-T134" },
+                "editionId": { "const": "ms-20261122-g9-trn-01-r1" }, "publicationMode": { "const": "pdf-only" },
+                "isDefault": { "const": false }, "levels": { "items": { "properties": { "nativeExportSha256": false } } }
+              } },
+              "else": { "properties": { "levels": { "items": { "required": ["nativeExportSha256"] } } } }
+            } },
+          "else": { "properties": { "nativePrefix": false, "assessmentPdfEvidence": false, "bridgePrintEvidence": false, "levels": { "items": { "properties": { "nativeExportSha256": false } } } } } },
         { "if": { "required": ["publicationMode"], "properties": { "publicationMode": { "const": "pdf-only" } } },
           "then": { "properties": {
             "grade": { "minimum": 7 },
@@ -40,6 +47,11 @@
         { "if": { "properties": { "grade": { "const": 9 } } }, "then": { "properties": { "nativePrefix": { "pattern": "^G9-" } } } }
       ],
       "properties": {
+        "bridgePrintEvidence": { "type": "object", "additionalProperties": false,
+          "required": ["kind", "freezeSha256", "independentReviewSha256", "stockPrintChecksSha256"],
+          "properties": { "kind": { "const": "regular-grade-9-bridge" },
+            "freezeSha256": { "$ref": "#/$defs/sha256" }, "independentReviewSha256": { "$ref": "#/$defs/sha256" },
+            "stockPrintChecksSha256": { "$ref": "#/$defs/sha256" } } },
         "assessmentPdfEvidence": {
           "type": "object", "additionalProperties": false,
           "required": ["kind", "scopeApprovalSha256", "independentReviewSha256", "freezeSha256"],
