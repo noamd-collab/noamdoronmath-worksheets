@@ -259,6 +259,11 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
     """
     cap=validate_lesson(lesson,allow_legacy=allow_legacy)
     if lesson['version'] == 3:
+        import fraction_lesson
+        if fraction_lesson.eligible(lesson):
+            if metadata is not None:
+                metadata.update(authorContract=fraction_lesson.VERSION, providerCalled=False, responseReceived=False)
+            return fraction_lesson.parameters(lesson)
         import counting_lesson
         if counting_lesson.eligible(lesson):
             if metadata is not None:

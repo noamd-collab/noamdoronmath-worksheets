@@ -267,7 +267,7 @@ def _figure(fig, elementary, index, work):
     return svg, path.relative_to(work).as_posix()
 
 
-def compile_source(lesson, validated, scope, skill_path, work, *, printed_answers=None):
+def compile_source(lesson, validated, scope, skill_path, work, *, printed_answers=None, printed_fractions=False):
     """Write skill build inputs. A caller must still run every applicable gate.
 
     ``validated`` is revalidated rather than trusting deserialized evidence.
@@ -284,18 +284,22 @@ def compile_source(lesson, validated, scope, skill_path, work, *, printed_answer
     elementary = scope["topic"]["skillId"] == "elementary"
     if evidence["unverifiedAnswers"] and elementary:
         raise GeneralSourceError("UNVERIFIED_ANSWERS", "This draft contains prose or proof answers without an implemented exact verifier; no deliverable was compiled")
+    if printed_fractions:
+        from fraction_lesson import eligible
+        if not elementary or not eligible(lesson):
+            raise GeneralSourceError("FRACTION_SCOPE", "Printed fractions require the supported lesson scope")
     if printed_answers is not None and not elementary:
         raise GeneralSourceError("PRINTED_TASK_MISMATCH", "Counting evidence must belong to an elementary worksheet")
     _load_skill(skill, elementary)
     (work / "figures").mkdir(exist_ok=True)
     if elementary:
-        _compile_elementary(lesson, source, evidence, scope, skill, work, printed_answers=printed_answers)
+        _compile_elementary(lesson, source, evidence, scope, skill, work, printed_answers=printed_answers, printed_fractions=printed_fractions)
     else:
         _compile_middle(lesson, source, evidence, scope, skill, work)
     return {"skill": scope["topic"]["skillId"], "work": str(work), "sourcePath": str(work / "worksheet-source.json"), "evidencePath": str(work / "general-evidence.json"), "unverifiedAnswerCount": len(evidence["unverifiedAnswers"]), "reviewRequired": True}
 
 
-def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed_answers=None):
+def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed_answers=None, printed_fractions=False):
     import ws_html as H
     from content_truth import Ledger
     grade = LETTERS[lesson["gradeNumber"] - 1]
@@ -311,7 +315,7 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
             revised_intro = place_intro(lesson, question)
             intro_spans = [{"kind":"text","text":revised_intro}] if revised_intro else question["intro"]
             intro = rich_text(intro_spans, grade, H)
-            if question is section["questions"][0] and not (printed_answers is not None and len(source["sections"]) == 1):
+            if question is section["questions"][0] and not ((printed_answers is not None or printed_fractions) and len(source["sections"]) == 1):
                 pieces.append('<h3 class="section-title">' + html.escape(section["title"]) + '</h3>')
             if "table" in question:
                 table = question["table"]
@@ -330,6 +334,11 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                 complete = states_entire_task(lesson, n-1, j-1, item) or _prints_calculation(item,computed)
                 task_text = "" if complete else _task_text(computed, grade, H)
                 answer = _answer_text(computed, item["answer"]["unit"], grade, H)
+                if printed_fractions:
+                    from fraction_lesson import printed_evidence
+                    proof = printed_evidence(question, j - 1, computed)
+                    ledger.claim(f"{n}.{j}.printed", "תשובה שנבדקה מול השברים המודפסים", proof, method="closed_form")
+                    task_text = ""
                 guard_counting_input(lesson, question, item, computed)
                 binding = place_answer(lesson, question, item, computed)
                 if printed_answers is not None:
@@ -449,9 +458,12 @@ if __name__ == "__main__":
     import division_facts
     import square_lesson
     import pythagoras_lesson
+    import fraction_lesson
     import counting_lesson
     from triangle_lesson import VERSION, compile_triangle
-    if payload.get("version") == counting_lesson.VERSION:
+    if payload.get("version") == fraction_lesson.VERSION:
+        result = fraction_lesson.compile_fractions(lesson, payload, scope, args.skill, wd)
+    elif payload.get("version") == counting_lesson.VERSION:
         result = counting_lesson.compile_counting(lesson, payload, scope, args.skill, wd)
     elif payload.get("version") == division_facts.VERSION:
         result = division_facts.compile_source(lesson, payload, args.skill, wd)
