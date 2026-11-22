@@ -6,7 +6,7 @@ import re
 
 from general_source import GeneralSourceError, MAX_BYTES
 from math_tasks import MathTaskError, inspect_ast, number, operation
-from numeric_literals import COEFFICIENT, NUMBER_TOKEN, arithmetic_tokens, display_literal, elementary_operations, literal_value
+from numeric_literals import COEFFICIENT, NUMBER_TOKEN, arithmetic_tokens, display_literal, elementary_operations, literal_value, normalize_percent_spacing
 
 GEOMETRY = re.compile(r"(point|segment|triangle|angle|polygon):([A-Z]{1,8})")
 OP = {
@@ -289,7 +289,13 @@ def fraction_literals(value):
     return FRACTION_LITERAL.sub(lambda m: f"frac({m[1].replace(',', '')},{m[2].replace(',', '')})", value)
 
 
+MARKED_PERCENT = re.compile(
+    rf"\[\[([+−-]?{NUMBER_TOKEN.pattern})\]\][ \u00a0\u202f]*%(?![%A-Za-z0-9_])"
+)
+
+
 def join_islands(value):
+    value = MARKED_PERCENT.sub(r"[[\1%]]", value)
     # Read one arithmetic expression in LTR when the author wrote its
     # operands in adjacent islands. Ordinary Hebrew text is never joined.
     value = re.sub(r"(?<!\w)___\s*([+*/−÷×=<>-])\s*" + ISLAND, r"[[___ \1 \2]]", value)
@@ -472,7 +478,7 @@ def spans(value, grade, *, fraction_notation=False):
     if len(value) > 2400:
         invalid()
     result = []
-    pieces = re.split(r"(\[\[|\]\])", join_islands(value))
+    pieces = re.split(r"(\[\[|\]\])", join_islands(normalize_percent_spacing(value)))
     i = 0
     while i < len(pieces):
         prose = pieces[i]

@@ -19,11 +19,16 @@ def elementary_operations(source):
     return _SCHOOL_OPERATION.sub(lambda m: " * " if m[1] == "x" else " / ", source)
 
 
+def normalize_percent_spacing(source):
+    """Join a percent sign to its number for a single LTR mathematical token."""
+    return re.sub(r"(?<=[0-9])[ \u00a0\u202f]+(?=%)", "", source)
+
+
 def display_literal(source):
     """Accept one printable numeric token, retaining its written precision."""
     if not isinstance(source, str) or not 1 <= len(source) <= 64:
         return None
-    spelling = source.replace("−", "-")
+    spelling = normalize_percent_spacing(source).replace("−", "-")
     if not _LITERAL.fullmatch(spelling):
         return None
     value = literal_value(spelling)
@@ -79,6 +84,7 @@ def arithmetic_tokens(source):
     Within frac(a,b), commas at the function's argument depth always separate
     arguments. A grouped argument can be written using ungrouped digits.
     """
+    source = normalize_percent_spacing(source)
     pos = 0
     stack = []
     previous = None
