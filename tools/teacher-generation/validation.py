@@ -131,9 +131,12 @@ def validate_model(lesson, payload, *, allow_legacy=False):
         from runtime_catalog import scope_for_lesson
         try:
             import division_facts
+            import square_lesson
             from triangle_lesson import VERSION, validate_parameters
             if isinstance(payload, dict) and payload.get('version') == division_facts.VERSION:
                 division_facts.derive(lesson, payload)
+            elif isinstance(payload, dict) and payload.get('version') == square_lesson.VERSION:
+                square_lesson.validate_parameters(lesson, payload)
             elif isinstance(payload, dict) and payload.get('version') == VERSION:
                 validate_parameters(lesson, payload)
             else:

@@ -379,9 +379,12 @@ if __name__ == "__main__":
     load = lambda name: json.loads((wd / name).read_text(encoding="utf-8"))
     lesson, payload, scope = load("lesson.json"), load("model-output.json"), load("curriculum-scope.json")
     import division_facts
+    import square_lesson
     from triangle_lesson import VERSION, compile_triangle
     if payload.get("version") == division_facts.VERSION:
         result = division_facts.compile_source(lesson, payload, args.skill, wd)
+    elif payload.get("version") == square_lesson.VERSION:
+        result = square_lesson.compile_square(lesson, payload, scope, args.skill, wd)
     elif payload.get("version") == VERSION:
         result = compile_triangle(lesson, payload, scope, args.skill, wd)
     else:

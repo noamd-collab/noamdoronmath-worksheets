@@ -90,6 +90,7 @@ def general_cases(output):
             lesson = json.loads((fixture / 'lesson.json').read_text())
             source = json.loads((fixture / 'model-output.json').read_text())
             expected_source = {'grade9-special-right-triangle':'triangle-parameters/1',
+                               'grade9-square':'square-parameters/1',
                                'grade3-division-curriculum':'division-facts/1'}.get(case, 4)
             if lesson.get('version') != 3 or source.get('version') != expected_source:
                 raise RuntimeError('General fixtures must exercise the new intake and source contracts')

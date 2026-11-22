@@ -6,7 +6,8 @@
     "grade9-quadratic",
     "grade9-coordinate-triangles",
     "grade9-special-right-triangle",
-    "grade3-division-curriculum"
+    "grade3-division-curriculum",
+    "grade9-square"
   ],
   "files": {
     "grade2-vocalized/lesson.json": {
@@ -56,6 +57,14 @@
     "grade3-division-curriculum/model-output.json": {
       "bytes": 53,
       "sha256": "528ce30bd940a89860288c6a79e2e56fccbe6bcad20ac1fdc6a11a0d71e2970c"
+    },
+    "grade9-square/model-output.json": {
+      "bytes": 198,
+      "sha256": "b6251fcafdbac8a6b3909d97af9456d489c01d4f974716183d4b1779ed378460"
+    },
+    "grade9-square/lesson.json": {
+      "bytes": 530,
+      "sha256": "3f818b571a5119551a59308446799705c49a89f571c1fbeecff197ee27350260"
     }
   }
 }

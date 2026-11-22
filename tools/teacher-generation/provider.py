@@ -247,8 +247,8 @@ def request_author_json(target, key, body, measured, timeout):
 def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None, allow_legacy=False):
     """Author one requested lesson, with at most one provider call.
 
-    The closed grade-nine triangle author returns replayable parameters locally.
-    Other supported lessons use the configured authoring provider. render_job
+    Supported native lesson authors return replayable parameters locally.
+    Other lessons use the configured authoring provider. render_job
     consumes the validated result and does not call an author.
     Caller must enforce owner auth, quota and
     job idempotency before calling. No credentials or provider response bodies
@@ -264,6 +264,11 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
             if metadata is not None:
                 metadata.update(authorContract=division_facts.VERSION, providerCalled=False, responseReceived=False)
             return division_facts.author(lesson)
+        import square_lesson
+        if square_lesson.eligible(lesson):
+            if metadata is not None:
+                metadata.update(authorContract=square_lesson.VERSION, providerCalled=False, responseReceived=False)
+            return square_lesson.parameters(lesson)
         from triangle_lesson import VERSION, eligible, parameters
         if eligible(lesson):
             if metadata is not None:
