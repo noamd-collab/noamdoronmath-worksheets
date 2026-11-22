@@ -1,4 +1,4 @@
-"""Recognize a bounded printed place-value exercise and solve its actual blanks.
+"""Bind bounded elementary exercises to the facts that the pupil sees.
 
 The provider's symbolic evaluation remains independently verified. Only a whole
 supported prompt can provide a stronger, pupil-facing answer binding here.
@@ -29,6 +29,7 @@ WRITE_INSTRUCTION = re.compile(
     r"(?: (?:המשלב|עם) סוגריים)?(?: (?:עבור כל מצב מתואר|המתאים לכל תיאור))?"
     r"(?:,?\s*וחשבו את (?:התוצאה|ערכו))?[.:]?"
 )
+NEUTRAL_INTRO = re.compile(r"(?:תרגול מילולי|קראו את ההוראות|פתרו את הסעיפים הבאים)[.:]?")
 NATURAL = r"(0|[1-9][0-9]{0,5})"
 FROM_WORDS = re.compile(
     r"(הסכום של|ההפרש בין|המכפלה של) " + NATURAL + r" ([ול])[־-]?" + NATURAL +
@@ -79,7 +80,8 @@ def printed_intent(question, item, solved, grade, *, location):
     if description and not WRITE_INSTRUCTION.fullmatch(intro or ""):
         # An individual subitem can carry its own instruction and full description.
         instruction, colon, body = description.partition(":")
-        if not colon or not WRITE_INSTRUCTION.fullmatch(instruction) or (intro and WRITE_EXPRESSION.search(intro)):
+        if (not colon or not WRITE_INSTRUCTION.fullmatch(instruction)
+                or not NEUTRAL_INTRO.fullmatch(intro or "")):
             reject("PRINTED_EXPRESSION_SCOPE")
         description = body
     parsed = FROM_WORDS.fullmatch(description or "")

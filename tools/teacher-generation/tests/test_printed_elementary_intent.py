@@ -1,4 +1,3 @@
-import copy
 import json
 from pathlib import Path
 import sys
@@ -52,7 +51,8 @@ class PrintedElementaryIntentTests(unittest.TestCase):
         intro = "כתבו תרגיל המשלב סוגריים עבור כל מצב מתואר, וחשבו את התוצאה:"
         for question, words in ((intro, "בכלי שני צבעים. שערו כמה גולות אדומות."),
                                 (intro, "הסכום של 6 ו-4, מוכפל ב-3, ואז מפחיתים אחת."),
-                                ("כתבו תרגיל וחשבו את התוצאה ואז הכפילו אותה.", "הסכום של 6 ו-4, מוכפל ב-3.")):
+                                ("כתבו תרגיל וחשבו את התוצאה ואז הכפילו אותה.", "הסכום של 6 ו-4, מוכפל ב-3."),
+                                ("הוסיפו אחת לכל מספר לפני החישוב.", "כתבו תרגיל וחשבו את התוצאה: הסכום של 6 ו-4, מוכפל ב-3.")):
             with self.subTest(words=words), self.assertRaises(GeneralSourceError) as err:
                 self.binding(question, words, self.calculated("30"))
             self.assertEqual(err.exception.code, "PRINTED_EXPRESSION_SCOPE")
