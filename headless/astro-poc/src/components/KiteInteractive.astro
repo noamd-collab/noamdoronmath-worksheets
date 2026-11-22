@@ -23,7 +23,8 @@
 </div>
 <div class="kite-ix" data-interactive="kite-diagonals" hidden>
   <p class="kite-ix__hint" dir="rtl">
-    גררו את הקודקודים וגלו: האלכסונים נשארים מאונכים, והשטח תמיד מכפלת האלכסונים חלקי 2.
+    הזיזו את הקודקודים — בגרירה, בכפתורים שמתחת ללוח או בחיצים — וגלו: האלכסונים נשארים
+    מאונכים, והשטח תמיד מכפלת האלכסונים חלקי 2.
   </p>
   <div
     class="kite-ix__stage"
@@ -33,7 +34,7 @@
       class="kite-ix__board"
       data-ix-board
       role="img"
-      aria-label="דלתון אינטראקטיבי: גוררים את הקודקודים A, B ו־C, והאלכסונים והשטח מתעדכנים"
+      aria-label="דלתון אינטראקטיבי: מזיזים את הקודקודים A, B ו־C בגרירה, בכפתורים או בחיצים, והאלכסונים והשטח מתעדכנים"
     ></div>
     <span class="kite-ix__badge" data-ix-badge>נסו בעצמכם!</span>
     <span class="kite-ix__cue" data-ix-cue hidden aria-hidden="true">
@@ -42,6 +43,20 @@
     </span>
   </div>
   <p class="kite-ix__readout" dir="rtl" aria-live="polite" data-ix-readout></p>
+  <div class="kite-ix__steps" data-ix-steps>
+    <div class="kite-ix__pick" role="group" aria-label="בחרו קודקוד להזזה">
+      <button type="button" class="kite-ix__chip" data-ix-pick="A" aria-pressed="true">קודקוד A</button>
+      <button type="button" class="kite-ix__chip" data-ix-pick="B" aria-pressed="false">קודקוד B</button>
+      <button type="button" class="kite-ix__chip" data-ix-pick="C" aria-pressed="false">קודקוד C</button>
+    </div>
+    <div class="kite-ix__pad">
+      <button type="button" class="kite-ix__arrow kite-ix__arrow--up" data-ix-move="up" aria-label="הזיזו את הקודקוד הנבחר למעלה">▲</button>
+      <button type="button" class="kite-ix__arrow kite-ix__arrow--left" data-ix-move="left" aria-label="הזיזו את הקודקוד הנבחר שמאלה">◀</button>
+      <button type="button" class="kite-ix__arrow kite-ix__arrow--right" data-ix-move="right" aria-label="הזיזו את הקודקוד הנבחר ימינה">▶</button>
+      <button type="button" class="kite-ix__arrow kite-ix__arrow--down" data-ix-move="down" aria-label="הזיזו את הקודקוד הנבחר למטה">▼</button>
+    </div>
+    <p class="kite-ix__steps-note" data-ix-steps-note>A ו־C זזים רק למעלה ולמטה; B זז גם לצדדים. אפשר גם במקשי החצים.</p>
+  </div>
   <div class="kite-ix__actions">
     <button type="button" class="kite-ix__replay" data-ix-replay>הפעלת ההדגמה מחדש</button>
     <button type="button" class="kite-ix__reset" data-ix-reset>איפוס הדלתון</button>
@@ -188,6 +203,67 @@
     direction: ltr;
     unicode-bidi: isolate;
     white-space: nowrap;
+  }
+  /* button route: pick a vertex, then step it — same state as the drag */
+  .kite-ix__steps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .kite-ix__pick {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .kite-ix__chip {
+    min-height: 44px;
+    min-width: 88px;
+    padding: 0 14px;
+    border: 2px solid #22305a;
+    border-radius: 999px;
+    background: #fbfaf5;
+    color: #22305a;
+    font: 700 15px/normal Heebo, 'Heebo Fallback', sans-serif;
+    cursor: pointer;
+  }
+  .kite-ix__chip[aria-pressed='true'] {
+    background: #22305a;
+    color: #fbfaf5;
+  }
+  .kite-ix__pad {
+    display: grid;
+    grid-template-columns: repeat(3, 56px);
+    grid-template-rows: repeat(2, 48px);
+    gap: 8px;
+    justify-content: center;
+  }
+  .kite-ix__arrow {
+    min-height: 44px;
+    min-width: 44px;
+    border: 2px solid #22305a;
+    border-radius: 14px;
+    background: #fff;
+    color: #22305a;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .kite-ix__arrow:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+  .kite-ix__arrow--up { grid-area: 1 / 2; }
+  .kite-ix__arrow--down { grid-area: 2 / 2; }
+  /* the page is RTL: grid column 1 is the right-hand cell */
+  .kite-ix__arrow--right { grid-area: 2 / 1; }
+  .kite-ix__arrow--left { grid-area: 2 / 3; }
+  .kite-ix__steps-note {
+    margin: 0;
+    text-align: center;
+    font-size: 14px;
+    color: #3d4870;
   }
   .kite-ix__actions {
     display: flex;

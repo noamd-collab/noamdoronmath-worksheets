@@ -10,6 +10,11 @@
  * axis, B and its mirror D across it. Teal sides from A, coral sides from C,
  * navy diagonals, yellow vertices, double teal ticks and triple coral ticks.
  * Units are cm with a 0.5 snap, so the default 8 × 6 kite shows S = 24.
+ *
+ * Three equal input routes, all through the same clamped `place*` helpers:
+ * pointer drag on the JSXGraph vertices, the 44px buttons under the board
+ * (pick a vertex, then step it), and the arrow keys once any of those
+ * controls has focus. The aria-live readout announces the new numbers.
  */
 
 import { sitePrefersReducedMotion } from './motionPreference.js';
@@ -158,7 +163,12 @@ function ticks(board: IxBoard, p1: IxPoint, p2: IxPoint, n: number, color: strin
   }
 }
 
-async function buildBoard(el: HTMLElement, readout: HTMLElement): Promise<{ reset: () => void }> {
+export type KiteMove = 'up' | 'down' | 'left' | 'right';
+
+async function buildBoard(
+  el: HTMLElement,
+  readout: HTMLElement
+): Promise<{ reset: () => void; nudge: (which: 'A' | 'B' | 'C', move: KiteMove) => void }> {
   const mod = (await import('jsxgraph')) as unknown as JxgModule & { default?: JxgModule };
   const JXG = mod.JSXGraph ? mod : (mod.default as JxgModule);
   const board = JXG.JSXGraph.initBoard(el, {
@@ -194,14 +204,29 @@ async function buildBoard(el: HTMLElement, readout: HTMLElement): Promise<{ rese
   }) as IxPoint;
 
   // B stays strictly between A and C so the shape is always a convex kite.
-  A.on('drag', () => A.moveTo([0, clamp(snap(A.Y()), Math.max(LIMITS.A.min, B.Y() + SNAP), LIMITS.A.max)]));
-  C.on('drag', () => C.moveTo([0, clamp(snap(C.Y()), LIMITS.C.min, Math.min(LIMITS.C.max, B.Y() - SNAP))]));
-  B.on('drag', () =>
+  // Drag, buttons and keys all land here, so every route obeys the same limits.
+  const placeA = (y: number) =>
+    A.moveTo([0, clamp(snap(y), Math.max(LIMITS.A.min, B.Y() + SNAP), LIMITS.A.max)]);
+  const placeC = (y: number) =>
+    C.moveTo([0, clamp(snap(y), LIMITS.C.min, Math.min(LIMITS.C.max, B.Y() - SNAP))]);
+  const placeB = (x: number, y: number) =>
     B.moveTo([
-      clamp(snap(B.X()), LIMITS.B.xMin, LIMITS.B.xMax),
-      clamp(snap(B.Y()), Math.max(LIMITS.B.yMin, C.Y() + SNAP), Math.min(LIMITS.B.yMax, A.Y() - SNAP)),
-    ])
-  );
+      clamp(snap(x), LIMITS.B.xMin, LIMITS.B.xMax),
+      clamp(snap(y), Math.max(LIMITS.B.yMin, C.Y() + SNAP), Math.min(LIMITS.B.yMax, A.Y() - SNAP)),
+    ]);
+  A.on('drag', () => placeA(A.Y()));
+  C.on('drag', () => placeC(C.Y()));
+  B.on('drag', () => placeB(B.X(), B.Y()));
+
+  /** One 0.5 cm step for the picked vertex — the no-drag route. */
+  function nudge(which: 'A' | 'B' | 'C', move: KiteMove): void {
+    const dy = move === 'up' ? SNAP : move === 'down' ? -SNAP : 0;
+    const dx = move === 'right' ? SNAP : move === 'left' ? -SNAP : 0;
+    if (which === 'A') placeA(A.Y() + dy);
+    else if (which === 'C') placeC(C.Y() + dy);
+    else placeB(B.X() + dx, B.Y() + dy);
+    board.update();
+  }
 
   // Kite body, then sides in the film's colors, then diagonals.
   board.create('polygon', [A, B, C, D], {
@@ -279,7 +304,7 @@ async function buildBoard(el: HTMLElement, readout: HTMLElement): Promise<{ rese
   };
   window.addEventListener('resize', onResize);
 
-  return { reset };
+  return { reset, nudge };
 }
 
 type KiteIxHook = {
@@ -324,13 +349,48 @@ export function initKiteInteractive(): void {
         const replayBtn = ix.querySelector<HTMLButtonElement>('[data-ix-replay]');
         const resetBtn = ix.querySelector<HTMLButtonElement>('[data-ix-reset]');
         const cueEl = ix.querySelector<HTMLElement>('[data-ix-cue]');
+        const stepsEl = ix.querySelector<HTMLElement>('[data-ix-steps]');
+        const pickBtns = Array.from(ix.querySelectorAll<HTMLButtonElement>('[data-ix-pick]'));
+        const moveBtns = Array.from(ix.querySelectorAll<HTMLButtonElement>('[data-ix-move]'));
         if (!demo || !loopRoot || !boardEl || !readout || !replayBtn || !resetBtn) return;
 
-        let board: { reset: () => void } | null = null;
+        let board: { reset: () => void; nudge: (which: 'A' | 'B' | 'C', move: KiteMove) => void } | null = null;
         let open = false;
         let cueDone = false;
         let failed = false;
         const replayLabel = replayBtn.textContent ?? '';
+
+        /* ——— button + keyboard route: pick a vertex, then step it ——— */
+        let picked: 'A' | 'B' | 'C' = 'A';
+        const syncPick = (): void => {
+          pickBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.ixPick === picked)));
+          // A and C ride the symmetry axis: sideways steps do not apply to them.
+          moveBtns.forEach((b) => {
+            const sideways = b.dataset.ixMove === 'left' || b.dataset.ixMove === 'right';
+            b.disabled = sideways && picked !== 'B';
+          });
+        };
+        const step = (move: KiteMove): void => board?.nudge(picked, move);
+        pickBtns.forEach((b) =>
+          b.addEventListener('click', () => {
+            picked = (b.dataset.ixPick as 'A' | 'B' | 'C') ?? 'A';
+            syncPick();
+          })
+        );
+        moveBtns.forEach((b) =>
+          b.addEventListener('click', () => step((b.dataset.ixMove as KiteMove) ?? 'up'))
+        );
+        stepsEl?.addEventListener('keydown', (ev: KeyboardEvent) => {
+          const map: Record<string, KiteMove> = {
+            ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right',
+          };
+          const move = map[ev.key];
+          if (!move) return;
+          if ((move === 'left' || move === 'right') && picked !== 'B') return;
+          ev.preventDefault();
+          step(move);
+        });
+        syncPick();
 
         const hook = (): LoopHook | null => loopRoot.__loop ?? null;
         const isStatic = (): boolean => hook()?.state().static ?? false;
@@ -340,7 +400,11 @@ export function initKiteInteractive(): void {
           open = true;
           loopRoot.style.display = 'none';
           ix.hidden = false;
-          requestAnimationFrame(() => ix.classList.add('is-on'));
+          // Never wait for a frame here: the site's Stop Animations mode freezes
+          // requestAnimationFrame, and a frozen callback left the panel at opacity 0.
+          // A forced reflow gives the CSS transition its start value without a frame.
+          void ix.offsetHeight;
+          ix.classList.add('is-on');
           if (!board) {
             try {
               boardEl.replaceChildren();

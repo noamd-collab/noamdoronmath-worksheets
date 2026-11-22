@@ -914,7 +914,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         let hit = null;
         $('app').querySelectorAll('[data-term-slot]').forEach((s) => { const q = s.getBoundingClientRect(); if (ev.clientX > q.left - 14 && ev.clientX < q.right + 14 && ev.clientY > q.top - 14 && ev.clientY < q.bottom + 14) hit = s; });
         const back = () => { const fin = () => { el.remove(); g.style.opacity = ''; }; if (el.animate && !this.rm) { const a = el.animate([{ left: el.style.left, top: el.style.top }, { left: d.ox + 'px', top: d.oy + 'px' }], { duration: 380, easing: 'cubic-bezier(.45,0,.25,1)', fill: 'forwards' }); a.onfinish = fin; } else fin(); };
-        if (!d.moved) { back(); this.say('גרור אותי למקום הנכון.', { mood: 'think' }); return; }
+        if (!d.moved) { back(); this.say('שים אותי במקום הנכון — בגרירה או בכפתורים.', { mood: 'think' }); return; }
         if (hit && hit.getAttribute('data-term-slot') === id) {
           const q = hit.getBoundingClientRect(), tx = q.left - c.left + q.width / 2 - r.width / 2, ty = q.top - c.top + q.height / 2 - r.height / 2;
           const fin = () => { el.remove(); g.style.opacity = ''; this.tapTile(id); };
@@ -922,7 +922,7 @@ h1{margin:0;font-family:"Secular One",sans-serif;font-weight:400;font-size:clamp
         } else {
           back(); this.sfx('error');
           if (hit) this.an(hit, [{ transform: 'translateX(0)' }, { transform: 'translateX(-5px)' }, { transform: 'translateX(5px)' }, { transform: 'translateX(0)' }], { duration: 300 });
-          this.say(hit ? 'לא שם. נסה מקום אחר.' : 'גרור עד המשבצת למטה.', { mood: 'think' });
+          this.say(hit ? 'לא שם. נסה מקום אחר.' : 'שים אותי במשבצת למטה — בגרירה או בכפתורים.', { mood: 'think' });
         }
       };
       window.addEventListener('pointermove', move); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
