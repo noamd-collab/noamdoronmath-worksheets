@@ -153,7 +153,7 @@ export async function requireGoogleTeacher(request: Request, options: TeacherAcc
   return verifyGoogleTeacherToken(sessionToken(request), options);
 }
 
-/** New worksheet generation must call this gate unconditionally before any model or job cost. */
+/** Use for features reserved for the permanent owner account. Public generation separately checks the server-enforced trial allowance. */
 export async function requireOwnerTeacher(request: Request, options: TeacherAccessOptions = {}): Promise<TeacherAccessResult> {
   return verifyTeacherToken(sessionToken(request), options);
 }

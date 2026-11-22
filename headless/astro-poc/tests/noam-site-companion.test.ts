@@ -192,9 +192,9 @@ describe('Noam AI site manual', () => {
     assert.match(teachers[0].how, /עמוד ציבורי/);
     assert.match(teachers[0].how, /דוגמה מהמאגר הקיים/);
     assert.match(teachers[0].how, /כלי בחירת השאלות.*זמינים לכל מי שמתחבר עם Google/);
-    assert.match(teachers[0].how, /מתוכנן להיות בתשלום/);
+    assert.match(teachers[0].how, /כשההתנסות פתוחה/);
     assert.match(teachers[0].how, /מתחבר עם Google/);
-    assert.match(teachers[0].how, /השירות החדש בפיתוח/);
+    assert.match(teachers[0].how, /עד 5 דפי עבודה בחינם/);
     assert.doesNotMatch(teachers[0].how, /בדיקות פרטיות|לבעלים בלבד/);
     assert.doesNotMatch(teachers[0].how, /ממשיכים לכלי העבודה/);
     assert.equal(teacherApps[0].id, 'page-teachers-app');
