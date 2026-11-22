@@ -172,7 +172,7 @@ describe('homepage Harmony parity (HEADLESS-MIGRATION-31)', () => {
       'roles come first, then the handwritten note');
     assert.match(index, /בונים דף עבודה משלכם/);
     assert.match(index, /מדפיסים עם תשובות/);
-    assert.match(index, /לבניית הדף שלי/);
+    assert.match(index, /ליצירת דפי עבודה למורים/);
     assert.doesNotMatch(index, /לחצו כאן/);
     assert.doesNotMatch(index, /exact-hero-teachers[\s\S]{0,800}\d+\/\d+/);
     assert.match(css, /exact-teachers-hello/);

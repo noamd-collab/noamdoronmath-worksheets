@@ -1,10 +1,10 @@
 # Private skill worksheet generation
 
-The owner-only generator uses the installed, hash-pinned Hebrew worksheet
-skills to create private PDF and editable Word drafts in Cloudflare. Ordinary
-teacher tools remain available to any verified Google teacher. New generation
-and its output objects remain restricted to the configured owner; this change
-does not grant other teachers access.
+The generator uses the installed, hash-pinned Hebrew worksheet skills to create
+private PDF and editable Word drafts in Cloudflare. A verified Google teacher
+can generate up to five worksheets across all supported grades and topics
+during the shared 72-hour trial window. The permanent owner has an unlimited quota. Each teacher's
+history and private downloads are bound to that teacher's account.
 
 ## Curriculum and authoring
 
