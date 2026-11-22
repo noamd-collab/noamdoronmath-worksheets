@@ -1,3 +1,7 @@
+## 2026-11-22 — Grade 7 common factors and introductory equations (078 and 079)
+
+All 63 subsections in G7-T124 and 92 in G7-T125 have three reviewed text hints each. The six original PDFs are linked from their topic pages and the catalog. The Ramzi markers match the original printed positions and the anonymously verified hint text for each subsection.
+
 ## 2026-11-22 — Grade 7 number patterns (077)
 
 The three published G7-T123 worksheets each have 18 text-only Ramzi markers. Positions were checked against the original printed subsections. The viewer matches all three reviewed hints to the exact PDF and source item before showing a marker.
