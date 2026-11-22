@@ -30,7 +30,7 @@ class NativeTriangleTest(unittest.TestCase):
             side_effect=AssertionError("Unexpected paid call"),
         ):
             meta = {}
-            data = author_lesson(self.lesson, metadata=meta)
+            data = author_lesson(self.lesson, offline_native_fixture=True, metadata=meta)
         self.assertFalse(meta["providerCalled"])
         self.assertFalse(meta["responseReceived"])
         self.assertEqual(meta["authorContract"], tr.VERSION)

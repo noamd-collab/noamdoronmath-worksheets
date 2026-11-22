@@ -32,7 +32,7 @@ class DivisionFactsTest(unittest.TestCase):
             "general_provider.author_general_lesson",
             side_effect=AssertionError("Unexpected provider"),
         ):
-            source = author_lesson(self.lesson, metadata=meta)
+            source = author_lesson(self.lesson, offline_native_fixture=True, metadata=meta)
         self.assertEqual(self.lesson, original)
         self.assertEqual(source["version"], facts.VERSION)
         self.assertEqual(

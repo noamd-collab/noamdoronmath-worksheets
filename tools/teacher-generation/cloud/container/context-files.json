@@ -83,6 +83,7 @@
     "tools/teacher-generation/math_tasks.py",
     "tools/teacher-generation/model-output.schema.json",
     "tools/teacher-generation/native_geometry.py",
+    "tools/teacher-generation/native_math_selection.py",
     "tools/teacher-generation/no_carry_addition.py",
     "tools/teacher-generation/numeric_literals.py",
     "tools/teacher-generation/output_gates.py",

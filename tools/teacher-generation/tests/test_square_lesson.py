@@ -26,7 +26,7 @@ class SquareLessonTest(unittest.TestCase):
             side_effect=AssertionError("Unexpected paid author"),
         ):
             meta = {}
-            source = author_lesson(self.lesson, metadata=meta)
+            source = author_lesson(self.lesson, offline_native_fixture=True, metadata=meta)
         self.assertEqual(source["version"], lesson_source.VERSION)
         self.assertFalse(meta["providerCalled"])
         validate_model(self.lesson, source)

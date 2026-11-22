@@ -27,7 +27,7 @@ class CountingLessonTests(unittest.TestCase):
         metadata = {}
         with patch("counting_lesson.secrets.randbits", return_value=self.parameters["seed"]), patch(
                 "general_provider.author_general_lesson", side_effect=AssertionError("unexpected provider call")):
-            first = author_lesson(self.lesson, metadata=metadata)
+            first = author_lesson(self.lesson, offline_native_fixture=True, metadata=metadata)
         self.assertEqual(first, self.parameters)
         self.assertIs(metadata["providerCalled"], False)
         validate_model(self.lesson, first)
