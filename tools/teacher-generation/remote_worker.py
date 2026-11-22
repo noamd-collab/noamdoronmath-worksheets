@@ -1,4 +1,4 @@
-"""Owner-only private job worker with a bounded, operator-controlled skill correction.
+"""Private teacher job worker with a bounded, operator-controlled skill correction.
 
 Run only from a reviewed checkout with pinned skills and operator-supplied
 environment. Secrets are not accepted in job JSON, forwarded to child renders,
@@ -26,7 +26,6 @@ from validation import GenerationError, capabilities, validate_lesson
 from preflight import check as check_readiness
 
 ORIGIN = 'https://ouzquolkeuceektfihss.supabase.co'
-OWNER = '80da2957-9492-4a9d-babb-28ba70dedd12'
 BUCKET = 'teacher-generation-private'
 ENABLE_SKILL_REVISION = True
 ARTIFACT_LIMIT = 15728640
@@ -76,15 +75,17 @@ def check_transport(remote):
 
 def heartbeat(remote):
     remote.call('/rest/v1/noam_teacher_generation_workers?on_conflict=id','POST',
-                {'id':'primary','updated_at':utc().isoformat(),'capabilities':capabilities()},prefer='resolution=merge-duplicates')
+                {'id':'primary','updated_at':utc().isoformat(),'capabilities':{**capabilities(),'trialActorIsolation':1}},prefer='resolution=merge-duplicates')
 
 def update_job(remote, job, values):
-    for key in ('id','lease_token'):
+    for key in ('id','owner_id','lease_token'):
         if not UUID.fullmatch(str(job.get(key,''))): raise RuntimeError('INVALID_JOB_ID')
     values={**values,'updated_at':utc().isoformat()}
-    rows=remote.call('/rest/v1/noam_teacher_generation_jobs?id=eq.'+job['id']+'&lease_token=eq.'+job['lease_token']+'&status=eq.running&lease_until=gt.'+utc().isoformat().replace('+00:00','Z'),
-                     'PATCH',values,prefer='return=representation')
-    if not isinstance(rows,list) or len(rows)!=1: raise RuntimeError('JOB_LEASE_LOST')
+    path = ('/rest/v1/noam_teacher_generation_jobs?select=id,owner_id&id=eq.' + job['id']
+            + '&owner_id=eq.' + job['owner_id'] + '&lease_token=eq.' + job['lease_token']
+            + '&status=eq.running&lease_until=gt.' + utc().isoformat().replace('+00:00','Z'))
+    rows=remote.call(path,'PATCH',values,prefer='return=representation')
+    if rows != [{'id':job['id'], 'owner_id':job['owner_id']}]: raise RuntimeError('JOB_LEASE_LOST')
 
 def safe_validation_detail(value):
     """Retain known local validation rules, never arbitrary exception/model text."""
@@ -183,6 +184,12 @@ def author_and_render(remote, job, target, lost, enable_skill_revision):
     diagnostics_due = True
 
     def save_diagnostics():
+        if metadata.get('initialPlainMath') is True:
+            # The short-lived container loses private attempt evidence on exit.
+            # Log only whether the correction was requested and validated.
+            print(json.dumps({'event':'source_notation_recovery', 'jobId':job['id'],
+                              'correctionRequested':metadata.get('correctionRequested') is True,
+                              'sourceValidated':metadata.get('validated') is True}), flush=True)
         if not save_author_diagnostics(target.parent, job['id'], metadata, author_failure):
             print(json.dumps({'event':'author_diagnostics_unavailable','jobId':job['id']}), flush=True)
 
@@ -238,7 +245,8 @@ def author_and_render(remote, job, target, lost, enable_skill_revision):
 
 
 def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISION):
-    if job.get('owner_id')!=OWNER or not UUID.fullmatch(str(job.get('id',''))): raise RuntimeError('JOB_OWNER_DENIED')
+    if not all(isinstance(job.get(key), str) and UUID.fullmatch(job[key]) for key in ('owner_id','id')):
+        raise RuntimeError('INVALID_JOB_ID')
     if job.get('status')!='running' or not UUID.fullmatch(str(job.get('lease_token',''))): raise RuntimeError('JOB_LEASE_LOST')
     try: expires=datetime.fromisoformat(job.get('lease_until','').replace('Z','+00:00'))
     except (ValueError,TypeError,AttributeError): raise RuntimeError('JOB_LEASE_LOST') from None
@@ -271,6 +279,8 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
         if not passed or {a.get('kind') for a in artifacts}!={'pdf','docx'} or len(artifacts)!=2:
             raise GenerationError('QUALITY_GATE_FAILED','A required output gate failed')
         check_transport(remote)
+        # Bind private uploads to the durable claim again after the potentially long render.
+        update_job(remote,job,{'phase':'checking'})
         published=[]
         for item in artifacts:
             if (artifact_root/item['path']).is_symlink(): raise RuntimeError('ARTIFACT_PATH_DENIED')
@@ -279,7 +289,7 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
             blob=path.read_bytes()
             if not 0<len(blob)<=ARTIFACT_LIMIT or hashlib.sha256(blob).hexdigest()!=item['sha256']: raise RuntimeError('ARTIFACT_HASH_MISMATCH')
             mime='application/pdf' if item['kind']=='pdf' else 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-            remote.call('/storage/v1/object/'+BUCKET+'/'+OWNER+'/'+job['id']+'/sheet.'+item['kind'],'POST',raw=blob,mime=mime)
+            remote.call('/storage/v1/object/'+BUCKET+'/'+job['owner_id']+'/'+job['id']+'/sheet.'+item['kind'],'POST',raw=blob,mime=mime)
             published.append({'kind':item['kind'],'sha256':item['sha256'],'bytes':len(blob)})
         # Paths/logs/model source stay on the private worker; browser gets only
         # bounded provenance and the exact two artifacts, never public URLs.

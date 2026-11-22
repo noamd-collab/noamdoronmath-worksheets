@@ -44,7 +44,7 @@ test('actual grade counts survive and unknown keys do not reuse a previous toolt
   assert.equal(resolveExactPeek('google',live)!.title,'התחברות עם Google');
   const teachers=renderExactPeek('teachers',live)!;
   assert.match(teachers,/למורים/);
-  assert.match(teachers,/בקרוב/);
+  assert.match(teachers,/התנסות/);
   assert.match(teachers,/התחברות עם Google/);
   assert.doesNotMatch(teachers,/בדיקות פרטיות|לבעלים בלבד/);
   assert.equal(resolveExactPeek('teachers',live)!.blocks,EXACT_PEEK_BLOCKS.teachers);
