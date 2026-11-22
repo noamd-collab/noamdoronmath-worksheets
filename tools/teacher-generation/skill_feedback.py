@@ -8,8 +8,13 @@ import re
 MAX_QUESTIONS = 6
 MAX_FILE = 256_000
 FEEDBACK = {
-    "G32": "Check the wording and truth of this question. For a price or amount per unit, state the price or amount of ONE named unit in Hebrew. For an actual universal assertion, use only a proposition established over the stated domain and supported by the verifier. Do not disguise a universal claim as an example.",
-    "G61": "Match the requested level and the progression of nearby questions. Adjust the number of operations, grouping and sizes of operands while preserving the target concept and the selected challenge role.",
+    "G32": (
+        "For a price or amount per unit, state the price or amount of ONE named unit. For a finite "
+        "allocation, name the group and how it shares the total. Examples of Hebrew wording only: "
+        "מחיר מחברת אחת הוא 4 שקלים. / חילקו 12 עפרונות שווה בשווה בין 4 תלמידים. כמה עפרונות קיבל תלמיד אחד? "
+        "Use the question's own facts. For a genuine universal assertion, keep the quantifier and use "
+        "only a claim established over the stated domain and supported by the verifier."
+    ),
     "G62": "Create a genuinely different mathematical task within the selected concept. Vary the reasoning or representation, and independently derive its answer.",
     "G66": "Use only concepts and tools allowed at the teacher's stated stopping point. Check the written order of amounts and units in each answer.",
     "D12": "State the unknown and all necessary givens. Keep the unknown's value out of the pupil text, diagram and hints. Put the verified result in the answer key.",
@@ -29,6 +34,64 @@ def _read(base, relative):
     if not file.is_relative_to(base) or not file.is_file() or file.stat().st_size > MAX_FILE:
         raise Unsupported
     return file.read_text(encoding="utf-8")
+
+
+def _difficulty(detail, add):
+    # The pinned skill prints the first low/high subitems and up to six
+    # over-ceiling subitems. Only their numeric evidence enters the request.
+    token = r"Q[1-9][0-9]?[1-9]=[0-9]{1,2}"
+    scores = {}
+
+    def record(ref):
+        matched = re.fullmatch(r"Q([1-9][0-9]?)([1-9])=([0-9]{1,2})", ref)
+        q, item, score = map(int, matched.groups())
+        key = (q, item)
+        if scores.setdefault(key, score) != score:
+            raise Unsupported
+        return key
+
+    low = spread_limit = ceiling = None
+    for clause in detail.split("; "):
+        pair = re.fullmatch(rf"פער קושי ([0-9]{{1,2}}) > ([0-9]{{1,2}}) — הדף מערבב רמות \(({token}) מול ({token})\)", clause)
+        if pair:
+            if low is not None:
+                raise Unsupported
+            spread, spread_limit = map(int, pair.group(1, 2))
+            low, high = record(pair[3]), record(pair[4])
+            if scores[high] - scores[low] != spread or spread <= spread_limit:
+                raise Unsupported
+            continue
+        cap = re.fullmatch(rf"פריטים מעל תקרת (?:[א-ו](?:׳|/מצוינות)?|מצוינות) \(([0-9]{{1,2}})\): ({token}(?:, {token}){{0,5}})", clause)
+        if not cap or ceiling is not None:
+            raise Unsupported
+        ceiling = int(cap[1])
+        for ref in cap[2].split(", "):
+            if scores[record(ref)] < ceiling + 2:
+                raise Unsupported
+
+    target = ceiling
+    bounds = {}
+    if ceiling is not None:
+        bounds["profileCeiling"] = ceiling
+    if low is not None:
+        if min(scores.values()) != scores[low] or max(scores.values()) != scores[high]:
+            raise Unsupported
+        bounds.update(measuredRange=[scores[low], scores[high]], maxSpread=spread_limit)
+        spread_target = scores[low] + spread_limit
+        target = spread_target if ceiling is None else min(ceiling, spread_target)
+    by_question = {}
+    for (q, item), score in sorted(scores.items()):
+        action = "keep" if (q, item) == low and score <= target else "reduce"
+        by_question.setdefault(q, []).append({"item": item, "measuredScore": score, "action": action})
+    for q, items in by_question.items():
+        instruction = "Preserve each keep item's current difficulty and the planned learning objective and challenge role."
+        if any(item["action"] == "reduce" for item in items):
+            instruction += (
+                " For each reduce item, use fewer distinct operation types or remove unnecessary nesting "
+                "in the printed problem and its answer. Swapping operands of the same size alone will not lower the score."
+            )
+        add(q, "G61", {"gate": "G61", **bounds, "maxItemScore": target, "items": items,
+                       "instruction": instruction + " Check every item in this question against maxItemScore."})
 
 
 def _elementary(read, failed, add):
@@ -60,21 +123,13 @@ def _elementary(read, failed, add):
         if not m:
             raise Unsupported
         code = m[1][:3]
+        if code == "G61":
+            _difficulty(m[2], add)
+            continue
         # The skill labels an elementary sub-item by the concatenation of
         # its question number and one digit, so Q101 means question 10 item 1.
         for detail in m[2].split("; "):
-            if code == "G61":
-                if detail.startswith("פער קושי "):
-                    pair = re.fullmatch(r"פער קושי [0-9]+ > [0-9]+ — הדף מערבב רמות \((Q[0-9]+=\d+) מול (Q[0-9]+=\d+)\)", detail)
-                    if not pair:
-                        raise Unsupported
-                    refs = list(pair.groups())
-                else:
-                    over = re.fullmatch(r"פריטים מעל תקרת [^:;]{1,64} \(\d+\): (Q[0-9]+=\d+(?:, Q[0-9]+=\d+){0,5})", detail)
-                    if not over:
-                        raise Unsupported
-                    refs = over[1].split(", ")
-            elif code == "G62":
+            if code == "G62":
                 clone = re.fullmatch(r"([1-9][0-9]?) פריטים זהים מבנית \((Q\d+(?:, Q\d+){0,4})\): «[^«»\n]{1,46}»", detail)
                 if not clone:
                     raise Unsupported
@@ -147,10 +202,13 @@ def read_skill_feedback(workdir, question_count):
     if type(question_count) is not int or not 4 <= question_count <= 30:
         return []
     result = {}
-    def add(number, code):
+    def add(number, code, finding=None):
         if not 1 <= number <= question_count:
             raise Unsupported
-        result.setdefault(number, set()).add(code)
+        findings = result.setdefault(number, {})
+        feedback = FEEDBACK[code] if finding is None else finding
+        if findings.setdefault(code, feedback) != feedback:
+            raise Unsupported
         if len(result) > MAX_QUESTIONS:
             raise Unsupported
     try:
@@ -167,5 +225,5 @@ def read_skill_feedback(workdir, question_count):
         reader(read, failed, add)
     except (OSError, UnicodeError, ValueError, TypeError, KeyError, RecursionError):
         return []
-    return [{"question": q, "codes": sorted(codes), "feedback": [FEEDBACK[c] for c in sorted(codes)]}
-            for q, codes in sorted(result.items())]
+    return [{"question": q, "codes": sorted(findings), "feedback": [findings[c] for c in sorted(findings)]}
+            for q, findings in sorted(result.items())]
