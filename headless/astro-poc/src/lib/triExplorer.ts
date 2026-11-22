@@ -5,9 +5,11 @@ import { sitePrefersReducedMotion } from './motionPreference.js';
  * The apex slides along a line parallel to the base; base and height stay
  * fixed, so S = a·h/2 stays 12 — the learner feels the invariant.
  *
- * Input: pointer drag on the SVG handle (setPointerCapture, touch-action:
- * none) or the synced <input type="range"> (keyboard arrows, SR). A short
- * auto demo (≤3 s, once per session, in-view only) shows the glide first.
+ * Input, three equal routes: pointer drag on the SVG handle
+ * (setPointerCapture, touch-action: none), the three 44px buttons under the
+ * drawing, and the keyboard — arrow keys, Home and End on the focused handle,
+ * or the synced <input type="range">. A short auto demo (≤3 s, once per
+ * session, in-view only) shows the glide first.
  * Reduced motion / html.noam-a11y-motion: no demo, drag keeps working.
  */
 import { EASE, lerp, ph } from './conceptLoops';
@@ -42,6 +44,9 @@ function setup(root: TriRoot) {
   const range = q(root, 'range') as HTMLInputElement;
   const hint = q(root, 'hint') as HTMLElement;
   const live = q(root, 'live') as HTMLElement;
+  const btnLeft = q(root, 'left') as HTMLButtonElement | null;
+  const btnRight = q(root, 'right') as HTMLButtonElement | null;
+  const btnHome = q(root, 'home') as HTMLButtonElement | null;
   if (!poly || !hit || !range) return;
 
   let u = U_HOME;
@@ -67,12 +72,17 @@ function setup(root: TriRoot) {
     handle.setAttribute('cx', String(ax));
     if (range.value !== String(u)) range.value = String(r2(u));
     range.setAttribute('aria-valuetext', `קודקוד במיקום ${u.toFixed(1)}, שטח המשולש 12`);
+    hit.setAttribute('aria-valuenow', String(r2(u)));
+    hit.setAttribute('aria-valuetext', `קודקוד במיקום ${u.toFixed(1)}, שטח המשולש 12`);
     if (announce && live) {
       live.textContent = '';
       // re-announce on consecutive identical positions too
-      requestAnimationFrame(() => {
+      // A timer, not a frame: Stop Animations holds requestAnimationFrame, and a
+      // held callback would silence the screen reader exactly for the readers who
+      // turned motion off.
+      window.setTimeout(() => {
         live.textContent = `הקודקוד זז, ושטח המשולש נשאר 12`;
-      });
+      }, 60);
     }
   }
 
@@ -156,6 +166,38 @@ function setup(root: TriRoot) {
     setApex(parseFloat(range.value));
   });
   range.addEventListener('change', () => setApex(u, true));
+
+  /* ——— buttons and arrow keys: the same state, without a pointer ——— */
+  function stopDemo() {
+    demoDone = true;
+    if (demoRaf) cancelAnimationFrame(demoRaf);
+    demoRaf = 0;
+    showHint();
+  }
+  function nudge(delta: number) {
+    stopDemo();
+    setApex(u + delta, true);
+  }
+  btnLeft?.addEventListener('click', () => nudge(-0.5));
+  btnRight?.addEventListener('click', () => nudge(0.5));
+  btnHome?.addEventListener('click', () => {
+    stopDemo();
+    setApex(U_HOME, true);
+  });
+  hit.addEventListener('keydown', (ev: Event) => {
+    const e = ev as KeyboardEvent;
+    let next = u;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') next = u - 0.5;
+    else if (e.key === 'ArrowRight' || e.key === 'ArrowUp') next = u + 0.5;
+    else if (e.key === 'PageDown') next = u - 2;
+    else if (e.key === 'PageUp') next = u + 2;
+    else if (e.key === 'Home') next = U_MIN;
+    else if (e.key === 'End') next = U_MAX;
+    else return;
+    e.preventDefault();
+    stopDemo();
+    setApex(next, true);
+  });
 
   /* ——— demo trigger: once per session, in view, motion allowed ——— */
   let seen = false;

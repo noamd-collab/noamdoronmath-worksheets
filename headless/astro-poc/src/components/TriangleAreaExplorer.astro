@@ -7,8 +7,10 @@
  *
  *   - demo glides the apex once (≤3 s), only when in view, once per session
  *   - drag: Pointer Events with setPointerCapture, touch-action: none
- *   - keyboard/SR: a real <input type="range"> (arrows work natively),
- *     synced with the SVG handle both ways; aria-live announces the area
+ *   - buttons: two 44px steppers move the apex half a unit at a time
+ *   - keyboard/SR: the handle itself is a focusable slider (arrows, Home,
+ *     End), and a real <input type="range"> stays synced with it both ways;
+ *     aria-live announces the area
  *   - prefers-reduced-motion / html.noam-a11y-motion: no auto demo, no
  *     transitions — dragging keeps working
  *
@@ -18,7 +20,7 @@
 
 <div class="tri-explorer" data-tri-explorer>
   <div class="tri-explorer__card">
-    <svg class="tri-explorer__svg" viewBox="0 0 560 330" aria-hidden="true" focusable="false">
+    <svg class="tri-explorer__svg" viewBox="0 0 560 330" role="img" aria-label="משולש שהקודקוד שלו זז על קו מקביל לבסיס">
       {/* the parallel line the apex slides on */}
       <line class="te-parallel" x1="60" y1="92" x2="500" y2="92" />
 
@@ -35,8 +37,20 @@
       <text class="te-t te-num" x="270" y="278" text-anchor="middle">a = 6</text>
       <text data-el="lbl-h" class="te-t te-num" x="290" y="176">h = 4</text>
 
-      {/* draggable apex handle (visual + generous hit area) */}
-      <circle data-el="hit" class="te-hit" cx="270" cy="92" r="30" />
+      {/* apex handle: drag, arrow keys, or the buttons below */}
+      <circle
+        data-el="hit"
+        class="te-hit"
+        cx="270"
+        cy="92"
+        r="30"
+        tabindex="0"
+        role="slider"
+        aria-label="קודקוד המשולש; הזיזו בגרירה, בכפתורים או במקשי החצים"
+        aria-valuemin="-1.5"
+        aria-valuemax="8"
+        aria-valuenow="3"
+      />
       <circle data-el="handle" class="te-handle" cx="270" cy="92" r="11" />
     </svg>
 
@@ -44,8 +58,21 @@
       S = (a · h) : 2 = (6 × 4) : 2 = <b class="te-ok">12</b>
     </p>
     <p class="tri-explorer__hint" data-el="hint">
-      גררו את הקודקוד ימינה ושמאלה — הבסיס והגובה לא משתנים, וגם השטח נשאר <bdi>12</bdi>
+      הזיזו את הקודקוד ימינה ושמאלה, בגרירה, בכפתורים או בחיצים — הבסיס והגובה לא משתנים, וגם
+      השטח נשאר <bdi>12</bdi>
     </p>
+
+    <div class="te-steps">
+      <button type="button" class="te-step" data-el="left" aria-label="הזיזו את הקודקוד שמאלה">
+        <span aria-hidden="true">◀</span> שמאלה
+      </button>
+      <button type="button" class="te-step" data-el="home" aria-label="החזירו את הקודקוד למרכז">
+        למרכז
+      </button>
+      <button type="button" class="te-step" data-el="right" aria-label="הזיזו את הקודקוד ימינה">
+        ימינה <span aria-hidden="true">▶</span>
+      </button>
+    </div>
 
     <label class="te-slider">
       <span class="sr-only">מיקום קודקוד המשולש לאורך הקו המקביל לבסיס</span>

@@ -92,13 +92,19 @@ export const prerender = false;
 </style>
 <script is:inline>
   var eliyahuFitRaf = 0;
+  var eliyahuFitTimer = 0;
   var eliyahuCardObserver;
+  function runEliyahuFit() {
+    if (eliyahuFitRaf) { cancelAnimationFrame(eliyahuFitRaf); eliyahuFitRaf = 0; }
+    if (eliyahuFitTimer) { clearTimeout(eliyahuFitTimer); eliyahuFitTimer = 0; }
+    fitEliyahuGame();
+  }
   function scheduleEliyahuFit() {
-    if (eliyahuFitRaf) return;
-    eliyahuFitRaf = requestAnimationFrame(function () {
-      eliyahuFitRaf = 0;
-      fitEliyahuGame();
-    });
+    if (eliyahuFitRaf || eliyahuFitTimer) return;
+    eliyahuFitRaf = requestAnimationFrame(runEliyahuFit);
+    // noam-accessibility.js holds requestAnimationFrame while animations are
+    // stopped, and a frames-only resize left the game frame at the old height.
+    eliyahuFitTimer = window.setTimeout(runEliyahuFit, 80);
   }
   function fitEliyahuGame() {
     var frame = document.querySelector('.eliyahu-game__frame');

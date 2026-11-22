@@ -2142,6 +2142,11 @@ a {
 
 .topic-page__terms a {
   color: var(--accent-dark);
+  /* 44px tap target without changing the look of the line */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 8px;
 }
 
 .card.is-topic-target {
@@ -3560,6 +3565,17 @@ html.noam-a11y-motion .hero-draw {
   cursor: grab;
   touch-action: none;
 }
+.tri-explorer .te-hit:focus-visible {
+  outline: 3px solid var(--cobalt);
+  outline-offset: 2px;
+}
+@media (max-width: 767px) {
+  /* the phone column scales this drawing to about a third of its user units,
+     so the invisible grab zone grows to stay a 44px tap target */
+  .tri-explorer .te-hit {
+    r: 70px;
+  }
+}
 .tri-explorer .te-handle {
   fill: var(--cobalt);
   stroke: #fff;
@@ -3587,6 +3603,37 @@ html.noam-a11y-motion .hero-draw {
 }
 .tri-explorer__hint.is-on { opacity: 1; }
 .te-ok { color: var(--green); }
+
+/* three equal routes: drag, these buttons, or the keyboard */
+.te-steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0 0;
+}
+.te-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  min-width: 88px;
+  padding: 0 16px;
+  border: 2px solid var(--cobalt);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--navy);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.te-step:hover { background: rgba(30, 136, 229, 0.08); }
+.te-step:focus-visible {
+  outline: 3px solid var(--cobalt);
+  outline-offset: 2px;
+}
 
 /* the synced range doubles as keyboard/SR control — visually quiet */
 .te-slider {
