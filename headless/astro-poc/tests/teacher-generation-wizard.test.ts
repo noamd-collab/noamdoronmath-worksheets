@@ -31,7 +31,7 @@ test('desktop and phone wizard use native keyboard validation with one visible q
         body: `<!doctype html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;font-family:Arial,sans-serif;background:#fafbf8}${css}</style></head><body>${markup}<script>${script}</script></body></html>` });
       if(url.pathname==='/teachers/generation-curriculum.json')return void request.respond({status:200,contentType:'application/json',body:catalog});
       if (url.pathname === '/api/teacherGeneration' && request.method() === 'GET') return void request.respond({ status: 200, contentType: 'application/json', body: JSON.stringify({
-        ok: true, online: true, capabilities: {profile:'general-skill-source/v1',curriculumSha256:GENERATION_CURRICULUM_SHA256,acceptedIntakeVersions:[2,3],topics }, jobs: [{ id: 'old-job', status: 'needs_review', phase: 'needs_review',
+        ok: true, online: true, capabilities: {profile:'general-skill-source/v1',curriculumSha256:GENERATION_CURRICULUM_SHA256,acceptedIntakeVersions:[2,3],topics }, jobs: [], history: [{ id: 'old-job', formats:['pdf','docx'], status: 'needs_review', phase: 'needs_review',
           created_at: '2026-11-13T00:00:00Z', lesson: { topicId: 'ג10', lastLesson: 'דף קודם' }, result: { automatedChecksPassed: true } }],
       }) });
       return void request.respond({ status: 204, body: '' });
@@ -44,6 +44,7 @@ test('desktop and phone wizard use native keyboard validation with one visible q
     const next = async () => { await page.focus('#plan-button'); await page.keyboard.press('Enter'); };
     await screen('grade-title');
     assert.equal(await page.$eval('#generation-history', el => (el as HTMLDetailsElement).open), false);
+    assert.equal(await page.$$eval('#generation-jobs .download', links=>links.length), 2);
     // Leave room for the site shell or the explicit mock banner in visual QA.
     assert.ok(await page.$eval('#plan-button', el => el.getBoundingClientRect().bottom) < viewport.height - 80);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
