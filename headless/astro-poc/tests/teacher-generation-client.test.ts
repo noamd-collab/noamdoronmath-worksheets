@@ -18,11 +18,17 @@ const generalCapabilities={profile:'general-skill-source/v1',curriculumSha256:GE
  topics:curriculum.topics.map(t=>({...t,enabled:true,readiness:'private_draft',e2eVerified:false,
   levels:t.topicId.startsWith('g9m:')?['b']:t.topicId.startsWith('g9r:')?['a','e']:['b','a','e'],
   questionCounts:Array.from({length:31-getTeacherGenerationMinimumQuestionCount(t.gradeNumber)!},(_,i)=>getTeacherGenerationMinimumQuestionCount(t.gradeNumber)!+i)}))};
+type Quota = {dailyLimit:number|null;remainingToday:number|null;resetsAt:string};
 type Reply = { ok?: boolean; status?: number; body?: any; error?: Error };
 
-function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; captcha?: boolean; emptyCapabilities?: boolean; general?: boolean; catalogMismatch?: boolean; firstHealth?: Promise<Reply> } = {}) {
+function harness(options: { quota?: Quota; online?: boolean; waking?: boolean; jobs?: any[]; captcha?: boolean; emptyCapabilities?: boolean; general?: boolean; catalogMismatch?: boolean; firstHealth?: Promise<Reply>; storage?: Map<string,string>; owner?: string } = {}) {
   const { document, window } = parseHTML(`<!doctype html><html><head></head><body>${markup}</body></html>`);
   const form = document.getElementById('generation-form') as any;
+  form.dataset.draftOwner=options.owner ?? '00000000-0000-4000-8000-000000000001';
+  const entries=options.storage ?? new Map<string,string>();
+  const storage={getItem:(key:string)=>entries.get(key) ?? null, setItem:(key:string,value:string)=>entries.set(key,value), removeItem:(key:string)=>entries.delete(key)};
+  const navigations:string[]=[],location=Object.assign(new URL('https://teachers.example/teachers/generate'),{assign:(href:string)=>navigations.push(href)});
+  const browserWindow=new Proxy(window,{get(target,key){if(key==='sessionStorage')return storage;if(key==='location')return location;return Reflect.get(target,key);}});
   (window.HTMLInputElement.prototype as any).checkValidity=()=>true;
   Object.defineProperty(window.HTMLInputElement.prototype,'checked',{configurable:true,get(){return this.hasAttribute('checked');},set(value){if(value)this.setAttribute('checked','');else this.removeAttribute('checked');}});
   const fields = new Map(Array.from(form.querySelectorAll('[name]')).map((el: any) => [el.getAttribute('name'), el]));
@@ -58,6 +64,7 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
   class LocalDate extends Date { static now() { return now; } }
   const timers = new Map<number, { callback: () => unknown; delay: number }>();
   const calls: { url: string; init: any }[] = [], posts: any[] = [], pendingReplies: Reply[] = [], pendingReads: Reply[] = [];
+  let quota=options.quota;
   let tokenPromise: Promise<string> | null = null, firstHealth=options.firstHealth;
   const verification = { ready: (cb: () => void) => cb(), execute: () => tokenPromise || Promise.resolve('local-verification-token') };
   (window as any).grecaptcha = options.captcha !== false ? verification : undefined;
@@ -70,15 +77,15 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
       posts.push(JSON.parse(init.body));
       const reply = pendingReplies.shift() || {};
       if (reply.error) throw reply.error;
-      return { ok: reply.ok ?? true, json: async () => reply.body || { ok: true } };
+      return { ok: reply.ok ?? true, status:reply.status ?? 200, json: async () => reply.body || { ok: true } };
     }
     const initial=firstHealth;firstHealth=undefined;
     const reply = initial ? await initial : pendingReads.shift() || {};
     if (reply.error) throw reply.error;
-    return { ok: reply.ok ?? true, status:reply.status, json: async () => reply.body || ({ ok: true, online, waking, jobs: structuredClone(jobs), capabilities: options.general?{...generalCapabilities,topics:emptyCapabilities?[]:generalCapabilities.topics}:{ acceptedIntakeVersions:[2],topics: emptyCapabilities ? [] : [topic, middle, disabled] } }) };
+    return { ok: reply.ok ?? true, status:reply.status, json: async () => reply.body || ({ ok: true, online, waking, quota, jobs: structuredClone(jobs), capabilities: options.general?{...generalCapabilities,topics:emptyCapabilities?[]:generalCapabilities.topics}:{ acceptedIntakeVersions:[2],topics: emptyCapabilities ? [] : [topic, middle, disabled] } }) };
   };
   vm.runInNewContext(shipped, {
-    document, window, TextDecoder, fetch: fetchLocal, crypto: { subtle:webcrypto.subtle,randomUUID: () => `00000000-0000-4000-8000-${String(++uuid).padStart(12, '0')}` },
+    document, window:browserWindow, URL, TextDecoder, fetch: fetchLocal, crypto: { subtle:webcrypto.subtle,randomUUID: () => `00000000-0000-4000-8000-${String(++uuid).padStart(12, '0')}` },
     AbortSignal: { timeout: () => undefined }, Date: LocalDate, console,
     setTimeout: (callback: () => unknown, delay: number) => { timers.set(++timer, { callback, delay }); return timer; },
     clearTimeout: (id: number) => timers.delete(id), setInterval: () => ++timer, clearInterval: () => {},
@@ -92,7 +99,8 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
   const element = (id: string) => document.getElementById(id) as any;
   const field = (name: string) => fields.get(name) as any;
   const dispatch = async (el: any, type: string) => { el.dispatchEvent(new window.Event(type, { bubbles: true, cancelable: true })); await flush(); };
-  return { document, window, form, field, element, calls, posts, pendingReplies, pendingReads, timers, flush, dispatch, focused: () => focused,
+  return { document, window, form, field, element, calls, posts, navigations, pendingReplies, pendingReads, timers, flush, dispatch, focused: () => focused,
+    setQuota(value: Quota) { quota=value; },
     setOnline(value: boolean) { online = value; }, setJobs(value: any[]) { jobs = value; },
     setWaking(value: boolean) { waking = value; }, advance(ms: number) { now += ms; },
     setEmptyCapabilities(value: boolean) { emptyCapabilities = value; },
@@ -113,6 +121,120 @@ function harness(options: { online?: boolean; waking?: boolean; jobs?: any[]; ca
     async nextRetry() { const selected = [...timers][0]; assert.ok(selected, 'retry scheduled'); timers.delete(selected[0]); await selected[1].callback(); await flush(); return selected[1].delay; },
   };
 }
+
+test('the quota notice shows the verified owner exemption before planning', async()=>{
+  const app=harness({quota:{dailyLimit:null,remainingToday:null,resetsAt:new Date().toISOString()}});
+  await app.flush();
+  assert.match(app.element('generation-quota').textContent,/ללא מכסה יומית/);
+  await app.choose();await app.submit();
+  assert.equal(app.element('create-button').disabled,false);
+  assert.equal(app.element('create-button').getAttribute('aria-describedby'),'generation-quota');
+});
+
+test('teachers see remaining creations before planning and regain creation at midnight', async()=>{
+  const resetsAt=new Date(Date.now()+3600000).toISOString();
+  const app=harness({quota:{dailyLimit:5,remainingToday:1,resetsAt}});
+  await app.flush();
+  assert.match(app.element('generation-quota').textContent,/5 דפים.*יצירה אחת.*חצות לפי שעון ישראל/);
+  app.setQuota({dailyLimit:5,remainingToday:0,resetsAt});
+  await app.visible();await app.choose();await app.submit();await app.click('create-button');
+  assert.equal(app.posts.length,0);
+  assert.equal(app.element('create-button').disabled,true);
+  assert.match(app.element('generation-status').textContent,/המכסה היומית נוצלה/);
+  app.setQuota({dailyLimit:5,remainingToday:5,resetsAt:new Date(Date.parse(resetsAt)+86400000).toISOString()});
+  app.advance(3601000);await app.nextRetry();
+  assert.match(app.element('generation-quota').textContent,/נשארו לך היום 5 יצירות/);
+  assert.doesNotMatch(app.element('generation-status').textContent,/המכסה היומית נוצלה/);
+  assert.equal(app.element('create-button').disabled,false);
+});
+
+test('an active job response for the test owner never claims a daily limit', async()=>{
+  const app=harness({quota:{dailyLimit:null,remainingToday:null,resetsAt:new Date().toISOString()}});
+  await app.flush();await app.choose();await app.submit();
+  app.pendingReplies.push({ok:false,status:423,body:{ok:false,code:'GENERATION_ACTIVE'}});
+  await app.click('create-button');
+  assert.match(app.element('generation-status').textContent,/כבר מכינים עבורך דף/);
+  assert.match(app.element('generation-quota').textContent,/ללא מכסה יומית/);
+  assert.equal(app.posts.length,1);
+});
+
+test('same-tab return preserves completed selections, lesson edits and current screen',async()=>{
+ const storage=new Map<string,string>(),app=harness({storage,general:true});await app.flush();await app.choose('2','ב05');
+ app.field('lastLesson').value='תרגלנו חיבור דו־ספרתי ללא המרה';await app.dispatch(app.field('lastLesson'),'input');
+ const restored=harness({storage,general:true});await restored.flush();
+ assert.match(restored.element('wizard-progress').textContent,/שלב 4/);assert.equal(restored.field('gradeNumber').value,'2');assert.equal(restored.field('topicId').value,'ב05');
+ assert.equal(restored.field('level').value,'b');assert.equal(restored.field('lastLesson').value,app.field('lastLesson').value);
+ assert.ok(restored.form.querySelector('[name=learnedConcept]:checked'));assert.equal(restored.posts.length,0);
+ await restored.submit();const review=harness({storage,general:true});await review.flush();
+ assert.equal(review.form.hidden,true);assert.match(review.element('plan-details').textContent,/חיבור דו־ספרתי/);assert.equal(review.posts.length,0);
+});
+
+test('a verified catalog restores an existing draft through a temporary failed status read', async()=>{
+ const storage=new Map<string,string>(),app=harness({storage,general:true});await app.flush();await app.choose('2','ב05');await app.submit();
+ const returned=harness({storage,general:true,firstHealth:Promise.resolve({error:new Error('offline')})});await returned.flush();
+ assert.equal(returned.form.hidden,true);assert.equal(returned.field('topicId').value,'ב05');assert.equal(returned.element('create-button').disabled,true);assert.equal(returned.posts.length,0);
+ await returned.click('refresh-generation');assert.equal(returned.element('create-button').disabled,false);
+});
+
+test('reload during reCAPTCHA keeps the plan and never claims that it was sent',async()=>{
+ const storage=new Map<string,string>(),app=harness({storage});await app.flush();await app.choose();await app.submit();
+ app.holdToken(new Promise(()=>{}));await app.click('create-button');assert.match(app.element('generation-status').textContent,/טרם נשלחה/);assert.equal(app.posts.length,0);
+ const restored=harness({storage});await restored.flush();assert.equal(restored.form.hidden,true);assert.equal(restored.posts.length,0);assert.equal(restored.element('create-button').disabled,false);
+});
+
+test('ordinary same-tab navigation during verification waits for the one keepalive POST',async()=>{
+ const app=harness();await app.flush();await app.choose();await app.submit();
+ let verify!:(token:string)=>void;app.holdToken(new Promise(resolve=>{verify=resolve;}));await app.click('create-button');
+ const anchor=app.document.querySelector('a[href="/teachers/start"]')!;
+ function leftClick(ctrlKey=false){const event=new app.window.Event('click',{bubbles:true,cancelable:true});Object.assign(event,{button:0,ctrlKey});anchor.dispatchEvent(event);return event;}
+ assert.equal(leftClick(true).defaultPrevented,false);assert.equal(leftClick().defaultPrevented,true);assert.equal(app.navigations.length,0);assert.equal(app.posts.length,0);
+ verify('local-verification-token');await app.flush();assert.equal(app.posts.length,1);assert.equal(app.calls.find(c=>c.init.method==='POST')?.init.keepalive,true);
+ assert.deepEqual(app.navigations,['https://teachers.example/teachers/start']);assert.match(app.element('generation-status').textContent,/הבקשה נשמרה/);
+});
+
+test('a stalled verification releases the requested link and cannot send late',async()=>{
+ const app=harness();await app.flush();await app.choose();await app.submit();
+ let verify!:(token:string)=>void;app.holdToken(new Promise(resolve=>{verify=resolve;}));await app.click('create-button');
+ const link=app.document.querySelector('a[href="/teachers/start"]')!;const event=new app.window.Event('click',{bubbles:true,cancelable:true});Object.assign(event,{button:0});link.dispatchEvent(event);
+ const deadline=[...app.timers.values()].find(t=>t.delay===25000)!;assert.ok(deadline);deadline.callback();
+ assert.equal(app.navigations.length,1);verify('late-token');await app.flush();assert.equal(app.posts.length,0);
+});
+
+test('a lost POST receipt reconciles the owner job; return opens its history without posting',async()=>{
+ const storage=new Map<string,string>(),app=harness({storage});await app.flush();await app.choose();await app.submit();
+ const key=JSON.parse([...storage.values()][0]).requestKey;
+ const job={id:'10000000-0000-4000-8000-000000000001',request_key:key,status:'running',phase:'authoring',created_at:new Date().toISOString(),lesson:{topicId:'ג10'}};
+ app.setJobs([job]);app.pendingReplies.push({error:new Error('reply lost')});await app.click('create-button');
+ assert.equal(app.posts.length,1);assert.equal(app.element('generation-history').open,true);assert.match(app.element('generation-status').textContent,/מכינים את השאלות/);
+ const restored=harness({storage,jobs:[{...job,status:'needs_review',phase:'needs_review',result:{automatedChecksPassed:true}}]});await restored.flush();
+ assert.equal(restored.element('generation-history').open,true);assert.ok(restored.element('generation-jobs').querySelector('a'));assert.equal(restored.element('create-button').hidden,true);
+ assert.equal(restored.posts.length,0);await restored.click('new-generation');assert.equal(storage.size,0);
+});
+
+test('truncated successful HTTP response and late database commit reconcile through GET only',async()=>{
+ const storage=new Map<string,string>(),app=harness({storage});await app.flush();await app.choose();await app.submit();
+ app.pendingReplies.push({status:200,body:{}});await app.click('create-button');assert.equal(app.posts.length,1);
+ assert.match(app.element('generation-status').textContent,/טרם התקבל אישור/);
+ app.setJobs([{id:'10000000-0000-4000-8000-000000000002',request_key:app.posts[0].requestKey,status:'running',phase:'checking',created_at:new Date().toISOString(),lesson:{}}]);
+ await app.poll();assert.match(app.element('generation-status').textContent,/בודקים את התוכן/);assert.equal(app.posts.length,1);
+});
+
+test('a missing POST receipt permits only an explicit retry of the original request key',async()=>{
+ const storage=new Map<string,string>(),app=harness({storage});await app.flush();await app.choose();await app.submit();
+ app.pendingReplies.push({error:new Error('connection lost')});await app.click('create-button');assert.equal(app.posts.length,1);
+ const restored=harness({storage});await restored.flush();assert.equal(restored.posts.length,0);assert.match(restored.element('generation-status').textContent,/טרם התקבל אישור/);
+ await restored.click('create-button');assert.equal(restored.posts[0].requestKey,app.posts[0].requestKey);assert.deepEqual(restored.posts[0].lesson,app.posts[0].lesson);
+});
+
+test('denial, explicit logout and another account cannot recover the private plan',async()=>{
+ for(const mode of ['forbidden','logout','different-owner']){
+  const storage=new Map<string,string>(),app=harness({storage});await app.flush();await app.choose();await app.submit();assert.equal(storage.size,1);
+  if(mode==='forbidden'){app.pendingReads.push({ok:false,status:403,body:{ok:false,code:'TEACHER_ACCESS_DENIED'}});await app.click('refresh-generation');assert.equal(app.element('plan-details').textContent,'');}
+  if(mode==='logout'){await app.dispatch(app.document.querySelector('[data-teacher-logout]'),'click');}
+  if(mode==='different-owner'){const other=harness({storage,owner:'00000000-0000-4000-8000-000000000002'});await other.flush();assert.equal(other.form.hidden,false);assert.equal(other.field('gradeNumber').value,'');}
+  assert.equal(storage.size,0);
+ }
+});
 
 test('offline state permits planning but emits no creation or verification request', async () => {
   const app = harness({ online: false }); await app.flush(); await app.choose(); await app.submit(); await app.click('create-button');
@@ -493,4 +615,28 @@ test('punctuation aliases share one explicit choice while preserving every selec
  inputs.forEach(input=>{input.checked=false;});group.checked=true;
  await app.submit();await app.click('create-button');
  assert.deepEqual(app.posts[0].lesson.lessonBoundary.conceptIds,JSON.parse(group.dataset.conceptIds));
+});
+
+test('returning to the tab shows the recorded failure reason in history without resubmitting',async()=>{
+ const app=harness();await app.flush();
+ const cases=[
+  ['SOURCE_SHAPE','התוכן שנוצר לא עבר את בדיקות הדף'],
+  ['SOURCE_RICH_TEXT','התוכן שנוצר לא עבר את בדיקות הדף'],
+  ['PROVIDER_UNAVAILABLE','שירות הכנת השאלות לא היה זמין'],
+  ['WORKER_INTERRUPTED','עיבוד הדף בשרת נפסק'],
+  ['unexpected private detail','הטיוטה לא הושלמה']
+ ];
+ const jobs=cases.map(([error_code],index)=>({id:'prior-'+index,status:'failed',phase:'authoring',error_code,
+  created_at:'2026-11-22T05:00:00Z',lesson:{}}));
+ app.setJobs(jobs);await app.visible();
+ const cards=Array.from(app.element('generation-jobs').querySelectorAll('article')) as HTMLElement[];
+ assert.equal(cards.length,cases.length);
+ for(const [index,card] of cards.entries()){
+  const [code,reason]=cases[index];
+  assert.match(card.textContent || '',/היצירה נעצרה בשרת/);
+  assert.ok(card.textContent?.includes(reason));
+  assert.ok(!card.textContent?.includes(code));
+  assert.equal(card.querySelector('a.download'),null);
+ }
+ assert.equal(app.posts.length,0);
 });
