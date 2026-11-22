@@ -129,6 +129,7 @@
 !tools/teacher-generation/tests/test_printed_elementary_intent.py
 !tools/teacher-generation/tests/test_printed_prose.py
 !tools/teacher-generation/tests/test_printed_tasks.py
+!tools/teacher-generation/tests/test_native_math_selection.py
 !tools/teacher-generation/tests/test_provider.py
 !tools/teacher-generation/tests/test_pythagoras_lesson.py
 !tools/teacher-generation/tests/test_remote_worker.py
