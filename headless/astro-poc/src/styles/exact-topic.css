@@ -20,7 +20,17 @@
   font-weight: 700;
   color: #5a6588;
 }
-.exact-topic .topic-page__crumbs a { color: #1e605e; }
+.exact-topic .topic-page__crumbs a {
+  color: #1e605e;
+  /* widen the tap target into the 22px gap, without moving the text */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  margin: 0 -6px;
+  padding: 0 6px;
+}
 .exact-topic .topic-math-nowrap { white-space: nowrap; }
 .exact-topic .topic-page__crumbs [aria-current='page'] {
   /* The source wraps this segment; the former shared skin truncated it. */
@@ -204,6 +214,13 @@
 .exact-topic .topic-page__author,
 .exact-topic .topic-page__updated,
 .exact-topic .topic-page__terms { color: #5a6588; }
+/* The byline link sits inside a sentence: give it a 44px box, keep the flow. */
+.exact-topic .topic-page__author a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 8px;
+}
 .exact-topic .topic-page__answer-hidden {
   display: none !important;
 }
