@@ -674,6 +674,20 @@ def validate_and_solve_task(task) -> dict:
     if type(task) is not dict or type(task.get("kind")) is not str:
         fail("INVALID_TASK", "Expected a typed task object")
     kind = task["kind"]
+    if kind in ("lcm", "gcd"):
+        exact(task, ("kind","left","right"), "integer pair")
+        inputs = []
+        for key in ("left","right"):
+            value = task[key]
+            inspect_ast(value)
+            if value["type"] != "number" or value["denominator"] != 1 or value["numerator"] <= 0:
+                fail("INVALID_TASK","A common divisor or multiple needs two positive integers")
+            inputs.append(value["numerator"])
+        a,b = inputs
+        answer = gcd(a,b) if kind == "gcd" else a // gcd(a,b) * b
+        integer(answer,MAX_RESULT_INTEGER,"integer pair result")
+        return _pack_task(task,f"{kind}({a},{b})",set(),[],
+                          {"type":"expression","value":number(answer)},"Euclidean algorithm")
     if kind in ("solve_system", "inequality", "statistics"):
         return {"solve_system": _solve_system_task, "inequality": _inequality_task, "statistics": _statistics_task}[kind](task)
     keys = {

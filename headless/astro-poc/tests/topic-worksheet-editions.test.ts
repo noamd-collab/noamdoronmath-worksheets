@@ -247,7 +247,7 @@ test('real equation, signed-number and factoring landings expose nine PDF links 
   }
 });
 
-test('real algebra landing routes all three hero topics to distinct groups and exposes the three new PDFs', async () => {
+test('real algebra landing routes all three hero topics to distinct groups and exposes the original PDFs and reviewed common-factor hints', async () => {
   const document = await renderTopic('algebraic-expressions-grade-7');
   const hero = document.querySelector('.exact-topic-copy')!;
   const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
@@ -262,9 +262,15 @@ test('real algebra landing routes all three hero topics to distinct groups and e
     assert.equal(controls.length, 1, `one target for topic ${topicId}`);
     const groups = topicWorksheetEditionLinks(catalog, 7, topicId, `/worksheets?grade=7&topic=${topicId}`);
     assert.deepEqual([...controls[0].querySelectorAll('a')].map(a => a.getAttribute('href')),
-      groups.flatMap(group => group.levels.map(level => level.href)));
+      groups.flatMap(group => group.levels.flatMap(level =>
+        level.partialHints ? [level.href, level.partialHints.href] : [level.href])));
     expectedLegacy.push(...groups.find(group => group.editionId === 'legacy')!.levels.map(level => level.href));
   }
+  const commonFactorPdfIds = [
+    '9023d70c7ee24eb185454683d723c60b', '58f6082fb2734aa2998fa899e3c02023', '5ae9b8d9161444b1b17df22793c172ab',
+  ];
+  const hintLinks = [...hero.querySelectorAll('#topic-levels a.partial-ramzi-link')];
+  assert.deepEqual(hintLinks.map(link => link.getAttribute('href')), commonFactorPdfIds.map(id => `/ramzi-partial?pdf=${id}`));
   assert.equal(expectedLegacy.length, 9);
   assert.deepEqual([...hero.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), expectedLegacy);
   const newPdfIds = ['b376976911234b758027329c9ea05cbf', 'b6a76fb3eccd477b9788958efefbded2', '0fe476657595498194b93cdc46e39e5f'];
@@ -318,6 +324,12 @@ test('both frequency landings expose six direct FRQ links while keeping their or
       assert.equal(ctas[1].getAttribute('href'), '#topic-levels-hero-26');
       assert.ok(ctas[1].textContent.includes('תרגול נוסף'));
       assert.equal(hero.querySelectorAll('#topic-levels-hero-26').length, 1);
+      const frequency090Ids = ['d1c095409f6b44c5b4b2b80493a5ec50', 'e1a2834fb3a14ca1be9d8fd85219100f', 'b2ac6fabde404b3d87570154b77c7b34'];
+      const frequency090Links = [...hero.querySelectorAll('#topic-levels a[data-edition-id="ms-20261121-frq-02-r4"]')];
+      assert.deepEqual(frequency090Links.map(pdf => [
+        pdf.getAttribute('href'), pdf.nextElementSibling?.getAttribute('href'),
+      ]), frequency090Ids.map(id => [`${catalog.config.pdfBase}${id}.pdf`, `/ramzi-partial?pdf=${id}`]));
+      assert.equal(hero.querySelectorAll('#topic-levels-hero-26 a[data-edition-id="ms-20261121-frq-02-r4"]').length, 0);
     }
     const ids = [...document.querySelectorAll('[id]')].map(element => element.id);
     assert.equal(new Set(ids).size, ids.length);

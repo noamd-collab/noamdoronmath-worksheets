@@ -35,6 +35,7 @@ function fixture() {
   const store = {
     health: async () => { calls.push('health'); return { online: true, capabilities: { acceptedIntakeVersions: [2], topics: [{ topicId: 'ג10', gradeNumber: 3,
       enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [12] }] } }; },
+    quota: async () => ({ dailyLimit:null, remainingToday:null, resetsAt:'2026-11-22T22:00:00Z' }),
     list: async () => { calls.push('list'); return []; },
     get: async (_id: string): Promise<any> => { calls.push('get'); return job; },
     findRequest: async (_key: string): Promise<any> => { calls.push('find'); return null; },
@@ -70,6 +71,31 @@ test('version3 grade8 uses pinned general profile and explicit scope without cla
   await code(await handleTeacherGeneration(post(input({lesson:lesson3})),f.deps),422,'TOPIC_NOT_SUPPORTED_YET');
   assert.ok(!f.calls.includes('enqueue')&&!f.calls.includes('bot'));
  }
+});
+
+test('status uses the authorized database session for the Jerusalem allowance and never accepts a browser owner override', async () => {
+  const f=fixture();
+  const response=await handleTeacherGeneration(new Request(origin+'/api/teacherGeneration?ownerId=untrusted&dailyLimit=0'),f.deps);
+  assert.deepEqual((await response.json()).quota,await f.store.quota());
+  const remaining={dailyLimit:5,remainingToday:2,resetsAt:'2026-11-23T00:00:00+02:00'};
+  const store=createGenerationStore('unit-user-token',async(url,init)=>{
+    assert.equal(new URL(String(url)).pathname,'/rest/v1/rpc/noam_teacher_generation_quota_status');
+    assert.deepEqual(JSON.parse(String(init?.body)),{});
+    assert.equal(new Headers(init?.headers).get('authorization'),'Bearer unit-user-token');
+    return Response.json({...remaining,ignored:'not returned'});
+  },'fixture-server-key');
+  assert.deepEqual(await store.quota(),remaining);
+});
+
+test('active creation and exhausted daily quota have distinct responses, gateway throttles stay service errors', async () => {
+  for(const [status,body,expected] of [
+    [423,{code:'PT423',message:'GENERATION_ACTIVE'},'GENERATION_ACTIVE'],
+    [429,{code:'PT429',message:'GENERATION_LIMIT'},'GENERATION_LIMIT'],
+    [429,{error:'rate limit'},'GENERATION_UNAVAILABLE'],
+  ] as const){
+    const store=createGenerationStore('unit-user-token',async()=>Response.json(body,{status}),'fixture-server-key');
+    await assert.rejects(store.enqueue({}),e=>e instanceof GenerationStoreError && e.code===expected);
+  }
 });
 
 test('actual Python general heartbeat agrees with API admission for all232 source topics and retains v2 bounds',async()=>{

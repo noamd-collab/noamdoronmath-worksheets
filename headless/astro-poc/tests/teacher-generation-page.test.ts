@@ -64,6 +64,7 @@ test('a denied visitor receives coming-soon HTML and existing-tools link, never 
   assert.match(document.querySelector('title')!.textContent, /בקרוב/);
   assert.equal(document.querySelector('#coming-soon-title')!.textContent, 'יצירת דפי עבודה חדשים עם AI');
   assert.match(document.querySelector('main')!.textContent, /כלי המורים הקיימים זמינים לכם כרגיל/);
+  assert.match(document.querySelector('main')!.textContent, /עד 5 דפים חדשים ביום.*חצות לפי שעון ישראל/);
   assert.equal(document.querySelector('main a')!.getAttribute('href'), '/teachers/start');
   assert.equal(document.querySelector('main')!.getAttribute('dir'), 'rtl');
   assert.equal(document.querySelectorAll('form,script,#generation-plan,#generation-jobs').length, 0);

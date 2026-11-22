@@ -170,6 +170,7 @@ describe('grade hub routes (HEADLESS-MIGRATION-16/17)', () => {
       '/isosceles-triangle-grade-9',
       '/triangle-calculations-grade-9',
       '/equilateral-triangle-grade-9',
+      '/special-triangles-review-grade-9',
       '/median-to-hypotenuse-grade-9',
     ]);
 

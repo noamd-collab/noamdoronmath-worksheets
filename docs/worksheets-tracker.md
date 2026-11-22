@@ -1,3 +1,15 @@
+## 2026-11-22 — Grade 7 frequency tables, modes and dot plots (090)
+
+Each of the three G7-T136 student PDFs has 36 reviewed Ramzi markers. Each marker is bound to its printed subsection and the three approved text hints. The grade 7 frequency landing lists these PDFs under topic 25, alongside the original downloads.
+
+## 2026-11-22 — Grade 7 common factors and introductory equations (078 and 079)
+
+All 63 subsections in G7-T124 and 92 in G7-T125 have three reviewed text hints each. The six original PDFs are linked from their topic pages and the catalog. The Ramzi markers match the original printed positions and the anonymously verified hint text for each subsection.
+
+## 2026-11-22 — Grade 7 number patterns (077)
+
+The three published G7-T123 worksheets each have 18 text-only Ramzi markers. Positions were checked against the original printed subsections. The viewer matches all three reviewed hints to the exact PDF and source item before showing a marker.
+
 ## 2026-11-22 — Reviewed hints on individual middle-school exercises
 
 The catalog and topic pages link to a partial Ramzi reader for 45 printed worksheets across 27 editions. The index covers 182 exercises with three independently reviewed hints each. Each marker requires the exact PDF and a matching verified Supabase record. The original PDF download remains available per level.

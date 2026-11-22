@@ -64,6 +64,8 @@ export type EliyahuGame = {
   kind: 'engine' | 'legacy';
   /** Path of the playable document. */
   playPath: string;
+  /** Short label kept on the corner card, such as (beta). */
+  badge?: string;
 };
 
 const INDIGO: GameTheme = {
@@ -759,7 +761,8 @@ export const LEGACY_GAMES: EliyahuGame[] = [
     topics: [{ grade: 9, topic: 44, coverage: 'partial' }],
     theme: TEAL,
     kind: 'legacy',
-    playPath: '/games/kefel-mekutsar-2'
+    playPath: '/games/kefel-mekutsar-2',
+    badge: '(beta)'
   },
   {
     slug: 'eliyahu-pythagoras',

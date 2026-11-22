@@ -257,6 +257,7 @@ const SLUG_CSS_OVERRIDE: Record<string, CssLoopVariant> = {
   'isosceles-triangle-grade-9': 'isosceles',
   'isosceles-triangle-properties-grade-8': 'isosceles',
   'special-triangles-grade-7-new': 'isosceles',
+  'special-triangles-review-grade-9': 'isosceles',
   'triangle-median-grade-8': 'median',
   'triangle-sides-angles-grade-9': 'side-angle',
   'similar-triangles-area-ratio-grade-8': 'similar-area',

@@ -14,8 +14,9 @@ if (!access.ok) Astro.response.status = 403;
  <main id="generation" class="generation" dir="rtl">
   <nav class="generation-top" data-teacher-auth="workspace"><a href="/teachers/start">חזרה לאזור המורים</a><span>יצירה חדשה · גישה אישית לנועם</span><button type="button" data-teacher-logout>התנתקות</button><p id="teacher-auth-status" role="status" aria-live="polite"></p></nav>
   <header><p class="eyebrow">מהשיעור האחרון, לדף הבא</p><h1>מכינים דף לשיעור</h1><p>בוחרים כיתה, נושא ורמה. ממשיכים לפרטי השיעור ולאישור הטיוטה.</p></header>
+  <p id="generation-quota" class="notice" role="status" aria-live="polite">בודקים את מכסת היצירה שלך…</p>
   <p id="generator-availability" class="availability" role="status">בודקים אילו נושאים זמינים ליצירה…</p>
-  <form id="generation-form" novalidate>
+  <form id="generation-form" data-draft-owner={access.userId} novalidate>
    <p id="wizard-progress" class="wizard-progress" role="status" aria-live="polite" aria-atomic="true">שלב 1 מתוך 5 · כיתה</p>
    <ol class="wizard-steps" aria-label="שלבי הכנת הדף"><li aria-current="step">כיתה</li><li>נושא</li><li>רמה</li><li>השיעור</li><li>אישור</li></ol>
    <fieldset data-generation-step aria-labelledby="grade-title">
@@ -68,7 +69,7 @@ if (!access.ok) Astro.response.status = 403;
    </fieldset>
    <div class="wizard-navigation"><button id="wizard-back" type="button" hidden>חזרה</button><button class="primary" id="plan-button" type="submit" disabled>המשך</button></div>
   </form>
-  <section id="generation-plan" hidden aria-labelledby="plan-title"><p class="wizard-progress">שלב 5 מתוך 5 · אישור</p><h2 id="plan-title" tabindex="-1">זה הדף שנכין</h2><dl id="plan-details"></dl><p>תיווצר טיוטה חדשה עם תשובות. לפני השימוש בכיתה יש לעיין בניסוח, בהתאמה לשיעור ובתצוגת PDF ו־Word.</p><div class="actions"><button id="create-button" class="primary" type="button">יצירת טיוטה חדשה</button><button id="edit-plan" type="button">שינוי הפרטים</button></div></section>
+  <section id="generation-plan" hidden aria-labelledby="plan-title"><p class="wizard-progress">שלב 5 מתוך 5 · אישור</p><h2 id="plan-title" tabindex="-1">זה הדף שנכין</h2><dl id="plan-details"></dl><p>תיווצר טיוטה חדשה עם תשובות. לפני השימוש בכיתה יש לעיין בניסוח, בהתאמה לשיעור ובתצוגת PDF ו־Word.</p><div class="actions"><button id="create-button" class="primary" type="button" aria-describedby="generation-quota">יצירת טיוטה חדשה</button><button id="edit-plan" type="button">שינוי הפרטים</button></div></section>
   <p id="generation-status" role="status" aria-live="polite"></p>
   <details id="generation-history" class="generation-history"><summary id="history-title">הדפים שלי</summary><p id="history-empty">הדפים שתיצור יופיעו כאן. יצירת דף אינה מסמנת שהחומר כבר נלמד בכיתה.</p><div id="generation-jobs"></div></details>
  </main>
@@ -81,6 +82,7 @@ if (!access.ok) Astro.response.status = 403;
   <p class="coming-soon-label">בקרוב</p>
   <h1 id="coming-soon-title">יצירת דפי עבודה חדשים עם AI</h1>
   <p>הכלי החדש נמצא בבדיקות ואינו פתוח עדיין לשימוש.</p>
+  <p><strong>כשהכלי ייפתח למורים, אפשר יהיה ליצור עד 5 דפים חדשים ביום.</strong> המכסה תתחדש בחצות לפי שעון ישראל.</p>
   <p>כלי המורים הקיימים זמינים לכם כרגיל: בחירת חומר, הרכבת דף והורדה.</p>
   <a href="/teachers/start">לכלי המורים הקיימים</a>
  </main>}

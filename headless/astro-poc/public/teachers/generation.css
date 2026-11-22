@@ -5,3 +5,5 @@
 .concept-choices { display: grid; gap: .5rem; margin-block: .75rem; }
 .generation .concept-choices label { display: flex; align-items: center; gap: .65rem; min-height: 44px; margin: 0; padding: .4rem .65rem; border: 1px solid #c9d3cf; border-radius: .6rem; cursor: pointer; }
 .generation .concept-choices input { width: 1.25rem; min-height: 1.25rem; height: 1.25rem; flex: 0 0 auto; margin: 0; padding: 0; accent-color: #252b4b; }
+
+.generation #generation-quota { box-sizing: border-box; max-width: 760px; margin: 0 auto 12px; font-weight: 700; }

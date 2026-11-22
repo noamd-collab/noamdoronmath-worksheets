@@ -89,10 +89,24 @@ def general_cases(output):
             fixture = root / case
             lesson = json.loads((fixture / 'lesson.json').read_text())
             source = json.loads((fixture / 'model-output.json').read_text())
-            if lesson.get('version') != 3 or source.get('version') != 4:
+            expected_source = {'grade9-special-right-triangle':'triangle-parameters/1',
+                               'grade1-counting':'counting-words/1',
+                               'grade8-pythagoras':'pythagoras-parameters/1',
+                               'grade9-square':'square-parameters/1',
+                               'grade3-division-curriculum':'division-facts/1'}.get(case, 4)
+            if lesson.get('version') != 3 or source.get('version') != expected_source:
                 raise RuntimeError('General fixtures must exercise the new intake and source contracts')
             validate_model(lesson, source)
             rendered = render_job(lesson, source, output / case)
+            if case == 'grade3-division-curriculum':
+                # Selecting the division concept alone never adds a mandatory
+                # inverse-multiplication task, even when the method was taught.
+                draft = json.loads((output / case / 'worksheet-source.json').read_text())
+                from division_facts import CHALLENGES
+                instructions = [q['instruction'] for q in draft['questions']]
+                if (any('כפל' in prompt for prompt in instructions)
+                        or instructions[-3:] != list(CHALLENGES.values())):
+                    raise RuntimeError('Division tasks do not match the selected curriculum concept')
             automated = (rendered['automatedChecksPassed'] is True
                          and all(step['status'] == 'PASS' for step in rendered['steps']))
             review_only = (rendered.get('renderingChecksPassed') is True
