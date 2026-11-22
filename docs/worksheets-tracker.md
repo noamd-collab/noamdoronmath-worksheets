@@ -1007,3 +1007,7 @@ Five PDFs were rebuilt. The grade 1 counting and data excellence sheets have dar
 ## Reviewed middle-school PDFs on 22 November 2026
 
 Packages 050–054, 057–061, 071–072 and 074–076 add 45 student PDFs at levels A, B and excellence. The final answer key is at the end of each worksheet. The catalog and the corresponding Hebrew topic pages retain their earlier materials. The [publication record](middle-reviewed-packages-050-076-20261122.json) identifies each student PDF, the review of its source revision and both verified media URLs.
+
+## Reviewed Grade 8 and Grade 9 worksheets on 22 November 2026
+
+The [six-package publication record](middle-renewal-wave6-20261122.json) identifies the 18 student PDFs and their independent reviews. Package 067 covers probability experiments and game fairness in Grade 8. Packages 100, 101, 102 and 105 follow the reduced Grade 9 program. Package 106 uses the equilateral triangle to practice the 30-degree theorem and its converse in the regular Grade 9 program. The three levels contain 366 items altogether. These editions link to printable PDFs with final answers. Previously available editions keep their original downloads and Ramzi access.

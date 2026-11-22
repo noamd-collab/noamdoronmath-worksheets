@@ -31,7 +31,7 @@ export default function compactServerBuild() {
             async renderChunk(code, chunk) {
               if (/^manifest_[^/]+\.mjs$/.test(chunk.fileName)) return null;
               // Landing-page chunks import hundreds of JSON records. Shorten their
-              // local bindings while preserving exports and observable function names.
+              // syntax and local bindings while preserving exports and observable names.
               const hasTopicData = chunk.moduleIds?.some(id => id.includes('/src/data/topic-pages/')) ?? false;
               const result = await transform(code, {
                 format: 'esm',
@@ -41,7 +41,7 @@ export default function compactServerBuild() {
                 minifyWhitespace: true,
                 minifyIdentifiers: hasTopicData,
                 keepNames: hasTopicData,
-                minifySyntax: false,
+                minifySyntax: hasTopicData,
                 sourcemap: false,
               });
               return { code: result.code, map: null };
