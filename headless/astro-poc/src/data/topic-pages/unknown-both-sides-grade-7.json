@@ -1,0 +1,293 @@
+{
+  "slug": "unknown-both-sides-grade-7",
+  "path": "/unknown-both-sides-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/unknown-both-sides-grade-7",
+  "fetchedAt": "2026-11-21T00:00:00.000Z",
+  "verifiedVia": "authored-own-landing-20261121",
+  "title": "הנעלם בשני האגפים לכיתה ז׳ | דף עבודה חינם",
+  "description": "כשהנעלם מופיע בשני האגפים, אוספים את איברי הנעלם לאגף אחד ואת המספרים לאגף השני.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "הנעלם בשני האגפים לכיתה ז׳",
+  "intro": "כשהנעלם מופיע בשני האגפים, אוספים את כל איברי הנעלם לאגף אחד ואת המספרים לאגף השני. כל פעולה נעשית בשני האגפים. הדפים זמינים בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשוואה 5x + 1 = 2x + 10 מחסרים 2x משני האגפים ומקבלים 3x + 1 = 10.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מחסרים 1 ומחלקים ב־3. מתקבל x = 3. בדיקה: 16 = 16.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחסרים את הנעלם רק מאגף אחד.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מעבירים איבר בלי להחליף את הפעולה שנעשית בשני האגפים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו את המשוואה 4x = x + 9.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא x = 3. אחרי חיסור x מתקבל 3x = 9.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "כשהנעלם מופיע בשני האגפים, אוספים את כל איברי הנעלם לאגף אחד ואת המספרים לאגף השני. כל פעולה נעשית בשני האגפים. הדפים זמינים בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "הנעלם בשני האגפים — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=39",
+      "catalogTopicId": 39
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "במשוואה 5x + 1 = 2x + 10 מחסרים 2x משני האגפים ומקבלים 3x + 1 = 10.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחסרים 1 ומחלקים ב־3. מתקבל x = 3. בדיקה: 16 = 16.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחסרים את הנעלם רק מאגף אחד.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מעבירים איבר בלי להחליף את הפעולה שנעשית בשני האגפים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרו את המשוואה 4x = x + 9.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא x = 3. אחרי חיסור x מתקבל 3x = 9.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "למה אוספים את הנעלם לאגף אחד?",
+      "answer": "כדי להישאר עם משוואה חד־שלבית, שאפשר לפתור בפעולה הפוכה אחת."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "למה אוספים את הנעלם לאגף אחד?",
+          "answer": "כדי להישאר עם משוואה חד־שלבית, שאפשר לפתור בפעולה הפוכה אחת."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/equations-both-sides-word-problems-grade-7",
+      "label": "משוואות בשני אגפים",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-both-sides-word-problems-grade-7"
+    },
+    {
+      "path": "/equation-representations-grade-7",
+      "label": "שלושה ייצוגים למשוואה",
+      "productionHref": "https://www.noamdoronmath.co.il/equation-representations-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "הנעלם בשני האגפים — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=39",
+    "source": "catalog-g7-t39",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=39",
+    "catalogTopicId": 39,
+    "catalogTopicTitle": "הנעלם בשני האגפים"
+  },
+  "catalogCtas": [
+    {
+      "label": "הנעלם בשני האגפים — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=39",
+      "source": "catalog-g7-t39",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=39",
+      "catalogTopicId": 39,
+      "catalogTopicTitle": "הנעלם בשני האגפים"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/unknown-both-sides-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/unknown-both-sides-grade-7",
+        "name": "הנעלם בשני האגפים לכיתה ז׳ | דף עבודה חינם",
+        "description": "כשהנעלם מופיע בשני האגפים, אוספים את איברי הנעלם לאגף אחד ואת המספרים לאגף השני.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/unknown-both-sides-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/unknown-both-sides-grade-7#learning-resource",
+        "name": "הנעלם בשני האגפים לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/unknown-both-sides-grade-7",
+        "description": "כשהנעלם מופיע בשני האגפים, אוספים את איברי הנעלם לאגף אחד ואת המספרים לאגף השני.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "פתרון משוואה שהנעלם מופיע בה בשני האגפים",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/unknown-both-sides-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "למה אוספים את הנעלם לאגף אחד?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כדי להישאר עם משוואה חד־שלבית, שאפשר לפתור בפעולה הפוכה אחת."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

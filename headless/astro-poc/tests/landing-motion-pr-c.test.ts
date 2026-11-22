@@ -29,13 +29,16 @@ const SECTION_3: Record<string, string> = {
   'mean-data-inquiry-grade-5': 'stats',
   'solids-explore-grade-6': 'solids',
   'area-rectangle-perimeter-grade-7': 'area',
+  'rectangle-square-area-grade-7': 'area',
   'rectangle-square-area-grade-9': 'area',
   'area-parallelogram-trapezoid-composite-grade-7': 'area-para',
+  'parallelogram-trapezoid-area-grade-7': 'area-para',
   'composite-polygons-area-grade-9': 'area-split',
   'parallelogram-grade-9': 'quads',
   'rectangle-grade-9': 'rect',
   'cylinder-surface-area-grade-8': 'cyl-area',
   'triangular-prism-surface-area-grade-9': 'prism-area',
+  'triangular-prism-volume-grade-7': 'prism-vol',
   'triangular-prism-volume-grade-9': 'prism-vol',
   'coordinate-plane-four-quadrants-grade-7': 'coords',
   'coordinate-plane-quadrants-grade-7': 'coords',
@@ -93,6 +96,9 @@ const ALL = { ...SECTION_3, ...MISSED, ...SECTION_4, ...INTEGRATED };
 const SAME_MOTION: Record<string, string> = {
   'congruence-theorems-grade-8': 'the copy slid before too, but was not congruent',
   'triangle-congruence-proofs-grade-8': 'the copy slid before too, but was not congruent',
+  'rectangle-square-area-grade-7': 'reuses the existing area loop; there is no older picture',
+  'parallelogram-trapezoid-area-grade-7': 'reuses the existing area-para loop; there is no older picture',
+  'triangular-prism-volume-grade-7': 'reuses the existing prism-vol loop; there is no older picture',
 };
 
 const points = (block: RegExp) => {

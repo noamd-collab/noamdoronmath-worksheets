@@ -1,0 +1,293 @@
+{
+  "slug": "simplify-then-solve-grade-7",
+  "path": "/simplify-then-solve-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/simplify-then-solve-grade-7",
+  "fetchedAt": "2026-11-21T00:00:00.000Z",
+  "verifiedVia": "authored-own-landing-20261121",
+  "title": "מפשטים ואז פותרים לכיתה ז׳ | דף עבודה חינם",
+  "description": "כשיש כמה איברים דומים באגף, קודם מפשטים ואחר כך פותרים. איברים דומים הם איברים עם אותו משתנה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מפשטים ואז פותרים לכיתה ז׳",
+  "intro": "כשיש כמה איברים דומים באותו אגף, קודם מפשטים ואחר כך פותרים. איברים דומים הם איברים עם אותו משתנה, או מספרים בלי משתנה. הדפים זמינים בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשוואה 2x + 3x + 1 = 16 מפשטים ל־5x + 1 = 16.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מחסרים 1 ומחלקים ב־5. מתקבל x = 3. בדיקה: 6 + 9 + 1 = 16.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחברים מספר חופשי עם המקדם של x, למשל 5x + 1 כאילו היה 6x.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "פותרים לפני שכינסו את האיברים הדומים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו את המשוואה x + 4x = 15.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא x = 3, כי 5x = 15.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "כשיש כמה איברים דומים באותו אגף, קודם מפשטים ואחר כך פותרים. איברים דומים הם איברים עם אותו משתנה, או מספרים בלי משתנה. הדפים זמינים בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "מפשטים ואז פותרים — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=36",
+      "catalogTopicId": 36
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "במשוואה 2x + 3x + 1 = 16 מפשטים ל־5x + 1 = 16.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחסרים 1 ומחלקים ב־5. מתקבל x = 3. בדיקה: 6 + 9 + 1 = 16.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחברים מספר חופשי עם המקדם של x, למשל 5x + 1 כאילו היה 6x.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "פותרים לפני שכינסו את האיברים הדומים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרו את המשוואה x + 4x = 15.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא x = 3, כי 5x = 15.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מתי מפשטים לפני שפותרים?",
+      "answer": "כשיש יותר מאיבר אחד מאותו סוג באגף, למשל שני מחוברים עם x."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מתי מפשטים לפני שפותרים?",
+          "answer": "כשיש יותר מאיבר אחד מאותו סוג באגף, למשל שני מחוברים עם x."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/equations-advanced-grade-7",
+      "label": "משוואות מתקדמות",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-advanced-grade-7"
+    },
+    {
+      "path": "/equations-parentheses-grade-7",
+      "label": "משוואות עם סוגריים",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-parentheses-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "מפשטים ואז פותרים — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=36",
+    "source": "catalog-g7-t36",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=36",
+    "catalogTopicId": 36,
+    "catalogTopicTitle": "מפשטים ואז פותרים"
+  },
+  "catalogCtas": [
+    {
+      "label": "מפשטים ואז פותרים — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=36",
+      "source": "catalog-g7-t36",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=36",
+      "catalogTopicId": 36,
+      "catalogTopicTitle": "מפשטים ואז פותרים"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/simplify-then-solve-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/simplify-then-solve-grade-7",
+        "name": "מפשטים ואז פותרים לכיתה ז׳ | דף עבודה חינם",
+        "description": "כשיש כמה איברים דומים באגף, קודם מפשטים ואחר כך פותרים. איברים דומים הם איברים עם אותו משתנה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/simplify-then-solve-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/simplify-then-solve-grade-7#learning-resource",
+        "name": "מפשטים ואז פותרים לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/simplify-then-solve-grade-7",
+        "description": "כשיש כמה איברים דומים באגף, קודם מפשטים ואחר כך פותרים. איברים דומים הם איברים עם אותו משתנה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "כינוס איברים דומים ואחר כך פתרון המשוואה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/simplify-then-solve-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מתי מפשטים לפני שפותרים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כשיש יותר מאיבר אחד מאותו סוג באגף, למשל שני מחוברים עם x."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

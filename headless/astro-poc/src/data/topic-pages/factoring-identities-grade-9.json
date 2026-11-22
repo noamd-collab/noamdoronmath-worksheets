@@ -1,0 +1,293 @@
+{
+  "slug": "factoring-identities-grade-9",
+  "path": "/factoring-identities-grade-9",
+  "grade": 9,
+  "sourceUrl": "https://www.noamdoronmath.co.il/factoring-identities-grade-9",
+  "fetchedAt": "2026-11-21T00:00:00.000Z",
+  "verifiedVia": "authored-own-landing-20261121",
+  "title": "נוסחאות הכפל המקוצר וטרינום לכיתה ט׳ | דף עבודה חינם",
+  "description": "מפרקים הפרש ריבועים, ריבוע של דו־איבר וטרינום. בטרינום מחפשים שני מספרים שמכפלתם וסכומם ידועים.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "נוסחאות הכפל המקוצר וטרינום לכיתה ט׳",
+  "intro": "הפרש ריבועים מתפרק לשני גורמים, סכום והפרש. ריבוע של דו־איבר כולל גם את האיבר האמצעי, פעמיים מכפלת שני החלקים. בטרינום מחפשים שני מספרים שמכפלתם האיבר החופשי וסכומם המקדם האמצעי. הדף זמין בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "x בריבוע פחות 9 שווה (x − 3)(x + 3).",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "x בריבוע ועוד 5x ועוד 6 שווה (x + 2)(x + 3), כי 2 כפול 3 שווה 6 ו־2 ועוד 3 שווים 5.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "דף PDF אחד זמין להורדה ולהדפסה, ברמה א׳, עם תשובות בסוף הדף.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שוכחים את האיבר האמצעי בריבוע של דו־איבר.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בטרינום בוחרים זוג שמכפלתו נכונה אבל סכומו אינו המקדם האמצעי.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פרקו את x בריבוע ועוד 5x ועוד 6.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא (x + 2)(x + 3).",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "הפרש ריבועים מתפרק לשני גורמים, סכום והפרש. ריבוע של דו־איבר כולל גם את האיבר האמצעי, פעמיים מכפלת שני החלקים. בטרינום מחפשים שני מספרים שמכפלתם האיבר החופשי וסכומם המקדם האמצעי. הדף זמין בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "כפל מקוצר וטרינום — פתיחת הדף",
+      "href": "/worksheets?grade=9&topic=42",
+      "catalogTopicId": 42
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "x בריבוע פחות 9 שווה (x − 3)(x + 3).",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "x בריבוע ועוד 5x ועוד 6 שווה (x + 2)(x + 3), כי 2 כפול 3 שווה 6 ו־2 ועוד 3 שווים 5.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "דף PDF אחד זמין להורדה ולהדפסה, ברמה א׳, עם תשובות בסוף הדף.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "שוכחים את האיבר האמצעי בריבוע של דו־איבר.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בטרינום בוחרים זוג שמכפלתו נכונה אבל סכומו אינו המקדם האמצעי.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פרקו את x בריבוע ועוד 5x ועוד 6.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא (x + 2)(x + 3).",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מהו הפרש ריבועים?",
+      "answer": "הפרש בין שני ריבועים. הוא מתפרק למכפלה של סכום ושל הפרש."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "דף אחד, רמה א׳, ובסופו תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מהו הפרש ריבועים?",
+          "answer": "הפרש בין שני ריבועים. הוא מתפרק למכפלה של סכום ושל הפרש."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "דף אחד, רמה א׳, ובסופו תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/factoring-grade-9",
+      "label": "פירוק לגורמים",
+      "productionHref": "https://www.noamdoronmath.co.il/factoring-grade-9"
+    },
+    {
+      "path": "/common-factor-grade-9",
+      "label": "הוצאת גורם משותף",
+      "productionHref": "https://www.noamdoronmath.co.il/common-factor-grade-9"
+    }
+  ],
+  "catalogCta": {
+    "label": "כפל מקוצר וטרינום — פתיחת הדף",
+    "href": "/worksheets?grade=9&topic=42",
+    "source": "catalog-g9-t42",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=42",
+    "catalogTopicId": 42,
+    "catalogTopicTitle": "פירוק לגורמים 2 — נוסחאות הכפל המקוצר וטרינום"
+  },
+  "catalogCtas": [
+    {
+      "label": "כפל מקוצר וטרינום — פתיחת הדף",
+      "href": "/worksheets?grade=9&topic=42",
+      "source": "catalog-g9-t42",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=9&topic=42",
+      "catalogTopicId": 42,
+      "catalogTopicTitle": "פירוק לגורמים 2 — נוסחאות הכפל המקוצר וטרינום"
+    }
+  ],
+  "gradeHubHref": "/grade-9",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/factoring-identities-grade-9#webpage",
+        "url": "https://www.noamdoronmath.co.il/factoring-identities-grade-9",
+        "name": "נוסחאות הכפל המקוצר וטרינום לכיתה ט׳ | דף עבודה חינם",
+        "description": "מפרקים הפרש ריבועים, ריבוע של דו־איבר וטרינום. בטרינום מחפשים שני מספרים שמכפלתם וסכומם ידועים.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/factoring-identities-grade-9#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/factoring-identities-grade-9#learning-resource",
+        "name": "נוסחאות הכפל המקוצר וטרינום לכיתה ט׳",
+        "url": "https://www.noamdoronmath.co.il/factoring-identities-grade-9",
+        "description": "מפרקים הפרש ריבועים, ריבוע של דו־איבר וטרינום. בטרינום מחפשים שני מספרים שמכפלתם וסכומם ידועים.",
+        "educationalLevel": "כיתה ט׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "פירוק לפי נוסחאות הכפל המקוצר ופירוק טרינום",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/factoring-identities-grade-9#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מהו הפרש ריבועים?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "הפרש בין שני ריבועים. הוא מתפרק למכפלה של סכום ושל הפרש."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "דף אחד, רמה א׳, ובסופו תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

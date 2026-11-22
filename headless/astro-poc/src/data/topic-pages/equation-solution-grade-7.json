@@ -1,0 +1,293 @@
+{
+  "slug": "equation-solution-grade-7",
+  "path": "/equation-solution-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/equation-solution-grade-7",
+  "fetchedAt": "2026-11-21T00:00:00.000Z",
+  "verifiedVia": "authored-own-landing-20261121",
+  "title": "מהו פתרון של משוואה לכיתה ז׳ | דף עבודה חינם",
+  "description": "פתרון של משוואה הוא מספר שהצבה שלו עושה את שני האגפים שווים. בדפים בודקים פתרון בהצבה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מהו פתרון של משוואה לכיתה ז׳",
+  "intro": "פתרון של משוואה הוא מספר שאם מציבים אותו במקום הנעלם, שני האגפים שווים. בדפים בודקים מועמד בהצבה, לפני שמחפשים את הפתרון. הדפים זמינים בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשוואה x + 4 = 9 מציבים 5 ומקבלים 9 = 9. לכן 5 הוא פתרון.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "הצבה של 3 נותנת 7 = 9. האגפים אינם שווים, ולכן 3 אינו פתרון.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "בוחרים מספר שנראה מתאים בלי להציב אותו בשני האגפים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "משווים רק אגף אחד ומתעלמים מהאגף השני.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "האם 2 הוא פתרון של 3x = 6?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "כן. הצבה נותנת 6 = 6, ושני האגפים שווים.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "פתרון של משוואה הוא מספר שאם מציבים אותו במקום הנעלם, שני האגפים שווים. בדפים בודקים מועמד בהצבה, לפני שמחפשים את הפתרון. הדפים זמינים בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "מהו פתרון של משוואה — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=32",
+      "catalogTopicId": 32
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "במשוואה x + 4 = 9 מציבים 5 ומקבלים 9 = 9. לכן 5 הוא פתרון.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "הצבה של 3 נותנת 7 = 9. האגפים אינם שווים, ולכן 3 אינו פתרון.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "בוחרים מספר שנראה מתאים בלי להציב אותו בשני האגפים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "משווים רק אגף אחד ומתעלמים מהאגף השני.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "האם 2 הוא פתרון של 3x = 6?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "כן. הצבה נותנת 6 = 6, ושני האגפים שווים.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "איך בודקים אם מספר הוא פתרון?",
+      "answer": "מציבים אותו במקום הנעלם. אם שני האגפים שווים, המספר הוא פתרון."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "איך בודקים אם מספר הוא פתרון?",
+          "answer": "מציבים אותו במקום הנעלם. אם שני האגפים שווים, המספר הוא פתרון."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/equations-basics-grade-7",
+      "label": "משוואות בסיס",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-basics-grade-7"
+    },
+    {
+      "path": "/one-step-equations-grade-7",
+      "label": "משוואות חד־שלביות",
+      "productionHref": "https://www.noamdoronmath.co.il/one-step-equations-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "מהו פתרון של משוואה — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=32",
+    "source": "catalog-g7-t32",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=32",
+    "catalogTopicId": 32,
+    "catalogTopicTitle": "מהו פתרון של משוואה"
+  },
+  "catalogCtas": [
+    {
+      "label": "מהו פתרון של משוואה — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=32",
+      "source": "catalog-g7-t32",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=32",
+      "catalogTopicId": 32,
+      "catalogTopicTitle": "מהו פתרון של משוואה"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/equation-solution-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/equation-solution-grade-7",
+        "name": "מהו פתרון של משוואה לכיתה ז׳ | דף עבודה חינם",
+        "description": "פתרון של משוואה הוא מספר שהצבה שלו עושה את שני האגפים שווים. בדפים בודקים פתרון בהצבה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/equation-solution-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/equation-solution-grade-7#learning-resource",
+        "name": "מהו פתרון של משוואה לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/equation-solution-grade-7",
+        "description": "פתרון של משוואה הוא מספר שהצבה שלו עושה את שני האגפים שווים. בדפים בודקים פתרון בהצבה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "בדיקת פתרון של משוואה בהצבה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/equation-solution-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "איך בודקים אם מספר הוא פתרון?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מציבים אותו במקום הנעלם. אם שני האגפים שווים, המספר הוא פתרון."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

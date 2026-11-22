@@ -1,0 +1,293 @@
+{
+  "slug": "box-and-cube-grade-7",
+  "path": "/box-and-cube-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/box-and-cube-grade-7",
+  "fetchedAt": "2026-11-21T00:00:00.000Z",
+  "verifiedVia": "authored-own-landing-20261121",
+  "title": "תיבה וקובייה לכיתה ז׳ | דף עבודה חינם",
+  "description": "תיבה היא גוף עם שש פאות מלבניות. בקובייה כל המקצועות שווים. נפח תיבה הוא אורך כפול רוחב כפול גובה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "תיבה וקובייה לכיתה ז׳",
+  "intro": "תיבה היא גוף עם שש פאות מלבניות. בקובייה כל המקצועות שווים וכל פאה היא ריבוע. נפח תיבה הוא אורך כפול רוחב כפול גובה. הדפים זמינים בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "תיבה שאורכה 2 ס״מ, רוחבה 3 ס״מ וגובהה 4 ס״מ. הנפח הוא 24 סמ״ק.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בקובייה שאורך מקצועה 3 ס״מ הנפח הוא 3 כפול 3 כפול 3, כלומר 27 סמ״ק.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "מחשבים שטח של פאה אחת כשמבקשים את נפח הגוף.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "בקובייה כופלים רק שתי מקצועות ושוכחים את השלישית.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "קובייה שאורך מקצועה 4 ס״מ. מה נפחה?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 64 סמ״ק, כי 4 כפול 4 כפול 4 שווה 64.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "תיבה היא גוף עם שש פאות מלבניות. בקובייה כל המקצועות שווים וכל פאה היא ריבוע. נפח תיבה הוא אורך כפול רוחב כפול גובה. הדפים זמינים בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "תיבה וקובייה — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=20",
+      "catalogTopicId": 20
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "תיבה שאורכה 2 ס״מ, רוחבה 3 ס״מ וגובהה 4 ס״מ. הנפח הוא 24 סמ״ק.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בקובייה שאורך מקצועה 3 ס״מ הנפח הוא 3 כפול 3 כפול 3, כלומר 27 סמ״ק.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחשבים שטח של פאה אחת כשמבקשים את נפח הגוף.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "בקובייה כופלים רק שתי מקצועות ושוכחים את השלישית.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "קובייה שאורך מקצועה 4 ס״מ. מה נפחה?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 64 סמ״ק, כי 4 כפול 4 כפול 4 שווה 64.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מה ההבדל בין תיבה לקובייה?",
+      "answer": "בקובייה כל המקצועות שווים. בתיבה האורך, הרוחב והגובה יכולים להיות שונים."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מה ההבדל בין תיבה לקובייה?",
+          "answer": "בקובייה כל המקצועות שווים. בתיבה האורך, הרוחב והגובה יכולים להיות שונים."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/solids-box-cube-prism-grade-7",
+      "label": "תיבה, קובייה ומנסרה",
+      "productionHref": "https://www.noamdoronmath.co.il/solids-box-cube-prism-grade-7"
+    },
+    {
+      "path": "/triangular-prism-volume-grade-7",
+      "label": "נפח מנסרה משולשת",
+      "productionHref": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "תיבה וקובייה — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=20",
+    "source": "catalog-g7-t20",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=20",
+    "catalogTopicId": 20,
+    "catalogTopicTitle": "תיבה וקובייה"
+  },
+  "catalogCtas": [
+    {
+      "label": "תיבה וקובייה — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=20",
+      "source": "catalog-g7-t20",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=20",
+      "catalogTopicId": 20,
+      "catalogTopicTitle": "תיבה וקובייה"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/box-and-cube-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/box-and-cube-grade-7",
+        "name": "תיבה וקובייה לכיתה ז׳ | דף עבודה חינם",
+        "description": "תיבה היא גוף עם שש פאות מלבניות. בקובייה כל המקצועות שווים. נפח תיבה הוא אורך כפול רוחב כפול גובה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/box-and-cube-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/box-and-cube-grade-7#learning-resource",
+        "name": "תיבה וקובייה לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/box-and-cube-grade-7",
+        "description": "תיבה היא גוף עם שש פאות מלבניות. בקובייה כל המקצועות שווים. נפח תיבה הוא אורך כפול רוחב כפול גובה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "מבנה של תיבה וקובייה וחישוב נפח",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/box-and-cube-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מה ההבדל בין תיבה לקובייה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "בקובייה כל המקצועות שווים. בתיבה האורך, הרוחב והגובה יכולים להיות שונים."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

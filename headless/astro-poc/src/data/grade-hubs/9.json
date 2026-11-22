@@ -22,6 +22,21 @@
           "productionHref": "https://www.noamdoronmath.co.il/factoring-grade-9"
         },
         {
+          "path": "/common-factor-grade-9",
+          "label": "הוצאת גורם משותף",
+          "productionHref": "https://www.noamdoronmath.co.il/common-factor-grade-9"
+        },
+        {
+          "path": "/factoring-identities-grade-9",
+          "label": "כפל מקוצר וטרינום",
+          "productionHref": "https://www.noamdoronmath.co.il/factoring-identities-grade-9"
+        },
+        {
+          "path": "/complete-factoring-grade-9",
+          "label": "פירוק מלא",
+          "productionHref": "https://www.noamdoronmath.co.il/complete-factoring-grade-9"
+        },
+        {
           "path": "/quadratic-equations-grade-9",
           "label": "משוואות ריבועיות",
           "productionHref": "https://www.noamdoronmath.co.il/quadratic-equations-grade-9"
@@ -294,6 +309,21 @@
       "path": "/factoring-grade-9",
       "label": "פירוק לגורמים",
       "productionHref": "https://www.noamdoronmath.co.il/factoring-grade-9"
+    },
+    {
+      "path": "/common-factor-grade-9",
+      "label": "הוצאת גורם משותף",
+      "productionHref": "https://www.noamdoronmath.co.il/common-factor-grade-9"
+    },
+    {
+      "path": "/factoring-identities-grade-9",
+      "label": "כפל מקוצר וטרינום",
+      "productionHref": "https://www.noamdoronmath.co.il/factoring-identities-grade-9"
+    },
+    {
+      "path": "/complete-factoring-grade-9",
+      "label": "פירוק מלא",
+      "productionHref": "https://www.noamdoronmath.co.il/complete-factoring-grade-9"
     },
     {
       "path": "/quadratic-equations-grade-9",
