@@ -1,4 +1,4 @@
-import { beforeNovember21Catalog, beforeNovember21Registry } from './fixtures/middle-090-091-094';
+import { beforeNovember21Catalog, beforeNovember21Registry, renewalIds } from './fixtures/middle-090-091-094';
 import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -312,10 +312,13 @@ test('preservation fences reject catalog, registry and landing substitutions and
       assert.throws(() => beforeBatch13Catalog(moved), assert.AssertionError, `${editionId} must not move from ${grade}/${sourceId} to ${grade}/${destinationId}`);
     }
   }
-  // The batch 12 fence calls this fence first, so it never reverses batch 13 twice; with batch 13
-  // present, it still refuses a substitution in its own edition.
-  assert.throws(() => beforeBatch12Catalog(previous), (error: any) => error instanceof assert.AssertionError
-    && error.message.includes('frequency-grade-7'), 'never reverses the November 21 overlay twice');
+  // An earlier batch must reject a second reversal at the most recent edition.
+  const latestEdition = renewalIds.at(-1)!;
+  assert.throws(() => beforeBatch12Catalog(previous), (error: unknown) =>
+    error instanceof assert.AssertionError && error.operator === 'deepStrictEqual'
+    && Array.isArray(error.expected) && error.expected.at(-1) === latestEdition
+    && (error.actual === undefined || (Array.isArray(error.actual) && !error.actual.includes(latestEdition))),
+  'never reverses the November 21–22 overlay twice');
   const batch12Substituted = read('headless/astro-poc/src/data/catalog.v1.json');
   batch12Substituted.grades.find((g: any) => g.grade === 7).topics.find((t: any) => t.id === 12)
     .editions.at(-1).levels[0].pdfSha256 = '0'.repeat(64);
