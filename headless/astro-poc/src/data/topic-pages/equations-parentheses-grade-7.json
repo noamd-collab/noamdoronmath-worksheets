@@ -1,0 +1,293 @@
+{
+  "slug": "equations-parentheses-grade-7",
+  "path": "/equations-parentheses-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/equations-parentheses-grade-7",
+  "fetchedAt": "2026-11-21T00:00:00.000Z",
+  "verifiedVia": "authored-own-landing-20261121",
+  "title": "משוואות עם סוגריים ושקילות לכיתה ז׳ | דף עבודה חינם",
+  "description": "פותחים סוגריים לפי חוק הפילוג, מפשטים, ואז פותרים. שתי משוואות שקולות כשיש להן אותו פתרון.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "משוואות עם סוגריים ושקילות לכיתה ז׳",
+  "intro": "פותחים סוגריים לפי חוק הפילוג, מפשטים איברים דומים, ואז פותרים. שתי משוואות שקולות כשיש להן אותו פתרון. הדפים זמינים בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "במשוואה 2(x + 3) = 14 פותחים סוגריים ומקבלים 2x + 6 = 14.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "מחסרים 6 ומחלקים ב־2. מתקבל x = 4. בדיקה: 2 כפול 7 שווה 14.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כופלים רק את האיבר הראשון שבתוך הסוגריים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "קוראים לשתי משוואות שקולות גם כשהפתרונות שלהן שונים.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "פתרו את המשוואה 3(x − 1) = 9.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא x = 4. אחרי הפתיחה 3x − 3 = 9, ולכן 3x = 12.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "פותחים סוגריים לפי חוק הפילוג, מפשטים איברים דומים, ואז פותרים. שתי משוואות שקולות כשיש להן אותו פתרון. הדפים זמינים בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "משוואות עם סוגריים ושקילות — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=37",
+      "catalogTopicId": 37
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "במשוואה 2(x + 3) = 14 פותחים סוגריים ומקבלים 2x + 6 = 14.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "מחסרים 6 ומחלקים ב־2. מתקבל x = 4. בדיקה: 2 כפול 7 שווה 14.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "כופלים רק את האיבר הראשון שבתוך הסוגריים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "קוראים לשתי משוואות שקולות גם כשהפתרונות שלהן שונים.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "פתרו את המשוואה 3(x − 1) = 9.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא x = 4. אחרי הפתיחה 3x − 3 = 9, ולכן 3x = 12.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "מתי שתי משוואות שקולות?",
+      "answer": "כשיש להן בדיוק אותו פתרון. פתיחת סוגריים אינה משנה את הפתרון."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "מתי שתי משוואות שקולות?",
+          "answer": "כשיש להן בדיוק אותו פתרון. פתיחת סוגריים אינה משנה את הפתרון."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/equations-advanced-grade-7",
+      "label": "משוואות מתקדמות",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-advanced-grade-7"
+    },
+    {
+      "path": "/simplify-then-solve-grade-7",
+      "label": "מפשטים ואז פותרים",
+      "productionHref": "https://www.noamdoronmath.co.il/simplify-then-solve-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "משוואות עם סוגריים ושקילות — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=37",
+    "source": "catalog-g7-t37",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=37",
+    "catalogTopicId": 37,
+    "catalogTopicTitle": "משוואות ופתרונן חלק 2 — סוגריים ושקילות"
+  },
+  "catalogCtas": [
+    {
+      "label": "משוואות עם סוגריים ושקילות — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=37",
+      "source": "catalog-g7-t37",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=37",
+      "catalogTopicId": 37,
+      "catalogTopicTitle": "משוואות ופתרונן חלק 2 — סוגריים ושקילות"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/equations-parentheses-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/equations-parentheses-grade-7",
+        "name": "משוואות עם סוגריים ושקילות לכיתה ז׳ | דף עבודה חינם",
+        "description": "פותחים סוגריים לפי חוק הפילוג, מפשטים, ואז פותרים. שתי משוואות שקולות כשיש להן אותו פתרון.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/equations-parentheses-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/equations-parentheses-grade-7#learning-resource",
+        "name": "משוואות עם סוגריים ושקילות לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/equations-parentheses-grade-7",
+        "description": "פותחים סוגריים לפי חוק הפילוג, מפשטים, ואז פותרים. שתי משוואות שקולות כשיש להן אותו פתרון.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "פתיחת סוגריים במשוואה ושמירה על שקילות",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/equations-parentheses-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "מתי שתי משוואות שקולות?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כשיש להן בדיוק אותו פתרון. פתיחת סוגריים אינה משנה את הפתרון."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}
