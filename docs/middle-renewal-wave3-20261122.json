@@ -1,0 +1,814 @@
+{
+  "schema": "middle-school-reviewed-pdf/v1",
+  "date": "2026-11-22",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 22.11.2026",
+  "baseline": "ce1031c38bf189484287a4bd7bbeb692e4ebc2ff",
+  "baselineCatalogSha256": "fa80584162ec2e869c24f01bbd6dfc275e6fe13a096834f291dfdf468b0231e4",
+  "baselineRegistrySha256": "6d1b63a11dd040d72b583a04bbb5b1671f225a3dd7aa5901803bc3860b671090",
+  "packages": [
+    {
+      "number": 63,
+      "sheetId": "G8-CMC-01",
+      "grade": 8,
+      "topicId": 25,
+      "slug": "choosing-measure-of-center-grade-8",
+      "producerPackage": "G8-T143",
+      "studentRevision": "r01",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "7d2d7c531565d5bd24de1dfeff87815dfd802bb438dd8f0c4aaa871598e608b2",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CLAUDE-INDEPENDENT-G8-CMC-01-r01-20261122/numbers-blind.json",
+          "sha256": "89cc8a3a24e66fda2a2582bb2105873609ba9c5f949b6478f4b7cb8d336d0424",
+          "verdict": "PASS_STUDENT_PDF_ESSENTIALS"
+        },
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CLAUDE-INDEPENDENT-G8-CMC-01-r01-20261122/review.json",
+          "sha256": "d73ad0457b524635dee072af70d6d5fde3da9b2a6f7156bc2bfe49233dc5e01c",
+          "verdict": "PASS_STUDENT_PDF_ESSENTIALS"
+        },
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G8-CMC-01-r01-20261122/review.json",
+          "sha256": "7df1cad32228e3d7a9b4430ea6e75534e67e8e9c659e41c054f1b4aaf6e9183e",
+          "verdict": "PASS_INDEPENDENT_STUDENT_PDF"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 8,
+          "items": 38,
+          "bytes": 55948,
+          "source": "submissions/Codex/MS-PROD-CODEX-063-r01/release/documents/G8-CMC-01/a/sheet.pdf",
+          "sha256": "81ee0bb659771737dc342c6f320e4dfd556a0e69c3ddb93fd03ef1230429e129",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3a9a63e89d10455c83e5d2661bdc1fd6.pdf",
+              "status": 200,
+              "sha256": "81ee0bb659771737dc342c6f320e4dfd556a0e69c3ddb93fd03ef1230429e129",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3a9a63e89d10455c83e5d2661bdc1fd6.pdf",
+              "status": 200,
+              "sha256": "81ee0bb659771737dc342c6f320e4dfd556a0e69c3ddb93fd03ef1230429e129",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 9,
+          "items": 39,
+          "bytes": 58455,
+          "source": "submissions/Codex/MS-PROD-CODEX-063-r01/release/documents/G8-CMC-01/b/sheet.pdf",
+          "sha256": "442331aca8fbe5b5df3d6937ca7bcffdd1ffac199925ca1993df2b87be79794c",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_57a2ed3ce4184c659077b833ff1b6991.pdf",
+              "status": 200,
+              "sha256": "442331aca8fbe5b5df3d6937ca7bcffdd1ffac199925ca1993df2b87be79794c",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_57a2ed3ce4184c659077b833ff1b6991.pdf",
+              "status": 200,
+              "sha256": "442331aca8fbe5b5df3d6937ca7bcffdd1ffac199925ca1993df2b87be79794c",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 10,
+          "items": 41,
+          "bytes": 61835,
+          "source": "submissions/Codex/MS-PROD-CODEX-063-r01/release/documents/G8-CMC-01/c/sheet.pdf",
+          "sha256": "525cd964c0a591f1bc015764e45bf725ce5a4ce770ccfe8f628c97f6fd7c59bf",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_88e30ce2b75c4371831fb4ad0356dc5d.pdf",
+              "status": 200,
+              "sha256": "525cd964c0a591f1bc015764e45bf725ce5a4ce770ccfe8f628c97f6fd7c59bf",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_88e30ce2b75c4371831fb4ad0356dc5d.pdf",
+              "status": 200,
+              "sha256": "525cd964c0a591f1bc015764e45bf725ce5a4ce770ccfe8f628c97f6fd7c59bf",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "בחירת מדד — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בוחרים בין ממוצע, חציון ושכיח לפי מטרת הבדיקה, ומחשבים ממוצע של שתי קבוצות לפי גודלן.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "42b7a416cbdce5cdb6bc2f8ad74f4f4adb59d5a9e5cc79dbe55f3db921e517c1",
+      "priorTopicSha256": "6e79f418a45415b83bc3dbdd97c69b2038d0274f7d72f40fdbb6608f057f60c9",
+      "edition": {
+        "grade": 8,
+        "topicId": 25,
+        "editionId": "ms-20261122-g8-cmc-01-r1",
+        "label": "בחירת מדד · PDF",
+        "nativePrefix": "G8-T143",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "3a9a63e89d10455c83e5d2661bdc1fd6",
+            "pdfSha256": "81ee0bb659771737dc342c6f320e4dfd556a0e69c3ddb93fd03ef1230429e129",
+            "sourceSha256": "1be5597c8d0e33129d24622f40e86a40ff711c1ae8c36017595d12292f7f2886",
+            "nativeExportSha256": "d033cffa7ccf577d6462ae87a7d9e2203765c4504ac3decd2f6a8e83fe3ec95d",
+            "worksheetId": "ms-g8-cmc-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "57a2ed3ce4184c659077b833ff1b6991",
+            "pdfSha256": "442331aca8fbe5b5df3d6937ca7bcffdd1ffac199925ca1993df2b87be79794c",
+            "sourceSha256": "aae0b8bab6704b9536792d7a8f3e2a5a59ab50327d05180bf95866cd72dc4d24",
+            "nativeExportSha256": "a26ea476272765244d0a11b67e131de502b037c62fe40e9dc4cb5451ddfaf3cc",
+            "worksheetId": "ms-g8-cmc-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "88e30ce2b75c4371831fb4ad0356dc5d",
+            "pdfSha256": "525cd964c0a591f1bc015764e45bf725ce5a4ce770ccfe8f628c97f6fd7c59bf",
+            "sourceSha256": "bd4577fea3d7c195027453f64751905c11bcfab813fc3e71c13e8327234bb21b",
+            "nativeExportSha256": "779296991803d79f7e8bf99366c9986155768f985b7c0fb54c25c8b440335c3d",
+            "worksheetId": "ms-g8-cmc-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "b9c3807e38d1fd7be7d79478161f5f9e5b41f7623490139a66a179c18e917224"
+    },
+    {
+      "number": 65,
+      "sheetId": "G8-BAR-01",
+      "grade": 8,
+      "topicId": 17,
+      "slug": "bar-charts-pictograms-grade-8",
+      "producerPackage": "G8-T145",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3-noam.claude (approved chart inputs)",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "7396c01083f146a482b9246d38db0a3f90eabe280e615732153bd26275613d8f",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G8-BAR-01-r02-20261122/review.json",
+          "sha256": "191543101864b6adb2c70f246646204f4d3676517a9c34e19f9fba9b383e9619",
+          "verdict": "PASS_INDEPENDENT_STUDENT_PDF_DELTA"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 8,
+          "items": 32,
+          "bytes": 71798,
+          "source": "submissions/Codex/MS-PROD-CODEX-065-r02/release/documents/G8-BAR-01/a/sheet.pdf",
+          "sha256": "335ece582cc71b74366448b7a10e422f1bc0709c084f171b222b8b95d20edc92",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_efe7ff1bc725471391f63ef697d0a0b2.pdf",
+              "status": 200,
+              "sha256": "335ece582cc71b74366448b7a10e422f1bc0709c084f171b222b8b95d20edc92",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_efe7ff1bc725471391f63ef697d0a0b2.pdf",
+              "status": 200,
+              "sha256": "335ece582cc71b74366448b7a10e422f1bc0709c084f171b222b8b95d20edc92",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 9,
+          "items": 32,
+          "bytes": 70425,
+          "source": "submissions/Codex/MS-PROD-CODEX-065-r02/release/documents/G8-BAR-01/b/sheet.pdf",
+          "sha256": "e6d31007c772427fc1c020c6a518740779654c13c7b66bb15343de4c5cecf981",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_eeae97a763c6454b9a172918ad4b3214.pdf",
+              "status": 200,
+              "sha256": "e6d31007c772427fc1c020c6a518740779654c13c7b66bb15343de4c5cecf981",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_eeae97a763c6454b9a172918ad4b3214.pdf",
+              "status": 200,
+              "sha256": "e6d31007c772427fc1c020c6a518740779654c13c7b66bb15343de4c5cecf981",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 9,
+          "items": 32,
+          "bytes": 71694,
+          "source": "submissions/Codex/MS-PROD-CODEX-065-r02/release/documents/G8-BAR-01/c/sheet.pdf",
+          "sha256": "2e68f018065d8e23ee848ad75691837085535a0ec408cec74e68d44fbe90a9c9",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_0b42e23a777848d5a1ea0f4e1e50a41d.pdf",
+              "status": 200,
+              "sha256": "2e68f018065d8e23ee848ad75691837085535a0ec408cec74e68d44fbe90a9c9",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_0b42e23a777848d5a1ea0f4e1e50a41d.pdf",
+              "status": 200,
+              "sha256": "2e68f018065d8e23ee848ad75691837085535a0ec408cec74e68d44fbe90a9c9",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "עמודות ופיקטוגרמות — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "קוראים גובה של עמודה ומפרשים ריבועים שלמים וחצאי ריבועים לפי המקרא. בודקים איך בחירת קנה המידה משפיעה על השוואת כמויות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "59aad8d3e10620b48114d64894b4049c9c348322a767fb6a87430500a2c4a1c8",
+      "priorTopicSha256": "8ac2cd13698d35b1b0490cd331cd4b5590b3c203a107803a85a4df77fc0cb4e4",
+      "edition": {
+        "grade": 8,
+        "topicId": 17,
+        "editionId": "ms-20261122-g8-bar-01-r1",
+        "label": "עמודות ופיקטוגרמות · PDF",
+        "nativePrefix": "G8-T145",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "efe7ff1bc725471391f63ef697d0a0b2",
+            "pdfSha256": "335ece582cc71b74366448b7a10e422f1bc0709c084f171b222b8b95d20edc92",
+            "sourceSha256": "6a02b53d1ae58fe695ce284be0f25b3d7f9758ab9e79b033bed35cf9121f3e74",
+            "nativeExportSha256": "eaf31017cc5aea9548e0302239f662c2b23ef3308d02bae454accb701db985fb",
+            "worksheetId": "ms-g8-bar-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "eeae97a763c6454b9a172918ad4b3214",
+            "pdfSha256": "e6d31007c772427fc1c020c6a518740779654c13c7b66bb15343de4c5cecf981",
+            "sourceSha256": "b81941ad884228e0509c94a38f852c04c91120f023f288caa3e684c58ab7ee23",
+            "nativeExportSha256": "f929474ac2d4dcd5920f036dfdfb9f7e56804bda62632d4ac82212d0f272c3d3",
+            "worksheetId": "ms-g8-bar-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "0b42e23a777848d5a1ea0f4e1e50a41d",
+            "pdfSha256": "2e68f018065d8e23ee848ad75691837085535a0ec408cec74e68d44fbe90a9c9",
+            "sourceSha256": "1b4c066cc57f4c13225827359f3c0caf86f14915656540aacf9c3a5a24615b98",
+            "nativeExportSha256": "dfe3e3046078305d6f4ede197dde81ebd253d00622259839995e3e4c6706605e",
+            "worksheetId": "ms-g8-bar-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "f2778dfd489a330ff697927a29087ec38e4f58a591d85e953fbf6df5c12a57d2"
+    },
+    {
+      "number": 83,
+      "sheetId": "G7-EQP-01",
+      "grade": 7,
+      "topicId": 38,
+      "slug": "equations-advanced-grade-7",
+      "producerPackage": "G7-T129",
+      "studentRevision": "r01",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "8a1172ec26abf1ee7267cbd5fa67d465047dcc0e68c7c1f90116dd3171fdd8c5",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G7-EQP-01-r01-20261122/review.json",
+          "sha256": "ef430f5f40fd53d3781c6c2c270ede54b86bbe72c0eb0a445bf8d4c850b6c8c4",
+          "verdict": "PASS_INDEPENDENT_STUDENT_PDF"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 6,
+          "items": 18,
+          "bytes": 39183,
+          "source": "submissions/Codex/MS-PROD-CODEX-083-r01/release/documents/G7-EQP-01/a/sheet.pdf",
+          "sha256": "0e6f79b85d519d4cd85a1f947059711d76d13219244a4a08a1061d08bf49a8c7",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b730cf86cb794cababa1bfac50f42839.pdf",
+              "status": 200,
+              "sha256": "0e6f79b85d519d4cd85a1f947059711d76d13219244a4a08a1061d08bf49a8c7",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b730cf86cb794cababa1bfac50f42839.pdf",
+              "status": 200,
+              "sha256": "0e6f79b85d519d4cd85a1f947059711d76d13219244a4a08a1061d08bf49a8c7",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 5,
+          "items": 18,
+          "bytes": 37546,
+          "source": "submissions/Codex/MS-PROD-CODEX-083-r01/release/documents/G7-EQP-01/b/sheet.pdf",
+          "sha256": "f897c86ea3487e912fbc63213b0ce20f1b32d3ddef86e0c6da04d8cf56733a1b",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3884b7c5c78c4808b89f42de8537ac87.pdf",
+              "status": 200,
+              "sha256": "f897c86ea3487e912fbc63213b0ce20f1b32d3ddef86e0c6da04d8cf56733a1b",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3884b7c5c78c4808b89f42de8537ac87.pdf",
+              "status": 200,
+              "sha256": "f897c86ea3487e912fbc63213b0ce20f1b32d3ddef86e0c6da04d8cf56733a1b",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 5,
+          "items": 18,
+          "bytes": 37540,
+          "source": "submissions/Codex/MS-PROD-CODEX-083-r01/release/documents/G7-EQP-01/c/sheet.pdf",
+          "sha256": "36c75cd6ad0eb5953e38117d3df938c0ccbb3a55c6b785031d87aab14855071a",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_eed9302cd60e430497fc00634ebc65e6.pdf",
+              "status": 200,
+              "sha256": "36c75cd6ad0eb5953e38117d3df938c0ccbb3a55c6b785031d87aab14855071a",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_eed9302cd60e430497fc00634ebc65e6.pdf",
+              "status": 200,
+              "sha256": "36c75cd6ad0eb5953e38117d3df938c0ccbb3a55c6b785031d87aab14855071a",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "סוגריים וחוק הפילוג — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "פותחים סוגריים בעזרת חוק הפילוג, כולל מקדם שלילי, ופותרים משוואות שמתארות כמויות ותשלומים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 17.11.2026",
+      "priorPageSha256": "ef15d7af87d185881b161d3ffe1e6d2269fa46287bfc9654495390915cc31263",
+      "priorTopicSha256": "22e30cfcf41904aae8ce4c0a696fae326d44a909d0cd34a567072a2ee82e42af",
+      "edition": {
+        "grade": 7,
+        "topicId": 38,
+        "editionId": "ms-20261122-g7-eqp-01-r1",
+        "label": "סוגריים וחוק הפילוג · PDF",
+        "nativePrefix": "G7-T129",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "b730cf86cb794cababa1bfac50f42839",
+            "pdfSha256": "0e6f79b85d519d4cd85a1f947059711d76d13219244a4a08a1061d08bf49a8c7",
+            "sourceSha256": "656730f0d2b74e4ee2e12c962cafe91267dda9279815d3ccbc1de551042e2050",
+            "nativeExportSha256": "847fdbc1edd53fb6383f6175b3f6053f38e9ce6a97229b2f2bf6f884768898d3",
+            "worksheetId": "ms-g7-eqp-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "3884b7c5c78c4808b89f42de8537ac87",
+            "pdfSha256": "f897c86ea3487e912fbc63213b0ce20f1b32d3ddef86e0c6da04d8cf56733a1b",
+            "sourceSha256": "6419454f98c10a911befe217cc868a913c8808530cd86f55b487d7df72fcefda",
+            "nativeExportSha256": "159071a53eb270063df9f8d2589c787dfece21cb8d933b18e2d28c282ac7bcb8",
+            "worksheetId": "ms-g7-eqp-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "eed9302cd60e430497fc00634ebc65e6",
+            "pdfSha256": "36c75cd6ad0eb5953e38117d3df938c0ccbb3a55c6b785031d87aab14855071a",
+            "sourceSha256": "1340a8e66b2a464673ea738ed01bd9442f597b9ae47ed5f207daa5a80c7449e2",
+            "nativeExportSha256": "fec4aed9a55d273ee94bc2254a455901751054dcef7893cb6ceb62514381d754",
+            "worksheetId": "ms-g7-eqp-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "ac4caa31b56ca95b4509e5e3700f922460df87a9f0c0b769b56b58a2f9be1eeb",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "לפני הפתרון מפשטים איברים, פותחים סוגריים בעזרת חוק הפילוג ובודקים שקילות. בנושא משוואות עם סוגריים ושקילות נוספו קובצי PDF לפתרון משוואות בפעולות שקולות, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+          "after": "לפני הפתרון מפשטים איברים, פותחים סוגריים בעזרת חוק הפילוג ובודקים שקילות. בנושא משוואות עם סוגריים ושקילות נוספו קובצי PDF לפתרון משוואות בפעולות שקולות, ברמות א׳, ב׳ ומצוינות. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "לפני הפתרון מפשטים איברים, פותחים סוגריים בעזרת חוק הפילוג ובודקים שקילות. בנושא משוואות עם סוגריים ושקילות נוספו קובצי PDF לפתרון משוואות בפעולות שקולות, ברמות א׳, ב׳ ומצוינות. בדפים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה.",
+          "after": "לפני הפתרון מפשטים איברים, פותחים סוגריים בעזרת חוק הפילוג ובודקים שקילות. בנושא משוואות עם סוגריים ושקילות נוספו קובצי PDF לפתרון משוואות בפעולות שקולות, ברמות א׳, ב׳ ומצוינות. בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים; קובצי ה־PDF הנוספים מיועדים להורדה ולהדפסה."
+        }
+      ]
+    },
+    {
+      "number": 84,
+      "sheetId": "G7-UBS-01",
+      "grade": 7,
+      "topicId": 39,
+      "slug": "unknown-both-sides-grade-7",
+      "producerPackage": "G7-T130",
+      "studentRevision": "r01",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "95e9018453e4f3e78bafcd911ed5bbdc3812cdba1cc3c11804ea7da61172f241",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G7-UBS-01-r01-20261122/review.json",
+          "sha256": "16aee966c4fe70acff229948ec67b37a1527be6e4dc72ab52ba9b4e2bc355940",
+          "verdict": "PASS_INDEPENDENT_STUDENT_PDF"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 5,
+          "items": 18,
+          "bytes": 37774,
+          "source": "submissions/Codex/MS-PROD-CODEX-084-r01/release/documents/G7-UBS-01/a/sheet.pdf",
+          "sha256": "295c7081cf1377c9754d48229558561de40abf3c705964b4b67cdfb89bc82232",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_25d5dffa817d4d65800f80ac210beef8.pdf",
+              "status": 200,
+              "sha256": "295c7081cf1377c9754d48229558561de40abf3c705964b4b67cdfb89bc82232",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_25d5dffa817d4d65800f80ac210beef8.pdf",
+              "status": 200,
+              "sha256": "295c7081cf1377c9754d48229558561de40abf3c705964b4b67cdfb89bc82232",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 5,
+          "items": 18,
+          "bytes": 37812,
+          "source": "submissions/Codex/MS-PROD-CODEX-084-r01/release/documents/G7-UBS-01/b/sheet.pdf",
+          "sha256": "03f27f056fbe551be26071c43754eb5a643507762bd93803273ef38032419e35",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_db5f813aca1647448b57fcc084006ff5.pdf",
+              "status": 200,
+              "sha256": "03f27f056fbe551be26071c43754eb5a643507762bd93803273ef38032419e35",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_db5f813aca1647448b57fcc084006ff5.pdf",
+              "status": 200,
+              "sha256": "03f27f056fbe551be26071c43754eb5a643507762bd93803273ef38032419e35",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 5,
+          "items": 18,
+          "bytes": 38311,
+          "source": "submissions/Codex/MS-PROD-CODEX-084-r01/release/documents/G7-UBS-01/c/sheet.pdf",
+          "sha256": "ad2f91baf1ebbe5db9313a85846c0687cd64194cb2b1599d2e11e3b308a94c7a",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ea8d2a9e354c46cc870ce3a21a05d35f.pdf",
+              "status": 200,
+              "sha256": "ad2f91baf1ebbe5db9313a85846c0687cd64194cb2b1599d2e11e3b308a94c7a",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_ea8d2a9e354c46cc870ce3a21a05d35f.pdf",
+              "status": 200,
+              "sha256": "ad2f91baf1ebbe5db9313a85846c0687cd64194cb2b1599d2e11e3b308a94c7a",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "הנעלם בשני האגפים — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מרכזים את איברי הנעלם באחד האגפים ובודקים מתי מתקבל פתרון יחיד, מתי כל מספר מתאים ומתי אין פתרון.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+      "priorPageSha256": "17797c0ba242928878d11695a7efb844e9cde3dfbc2d0a5570f8e2954c76f853",
+      "priorTopicSha256": "471bc5790238601a18588b5369716d735093fb3b4d599af154caac877b4c9e50",
+      "edition": {
+        "grade": 7,
+        "topicId": 39,
+        "editionId": "ms-20261122-g7-ubs-01-r1",
+        "label": "הנעלם בשני האגפים · PDF",
+        "nativePrefix": "G7-T130",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "25d5dffa817d4d65800f80ac210beef8",
+            "pdfSha256": "295c7081cf1377c9754d48229558561de40abf3c705964b4b67cdfb89bc82232",
+            "sourceSha256": "c8614e64522093afb2790b791492503dad57a6865983f70477da7ff7b0ea9eb8",
+            "nativeExportSha256": "b83b106d1efeedd9eb8b6661ccda7f31cfe594e1a1c03d6f0cd7adfe4ffa89b6",
+            "worksheetId": "ms-g7-ubs-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "db5f813aca1647448b57fcc084006ff5",
+            "pdfSha256": "03f27f056fbe551be26071c43754eb5a643507762bd93803273ef38032419e35",
+            "sourceSha256": "2eac9aff9f3b21811ae873afe4c74f7e85d189d6a1c24eb6b723b43806fe4ea5",
+            "nativeExportSha256": "0f6733b3f8c0b4450b5cfd28baae387291b083234e6777f47e868796dbd5b6d9",
+            "worksheetId": "ms-g7-ubs-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "ea8d2a9e354c46cc870ce3a21a05d35f",
+            "pdfSha256": "ad2f91baf1ebbe5db9313a85846c0687cd64194cb2b1599d2e11e3b308a94c7a",
+            "sourceSha256": "ed76dfba727bf63e26fb6afb6c870179ccd8e919a731c34007ad59d01709e6a4",
+            "nativeExportSha256": "d05eb120784695da8ed394e6b99e21138d0a317708fa50b6528ed68e49eca422",
+            "worksheetId": "ms-g7-ubs-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "41471f8fb45457e7cd22ad46d3feca2a9c816ed2ded2207f1b255f66e3388591"
+    },
+    {
+      "number": 85,
+      "sheetId": "G7-TRE-01",
+      "grade": 7,
+      "topicId": 40,
+      "slug": "equation-representations-grade-7",
+      "producerPackage": "G7-T131",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "7fa9d891da2b126396778312a76055db3ce24abb5581b958d199063ee9fd19c3",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G7-TRE-01-r02-20261122/review.json",
+          "sha256": "12bf70f25d5fb3deb3db849cc5e6f402f53e5326df6b996cfba18ec96b327062",
+          "verdict": "PASS_INDEPENDENT_STUDENT_PDF"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 6,
+          "items": 18,
+          "bytes": 39288,
+          "source": "submissions/Codex/MS-PROD-CODEX-085-r02/release/documents/G7-TRE-01/a/sheet.pdf",
+          "sha256": "f87e446234827f3f3e4860376c902f838fcf83dae60d48935d964fb27dc34409",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_2b3c22d0d0414105a4a7615621d948ee.pdf",
+              "status": 200,
+              "sha256": "f87e446234827f3f3e4860376c902f838fcf83dae60d48935d964fb27dc34409",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_2b3c22d0d0414105a4a7615621d948ee.pdf",
+              "status": 200,
+              "sha256": "f87e446234827f3f3e4860376c902f838fcf83dae60d48935d964fb27dc34409",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 6,
+          "items": 18,
+          "bytes": 38752,
+          "source": "submissions/Codex/MS-PROD-CODEX-085-r02/release/documents/G7-TRE-01/b/sheet.pdf",
+          "sha256": "d7b42c31a78f60182ef9ce9a835e25af70cb49f50a2b4568f20d8afa37380b11",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_98f98356dd684869aa6f2400ee79fbca.pdf",
+              "status": 200,
+              "sha256": "d7b42c31a78f60182ef9ce9a835e25af70cb49f50a2b4568f20d8afa37380b11",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_98f98356dd684869aa6f2400ee79fbca.pdf",
+              "status": 200,
+              "sha256": "d7b42c31a78f60182ef9ce9a835e25af70cb49f50a2b4568f20d8afa37380b11",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 7,
+          "items": 18,
+          "bytes": 40753,
+          "source": "submissions/Codex/MS-PROD-CODEX-085-r02/release/documents/G7-TRE-01/c/sheet.pdf",
+          "sha256": "77ddd5356812a583d12747e15b0bbf66e3d0ed9b1df97b12c0ed65f5695e123a",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_346c5508664f45f1a35ad1c5098277f0.pdf",
+              "status": 200,
+              "sha256": "77ddd5356812a583d12747e15b0bbf66e3d0ed9b1df97b12c0ed65f5695e123a",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_346c5508664f45f1a35ad1c5098277f0.pdf",
+              "status": 200,
+              "sha256": "77ddd5356812a583d12747e15b0bbf66e3d0ed9b1df97b12c0ed65f5695e123a",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "שלושה ייצוגים לפתרון משוואה — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מתרגמים בין סיפור, טבלת הצבה ומשוואה. בודקים כיצד כל פעולה באגפי המשוואה משנה את הכמויות שבסיפור.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+      "priorPageSha256": "c368928d2e4269a135c566a19b23e4115d9f9f3684bf9d8d863bfbe905b71fbb",
+      "priorTopicSha256": "474e17d389e5bc38538b7f27f426d164ddddb18e3280b6471746a64f0a0a24a5",
+      "edition": {
+        "grade": 7,
+        "topicId": 40,
+        "editionId": "ms-20261122-g7-tre-01-r1",
+        "label": "שלושה ייצוגים לפתרון משוואה · PDF",
+        "nativePrefix": "G7-T131",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "2b3c22d0d0414105a4a7615621d948ee",
+            "pdfSha256": "f87e446234827f3f3e4860376c902f838fcf83dae60d48935d964fb27dc34409",
+            "sourceSha256": "cc543836bdaecb68cd04635b8e38bdca6efa0e63f1b308e9a926d5ee84753c78",
+            "nativeExportSha256": "88029fe90b70477e0a61b99fb31ccf8a44ec2175eb5cff937be72a5ca3364fd8",
+            "worksheetId": "ms-g7-tre-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "98f98356dd684869aa6f2400ee79fbca",
+            "pdfSha256": "d7b42c31a78f60182ef9ce9a835e25af70cb49f50a2b4568f20d8afa37380b11",
+            "sourceSha256": "89405cdb535891a278cdb6051cb639bd03a2c49760cc539d1e062c551c8176fb",
+            "nativeExportSha256": "4fd611c79459f93732ac2b2671b8611eda48d5867677325feebde6c398faac40",
+            "worksheetId": "ms-g7-tre-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "346c5508664f45f1a35ad1c5098277f0",
+            "pdfSha256": "77ddd5356812a583d12747e15b0bbf66e3d0ed9b1df97b12c0ed65f5695e123a",
+            "sourceSha256": "a29c6a7eeb324f3a048f35e8e57090995db097f932c382d50a9c682372bd4724",
+            "nativeExportSha256": "ab8d4513ba75fa55fd2794a73e7e44237f17e2f6f4c500a0103faa598765f49c",
+            "worksheetId": "ms-g7-tre-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "a2685bde77a591a52019844067c6ff661ece674de473f9daf85274489f625794"
+    }
+  ],
+  "additionalLandingEdits": {
+    "equations-both-sides-word-problems-grade-7": [
+      {
+        "path": [
+          "bodyFlow",
+          12,
+          "text"
+        ],
+        "before": "המהדורה הנוספת כוללת שלושה דפי PDF עם תשובות בסוף: בחירת נעלם, בניית משוואה מתוך סיפור, פתרון ובדיקת התאמת התוצאה להקשר. כאן ממשיכים מהמודל האלגברי אל הפתרון ואל פירושו בסיפור. הקבצים מיועדים להורדה ולהדפסה; בדפים שנפתחים עם רמזי אפשר לקבל רמזים.",
+        "after": "המהדורה הנוספת כוללת שלושה דפי PDF עם תשובות בסוף: בחירת נעלם, בניית משוואה מתוך סיפור, פתרון ובדיקת התאמת התוצאה להקשר. כאן ממשיכים מהמודל האלגברי אל הפתרון ואל פירושו בסיפור. הקבצים מיועדים להורדה ולהדפסה; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים."
+      },
+      {
+        "path": [
+          "sections",
+          3,
+          "blocks",
+          0,
+          "text"
+        ],
+        "before": "המהדורה הנוספת כוללת שלושה דפי PDF עם תשובות בסוף: בחירת נעלם, בניית משוואה מתוך סיפור, פתרון ובדיקת התאמת התוצאה להקשר. כאן ממשיכים מהמודל האלגברי אל הפתרון ואל פירושו בסיפור. הקבצים מיועדים להורדה ולהדפסה; בדפים שנפתחים עם רמזי אפשר לקבל רמזים.",
+        "after": "המהדורה הנוספת כוללת שלושה דפי PDF עם תשובות בסוף: בחירת נעלם, בניית משוואה מתוך סיפור, פתרון ובדיקת התאמת התוצאה להקשר. כאן ממשיכים מהמודל האלגברי אל הפתרון ואל פירושו בסיפור. הקבצים מיועדים להורדה ולהדפסה; בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמזים."
+      }
+    ]
+  }
+}

@@ -12,9 +12,11 @@ import renew from '../../../../docs/middle-reviewed-packages-050-076-20261122.js
 
 import nextRenew from '../../../../docs/middle-renewal-wave2-20261122.json';
 
-export { reviewed, seven, three, renew, nextRenew };
-const releases = [nextRenew, renew, three, seven, reviewed];
-const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages, ...nextRenew.packages];
+import thirdRenew from '../../../../docs/middle-renewal-wave3-20261122.json';
+
+export { reviewed, seven, three, renew, nextRenew, thirdRenew };
+const releases = [thirdRenew, nextRenew, renew, three, seven, reviewed];
+const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages, ...nextRenew.packages, ...thirdRenew.packages];
 export const renewalIds = allPackages.map(item => item.edition.editionId);
 // The SSR loader normalizes property insertion order without changing data.
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, (_key, item) => {
@@ -66,8 +68,9 @@ export function beforeNovember21Copy<T>(slug: string, page: T): T {
 
 export function copyBeforeRelease<T>(slug: string, page: T, release: typeof releases[number]): T {
   const item = release.packages.find(p => p.slug === slug);
-  const companion = release === nextRenew && slug === 'coordinate-plane-grade-8'
-    ? nextRenew.additionalLandingEdits['coordinate-plane-grade-8'] : [];
+  const extraEdits: Record<string, { path: (string | number)[], before: string, after: string }[]> =
+    release === nextRenew ? nextRenew.additionalLandingEdits : release === thirdRenew ? thirdRenew.additionalLandingEdits : {};
+  const companion = extraEdits[slug] ?? [];
   if (!item && !companion.length) return page;
   const result: any = structuredClone(page);
   const edits = item && 'priorCopyEdits' in item && Array.isArray(item.priorCopyEdits)
