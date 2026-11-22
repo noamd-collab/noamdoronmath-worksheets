@@ -62,6 +62,7 @@
     "tools/teacher-generation/lesson_boundary.py",
     "tools/teacher-generation/math_tasks.py",
     "tools/teacher-generation/model-output.schema.json",
+    "tools/teacher-generation/no_carry_addition.py",
     "tools/teacher-generation/output_gates.py",
     "tools/teacher-generation/preflight.py",
     "tools/teacher-generation/provider.py",

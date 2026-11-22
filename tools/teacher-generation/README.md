@@ -23,7 +23,16 @@ to the configured Qwen authoring model. It makes one bounded authoring attempt;
 validation failure never triggers an automatic billed retry. The model is not
 a reviewer and cannot assert approval.
 
-The model returns source-v4 declarative JSON, not code or markup.
+The general author returns source-v4 declarative JSON. The provider boundary
+wraps single typed spans and unambiguous Hebrew prose in span arrays before
+the canonical validator checks every field. It preserves mathematical ASTs.
+
+Basic grade-two practice for the single concept ב05#1 also offers a compact
+parameter contract for 8–12 questions. The author selects operands and settings
+within a no-regrouping plan. The compiler constructs vocalized problems and
+checks each actual operand pair. Custom teacher constraints can use full
+source-v4 in the same authoring call. Other scopes use full source-v4 directly.
+
 `general_source.py` checks closed shapes, size, volume, niqqud, allowed concepts
 and expression bounds. `math_tasks.py` verifies typed arithmetic, symbolic
 operations, bounded equations/systems, inequalities and descriptive statistics.

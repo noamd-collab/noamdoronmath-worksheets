@@ -107,6 +107,8 @@ def safe_validation_detail(value):
         'Negative derived value outside the selected teaching limits',
     }
     patterns = (
+        r'(?:A text block needs one to thirty typed spans|Expected a typed span|Unsupported text span) at '
+        r'(?:rule|q[1-9][0-9]?(?:\.intro|\.item\.[1-9]\.(?:prompt|answer)|\.table\.(?:head\.[1-6]|row\.(?:[1-9]|1[0-2])\.[1-6])))',
         r'author root: expected fields version,questions',
         r'author question [1-9][0-9]{0,2}: expected fields items',
         r'author question [1-9][0-9]{0,2} item [1-9][0-9]?: expected fields (?:a,b,solution|a,solution|divisor,quotient)',
@@ -137,7 +139,7 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         elapsed = metadata.get('elapsedSeconds')
         if type(elapsed) in (int, float) and 0 <= elapsed <= 86400: record['elapsedSeconds'] = round(elapsed, 3)
         record['usage'] = safe_usage(metadata.get('usage'))
-        if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4'):
+        if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4', 'no-carry-addition/1'):
             record['authorContract'] = metadata['authorContract']
         derivation = metadata.get('derivation')
         if isinstance(derivation, dict) and type(derivation.get('performed')) is bool:
