@@ -104,6 +104,15 @@ def _notation(span):
     return names
 
 
+# Both pinned middle emitters support these macros in native math islands.
+# Unicode relation glyphs can instead select an unshipped fallback font.
+_MIDDLE_RELATIONS = str.maketrans({"≤": r"\leq", "≥": r"\geq", "≠": r"\neq"})
+
+
+def _middle_math(text):
+    return "$" + text.translate(_MIDDLE_RELATIONS) + "$"
+
+
 def _formula(notation, grade, H):
     from compact_authoring import display_parts, schoolbook_tokens
     number_grade = LETTERS.index(grade) + 1 if H else grade
@@ -141,7 +150,7 @@ def _formula(notation, grade, H):
             rendered.append(re.sub(r"(?<![A-Za-z\\])[xyab](?![A-Za-z])",
                                    lambda match: aliases.get(match[0],match[0]),text))
     text = " ".join(rendered)
-    return H.ltr(text) if H else "$" + text + "$"
+    return H.ltr(text) if H else _middle_math(text)
 
 
 def rich_text(spans, grade, H=None):
@@ -150,11 +159,11 @@ def rich_text(spans, grade, H=None):
         if span["kind"] == "text":
             result.append(html.escape(span["text"]) if H else span["text"])
         elif span["kind"] == "math":
-            result.append(H.ltr(_elementary_math(span["expression"], grade, H)) if H else "$" + to_house_math(span["expression"]) + "$")
+            result.append(H.ltr(_elementary_math(span["expression"], grade, H)) if H else _middle_math(to_house_math(span["expression"])))
         elif span["kind"] == "formula":
             result.append(_formula(span["notation"],grade,H))
         elif span["kind"] == "geometry":
-            result.append("$" + _notation(span) + "$")
+            result.append(_middle_math(_notation(span)))
     return "".join(result)
 
 
@@ -184,7 +193,7 @@ def _task_text(solved, grade, H=None, *, notation=None):
     if notation is not None:
         return _formula(notation, grade, H)
     render = (lambda ast: _elementary_math(ast, grade, H)) if H else to_house_math
-    wrap = H.ltr if H else lambda s: "$" + s + "$"
+    wrap = H.ltr if H else _middle_math
     kind = task["kind"]
     if kind == "figure_measure":
         figure=task["figure"]
@@ -229,7 +238,7 @@ def _task_text(solved, grade, H=None, *, notation=None):
 
 def _answer_text(solved, unit, grade, H=None, *, original_variable=None, notation=None):
     render = (lambda ast: _elementary_math(ast, grade, H)) if H else to_house_math
-    wrap = H.ltr if H else lambda s: "$" + s + "$"
+    wrap = H.ltr if H else _middle_math
     result = solved["result"]
     if result["type"] == "expression":
         from numeric_literals import decimal_result

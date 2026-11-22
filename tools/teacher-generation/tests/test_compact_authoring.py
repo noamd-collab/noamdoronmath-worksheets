@@ -66,7 +66,9 @@ class CompactAuthoringTests(unittest.TestCase):
             _formula("a^2 + b^2 = c^2", 8, None), "$a^{2} + b^{2} = c^{2}$"
         )
         self.assertEqual(_formula("AD=8", 8, None), "$AD = 8$")
-        self.assertEqual(_formula("5 != 7", 8, None), "$5 ≠ 7$")
+        for symbol, macro in [("!=", r"\neq"), ("<=", r"\leq"), (">=", r"\geq")]:
+            with self.subTest(symbol=symbol):
+                self.assertEqual(_formula("5 " + symbol + " 7", 8, None), "$5 " + macro + " 7$")
         self.assertEqual(
             spans("[[1/2+___=5/6]]", 5, fraction_notation=True),
             [{"kind": "formula", "notation": "frac(1,2)+___=frac(5,6)"}],
