@@ -130,8 +130,11 @@ def validate_model(lesson, payload, *, allow_legacy=False):
         from general_source import validate_source, GeneralSourceError
         from runtime_catalog import scope_for_lesson
         try:
+            import division_facts
             from triangle_lesson import VERSION, validate_parameters
-            if isinstance(payload, dict) and payload.get('version') == VERSION:
+            if isinstance(payload, dict) and payload.get('version') == division_facts.VERSION:
+                division_facts.derive(lesson, payload)
+            elif isinstance(payload, dict) and payload.get('version') == VERSION:
                 validate_parameters(lesson, payload)
             else:
                 validate_source(lesson, payload, scope_for_lesson(lesson))

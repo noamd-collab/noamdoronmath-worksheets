@@ -37,7 +37,9 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
     job leasing and storage. skill_paths is trusted operator configuration only.
     """
     cap=validate_model(lesson,model_payload,allow_legacy=allow_legacy)
+    from division_facts import VERSION as division_version
     general=lesson['version']==3
+    native_division=general and model_payload.get('version')==division_version
     adapter=HERE/('general_adapters.py' if general else 'adapters.py')
     if not general and cap['skill']=='middle' and not (
         lesson['gradeNumber']==7 and lesson['topicId']=='g7:equations'
@@ -84,10 +86,10 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
             ('word',[skill/'scripts/build_docx.py',work/'sheet.html',work/'sheet.docx']),
             ('word-layout',[HERE/'docx_layout.py','--docx',work/'sheet.docx','--content',work/'content.json']),
             ('worksheet',[skill/'scripts/check_worksheet.py',work/'sheet.pdf',work/'preview','--band','elementary-ab' if lesson['gradeNumber']<=2 else 'elementary']),
-            ('output-gates',[HERE/'output_gates.py','--skill',skill,'--pdf',work/'sheet.pdf','--band','elementary-ab' if lesson['gradeNumber']<=2 else 'elementary']+(['--general'] if general else [])),
+            ('output-gates',[HERE/'output_gates.py','--skill',skill,'--pdf',work/'sheet.pdf','--band','elementary-ab' if lesson['gradeNumber']<=2 else 'elementary']+(['--general'] if general and not native_division else [])),
             ('house-gates',[skill/'scripts/lib/house_gates.py','--html',work/'sheet.html','--pdf',work/'sheet.pdf','--gen',adapter,'--content',work/'content.json','--figdir',work/'figures','--grade','אבגדהו'[lesson['gradeNumber']-1],'--level',{'a':'א','b':'ב','e':'מצוינות'}[lesson['level']],'--docx',work/'sheet.docx']),
         ]:
-            if general and name=='word-layout':
+            if general and not native_division and name=='word-layout':
                 # This postprocessor only understands the old fixed pilot
                 # wording; native Word and house gates cover general source.
                 continue

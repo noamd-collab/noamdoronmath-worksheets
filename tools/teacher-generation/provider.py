@@ -259,6 +259,11 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
     """
     cap=validate_lesson(lesson,allow_legacy=allow_legacy)
     if lesson['version'] == 3:
+        import division_facts
+        if division_facts.eligible(lesson):
+            if metadata is not None:
+                metadata.update(authorContract=division_facts.VERSION, providerCalled=False, responseReceived=False)
+            return division_facts.author(lesson)
         from triangle_lesson import VERSION, eligible, parameters
         if eligible(lesson):
             if metadata is not None:
