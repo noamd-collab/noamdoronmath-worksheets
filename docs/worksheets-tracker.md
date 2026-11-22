@@ -1011,3 +1011,7 @@ Packages 050–054, 057–061, 071–072 and 074–076 add 45 student PDFs at le
 ## Reviewed Grade 8 and Grade 9 worksheets on 22 November 2026
 
 The [six-package publication record](middle-renewal-wave6-20261122.json) identifies the 18 student PDFs and their independent reviews. Package 067 covers probability experiments and game fairness in Grade 8. Packages 100, 101, 102 and 105 follow the reduced Grade 9 program. Package 106 uses the equilateral triangle to practice the 30-degree theorem and its converse in the regular Grade 9 program. The three levels contain 366 items altogether. These editions link to printable PDFs with final answers. Previously available editions keep their original downloads and Ramzi access.
+
+### Grade 7 two-step equations on 22 November 2026
+
+Package 081 adds three printable levels for two-step equations, with eight questions, 32 subitems and an answer key in each PDF. The [publication record](middle-renewal-wave7-20261122.json) lists the exact student files, their download checks and the independent review of revision 03.

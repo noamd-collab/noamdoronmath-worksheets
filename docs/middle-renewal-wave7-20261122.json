@@ -1,0 +1,160 @@
+{
+  "schema": "middle-school-reviewed-pdf/v1",
+  "date": "2026-11-22",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 22.11.2026",
+  "baseline": "38a90f5cf3529fe0869fbbd33fbe93722a719da3",
+  "baselineCatalogSha256": "e05f2cc25fdb0f18a49bda8f3c2425e27470891c20978380494d58ee65048657",
+  "baselineRegistrySha256": "1880e83c05d53b280b03a730a7ed62a1080ec0d39f607b3e8925fe7fb0a0c801",
+  "packages": [
+    {
+      "number": 81,
+      "sheetId": "G7-TSE-01",
+      "grade": 7,
+      "topicId": 35,
+      "slug": "two-step-equations-grade-7",
+      "producerPackage": "G7-T127",
+      "studentRevision": "r03",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "24f239f6ad9b1baffd6cf22b3a5e2988d6c4e1d5b629b3799eefe3f0d43a50f5",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G7-TSE-01-r03-20261122/review.json",
+          "sha256": "45dbf4be12ffec60c19f05d6f3b9db9fbdc979856ad240baa363daf245fb1fa0",
+          "verdict": "PASS_INDEPENDENT_PDF_REVIEW"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 9,
+          "items": 32,
+          "bytes": 56088,
+          "source": "submissions/Codex/MS-PROD-CODEX-081-r03/release/documents/G7-TSE-01/a/sheet.pdf",
+          "sha256": "893cf6df710fb626bf1115d14ea6115b55c568f35cc05b697345baff7fd400aa",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_9c12ed7fe3c848e79a6f04dc61008c9b.pdf",
+              "status": 200,
+              "sha256": "893cf6df710fb626bf1115d14ea6115b55c568f35cc05b697345baff7fd400aa",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_9c12ed7fe3c848e79a6f04dc61008c9b.pdf",
+              "status": 200,
+              "sha256": "893cf6df710fb626bf1115d14ea6115b55c568f35cc05b697345baff7fd400aa",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 9,
+          "items": 32,
+          "bytes": 56577,
+          "source": "submissions/Codex/MS-PROD-CODEX-081-r03/release/documents/G7-TSE-01/b/sheet.pdf",
+          "sha256": "1c1b4723a99477fc771ce99f5568b697aa7ec1390766c230f584d22b0f8470ef",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_7834c162417140c5b673f1be700f1022.pdf",
+              "status": 200,
+              "sha256": "1c1b4723a99477fc771ce99f5568b697aa7ec1390766c230f584d22b0f8470ef",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_7834c162417140c5b673f1be700f1022.pdf",
+              "status": 200,
+              "sha256": "1c1b4723a99477fc771ce99f5568b697aa7ec1390766c230f584d22b0f8470ef",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 9,
+          "items": 32,
+          "bytes": 57533,
+          "source": "submissions/Codex/MS-PROD-CODEX-081-r03/release/documents/G7-TSE-01/c/sheet.pdf",
+          "sha256": "5aae2a6b375f348deb8aabd91af302d8fe274c0e071464aff440ddf2b59dacd8",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_546d365047014893b4c0c3fc46bd4a4e.pdf",
+              "status": 200,
+              "sha256": "5aae2a6b375f348deb8aabd91af302d8fe274c0e071464aff440ddf2b59dacd8",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_546d365047014893b4c0c3fc46bd4a4e.pdf",
+              "status": 200,
+              "sha256": "5aae2a6b375f348deb8aabd91af302d8fe274c0e071464aff440ddf2b59dacd8",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "משוואות דו־שלביות — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "פותרים משוואות בשני שלבים בעזרת פעולות הפוכות בשני האגפים, מסבירים את סדר הפעולות ובודקים את הפתרון בהצבה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "63a245f478f58f3f22190584665cc1201488ac3dc52b623f492caef43c2df30e",
+      "priorTopicSha256": "837eccd5563be84f22774025b679bc7fdcd75d9a2db5885323d7179fc686b157",
+      "edition": {
+        "grade": 7,
+        "topicId": 35,
+        "editionId": "ms-20261122-g7-tse-01-r1",
+        "label": "משוואות דו־שלביות · PDF",
+        "nativePrefix": "G7-T127",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "9c12ed7fe3c848e79a6f04dc61008c9b",
+            "pdfSha256": "893cf6df710fb626bf1115d14ea6115b55c568f35cc05b697345baff7fd400aa",
+            "sourceSha256": "5e640dafa7999806fdc41fee7fd7ea2165162d79e3733c46281461c9439142d9",
+            "nativeExportSha256": "6c2c9f729bc0fb1826c11246d6392cd756f8f9925bfd98a2de0c0ff7a9623292",
+            "worksheetId": "ms-g7-tse-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "7834c162417140c5b673f1be700f1022",
+            "pdfSha256": "1c1b4723a99477fc771ce99f5568b697aa7ec1390766c230f584d22b0f8470ef",
+            "sourceSha256": "8e496ae616ccd8d0fd7fa3680150c4a61ca39622798849339f44d40d0b980f80",
+            "nativeExportSha256": "ed451ce139e55c1b7bf65e7b63757cc0cecd1e6fce658cc03b2c636cd23f9c18",
+            "worksheetId": "ms-g7-tse-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "546d365047014893b4c0c3fc46bd4a4e",
+            "pdfSha256": "5aae2a6b375f348deb8aabd91af302d8fe274c0e071464aff440ddf2b59dacd8",
+            "sourceSha256": "efa2cc2231e47732a0248c4e2a59009d6e480dc6105cacd4f1d774d10796966b",
+            "nativeExportSha256": "58674565a3e593d7c32d32cbae829f0a3c7d641af9200033fc74cc9d29481a6f",
+            "worksheetId": "ms-g7-tse-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "f493f6f82098b131d80c64253fcc3340a9a3318a34beb985f66280f14f2fdcc6"
+    }
+  ]
+}

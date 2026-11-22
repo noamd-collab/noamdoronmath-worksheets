@@ -6,7 +6,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { topicPageCatalogTopicIds, topicPagePdfParts } from '../src/lib/topicStructuredData';
 import { loadTopicPage } from '../src/lib/topicPages';
-import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, sixthRenew } from './fixtures/middle-090-091-094';
+import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, seventhRenew, sixthRenew } from './fixtures/middle-090-091-094';
 
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
@@ -15,8 +15,8 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 test('the six reviewed Grade 8 and 9 topics link 18 PDFs with the correct Grade 9 programs', () => {
   const releases = sixthRenew.packages;
   assert.deepEqual(releases.map(p => p.number), [67,100,101,102,105,106]);
-  const catalog = read('headless/catalog/catalog.v1.json');
-  const registry = read('headless/catalog/worksheet-editions.v1.json');
+  const catalog = catalogBeforePackages(read('headless/catalog/catalog.v1.json'), seventhRenew.packages);
+  const registry = registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), seventhRenew.packages.map(p => p.edition));
   assert.equal(digest(catalogBeforePackages(catalog, releases)), sixthRenew.baselineCatalogSha256);
   assert.equal(digest(registryBeforeRelease(registry, releases.map(p => p.edition))), sixthRenew.baselineRegistrySha256);
   assert.equal(releases.flatMap(p => p.studentFiles).reduce((total, file) => total + file.items, 0), 366);

@@ -7766,6 +7766,48 @@
           "revision": 1
         }
       ]
+    },
+    {
+      "grade": 7,
+      "topicId": 35,
+      "editionId": "ms-20261122-g7-tse-01-r1",
+      "label": "משוואות דו־שלביות · PDF",
+      "nativePrefix": "G7-T127",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "9c12ed7fe3c848e79a6f04dc61008c9b",
+          "pdfSha256": "893cf6df710fb626bf1115d14ea6115b55c568f35cc05b697345baff7fd400aa",
+          "sourceSha256": "5e640dafa7999806fdc41fee7fd7ea2165162d79e3733c46281461c9439142d9",
+          "nativeExportSha256": "6c2c9f729bc0fb1826c11246d6392cd756f8f9925bfd98a2de0c0ff7a9623292",
+          "worksheetId": "ms-g7-tse-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "7834c162417140c5b673f1be700f1022",
+          "pdfSha256": "1c1b4723a99477fc771ce99f5568b697aa7ec1390766c230f584d22b0f8470ef",
+          "sourceSha256": "8e496ae616ccd8d0fd7fa3680150c4a61ca39622798849339f44d40d0b980f80",
+          "nativeExportSha256": "ed451ce139e55c1b7bf65e7b63757cc0cecd1e6fce658cc03b2c636cd23f9c18",
+          "worksheetId": "ms-g7-tse-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "546d365047014893b4c0c3fc46bd4a4e",
+          "pdfSha256": "5aae2a6b375f348deb8aabd91af302d8fe274c0e071464aff440ddf2b59dacd8",
+          "sourceSha256": "efa2cc2231e47732a0248c4e2a59009d6e480dc6105cacd4f1d774d10796966b",
+          "nativeExportSha256": "58674565a3e593d7c32d32cbae829f0a3c7d641af9200033fc74cc9d29481a6f",
+          "worksheetId": "ms-g7-tse-01-c-r1",
+          "revision": 1
+        }
+      ]
     }
   ]
 }
