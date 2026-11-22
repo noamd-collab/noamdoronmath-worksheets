@@ -32,7 +32,7 @@ class FractionLessonTests(unittest.TestCase):
             side_effect=AssertionError("Unexpected live provider"),
         ):
             meta = {}
-            supplied = author_lesson(self.lesson, metadata=meta)
+            supplied = author_lesson(self.lesson, offline_native_fixture=True, metadata=meta)
         self.assertEqual(meta["authorContract"], f.VERSION)
         self.assertFalse(meta["providerCalled"])
         validate_model(self.lesson, supplied)

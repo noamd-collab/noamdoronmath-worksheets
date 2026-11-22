@@ -35,7 +35,7 @@ class PythagoreanLessonTest(unittest.TestCase):
             side_effect=RuntimeError("Unexpected model call"),
         ):
             meta = {}
-            generated = author_lesson(self.lesson, metadata=meta)
+            generated = author_lesson(self.lesson, offline_native_fixture=True, metadata=meta)
         self.assertFalse(meta["providerCalled"])
         self.assertEqual(generated["version"], p.VERSION)
         validate_model(self.lesson, generated)

@@ -77,8 +77,16 @@ def author_guidance(context, scope):
             "productionReferencesHandledByCompiler": compiler_references}}
 
 
+def with_full_source(selection, full_schema):
+    # Both modes are offered in the original request. There is no paid fallback call.
+    definitions = dict(full_schema['$defs'])
+    definitions['fullSource'] = {k: v for k, v in full_schema.items() if k != '$defs'}
+    return {'type': 'object', '$defs': definitions,
+            'anyOf': [selection, {'$ref': '#/$defs/fullSource'}]}
+
+
 def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
-                          timeout=90, metadata=None, skill_paths=None, authoring_context=None, revision=None):
+                          timeout=90, metadata=None, skill_paths=None, authoring_context=None, revision=None, select_exercises=False):
     from provider import qwen_chat_url, request_author_json
     key = api_key or os.environ.get('QWEN_API_KEY') or os.environ.get('DASHSCOPE_API_KEY')
     base = base_url or os.environ.get('QWEN_BASE_URL')
@@ -222,10 +230,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         addition_plan = no_carry_addition.parameter_plan(lesson['questionCount'])
         # Keep the full source branch in the very same request. A teacher may
         # add a specific constraint that the parameter options cannot express.
-        definitions = dict(schema['$defs'])
-        definitions['fullSource'] = {k:v for k,v in schema.items() if k != '$defs'}
-        schema = {'type':'object', '$defs':definitions, 'anyOf':[
-            no_carry_addition.parameter_schema(lesson['questionCount']), {'$ref':'#/$defs/fullSource'}]}
+        schema = with_full_source(no_carry_addition.parameter_schema(lesson['questionCount']), schema)
         user.update({'additionPlan': addition_plan, 'themes': list(no_carry_addition.UNITS),
                      'finalContractReminder': 'For ordinary no-regrouping practice choose compact version 1. Each row has theme (one-based object index) and choices (exactly five one-based pair indices). For a conflicting teacher requirement author the full worksheet content instead.'})
         system = (
@@ -260,8 +265,25 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                   "exact numerical results. Return all choices yourself. Use the full-source mode only when the "
                   "specific teacher brief is incompatible. In that mode: no trigonometry, coordinate-distance "
                   "formula, inverse trigonometry, radians, LaTeX delimiters, or references to unprinted triangles. " + system)
+    native_menu = None
+    if select_exercises and addition_plan is None and not geometry_options:
+        from native_math_selection import build_menu, CONTRACT
+        native_menu = build_menu(lesson)
+        if native_menu is not None:
+            schema = with_full_source(native_menu.schema(), schema)
+            user['mathematicalOptions'] = native_menu.public
+            user['finalContractReminder'] = (
+                'Select options by their displayed mathematical data and the teacher stopping point. '
+                'Use one-based integer choices in order. When no offered combination fits the teacher, '
+                'author the complete worksheet using title, rule, practice and challenges in this same response.')
+            system = (
+                'First compare the mathematical options with the teacher instructions, selected concepts and skill. '
+                'Return {"version":"teacher-math-selection/1","choices":[...]} only when the actual data '
+                'and exercises fit. For one whole-series profile select one index. Otherwise select one option '
+                'for every question. If the options cannot meet the request write a full original worksheet. '
+                'The following full-content instructions govern that alternative. ' + system)
     user['sourceSchema'] = schema
-    schema_name = 'worksheet_authoring_choice' if addition_plan is not None else 'skill_worksheet_content'
+    schema_name = 'worksheet_authoring_choice' if addition_plan is not None or native_menu is not None else 'skill_worksheet_content'
     if geometry_options:
         schema_name = "triangle_worksheet_authoring_choice"
     body = {'model': chosen, 'messages': [
@@ -281,11 +303,18 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                          separators=(',',':'),ensure_ascii=False).encode()).hexdigest(),
                      'requestBodySha256':hashlib.sha256(json.dumps(body,sort_keys=True,
                          separators=(',',':'),ensure_ascii=False).encode()).hexdigest()})
+    measured['providerCalled'] = True
     response = request_author_json(target, key, body, measured, timeout)
     def compile_content(payload):
         if geometry_options and isinstance(payload, dict) and payload.get("mode") == "triangle-design/1":
             measured["authorContract"] = "triangle-design/1"
             payload = triangle_parts_shape.compile_design(payload, geometry_options, plan)
+        if native_menu is not None and isinstance(payload, dict) and payload.get('version') == CONTRACT:
+            result = native_menu.resolve(lesson, payload)
+            from validation import validate_model
+            validate_model(lesson, result)
+            measured['authorContract'] = CONTRACT
+            return result
         if addition_plan is not None and isinstance(payload, dict) and payload.get('version') == 1:
             measured['authorContract'] = 'no-carry-addition/1'
             payload = no_carry_addition.build_source(lesson, payload, addition_plan)

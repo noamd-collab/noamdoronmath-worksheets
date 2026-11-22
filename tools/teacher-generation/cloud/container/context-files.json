@@ -130,6 +130,7 @@
     "tools/teacher-generation/tests/test_printed_elementary_intent.py",
     "tools/teacher-generation/tests/test_printed_prose.py",
     "tools/teacher-generation/tests/test_printed_tasks.py",
+    "tools/teacher-generation/tests/test_native_math_selection.py",
     "tools/teacher-generation/tests/test_provider.py",
     "tools/teacher-generation/tests/test_provider_middle_math.py",
     "tools/teacher-generation/tests/test_pythagoras_lesson.py",
@@ -143,6 +144,7 @@
     "tools/teacher-generation/tests/test_wspec_ocr_tesseract.py",
     "tools/teacher-generation/triangle_lesson.py",
     "tools/teacher-generation/triangle_parts_shape.py",
+    "tools/teacher-generation/native_math_selection.py",
     "tools/teacher-generation/triangle_shape.py",
     "tools/teacher-generation/validation.py",
     "tools/teacher-generation/wspec_ocr_tesseract.py"
