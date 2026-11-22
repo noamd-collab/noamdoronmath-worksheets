@@ -1,11 +1,7 @@
 """Closed, replayable grade-nine introductory square lesson with exact constructions."""
 
-from pathlib import Path
-import hashlib
 import re
 import secrets
-import shutil
-import sys
 
 from general_source import GeneralSourceError
 from triangle_lesson import item, math
@@ -529,69 +525,17 @@ def build(lesson, data):
 
 
 def compile_square(lesson, data, scope, skill, work):
-    from general_adapters import dump
+    from native_geometry import compile_geometry
     from square_shape import render_square
 
-    sys.path.insert(0, str(Path(skill).resolve()))
-    wd = Path(work)
-    (wd / "figures").mkdir(exist_ok=True)
-    lvl, canon, facts = build(lesson, data)
-    for q in lvl["questions"]:
-        if "_squareFigure" in q:
-            spec = q["_squareFigure"]
-            svg = render_square(spec)
-            q["fig"] = svg
-            path = wd / "figures" / f"q{q['n']}"
-            path.with_suffix(".svg").write_text(svg, encoding="utf-8")
-            dump(
-                path.with_suffix(".json"),
-                {
-                    "version": 1,
-                    "constructorInput": spec,
-                    "sha256": hashlib.sha256(svg.encode()).hexdigest(),
-                },
-            )
-    evidence = {
-        "version": 1,
-        "scope": "squared side and diagonal lengths of closed quadrilateral constructions",
-        "computations": facts,
-        "proseReviewRequired": True,
-    }
-    dump(wd / "general-source.json", data)
-    dump(wd / "general-evidence.json", evidence)
-    dump(wd / "verified.json", evidence)
-    dump(wd / "levels.json", [lvl])
-    dump(
-        wd / "worksheet-source.json",
-        {
-            "version": 4,
-            "meta": {"gradeNumber": 9, "levelCode": "b", "topicId": TOPIC},
-            "questions": canon,
-            "reviewRequired": True,
-        },
+    return compile_geometry(
+        lesson,
+        data,
+        skill,
+        work,
+        build=build,
+        render=render_square,
+        figure_key="_squareFigure",
+        package="G9-T47",
+        evidence_scope="squared side and diagonal lengths of closed quadrilateral constructions",
     )
-    shutil.copyfile(Path(__file__).with_name("square_shape.py"), wd / "square_shape.py")
-    bridge = """import importlib.util
-import json
-from pathlib import Path
-root = Path(__file__).parent
-spec = importlib.util.spec_from_file_location("square_shape", root / "square_shape.py")
-shapes = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(shapes)
-LEVELS = json.loads((root / "levels.json").read_text(encoding="utf-8"))
-for level in LEVELS:
-    level["words_share"] = {int(k): v for k, v in level["words_share"].items()}
-    for question in level["questions"]:
-        if "_squareFigure" in question:
-            if shapes.render_square(question.pop("_squareFigure")) != question["fig"]:
-                raise ValueError("Square differs from its recorded construction")
-STRICT_FIGURES = True
-PACKAGE = "G9-T47"
-"""
-    (wd / "content.py").write_text(bridge, encoding="utf-8")
-    return {
-        "skill": "middle",
-        "work": str(wd),
-        "sourcePath": str(wd / "worksheet-source.json"),
-        "reviewRequired": True,
-    }
