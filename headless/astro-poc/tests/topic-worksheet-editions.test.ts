@@ -1,3 +1,4 @@
+import { beforeNovember21Copy } from './fixtures/middle-090-091-094';
 import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
@@ -427,7 +428,13 @@ test('actual SAO/WPC pages expose six PDFs while preserving legacy 38 and 41/40/
     const ids = [...document.querySelectorAll('[id]')].map(e => e.id);
     assert.equal(new Set(ids).size, ids.length);
     const text = document.querySelector('main')!.textContent.replace(/[\u2066-\u2069]/g, '');
-    assert.ok(text.includes(reviewedSaoWpc.landingDeltas.find(d => d.slug === addition.slug)!.appendedSection.blocks[0].text));
+    const reviewedSection = reviewedSaoWpc.landingDeltas.find(d => d.slug === addition.slug)!.appendedSection;
+    const page = loadTopicPage(addition.slug);
+    const prior = beforeNovember21Copy(addition.slug, page);
+    const section = (source: typeof page) => source.sections.find(row => row.heading === reviewedSection.heading)!;
+    const plain = (value: string) => value.replace(/[\u2066-\u2069]/g, '');
+    assert.equal(plain(section(prior).blocks[0].text!), reviewedSection.blocks[0].text);
+    assert.ok(text.includes(plain(section(page).blocks[0].text!)), addition.slug);
   }
 });
 
