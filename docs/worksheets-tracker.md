@@ -1,3 +1,7 @@
+## 2026-11-22 — Grade 7 number patterns (077)
+
+The three published G7-T123 worksheets each have 18 text-only Ramzi markers. Positions were checked against the original printed subsections. The viewer matches all three reviewed hints to the exact PDF and source item before showing a marker.
+
 ## 2026-11-22 — Reviewed hints on individual middle-school exercises
 
 The catalog and topic pages link to a partial Ramzi reader for 45 printed worksheets across 27 editions. The index covers 182 exercises with three independently reviewed hints each. Each marker requires the exact PDF and a matching verified Supabase record. The original PDF download remains available per level.
