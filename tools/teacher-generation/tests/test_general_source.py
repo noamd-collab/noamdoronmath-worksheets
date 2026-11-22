@@ -219,4 +219,125 @@ class SourceTests(unittest.TestCase):
             self.assertTrue(_answer_text(solved,"",8));self.assertTrue(_task_text(solved,8))
 
 
+class PrintedElementaryTests(unittest.TestCase):
+    def setUp(self):
+        self.lesson = {"gradeNumber": 3, "topicId": "ג01"}
+
+    def bind(self, prompt, result, *, table=None, lesson=None):
+        from math_tasks import number, validate_and_solve_task
+        from printed_elementary import place_answer
+        task = {"kind":"evaluate","expression":number(result)} if type(result) is int else result
+        item={"prompt":[{"kind":"text","text":prompt}],"answer":{"kind":"computed","unit":"","task":task}}
+        q={"intro":[],"items":[item]}
+        if table is not None: q["table"]=table
+        return place_answer(lesson or self.lesson,q,item,validate_and_solve_task(task))
+
+    def test_real_place_forms_compute_the_answer_to_each_printed_blank(self):
+        cases=[
+            ("308 = ___ מאות + ___ עשרות + ___ אחדות", 308, ["3","0","8"]),
+            ("___ מאות + ___ עשרות + ___ אחדות = 915", 915, ["9","1","5"]),
+            ("456 = ___ מאות + 50 + ___ אחדות", 6, ["4","6"]),
+            ("123 — ספרת העשרות היא ___", 2, ["2"]),
+            ("במספר 523, מהו הערך של הספרה 5?", 500, ["500"]),
+            ("200 + 30 + 5 = ___", 235, ["235"]),
+            ("מספר תלת-ספרתי שספרת המאות שלו 5, ספרת העשרות 3 וספרת האחדות 7. מהו המספר?", 537, ["537"]),
+            ("פרקו את המספר 308 לצורות שונות (למשל: מאות ועשרות ואחדות).", 308, ["300 + 0 + 8","290 + 18"]),
+        ]
+        for prompt,typed,expected in cases:
+            with self.subTest(prompt=prompt):
+                bound=self.bind(prompt,typed)
+                self.assertEqual([p[0] for p in bound.parts if isinstance(p,tuple)],expected)
+                self.assertEqual(bound.proof["verifiedTypedValue"],typed)
+                with self.assertRaises(GeneralSourceError): self.bind(prompt,typed+1)
+        self.assertIsNone(self.bind("חשבו את הביטוי.",3))
+        self.assertIsNone(self.bind(cases[0][0],308,lesson={"gradeNumber":3,"topicId":"ג10"}))
+
+    def test_real_table_and_comparison_are_bound_to_the_data_students_see(self):
+        from math_tasks import number
+        plain=lambda s:[{"kind":"text","text":s}]
+        table={"head":[plain(v) for v in ("מספר","מאות","עשרות","אחדות")],
+               "rows":[[plain(v) for v in ("456","___","___","___")]]}
+        full="השלמת שורה א׳: 456 = ___ מאות + ___ עשרות + ___ אחדות"
+        self.assertEqual(self.bind(full,456,table=table).proof["number"],456)
+        table["rows"][0][0]=plain("465")
+        with self.assertRaises(GeneralSourceError): self.bind(full,456,table=table)
+        task={"kind":"compare","left":number(700),"right":number(70)}
+        claim="טענה: במספר 729, הערך של הספרה 7 הוא 70."
+        self.assertIn("לא נכון.",self.bind(claim,task).parts[0])
+        with self.assertRaises(GeneralSourceError): self.bind(claim,{**task,"left":number(70)})
+        with self.assertRaises(GeneralSourceError): self.bind(claim,{**task,"left":number(701)})
+        for wrong in ("במספר 525, מהו הערך של הספרה 5?", "356 = ___ מאות + 40 + ___ אחדות"):
+            with self.assertRaises(GeneralSourceError): self.bind(wrong,5)
+
+    def test_specialized_counting_evidence_is_complete_and_never_loosens_math(self):
+        from math_tasks import number, validate_and_solve_task
+        from printed_elementary import guard_counting_input, validate_counting_values
+        lesson={"gradeNumber":1,"topicId":"א01"}
+        result=validate_and_solve_task({"kind":"evaluate","expression":number(3)})
+        solved={"q1-i1":result}
+        validate_counting_values(lesson,solved,{"q1-i1":3})
+        for wrong in ({},{"q1-i1":2},{"q1-i1":True},{"q1-i1":3,"q2-i1":3}):
+            with self.assertRaises(GeneralSourceError):validate_counting_values(lesson,solved,wrong)
+        with self.assertRaises(GeneralSourceError):validate_counting_values(self.lesson,solved,{"q1-i1":3})
+        item={"prompt":[{"kind":"text","text":"כַּמָּה צִפּוֹרִים יֵשׁ? (דְּמוּת: שָׁלוֹשׁ צִפּוֹרִים)"}]}
+        question={"intro":[{"kind":"text","text":"סִפְרוּ אֶת הַפְּרִיטִים"}]}
+        with self.assertRaises(GeneralSourceError):guard_counting_input(lesson,question,item,result)
+        bad_sort=validate_and_solve_task({"kind":"statistics","operation":"sort","values":[number(3),number(0)]})
+        item["prompt"]=[{"kind":"text","text":"עֵט, עֵט, עֵט. כַּמָּה עֵטִים?"}]
+        with self.assertRaises(GeneralSourceError):guard_counting_input(lesson,question,item,bad_sort)
+        guard_counting_input({"gradeNumber":4,"topicId":"ד01"},question,item,bad_sort)
+
+
+class PrintedPercentagesTests(unittest.TestCase):
+    @staticmethod
+    def rich_text(s):
+        return [{"kind":"text","text":s}]
+
+    def setup_item(self, intro, prompt, value, unit, lesson=None):
+        from math_tasks import validate_and_solve_task
+        from printed_percentages import percentage_evidence
+        source_lesson=lesson or {"gradeNumber":8,"topicId":"g8:percentages"}
+        item={"prompt":self.rich_text(prompt),"answer":{"kind":"computed","unit":unit}}
+        return percentage_evidence(source_lesson,self.rich_text(intro),item,validate_and_solve_task({"kind":"evaluate","expression":value}))
+
+    def test_exact_visible_base_amount_and_units(self):
+        intro="בכיתה יש 25 תלמידים."
+        prompt="כמה הם 20 אחוזים מ־25 התלמידים?"
+        check=self.setup_item(intro,prompt,number(5),"תלמידים")
+        self.assertEqual((check["role"],check["value"]),("part","5"))
+        with self.assertRaises(GeneralSourceError):self.setup_item(intro,prompt,number(4),"תלמידים")
+        with self.assertRaises(GeneralSourceError):self.setup_item(intro,prompt,number(5),"שקלים")
+        with self.assertRaises(GeneralSourceError):self.setup_item("בכיתה יש 20 תלמידים.",prompt,number(5),"תלמידים")
+        with self.assertRaises(GeneralSourceError):self.setup_item("","כמה הם 10 אחוזים מ־25 התלמידים?",number(5,2),"תלמידים")
+        self.assertEqual(self.setup_item("","כמה הם 10 אחוזים מ־25 השקלים?",number(5,2),"שקלים")["value"],"5/2")
+        self.assertIsNone(self.setup_item(intro,"מצאו את הכמות.",number(5),"תלמידים"))
+        self.assertIsNone(self.setup_item(intro,"כמה הם 20 אחוזים מ־25 התלמידים שקיבלו בונוס של 5?",number(5),"תלמידים"))
+        self.assertIsNone(self.setup_item(intro,prompt,number(5),"תלמידים",{"gradeNumber":7,"topicId":"g7:other"}))
+
+    def test_inverse_percentage_requires_its_own_known_base(self):
+        p="דנה ענתה נכון על 45 שאלות. כמה אחוזים מהשאלות ענתה דנה נכון?"
+        self.assertEqual(self.setup_item("במבחן היו 50 שאלות.",p,number(90),"אחוזים")["role"],"percentage")
+        self.assertIsNone(self.setup_item("",p,number(90),"אחוזים"))
+        self.assertIsNone(self.setup_item("במבחן היו 50 שאלות.",p.replace("ענתה דנה נכון?","ענה דני נכון?"),number(90),"אחוזים"))
+        with self.assertRaises(GeneralSourceError):self.setup_item("במבחן היו 40 שאלות.",p,number(90),"אחוזים")
+        with self.assertRaises(GeneralSourceError):self.setup_item("במבחן היו 50 שאלות.",p,number(90),"שאלות")
+
+    def test_middle_native_compiler_keeps_recipe_for_an_incomplete_instruction(self):
+        import tempfile
+        from general_adapters import _compile_middle
+        from math_tasks import validate_and_solve_task
+        task={"kind":"evaluate","expression":{"type":"operation","op":"multiply","args":[number(1,5),number(25)]}}
+        def row(prompt):
+            return {"prompt":self.rich_text(prompt),"answer":{"kind":"computed","unit":"תלמידים","task":task}}
+        q={"intro":self.rich_text("בכיתה יש 25 תלמידים."),"star":False,"items":[row("כמה הם 20 אחוזים מ־25 התלמידים?"),row("חשבו כמה תלמידים מתקבלים.")]}
+        source={"title":"אחוזים","rule":self.rich_text("חלק ממאה"),"sections":[{"title":"אחוז מתוך השלם","conceptIds":["g8:percentages#0"],"questions":[q]}]}
+        solved=validate_and_solve_task(task); evidence={"computations":[{"itemId":"q1-i1","computed":solved},{"itemId":"q1-i2","computed":solved}]}
+        scope={"topic":{"sourceTopicId":"percentages","sourceTrack":"ח","domain":"מספרי"}}
+        with tempfile.TemporaryDirectory() as tmp:
+            _compile_middle({"gradeNumber":8,"level":"b","topicId":"g8:percentages"},source,evidence,scope,None,Path(tmp))
+            items=json.loads((Path(tmp)/"worksheet-source.json").read_text())["questions"][0]["items"]
+            self.assertEqual(items[0]["text"],"כמה הם 20 אחוזים מ־25 התלמידים?")
+            self.assertIn("25",items[1]["text"])
+            self.assertEqual(set(json.loads((Path(tmp)/"verified.json").read_text())["printedChecks"]),{"q1-i1"})
+
 if __name__=="__main__":unittest.main()
