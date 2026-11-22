@@ -1,21 +1,19 @@
-# Private teacher pilot worker operations
+# Private teacher worksheet worker operations
 
-This is an operator runbook, not an instruction to execute a database migration
-or start paid work automatically. The worker is a separate Python process; Wix
-only authenticates the owner, enqueues requests and streams private downloads.
+The website authenticates the Google teacher and the database enforces admission
+before the worker can claim a lesson. Verified Google teachers can create five worksheets
+per account during the same 72-hour campaign. The configured owner remains exempt
+from the quota. Each account can have one active request.
 
 ## Account and service credentials
 
-The permanent owner entitlement is bound to Supabase user
-`80da2957-9492-4a9d-babb-28ba70dedd12`, verified as
-`amiramnoam@gmail.com` with a confirmed email and Google identity on 2026-11-13.
-The account was not banned. The application verifies each request with the fixed
-project's Auth service, requires Google app metadata and a matching Google
-identity, then checks this user ID. A browser-supplied email/profile cannot grant
-access. Permanent entitlement does not make a session permanent: the HttpOnly
-cookie expires with the verified access token. Sign in again when it expires.
-Ordinary teacher tools accept verified Google users; AI generation remains owner
-only. All generated downloads require the owner session again.
+The website verifies the authenticated Google identity on each request. The
+claim RPC, available to the service role, supplies the job, the authenticated
+teacher's user UUID and the lease. Each conditional database update matches all
+three identifiers. The worker verifies the claim before authoring and again
+after rendering. Its only output keys in the private bucket are
+`<owner_id>/<job_id>/sheet.pdf` and `<owner_id>/<job_id>/sheet.docx`.
+Storage and job-row policies restrict each teacher to their own ready drafts.
 
 The deployed server and worker both need `TEACHER_GENERATION_SERVICE_KEY`.
 The current REST clients send it in both `apikey` and `Authorization: Bearer`, so
@@ -24,7 +22,7 @@ user token, Qwen key or Supabase management token. Do not substitute a new
 `sb_secret_...` key without updating and testing **both** REST clients: current
 [Supabase guidance](https://supabase.com/docs/guides/getting-started/api-keys#known-limitations)
 requires new secret keys on `apikey`, not Bearer. A service key bypasses RLS and
-must remain server-side. The owner's browser never receives it.
+must remain server-side. The browser never receives it.
 
 The operator-only worker env file contains these names, with literal values
 (no shell interpolation):
@@ -67,7 +65,7 @@ that bounded interval, then becomes offline. Online means a recent successful
 runtime/queue/storage readiness cycle, not a guarantee that a future provider
 request will succeed. Missing server-side enqueue credentials still prevent job
 creation. A failed or expired claimed job is never automatically sent to the
-paid provider again; the owner must explicitly request another attempt.
+paid provider again. A new request requires a fresh submission.
 
 ## Check, start and stop on the pilot Mac
 
@@ -89,10 +87,9 @@ DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib "$task_python" -B \
 ```
 
 Before service startup, separately verify the applied migration, claim RPC
-service-role grant, owner RLS and absence of unexpected queued work. Do not use
+service-role grant, per-account RLS and absence of unexpected queued work. Do not use
 `--once` as a diagnostic: it can claim and bill an existing queued request.
-Starting the normal worker authorizes it to process owner-created requests; it
-does not itself create a worksheet request.
+The normal worker claims the next admitted request.
 
 This dedicated LaunchAgent persists after the terminal/chat ends and restarts a
 crashed worker. The plist stores paths only, never credentials. Generate it
@@ -146,7 +143,7 @@ not only in an interactive shell.
 ```sh
 # Exact dedicated service status; does not print the secret env file.
 launchctl print "gui/$(id -u)/il.co.noamdoronmath.teacher-generation"
-# Stop after confirming no owner job is running, unless emergency stop is needed.
+# Stop after confirming no worksheet job is running, unless emergency stop is needed.
 launchctl bootout "gui/$(id -u)/il.co.noamdoronmath.teacher-generation"
 # Start again using the existing reviewed plist.
 launchctl bootstrap "gui/$(id -u)" "$task_state/worker.plist"
@@ -160,20 +157,21 @@ it `WORKER_INTERRUPTED` rather than repeating a potentially billed call.
 
 ## Acceptance through the website
 
-Once the server secret, migration and worker are ready, sign in with the owner
-Google account, open `/teachers/generate`, and confirm the UI is online. Use one
-supported B/practice-or-review request: grade 3 `ג10` (12 questions) or grade 7
-`g7:equations` (20 questions). The database enforces one active job and five
-requests per rolling 24 hours, including failures. Reusing the same request key
-does not start a second job. Do not run a separate direct model benchmark for
-the same request.
+Qualify the Linux/amd64 container for the exact release commit with
+`tools/teacher-generation/cloud/container/ci_check.sh`. Retain its pinned skill
+archive checks, full test results and offline PDF/Word fixture reports. Confirm
+the deployed image digest and its source revision against the qualified image.
+Use the existing drain/preflight/activate sequence, verify the private bucket,
+and check for a fresh primary heartbeat after activation with
+`capabilities.trialActorIsolation = 1` before admitting trial submissions.
 
-Expected states are queued → running → needs_review, with only the verified PDF
-and editable DOCX downloadable to the owner. `needs_review` remains a teacher
-review requirement. Automated PASS is not visual Word approval, proof of exact
-classroom timing, approval to publish a worksheet, or support for all grades and
-topics. Check signed-out and other-Google-account denial independently. The
-public worksheet catalog is never changed by this worker.
+During the campaign a verified Google teacher enters the generator from the teacher area.
+A submitted worksheet follows queued → running → needs_review. Repeating the
+same request key returns the same job. Open the two files from that teacher's
+history. Confirm a second account sees only its own history and downloads,
+including for previously created owner drafts. Verify the five-work quota
+across two topics and the three-day expiry in an isolated environment with a
+controlled clock. A draft remains subject to the teacher's classroom review.
 
 ## Read-only audit snapshot (2026-11-13)
 

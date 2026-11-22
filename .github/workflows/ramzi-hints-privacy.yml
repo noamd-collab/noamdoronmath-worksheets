@@ -54,7 +54,9 @@ jobs:
         run: |
           node tools/security/verify-rls-postgres.mjs
           node --test tools/security/verify-edition-hints-postgres.mjs
-      - name: Verify owner-only worksheet draft downloads
+      - name: Verify worksheet trial reservations and private draft downloads
         env:
           NOAM_PGLITE_MODULE: ${{ runner.temp }}/ramzi-rls/node_modules/@electric-sql/pglite/dist/index.js
-        run: node --experimental-strip-types tools/security/verify-teacher-generation-storage-postgres.mjs
+        run: |
+          node tools/security/verify-teacher-generation-postgres.mjs
+          node --experimental-strip-types tools/security/verify-teacher-generation-storage-postgres.mjs

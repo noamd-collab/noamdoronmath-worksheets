@@ -6,9 +6,9 @@ worker remains the active worker until an explicitly reviewed cutover. Nothing
 in this directory creates a hosting account, adds a payment method, deploys a
 service, activates job processing or uses the owner's final generation trial.
 
-Only the new generator is owner-only. The regular teacher tools remain available
-to every authenticated Google teacher; this server is not an authentication path
-for those tools. Its shared key is held by the website server, never the browser.
+The website authenticates the Google teacher and the database enforces trial
+admission before a job is queued. The shared wake key stays on the server.
+The worker derives each private artifact prefix from the durable job's account.
 
 ## HTTP contract
 

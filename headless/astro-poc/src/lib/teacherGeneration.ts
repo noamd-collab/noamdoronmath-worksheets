@@ -1,6 +1,6 @@
-import { requireOwnerTeacher, teacherAccessFailure, TEACHER_PRIVATE_HEADERS, type TeacherAccessResult } from './teacherAccess';
+import { requireGoogleTeacher, teacherAccessFailure, TEACHER_PRIVATE_HEADERS, type TeacherAccessResult } from './teacherAccess';
 import { sameOriginTeacherMutation } from './teacherSession';
-import { createGenerationStore, generationSessionToken, GenerationStoreError, uuid, workerAcceptsCurrentIntake, workerAcceptsCurriculumIntake } from './teacherGenerationStore';
+import { createGenerationStore, generationSessionToken, GenerationStoreError, uuid, workerAcceptsCurrentIntake, workerAcceptsCurriculumIntake, type GenerationQuota } from './teacherGenerationStore';
 import { validateTeacherGenerationIntake, isTeacherGenerationDraftReady, type TeacherGenerationCurriculum } from './teacherGenerationContract';
 import type { TeacherWorkerWake } from './teacherWorkerWake';
 
@@ -21,10 +21,11 @@ async function boundedBody(request: Request): Promise<string | null> {
   try {for(;;){const part=await reader.read();if(part.done)break;bytes+=part.value.length;if(bytes>24000)return null;text+=decoder.decode(part.value,{stream:true});}return text+decoder.decode();}
   finally {void reader.cancel().catch(()=>{});reader.releaseLock();}
 }
-async function workerReadiness(store: ReturnType<typeof createGenerationStore>, wake?: TeacherWorkerWake) {
+async function workerReadiness(store: ReturnType<typeof createGenerationStore>, quota: GenerationQuota, wake?: TeacherWorkerWake) {
   const wakeResult = wake ? await wake() : undefined;
   const health = await store.health();
-  const online = (wakeResult === undefined || wakeResult === 'accepted') && health.online && workerAcceptsCurrentIntake(health.capabilities);
+  const online = (wakeResult === undefined || wakeResult === 'accepted') && health.online && workerAcceptsCurrentIntake(health.capabilities) &&
+    (quota.mode === 'owner' || health.capabilities?.trialActorIsolation === 1);
   return { ...health, online, waking: !online && (wakeResult === 'accepted' || wakeResult === 'pending') };
 }
 async function queuedDispatch(job: { status?: string }, wake?: TeacherWorkerWake) {
@@ -35,8 +36,8 @@ async function queuedDispatch(job: { status?: string }, wake?: TeacherWorkerWake
   catch { return { dispatchPending: true }; }
 }
 export async function handleTeacherGeneration(request: Request, deps: GenerationDependencies): Promise<Response> {
-  // Always owner-only. Never classify a request by browser-controlled intent.
-  const access = await (deps.authorize ?? requireOwnerTeacher)(request);
+  // The verified session identifies the account. SQL is authoritative for each new reservation.
+  const access = await (deps.authorize ?? requireGoogleTeacher)(request);
   if (!access.ok) return teacherAccessFailure(access);
   if (request.method !== 'GET' && request.method !== 'POST') return error('METHOD_NOT_ALLOWED', 405);
   if (request.method === 'POST' && !sameOriginTeacherMutation(request)) return error('ORIGIN_NOT_ALLOWED', 403);
@@ -47,8 +48,11 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
       const id = query.get('id');
       if (id && !uuid(id)) return error('INVALID_JOB');
       if (!id) {
-        const health = await workerReadiness(store, deps.wake);
-        const [quota, jobs, history] = await Promise.all([store.quota(), store.list(), store.createdWorksheets()]);
+        const quota = await store.quota();
+        const health = quota.active && quota.remainingTotal !== 0
+          ? await workerReadiness(store, quota, deps.wake)
+          : { online: false, waking: false, capabilities: null };
+        const [jobs, history] = await Promise.all([store.list(), store.createdWorksheets()]);
         return reply({ ok: true, ...health, quota, jobs, history });
       }
       const job = await store.get(id);
@@ -83,7 +87,14 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
     const existing = await store.findRequest(input.requestKey);
     if (existing) return existing.request_hash === requestHash
       ? reply({ ok: true, job: existing, reused: true, ...await queuedDispatch(existing, deps.wake) }) : error('REQUEST_CONFLICT', 409);
-    const health = await workerReadiness(store, deps.wake);
+    const quota = await store.quota();
+    if (!quota.active) return error('TRIAL_CLOSED', 403);
+    if (quota.remainingTotal === 0) {
+      const jobs = await store.list();
+      return jobs.some((job: { status: string }) => job.status === 'queued' || job.status === 'running')
+        ? error('GENERATION_ACTIVE', 423) : error('GENERATION_LIMIT', 429);
+    }
+    const health = await workerReadiness(store, quota, deps.wake);
     if (!health.online) return error(health.waking ? 'GENERATOR_WAKING' : 'GENERATOR_OFFLINE', 503);
     const capability = health.capabilities?.topics?.find((t: any) => t.topicId === checked.value.topicId && t.gradeNumber === checked.value.gradeNumber);
     const legacyCapability = capability?.legacy?.intakeVersion === 2 ? capability.legacy : capability;

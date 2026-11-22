@@ -259,8 +259,11 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             raise GeneralSourceError('AUTHOR_PLAN_MISMATCH','Source questions must follow the requested challenge and item slots')
         return payload
 
-    if (isinstance(revision, dict) and isinstance(response, dict)
-            and set(response) == {"title", "rule", "practice", "challenges"}):
+    flat_reply = isinstance(response, dict) and set(response) == {"title", "rule", "practice", "challenges"}
+    v4_reply = (isinstance(response, dict) and response.get("version") == 4
+                and set(response) == {"version", "title", "rule", "sections"})
+    can_revise = isinstance(revision, dict) and (flat_reply or v4_reply)
+    if can_revise:
         # This state never enters logs, persistent jobs, or download metadata.
         used = False
         def revise(findings):
@@ -272,6 +275,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             request, fields = correction_body(response, findings, lesson, scope, plan, context, chosen)
             observed = {}
             try:
+                measured["correctionRequested"] = True
                 replacements = request_author_json(target, key, request, observed, timeout)
                 updated = compile_content(apply_replacements(response, fields, replacements))
                 measured["validated"] = True
@@ -281,14 +285,21 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                 reject(exc.code, str(exc))
             finally:
                 measured["revisionUsage"] = observed.get("usage", {})
-        revision["revise"] = revise
+        if flat_reply:
+            revision["revise"] = revise
     try:
         payload = compile_content(response)
     except GeneralSourceError as exc:
         measured['validationError'] = {'code': exc.code, 'detail': str(exc)[:240]}
-        if isinstance(revision, dict) and "revise" in revision:
+        if exc.code == 'SOURCE_PLAIN_MATH':
+            measured['initialPlainMath'] = True
+        # Historical source-v4 replies are eligible only for content-preserving
+        # notation, never a rewrite of their trusted plan, flags or concepts.
+        if can_revise and (flat_reply or exc.code == "SOURCE_PLAIN_MATH"):
             from skill_authoring import source_findings
-            revision["sourceFindings"] = source_findings(response, lesson, scope, exc)
+            findings = source_findings(response, lesson, scope, exc)
+            if findings:
+                revision.update(revise=revise, sourceFindings=findings)
         reject(exc.code, str(exc))
     measured['validated'] = True
     return payload
