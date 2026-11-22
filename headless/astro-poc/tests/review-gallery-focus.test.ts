@@ -11,7 +11,7 @@ describe('preview-only gallery focus preserves the original inventory and cards'
     const page = await browser.newPage();
     try {
       await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
-      for (const [gallery, count] of [['a', 42], ['b', 75], ['c', 64]] as const) {
+      for (const [gallery, count] of [['a', 42], ['b', 75], ['c', 65]] as const) {
         const response = await page.goto(`${server.origin}/review/landing-loops-pr-${gallery}`, { waitUntil: 'load' });
         assert.equal(response?.status(), 200);
         const inventory = await page.$$eval('[data-review-slug]', cards => cards.map(card => card.getAttribute('data-review-slug')));

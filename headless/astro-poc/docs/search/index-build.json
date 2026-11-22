@@ -2857,6 +2857,14 @@
       "reason": "not a catalog card (sub-topic or missing)"
     },
     {
+      "key": "page:/special-triangles-review-grade-9",
+      "title": "משולשים מיוחדים — חזרה מכיתה ז׳ לכיתה ט׳",
+      "linkedTopic": "topic:9:21",
+      "linkedTitle": "משולשים מיוחדים — חזרה מכיתה ז׳",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/games/eliyahu-pythagoras",
       "title": "משחק משפט פיתגורס עם אליהו",
       "linkedTopic": "topic:8:11",
