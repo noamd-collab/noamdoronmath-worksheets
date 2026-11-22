@@ -16,6 +16,16 @@ Grade 9 topic 21 lists the three current grade 7 topic 15 worksheets as grade 7 
 
 Each package contains three student PDFs with final answers. These seven downloadable editions use the middle-school worksheet skill 7.3.3.
 
+## 2026-11-22 — three grade 7 algebra packages
+
+| Package | Catalog topic | Worksheet | Student PDF pages (A/B/excellence) |
+| --- | --- | --- | --- |
+| 077 r02 | 21 | Number patterns and general rules | 6 / 7 / 7 |
+| 078 r02 | 30 | Common factors and a minus before parentheses | 5 / 5 / 5 |
+| 079 r01 | 33 | Equations, equivalence and checking a solution | 7 / 7 / 8 |
+
+These nine worksheets use skill 7.3.3. Each has space for working and includes a final answer key.
+
 ## 2026-11-19 — batch 13 (renewal): ten grade 8 pages get their first reviewed PDF edition (candidate)
 
 ## 2026-11-21 — middle-school packages 090, 091 and 094
