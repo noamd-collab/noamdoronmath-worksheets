@@ -84,7 +84,9 @@ function harness(options: HarnessOptions = {}) {
       return options.signOut ? options.signOut() : { error: null };
     },
   } };
+  const clearedDrafts:string[]=[];
   const window: Record<string, unknown> = {
+    sessionStorage:{removeItem:(key:string)=>clearedDrafts.push(key)},
     NOAM_LEARNING_CONFIG: { googleEnabled: true, url: 'https://auth.example.test', key: 'synthetic-public-key' },
   };
   window.self = window; window.top = window;
@@ -119,7 +121,7 @@ function harness(options: HarnessOptions = {}) {
     },
   }, { filename: 'teachers/auth.js', timeout: 1000 });
   return {
-    button, status, logoutButton, requests, navigations, histories, oauth, signOutCalls, removedKeys, clientOptions,
+    button, status, logoutButton, requests, navigations, histories, oauth, signOutCalls, removedKeys, clearedDrafts, clientOptions,
     get sessionReads() { return sessionReads; },
     emit(event: string, session: Session) {
       assert.ok(authListener, 'Expected SDK auth-state subscription');
@@ -312,6 +314,7 @@ test('logout clears the server cookie then checks local SDK sign-out before leav
   assert.deepEqual(h.navigations, ['/teachers']);
   assert.equal(h.logoutButton.submissions, 0);
   assert.equal(h.requests.filter(call => call.body?.action === 'logout').length, 1, 'SIGNED_OUT during logout must not trigger a second clear');
+  assert.deepEqual(h.clearedDrafts,['teacher-generation-draft-v1'], 'logout elsewhere in the teacher workspace also clears private wizard data');
 });
 
 test('after server logout, SDK signOut errors clear local auth and return to the public page', async () => {

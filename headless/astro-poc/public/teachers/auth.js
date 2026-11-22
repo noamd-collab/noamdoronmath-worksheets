@@ -28,6 +28,7 @@
   async function clearCookie() {
     var response = await postSession({ action: 'logout' });
     if (!response.ok) throw new Error('SESSION_CLEAR_FAILED');
+    try { window.sessionStorage.removeItem('teacher-generation-draft-v1'); } catch (_) {}
   }
   async function bridge(session, navigate) {
     if (leaving) return;

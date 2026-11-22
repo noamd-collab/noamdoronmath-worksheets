@@ -48,7 +48,8 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
       if (id && !uuid(id)) return error('INVALID_JOB');
       if (!id) {
         const health = await workerReadiness(store, deps.wake);
-        return reply({ ok: true, ...health, jobs: await store.list() });
+        const [quota, jobs] = await Promise.all([store.quota(), store.list()]);
+        return reply({ ok: true, ...health, quota, jobs });
       }
       const job = await store.get(id);
       if (!job) return error('JOB_NOT_FOUND', 404);
