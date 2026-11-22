@@ -39,8 +39,53 @@ class SkillFeedbackTests(unittest.TestCase):
         out = read_skill_feedback(self.base, 12)
         self.assertEqual([(r["question"], r["codes"]) for r in out],
                          [(2, ["G61"]), (4, ["G32"]), (8, ["G32"]), (10, ["G61"]), (12, ["G32"])])
-        self.assertIn("ONE named unit", out[1]["feedback"][0])
+        easy = out[0]["feedback"][0]
+        hard = out[3]["feedback"][0]
+        for finding in [easy, hard]:
+            self.assertEqual(finding["measuredRange"], [3, 8])
+            self.assertEqual(finding["maxSpread"], 4)
+            self.assertEqual(finding["maxItemScore"], 7)
+        self.assertEqual(easy["items"], [{"item": 3, "measuredScore": 3, "action": "keep"}])
+        self.assertEqual(hard["items"], [{"item": 1, "measuredScore": 8, "action": "reduce"}])
+        self.assertIn("fewer distinct operation types", hard["instruction"])
+        self.assertIn("every item", hard["instruction"])
+        unit_feedback = out[1]["feedback"][0]
+        for example in ["ONE named unit", "מחיר מחברת אחת", "שווה בשווה בין 4 תלמידים", "keep the quantifier"]:
+            self.assertIn(example, unit_feedback)
         self.assertNotIn("טקסט שאין להעביר", str(out))
+
+    def test_profile_ceiling_and_spread_both_apply_to_each_item(self):
+        self.manifest("elementary", ["house-gates"])
+        self.housed("FAIL — G61-level: פריטים מעל תקרת ג (6): Q21=8, Q31=9; "
+                    "פער קושי 5 > 4 — הדף מערבב רמות (Q22=4 מול Q31=9)")
+        result = read_skill_feedback(self.base, 12)
+        self.assertEqual([r["question"] for r in result], [2, 3])
+        for row in result:
+            finding = row["feedback"][0]
+            self.assertEqual((finding["profileCeiling"], finding["maxItemScore"]), (6, 6))
+        self.assertEqual(result[0]["feedback"][0]["items"],
+                         [{"item": 1, "measuredScore": 8, "action": "reduce"},
+                          {"item": 2, "measuredScore": 4, "action": "keep"}])
+        self.housed("FAIL — G61-level: פריטים מעל תקרת ו/מצוינות (12): Q23=14, Q24=15")
+        cap = read_skill_feedback(self.base, 12)[0]["feedback"][0]
+        self.assertEqual(cap["maxItemScore"], 12)
+        self.assertNotIn("measuredRange", cap)
+        self.assertEqual([i["action"] for i in cap["items"]], ["reduce", "reduce"])
+
+    def test_rejects_inconsistent_or_unrecognized_measured_difficulty(self):
+        self.manifest("elementary", ["house-gates"])
+        for finding in [
+            "פער קושי 6 > 4 — הדף מערבב רמות (Q23=3 מול Q101=8)",
+            "פער קושי 5 > 5 — הדף מערבב רמות (Q23=3 מול Q101=8)",
+            "פער קושי 5 > 4 — הדף מערבב רמות (Q23=3 מול Q23=8)",
+            "פריטים מעל תקרת ג (6): Q23=7",
+            "פריטים מעל תקרת untrusted (6): Q23=8",
+            "פריטים מעל תקרת ג (6): Q11=10; פער קושי 5 > 4 — הדף מערבב רמות (Q23=3 מול Q101=8)",
+            "פריטים מעל תקרת ג (6): Q11=8, Q11=9",
+        ]:
+            with self.subTest(finding=finding):
+                self.housed("FAIL — G61-level: " + finding)
+                self.assertEqual(read_skill_feedback(self.base, 12), [])
 
     def test_content_only_bounded_order_dedup_excludes_unactionable_runs(self):
         self.manifest("elementary", ["house-gates"])
