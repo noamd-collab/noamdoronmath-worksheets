@@ -174,6 +174,90 @@ def validate_figure(fig, scope):
     return deepcopy(fig)
 
 
+def validate_prose(value, grade, scope, *, require_hebrew=False):
+    prose = " ".join(_prose_strings(value))
+    if not geometry_topic(scope) and DRAWING_REQUEST.search(NIQQUD.sub("", prose)):
+        bad("DRAWING_POLICY", "Only geometry lessons can give drawing instructions")
+    if require_hebrew and not HEBREW.search(prose):
+        bad("SOURCE_LANGUAGE", "Expected original Hebrew worksheet prose")
+    if grade >= 3 and NIQQUD.search(prose):
+        bad("SOURCE_NIQQUD", "Grades three and up use unvocalized prose")
+    # The live line keeps its field-level pointing rule. The stricter word-level
+    # check from the smooth-UX branch rejects valid abbreviations such as ס״מ.
+    if grade <= 2 and any(HEBREW.search(s) and not NIQQUD.search(s) for s in _prose_strings(value)):
+        bad("SOURCE_NIQQUD", "Grades one and two require vocalized prose in every Hebrew text field")
+
+
+def validate_question(question, grade, scope, *, provider, qcount, evidence, pending):
+    """Validate and normalize one expanded question, preserving its printed position."""
+    exact(question, ("intro", "star", "items"), ("table", "figure", "drawingFromWords"))
+    question["intro"] = rich(question["intro"], grade, provider=provider, location=f"q{qcount}.intro")
+    if type(question["star"]) is not bool:
+        bad("SOURCE_STAR", "Star must be boolean")
+    if "table" in question:
+        table = question["table"]; exact(table, ("head", "rows"))
+        if type(table["head"]) is not list or not 2 <= len(table["head"]) <= 6 or type(table["rows"]) is not list or not 1 <= len(table["rows"]) <= 12:
+            bad("SOURCE_TABLE", "Table exceeds supported size")
+        for col, cell in enumerate(table["head"]):
+            table["head"][col] = rich(cell, grade, provider=provider, location=f"q{qcount}.table.head.{col+1}")
+        for row_num, row in enumerate(table["rows"], 1):
+            if type(row) is not list or len(row) != len(table["head"]):
+                bad("SOURCE_TABLE", "Table rows must have the header width")
+            for col, cell in enumerate(row):
+                row[col] = rich(cell, grade, provider=provider, location=f"q{qcount}.table.row.{row_num}.{col+1}")
+    else:
+        from compact_authoring import requires_existing_table
+        if requires_existing_table(question):
+            bad("SOURCE_TABLE", f"The question refers to a table that was not supplied at q{qcount}")
+    if "figure" in question:
+        validate_figure(question["figure"], scope)
+    if "drawingFromWords" in question:
+        if type(question["drawingFromWords"]) is not bool or not geometry_topic(scope):
+            bad("DRAWING_POLICY","Drawing-from-words is permitted only in an authorized figure topic")
+        if question["drawingFromWords"] and "figure" in question:
+            bad("SOURCE_FIGURE","A drawing-from-words task must leave the requested figure blank")
+    if type(question["items"]) is not list or not (5 if grade <= 2 else 3) <= len(question["items"]) <= 9:
+        bad("SOURCE_ITEMS", "Broad worksheets require at least five items per question in grades one and two, and three items otherwise")
+    for j, item in enumerate(question["items"], 1):
+        exact(item, ("prompt", "answer"))
+        item["prompt"] = rich(item["prompt"], grade, provider=provider, location=f"q{qcount}.item.{j}.prompt")
+        answer = item["answer"]
+        if type(answer) is not dict:
+            bad("SOURCE_ANSWER", "Expected typed answer")
+        item_id = f"q{qcount}-i{j}"
+        if answer.get("kind") == "computed":
+            exact(answer, ("kind", "task", "unit"), ("notation",)); text(answer["unit"], 50, empty=True)
+            solved = validate_and_solve_task(answer["task"])
+            from printed_tasks import match_printed_task, printed_table_row, validate_computed_request
+            validate_computed_request(question, item, solved, grade, location=f"q{qcount}.item.{j}")
+            match_printed_task(item, solved, grade)
+            printed_table_row(question, item, solved)
+            if grade <= 6:
+                from printed_elementary import printed_intent
+                printed_intent(question, item, solved, grade, location=f"q{qcount}.item.{j}")
+            if "notation" in answer:
+                from compact_authoring import expression
+                notation = answer["notation"]
+                if (type(notation) is not str or solved["question"]["kind"] != "evaluate" or
+                        expression(notation, grade) != solved["question"]["expression"]):
+                    bad("SOURCE_NOTATION", "The printed calculation must equal its exact typed task")
+            evidence.append({"itemId": item_id, "computed": solved})
+        elif answer.get("kind") == "figure":
+            exact(answer,("kind","operation","unit"),("point",));text(answer["unit"],50,empty=True)
+            if "figure" not in question or answer["operation"] not in FIGURE_OPERATIONS:
+                bad("SOURCE_FIGURE_TASK","Figure answers must bind to the question's actual figure")
+            try:solved=solve_figure_task(question["figure"],answer["operation"],answer.get("point"))
+            except ValueError:bad("SOURCE_FIGURE_TASK","This figure quantity has no implemented exact verifier")
+            evidence.append({"itemId":item_id,"computed":solved})
+        elif answer.get("kind") == "review":
+            exact(answer, ("kind", "text"))
+            answer["text"] = rich(answer["text"], grade, provider=provider, location=f"q{qcount}.item.{j}.answer")
+            pending.append({"itemId": item_id, "reason": "No implemented exact verifier for this authored answer or proof"})
+        else:
+            bad("SOURCE_ANSWER", "Only computed or explicitly unverified review answers are supported")
+    validate_prose(question, grade, scope)
+
+
 def validate_source(lesson, payload, scope, *, provider=False):
     try:
         return _validate_source(lesson, payload, scope, provider=provider)
@@ -211,81 +295,18 @@ def _validate_source(lesson, payload, scope, *, provider):
         if type(section["questions"]) is not list or not 1 <= len(section["questions"]) <= 30:
             bad("SOURCE_QUESTIONS", "Empty or oversized section")
         for question in section["questions"]:
-            exact(question, ("intro", "star", "items"), ("table", "figure", "drawingFromWords"))
             qcount += 1
-            question["intro"] = rich(question["intro"], grade, provider=provider, location=f"q{qcount}.intro")
-            if type(question["star"]) is not bool:
-                bad("SOURCE_STAR", "Star must be boolean")
+            validate_question(question, grade, scope, provider=provider, qcount=qcount,
+                              evidence=evidence, pending=pending)
             stars += int(question["star"])
-            if "table" in question:
-                table = question["table"]; exact(table, ("head", "rows"))
-                if type(table["head"]) is not list or not 2 <= len(table["head"]) <= 6 or type(table["rows"]) is not list or not 1 <= len(table["rows"]) <= 12:
-                    bad("SOURCE_TABLE", "Table exceeds supported size")
-                for col, cell in enumerate(table["head"]):
-                    table["head"][col] = rich(cell, grade, provider=provider, location=f"q{qcount}.table.head.{col+1}")
-                for row_num, row in enumerate(table["rows"], 1):
-                    if type(row) is not list or len(row) != len(table["head"]):
-                        bad("SOURCE_TABLE", "Table rows must have the header width")
-                    for col, cell in enumerate(row):
-                        row[col] = rich(cell, grade, provider=provider, location=f"q{qcount}.table.row.{row_num}.{col+1}")
-            if "figure" in question:
-                validate_figure(question["figure"], scope)
-            if "drawingFromWords" in question:
-                if type(question["drawingFromWords"]) is not bool or not geometry_topic(scope):
-                    bad("DRAWING_POLICY","Drawing-from-words is permitted only in an authorized figure topic")
-                if question["drawingFromWords"] and "figure" in question:
-                    bad("SOURCE_FIGURE","A drawing-from-words task must leave the requested figure blank")
-            if type(question["items"]) is not list or not (5 if grade <= 2 else 3) <= len(question["items"]) <= 9:
-                bad("SOURCE_ITEMS", "Broad worksheets require at least five items per question in grades one and two, and three items otherwise")
-            for j, item in enumerate(question["items"], 1):
-                exact(item, ("prompt", "answer"))
-                item_count += 1
-                item["prompt"] = rich(item["prompt"], grade, provider=provider, location=f"q{qcount}.item.{j}.prompt")
-                answer = item["answer"]
-                if type(answer) is not dict:
-                    bad("SOURCE_ANSWER", "Expected typed answer")
-                item_id = f"q{qcount}-i{j}"
-                if answer.get("kind") == "computed":
-                    exact(answer, ("kind", "task", "unit"), ("notation",)); text(answer["unit"], 50, empty=True)
-                    solved = validate_and_solve_task(answer["task"])
-                    if grade <= 6:
-                        from printed_elementary import printed_intent
-                        printed_intent(question, item, solved, grade, location=f"q{qcount}.item.{j}")
-                    if "notation" in answer:
-                        from compact_authoring import expression
-                        notation = answer["notation"]
-                        if (type(notation) is not str or solved["question"]["kind"] != "evaluate" or
-                                expression(notation, grade) != solved["question"]["expression"]):
-                            bad("SOURCE_NOTATION", "The printed calculation must equal its exact typed task")
-                    evidence.append({"itemId": item_id, "computed": solved})
-                elif answer.get("kind") == "figure":
-                    exact(answer,("kind","operation","unit"),("point",));text(answer["unit"],50,empty=True)
-                    if "figure" not in question or answer["operation"] not in FIGURE_OPERATIONS:
-                        bad("SOURCE_FIGURE_TASK","Figure answers must bind to the question's actual figure")
-                    try:solved=solve_figure_task(question["figure"],answer["operation"],answer.get("point"))
-                    except ValueError:bad("SOURCE_FIGURE_TASK","This figure quantity has no implemented exact verifier")
-                    evidence.append({"itemId":item_id,"computed":solved})
-                elif answer.get("kind") == "review":
-                    exact(answer, ("kind", "text"))
-                    answer["text"] = rich(answer["text"], grade, provider=provider, location=f"q{qcount}.item.{j}.answer")
-                    pending.append({"itemId": item_id, "reason": "No implemented exact verifier for this authored answer or proof"})
-                else:
-                    bad("SOURCE_ANSWER", "Only computed or explicitly unverified review answers are supported")
+            item_count += len(question["items"])
     if qcount != lesson["questionCount"] or not 4 <= qcount <= 30 or item_count > MAX_ITEMS:
         bad("SOURCE_VOLUME", "Source must exactly match the requested question count and item budget")
     if seen != allowed:
         bad("SOURCE_COVERAGE", "Every selected concept must be represented by a section")
     if not 2 <= stars <= 4:
         bad("SOURCE_STARS", "The pinned skill requires two to four starred questions")
-    prose = " ".join(_prose_strings(normalized))
-    if not geometry_topic(scope) and DRAWING_REQUEST.search(NIQQUD.sub("", prose)):
-        bad("DRAWING_POLICY", "Only geometry lessons can give drawing instructions")
-    if not HEBREW.search(prose):
-        bad("SOURCE_LANGUAGE", "Expected original Hebrew worksheet prose")
-    if grade >= 3 and NIQQUD.search(prose):
-        bad("SOURCE_NIQQUD", "Grades three and up use unvocalized prose")
-    if grade <= 2 and any(HEBREW.search(s) and not NIQQUD.search(s) for s in _prose_strings(normalized)):
-        bad("SOURCE_NIQQUD", "Grades one and two require vocalized prose in every Hebrew text field")
+    validate_prose(normalized, grade, scope, require_hebrew=True)
     if grade == 2 and scope["topic"]["topicId"] == "ב05" and allowed == {"ב05#1"}:
         from no_carry_addition import validate_topic_math
         validate_topic_math(normalized)

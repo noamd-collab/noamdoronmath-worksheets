@@ -324,7 +324,8 @@ LABEL_DESCRIPTION = re.compile(r"\s+(?:הוא|היא)\s+(?:ה?גובה|ה?תיכ
 COORDINATE_CONTEXT = re.compile(r"(?:נקוד(?:ה|ת|ות)|שיעורים|זוג סדור)\s*$")
 LABEL_SEPARATOR = re.compile(r"(?:\s+[ול][־-]?|,\s*)")
 NUMBER_LIST_PREFIX = re.compile(
-    rf"(?:רשימה|אפשרויות|מספרים)\s*:\s*(?:[-−]?{NUMBER_TOKEN.pattern}%?\s*,\s+)*$"
+    rf"(?:(?:רשימה|אפשרויות|מספרים)\s*:|(?:התוצאות הן|הערכים הם|המספרים הם))"
+    rf"\s*(?:[-−]?{NUMBER_TOKEN.pattern}%?\s*,\s+)*$"
 )
 
 
@@ -467,6 +468,13 @@ def spans(value, grade, *, fraction_notation=False):
     if len(value) > 2400:
         invalid()
     result = []
+    if grade <= 6 and value.count("___") == 1 and value.count("=") == 1 and not re.search(r"[<>!≤≥≠]", value):
+        bare = re.sub(r"\[\[(___|[-−]?[0-9]+)\]\]", r"\1", value.strip())
+        formula = elementary_operations(bare.translate(MATH_TRANSLATION))
+        if schoolbook_tokens(formula, grade) is not None:
+            value = "[[" + formula + "]]"
+    # A percent sign on a numeric island belongs to the same printed LTR token.
+    value = re.sub(r"\[\[([-−]?[0-9]+(?:\.[0-9]+)?)\]\]%", r"[[\1%]]", value)
     pieces = re.split(r"(\[\[|\]\])", join_islands(value))
     i = 0
     while i < len(pieces):
@@ -482,8 +490,10 @@ def spans(value, grade, *, fraction_notation=False):
             # inside a sum. Keep the expression in the pupil's notation.
             atom = fraction_literals(atom)
         if grade < 7 and ("x" in atom or ":" in atom):
-            from numeric_literals import elementary_operations
             atom = elementary_operations(atom)
+        if grade >= 7 and atom.startswith("point:") and COORDINATE.fullmatch(atom[6:]) and atom[6:7].isupper():
+            # An explicitly named coordinate is the existing A(x,y) display form.
+            atom = atom[6:]
         geo = GEOMETRY.fullmatch(atom)
         if geo:
             result.append({"kind": "geometry", "type": geo[1], "names": geo[2]})
@@ -579,9 +589,75 @@ def expand_task(task, grade, fraction_notation):
                     eq[field] = expr(eq[field])
 
 
+TABLE_CONSTRUCTION = re.compile(r"(?:בנו|צרו|הכינו|ערכו) (?:לכם |בעצמכם )?טבלה(?![א-ת])")
+ATTACHED_TABLE = re.compile(r"(?:הטבלה|בטבלה) (?:הבאה|הנתונה|המצורפת|שלפני(?:כם|כן))")
 MISSING_TABLE_REFERENCE = re.compile(
-    r"(?:הטבלה הבאה|בטבלה שלפני(?:כם|כן)|לפי הטבלה המצורפת|התוצאה הנכונה מהשורה השנייה)"
+    r"(?:הטבלה (?:הבאה|הנתונה|המצורפת|שלפני(?:כם|כן))|בטבלה (?:הנתונה|שלפני(?:כם|כן))|"
+    r"(?:קראו|השלימו|מלאו) את הטבלה|(?:הערך החסר|הנתונים) בטבלה|התוצאה הנכונה מהשורה השנייה)"
 )
+
+
+def requires_existing_table(question):
+    """Detect an explicit dependency on tabular data in compact or typed prose."""
+    prompts = [question.get("intro")]
+    items = question.get("items")
+    if isinstance(items, list):
+        prompts.extend(item.get("prompt") for item in items if isinstance(item, dict))
+    prose = []
+    for prompt in prompts:
+        if isinstance(prompt, list):
+            prompt = "".join(span.get("text", " ") for span in prompt if isinstance(span, dict)
+                             and isinstance(span.get("text", " "), str))
+        if isinstance(prompt, str):
+            prose.append(re.sub(r"[\u0591-\u05bd\u05bf\u05c1-\u05c2\u05c4-\u05c5\u05c7]", "", prompt))
+    return (any(ATTACHED_TABLE.search(part) for part in prose)
+            or (any(MISSING_TABLE_REFERENCE.search(part) for part in prose)
+                and not any(TABLE_CONSTRUCTION.search(part) for part in prose)))
+
+
+def _explicit_table_row(prompt):
+    """Read one fully specified row, preserving labels, values, blanks and order."""
+    if not isinstance(prompt, str) or len(prompt) > 2400:
+        return None
+    pipes = re.fullmatch(r"\[\[([^\[\]\n]+)\]\]\s*\n\s*\[\[([^\[\]\n]+)\]\]", prompt.strip())
+    if pipes:
+        header, raw = ([cell.strip() for cell in line.split("|")] for line in pipes.groups())
+    else:
+        fields = re.split(r",\s+", prompt.removeprefix("בטבלה: ").strip())
+        pairs = [re.fullmatch(r"([א-ת ][א-ת ]*)\s*[:=]\s*(.+)", field) for field in fields]
+        if not all(pairs):
+            return None
+        header, raw = zip(*((pair[1].strip(), pair[2].strip()) for pair in pairs))
+    if (not 2 <= len(header) == len(raw) <= 6 or len(set(header)) != len(header)
+            or any(not re.fullmatch(r"[א-ת]+(?: [א-ת]+){0,3}", label) for label in header)):
+        return None
+    row = []
+    for cell in raw:
+        island = re.fullmatch(r"\[\[([^\[\]]+)\]\](%?)", cell)
+        value = "".join(island.groups()) if island else cell
+        if value in {"?", "___"}:
+            row.append("[[___]]")
+        elif display_literal(value) is not None:
+            row.append("[[" + value + "]]")
+        else:
+            return None
+    if row.count("[[___]]") != 1:
+        return None
+    return list(header), row
+
+
+def _bind_inline_table(question, grade):
+    items = question.get("items")
+    if type(items) is not list or not 1 <= len(items) <= 9:
+        return False
+    parsed = [_explicit_table_row(item.get("prompt")) if isinstance(item, dict) else None for item in items]
+    if not all(parsed) or any(pair[0] != parsed[0][0] for pair in parsed):
+        return False
+    question["table"] = {"head": parsed[0][0], "rows": [pair[1] for pair in parsed]}
+    for index, item in enumerate(items, 1):
+        label = "שׁוּרָה" if grade <= 2 else "שורה"
+        item["prompt"] = f"{label} [[{index}]]"
+    return True
 
 
 def expand_source(source, grade, *, fraction_notation=False):
@@ -608,16 +684,8 @@ def expand_source(source, grade, *, fraction_notation=False):
         for question in section["questions"]:
             if not isinstance(question, dict):
                 continue
-            intro = question.get("intro")
-            if (
-                isinstance(intro, str)
-                and "table" not in question
-                and MISSING_TABLE_REFERENCE.search(intro)
-            ):
-                raise GeneralSourceError(
-                    "SOURCE_TABLE",
-                    "The question refers to a table that was not supplied",
-                )
+            if "table" not in question and requires_existing_table(question) and not _bind_inline_table(question, grade):
+                raise GeneralSourceError("SOURCE_TABLE", "The question refers to a table that was not supplied")
             if "intro" in question:
                 question["intro"] = rich(question["intro"])
             figure = question.get("figure")

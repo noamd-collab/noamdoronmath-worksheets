@@ -44,3 +44,17 @@ class PrintedTaskTests(unittest.TestCase):
             with self.subTest(invalid=invalid), self.assertRaises(GeneralSourceError):
                 printed_solve(prompt, invalid, 7)
         self.assertIsNone(printed_solve(spans("פתרו: [[2*z+y=16]]", 7), task, 7))
+
+
+class PupilAnswerTypeTests(unittest.TestCase):
+    def test_scalar_cannot_answer_question_asking_for_a_decision_or_equation(self):
+        from printed_tasks import validate_computed_request
+        from compact_authoring import spans
+        from general_source import GeneralSourceError
+        solved = {"result": {"type": "expression", "value": {"type": "number", "numerator": 6, "denominator": 1}}}
+        for p in ("האם [[x=5]] מקיים את המשוואה [[x+1=6]]?", "כתבו משוואה שפתרונה הוא [[6]].",
+                  "האם [[40%]] מתוך [[50]] גדול מ־[[20]]? חשבו את הערך המדויק."):
+            with self.subTest(prompt=p), self.assertRaisesRegex(GeneralSourceError, "at q2.item.1"):
+                validate_computed_request({}, {"prompt":spans(p, 8)}, solved, 8, "q2.item.1")
+        validate_computed_request({}, {"prompt":spans("אם היו [[6]] ונוספו [[2]], כמה יש עכשיו?", 8)},
+                                  solved, 8, "q2.item.1")

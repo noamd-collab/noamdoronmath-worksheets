@@ -35,6 +35,30 @@ class SquareLessonTest(unittest.TestCase):
             lesson_source.build(self.lesson, json.loads(json.dumps(source))),
         )
 
+    @unittest.skip("The live line rejects lessonGoal=introduce in validation.validate_lesson; "
+                   "the introductory square contract stays dormant until that goal is enabled.")
+    @patch("provider.build_authoring_context", return_value={})
+    def test_introduction_uses_real_provider_contract_and_replays_its_selected_geometry(self, _context):
+        lesson = dict(self.lesson, lessonGoal="introduce")
+        source = {**self.source, "version": lesson_source.INTRO_VERSION,
+                  "constructionOrder": list(reversed(lesson_source.FAMILIES[1:]))}
+        with patch("provider.request_author_json", return_value=source) as author:
+            meta = {}
+            got = author_lesson(lesson, metadata=meta, api_key="test", model="test",
+                                base_url="https://dashscope-intl.aliyuncs.com/compatible-mode/v1")
+        author.assert_called_once()
+        self.assertEqual(meta["authorContract"], lesson_source.INTRO_VERSION)
+        validate_model(lesson, got)
+        _, _, facts = lesson_source.build(lesson, got)
+        self.assertEqual([r["family"] for r in facts if r["family"] in lesson_source.FAMILIES][:7],
+                         ["outline", *source["constructionOrder"]])
+        for bad in ({**got, "constructionOrder": ["diagonals"] * 6}, {**got, "choices": [True]*20}):
+            with self.assertRaises(GenerationError):
+                validate_model(lesson, bad)
+        self.assertFalse(lesson_source.provider_introduction(dict(lesson, lastLesson="ללא אלכסונים")))
+        with self.assertRaises(GenerationError):
+            validate_model(dict(lesson, lessonGoal="practice"), got)
+
     def test_custom_context_or_different_concepts_remain_with_general_author(self):
         for field, value in (
             ("level", "a"),

@@ -20,7 +20,7 @@ from math_tasks import to_house_math, validate_and_solve_task
 from general_geometry import solve_figure_task, measure_elementary_svg
 from no_carry_addition import states_entire_task
 from printed_percentages import percentage_evidence
-from printed_tasks import match_printed_task, matching_solution_choices, printed_solve
+from printed_tasks import match_printed_task, matching_solution_choices, printed_solve, printed_table_row
 from printed_elementary import guard_counting_input, place_answer, place_intro, printed_intent, validate_counting_values
 
 LETTERS = "אבגדהוזחטי"
@@ -388,12 +388,13 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                 complete = states_entire_task(lesson, n-1, j-1, item) or _prints_calculation(item,computed,lesson["gradeNumber"])
                 task_text = "" if complete else _task_text(computed, grade, H, notation=item["answer"].get("notation"))
                 answer = _answer_text(computed, item["answer"]["unit"], grade, H, notation=item["answer"].get("notation"))
-                intent = printed_intent(question, item, computed, lesson["gradeNumber"], location=f"q{n}.item.{j}")
+                intent = (printed_intent(question, item, computed, lesson["gradeNumber"], location=f"q{n}.item.{j}")
+                          or printed_table_row(question, item, computed))
                 if intent:
                     task_text = ""
-                    if intent["rule"] == "write_expression":
+                    if intent["rule"] in ("write_expression", "write_division"):
                         entered = _elementary_math(intent["expression"], grade, H)
-                        result = _elementary_math(computed["result"]["value"], grade, H)
+                        result = _elementary_math(intent.get("value", computed["result"]["value"]), grade, H)
                         answer = H.ltr(entered + " = " + result)
                     ledger.claim(f"{n}.{j}.intent", "הפעולות והנתונים אומתו מול השאלה המודפסת",
                                  intent, method="closed_form")
@@ -443,7 +444,10 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
     dump(work / "worksheet-source.json", {"version": 4, "meta": dict(meta, gradeNumber=lesson["gradeNumber"], levelCode={"a":"A", "b":"B", "e":"E"}[lesson["level"]], topicId=lesson["topicId"]), "questions": canon, "reviewRequired": True})
     template = (skill / "assets/worksheet_template_elementary.html").read_text(encoding="utf-8")
     head = template.split("<body", 1)[0]
-    head = head.replace('</head>', '<style>.answers span.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block;white-space:nowrap}.work-table{border-collapse:collapse;width:100%;margin:8px 0}.work-table td,.work-table th{border:1px solid #9cb5c8;padding:6px;text-align:center}.section-title{font-size:18px;color:#286ca1}</style></head>', 1)
+    # Keep long answer keys readable even when they continue across a page break.
+    answer_layout = ("table.ans td{padding:8px}"
+                     "table.ans tr:nth-last-child(-n+6):not(:last-child){break-after:avoid}")
+    head = head.replace('</head>', '<style>'+answer_layout+'.answers span.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block;white-space:nowrap}.work-table{border-collapse:collapse;width:100%;margin:8px 0}.work-table td,.work-table th{border:1px solid #9cb5c8;padding:6px;text-align:center}.section-title{font-size:18px;color:#286ca1}</style></head>', 1)
     body = ['<body class="'+('band-ab' if ab else 'band-gd' if lesson["gradeNumber"]<=4 else 'band-hv')+'">', '<div class="unit">'+html.escape(source["title"])+'</div><hr class="unit-rule">', '<div class="subtitle">'+LEVELS[lesson["level"]]+' · כיתה '+grade+'׳</div>', '<div class="details"><span>שם: ____________________</span><span>כיתה: ________</span><span>תאריך: __________</span></div>', '<p>'+rich_text(source["rule"], grade, H)+'</p>', '<ol class="questions">']
     for q, intro, rendered, answer in qs:
         body.append('<li'+(' class="starred"' if q["star"] else '')+'>'+('<span class="star"></span> ' if q["star"] else '')+intro+rendered+'</li>')
@@ -486,7 +490,8 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
             for j, item in enumerate(question["items"], 1):
                 item_id = f"q{n}-i{j}"; computed = solved.get(item_id)
                 prompt = rich_text(item["prompt"], lesson["gradeNumber"])
-                printed = percentage_evidence(lesson, question["intro"], item, computed)
+                printed = (percentage_evidence(lesson, question["intro"], item, computed)
+                           or printed_table_row(question, item, computed))
                 bound = match_printed_task(item, computed, lesson["gradeNumber"])
                 label = printed_solve(item["prompt"], computed["question"], lesson["gradeNumber"]) if computed else None
                 if isinstance(label, str) and label != computed["question"]["variable"]:
@@ -560,7 +565,7 @@ if __name__ == "__main__":
         result = division_facts.compile_source(lesson, payload, args.skill, wd)
     elif payload.get("version") == pythagoras_lesson.VERSION:
         result = pythagoras_lesson.compile_pythagoras(lesson, payload, scope, args.skill, wd)
-    elif payload.get("version") == square_lesson.VERSION:
+    elif payload.get("version") in (square_lesson.VERSION, square_lesson.INTRO_VERSION):
         result = square_lesson.compile_square(lesson, payload, scope, args.skill, wd)
     elif payload.get("version") == VERSION:
         result = compile_triangle(lesson, payload, scope, args.skill, wd)

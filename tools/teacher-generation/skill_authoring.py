@@ -5,7 +5,9 @@ from dataclasses import dataclass
 import json
 import re
 
-from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich
+from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich, validate_question
+from math_tasks import MathTaskError
+from skill_feedback import MAX_QUESTIONS
 import compact_authoring
 
 
@@ -42,6 +44,37 @@ def question_plan(lesson, scope):
     return rows
 
 
+def question_ref(slot):
+    return {"$ref": "#/$defs/" + slot.get("representation", "question")}
+
+
+def ordered_geometry_groups(payload, plan):
+    """Convert the named wire slots to stable print order without trusting JSON key order."""
+    if not isinstance(payload, dict) or "representation" not in plan[0]:
+        return payload
+    result = dict(payload)
+    for group in ("practice", "challenges"):
+        value = result.get(group)
+        if isinstance(value, dict):
+            keys = [f"q{row['questionNumber']}" for row in plan if row["group"] == group]
+            if set(value) != set(keys):
+                raise GeneralSourceError("AUTHOR_PLAN_MISMATCH", "Missing or unexpected geometry question")
+            result[group] = [value[key] for key in keys]
+    return result
+
+
+def check_representation(question, slot):
+    expected = slot.get("representation")
+    if not expected:
+        return
+    figure = question.get("figure", {})
+    correct = (question.get("drawingFromWords") is True and "figure" not in question
+               if expected == "drawingFromWords" else
+               figure.get("kind") == ("coordinate_plane" if expected == "coordinate_plane" else "shape"))
+    if not correct:
+        raise GeneralSourceError("SOURCE_FIGURE", "Missing or incorrect planned construction")
+
+
 def worksheet_schema(lesson, scope):
     """Ask for educational content only. The compiler owns scope, versions and layout."""
     canonical = authoring_schema(lesson, scope)
@@ -55,6 +88,28 @@ def worksheet_schema(lesson, scope):
     for group, count in (("practice", lesson["questionCount"] - 3), ("challenges", 3)):
         content[group] = {"type": "array", "items": {"$ref": "#/$defs/question"},
                           "minItems": count, "maxItems": count}
+    if lesson.get("minutes", 60) / lesson["questionCount"] <= 1.8:
+        items = question["properties"]["items"]
+        items["maxItems"] = items["minItems"]
+    plan = question_plan(lesson, scope)
+    if "representation" in plan[0]:
+        # Make the drawing compulsory only in the slots that require one. The
+        # model can then see each question's exact figure schema while authoring.
+        props = question["properties"]
+        shared = {k: v for k, v in props.items() if k not in ("figure", "drawingFromWords")}
+        for kind in ("drawingFromWords", "coordinate_plane", "geometryFigure"):
+            if kind == "drawingFromWords":
+                need, field = "drawingFromWords", {"const": True}
+            else:
+                need = "figure"
+                constructor = "coordinate_plane" if kind == "coordinate_plane" else "shape"
+                variants = [v for v in props["figure"]["oneOf"] if v["properties"]["kind"]["const"] == constructor]
+                field = variants[0] if len(variants) == 1 else {"oneOf": variants}
+            definitions[kind] = {**question, "properties": {**shared, need: field},
+                                 "required": [*question["required"], need]}
+        for group in ("practice", "challenges"):
+            slots = {f"q{row['questionNumber']}": question_ref(row) for row in plan if row["group"] == group}
+            content[group] = {"type": "object", "properties": slots, "required": list(slots), "additionalProperties": False}
     schema = {"type": "object", "properties": content, "required": list(content),
               "additionalProperties": False, "$defs": definitions}
     compact_authoring.wire_schema(schema, scope["topic"]["domain"] in ("data", "אי-ודאות", "אינטגרטיבי"))
@@ -296,7 +351,7 @@ def correction_body(original, findings, lesson, scope, plan, context, model):
         if correction is None:
             raise GeneralSourceError("REVISION_SCOPE", "No bounded set of notation fields to correct")
         return correction.request(model), correction
-    if not isinstance(findings, list) or not 1 <= len(findings) <= 6:
+    if not isinstance(findings, list) or not 1 <= len(findings) <= MAX_QUESTIONS:
         raise GeneralSourceError("REVISION_SCOPE", "No bounded set of worksheet questions to correct")
     fields, rows = {}, []
     for finding in findings:
@@ -308,7 +363,7 @@ def correction_body(original, findings, lesson, scope, plan, context, model):
         fields[f"q{index}"] = (slot["group"], offset)
         rows.append({"question": index, "plan": slot, "original": original[slot["group"]][offset],
                      "findings": finding["feedback"]})
-    properties = {name: {"$ref": "#/$defs/question"} for name in fields}
+    properties = {name: question_ref(plan[int(name[1:]) - 1]) for name in fields}
     schema = {"type": "object", "properties": properties, "required": list(properties),
               "additionalProperties": False, "$defs": worksheet_schema(lesson, scope)["$defs"]}
     skill = context.get("skill", {})
@@ -356,34 +411,57 @@ def apply_replacements(original, fields, replacements):
 def source_findings(original, lesson, scope, error):
     """Localize recoverable wire errors without disclosing text or relaxing validation."""
     instructions = {
-        "PRINTED_EXPRESSION_SCOPE": "Keep the requested skill. For writing an expression, use 'כתבו תרגיל וחשבו את התוצאה:' followed by complete descriptions such as 'הסכום של 6 ו־4, מוכפל ב־3.' Vary the actual numbers and intended operations. Put only the matching two-operation calculation in the typed answer. The compiler prints the expression and its value in the key.",
+        "PRINTED_EXPRESSION_SCOPE": "Preserve the selected concept. If only ONE operation is taught ask directly for a numeric quantity with fully printed givens. Only when two operations are taught and needed for writing an expression, use 'כתבו תרגיל וחשבו את התוצאה:' followed by complete descriptions such as 'הסכום של 6 ו־4, מוכפל ב־3.' Vary the actual numbers and intended operations. Put only the matching two-operation calculation in the typed answer. The compiler prints the expression and its value in the key.",
         "PRINTED_EXPRESSION_MISMATCH": "Ensure that the comparison operands or the expression to be written exactly match the printed givens, in the same order, with the requested units.",
-        "SOURCE_NOTATION": "Write each mathematical expression using supported school notation and explicit operators.",
+        "SOURCE_NOTATION": "Check every intro, prompt, answer and table cell. Inside each [[...]] keep only one complete formula. Write units, question marks and Hebrew words outside the brackets. Each point with coordinates is [[A(2,3)]] and each angle has three distinct points, e.g. [[angle:ABC]]. A task expression never contains Hebrew, an equality, a question mark, a standalone operator or a blank. For equations provide left and right expressions in separate fields. Use explicit * and /, e.g. (15/100)*80.",
         "SOURCE_PLAIN_MATH": "Put the complete formula or variable name in one [[...]] span inside the Hebrew sentence.",
-        "SOURCE_TABLE": "Supply the referenced table with its actual data, or give a complete, self-contained exercise.",
+        "SOURCE_TABLE": "Use self-contained printed givens in each item; remove any reference to an absent table from the intro and every item. If a table is essential to the taught skill, supply it as a question-level table object with head and rows arrays, never pipes or Markdown in prompt text.",
+        "DRAWING_POLICY": "Rewrite the complete question and its items in words using only printed givens. Remove all diagrams, sketches, drawing instructions and references to figures; keep the selected mathematical skill.",
+        "SOURCE_FIGURE": "Use the construction and all of its labelled points as specified by the question plan. For a coordinate plane include every point and segment and integer limits that contain the origin.",
+        "SOURCE_FIGURE_TASK": "Ask for a figure quantity supported by its actual construction; keep all named vertices and their stated measurements consistent.",
+        "PRINTED_ANSWER_KIND": "A yes/no question needs an explicit yes/no and a requested equation needs a complete equation. If the goal is quantitative, rewrite the question and its intro to ask only for the exact scalar you can verify. Otherwise use a supported answer for the whole task.",
+        "PRINTED_TASK_MISMATCH": "Solve the exercise again using the exact givens in the printed prompt, including the displayed operand order, units and missing value. Correct the printed task and typed answer together.",
+        "SOURCE_NIQQUD": "Apply the required grade-specific Hebrew pointing to every word of this question and its answers.",
         "SOURCE_RICH_TEXT": "Use plain Hebrew strings with [[...]] for mathematics in every rich field.",
     }
-    feedback = instructions.get(error.code)
-    if not feedback:
+    grade = lesson["gradeNumber"]
+    if grade <= 6:
+        instructions["SOURCE_NOTATION"] = (
+            "Keep elementary arithmetic in the selected operations. Put the ENTIRE expression in one math span: "
+            "a missing number is three underscores, e.g. [[24 / ___ = 6]], with the answer expression 24/6. "
+            "Never use x or other letters for an unknown, and never mix Hebrew words with the formula. "
+            "Use ordinary Hebrew outside the formula. In task.expression use known numeric operands only.")
+    if not geometry_topic(scope):
+        instructions["SOURCE_TABLE"] += " Example of a real table: table.head and table.rows contain separate plain cells; a missing value uses ___ in its own cell. Use only meaningful columns and givens for the selected concept."
+    if error.code not in instructions:
         return []
     if error.code == "SOURCE_PLAIN_MATH":
         return ([{"kind": "mark_math", "codes": [error.code]}]
                 if notation_correction(original, lesson, scope) is not None else [])
     groups = [original.get(k) for k in ("practice", "challenges")]
-    if not all(isinstance(g, list) for g in groups) or len(groups[0]) != lesson["questionCount"] - 3 or len(groups[1]) != 3:
+    if not all(isinstance(g, list) for g in groups) or [len(g) for g in groups] != [lesson["questionCount"] - 3, 3]:
         return []
-    indices = set()
-    location = re.search(r" at q([1-9][0-9]?)\.(?:intro|item|table)\b", str(error))
-    if location:
-        indices.add(int(location[1]))
-    for index, question in enumerate(groups[0] + groups[1], 1):
+    plan = question_plan(lesson, scope)
+    findings = []
+    for index, wire in enumerate(groups[0] + groups[1], 1):
+        if not isinstance(wire, dict) or "star" in wire:
+            return []
         try:
-            compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]},
+            question ={**wire, "star": index > len(groups[0])}
+            expanded = compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]},
                 lesson["gradeNumber"], fraction_notation=scope["topic"]["domain"] == "fractions")
-        except GeneralSourceError as exc:
-            if exc.code != error.code:
+            validate_question(expanded["sections"][0]["questions"][0], lesson["gradeNumber"], scope,
+                              provider=True, qcount=index, evidence=[], pending=[])
+            check_representation(question, plan[index - 1])
+        except (GeneralSourceError, MathTaskError) as exc:
+            feedback = instructions.get(exc.code)
+            if not feedback:
                 return []
-            indices.add(index)
-            if len(indices) > 6:
+            location = re.search(r" at q[1-9][0-9]?\.(intro|item\.[1-9](?:\.(?:prompt|answer))?|table(?:\.[a-z0-9.]+)?)\b", str(exc))
+            if location:
+                feedback = f"Check {location[1]}. " + feedback
+            findings.append({"question": index, "codes": [exc.code], "feedback": [feedback]})
+            if len(findings) > MAX_QUESTIONS:
                 return []
-    return [{"question": i, "codes": [error.code], "feedback": [feedback]} for i in sorted(indices)]
+    # A rule/title or worksheet-wide failure cannot be fixed by replacing individual rows.
+    return findings if any(error.code in f["codes"] for f in findings) else []

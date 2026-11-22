@@ -1,6 +1,7 @@
 """Bind exact tasks to complete formulas that the student actually sees."""
 
 from dataclasses import dataclass
+from fractions import Fraction
 import re
 import unicodedata
 
@@ -24,6 +25,21 @@ OP_NAMES = {
 
 def _reject():
     raise GeneralSourceError("PRINTED_TASK_MISMATCH", "The exact answer disagrees with the printed task")
+
+
+def validate_computed_request(question, item, solved, grade, location):
+    """A numeric key cannot answer a yes/no question or supply a requested equation."""
+    if solved["result"].get("type") != "expression":
+        return
+    def words(spans):
+        value = "".join(s["text"] if s["kind"] == "text" else "@" for s in spans)
+        return "".join(c for c in value if not unicodedata.combining(c))
+
+    prompt = words(item["prompt"])
+    if (re.search(r"(?:^|[.!?]\s*|\sו?)האם\s", prompt)
+            or re.search(r"(?:כתבו|רשמו|בנו|חברו)\s+(?:את\s+ה)?משוואה", prompt)):
+        raise GeneralSourceError("PRINTED_ANSWER_KIND",
+                                 "The printed request needs a decision or an equation, not a scalar at " + location)
 
 
 def _tree(part):
@@ -73,10 +89,11 @@ def match_printed_task(item, solved, grade):
         labels = OP_NAMES if grade > 2 else {
             "add": "חִבּוּר", "subtract": "חִסּוּר", "multiply": "כֶּפֶל", "divide": "חִלּוּק"}
         return Binding({"rule": "first_operation", "step": steps[0]}, labels[steps[0]["op"]])
-    if (re.fullmatch(r"(?:השלימו|המספר החסר הוא(?: ___)?|מצאו את המספר החסר)[\s:?.]*", words)
+    if ((not words or re.fullmatch(r"(?:השלימו|המספר החסר הוא(?: ___)?|מצאו את המספר החסר)[\s:?.]*", words))
             and span["kind"] == "formula" and span["notation"].count("___") == 1 and len(parts) == 3
-            and parts[1] == "=" and isinstance(parts[0], dict) and isinstance(parts[2], dict)
-            and not item["answer"]["unit"]):
+            and parts[1] == "=" and isinstance(parts[0], dict) and isinstance(parts[2], dict)):
+        if item["answer"]["unit"]:
+            _reject()
         eq = {"kind": "solve", "variable": "x", "lhs": parts[0], "rhs": parts[2]}
         result = validate_and_solve_task(eq)["result"]
         if result["classification"] != "finite" or result["values"] != [solved["result"]["value"]]:
@@ -84,6 +101,62 @@ def match_printed_task(item, solved, grade):
         return Binding({"rule": "unique_missing_number", "equation": eq,
                         "value": result["values"][0]})
     return None
+
+
+def printed_table_row(question, item, solved):
+    """Prove the single missing quantity in a referenced numeric row with named roles."""
+    table = question.get("table")
+    if not table or not solved or solved["question"]["kind"] != "evaluate":
+        return None
+    prompt = item["prompt"]
+    if (len(prompt) != 2 or prompt[0].get("text", "").strip() not in ("שורה", "שׁוּרָה")
+            or prompt[1].get("kind") != "math"):
+        return None
+    index = prompt[1]["expression"]
+    if index.get("type") != "number" or index["denominator"] != 1 or not 1 <= index["numerator"] <= len(table["rows"]):
+        return None
+    labels = [cell[0].get("text", "") if len(cell) == 1 else "" for cell in table["head"]]
+    ratios = (("מחלק", "מנה", "מחולק"), ("מספר", "אחוז", "תוצאה"))
+    roles = next((roles for roles in ratios if len(labels) == 3 and set(roles) == set(labels)), None)
+    if roles is None:
+        return None
+    row = table["rows"][index["numerator"] - 1]
+    quantities = []
+    for role in roles:
+        cell = row[labels.index(role)]
+        if len(cell) != 1:
+            return None
+        span = cell[0]
+        if span.get("notation") == "___":
+            quantities.append(None)
+        elif role == "אחוז":
+            spelling = span.get("notation", "")
+            if not spelling.endswith("%") or display_literal(spelling) is None:
+                return None
+            quantities.append(literal_value(spelling))
+        elif span.get("kind") == "math" and span["expression"].get("type") == "number":
+            val = span["expression"]
+            quantities.append(Fraction(val["numerator"], val["denominator"]))
+        elif span.get("kind") == "formula" and display_literal(span["notation"]) is not None:
+            quantities.append(literal_value(span["notation"]))
+        else:
+            return None
+    if quantities.count(None) != 1:
+        return None
+    a, b, total = quantities
+    missing = quantities.index(None)
+    if missing != 2 and not quantities[1 - missing]:
+        _reject()
+    expected = a * b if missing == 2 else total / quantities[1 - missing]
+    if roles[0] == "מחלק" and (expected if missing == 0 else a) == 0:
+        _reject()
+    if roles[missing] == "אחוז":
+        expected *= 100
+    actual = solved["result"].get("value", {})
+    if (actual.get("type") != "number" or Fraction(actual["numerator"], actual["denominator"]) != expected
+            or item["answer"]["unit"] not in (("%", "אחוז", "אחוזים", "") if roles[missing] == "אחוז" else ("",))):
+        _reject()
+    return {"rule": "printed_table_row", "row": index["numerator"], "quantity": roles[missing]}
 
 
 def _named_equation(notation, grade):

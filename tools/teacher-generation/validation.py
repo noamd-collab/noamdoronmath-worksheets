@@ -142,7 +142,7 @@ def validate_model(lesson, payload, *, allow_legacy=False):
                 counting_lesson.validate_parameters(lesson, payload)
             elif isinstance(payload, dict) and payload.get('version') == division_facts.VERSION:
                 division_facts.derive(lesson, payload)
-            elif isinstance(payload, dict) and payload.get('version') == square_lesson.VERSION:
+            elif isinstance(payload, dict) and payload.get('version') in (square_lesson.VERSION, square_lesson.INTRO_VERSION):
                 square_lesson.validate_parameters(lesson, payload)
             elif isinstance(payload, dict) and payload.get('version') == pythagoras_lesson.VERSION:
                 pythagoras_lesson.validate_parameters(lesson, payload)

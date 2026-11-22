@@ -37,6 +37,19 @@ FROM_WORDS = re.compile(
 )
 
 
+QUOTIENT_FROM_ROLES = re.compile(
+    r"(?:כתבו|רשמו) תרגיל חילוק שהמחולק (?:בו )?הוא " + NATURAL +
+    r" והמחלק (?:בו )?הוא " + NATURAL + r"[.]מה(?:י)? המנה[?]"
+)
+DIVIDEND_FROM_ROLES = re.compile(
+    r"(?:כתבו|רשמו) תרגיל חילוק שהמחלק (?:בו )?הוא " + NATURAL +
+    r" ו(?:התוצאה|המנה) היא " + NATURAL + r"[.]?"
+)
+DIVISION_INSTRUCTION = re.compile(
+    r"(?:(?:בנו|כתבו|רשמו) (?:דוגמה (?:משלכם )?ל)?תרגיל חילוק(?: ובדקו אותו)?|בנו דוגמה חדשה)[.:]?"
+)
+
+
 def printed_intent(question, item, solved, grade, *, location):
     """Bind a printed comparison or a request to write and evaluate an expression."""
     if grade > 6:
@@ -77,6 +90,26 @@ def printed_intent(question, item, solved, grade, *, location):
         reject("PRINTED_EXPRESSION_SCOPE")
     intro = _plain(question["intro"])
     description = _plain(prompt)
+    division = QUOTIENT_FROM_ROLES.fullmatch(description or "")
+    inverse = DIVIDEND_FROM_ROLES.fullmatch(description or "")
+    if (division or inverse) and (DIVISION_INSTRUCTION.fullmatch(intro or "") or NEUTRAL_INTRO.fullmatch(intro or "")):
+        if grade < 2 or task["kind"] != "evaluate" or item["answer"].get("unit"):
+            reject("PRINTED_EXPRESSION_SCOPE")
+        if inverse:
+            divisor, quotient = map(int, inverse.groups())
+            if not divisor:
+                reject("PRINTED_EXPRESSION_SCOPE")
+            product = operation("multiply", number(divisor), number(quotient))
+            if task["expression"] != product:
+                reject("PRINTED_EXPRESSION_MISMATCH")
+            # The requested answer is the whole division equation.
+            return {"rule": "write_division", "expression": operation("divide", number(divisor * quotient), number(divisor)),
+                    "value": number(quotient)}
+        dividend, divisor = map(int, division.groups())
+        tree = operation("divide", number(dividend), number(divisor))
+        if tree != task["expression"]:
+            reject("PRINTED_EXPRESSION_MISMATCH")
+        return {"rule": "write_expression", "expression": tree}
     if description and not WRITE_INSTRUCTION.fullmatch(intro or ""):
         # An individual subitem can carry its own instruction and full description.
         instruction, colon, body = description.partition(":")

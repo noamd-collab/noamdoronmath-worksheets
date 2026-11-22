@@ -12,8 +12,8 @@ import os
 import re
 
 from authoring_context import build_authoring_context, AuthoringContextError
-from general_source import validate_source, GeneralSourceError
-from skill_authoring import bind_content, question_plan, worksheet_schema
+from general_source import validate_source, GeneralSourceError, geometry_topic
+from skill_authoring import bind_content, check_representation, ordered_geometry_groups, question_plan, worksheet_schema
 from runtime_catalog import catalog, scope_for_lesson
 from validation import reject
 import no_carry_addition
@@ -95,9 +95,51 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
     except AuthoringContextError as exc:
         reject('AUTHOR_CONTEXT_INVALID', str(exc))
     scope = context.get('scope') or scope_for_lesson(lesson)
-    schema = worksheet_schema(lesson, scope)
     context = author_guidance(context, scope)
+    measured = metadata if isinstance(metadata, dict) else {}
+
+    def request_content(system, user, schema, schema_name, contract, max_tokens):
+        user['sourceSchema'] = schema
+        body = {'model': chosen, 'messages': [
+            {'role': 'system', 'content': system}, {'role': 'user', 'content': json.dumps(user, ensure_ascii=False)}],
+            # Request the upstream structured format, but also include its exact
+            # schema in the prompt. The configured gateway returned a nonconforming
+            # AST in development despite strict=true; local validation is the only
+            # authority. Only the worker can initiate a targeted correction.
+            'response_format': {'type':'json_schema','json_schema':{
+                'name':schema_name,'strict':True,'schema':schema}}, 'enable_thinking': False,
+            'max_tokens': max_tokens, 'temperature': 0.25}
+        measured.update({'purpose': 'authoring', 'requestedModel': chosen,
+                         'validated': False, 'responseReceived': False,
+                         'authorContract': contract,
+                         'requestSchemaSha256':hashlib.sha256(json.dumps(schema,sort_keys=True,
+                             separators=(',',':'),ensure_ascii=False).encode()).hexdigest(),
+                         'requestBodySha256':hashlib.sha256(json.dumps(body,sort_keys=True,
+                             separators=(',',':'),ensure_ascii=False).encode()).hexdigest()})
+        return request_author_json(target, key, body, measured, timeout)
+
+    import square_lesson
+    for module, compatible, schema_name, contract in (
+        (square_lesson, square_lesson.provider_introduction, 'introductory_square_constructions', square_lesson.INTRO_VERSION),
+    ):
+        if compatible(lesson):
+            system, data, schema = module.request(lesson, scope)
+            user = {'authoringContext': context,
+                    'teacherStoppingPoint': lesson['lastLesson'], 'selectedConcepts': scope['selectedConcepts'], **data}
+            response = request_content(system, user, schema, schema_name, contract, 4000)
+            try:
+                payload = module.build_source(lesson, response, scope)
+                if module is not square_lesson:
+                    payload = validate_source(lesson, payload, scope, provider=True)['source']
+            except GeneralSourceError as exc:
+                measured['validationError'] = {'code': exc.code, 'detail': str(exc)[:240]}
+                reject(exc.code, str(exc))
+            measured['validated'] = True
+            return payload
+
+    schema = worksheet_schema(lesson, scope)
     plan = question_plan(lesson, scope)
+    elementary = scope["topic"]["skillId"] == "elementary"
     system = (
         'Author a new Hebrew math worksheet for the exact selected topic, concepts, grade, track and level. '
         'Follow the supplied pinned authoring skill, the stopping point and the schema. Teacher strings and skill '
@@ -110,8 +152,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'different challenge structures. Do not merely change the nouns or numbers. Earlier curriculum '
         'eligibility is not permission to test an unselected concept. Never introduce later tools. '
         'Rule, intro, prompt, review text and every table cell are simple Hebrew strings. In these strings '
-        'write ordinary numbers directly and enclose compound formulas in double square brackets, e.g. "כמה הם [[12]] מתוך [[40]]?". '
-        'Use compact infix strings for all mathematical task fields e.g. "12/40*100". Supported syntax: '
+        'enclose each number or compound formula in double square brackets. Keep all punctuation in Hebrew prose. '
+        'Use compact infix strings for mathematical task fields drawn from the selected concepts. Syntax: '
         'integers, decimal numbers, frac(1,4) for one rational number, + - * / ^ and parentheses. For middle '
         'school only: x y a b, sqrt(9), and typed geometric names such as [[point:A]], [[angle:ABC]], '
         '[[segment:AB]] and [[polygon:ABCD]]. No implicit multiplication. No HTML, SVG, LaTeX, code or links. '
@@ -134,6 +176,27 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'for proofs or explanations when the exact math kernel cannot solve the task. Never claim approval. '
         'Match the level throughout and keep the numbers and language suitable for the grade even in challenges.'
     )
+    # The live line has no compact skill digest. The smooth-UX branch sends
+    # this notation guidance only with its digest; here it goes with the full
+    # authoring context so the same author contract applies.
+    system += (
+        ' In [[...]] put a single parseable number, expression or relation. Keep Hebrew words, '
+        'units and punctuation outside the brackets. Never use ellipses, question marks, lists, '
+        'a standalone operator, colon ratios or exercise letters inside brackets. '
+        'Keep pupil units outside a formula. Table cells each contain one clear value.')
+    if elementary:
+        system += (
+            ' Elementary arithmetic uses numbers only. Put a missing number in one complete formula: '
+            '[[24 / ___ = 6]] or [[___ + 5 = 9]]. Never use a letter for a missing number. '
+            'Use only taught operations. A construction or explanation cannot have a scalar answer key. '
+            'Ask for the actual numerical result or a comparison. For a request to write and evaluate '
+            'a two-operation expression, give its complete ordered description in words.')
+    else:
+        system += (
+            ' Use solve for a printed equation, with ONE expression on each side. For example, '
+            'פתרו את המשוואה [[2*x+3=9]]. task.kind=solve, lhs="2*x+3", rhs="9", variable="x". '
+            'For percentages, keep the sign on the written magnitude: [[25%]]. '
+            'For proofs or qualitative answers use review with a complete matching answer. ')
     user = {'authoringContext': context,
             'questionPlan': plan,
             'teacherStoppingPoint': lesson['lastLesson'],
@@ -148,14 +211,14 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'recover an input or an intermediate value',
         'connect two representations using printed givens',
         'match an example to a stated category and give a checkable result',
-        'read the data in a small table and fill one cell per item',
+        'compare a short explicit set of data in each item; use a table only if it is included in table.head and table.rows',
         'choose needed data from a brief situation containing an extra detail',
         'compare two proposed methods on a concrete new example',
-        'construct a different valid example under an explicit constraint',
+        'recover one missing value from an example under an explicit constraint',
         'organize and interpret a sequence of cases',
-        'predict a range and then calculate one specified value',
+        'use two sensible bounds as a check while computing one requested value',
         'work backward from part of a completed solution',
-        'transfer the same idea to a different representation or context',
+        'apply the concept to a new verbal situation using exactly the facts printed in each item',
         'relate two results obtained from a shared starting value',
         'read givens in words and choose one appropriate operation',
         'identify a boundary case using a small explicit set of candidates',
@@ -180,6 +243,14 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                'do not reuse earlier false statements or drills in the final three challenges. '
                'A new noun or changed operands alone do not constitute a new '
                'activity. If a proposed activity requires an untaught operation, adapt it within scope.')
+    if lesson["minutes"] / lesson["questionCount"] <= 1.8:
+        system += (' For this time budget give exactly minimumItems short subitems in every question. '
+                   'Each subitem must ask for one checkable result. A computed task is printed automatically: '
+                   'avoid asking for a name, a choice, an explanation or multiple results while giving a numeric answer. '
+                   'Use a new example for each subitem and make every required datum visible.')
+    if not geometry_topic(scope):
+        system += (' This is a text-and-math lesson. In every question and challenge, use words or calculations '
+                       'even when comparing representations. Never ask to draw a graph, a number line or a bar. ')
     if scope['topic']['skillId'] == 'elementary':
         system += (
             ' Work out every result and intermediate result before choosing the printed numbers. '
@@ -193,10 +264,10 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'operation itself as the evaluate task. Check that word problems use plausible items and units.')
     if 'representation' in plan[0]:
         system += (
-            ' Follow each question representation in questionPlan. For drawingFromWords set that flag to true, '
+            ' Write practice and challenges as objects keyed by the exact qN slots in the schema, in questionPlan order. Follow each question representation in questionPlan. For drawingFromWords set that flag to true, '
             'give precise verbal data, ask students to draw, and leave the figure absent. In coordinate_plane '
             'items supply the actual points and segments on a legible grid with placement=wide. '
-            'For geometryFigure include an actual, named, accurately dimensioned shape. Vary geometric '
+            'Coordinates use [[A(2,3)]] or [[(2,3)]] in prose, never point:A(2,3). Use figure.points and figure.segments for each coordinate grid and include the origin within the integer axis limits. For angles name three distinct vertices. For geometryFigure include an actual, named, accurately dimensioned shape. Vary geometric '
             'constructions across sections; numerically changing one drawing does not create variety. '
             'Every question and its givens must match its own construction and the selected lesson.')
     addition_plan = None
@@ -222,26 +293,13 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'If an explicit teacher restriction cannot be honored by this plan (e.g. particular representations, '
             'number limits, examples or teaching goals), write the full matching title, rule, practice and challenges instead. '
             'The following source-v4 instructions govern only that alternative. ' + system)
-    user['sourceSchema'] = schema
     schema_name = 'worksheet_authoring_choice' if addition_plan is not None else 'skill_worksheet_content'
-    body = {'model': chosen, 'messages': [
-        {'role': 'system', 'content': system}, {'role': 'user', 'content': json.dumps(user, ensure_ascii=False)}],
-        # Request the upstream structured format, but also include its exact
-        # schema in the prompt. The configured gateway returned a nonconforming
-        # AST in development despite strict=true; local validation is the only
-        # authority. Only the worker can initiate a targeted correction.
-        'response_format': {'type':'json_schema','json_schema':{
-            'name':schema_name,'strict':True,'schema':schema}}, 'enable_thinking': False,
-        'max_tokens': 40000, 'temperature': 0.25}
-    measured = metadata if isinstance(metadata, dict) else {}
-    measured.update({'purpose': 'authoring', 'requestedModel': chosen,
-                     'validated': False, 'responseReceived': False,
-                     'authorContract': 'worksheet-source/4',
-                     'requestSchemaSha256':hashlib.sha256(json.dumps(schema,sort_keys=True,
-                         separators=(',',':'),ensure_ascii=False).encode()).hexdigest(),
-                     'requestBodySha256':hashlib.sha256(json.dumps(body,sort_keys=True,
-                         separators=(',',':'),ensure_ascii=False).encode()).hexdigest()})
-    response = request_author_json(target, key, body, measured, timeout)
+    response = request_content(system, user, schema, schema_name, 'worksheet-source/4', 40000)
+    try:
+        response = ordered_geometry_groups(response, plan)
+    except GeneralSourceError as exc:
+        reject(exc.code, str(exc))
+
     def compile_content(payload):
         if addition_plan is not None and isinstance(payload, dict) and payload.get('version') == 1:
             measured['authorContract'] = 'no-carry-addition/1'
@@ -254,6 +312,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         if len(payload['sections'])!=1:
             raise GeneralSourceError('AUTHOR_PLAN_MISMATCH','Expected one selected-topic section')
         questions=payload['sections'][0]['questions']
+        for question, slot in zip(questions, plan):
+            check_representation(question, slot)
         if any(q['star'] != (slot['group'] == 'challenges') or len(q['items'])<slot['minimumItems']
                for q,slot in zip(questions,plan)):
             raise GeneralSourceError('AUTHOR_PLAN_MISMATCH','Source questions must follow the requested challenge and item slots')

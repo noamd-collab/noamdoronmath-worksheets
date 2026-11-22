@@ -144,7 +144,12 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         record['usage'] = safe_usage(metadata.get('usage'))
         if 'revisionUsage' in metadata:
             record['revisionUsage'] = safe_usage(metadata.get('revisionUsage'))
-        if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4', 'no-carry-addition/1', 'triangle-parameters/1', 'division-facts/1', 'square-parameters/1', 'counting-words/1', 'pythagoras-parameters/1', 'unlike-fractions/1'):
+        if metadata.get('authorContract') in (
+            'worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4', 'no-carry-addition/1',
+            'triangle-parameters/1', 'division-facts/1', 'square-parameters/1', 'counting-words/1',
+            'pythagoras-parameters/1', 'unlike-fractions/1', 'square-introduction/1',
+            'intro-algebra/1', 'intro-arithmetic/1',
+        ):
             record['authorContract'] = metadata['authorContract']
         derivation = metadata.get('derivation')
         if isinstance(derivation, dict) and type(derivation.get('performed')) is bool:

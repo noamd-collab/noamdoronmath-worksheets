@@ -111,7 +111,11 @@ class ProviderMiddleMathTests(unittest.TestCase):
         replacement["intro"] = [{"kind": "text", "text": "נתון AD ⊥ BC."}]
         untouched = copy.deepcopy(flat)
         revision = {}
-        with patch("provider.build_authoring_context", return_value={}), patch(
+        # This test covers rich-text canonicalization. Planned geometry
+        # constructions are enforced and tested separately in
+        # test_general_runtime.test_geometry_slots_require_real_constructions_including_on_revision.
+        with patch("general_provider.check_representation"), \
+                patch("provider.build_authoring_context", return_value={}), patch(
             "provider.request_author_json", side_effect=[flat, {"q1": replacement}]
         ) as author:
             first = provider.author_lesson(lesson, revision=revision, api_key="synthetic-fixture-key",
