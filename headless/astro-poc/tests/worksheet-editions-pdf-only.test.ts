@@ -209,3 +209,27 @@ test('JSON schema agrees on PDF-only provenance, forbidden future fields and the
     assert.throws(() => mergeWorksheetEditions(base, rows), /Worksheet editions:/);
   }
 });
+
+test('questions-only assessment binds its three print files and cannot borrow another edition’s source', () => {
+  const registry = JSON.parse(readFileSync(new URL('../../../headless/catalog/worksheet-editions.v1.json', import.meta.url), 'utf8'));
+  const original = registry.editions.find((row: {editionId: string}) => row.editionId === 'ms-20261122-g7-ast-01-r1');
+  assert.ok(original);
+  const cases = [
+    (row: typeof original) => { delete row.assessmentPdfEvidence; },
+    (row: typeof original) => { row.assessmentPdfEvidence.independentReviewSha256 = '0'.repeat(64); },
+    (row: typeof original) => { row.levels[0].sourceSha256 = row.levels[1].sourceSha256; },
+    (row: typeof original) => { row.levels[0].nativeExportSha256 = row.levels[0].sourceSha256; },
+    (row: typeof original) => { row.levels[0].pdfSha256 = '1'.repeat(64); },
+    (row: typeof original) => { row.isDefault = true; },
+  ];
+  for (const mutate of cases) {
+    const changed = structuredClone(original);
+    mutate(changed);
+    assert.throws(() => mergeWorksheetEditions(base, {version: 1, editions: [changed]}));
+  }
+  const merged = mergeWorksheetEditions(base, {version: 1, editions: [original]});
+  const assessment = topic(merged, 7, 50).editions!.find(e => e.editionId === original.editionId)!;
+  assert.equal(assessment.routing.usesViewer, false);
+  assert.equal(assessment.routing.aiHintShown, false);
+  assert.ok(assessment.levels.every(l => !Object.hasOwn(l, 'ramzi')));
+});
