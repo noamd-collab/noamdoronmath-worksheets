@@ -5,6 +5,7 @@ generated worksheet has already passed output gates. Each output is gated.
 """
 from __future__ import annotations
 
+from functools import cache
 from pathlib import Path
 from curriculum_scope import load_curriculum_scope, validate_curriculum_scope
 
@@ -13,7 +14,9 @@ CURRICULUM_SHA256 = '57adca1891cbc2ef333709a6adee18045da23035f9e981f091673d2f854
 HERE = Path(__file__).resolve().parent
 
 
+@cache
 def catalog():
+    """Reuse the immutable, hash-verified projection for this worker process."""
     return load_curriculum_scope(HERE / 'generation-curriculum.json', CURRICULUM_SHA256)
 
 

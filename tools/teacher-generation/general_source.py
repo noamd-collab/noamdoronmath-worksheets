@@ -80,9 +80,13 @@ def rich(value, grade, *, provider=False, location=""):
         if kind == "text":
             exact(span, ("kind", "text")); text(span["text"], 1200)
             if grade >= 7 and re.search(r"[0-9A-Za-z]", span["text"]):
-                bad("SOURCE_PLAIN_MATH", "Middle-school numbers and Latin names require typed spans")
+                bad("SOURCE_PLAIN_MATH", "Middle-school numbers and Latin names require typed spans" + (" at " + location if location else ""))
         elif kind == "math":
             exact(span, ("kind", "expression")); inspect_ast(span["expression"])
+        elif kind == "formula":
+            from compact_authoring import display_parts
+            exact(span, ("kind", "notation"))
+            display_parts(span["notation"],grade)
         elif kind == "geometry":
             exact(span, ("kind", "type", "names"))
             lengths = {"point": (1, 1), "segment": (2, 2), "triangle": (3, 3), "angle": (3, 3), "polygon": (3, 8)}
@@ -94,6 +98,12 @@ def rich(value, grade, *, provider=False, location=""):
         else:
             bad("SOURCE_RICH_TEXT", "Unsupported text span" + (" at " + location if location else ""))
     return deepcopy(value)
+
+
+DRAWING_REQUEST = re.compile(
+    r"(?<![א-ת])(?:ו?(?:ציירו|שרטטו|סרטטו)|(?:היעזרו|העזרו|התבוננו|הסתכלו) "
+    r"ב(?:שרטוט|סרטוט|איור|ציור|תרשים)|(?:הוסיפו|השלימו|צרו|הכינו) (?:שרטוט|סרטוט|איור|ציור|תרשים))(?![א-ת])"
+)
 
 
 def geometry_topic(scope):
@@ -234,8 +244,17 @@ def _validate_source(lesson, payload, scope, *, provider):
                     bad("SOURCE_ANSWER", "Expected typed answer")
                 item_id = f"q{qcount}-i{j}"
                 if answer.get("kind") == "computed":
-                    exact(answer, ("kind", "task", "unit")); text(answer["unit"], 50, empty=True)
+                    exact(answer, ("kind", "task", "unit"), ("notation",)); text(answer["unit"], 50, empty=True)
                     solved = validate_and_solve_task(answer["task"])
+                    if grade <= 6:
+                        from printed_elementary import printed_intent
+                        printed_intent(question, item, solved, grade, location=f"q{qcount}.item.{j}")
+                    if "notation" in answer:
+                        from compact_authoring import expression
+                        notation = answer["notation"]
+                        if (type(notation) is not str or solved["question"]["kind"] != "evaluate" or
+                                expression(notation, grade) != solved["question"]["expression"]):
+                            bad("SOURCE_NOTATION", "The printed calculation must equal its exact typed task")
                     evidence.append({"itemId": item_id, "computed": solved})
                 elif answer.get("kind") == "figure":
                     exact(answer,("kind","operation","unit"),("point",));text(answer["unit"],50,empty=True)
@@ -257,6 +276,8 @@ def _validate_source(lesson, payload, scope, *, provider):
     if not 2 <= stars <= 4:
         bad("SOURCE_STARS", "The pinned skill requires two to four starred questions")
     prose = " ".join(_prose_strings(normalized))
+    if not geometry_topic(scope) and DRAWING_REQUEST.search(NIQQUD.sub("", prose)):
+        bad("DRAWING_POLICY", "Only geometry lessons can give drawing instructions")
     if not HEBREW.search(prose):
         bad("SOURCE_LANGUAGE", "Expected original Hebrew worksheet prose")
     if grade >= 3 and NIQQUD.search(prose):
@@ -294,6 +315,11 @@ def authoring_schema(lesson, scope):
         return {"type": "array", "items": item, "minItems": minimum, "maxItems": maximum}
     plain_pattern=r"^(?![\s\S]*(?:[<>$\\]|(?:[hH][tT][tT][pP][sS]?|[fF][iI][lL][eE]|[dD][aA][tT][aA]):|[\u0000-\u0008\u000b-\u001f\u007f\u202a-\u202e\u2066-\u2069]))[\s\S]*$"
     st = {"type": "string", "maxLength": 1200, "minLength": 1,"pattern":plain_pattern}
+    grade = lesson["gradeNumber"]
+    if grade <= 2:
+        # This also covers titles copied from the unvocalized catalogue.
+        vocalized = {"pattern": r"^(?:[^א-ת]*|[\s\S]*[\u05b0-\u05bc\u05c1\u05c2\u05c7][\s\S]*)$"}
+        st["allOf"] = [vocalized]
     prose_st=dict(st)
     if lesson["gradeNumber"]>=7:
         prose_st["allOf"]=[{"pattern":r"^[^0-9A-Za-z]*$"}]
@@ -301,11 +327,44 @@ def authoring_schema(lesson, scope):
     expr = {"$ref": "#/$defs/expression"}
     task = {"$ref": "#/$defs/task"}
     rt = {"$ref": "#/$defs/rich"}
-    expression = {"oneOf": [obj({"type": {"const": "number"}, "numerator": num, "denominator": {"type": "integer", "minimum": 1, "maximum": 1_000_000}}), obj({"type": {"const": "symbol"}, "name": {"enum": ["x", "y", "a", "b"]}}), obj({"type": {"const": "operation"}, "op": {"enum": ["add", "multiply"]}, "args": arr(expr, 2, 6)}), obj({"type": {"const": "operation"}, "op": {"enum": ["subtract", "divide", "power"]}, "args": arr(expr, 2, 2)}), obj({"type": {"const": "operation"}, "op": {"const": "sqrt"}, "args": arr(expr, 1, 1)})]}
-    tasks = [obj({"kind": {"enum": ["evaluate", "simplify", "factor", "expand"]}, "expression": expr}), obj({"kind": {"const": "compare"}, "left": expr, "right": expr}), obj({"kind": {"const": "solve"}, "lhs": expr, "rhs": expr, "variable": {"enum": ["x", "y", "a", "b"]}}), obj({"kind": {"const": "substitute"}, "expression": expr, "values": {"type": "object", "properties": {n: expr for n in ("x", "y", "a", "b")}, "additionalProperties": False, "minProperties": 1}})]
-    tasks += [obj({"kind":{"const":"solve_system"},"variables":arr({"enum":["x","y","a","b"]},2,2),"equations":arr(obj({"lhs":expr,"rhs":expr}),2,2)}), obj({"kind":{"const":"inequality"},"variable":{"enum":["x","y","a","b"]},"lhs":expr,"rhs":expr,"relation":{"enum":["lt","le","gt","ge"]}}), obj({"kind":{"const":"statistics"},"operation":{"enum":["mean","median","mode","range","sort"]},"values":arr(expression["oneOf"][0],1,64)})]
-    rich_schema = arr({"oneOf": [obj({"kind": {"const": "text"}, "text": prose_st}), obj({"kind": {"const": "math"}, "expression": expr}), obj({"kind": {"const": "geometry"}, "type": {"enum": ["point", "segment", "triangle", "angle", "polygon"]}, "names": {"type": "string", "pattern": "^[A-Z]{1,8}$"}})]})
+    middle = scope["topic"]["skillId"] == "middle"
+    variables = {"enum": ["x", "y", "a", "b"]}
+    rational = obj({"type": {"const": "number"}, "numerator": num,
+                    "denominator": {"type": "integer", "minimum": 1, "maximum": 1_000_000}})
+    multiple_ops = ["add"] if grade == 1 else ["add", "multiply"]
+    binary_ops = ["subtract"] if grade == 1 else ["subtract", "divide"]
+    if grade >= 4:
+        binary_ops.append("power")
+    expressions = [rational,
+                   obj({"type": {"const": "operation"}, "op": {"enum": multiple_ops}, "args": arr(expr, 2, 6)}),
+                   obj({"type": {"const": "operation"}, "op": {"enum": binary_ops}, "args": arr(expr, 2, 2)})]
+    tasks = [obj({"kind": {"enum": ["evaluate", "simplify", "factor", "expand"]}, "expression": expr}),
+             obj({"kind": {"const": "compare"}, "left": expr, "right": expr}),
+             obj({"kind": {"const": "statistics"}, "operation": {"enum": ["mean", "median", "mode", "range", "sort"]},
+                  "values": arr(rational, 1, 64)})]
+    spans = [obj({"kind": {"const": "text"}, "text": prose_st}),
+             obj({"kind": {"const": "math"}, "expression": expr})]
+    if middle:
+        expressions.extend([
+            obj({"type": {"const": "symbol"}, "name": variables}),
+            obj({"type": {"const": "operation"}, "op": {"const": "sqrt"}, "args": arr(expr, 1, 1)})])
+        tasks.extend([
+            obj({"kind": {"const": "solve"}, "lhs": expr, "rhs": expr, "variable": variables}),
+            obj({"kind": {"const": "substitute"}, "expression": expr, "values": {
+                "type": "object", "properties": {name: expr for name in variables["enum"]},
+                "additionalProperties": False, "minProperties": 1}}),
+            obj({"kind": {"const": "solve_system"}, "variables": arr(variables, 2, 2),
+                 "equations": arr(obj({"lhs": expr, "rhs": expr}), 2, 2)}),
+            obj({"kind": {"const": "inequality"}, "variable": variables, "lhs": expr, "rhs": expr,
+                 "relation": {"enum": ["lt", "le", "gt", "ge"]}})])
+        spans.append(obj({"kind": {"const": "geometry"},
+                          "type": {"enum": ["point", "segment", "triangle", "angle", "polygon"]},
+                          "names": {"type": "string", "pattern": "^[A-Z]{1,8}$"}}))
+    expression = {"oneOf": expressions}
+    rich_schema = arr({"oneOf": spans})
     unit_schema={"type":"string","maxLength":50,"pattern":plain_pattern}
+    if grade <= 2:
+        unit_schema["allOf"] = [vocalized]
     answers = [obj({"kind": {"const": "computed"}, "task": task, "unit": unit_schema})]
     if scope["topic"]["skillId"] == "middle":
         answers.append(obj({"kind": {"const": "review"}, "text": rt}))
