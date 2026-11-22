@@ -1,6 +1,6 @@
 /**
  * Every catalog topic in grades 1–9 has a landing whose primary CTA is that
- * topic. These fifteen used to appear only inside a parent page.
+ * topic. Some were previously accessible only through a broader topic page.
  * Loops are existing films; this file does not add a new variant.
  */
 import assert from 'node:assert/strict';
@@ -28,6 +28,7 @@ const OWN = [
   { grade: 7, topicId: 40, slug: 'equation-representations-grade-7', parent: 'equations-both-sides-word-problems-grade-7', loop: 'balance' },
   { grade: 7, topicId: 45, slug: 'parallelogram-trapezoid-area-grade-7', parent: 'area-parallelogram-trapezoid-composite-grade-7', loop: 'area-para' },
   { grade: 7, topicId: 47, slug: 'triangular-prism-volume-grade-7', parent: 'solids-box-cube-prism-grade-7', loop: 'prism-vol' },
+  { grade: 8, topicId: 55, slug: 'integrated-geometry-grade-8', parent: 'coordinate-plane-grade-8', loop: 'congruence' },
   { grade: 9, topicId: 41, slug: 'common-factor-grade-9', parent: 'factoring-grade-9', loop: 'area-model' },
   { grade: 9, topicId: 42, slug: 'factoring-identities-grade-9', parent: 'factoring-grade-9', loop: 'area-model' },
   { grade: 9, topicId: 43, slug: 'complete-factoring-grade-9', parent: 'factoring-grade-9', loop: 'area-model' },
