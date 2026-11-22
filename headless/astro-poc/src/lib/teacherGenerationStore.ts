@@ -103,6 +103,11 @@ export function createGenerationStore(token: string, fetcher: typeof fetch = fet
       return { dailyLimit: quota.dailyLimit, remainingToday: quota.remainingToday, resetsAt: quota.resetsAt };
     },
     async list() { return request('/rest/v1/noam_teacher_generation_jobs?select=' + columns + '&order=created_at.desc&limit=20'); },
+    async createdWorksheets() {
+      return request('/rest/v1/rpc/noam_teacher_created_worksheets', {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}',
+      });
+    },
     async get(id: string) {
       if (!uuid(id)) return null;
       const rows = await request('/rest/v1/noam_teacher_generation_jobs?id=eq.' + id + '&select=' + columns + '&limit=1');
