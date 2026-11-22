@@ -7133,6 +7133,174 @@
           "revision": 1
         }
       ]
+    },
+    {
+      "grade": 8,
+      "topicId": 16,
+      "editionId": "ms-20261122-g8-org-01-r1",
+      "label": "ארגון נתונים · PDF",
+      "nativePrefix": "G8-T144",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "c936ea84fc574bafaf20ab02dd6da1d8",
+          "pdfSha256": "67c60879bb81c1d09e4d82eaa186dae09826dc26e1e233957c1d75bed91d2b08",
+          "sourceSha256": "d0580debbe74d5899ed97138b0118759c28f8ed2a6b21bf97a52ae05491bfeaf",
+          "nativeExportSha256": "7f06cca81ad009b539c53f4f418aaaf93152be684fa0b5b9c05001055baadf22",
+          "worksheetId": "ms-g8-org-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "813d36779ee14cc4a6b91124563dc587",
+          "pdfSha256": "a3624ab6e4108252b0d998719da26412085fafadfacd74c87b46e6e66c7ebd67",
+          "sourceSha256": "cd87f7f2ddd4d8bab0c3163ef20c047194a3cb408122adae045ccdff84503a65",
+          "nativeExportSha256": "b690c7f886159bcf87415769bd5646e0aae66ac02e6fc8594c088633ad65e00b",
+          "worksheetId": "ms-g8-org-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "ceda1450d8f04553a0dc355671368639",
+          "pdfSha256": "eab1195cbd5c8b658b64cd371ac6989b3d5b43ec61aa8cedb849f50e501379fc",
+          "sourceSha256": "089df886e6902f4e9cefd3d4cd4ca410fa32d838aeeb522525b6727b31b29a83",
+          "nativeExportSha256": "ad1426700fa6354a7ff595fb5bd358de671d0c3df772521fd365a45e97c257f9",
+          "worksheetId": "ms-g8-org-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 10,
+      "editionId": "ms-20261122-g7-cpa-01-r1",
+      "label": "הרחבת מערכת הצירים חלק 2 — יישום והעמקה · PDF",
+      "nativePrefix": "G7-T132",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "51de50e3976b4fb097317b045805bb17",
+          "pdfSha256": "77f38be7b4fe25196b727310f643ae9dacdd26b37686647210bc5fa48952df6e",
+          "sourceSha256": "c14a93682facd3d9430cf0365ac5356d2366f13173905c4c408252edf61f7183",
+          "nativeExportSha256": "49ae3e27d09a1e3e16b0ef602b0eada45e4dfe3b1a06a0eccbb5ce10b4a5918a",
+          "worksheetId": "ms-g7-cpa-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "056b6d84f2134cac9370ef5cbf56e3fe",
+          "pdfSha256": "47cb4c251f3304c37fae21fb366f1d6ba9e13bfddb4136960cce1013af1820b9",
+          "sourceSha256": "0fc918e25a8073038a081463ae82197f73b46fe6b66be154ad58b49624e55cb3",
+          "nativeExportSha256": "a4f00a6b4e090e6def403afc6daf7e77e2e93e70cf25435d10d7296f1f50fe5c",
+          "worksheetId": "ms-g7-cpa-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "6424d21a998b49bc998d6b4b8e444b9c",
+          "pdfSha256": "72820d45d05737e0eff5e8cb8660087ffc907629d4eadbee847140cb625221ca",
+          "sourceSha256": "00a29e01310a0afc71084f7e485b2ac0dedeaf4e23c3994efbbb311869b83709",
+          "nativeExportSha256": "86058ceba0d270fec874b4ab3eed53f026607512af436889286044a641d7e611",
+          "worksheetId": "ms-g7-cpa-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 7,
+      "topicId": 13,
+      "editionId": "ms-20261122-g7-anr-01-r1",
+      "label": "זוויות — דף חזרה מסכם · PDF",
+      "nativePrefix": "G7-T133",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "34a33876fba3417e95fc861b045ad550",
+          "pdfSha256": "f219f9a67cc5245e8f22e1dee75a851fc06e70fb2b224643139f646b1de19bbd",
+          "sourceSha256": "990b1c8d0b330f8f502c6c92250844cac96e2e4474ce6ac5e2b25021f2ab9d82",
+          "nativeExportSha256": "aebb66d96b23d21bb2e3c0bfc7e6f672db4bfbb81df5674de5a541c07a773dbe",
+          "worksheetId": "ms-g7-anr-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "815040ca8756401ba0818e45ff47d7d6",
+          "pdfSha256": "dcc7623025a352def51c7c86427b09dda6854eff4a6ba975a2ebd3b039c2e0f3",
+          "sourceSha256": "665496aa2ce4a0138a42ae1fd4beb697da390aa8007c9c3594c98ede7089a742",
+          "nativeExportSha256": "6198553bd95f189796ce815b943d73209932e34e213122307a8f62080f0832f3",
+          "worksheetId": "ms-g7-anr-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "71502f15e2e74e4e8cd2da43de7f77f7",
+          "pdfSha256": "a36b63c8799e6c2fcaba3444413538c3c05b3f5e42523bfed4bc4c8d4cec5368",
+          "sourceSha256": "d70343344622f4960f1233a282c875d1aa648fe724e2447db5a0dc2e5e78df31",
+          "nativeExportSha256": "679c66b3fcc7a05cbcf448e27f4807fe687a0ce9d127c1f33bf6a78a7de0e8fc",
+          "worksheetId": "ms-g7-anr-01-c-r1",
+          "revision": 1
+        }
+      ]
+    },
+    {
+      "grade": 8,
+      "topicId": 35,
+      "editionId": "ms-20261122-g8-gap-01-r1",
+      "label": "גישור ותיקון פערים · PDF",
+      "nativePrefix": "G8-T156",
+      "publicationMode": "pdf-only",
+      "isDefault": false,
+      "status": "published",
+      "levels": [
+        {
+          "key": "a",
+          "viewerLevel": "A",
+          "pdfId": "194703f3d93e4ae88dfca35131cace21",
+          "pdfSha256": "eb584469e591e44821be49bdfe736013ade3e39d7c646c041f5faa638e52ecf5",
+          "sourceSha256": "631ea6e16df5c5426810382540eb359a30dfc5ff96275794faba3ccf579056da",
+          "nativeExportSha256": "f18995518041fca08cd489f0bae2bbc58fee6f89f00247c728dafa063334d2f9",
+          "worksheetId": "ms-g8-gap-01-a-r1",
+          "revision": 1
+        },
+        {
+          "key": "b",
+          "viewerLevel": "B",
+          "pdfId": "073071967146416e8db6fd2da0368279",
+          "pdfSha256": "fd2667e0aa6269a272291831928fe6acf6c586f891d3ec2e8f962a8a3b14f007",
+          "sourceSha256": "99f06bb7e4dd35018d1a488cafe5a521ff7a5316f8212e571e5e8949ca91597e",
+          "nativeExportSha256": "2db8d0fbff08eba4874eb915583794b257b06ca6f2c2fcbcee0eb5b1d9f1c3d1",
+          "worksheetId": "ms-g8-gap-01-b-r1",
+          "revision": 1
+        },
+        {
+          "key": "c",
+          "viewerLevel": "E",
+          "pdfId": "315f1b1a3c0c4de481720e3f87981f8c",
+          "pdfSha256": "cc44cdc09cd2efb6b2ca48f91936f293a5220947b99dd10196c94942d5439d77",
+          "sourceSha256": "98d3259a65872c93186809869e57ea17bb952c83bab9e0c1c83d36f292b47150",
+          "nativeExportSha256": "f3c5e52dda6e31d03b760c2546734ee4566ebc3d4ddd6d702089915694f7168a",
+          "worksheetId": "ms-g8-gap-01-c-r1",
+          "revision": 1
+        }
+      ]
     }
   ]
 }
