@@ -66,17 +66,20 @@ export function beforeNovember21Copy<T>(slug: string, page: T): T {
 
 export function copyBeforeRelease<T>(slug: string, page: T, release: typeof releases[number]): T {
   const item = release.packages.find(p => p.slug === slug);
-  if (!item) return page;
+  const companion = release === nextRenew && slug === 'coordinate-plane-grade-8'
+    ? nextRenew.additionalLandingEdits['coordinate-plane-grade-8'] : [];
+  if (!item && !companion.length) return page;
   const result: any = structuredClone(page);
-  if (release === seven) {
-    const edits = seven.packages.find(p => p.slug === slug)?.priorCopyEdits ?? [];
-    for (const edit of edits) {
-      const parent = edit.path.slice(0, -1).reduce((node: any, key) => node[key], result);
-      const key = edit.path.at(-1)!;
-      assert.equal(strip(parent[key]), edit.after, slug);
-      parent[key] = parent[key] === edit.after ? edit.before : isolateMathRuns(edit.before);
-    }
+  const edits = item && 'priorCopyEdits' in item && Array.isArray(item.priorCopyEdits)
+    ? item.priorCopyEdits : companion;
+  for (const edit of edits) {
+    const path: (string | number)[] = edit.path;
+    const parent = path.slice(0, -1).reduce<any>((node, key) => node[key], result);
+    const key = path.at(-1)!;
+    assert.equal(strip(parent[key]), edit.after, slug);
+    parent[key] = parent[key] === edit.after ? edit.before : isolateMathRuns(edit.before);
   }
+  if (!item) return result;
   const section = result.sections.pop();
   assert.equal(strip(section.heading), item.section.heading, slug);
   assert.deepEqual(section.blocks.map((b: any) => strip(b.text)), item.section.blocks.map(b => b.text), slug);
