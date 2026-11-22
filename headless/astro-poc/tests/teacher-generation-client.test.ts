@@ -254,6 +254,38 @@ test('offline state permits planning but emits no creation or verification reque
   assert.equal(app.calls.some(c => c.url === '/api/noamBotConfig'), false);
 });
 
+test('an offline worker becoming ready restores the visible lesson without another click or a paid request', async () => {
+  const app = harness({ online: false, general: true });
+  await app.flush();
+  await app.choose('8', 'g8:congruence');
+  await app.submit();
+  const details = app.element('plan-details').textContent;
+  assert.equal(app.element('create-button').disabled, true);
+  app.setOnline(true);
+  assert.equal(await app.nextRetry(), 60000);
+  assert.equal(app.element('create-button').disabled, false);
+  assert.equal(app.element('plan-details').textContent, details);
+  assert.equal(app.element('generation-status').textContent, 'המנוע זמין. אפשר ליצור את הדף.');
+  assert.equal(app.posts.length, 0);
+  assert.equal(app.calls.some(c => c.url === '/api/noamBotConfig'), false);
+  assert.equal(app.timers.size, 0);
+});
+
+test('a prepared lesson stops automatic availability checks after the maximum worker backoff window', async () => {
+  const app = harness({ online: false, general: true });
+  await app.flush();
+  await app.choose('8', 'g8:congruence');
+  await app.submit();
+  for (let minute = 1; minute <= 16; minute++) {
+    app.advance(60000);
+    assert.equal(await app.nextRetry(), 60000);
+  }
+  assert.equal(app.timers.size, 0);
+  assert.equal(app.posts.length, 0);
+  assert.equal(app.element('create-button').disabled, true);
+  assert.match(app.element('generation-status').textContent, /רענון מצב היצירה/);
+});
+
 test('a slow or failing first health request never blocks topic selection or loses a catalog plan', async () => {
   let finishHealth!: (reply: Reply) => void;
   const firstHealth = new Promise<Reply>(resolve => { finishHealth = resolve; });
