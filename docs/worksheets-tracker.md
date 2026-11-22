@@ -1003,3 +1003,7 @@ Moved the exact 15-row source/old/new hash proof to a required content-addressed
 This candidate adds 107 individually reviewed student PDFs (1,006 printed pages, including final answers). The grade 1–6 counts are 38, 6, 45, 6, 9 and 3. Each file is linked from its grade's catalog card and its existing topic landing page. Site search selects the new PDF for each available level. The PDF hashes and grade/topic/level associations are recorded in `headless/astro-poc/src/data/elementary-print-worksheets.json`.
 
 Five PDFs were rebuilt. The grade 1 counting and data excellence sheets have darker writing lines. Grade 1 addition to 20 (level B) and equality (excellence) have more balanced exercise pagination. The grade 3 quadrilateral-properties excellence answer key keeps the unit with the answer to 8ב. The exact final PDFs were checked against the source answer ledgers. Earlier worksheets remain available in the catalog and on the topic pages.
+
+## Reviewed middle-school PDFs on 22 November 2026
+
+Packages 050–054, 057–061, 071–072 and 074–076 add 45 student PDFs at levels A, B and excellence. The final answer key is at the end of each worksheet. The catalog and the corresponding Hebrew topic pages retain their earlier materials. The [publication record](middle-reviewed-packages-050-076-20261122.json) identifies each student PDF, the review of its source revision and both verified media URLs.
