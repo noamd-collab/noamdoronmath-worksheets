@@ -47,6 +47,18 @@ class PrintedTaskTests(unittest.TestCase):
 
 
 class PupilAnswerTypeTests(unittest.TestCase):
+    def test_noun_mother_is_not_a_yes_no_question(self):
+        from printed_tasks import yes_no_question
+        for prompt in ["גיל האם הוא @ שנים, והבת צעירה ממנה ב־@ שנים. מה גיל הבת?",
+                       "האם קנתה @ תפוחים. כמה תפוחים נשארו?",
+                       "האם של דנה בת @. בת כמה דנה?"]:
+            with self.subTest(prompt=prompt):
+                self.assertFalse(yes_no_question(prompt))
+        for prompt in ["האם @ גדול מ־@?", "בדקו: האם @ פתרון של המשוואה?",
+                       "@ והאם התוצאה זוגית?", "המספר @. האם הוא זוגי?"]:
+            with self.subTest(prompt=prompt):
+                self.assertTrue(yes_no_question(prompt))
+
     def test_scalar_cannot_answer_question_asking_for_a_decision_or_equation(self):
         from printed_tasks import validate_computed_request
         from compact_authoring import spans

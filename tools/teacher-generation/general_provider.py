@@ -13,7 +13,7 @@ import re
 
 from authoring_context import build_authoring_context, AuthoringContextError
 from general_source import validate_source, GeneralSourceError, geometry_topic
-from skill_authoring import bind_content, check_representation, ordered_geometry_groups, question_plan, worksheet_schema
+from skill_authoring import bind_content, question_plan, worksheet_schema
 from runtime_catalog import catalog, scope_for_lesson
 from validation import reject
 import no_carry_addition
@@ -264,7 +264,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'operation itself as the evaluate task. Check that word problems use plausible items and units.')
     if 'representation' in plan[0]:
         system += (
-            ' Write practice and challenges as objects keyed by the exact qN slots in the schema, in questionPlan order. Follow each question representation in questionPlan. For drawingFromWords set that flag to true, '
+            ' Follow each question representation in questionPlan. For drawingFromWords set that flag to true, '
             'give precise verbal data, ask students to draw, and leave the figure absent. In coordinate_plane '
             'items supply the actual points and segments on a legible grid with placement=wide. '
             'Coordinates use [[A(2,3)]] or [[(2,3)]] in prose, never point:A(2,3). Use figure.points and figure.segments for each coordinate grid and include the origin within the integer axis limits. For angles name three distinct vertices. For geometryFigure include an actual, named, accurately dimensioned shape. Vary geometric '
@@ -295,10 +295,6 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'The following source-v4 instructions govern only that alternative. ' + system)
     schema_name = 'worksheet_authoring_choice' if addition_plan is not None else 'skill_worksheet_content'
     response = request_content(system, user, schema, schema_name, 'worksheet-source/4', 40000)
-    try:
-        response = ordered_geometry_groups(response, plan)
-    except GeneralSourceError as exc:
-        reject(exc.code, str(exc))
 
     def compile_content(payload):
         if addition_plan is not None and isinstance(payload, dict) and payload.get('version') == 1:
@@ -312,8 +308,6 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         if len(payload['sections'])!=1:
             raise GeneralSourceError('AUTHOR_PLAN_MISMATCH','Expected one selected-topic section')
         questions=payload['sections'][0]['questions']
-        for question, slot in zip(questions, plan):
-            check_representation(question, slot)
         if any(q['star'] != (slot['group'] == 'challenges') or len(q['items'])<slot['minimumItems']
                for q,slot in zip(questions,plan)):
             raise GeneralSourceError('AUTHOR_PLAN_MISMATCH','Source questions must follow the requested challenge and item slots')

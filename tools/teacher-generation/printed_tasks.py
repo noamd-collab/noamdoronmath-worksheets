@@ -27,6 +27,18 @@ def _reject():
     raise GeneralSourceError("PRINTED_TASK_MISMATCH", "The exact answer disagrees with the printed task")
 
 
+OTHER_QUESTION_WORD = re.compile(r"(?:^|\s)(?:כמה|מה|מהו|מהי|מהם|מהן|איזה|איזו|אילו|מי|מתי|איפה|היכן|למה|מדוע|כיצד|באיזה|באיזו|בכמה|לכמה)(?=\s|$|\?)")
+
+
+def yes_no_question(prompt):
+    """True only for the interrogative particle, not the noun האם ('the mother')."""
+    for match in re.finditer(r"(?:^|[.!?:;,@]\s*|\sו)האם\s", prompt):
+        clause = re.match(r"[^.!?]*[.!?]?", prompt[match.end():])[0]
+        if clause.endswith("?") and not OTHER_QUESTION_WORD.search(clause):
+            return True
+    return False
+
+
 def validate_computed_request(question, item, solved, grade, location):
     """A numeric key cannot answer a yes/no question or supply a requested equation."""
     if solved["result"].get("type") != "expression":
@@ -36,7 +48,7 @@ def validate_computed_request(question, item, solved, grade, location):
         return "".join(c for c in value if not unicodedata.combining(c))
 
     prompt = words(item["prompt"])
-    if (re.search(r"(?:^|[.!?]\s*|\sו?)האם\s", prompt)
+    if (yes_no_question(prompt)
             or re.search(r"(?:כתבו|רשמו|בנו|חברו)\s+(?:את\s+ה)?משוואה", prompt)):
         raise GeneralSourceError("PRINTED_ANSWER_KIND",
                                  "The printed request needs a decision or an equation, not a scalar at " + location)

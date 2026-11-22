@@ -379,39 +379,22 @@ class GeneralRuntimeTests(unittest.TestCase):
                     self.assertEqual(kinds.count("coordinate_plane"), grids)
                     self.assertEqual(kinds.count("geometryFigure"), count - sketches - grids)
 
-    def test_geometry_slots_require_real_constructions_including_on_revision(self):
-        from skill_authoring import check_representation, correction_body, ordered_geometry_groups, question_plan, worksheet_schema
-        topic = next(t for t in catalog().topics if t["topicId"] == "g9m:square")
-        lesson = intake(topic)
-        scope = scope_for_lesson(lesson)
-        plan = question_plan(lesson, scope)
-        wire = worksheet_schema(lesson, scope)
-        groups = {"title": "ריבוע", "rule": "תכונות הריבוע."}
-        for group in ("practice", "challenges"):
-            slots = [r for r in plan if r["group"] == group]
-            groups[group] = {f"q{r['questionNumber']}": {"intro": str(r["questionNumber"])} for r in reversed(slots)}
-            for slot in slots:
-                key = f"q{slot['questionNumber']}"
-                ref = wire["properties"][group]["properties"][key]["$ref"]
-                spec = wire["$defs"][ref.split("/")[-1]]
-                field = "drawingFromWords" if slot["representation"] == "drawingFromWords" else "figure"
-                self.assertIn(field, spec["required"])
-                with self.assertRaises(GeneralSourceError):
-                    check_representation({}, slot)
-        ordered = ordered_geometry_groups(groups, plan)
-        self.assertEqual([q["intro"] for q in ordered["practice"] + ordered["challenges"]],
-                         [str(i+1) for i in range(len(plan))])
-        slot = next(r for r in plan if r["representation"] == "coordinate_plane")
-        with self.assertRaises(GeneralSourceError):
-            check_representation({"figure": {"kind": "shape"}}, slot)
-        number = slot["questionNumber"]
-        body, _ = correction_body(ordered, [{"question": number, "feedback": ["supply the named grid"]}],
-                                  lesson, scope, plan, {}, "test")
-        schema = body["response_format"]["json_schema"]["schema"]
-        self.assertEqual(schema["properties"][f"q{number}"]["$ref"], "#/$defs/coordinate_plane")
-        groups["practice"].pop("q1")
-        with self.assertRaises(GeneralSourceError):
-            ordered_geometry_groups(groups, plan)
+    def test_reviewed_coordinate_triangle_reply_is_not_forced_into_generic_figure_slots(self):
+        # g9m:computational_triangle level b reaches the general author. Its
+        # reviewed reply uses coordinate grids and verbal sketches where the
+        # generic sketch/grid/shape plan expects shapes; it must still pass.
+        import general_provider
+        fixture = HERE / 'cloud/container/fixtures/general/grade9-coordinate-triangles'
+        lesson = json.loads((fixture / 'lesson.json').read_text())
+        reviewed = json.loads((fixture / 'model-output.json').read_text())
+        questions = [{k: v for k, v in q.items() if k != 'star'} for q in reviewed['sections'][0]['questions']]
+        reply = {'title': reviewed['title'], 'rule': reviewed['rule'],
+                 'practice': questions[:-3], 'challenges': questions[-3:]}
+        meta = {}
+        with patch('provider.request_author_json', return_value=copy.deepcopy(reply)):
+            general_provider.author_general_lesson(lesson, metadata=meta, revision={},
+                authoring_context={'scope': scope_for_lesson(lesson)}, **self.config)
+        self.assertTrue(meta['validated'])
 
     def test_author_receives_skill_content_truth_and_only_applicable_elementary_principles(self):
         from general_provider import author_guidance

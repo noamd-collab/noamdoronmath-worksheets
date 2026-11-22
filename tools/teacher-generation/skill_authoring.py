@@ -44,37 +44,6 @@ def question_plan(lesson, scope):
     return rows
 
 
-def question_ref(slot):
-    return {"$ref": "#/$defs/" + slot.get("representation", "question")}
-
-
-def ordered_geometry_groups(payload, plan):
-    """Convert the named wire slots to stable print order without trusting JSON key order."""
-    if not isinstance(payload, dict) or "representation" not in plan[0]:
-        return payload
-    result = dict(payload)
-    for group in ("practice", "challenges"):
-        value = result.get(group)
-        if isinstance(value, dict):
-            keys = [f"q{row['questionNumber']}" for row in plan if row["group"] == group]
-            if set(value) != set(keys):
-                raise GeneralSourceError("AUTHOR_PLAN_MISMATCH", "Missing or unexpected geometry question")
-            result[group] = [value[key] for key in keys]
-    return result
-
-
-def check_representation(question, slot):
-    expected = slot.get("representation")
-    if not expected:
-        return
-    figure = question.get("figure", {})
-    correct = (question.get("drawingFromWords") is True and "figure" not in question
-               if expected == "drawingFromWords" else
-               figure.get("kind") == ("coordinate_plane" if expected == "coordinate_plane" else "shape"))
-    if not correct:
-        raise GeneralSourceError("SOURCE_FIGURE", "Missing or incorrect planned construction")
-
-
 def worksheet_schema(lesson, scope):
     """Ask for educational content only. The compiler owns scope, versions and layout."""
     canonical = authoring_schema(lesson, scope)
@@ -91,26 +60,10 @@ def worksheet_schema(lesson, scope):
     if lesson.get("minutes", 60) / lesson["questionCount"] <= 1.8:
         items = question["properties"]["items"]
         items["maxItems"] = items["minItems"]
-    plan = question_plan(lesson, scope)
-    if "representation" in plan[0]:
-        # Make the drawing compulsory only in the slots that require one. The
-        # model can then see each question's exact figure schema while authoring.
-        props = question["properties"]
-        shared = {k: v for k, v in props.items() if k not in ("figure", "drawingFromWords")}
-        for kind in ("drawingFromWords", "coordinate_plane", "geometryFigure"):
-            if kind == "drawingFromWords":
-                need, field = "drawingFromWords", {"const": True}
-            else:
-                need = "figure"
-                constructor = "coordinate_plane" if kind == "coordinate_plane" else "shape"
-                variants = [v for v in props["figure"]["oneOf"] if v["properties"]["kind"]["const"] == constructor]
-                field = variants[0] if len(variants) == 1 else {"oneOf": variants}
-            definitions[kind] = {**question, "properties": {**shared, need: field},
-                                 "required": [*question["required"], need]}
-        for group in ("practice", "challenges"):
-            slots = {f"q{row['questionNumber']}": question_ref(row) for row in plan if row["group"] == group}
-            content[group] = {"type": "object", "properties": slots, "required": list(slots), "additionalProperties": False}
-    schema = {"type": "object", "properties": content, "required": list(content),
+    # Planned geometry slots are not bound to a required figure kind on the
+    # live line. The generic sketch/grid/shape plan rejects valid replies for
+    # coordinate-triangle and solids topics (see PR description).
+    schema ={"type": "object", "properties": content, "required": list(content),
               "additionalProperties": False, "$defs": definitions}
     compact_authoring.wire_schema(schema, scope["topic"]["domain"] in ("data", "אי-ודאות", "אינטגרטיבי"))
     return schema
@@ -363,7 +316,7 @@ def correction_body(original, findings, lesson, scope, plan, context, model):
         fields[f"q{index}"] = (slot["group"], offset)
         rows.append({"question": index, "plan": slot, "original": original[slot["group"]][offset],
                      "findings": finding["feedback"]})
-    properties = {name: question_ref(plan[int(name[1:]) - 1]) for name in fields}
+    properties = {name: {"$ref": "#/$defs/question"} for name in fields}
     schema = {"type": "object", "properties": properties, "required": list(properties),
               "additionalProperties": False, "$defs": worksheet_schema(lesson, scope)["$defs"]}
     skill = context.get("skill", {})
@@ -452,7 +405,6 @@ def source_findings(original, lesson, scope, error):
                 lesson["gradeNumber"], fraction_notation=scope["topic"]["domain"] == "fractions")
             validate_question(expanded["sections"][0]["questions"][0], lesson["gradeNumber"], scope,
                               provider=True, qcount=index, evidence=[], pending=[])
-            check_representation(question, plan[index - 1])
         except (GeneralSourceError, MathTaskError) as exc:
             feedback = instructions.get(exc.code)
             if not feedback:
