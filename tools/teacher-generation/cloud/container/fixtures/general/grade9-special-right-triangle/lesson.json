@@ -1,0 +1,25 @@
+{
+  "version": 3,
+  "gradeNumber": 9,
+  "topicId": "g9r:right_triangle_30_60_90",
+  "level": "a",
+  "questionCount": 20,
+  "lessonGoal": "practice",
+  "minutes": 30,
+  "lastLesson": "תרגלנו את המשפט הישיר ואת המשפט ההפוך.",
+  "alreadyLearned": [],
+  "classLabel": "",
+  "lessonBoundary": {
+    "version": 1,
+    "kind": "curriculum_scope",
+    "curriculumSha256": "57adca1891cbc2ef333709a6adee18045da23035f9e981f091673d2f8547527b",
+    "conceptIds": [
+      "g9r:right_triangle_30_60_90#0",
+      "g9r:right_triangle_30_60_90#1",
+      "g9r:right_triangle_30_60_90#2",
+      "g9r:right_triangle_30_60_90#3",
+      "g9r:right_triangle_30_60_90#4",
+      "g9r:right_triangle_30_60_90#5"
+    ]
+  }
+}
