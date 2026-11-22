@@ -34,6 +34,7 @@
     "batch13-pdf-intake.test.ts",
     "middle-090-091-094-pdf.test.ts",
     "middle-b18-seven-pdf.test.ts",
+    "middle-reviewed-050-076.test.ts",
     "middle-077-078-079-pdf.test.ts",
     "percentages-landing.test.ts",
     "ramzi-activation-copy-20261119.test.ts"

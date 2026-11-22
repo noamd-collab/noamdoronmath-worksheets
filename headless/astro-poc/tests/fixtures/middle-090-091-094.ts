@@ -8,9 +8,11 @@ import seven from '../../../../docs/middle-b18-seven-pdf-20261122.json';
 
 import three from '../../../../docs/middle-077-078-079-pdf-20261122.json';
 
-export { reviewed, seven, three };
-const releases = [reviewed, seven, three];
-const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages];
+import renew from '../../../../docs/middle-reviewed-packages-050-076-20261122.json';
+
+export { reviewed, seven, three, renew };
+const releases = [renew, three, seven, reviewed];
+const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages];
 export const renewalIds = allPackages.map(item => item.edition.editionId);
 // The SSR loader normalizes property insertion order without changing data.
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, (_key, item) => {
@@ -21,8 +23,12 @@ const strip = (text: string) => text.replace(/[⁦-⁩]/g, '');
 
 /** Recover the catalog before the November 21–22 PDF editions, while checking each exact overlay. */
 export function beforeNovember21Catalog<T>(catalog: T): T {
-  const result: any = beforeGrade9SpecialTrianglesReview(catalog);
-  for (const item of allPackages) {
+  return catalogBeforePackages(beforeGrade9SpecialTrianglesReview(catalog), allPackages);
+}
+
+export function catalogBeforePackages<T>(catalog: T, packages: typeof allPackages): T {
+  const result: any = structuredClone(catalog);
+  for (const item of packages) {
     const topic = result.grades.find((g: any) => g.grade === item.grade)?.topics.find((t: any) => t.id === item.topicId);
     assert.ok(topic, item.slug);
     assert.deepEqual(topic.editions?.map((e: any) => e.editionId), [item.edition.editionId], item.slug);
@@ -50,12 +56,16 @@ export function beforeNovember21Registry<T>(registry: T): T {
 }
 
 export function beforeNovember21Copy<T>(slug: string, page: T): T {
-  const release = releases.find(batch => batch.packages.some(p => p.slug === slug));
-  const item = release?.packages.find(p => p.slug === slug);
-  if (!release || !item) return page;
+  return releases.reduce((current, release) => copyBeforeRelease(slug, current, release), page);
+}
+
+export function copyBeforeRelease<T>(slug: string, page: T, release: typeof releases[number]): T {
+  const item = release.packages.find(p => p.slug === slug);
+  if (!item) return page;
   const result: any = structuredClone(page);
-  if ('priorCopyEdits' in item) {
-    for (const edit of item.priorCopyEdits) {
+  if (release === seven) {
+    const edits = seven.packages.find(p => p.slug === slug)?.priorCopyEdits ?? [];
+    for (const edit of edits) {
       const parent = edit.path.slice(0, -1).reduce((node: any, key) => node[key], result);
       const key = edit.path.at(-1)!;
       assert.equal(strip(parent[key]), edit.after, slug);
