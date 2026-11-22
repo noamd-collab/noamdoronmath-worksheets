@@ -69,7 +69,7 @@ export function beforeNovember21Copy<T>(slug: string, page: T): T {
 export function copyBeforeRelease<T>(slug: string, page: T, release: typeof releases[number]): T {
   const item = release.packages.find(p => p.slug === slug);
   const extraEdits: Record<string, { path: (string | number)[], before: string, after: string }[]> =
-    'additionalLandingEdits' in release ? release.additionalLandingEdits : {};
+    release === nextRenew ? nextRenew.additionalLandingEdits : release === thirdRenew ? thirdRenew.additionalLandingEdits : {};
   const companion = extraEdits[slug] ?? [];
   if (!item && !companion.length) return page;
   const result: any = structuredClone(page);
