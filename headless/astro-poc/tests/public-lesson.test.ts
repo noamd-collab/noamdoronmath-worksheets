@@ -54,16 +54,23 @@ describe('public lesson menu page', () => {
     assert.ok(xml.includes(`${SITE_CANONICAL_ORIGIN}/math-tools`));
   });
 
-  it('is offered from the home page card and the extras menu', () => {
+  it('is offered from the home page card and Eliyahu\'s games corner', () => {
     const home = readFileSync(fromTest('../src/pages/index.astro'), 'utf8');
     const card = readFileSync(fromTest('../src/components/GamePromoCard.astro'), 'utf8');
     const header = readFileSync(fromTest('../src/components/SiteHeader.astro'), 'utf8');
+    const corner = readFileSync(fromTest('../src/lib/eliyahuGames.ts'), 'utf8');
+    const gamesPage = readFileSync(fromTest('../src/pages/games/index.astro'), 'utf8');
     assert.ok(home.includes('GamePromoCard'));
     assert.ok(card.includes('חדש!'));
     assert.ok(card.includes('data-home-game-promo'));
     assert.ok(card.includes('kefel-mekutsar-card.webp'));
     assert.ok(card.includes('PUBLIC_LESSON_PATH'));
-    assert.ok(header.includes('PUBLIC_LESSON_PATH'));
+    assert.equal(header.includes('PUBLIC_LESSON_PATH'), false);
+    assert.equal(header.includes('/games/kefel-mekutsar-2'), false);
+    assert.ok(corner.includes("slug: 'kefel-mekutsar-2'"));
+    assert.ok(corner.includes("badge: '(beta)'"));
+    assert.ok(gamesPage.includes('game.badge'));
+    assert.ok(gamesPage.includes('gamePath(game)'));
     assert.ok(existsSync(fromTest('../public/games/kefel-mekutsar-card.webp')));
     assert.equal(existsSync(fromTest('../src/pages/l')), false);
     assert.equal(existsSync(fromTest('../src/lib/secretLesson.ts')), false);
