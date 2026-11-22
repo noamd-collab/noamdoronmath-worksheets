@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-sqm-01-r1",
+  "nativePrefix": "G9-T84",
+  "level": "a",
+  "levelCode": "A",
+  "title": "ריבוע: תכונות, אלכסונים, שטח ומשפט פיתגורס",
+  "pdfId": "334c469b45ec4819a94e1f7ea2dfcb36",
+  "pdfSha256": "6e617c57f71bf31eba278d47f25198b7382cf7858c41549e2be51fc4d1388f94",
+  "canonicalSourceSha256": "0ec0e78f7c2815e1f696a816ba20f763ffbeebb2a14717130109118ede670902",
+  "items": [
+    {
+      "exerciseId": "G9-T84-A-Q01א",
+      "canonicalQuestionSha256": "0eab72b5d2b2d2224b76ab6a99d224c9ca1ad41f56ec52ebef2c7af11cfa3663",
+      "canonicalItemId": "ms-g9-sqm-01-a-r1.question.01.item.01",
+      "sourceExerciseSha256": "2e9960bff7f650a108d4b09de893c1d708ccea725f3ea1ecc888935ef8547e9f",
+      "q": 1,
+      "part": "א",
+      "pin": {
+        "page": 1,
+        "x": 0.8452388984101806,
+        "y": 0.48425054166731313
+      },
+      "hintSha256": [
+        "df78abdfa967a4292fa7048510feb37e3eab78926f3bfc6565a29d0df64b04da",
+        "39570a127b7dbce7f3edb1c6e9776966cf1637b552edd5ed77f98d34bccfc0d3",
+        "28409c72818ab1828368151275b8aeb6a7afc264922c3d7f9ec979cb5e332f79"
+      ]
+    },
+    {
+      "exerciseId": "G9-T84-A-Q01ד",
+      "canonicalQuestionSha256": "0eab72b5d2b2d2224b76ab6a99d224c9ca1ad41f56ec52ebef2c7af11cfa3663",
+      "canonicalItemId": "ms-g9-sqm-01-a-r1.question.01.item.04",
+      "sourceExerciseSha256": "85175141c099db9b837c25a8c00453502e2023e631d709578b6b6a833af15c45",
+      "q": 1,
+      "part": "ד",
+      "pin": {
+        "page": 2,
+        "x": 0.8473291281293592,
+        "y": 0.06621724313775698
+      },
+      "hintSha256": [
+        "897fb71d4827f73aa553def7d440e0e52e93f301cdc79da77e4a5c53f5b4da7e",
+        "cf24f25386af5f2fd559d3051b77d41207f3c7c7029a4edf0a42327519e8fde0",
+        "fbc22286660f7f2455d080fbc8dea36b8add3be608b8415f2711893325ffc7c1"
+      ]
+    },
+    {
+      "exerciseId": "G9-T84-A-Q08א",
+      "canonicalQuestionSha256": "49040d4e222818614bee54bd7f358d72a7fcbd3c29348cbe591d6d2382d0ee03",
+      "canonicalItemId": "ms-g9-sqm-01-a-r1.question.08.item.01",
+      "sourceExerciseSha256": "b53b18a32bd6a78f63dc31d4c7d9d47941f5f75f8864ca87264bbb025a0131c8",
+      "q": 8,
+      "part": "א",
+      "pin": {
+        "page": 8,
+        "x": 0.8452388984101806,
+        "y": 0.4070959541732706
+      },
+      "hintSha256": [
+        "a1203275d26a47325ed95adaae71e7cdfaf46b9dbaa8405b1340b12ef354e25b",
+        "e43a7991a763cc485e47bccf5fdb21b591b4c5090249e62c9c5cc5c250164cff",
+        "a92944842bdc2a434f557366f85f001b511b1ffa8ade836485cf22c304554b22"
+      ]
+    },
+    {
+      "exerciseId": "G9-T84-A-Q08ד",
+      "canonicalQuestionSha256": "49040d4e222818614bee54bd7f358d72a7fcbd3c29348cbe591d6d2382d0ee03",
+      "canonicalItemId": "ms-g9-sqm-01-a-r1.question.08.item.04",
+      "sourceExerciseSha256": "6ec2d9a6260acd35ca163d68dce56881172da6d28e3da0be97a286485f79c4c4",
+      "q": 8,
+      "part": "ד",
+      "pin": {
+        "page": 8,
+        "x": 0.8473291281293592,
+        "y": 0.7651214823886169
+      },
+      "hintSha256": [
+        "cfb38183178ace2dcad30513a49f4940a3a3c53b75bdc52606eaa66ea78d7bc0",
+        "e666c615d4cd52449e7ccfe6d126e80071800bbe7615e35aca15ff5e028ffa93",
+        "868080c9e24d815709d4f17240fb88c141d4538ff44112771bd95f05cdaecefc"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+.level-with-ramzi {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.level-with-ramzi .partial-ramzi-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding-inline: .4rem;
+  color: #205956;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}

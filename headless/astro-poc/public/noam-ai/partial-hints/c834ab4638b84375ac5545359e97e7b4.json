@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-pbm-01-r1",
+  "nativePrefix": "G9-T92",
+  "level": "a",
+  "levelCode": "A",
+  "title": "הסתברות: מושגים בסיסיים, שכיחות יחסית ומאורע משלים",
+  "pdfId": "c834ab4638b84375ac5545359e97e7b4",
+  "pdfSha256": "ce95f7fe95dd021c245829d3e0264ca764527eb627d222accb50143db1226bec",
+  "canonicalSourceSha256": "db62ce9bb1c587f7ea7f6dd690ee95582dcba3d1abb8e025bd6ca25a01d5b3d5",
+  "items": [
+    {
+      "exerciseId": "G9-T92-A-Q05ב",
+      "canonicalQuestionSha256": "47e5028ba64e9b20b49e74b96078b39872b647a3a06b52fb7a6450fbdb6e7fa2",
+      "canonicalItemId": "ms-g9-pbm-01-a-r1.question.05.item.02",
+      "sourceExerciseSha256": "3fb1b527ee28095a660498ab5428f9090c493f40141aa6ff847f495d34990418",
+      "q": 5,
+      "part": "ב",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375662,
+        "y": 0.06622046389824167
+      },
+      "hintSha256": [
+        "7e111ba5694e1e28be79518b02baf642d40adf64e0f9c2fbc2c3247dbc914612",
+        "a437023032b004179d942a3b519a6c8b1bd0468daf0e2ae922aa5b6547954442",
+        "8dbe62f573bfd76c40526bda39b1e653db0ea765c3faf3cf69ef66ad344e8a67"
+      ]
+    }
+  ]
+}

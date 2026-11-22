@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-prs-01-r1",
+  "nativePrefix": "G7-T73",
+  "level": "c",
+  "levelCode": "E",
+  "title": "מנסרה משולשת ישרה: מבנה, פריסה, שטח פנים ונפח",
+  "pdfId": "a194d9e6f4c24e588b8069af66fea49d",
+  "pdfSha256": "2d71c67e2ad26bfab74902e21be3da553dcddc0545461928e4b04b9acf7c14e7",
+  "canonicalSourceSha256": "dca197f055935553332575b9f6730cd680bde58ecacbd6d87bd53aa0b84b225f",
+  "items": [
+    {
+      "exerciseId": "G7-T73-E-Q04ג",
+      "canonicalQuestionSha256": "c3cac7e41840e80636ae5ed1aad0d7e03d5e0aed43d217e0ec15a15613a05537",
+      "canonicalItemId": "ms-g7-prs-01-c-r1.question.04.item.03",
+      "sourceExerciseSha256": "a595e2a02d093c44d658f93f12ec2e1ad76c4acb5c84e54f778a04b6b4f6e3a5",
+      "q": 4,
+      "part": "ג",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375662,
+        "y": 0.5500715613436887
+      },
+      "hintSha256": [
+        "1aaf5e438e470fff6a2750372f942d0ce2cd3afaed41d517e3934cf541675ca0",
+        "319f02000c75f96b615f4f5df448d9958636196a1402b9a089a160258b146fc1",
+        "4e4ae9b629c1a10468d5ea19667f9994fe626e018af8d0178bf33a377acadbf3"
+      ]
+    }
+  ]
+}

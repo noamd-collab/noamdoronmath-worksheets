@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-str-01-r1",
+  "nativePrefix": "G9-T110",
+  "level": "b",
+  "levelCode": "B",
+  "title": "ארגון נתונים בטבלה ובדיאגרמות, שכיחות יחסית, טווח ומדדי מרכז",
+  "pdfId": "35568da347874b54921bce0fb67dc8ae",
+  "pdfSha256": "fb173cfc5a073aa5a0724be36fea83a9b1d3d0121d2ee20396e07f470f6f5baf",
+  "canonicalSourceSha256": "82ed5691a3911a9bb73c88d4127edc2438ac53d9f53d4b37452ea9c525da00d3",
+  "items": [
+    {
+      "exerciseId": "G9-T110-B-Q04א",
+      "canonicalQuestionSha256": "55bd295fd4dda00b678b27a29c1627c8fe03bd455c60aa28cbc40221ed8a0ac9",
+      "canonicalItemId": "ms-g9-str-01-b-r1.question.04.item.01",
+      "sourceExerciseSha256": "41d21e54d153e9274cba716406925b0a4d833569c9217b0f6f9271a5a4b4bb41",
+      "q": 4,
+      "part": "א",
+      "pin": {
+        "page": 4,
+        "x": 0.8452388984101806,
+        "y": 0.11948548202554793
+      },
+      "hintSha256": [
+        "1c581c4424cd0c3c33b5b7beba51ff2bd8d44c4888185672b61e73a81effe803",
+        "c8af0736c285a2d936df1cecf5681bc70823425ea04b31252d50d194efc91ce4",
+        "83dc3f263bf3f66f424e51aea45f407d975ff149d0b062c286aec97d18f349fb"
+      ]
+    }
+  ]
+}

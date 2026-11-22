@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-rat-01-r1",
+  "nativePrefix": "G8-T94",
+  "level": "a",
+  "levelCode": "A",
+  "title": "יחס וחלוקה ביחס נתון, פרופורציה ויחס ישר וקנה מידה",
+  "pdfId": "eb5c82cdae23439192002a2ae5a09987",
+  "pdfSha256": "c888827e47c5cc329a7bf7c0cb72067a7e4ca50b7bc7b2c49696961b9f8b2998",
+  "canonicalSourceSha256": "814998b3ef444d0d209a10678adc637882986fad468c756ee96159107b1b7199",
+  "items": [
+    {
+      "exerciseId": "G8-T94-A-Q03ב",
+      "canonicalQuestionSha256": "c5062bd38cf08662b24d99c3147295cb6a72168465afa3fb9ba32d1731ecb100",
+      "canonicalItemId": "ms-g8-rat-01-a-r1.question.03.item.02",
+      "sourceExerciseSha256": "5932e9772e413918fa06e89062bcdb58b64502633f9a2ceb0ee044414525aff9",
+      "q": 3,
+      "part": "ב",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.5352216741664327
+      },
+      "hintSha256": [
+        "4586a324e80d5c2ec70f7e5d286f7ade5390b9c5b7907b3e36b4f0055d21535f",
+        "98f07b746cf8d2e633c1cca683b85b264f4a4ee8debc26dc3a8a94f52f76d13f",
+        "a9e1096bc24779a764ef7865ea17d3ea9bf4ce33d6b7a50a74ca5942791217c1"
+      ]
+    }
+  ]
+}

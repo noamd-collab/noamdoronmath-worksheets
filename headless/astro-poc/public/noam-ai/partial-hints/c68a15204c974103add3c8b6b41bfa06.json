@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-fnc-02-r1",
+  "nativePrefix": "G8-T102",
+  "level": "a",
+  "levelCode": "A",
+  "title": "מושג הפונקציה בהקשר: משתנה תלוי ובלתי תלוי, תחום הגדרה וטווח",
+  "pdfId": "c68a15204c974103add3c8b6b41bfa06",
+  "pdfSha256": "ff22104f75d7bbcaaa140703d1750235beb370d8d2444093c10a9fb6fc788751",
+  "canonicalSourceSha256": "cea8574a34a241c4e65752cd2cc0faf93366001072b474e05085c14756efdb41",
+  "items": [
+    {
+      "exerciseId": "G8-T102-A-Q01א",
+      "canonicalQuestionSha256": "dd281a31ff9beb58b85740b8e3685690645ecab94c3024c817a262fc1ff6ab7c",
+      "canonicalItemId": "ms-g8-fnc-02-a-r1.question.01.item.01",
+      "sourceExerciseSha256": "e0ec25fdd3ce2692db83646acfed5e759fee5ff24f33b16841e045d295d21021",
+      "q": 1,
+      "part": "א",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375664,
+        "y": 0.6167961092405536
+      },
+      "hintSha256": [
+        "9fee25f508e7468547fc22829d9584e0373255d323a497c49d237eed14f5260b",
+        "6dbfa98ae91f7ad5992e6e3966adc002629a5cf90cb951211d80c126c7ebb17f",
+        "3bd8aa8523f44a0d9bca96d6606c21d961d88ff03b4899f3af2328c24d694bea"
+      ]
+    }
+  ]
+}

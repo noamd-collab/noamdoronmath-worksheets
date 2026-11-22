@@ -11,6 +11,7 @@ const prefix = 'noam-ai/native/';
 export const staticNoamRules = [
   '/noam-ai/manifests/*',
   '/noam-ai/learning-scopes/*',
+  '/noam-ai/partial-hints/*',
   '/noam-ai/sync-provenance.json',
   '/noam-ai/catalog-migrations.json',
   '/noam-ai/catalog-migrations.js',

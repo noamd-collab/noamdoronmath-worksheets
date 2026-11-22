@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-pga-01-r1",
+  "nativePrefix": "G7-T101",
+  "level": "b",
+  "levelCode": "B",
+  "title": "משפט פיתגורס בחישובי שטח והיקף",
+  "pdfId": "a12dafcf047a439a9d26d3cc6ed61c0e",
+  "pdfSha256": "61b84afe8c84335ea660848fbe395699f856d400548f225e7c599caa8359c2ac",
+  "canonicalSourceSha256": "539bd7cfb7290d85b860ce4bbfc0ece3a403428ff43b77e3c1b652b1efb33f6e",
+  "items": [
+    {
+      "exerciseId": "G7-T101-B-Q04ג",
+      "canonicalQuestionSha256": "93b98992d62f7eab41b38e852b344cf865c70f4681c88692fe8af9ed6dfae192",
+      "canonicalItemId": "ms-g7-pga-01-b-r1.question.04.item.03",
+      "sourceExerciseSha256": "1ba90f18d1136bd78be0c54c4b122508fb1a620eed14b2d53a337b21792c980f",
+      "q": 4,
+      "part": "ג",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375663,
+        "y": 0.571531615589854
+      },
+      "hintSha256": [
+        "90a265faa821d79541f59fb8445cac141c22887a097ed22b61ecba5d9bbea1d7",
+        "3745df9766de6ba399c3cfe32cbb7eaa5dc5e943523c7e1d233d8dcb64b79893",
+        "885207d893a8d1fd2d2ce053f89186d514069d68a74b0bb36d10e23e894e926a"
+      ]
+    }
+  ]
+}

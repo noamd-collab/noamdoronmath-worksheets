@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-tri-02-r1",
+  "nativePrefix": "G8-T73",
+  "level": "c",
+  "levelCode": "E",
+  "title": "משולש שווה־שוקיים: תכונות ומשפטים הפוכים",
+  "pdfId": "3903e1ae817d4b4299f76ccc6294c579",
+  "pdfSha256": "d07b7a4417c834e0fe0819f5f07afac6ffe640656299cf009055ae6f1beb881f",
+  "canonicalSourceSha256": "5adbb08d921a5fb0345dd3104361a9e99faf97065e83b2433a119b7c59753a00",
+  "items": [
+    {
+      "exerciseId": "G8-T73-E-Q02א",
+      "canonicalQuestionSha256": "f5b22ae4600ba574f935df48989661bc984781e9c25c811fc7a24b2f1cdf203a",
+      "canonicalItemId": "ms-g8-tri-02-c-r1.question.02.item.01",
+      "sourceExerciseSha256": "77e9f6987dceebfebc779f66f7acb7e8096363f3818cb256158f95f66d093ccc",
+      "q": 2,
+      "part": "א",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375663,
+        "y": 0.1132384960718294
+      },
+      "hintSha256": [
+        "f9187fbbfde72f15182aeaf644ea30ce944a10b9fcc2c8fe8d136046622d08aa",
+        "179d3df71cb9215288fe0b75300489b0b87af8946ee8e01fbde06da10ecdaaea",
+        "d9c47ba545032f475cf0aa1eb5d0852ef84137c2a3a86d6d6dca0a673b3d97aa"
+      ]
+    }
+  ]
+}

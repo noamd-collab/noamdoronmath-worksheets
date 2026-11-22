@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-mul-01-r1",
+  "nativePrefix": "G7-T93",
+  "level": "b",
+  "levelCode": "B",
+  "title": "כפל וחילוק מספרים מכוונים",
+  "pdfId": "b45c4d505e824ff68b829af6b5231301",
+  "pdfSha256": "6d8ad32a67bc9dd9a939017afaf7945ab4f78e70a299a3e988893fc8b90e8d79",
+  "canonicalSourceSha256": "544e68228b8299e2ba8619b095bfa0f369f96a370e70979d5a1db8f4107e9fd0",
+  "items": [
+    {
+      "exerciseId": "G7-T93-B-Q04ב",
+      "canonicalQuestionSha256": "2cadcd40ca4400434ef9332459ac1f94cae91d26812a83f43cc1f70250eff85e",
+      "canonicalItemId": "ms-g7-mul-01-b-r1.question.04.item.02",
+      "sourceExerciseSha256": "a2338dfcb6f489d69c4bf8617122c9e767a0d7c95699533a8f7c3f3b5d94f107",
+      "q": 4,
+      "part": "ב",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.18808437579498688
+      },
+      "hintSha256": [
+        "2516aaa70c3b6315528994ecd048206ef22600f07a16a4cabce4cc65cdd89f7f",
+        "ace71621d91bf4a57076edffc65496081de03542fccfef9bef3f6e93bb529180",
+        "a3b499c05fdb96a8b62dd03b0fb331ed5bc435edef53c640fcfdc7c0b85b0c77"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-qfr-01-r1",
+  "nativePrefix": "G9-T102",
+  "level": "a",
+  "levelCode": "A",
+  "title": "נוסחת השורשים לט׳ רגילה: פתרון משוואות ריבועיות ומספר הפתרונות",
+  "pdfId": "696c707d9e4f42049ead576bc0563f6e",
+  "pdfSha256": "577f43706bedd87be1e07445538bc4dcd40401bb6a3d65a4ce0685661b897a5b",
+  "canonicalSourceSha256": "87c5dad7942fbf05266a7c4ca0145d753fd71fdf8a0659086018afaa87665645",
+  "items": [
+    {
+      "exerciseId": "G9-T102-A-Q06ג",
+      "canonicalQuestionSha256": "83fa46e95c8ddb56a59dacc69926da80763cdc0f613450bee6da2c682a3ebc16",
+      "canonicalItemId": "ms-g9-qfr-01-a-r1.question.06.item.03",
+      "sourceExerciseSha256": "5a7bcd546631a3a1d6ad8e7a603884605a427dcfc17e89aba93a94cb52de3732",
+      "q": 6,
+      "part": "ג",
+      "pin": {
+        "page": 6,
+        "x": 0.8311375661375662,
+        "y": 0.5046528524130192
+      },
+      "hintSha256": [
+        "58480f45684130642fddcb67d094d01f24c8a8ea580c7c7fd8e226f2a6790786",
+        "7710a4ba552c9a264b37154966a1ec4befb8c270d9d98d816910c71f2d75905b",
+        "87b0286c459d8f84f17503b0969f3bd3c334f9fef4ccc54a36ed7b5f51070dd5"
+      ]
+    },
+    {
+      "exerciseId": "G9-T102-A-Q06ה",
+      "canonicalQuestionSha256": "83fa46e95c8ddb56a59dacc69926da80763cdc0f613450bee6da2c682a3ebc16",
+      "canonicalItemId": "ms-g9-qfr-01-a-r1.question.06.item.05",
+      "sourceExerciseSha256": "5b1115ac3a3ee8ae0aae32dbf2833671d18626dc3f570afd3ba59e45b716a19c",
+      "q": 6,
+      "part": "ה",
+      "pin": {
+        "page": 6,
+        "x": 0.8311375661375662,
+        "y": 0.7862621677890013
+      },
+      "hintSha256": [
+        "58480f45684130642fddcb67d094d01f24c8a8ea580c7c7fd8e226f2a6790786",
+        "be94405a4fd400211f0a1118060357c2e0210d89bb181a81fceb4732af407265",
+        "3757b0f7473e041981fc78c1c98b7bb0fd82c26b44b4a7da4f0239fcc039ea12"
+      ]
+    }
+  ]
+}

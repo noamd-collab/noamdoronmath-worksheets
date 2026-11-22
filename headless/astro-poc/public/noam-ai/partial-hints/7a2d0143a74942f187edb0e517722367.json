@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-rhm-01-r1",
+  "nativePrefix": "G9-T81",
+  "level": "a",
+  "levelCode": "A",
+  "title": "מעוין: תכונות, אלכסונים מאונכים ושטח עם משפט פיתגורס",
+  "pdfId": "7a2d0143a74942f187edb0e517722367",
+  "pdfSha256": "6071bcd72dc646f392c4f0f3e3a82e7e524f3470350f334f6181b8dfb60391f4",
+  "canonicalSourceSha256": "bcbed81cec18aaf9ece0c42ddfa104785e76f33f1bd6024b5596cc3447da1494",
+  "items": [
+    {
+      "exerciseId": "G9-T81-A-Q01ד",
+      "canonicalQuestionSha256": "c0d2e6ff0ece794dfef46de3921acbd5f89dce78bc3bc35d085444329b3f1ee7",
+      "canonicalItemId": "ms-g9-rhm-01-a-r1.question.01.item.04",
+      "sourceExerciseSha256": "51da9f9f86533a4f19a3cc8477b124d8738c7c745793f1e5401f8d7b77df7256",
+      "q": 1,
+      "part": "ד",
+      "pin": {
+        "page": 2,
+        "x": 0.8473291281293592,
+        "y": 0.06621724313775698
+      },
+      "hintSha256": [
+        "da5cc092e78592ee98fb2e35b98595725697b7c2f262cb97f03125054e438cb5",
+        "6887c0cbe4db5c0308bbf6ef87365a177b01dab41223d81ec1eeb2e5401cf0eb",
+        "23c46a682065a7e8460a43f378c3fe4dd6f620f1e824c94fc81178f0c79cae51"
+      ]
+    },
+    {
+      "exerciseId": "G9-T81-A-Q03ג",
+      "canonicalQuestionSha256": "727eac4b28eeab37bafcd9aa002e7d0b3cbf91f4028d0ede3b5b333783784823",
+      "canonicalItemId": "ms-g9-rhm-01-a-r1.question.03.item.03",
+      "sourceExerciseSha256": "6c83fd9e9cf77902f5b6370be1162600b8527876b26f2a1f79243990f8410889",
+      "q": 3,
+      "part": "ג",
+      "pin": {
+        "page": 3,
+        "x": 0.8478882128002732,
+        "y": 0.6524962949999282
+      },
+      "hintSha256": [
+        "e5d56243a6e85686945234a37d3fbed26f265baa46ac6fde1a41facad4995d1e",
+        "2505f3e878b6269b711ded20471bf3e726de576975887525d0fcda14591360f3",
+        "752c881e7c278da50026c6edf475d78b174efcce10c1557dc2ce6e406c02c011"
+      ]
+    },
+    {
+      "exerciseId": "G9-T81-A-Q06ד",
+      "canonicalQuestionSha256": "ef373c7432ab43541828e5fde7b0913f7ab66fefb50d7c843e3bcf613fa1e7ed",
+      "canonicalItemId": "ms-g9-rhm-01-a-r1.question.06.item.04",
+      "sourceExerciseSha256": "b4f35e1e0b483d47435b8f29ac4d179ea8e06392e469f6f0fabb6a9ffd5d4c3b",
+      "q": 6,
+      "part": "ד",
+      "pin": {
+        "page": 6,
+        "x": 0.8473291281293592,
+        "y": 0.3205070829625675
+      },
+      "hintSha256": [
+        "4c5ed6deb1cde92553b7ae68d8001d19eb4b52790ba4cb1007cac9bf5981b61e",
+        "e874ab1b4811e6f693c6c2b3889ed77b98f4e18831cd2a224ea2b115fe65a1d1",
+        "cf518f457745ed929890783f22520317db0ae72f2b7f6cb00c7eee30327ac635"
+      ]
+    }
+  ]
+}

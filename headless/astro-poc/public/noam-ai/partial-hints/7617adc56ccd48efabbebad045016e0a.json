@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-fnc-02-r1",
+  "nativePrefix": "G8-T102",
+  "level": "b",
+  "levelCode": "B",
+  "title": "מושג הפונקציה בהקשר: משתנה תלוי ובלתי תלוי, תחום הגדרה וטווח",
+  "pdfId": "7617adc56ccd48efabbebad045016e0a",
+  "pdfSha256": "1666ba5bd001d59b08cf09551c530432a752a9038e4b74daf87d6786248965a6",
+  "canonicalSourceSha256": "de1b6604255ff30a73b6620289829005a600921a3635385aa3257c3d32369acc",
+  "items": [
+    {
+      "exerciseId": "G8-T102-B-Q03ד",
+      "canonicalQuestionSha256": "c94249002de365965e2654d339ab5f5c015c8bb839ff5311cb168dffe3e0b808",
+      "canonicalItemId": "ms-g8-fnc-02-b-r1.question.03.item.04",
+      "sourceExerciseSha256": "40e9c1661086552fd0a137a1f403311e2a62dc8149bf12d2eaf9f5ef09e79fa9",
+      "q": 3,
+      "part": "ד",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375663,
+        "y": 0.5983165950137224
+      },
+      "hintSha256": [
+        "851bd6c117d9ab3b10b3182a5afc767bed1093c65dc75b3f13069c946d829b94",
+        "e58ffad24679bc77db5fd0a781aa539f7d99a7ca9a07094b33cca9ffae8981b9",
+        "e1754ed10a31432ff6bab40082ffedc7da029df8b97907d61a81179b2fc2cdaf"
+      ]
+    },
+    {
+      "exerciseId": "G8-T102-B-Q05א",
+      "canonicalQuestionSha256": "1dc6bab44d625af1f3bceadac10e1a0adc33d8a06a74046c79cfeb991b99571e",
+      "canonicalItemId": "ms-g8-fnc-02-b-r1.question.05.item.01",
+      "sourceExerciseSha256": "e0385f8255b39cf51779bc5a7b221873580087ae97b8eea8c4fc3691f832f280",
+      "q": 5,
+      "part": "א",
+      "pin": {
+        "page": 5,
+        "x": 0.8311375661375663,
+        "y": 0.1132384960718294
+      },
+      "hintSha256": [
+        "5702e425705e94b463fc6db3dbe9cfcb2479679e2dfdc36e7d434b9f4e57f8fc",
+        "7788b98b8768f4276d64374c6e0a12065d017aed1c2160bf9ed88c7665b07c6f",
+        "f7a8e7c66a0616679e087f5e52c215bb401868152648be3779301489112cabd6"
+      ]
+    },
+    {
+      "exerciseId": "G8-T102-B-Q05ג",
+      "canonicalQuestionSha256": "1dc6bab44d625af1f3bceadac10e1a0adc33d8a06a74046c79cfeb991b99571e",
+      "canonicalItemId": "ms-g8-fnc-02-b-r1.question.05.item.03",
+      "sourceExerciseSha256": "10ab4f76873a58fef3289c9113e62996d54faabb27237d710c745d2358275f14",
+      "q": 5,
+      "part": "ג",
+      "pin": {
+        "page": 5,
+        "x": 0.8311375661375663,
+        "y": 0.36706897997444055
+      },
+      "hintSha256": [
+        "c309020b92b1ecd327df016ca5554a8bcafa4a675fa37ff7821b29484e8c377f",
+        "719a0e2b9fd9e8c1a5ab01a965ed9fc007af22ae51d651ae39168d511b31a70a",
+        "c8b2419c1f6cb04d4bf7fbeb38305d4d61c25e1d2b9d30405f71ce895af5c52e"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-rhm-01-r1",
+  "nativePrefix": "G9-T81",
+  "level": "b",
+  "levelCode": "B",
+  "title": "מעוין: תכונות, אלכסונים מאונכים ושטח עם משפט פיתגורס",
+  "pdfId": "0011a1c0893c4a0d84a92efb3d8f4dc8",
+  "pdfSha256": "ee457f36b8a2375399b4d69bd3342b342e4c667fa974b58ddee4fd24526512b7",
+  "canonicalSourceSha256": "1adfc42f72c12078f3331a25a9db4063ce4ed134f468228876676baec2db600b",
+  "items": [
+    {
+      "exerciseId": "G9-T81-B-Q02ד",
+      "canonicalQuestionSha256": "ea4d505ff800847f5c95f3e27edccaefba9d247112d74aeec0cae0ee4a43620a",
+      "canonicalItemId": "ms-g9-rhm-01-b-r1.question.02.item.04",
+      "sourceExerciseSha256": "21d23bd6f5b087246b7cf1b0120b4f05c85c633ad5f96c6589291ea085987da5",
+      "q": 2,
+      "part": "ד",
+      "pin": {
+        "page": 2,
+        "x": 0.8473291281293592,
+        "y": 0.6455710151475453
+      },
+      "hintSha256": [
+        "a3c7654aa41ebdd5819ee352c6b6fe773749fac32371b3103e7527324ddf86e4",
+        "a82adb799e85c604f15e16af9d5268cb92f3888bf9b87bb515e47dac33b8b457",
+        "78979a47a69808e68a37d0b68c57e92663a7a6c4301b28854180d6d9d198dc3e"
+      ]
+    }
+  ]
+}

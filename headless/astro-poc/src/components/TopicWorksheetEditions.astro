@@ -15,13 +15,18 @@ const multiple = editions.length > 1;
       {multiple && <strong class="topic-worksheet-edition-label">{edition.label}</strong>}
       {edition.note && <p class="topic-worksheet-edition-note">{edition.note}</p>}
       <div class="exact-topic-levels">
-        {edition.levels.map(level => (
-          <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href}
+        {edition.levels.map(level => {
+          const pdfButton = <a class={`exact-topic-level exact-topic-level--${level.key}`} href={level.href}
             target="_blank" rel="noopener noreferrer" data-level-key={level.key}
             data-edition-id={edition.editionId}>
             {worksheetActionLabel(level.label, level.href)}
-          </a>
-        ))}
+          </a>;
+          return level.partialHints ? <span class="level-with-ramzi">
+            {pdfButton}
+            <a class="partial-ramzi-link" href={level.partialHints.href} target="_blank" rel="noopener noreferrer"
+              aria-label={`${edition.label} · ${level.label} · ${level.partialHints.label}`}>{level.partialHints.label}</a>
+          </span> : pdfButton;
+        })}
       </div>
     </div>
   ))}
