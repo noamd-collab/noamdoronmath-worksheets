@@ -64,6 +64,8 @@ def rich(value, grade, *, provider=False, location=""):
         if type(value) in (str, dict):
             value = [value]
         if type(value) is list and 1 <= len(value) <= 30:
+            from compact_authoring import provider_span_array
+            value = provider_span_array(value, grade)
             value = [
                 {"kind": "text", "text": span}
                 if type(span) is str and HEBREW.search(span)
