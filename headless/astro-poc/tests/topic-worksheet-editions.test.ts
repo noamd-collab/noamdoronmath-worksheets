@@ -299,6 +299,21 @@ test('real single-topic hero retains one download group and direct level-B/excel
   assert.equal(hero.querySelector('[data-topic-levels]')?.previousElementSibling, ctas.at(-1)!.parentElement);
 });
 
+test('the probability introduction landing pairs each 091 PDF with its reviewed reader and preserves the original edition', async () => {
+  const catalog = loadCatalog();
+  const document = await renderTopic('probability-introduction-grade-7');
+  const group = document.querySelector('#topic-levels')!;
+  const ids = ['1b11ff7dc82e4b05a85ea3a5dce99af5', 'b3be66e753874bdfa561d965dc62b63e', 'ae3bc69e774149e7befd969c4949b4a8'];
+  const pdfLinks = [...group.querySelectorAll('a[data-edition-id="ms-20261121-pri-01-r1"]')];
+  assert.deepEqual(pdfLinks.map(pdf => [pdf.getAttribute('href'), pdf.nextElementSibling?.getAttribute('href')]),
+    ids.map(id => [`${catalog.config.pdfBase}${id}.pdf`, `/ramzi-partial?pdf=${id}`]));
+  assert.equal(group.querySelectorAll('a.partial-ramzi-link').length, 3);
+  const original = topicWorksheetEditionLinks(catalog, 7, 28, '/worksheets?grade=7&topic=28')
+    .find(entry => entry.editionId === 'legacy')!;
+  assert.deepEqual([...group.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')),
+    original.levels.map(level => level.href));
+});
+
 test('both frequency landings expose six direct FRQ links while keeping their original topics and downloads', async () => {
   const catalog = loadCatalog();
   const editionId = 'ms-20261115-frq-01-r1';
