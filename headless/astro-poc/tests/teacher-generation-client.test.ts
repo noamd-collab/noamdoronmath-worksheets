@@ -621,6 +621,8 @@ test('returning to the tab shows the recorded failure reason in history without 
  const app=harness();await app.flush();
  const cases=[
   ['SOURCE_SHAPE','התוכן שנוצר לא עבר את בדיקות הדף'],
+  ['SOURCE_PLAIN_MATH','ההפקה נעצרה לפני שנשמרו קובצי PDF ו־Word להורדה'],
+  ['SOURCE_NOTATION','המחולל התקשה לכתוב סימון מתמטי'],
   ['SOURCE_RICH_TEXT','התוכן שנוצר לא עבר את בדיקות הדף'],
   ['PROVIDER_UNAVAILABLE','שירות הכנת השאלות לא היה זמין'],
   ['WORKER_INTERRUPTED','עיבוד הדף בשרת נפסק'],

@@ -222,12 +222,13 @@
  const draftValidationErrors=new Set([
   'SOURCE_SHAPE','SOURCE_RICH_TEXT','SOURCE_ADDITION_SCOPE','SOURCE_ANSWER','SOURCE_CONCEPT','SOURCE_COVERAGE',
   'SOURCE_FIGURE','SOURCE_FIGURE_TASK','SOURCE_GEOMETRY','SOURCE_ITEMS','SOURCE_JSON','SOURCE_LANGUAGE',
-  'SOURCE_NIQQUD','SOURCE_NOTATION','SOURCE_NUMBER','SOURCE_PLAIN_MATH','SOURCE_QUESTIONS','SOURCE_SCOPE',
+  'SOURCE_NIQQUD','SOURCE_NUMBER','SOURCE_QUESTIONS','SOURCE_SCOPE',
   'SOURCE_SECTIONS','SOURCE_SIZE','SOURCE_STAR','SOURCE_STARS','SOURCE_TABLE','SOURCE_TEXT','SOURCE_VERSION',
   'SOURCE_VOLUME','QUALITY_GATE_FAILED','INVALID_MODEL_OUTPUT','PROVIDER_INCOMPLETE','PROVIDER_INVALID_RESPONSE',
   'PROVIDER_OUTPUT_TOO_LARGE','WRONG_ANSWER','OUTSIDE_LESSON_BOUNDARY','UNVERIFIED_SOLUTION'
  ]);
  function jobFailureMessage(code) {
+  if(code==='SOURCE_PLAIN_MATH' || code==='SOURCE_NOTATION')return 'המחולל התקשה לכתוב סימון מתמטי בדף. ההפקה נעצרה לפני שנשמרו קובצי PDF ו־Word להורדה.';
   if(draftValidationErrors.has(code))return 'התוכן שנוצר לא עבר את בדיקות הדף. אפשר לשלוח בקשה חדשה לאותו שיעור.';
   if(['PROVIDER_UNAVAILABLE','PROVIDER_HTTP_ERROR','PROVIDER_TLS_ERROR'].includes(code))return 'שירות הכנת השאלות לא היה זמין בזמן היצירה. אפשר לנסות שוב מאוחר יותר.';
   if(code==='WORKER_INTERRUPTED' || code==='WORKER_FAILED')return 'עיבוד הדף בשרת נפסק לפני שהטיוטה הושלמה. אפשר לשלוח בקשת יצירה חדשה.';
