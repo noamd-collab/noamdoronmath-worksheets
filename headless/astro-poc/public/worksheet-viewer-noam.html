@@ -5490,11 +5490,41 @@ function loadStaticManifest(){
     if(manifest&&window.NoamCuratedHints){window.NoamCuratedHints.invalidate(manifest);}
     manifest=null;manifestReady=false;fab.classList.add("hidden");
   }
-  return fetch(MANIFEST_PATH, { cache:"default" })
-    .then(function(response){
-      if (!response.ok){ throw new Error("manifest " + response.status); }
-      return response.json();
-    })
+  function isCurrentLoad(){
+    return loadVersion===noamManifestLoadVersion && requestedSearch===location.search;
+  }
+
+  // Recover a dropped worksheet map in the open viewer. Retry only the GET,
+  // leaving content and edition binding checks outside the retry loop.
+  async function fetchManifest(){
+    var retryDelays=[300, 900];
+    for (var attempt=0; ; attempt++){
+      if (!isCurrentLoad()){throw new Error("MANIFEST_SUPERSEDED");}
+      var controller=typeof AbortController==="function" ? new AbortController() : null;
+      var timeout=controller ? setTimeout(function(){controller.abort();},15000) : null;
+      try{
+        var response=await fetch(MANIFEST_PATH, {
+          cache:attempt===0 ? "default" : "reload",
+          signal:controller ? controller.signal : undefined
+        });
+        if (!response.ok){
+          var error=new Error("manifest " + response.status);
+          error.status=response.status;
+          throw error;
+        }
+        return await response.json();
+      }catch(error){
+        var transient=error.name==="TypeError" || error.name==="AbortError" ||
+          error.status===408 || (error.status>=500 && error.status<=599);
+        if (!transient || attempt===retryDelays.length || !isCurrentLoad()){throw error;}
+      }finally{
+        if (timeout!==null){clearTimeout(timeout);}
+      }
+      await new Promise(function(resolve){setTimeout(resolve,retryDelays[attempt]);});
+    }
+  }
+
+  return fetchManifest()
     .then(function(data){
       if (!data || !Array.isArray(data.exercises) || !data.exercises.length){
         throw new Error("empty manifest");
@@ -5510,7 +5540,7 @@ function loadStaticManifest(){
       return data;
     })
     .then(function(data){
-      if(loadVersion!==noamManifestLoadVersion||requestedSearch!==location.search){throw new Error("MANIFEST_SUPERSEDED");}
+      if(!isCurrentLoad()){throw new Error("MANIFEST_SUPERSEDED");}
       if(editionRequested){hydrateEditionState(data);}
       manifest = data;
       manifestReady = true;
@@ -5531,7 +5561,7 @@ function loadStaticManifest(){
     })
     .catch(function(error){
       console.warn("NOAM STATIC MANIFEST:", error);
-      if(loadVersion!==noamManifestLoadVersion){return null;}
+      if(!isCurrentLoad()){return null;}
       manifestReady = false;
       manifest = null;
       fab.classList.add("hidden");
