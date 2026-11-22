@@ -94,8 +94,11 @@ describe('eliyahu pythagoras game page', () => {
     const paths = listMainPagePaths(['./math-tools.astro', './aboutus.astro']);
     assert.ok(paths.includes(PYTHAGORAS_GAME_PATH));
     assert.equal(paths.includes(PYTHAGORAS_GAME_PLAY_PATH), false);
-    assert.ok(header.includes('PYTHAGORAS_GAME_PATH'));
-    assert.ok(header.includes('משחק משפט פיתגורס'));
+    assert.equal(header.includes('PYTHAGORAS_GAME_PATH'), false);
+    assert.equal(header.includes('/games/eliyahu-pythagoras'), false);
+    assert.ok(header.includes('פינת המשחקים של אליהו'));
+    const corner = readFileSync(fromTest('../src/lib/eliyahuGames.ts'), 'utf8');
+    assert.ok(corner.includes("slug: 'eliyahu-pythagoras'"));
   });
 
   it('is linked from the grade 8 and grade 9 theorem pages', () => {
