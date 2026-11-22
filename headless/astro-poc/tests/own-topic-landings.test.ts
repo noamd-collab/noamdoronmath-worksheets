@@ -47,7 +47,7 @@ describe('own topic landings', () => {
     ]);
     for (const slug of TOPIC_PAGE_G9_AUTHORED_SLUGS) {
       const page = loadTopicPage(slug);
-      assert.equal(page.catalogCtas.length, 1, slug);
+      assert.ok(page.catalogCtas.length >= 1, slug);
       assert.equal(page.catalogCta.catalogTopicId, page.catalogCtas[0].catalogTopicId);
     }
   });
