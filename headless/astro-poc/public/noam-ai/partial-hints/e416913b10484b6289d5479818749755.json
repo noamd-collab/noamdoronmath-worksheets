@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-g8-dat-01-r1",
+  "nativePrefix": "G8-T96",
+  "level": "c",
+  "levelCode": "E",
+  "title": "ארגון מידע, שכיחות יחסית, טווח ומדדי מרכז",
+  "pdfId": "e416913b10484b6289d5479818749755",
+  "pdfSha256": "d1d959c3d719c425b714b1d587ca7333f6dc47d6c0a7e731dcc7475d9376d46d",
+  "canonicalSourceSha256": "d643065b6ec7401f796586d99f2ff8defea26315cb65ba953c6432d808b094e6",
+  "items": [
+    {
+      "exerciseId": "G8-T96-E-Q06ג",
+      "canonicalQuestionSha256": "7991e4a8fb711b76f1af72ea89052bc103313ffcc8f0144f0e077b363bdf335e",
+      "canonicalItemId": "ms-g8-dat-01-c-r1.question.06.item.03",
+      "sourceExerciseSha256": "43e28843e65a970855519d544dc74867fb4fd83f35a879ce984e93229b8a8844",
+      "q": 6,
+      "part": "ג",
+      "pin": {
+        "page": 6,
+        "x": 0.8311375661375663,
+        "y": 0.4497101010101009
+      },
+      "hintSha256": [
+        "c238e7a02d057f5fad152dbff0f6adc3b588845dd6827ba7f0202a6f275afc77",
+        "0f7ebb10ee2c6af6a9083e0a66a51e026816623fe098fafb70b16d093566d03d",
+        "06574211fd5c324cae8cb9361411d25e7e4a2493b170a4c7edfe6f20e07e8904"
+      ]
+    },
+    {
+      "exerciseId": "G8-T96-E-Q08ג",
+      "canonicalQuestionSha256": "772ae21e82aa1b9bb2f3ec3f225d16d493b304483a7963a039453974f49d971c",
+      "canonicalItemId": "ms-g8-dat-01-c-r1.question.08.item.03",
+      "sourceExerciseSha256": "a10b7441091ba3941abf06e266dceb4590f181c6f03a5daf49fc9b93e1ca605e",
+      "q": 8,
+      "part": "ג",
+      "pin": {
+        "page": 8,
+        "x": 0.8311375661375663,
+        "y": 0.4020117970339242
+      },
+      "hintSha256": [
+        "f8f7fe84e7ff37d41c26e57915a125c3f5ae15939f67f5120035ccf0e8acd0de",
+        "567828e9cb5623951f0a69e0cd33cb281ab28af0c6878470f709b7eb561a1b8e",
+        "504260466e0d427dee17b5c18452c95179c6bdb295a5ec8142b1a19c6e45c607"
+      ]
+    }
+  ]
+}

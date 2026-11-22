@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-dir-01-r1",
+  "nativePrefix": "G7-T63",
+  "level": "b",
+  "levelCode": "B",
+  "title": "מספרים מכוונים: סדר, מספרים נגדיים וערך מוחלט",
+  "pdfId": "aef807ca2bdf40b89a2b79ab40d37a60",
+  "pdfSha256": "dba54ff14f7468fa2aad5b31b39d09411a67bde484163a8e976566ad9e662bdf",
+  "canonicalSourceSha256": "2ca8e5b901e239e9c1762f6b0dab63c54ef7df6dfa7037427655f077f42816ff",
+  "items": [
+    {
+      "exerciseId": "G7-T63-B-Q02א",
+      "canonicalQuestionSha256": "58186f30f523bb289f9f047932f3cb08252edd6cc8371432b5059a1b2fd487a6",
+      "canonicalItemId": "ms-g7-dir-01-b-r1.question.02.item.01",
+      "sourceExerciseSha256": "1978b7b1388cf0f50e22a5bd6d32b89995f9f515dab618f2c561fd355a2b425d",
+      "q": 2,
+      "part": "א",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.1132384960718294
+      },
+      "hintSha256": [
+        "a4ae8c19d132fb9938a33e9cdfe5a2ef907c130334ae73bbcd97d023c1f5ddaf",
+        "36b658ac2dc20d36aa9cb3b92a0bde130a7b007951705ef16509a77bcef5441f",
+        "5c378ba4b786d9e05ca5b06c1ce37bcd2c81620b0bd99f95b806b98068be6d8b"
+      ]
+    }
+  ]
+}

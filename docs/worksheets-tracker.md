@@ -1,3 +1,7 @@
+## 2026-11-22 — Reviewed hints on individual middle-school exercises
+
+The catalog and topic pages link to a partial Ramzi reader for 45 printed worksheets across 27 editions. The index covers 182 exercises with three independently reviewed hints each. Each marker requires the exact PDF and a matching verified Supabase record. The original PDF download remains available per level.
+
 ## 2026-11-22 — Grade 9 special triangles review
 
 Grade 9 topic 21 lists the three current grade 7 topic 15 worksheets as grade 7 review. Each level opens its existing G7-T15 PDF, exercises and Supabase hints.

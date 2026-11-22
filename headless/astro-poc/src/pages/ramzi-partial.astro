@@ -1,0 +1,109 @@
+---
+import pdfEngine from 'pdfjs-dist/build/pdf.min.js?url';
+import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.js?url';
+---
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,follow" />
+    <title>רמזי · דף עבודה | מתמטיקה עם נועם דורון</title>
+    <script is:inline src="/noam-learning-config.js"></script>
+    <script is:inline defer src={pdfEngine}></script>
+  </head>
+  <body>
+    <main id="partial-viewer" data-worker={pdfWorker}>
+      <header>
+        <div class="identity"><span>בס״ד</span><a href="/worksheets">מתמטיקה עם נועם דורון</a></div>
+        <div class="heading"><h1 id="sheet-title">דף עבודה עם רמזי</h1><a id="pdf-link" hidden>פתיחת PDF</a></div>
+      </header>
+      <p id="status" role="status">טוען את דף העבודה…</p>
+      <div id="reader" hidden>
+        <div class="tools" aria-label="כלי תצוגה">
+          <nav aria-label="דפדוף בדף העבודה">
+            <button id="prev" type="button">הקודם</button>
+            <span id="page-number" aria-live="polite"></span>
+            <button id="next" type="button">הבא</button>
+          </nav>
+          <label id="reviewed-pages" for="reviewed-page" hidden>
+            עמודים עם רמזים
+            <select id="reviewed-page"><option value="" disabled>בחירת עמוד</option></select>
+          </label>
+          <div class="zoom"><button id="zoom" type="button" aria-pressed="false">הגדלה</button></div>
+        </div>
+        <div class="workspace">
+          <div id="paper-scroll" tabindex="0" aria-label="עמוד מתוך דף העבודה">
+            <div id="paper"><canvas id="page" aria-label="עמוד PDF"></canvas><div id="pins"></div></div>
+          </div>
+          <div id="pin-list" hidden aria-label="רמזים בעמוד"></div>
+          <section id="hints" hidden aria-labelledby="hint-title" tabindex="-1">
+            <div class="hint-heading"><h2 id="hint-title"></h2><button id="close-hints" type="button" aria-label="סגירת הרמזים">סגירה</button></div>
+            <ol id="hint-list" aria-live="polite"></ol>
+            <div id="feedback" aria-label="משוב על הרמז"><button id="understood" type="button">הבנתי</button><button id="not-understood" type="button">לא הבנתי</button></div>
+            <p id="last-hint" role="status" hidden>זה היה הרמז האחרון לסעיף הזה.</p>
+          </section>
+        </div>
+      </div>
+      <noscript>יש להפעיל JavaScript כדי לצפות בדף העבודה עם רמזי.</noscript>
+    </main>
+    <script>
+      import { openPartialReader } from '../scripts/partialWorksheetReader';
+      function start() { void openPartialReader(); }
+      if (document.readyState === 'complete') start();
+      else window.addEventListener('load', start, {once:true});
+    </script>
+  </body>
+</html>
+<style is:global>
+  * { box-sizing:border-box }
+  :root { color-scheme:light; font-family:Arial,sans-serif; color:#193944; background:#f4f6f4 }
+  html,body { width:100%; max-width:100%; overflow-x:clip }
+  body { margin:0 }
+  [hidden] { display:none !important }
+  main { width:100%; max-width:77rem; margin:auto; padding:1rem clamp(.55rem,2.8vw,2.5rem) 2rem }
+  .identity,.heading,.tools,nav,.hint-heading { display:flex; align-items:center; gap:.65rem }
+  .identity { justify-content:space-between; color:#4c6569; font-size:.85rem }
+  .identity a { color:inherit }
+  .heading h1 { min-width:0; overflow-wrap:anywhere }
+  .heading { margin:1rem 0 .5rem; justify-content:space-between }
+  h1 { margin:0; font-size:clamp(1.35rem,3vw,2rem); line-height:1.25 }
+  a { display:inline-flex; align-items:center; min-height:44px; min-width:44px; color:#0c5b69; text-underline-offset:.2em }
+  #pdf-link { white-space:nowrap }
+  #status { margin:.4rem 0 .8rem; color:#3f5a62; font-size:.95rem }
+  .tools { flex-wrap:wrap; justify-content:space-between; max-width:50rem; margin:.8rem 0 }
+  button { border:1px solid #abc0c2; color:#173f49; border-radius:.45rem; background:white; padding:.5rem .8rem; min-height:44px; min-width:44px; font:inherit; cursor:pointer }
+  #reviewed-pages { display:flex; align-items:center; gap:.4rem; font-size:.9rem }
+  #reviewed-page { min-height:44px; padding:.4rem; border:1px solid #abc0c2; border-radius:.45rem; background:white; color:#173f49; font:inherit }
+  #reviewed-page:focus-visible { outline:3px solid #a15317; outline-offset:2px }
+  button:disabled { opacity:.45; cursor:default }
+  :is(button,a,[tabindex]):focus-visible { outline:3px solid #a15317; outline-offset:2px }
+  .workspace { display:grid; grid-template-columns:minmax(0,50rem) minmax(14rem,1fr); gap:1rem; align-items:start }
+  #paper-scroll { min-width:0; overflow:auto; direction:ltr; background:#e5eae6; border:1px solid #bac9c7; border-radius:.3rem }
+  #paper { position:relative; width:100%; min-width:100%; background:#fff; line-height:0 }
+  #paper.enlarged { width:160% }
+  #page { width:100%; height:auto; display:block }
+  #pins { position:absolute; inset:0; pointer-events:none }
+  .hint-pin { position:absolute; display:grid; place-items:center; pointer-events:auto; transform:translateY(-50%); height:44px; width:44px; padding:0; border:0; background:transparent; font-weight:bold; font-size:.78rem; line-height:1 }
+  .pin-mark { display:grid; place-items:center; min-width:1.75rem; min-height:1.6rem; padding:.18rem .38rem; border-radius:2rem; background:#f8e66b; border:1.5px solid #765318; color:#43320d; box-shadow:0 1px 3px #0002 }
+  .hint-pin[aria-pressed="true"] .pin-mark { background:#714e09; color:white }
+  #pin-list { grid-column:1; display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.65rem }
+  #pin-list .hint-pin { position:static; transform:none; width:auto; padding:.3rem .55rem; background:#fff; border:1px solid #abc0c2 }
+  #hints { position:sticky; top:1rem; min-width:0; border:1px solid #cad8d5; background:#fff; border-radius:.65rem; padding:1rem; box-shadow:0 3px 16px #15353b0a }
+  .hint-heading { justify-content:space-between }
+  h2 { margin:0; font-size:1.13rem }
+  #close-hints { padding:.25rem .5rem; font-size:.85rem }
+  ol { line-height:1.6; padding-inline-start:1.4rem; overflow-wrap:anywhere }
+  li + li { margin-top:.6rem }
+  #feedback { display:flex; gap:.5rem }
+  #understood { background:#1b5b62; border-color:#1b5b62; color:white }
+  @media(max-width:760px){
+    .workspace { display:block }
+    #hints { position:static; margin:.8rem 0 }
+    .tools { font-size:.9rem; gap:.2rem }
+    .tools button { min-height:44px }
+    nav { gap:.4rem }
+    #reviewed-pages { order:3; flex-basis:100%; margin-top:.3rem }
+    .pin-mark { font-size:.72rem }
+  }
+</style>

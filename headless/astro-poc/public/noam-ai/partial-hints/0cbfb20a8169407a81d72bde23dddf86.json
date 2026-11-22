@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-slp-01-r1",
+  "nativePrefix": "G8-T78",
+  "level": "a",
+  "levelCode": "A",
+  "title": "קצב שינוי אחיד, שיפוע וייצוג אלגברי של פונקציה קווית",
+  "pdfId": "0cbfb20a8169407a81d72bde23dddf86",
+  "pdfSha256": "253ea6436b9e302a9ccd1d9f548a65de948fbbf074ef2c264ece18940dafd813",
+  "canonicalSourceSha256": "3d72520dcbd6b8f9a9fee01ffca517d4810ddd99e77d1db38e7e4c9484002def",
+  "items": [
+    {
+      "exerciseId": "G8-T78-A-Q03ב",
+      "canonicalQuestionSha256": "8b2b85c35aa287008973d86326017e7f99f8715bf66f510cd9e1cb97e552914f",
+      "canonicalItemId": "ms-g8-slp-01-a-r1.question.03.item.02",
+      "sourceExerciseSha256": "e09f417947ffdaca449147ff7e0fd56f855f0e222c3811f0663dba88cfeb8fa6",
+      "q": 3,
+      "part": "ב",
+      "pin": {
+        "page": 3,
+        "x": 0.8465953791630161,
+        "y": 0.3962465496484509
+      },
+      "hintSha256": [
+        "7e0543fd1bdf9e5c38d1fba615390ceffbba055c7f6db25ec92a16edabf7d88d",
+        "2f00ed19ecd54a9a62bdd5f431775d85ee281f1f268d1afd2df05d5dd21d7486",
+        "906e3a33aa7172358139ab537b69f04287e2d3401960cb2954aa4b03a2623a59"
+      ]
+    }
+  ]
+}

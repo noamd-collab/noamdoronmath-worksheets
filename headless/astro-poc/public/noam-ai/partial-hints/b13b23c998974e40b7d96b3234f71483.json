@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-dat-03-r1",
+  "nativePrefix": "G8-T103",
+  "level": "b",
+  "levelCode": "B",
+  "title": "שכיחות יחסית ודיאגרמת עיגול, מיון נתונים, ומדדי מרכז כשמשנים את הנתונים",
+  "pdfId": "b13b23c998974e40b7d96b3234f71483",
+  "pdfSha256": "87a44db33f9ad824b5133605479857cb4306b0c1e310e93a7e7e8f7bd86e07aa",
+  "canonicalSourceSha256": "ddde2e537fd3afc104ff05a7b25f29fed58880354f3fdde882c76ff826f4ce0d",
+  "items": [
+    {
+      "exerciseId": "G8-T103-B-Q11ג",
+      "canonicalQuestionSha256": "15572844b73faf4761553b5f2dba2f983b65a3d87578e48b335aed6d49227acb",
+      "canonicalItemId": "ms-g8-dat-03-b-r1.question.11.item.03",
+      "sourceExerciseSha256": "e878b06af55a05469e0ce4dc9adb133c4d1ba99113f1418c6272d5e7209218ed",
+      "q": 11,
+      "part": "ג",
+      "pin": {
+        "page": 10,
+        "x": 0.8478882128002732,
+        "y": 0.4746483892946268
+      },
+      "hintSha256": [
+        "2427dc87349240cde2e4a3b945c7f039df442ce68dddeb22df7ee9e2aa60ee06",
+        "0bb7c1e90e6c5fe8d5f6485722676249eb97d7439d49bd7c2c9a3ec888b45b79",
+        "1542ae9a6c5e0b7b5ef9b49526c35b0ac38c19ac97e06195743e5d06f6441b9b"
+      ]
+    }
+  ]
+}

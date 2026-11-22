@@ -1,13 +1,14 @@
 import type { CatalogEdition, CatalogTopic, CatalogV1 } from './catalog/types';
 import { resolveEdition, topicEditions, worksheetEditionNote } from './catalog/editions';
 import { buildWorksheetHref } from './worksheetLinks';
+import { partialHintCount } from './catalog/partialHints';
 
 export interface TopicWorksheetEditionLinks {
   editionId: string;
   label: string;
   pdfOnly: boolean;
   note: string | null;
-  levels: Array<{ key: string; label: string; href: string }>;
+  levels: Array<{ key: string; label: string; href: string; partialHints?: { href: string; label: string } }>;
 }
 
 const printLevelLabels = { a: 'רמה א׳', b: 'רמה ב׳', c: 'מצוינות' } as const;
@@ -61,12 +62,17 @@ export function topicWorksheetEditionLinks(
     label: edition.label,
     pdfOnly: edition.publicationMode === 'pdf-only',
     note: worksheetEditionNote(edition),
-    levels: edition.levels.map(level => ({
-      key: level.key,
-      label: level.label,
-      href: buildWorksheetHref({ catalog, grade, topic, levelKey: level.key,
-        editionId: edition.editionId, backPath }),
-    })),
+    levels: edition.levels.map(level => {
+      const link = { key: level.key, label: level.label, href: buildWorksheetHref({
+        catalog, grade, topic, levelKey: level.key, editionId: edition.editionId, backPath,
+      }) };
+      const count = partialHintCount(edition, level);
+      if (!count) return link;
+      return { ...link, partialHints: {
+        href: '/ramzi-partial?pdf=' + level.pdfId,
+        label: count === 1 ? 'רמזי לסעיף אחד' : 'רמזי ל־' + count + ' סעיפים',
+      } };
+    }),
   }));
   const print = elementaryPrintEdition(catalog, grade, topic.id);
   return print ? [print, ...editions] : editions;

@@ -1,5 +1,6 @@
 import { Fragment, useMemo, useState, useId, useCallback, useEffect, useRef } from 'react';
 import '../styles/exact-catalog.css';
+import '../styles/partial-hint-links.css';
 import '../styles/site-search.css';
 import type { CatalogGrade, CatalogGroup, CatalogTopic, CatalogV1 } from '../lib/catalog/types';
 import {
@@ -335,7 +336,7 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
   function renderLevelButtons(topic: CatalogTopic, edition: TopicWorksheetEditionLinks) {
     return edition.levels.map((level) => {
       const href = level.href;
-      return (
+      const pdfButton = (
         <a
           key={topic.id + '-' + level.key + '-' + edition.editionId}
           className={`${levelClass(level.key)}${isDirectWorksheetPdf(href) ? ' lvl--pdf' : ''}`}
@@ -347,6 +348,14 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
           {worksheetActionLabel(level.label, href)}
         </a>
       );
+      if (!level.partialHints) return pdfButton;
+      return <span className="level-with-ramzi" key={level.key + edition.editionId}>
+        {pdfButton}
+        <a className="partial-ramzi-link" href={level.partialHints.href} target="_blank"
+          rel="noopener noreferrer" aria-label={`${topic.title} · ${level.label} · ${level.partialHints.label}`}>
+          {level.partialHints.label}
+        </a>
+      </span>;
     });
   }
 

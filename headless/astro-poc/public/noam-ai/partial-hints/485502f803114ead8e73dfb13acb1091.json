@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-root-01-r1",
+  "nativePrefix": "G7-T78",
+  "level": "b",
+  "levelCode": "B",
+  "title": "שורש ריבועי חיובי ואומדן שורש",
+  "pdfId": "485502f803114ead8e73dfb13acb1091",
+  "pdfSha256": "c6ec451b834d397354c57f22fba7e0235665b6e69c12c5ba9972cf08a88ed2c2",
+  "canonicalSourceSha256": "c5369cdf03781021c2c6805d4eceab8e44ef48dd8caf62d073f18e84ba0fd070",
+  "items": [
+    {
+      "exerciseId": "G7-T78-B-Q06ג",
+      "canonicalQuestionSha256": "955699bbd65c6c63c6f6cd837a24a169c1b584f4a409343fd2517727d0b73739",
+      "canonicalItemId": "ms-g7-root-01-b-r1.question.06.item.03",
+      "sourceExerciseSha256": "e853087d7291b5ff5fe39ced1916689ef08c143c2fe681ce9b67b0a647c37e07",
+      "q": 6,
+      "part": "ג",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.5857613488002992
+      },
+      "hintSha256": [
+        "95f4052e0aa8bc49c9394111f12861b3c2544bd8ec55e3cf92778fc0417e2e1a",
+        "51ac89e4c556e6994efd7354a6500aaa1a33545bf4a5d7891e68cd0be1916616",
+        "ce603db77db3422b3b633d8888882fa3d137fd61933b23b38ab28ed9de4a9d13"
+      ]
+    }
+  ]
+}
