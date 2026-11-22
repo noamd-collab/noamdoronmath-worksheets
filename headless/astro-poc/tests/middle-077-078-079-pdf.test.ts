@@ -6,7 +6,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { topicPageCatalogTopicIds, topicPagePdfParts } from '../src/lib/topicStructuredData';
 import { loadTopicPage } from '../src/lib/topicPages';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
-import { beforeNovember21Copy, catalogBeforePackages, renew, registryBeforeRelease, nextRenew, three } from './fixtures/middle-090-091-094';
+import { beforeNovember21Copy, catalogBeforePackages, renew, registryBeforeRelease, thirdRenew, nextRenew, three } from './fixtures/middle-090-091-094';
 
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
@@ -23,10 +23,10 @@ test('grade 7 algebra PDFs preserve existing grades, catalog groups and the prec
     p.studentFiles.reduce((sum, f) => sum + f.items, 0), p.studentFiles.reduce((sum, f) => sum + f.pages, 0),
   ]), scope);
 
-  const registry = registryBeforeRelease(registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), nextRenew.packages.map(p => p.edition)), renew.packages.map(p => p.edition));
+  const registry = registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), thirdRenew.packages.map(p => p.edition)), nextRenew.packages.map(p => p.edition)), renew.packages.map(p => p.edition));
   const preWave = registryBeforeRelease(registry, three.packages.map(p => p.edition));
   assert.equal(checksum(preWave), three.baselineRegistrySha256);
-  const previous = catalogBeforePackages(catalogBeforePackages(read('headless/catalog/catalog.v1.json'), nextRenew.packages), renew.packages);
+  const previous = catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(read('headless/catalog/catalog.v1.json'), thirdRenew.packages), nextRenew.packages), renew.packages);
   const catalog = loadCatalog();
   const gradeNineReview = previous.grades.find((g: any) => g.grade === 9).topics.find((t: any) => t.id === 21);
   assert.equal(gradeNineReview.noamTopicId, 'G9-T14');
