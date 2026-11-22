@@ -91,6 +91,7 @@ def general_cases(output):
             source = json.loads((fixture / 'model-output.json').read_text())
             expected_source = {'grade9-special-right-triangle':'triangle-parameters/1',
                                'grade1-counting':'counting-words/1',
+                               'grade5-unlike-fractions':'unlike-fractions/1',
                                'grade8-pythagoras':'pythagoras-parameters/1',
                                'grade9-square':'square-parameters/1',
                                'grade3-division-curriculum':'division-facts/1'}.get(case, 4)
