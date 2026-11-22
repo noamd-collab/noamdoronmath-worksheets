@@ -378,5 +378,9 @@ if __name__ == "__main__":
     args = ap.parse_args(); wd = Path(args.work)
     load = lambda name: json.loads((wd / name).read_text(encoding="utf-8"))
     lesson, payload, scope = load("lesson.json"), load("model-output.json"), load("curriculum-scope.json")
-    result = compile_source(lesson, validate_source(lesson, payload, scope), scope, args.skill, wd)
+    from triangle_lesson import VERSION, compile_triangle
+    if payload.get("version") == VERSION:
+        result = compile_triangle(lesson, payload, scope, args.skill, wd)
+    else:
+        result = compile_source(lesson, validate_source(lesson, payload, scope), scope, args.skill, wd)
     print(json.dumps(result, ensure_ascii=False))
