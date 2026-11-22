@@ -345,6 +345,7 @@ import triangularPrismVolumeGrade7 from '../data/topic-pages/triangular-prism-vo
 import commonFactorGrade9 from '../data/topic-pages/common-factor-grade-9.json';
 import factoringIdentitiesGrade9 from '../data/topic-pages/factoring-identities-grade-9.json';
 import completeFactoringGrade9 from '../data/topic-pages/complete-factoring-grade-9.json';
+import specialTrianglesReviewGrade9 from '../data/topic-pages/special-triangles-review-grade-9.json';
 import { isolateMathRuns } from './mathDirection';
 import { familyRelatedTopics, gradeHubRelatedTopic, type FamilyRelatedTopic } from './topicFamilies';
 
@@ -681,6 +682,11 @@ export const TOPIC_PAGE_OWN_LANDING_SLUGS = [
   'complete-factoring-grade-9',
 ] as const;
 
+/** Grade 9 topic 21, the grade-7 special-triangles review. Own landing, existing isosceles loop. */
+export const TOPIC_PAGE_G9_REVIEW_SLUGS = [
+  'special-triangles-review-grade-9',
+] as const;
+
 export const TOPIC_PAGE_G5_SLUGS = [
   'big-numbers-rounding-grade-5',
   'number-sense-tens-hundreds-grade-5',
@@ -824,6 +830,7 @@ export const TOPIC_PAGE_AUTHORED_SLUGS = [
   ...TOPIC_PAGE_G6_SLUGS,
   ...TOPIC_PAGE_G9_AUTHORED_SLUGS,
   ...TOPIC_PAGE_OWN_LANDING_SLUGS,
+  ...TOPIC_PAGE_G9_REVIEW_SLUGS,
 ] as const;
 
 export const TOPIC_PAGE_SLUGS = [
@@ -845,6 +852,7 @@ export const TOPIC_PAGE_SLUGS = [
   ...TOPIC_PAGE_G6_SLUGS,
   ...TOPIC_PAGE_G9_AUTHORED_SLUGS,
   ...TOPIC_PAGE_OWN_LANDING_SLUGS,
+  ...TOPIC_PAGE_G9_REVIEW_SLUGS,
 ] as const;
 
 export type TopicPageSlug = (typeof TOPIC_PAGE_SLUGS)[number];
@@ -1142,6 +1150,7 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'common-factor-grade-9': commonFactorGrade9 as TopicPageContent,
   'factoring-identities-grade-9': factoringIdentitiesGrade9 as TopicPageContent,
   'complete-factoring-grade-9': completeFactoringGrade9 as TopicPageContent,
+  'special-triangles-review-grade-9': specialTrianglesReviewGrade9 as TopicPageContent,
   // Elementary authored pages (G1, catalog order)
   'counting-grade-1': countingGrade1 as TopicPageContent,
   'numbers-to-100-grade-1': numbersTo100Grade1 as TopicPageContent,
@@ -1354,7 +1363,8 @@ function isolateRelatedLabel(rel: FamilyRelatedTopic): FamilyRelatedTopic {
 const AUTHORED_RELATED_SLUGS = new Set<string>(['median-to-hypotenuse-grade-9', 'equations-numeric-denominator-grade-9',
   'isometric-transformations-grade-8', 'parallel-lines-angles-grade-9', 'co-interior-angles-grade-9', 'math-literacy-tasks-grade-9',
   'percentages-grade-9',
-  ...TOPIC_PAGE_OWN_LANDING_SLUGS]);
+  ...TOPIC_PAGE_OWN_LANDING_SLUGS,
+  ...TOPIC_PAGE_G9_REVIEW_SLUGS]);
 
 /** Links from a parent landing to a topic that now has its own page. */
 const CHILD_LANDING_LINKS: Record<string, readonly FamilyRelatedTopic[]> = {
@@ -1385,6 +1395,9 @@ const CHILD_LANDING_LINKS: Record<string, readonly FamilyRelatedTopic[]> = {
   ],
   'area-parallelogram-trapezoid-composite-grade-7': [
     { path: '/parallelogram-trapezoid-area-grade-7', label: 'שטח מקבילית וטרפז', productionHref: 'https://www.noamdoronmath.co.il/parallelogram-trapezoid-area-grade-7' },
+  ],
+  'equilateral-triangle-grade-9': [
+    { path: '/special-triangles-review-grade-9', label: 'משולשים מיוחדים — חזרה מכיתה ז׳', productionHref: 'https://www.noamdoronmath.co.il/special-triangles-review-grade-9' },
   ],
   'factoring-grade-9': [
     { path: '/common-factor-grade-9', label: 'הוצאת גורם משותף', productionHref: 'https://www.noamdoronmath.co.il/common-factor-grade-9' },
