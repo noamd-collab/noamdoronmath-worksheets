@@ -256,15 +256,15 @@ def _fold(op, args):
     return operation(op, _fold(op, args[:mid]), _fold(op, args[mid:]))
 
 
-def _canonical_ast(ast):
+def _canonical_ast(ast, *, share_leaves=False):
     """Only exact associativity; preserve operand order and every operand.
 
     Shape is already validated. Original task/conditions remain untouched;
     normalized trees are checked separately before any SymPy construction.
     """
     if ast["type"] != "operation":
-        return deepcopy(ast)
-    args = [_canonical_ast(arg) for arg in ast["args"]]
+        return ast if share_leaves else deepcopy(ast)
+    args = [_canonical_ast(arg, share_leaves=share_leaves) for arg in ast["args"]]
     return _fold(ast["op"], args) if ast["op"] in ("add", "multiply") else operation(ast["op"], *args)
 
 
@@ -305,7 +305,7 @@ def _result_ast(expression):
     return ast
 
 
-def to_house_math(ast) -> str:
+def to_house_math(ast, *, number_spellings=None) -> str:
     r"""Compile a bounded AST to the skill's math-island *contents*, without $.
 
     Uses stacked \f{}, \sqrt{}, stretched \g{} parentheses, and middle-school
@@ -314,12 +314,17 @@ def to_house_math(ast) -> str:
     """
     inspect_ast(ast, Budget(result=True))
 
-    ast = _canonical_ast(ast)
+    ast = _canonical_ast(ast, share_leaves=bool(number_spellings))
     inspect_ast(ast, Budget(result=True))
 
     def emit(node):
         kind = node["type"]
         if kind == "number":
+            if number_spellings:
+                from numeric_literals import printed_number
+                spelling = printed_number(node, number_spellings)
+                if spelling is not None:
+                    return spelling.replace("-", "−")
             n, d = node["numerator"], node["denominator"]
             sign = "−" if n < 0 else ""
             return sign + (str(abs(n)) if d == 1 else r"\f{" + str(abs(n)) + "}{" + str(d) + "}")
@@ -355,7 +360,7 @@ def to_house_math(ast) -> str:
         left=group(parts[0]) if additive(args[0]) else parts[0]
         right=group(parts[1]) if additive(args[1]) or negative(args[1]) else parts[1]
         # Unary negation is printed as a sign rather than (-1)·(expression).
-        if args[0]=={'type':'number','numerator':-1,'denominator':1}:
+        if args[0]=={'type':'number','numerator':-1,'denominator':1} and not (number_spellings and id(args[0]) in number_spellings):
             return '−'+right
         return left+" · "+right
 

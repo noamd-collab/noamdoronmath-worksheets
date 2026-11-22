@@ -93,7 +93,7 @@ class GeneralRuntimeTests(unittest.TestCase):
         envelope={'model':'fixture-model','usage':{'prompt_tokens':123,'private':'discard'},
                   'choices':[{'finish_reason':'stop','message':{'content':json.dumps(payload,ensure_ascii=False)}}]}
         measured={}
-        with patch('general_provider.build_authoring_context',return_value=context), patch('provider.build_opener') as network:
+        with patch('provider.build_authoring_context',return_value=context), patch('provider.build_opener') as network:
             network.return_value.open.return_value=Response(envelope)
             got=provider.author_lesson(self.lesson,metadata=measured,**self.config)
             network.return_value.open.assert_called_once()
@@ -105,10 +105,11 @@ class GeneralRuntimeTests(unittest.TestCase):
         sent=json.loads(body['messages'][1]['content'])
         self.assertEqual(sent['authoringContext'],context)
         schema=body['response_format']['json_schema']['schema']
-        self.assertEqual(schema['properties']['version']['const'],4)
+        self.assertEqual(set(schema['required']), {'title', 'rule', 'practice', 'challenges'})
+        self.assertFalse(schema['additionalProperties'])
         self.assertEqual(body['response_format']['type'],'json_schema')
         self.assertIs(body['response_format']['json_schema']['strict'],True)
-        section=schema['properties']['sections']['items']['properties']
+        section=schema['properties']
         for name, count in [('practice',17),('challenges',3)]:
             self.assertEqual((section[name]['minItems'],section[name]['maxItems']),(count,count))
             self.assertEqual(section[name]['items'],{'$ref':'#/$defs/question'})
@@ -118,6 +119,95 @@ class GeneralRuntimeTests(unittest.TestCase):
         self.assertRegex(measured['requestSchemaSha256'],r'^[a-f0-9]{64}$')
         self.assertRegex(measured['requestBodySha256'],r'^[a-f0-9]{64}$')
         self.assertNotIn('synthetic-fixture-key',json.dumps(body))
+
+    def test_flat_content_round_trip_and_rejection_of_extra_owner_fields(self):
+        original = source(self.lesson)
+        qs = original['sections'][0]['questions']
+        content = {k: copy.deepcopy(original[k]) for k in ('title', 'rule')}
+        raw = [{k: v for k, v in q.items() if k != 'star'} for q in qs]
+        content.update(practice=raw[:-3], challenges=raw[-3:])
+        with patch('provider.build_authoring_context', return_value={}), \
+                patch('provider.request_author_json', return_value=content) as network:
+            self.assertEqual(provider.author_lesson(self.lesson, **self.config), original)
+            network.assert_called_once()
+        from skill_authoring import bind_content
+        for field in ('approved', 'conceptIds', 'outputPath', 'teacherContext'):
+            with self.subTest(field=field), self.assertRaises(GeneralSourceError):
+                bind_content({**content, field: True}, scope_for_lesson(self.lesson))
+
+    def test_targeted_revision_spends_at_most_once_and_preserves_other_rows(self):
+        original = source(self.lesson)
+        qs = original["sections"][0]["questions"]
+        rows = [{k: v for k, v in q.items() if k != "star"} for q in qs]
+        content = {k: copy.deepcopy(original[k]) for k in ("title", "rule")}
+        content.update(practice=copy.deepcopy(rows[:-3]), challenges=copy.deepcopy(rows[-3:]))
+        content["practice"][3]["intro"] = "חשבו [[4 @ 2]]."
+        findings, measured = {}, {}
+        with patch("provider.build_authoring_context", return_value={}), \
+                patch("provider.request_author_json", side_effect=[content, {"q4": rows[3]}]) as network:
+            with self.assertRaises(GenerationError):
+                provider.author_lesson(self.lesson, revision=findings, metadata=measured, **self.config)
+            self.assertEqual(network.call_count, 1)
+            self.assertEqual([f["question"] for f in findings["sourceFindings"]], [4])
+            revised = findings["revise"](findings["sourceFindings"])
+            self.assertEqual(revised, original)
+            self.assertTrue(measured["validated"])
+            body = network.call_args.args[2]
+            self.assertEqual(body["response_format"]["json_schema"]["schema"]["required"], ["q4"])
+            with self.assertRaises(GenerationError) as error:
+                findings["revise"](findings["sourceFindings"])
+            self.assertEqual(error.exception.code, "REVISION_LIMIT")
+            self.assertEqual(network.call_count, 2)
+
+    def test_correction_rejects_unknown_or_excess_scope(self):
+        from skill_authoring import correction_body, question_plan, apply_replacements
+        scope = scope_for_lesson(self.lesson)
+        rows = question_plan(self.lesson, scope)
+        flat = {"title":"כותרת", "rule":"הנחיה", "practice":[{}]*17, "challenges":[{}]*3}
+        for indexes in ([], [False], [0], [21], [3,3], list(range(1,8))):
+            with self.subTest(indexes=indexes), self.assertRaises(GeneralSourceError):
+                correction_body(flat, [{"question":i,"feedback":["fix"]} for i in indexes],
+                    self.lesson, scope, rows, {}, "test")
+        with self.assertRaises(GeneralSourceError):
+            apply_replacements(flat, {"q5": ("practice",4)}, {"q6": {}})
+
+    def test_skill_plan_covers_selected_concepts_and_respects_figure_policy_across_catalog(self):
+        from skill_authoring import question_plan, worksheet_schema
+        from general_source import geometry_topic
+        for topic in catalog().topics:
+            lesson = intake(topic)
+            ids = [c['id'] for c in topic['concepts']]
+            lesson['lessonBoundary']['conceptIds'] = ids
+            scope = scope_for_lesson(lesson)
+            with self.subTest(topic=topic['topicId']):
+                rows = question_plan(lesson, scope)
+                self.assertEqual(len(rows), lesson['questionCount'])
+                self.assertTrue(all(r['group'] == 'practice' for r in rows[:-3]))
+                self.assertTrue(all(r['group'] == 'challenges' for r in rows[-3:]))
+                for cohort in (rows[:-3], rows[-3:]):
+                    ordered = dict.fromkeys(c for row in cohort for c in row['conceptIds'])
+                    self.assertEqual(list(ordered), ids)
+                wire = worksheet_schema(lesson, scope)
+                supports_figures = 'figure' in wire['$defs']['question']['properties']
+                self.assertEqual(supports_figures, geometry_topic(scope))
+                if not supports_figures:
+                    self.assertFalse(any('representation' in row for row in rows))
+
+    def test_author_receives_skill_content_truth_and_only_applicable_elementary_principles(self):
+        from general_provider import author_guidance
+        topic = catalog().topics[0]
+        scope = scope_for_lesson(intake(topic))
+        rules = {'authoring_policy_he': 'כלל לכל הנושאים', 'principles': [
+            {'id': 'included', 'topic_ids': [topic['sourceTopicId']]},
+            {'id': 'other', 'topic_ids': ['other']}]}
+        def doc(path, value):
+            return {'path': path, 'text': value, 'sha256': 'a' * 64}
+        context = {'skill': {'documents': [
+            doc('references/content-truth.md', 'אימות מול הנתונים'),
+            doc('didactic_principles_elementary.json', json.dumps(rules))]}}
+        actual = author_guidance(context, scope)['skill']
+        self.assertEqual(actual['elementaryPrinciples']['applicable'], rules['principles'][:1])
+        self.assertEqual(actual['documents'], context['skill']['documents'][:1])
 
     def test_rejects_incomplete_provider_rows_and_misplaced_challenges(self):
         # Both are real risks when a provider treats its schema as advisory.
@@ -131,7 +221,7 @@ class GeneralRuntimeTests(unittest.TestCase):
                 questions[0]['star'],questions[-1]['star']=True,False
                 expected='AUTHOR_PLAN_MISMATCH'
             with self.subTest(only_stars=only_stars), \
-                    patch('general_provider.build_authoring_context',return_value={}), \
+                    patch('provider.build_authoring_context',return_value={}), \
                     patch('provider.request_author_json',return_value=payload) as author, \
                     self.assertRaises(GenerationError) as caught:
                 provider.author_lesson(self.lesson,**self.config)
@@ -184,7 +274,7 @@ class GeneralRuntimeTests(unittest.TestCase):
         with self.assertRaisesRegex(GeneralSourceError, "table.head.1"):
             validate_source(self.lesson, payload, scope)
         untouched = copy.deepcopy(payload)
-        with patch('general_provider.build_authoring_context',return_value={}), patch('provider.request_author_json',return_value=payload) as author:
+        with patch('provider.build_authoring_context',return_value={}), patch('provider.request_author_json',return_value=payload) as author:
             corrected = provider.author_lesson(self.lesson, **self.config)
         author.assert_called_once()
         table = corrected["sections"][0]["questions"][0]["table"]
@@ -210,7 +300,7 @@ class GeneralRuntimeTests(unittest.TestCase):
             authored = {"version":1, "questions":[{"theme":(q % 10)+1, "choices":[(i + q) % 4 + 1 for i in range(5)]}
                                                  for q in range(count)]}
             measured = {}
-            with patch('general_provider.build_authoring_context',return_value={}), patch('provider.request_author_json',return_value=authored) as author:
+            with patch('provider.build_authoring_context',return_value={}), patch('provider.request_author_json',return_value=authored) as author:
                 result = provider.author_lesson(lesson, metadata=measured, **self.config)
                 body = author.call_args.args[2]
             author.assert_called_once()
@@ -253,7 +343,7 @@ class GeneralRuntimeTests(unittest.TestCase):
         payload = json.loads((fixture/'model-output.json').read_text())
         for i,q in enumerate(payload["sections"][0]["questions"]):
             q["star"] = i >= lesson["questionCount"]-3
-        with patch('general_provider.build_authoring_context',return_value={}), patch('provider.request_author_json',return_value=payload) as author:
+        with patch('provider.build_authoring_context',return_value={}), patch('provider.request_author_json',return_value=payload) as author:
             self.assertEqual(provider.author_lesson(lesson, **self.config), payload)
         author.assert_called_once()
         self.assertEqual(json.loads(author.call_args.args[2]["messages"][1]["content"])["teacherStoppingPoint"], lesson["lastLesson"])
@@ -293,7 +383,7 @@ class GeneralRuntimeTests(unittest.TestCase):
     def test_bad_general_response_never_retries_or_becomes_approved(self):
         envelope={'choices':[{'finish_reason':'stop','message':{'content':'{"version":4,"approved":true}'}}]}
         measured={}
-        with patch('general_provider.build_authoring_context',return_value={}), patch('provider.build_opener') as network:
+        with patch('provider.build_authoring_context',return_value={}), patch('provider.build_opener') as network:
             network.return_value.open.return_value=Response(envelope)
             with self.assertRaises(GenerationError): provider.author_lesson(self.lesson,metadata=measured,**self.config)
             network.return_value.open.assert_called_once()
@@ -312,7 +402,7 @@ class GeneralRuntimeTests(unittest.TestCase):
         envelope={'choices':[{'finish_reason':'stop','message':{
             'content':json.dumps(payload,ensure_ascii=False)}}]}
         measured={}
-        with patch('general_provider.build_authoring_context',return_value={}), patch('provider.build_opener') as network:
+        with patch('provider.build_authoring_context',return_value={}), patch('provider.build_opener') as network:
             network.return_value.open.return_value=Response(envelope)
             with self.assertRaises(GenerationError) as raised:
                 provider.author_lesson(self.lesson,metadata=measured,**self.config)

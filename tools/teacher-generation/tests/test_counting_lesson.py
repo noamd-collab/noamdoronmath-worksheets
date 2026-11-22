@@ -22,7 +22,8 @@ class CountingLessonTests(unittest.TestCase):
         self.lesson = json.loads((FIXTURE / "lesson.json").read_text())
         self.parameters = json.loads((FIXTURE / "model-output.json").read_text())
 
-    def test_native_eligible_intake_needs_no_provider_and_preserves_replay(self):
+    @patch("provider.build_authoring_context", return_value={})
+    def test_native_eligible_intake_needs_no_provider_and_preserves_replay(self, _context):
         metadata = {}
         with patch("counting_lesson.secrets.randbits", return_value=self.parameters["seed"]), patch(
                 "general_provider.author_general_lesson", side_effect=AssertionError("unexpected provider call")):

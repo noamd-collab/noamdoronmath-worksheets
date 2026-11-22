@@ -1,4 +1,4 @@
-"""Recognize a bounded printed place-value exercise and solve its actual blanks.
+"""Bind bounded elementary exercises to the facts that the pupil sees.
 
 The provider's symbolic evaluation remains independently verified. Only a whole
 supported prompt can provide a stronger, pupil-facing answer binding here.
@@ -9,7 +9,7 @@ import re
 import unicodedata
 
 from general_source import GeneralSourceError
-from math_tasks import validate_and_solve_task
+from math_tasks import number, operation, validate_and_solve_task
 
 PLACE = {"אחדות": 1, "עשרות": 10, "מאות": 100}
 THREE = r"([1-9][0-9]{2})"
@@ -21,6 +21,86 @@ class PrintedAnswer:
     # Each part is trusted Hebrew prose (str), or one formula stored as a tuple.
     parts: tuple
     proof: dict
+
+
+WRITE_EXPRESSION = re.compile(r"(?:^|[.!?:;]\s*|\s+ו)(?:כתבו|רשמו|חברו|בנו)\s+(?:את\s+ה)?(?:תרגיל|ביטוי)(?![א-ת])")
+WRITE_INSTRUCTION = re.compile(
+    r"(?:כתבו|רשמו|חברו|בנו) (?:תרגיל|ביטוי(?: חשבוני)?)"
+    r"(?: (?:המשלב|עם) סוגריים)?(?: (?:עבור כל מצב מתואר|המתאים לכל תיאור))?"
+    r"(?:,?\s*וחשבו את (?:התוצאה|ערכו))?[.:]?"
+)
+NEUTRAL_INTRO = re.compile(r"(?:תרגול מילולי|קראו את ההוראות|פתרו את הסעיפים הבאים)[.:]?")
+NATURAL = r"(0|[1-9][0-9]{0,5})"
+FROM_WORDS = re.compile(
+    r"(הסכום של|ההפרש בין|המכפלה של) " + NATURAL + r" ([ול])[־-]?" + NATURAL +
+    r",\s*(מוכפל(?:ת)? ב[־-]?|מחולק(?:ת)? ב[־-]?|פחות |ועוד )" + NATURAL + r"[.]?"
+)
+
+
+def printed_intent(question, item, solved, grade, *, location):
+    """Bind a printed comparison or a request to write and evaluate an expression."""
+    if grade > 6:
+        return None
+    prompt = item["prompt"]
+    task = solved["question"]
+
+    def reject(code):
+        raise GeneralSourceError(code, "Unverified pupil exercise or mismatched expression at " + location)
+
+    def words(parts):
+        return "".join(c for s in parts if s["kind"] == "text"
+                       for c in s["text"] if not unicodedata.combining(c))
+
+    asks_for_expression = any(WRITE_EXPRESSION.search(words(p)) for p in (question["intro"], prompt))
+    if task["kind"] == "compare" and not asks_for_expression:
+        pattern = "".join(s["text"] if s["kind"] == "text" else "@" for s in prompt).strip()
+        if re.fullmatch(r"השוו\s*:?\s*@\s+לבין\s+@\s*[.?]?", pattern):
+            from compact_authoring import expression
+            visible = []
+            for s in prompt:
+                if s["kind"] == "math":
+                    visible.append(s["expression"])
+                elif s["kind"] == "formula":
+                    try:
+                        visible.append(expression(s["notation"], grade))
+                    except GeneralSourceError:
+                        reject("PRINTED_EXPRESSION_SCOPE")
+                elif s["kind"] != "text":
+                    reject("PRINTED_EXPRESSION_SCOPE")
+            if visible != [task["left"], task["right"]] or item["answer"].get("unit"):
+                reject("PRINTED_EXPRESSION_MISMATCH")
+            return {"rule": "printed_comparison", "left": visible[0], "right": visible[1]}
+
+    if not asks_for_expression:
+        return None
+    if "table" in question or "figure" in question:
+        reject("PRINTED_EXPRESSION_SCOPE")
+    intro = _plain(question["intro"])
+    description = _plain(prompt)
+    if description and not WRITE_INSTRUCTION.fullmatch(intro or ""):
+        # An individual subitem can carry its own instruction and full description.
+        instruction, colon, body = description.partition(":")
+        if (not colon or not WRITE_INSTRUCTION.fullmatch(instruction)
+                or not NEUTRAL_INTRO.fullmatch(intro or "")):
+            reject("PRINTED_EXPRESSION_SCOPE")
+        description = body
+    parsed = FROM_WORDS.fullmatch(description or "")
+    if not parsed or task["kind"] != "evaluate" or item["answer"].get("unit"):
+        reject("PRINTED_EXPRESSION_SCOPE")
+    phrase, first, join, second, then, third = parsed.groups()
+    initial, connector = {"הסכום של": ("add", "ו"), "ההפרש בין": ("subtract", "ל"),
+                          "המכפלה של": ("multiply", "ו")}[phrase]
+    if join != connector:
+        reject("PRINTED_EXPRESSION_SCOPE")
+    final = next(op for prefix, op in (("מוכפל", "multiply"), ("מחולק", "divide"),
+                                       ("פחות", "subtract"), ("ועוד", "add")) if then.startswith(prefix))
+    if grade == 1 and {initial, final}.intersection({"multiply", "divide"}):
+        reject("PRINTED_EXPRESSION_SCOPE")
+    pair = operation(initial, number(int(first)), number(int(second)))
+    tree = operation(final, pair, number(int(third)))
+    if tree != task["expression"]:
+        reject("PRINTED_EXPRESSION_MISMATCH")
+    return {"rule": "write_expression", "expression": tree}
 
 
 def _plain(spans):

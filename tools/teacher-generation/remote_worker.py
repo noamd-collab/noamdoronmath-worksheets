@@ -1,4 +1,4 @@
-"""Owner-only private job worker. No inbound listener; no automatic paid retries.
+"""Owner-only private job worker with a bounded, operator-controlled skill correction.
 
 Run only from a reviewed checkout with pinned skills and operator-supplied
 environment. Secrets are not accepted in job JSON, forwarded to child renders,
@@ -21,12 +21,14 @@ from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPSHand
 from urllib.error import HTTPError
 from provider import author_lesson, safe_usage
 from runner import render_job
+from skill_feedback import read_skill_feedback
 from validation import GenerationError, capabilities, validate_lesson
 from preflight import check as check_readiness
 
 ORIGIN = 'https://ouzquolkeuceektfihss.supabase.co'
 OWNER = '80da2957-9492-4a9d-babb-28ba70dedd12'
 BUCKET = 'teacher-generation-private'
+ENABLE_SKILL_REVISION = True
 ARTIFACT_LIMIT = 15728640
 ARTIFACT_MIMES = {'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'}
 UUID = re.compile(r'^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$')
@@ -139,6 +141,8 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         elapsed = metadata.get('elapsedSeconds')
         if type(elapsed) in (int, float) and 0 <= elapsed <= 86400: record['elapsedSeconds'] = round(elapsed, 3)
         record['usage'] = safe_usage(metadata.get('usage'))
+        if 'revisionUsage' in metadata:
+            record['revisionUsage'] = safe_usage(metadata.get('revisionUsage'))
         if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4', 'no-carry-addition/1', 'triangle-parameters/1', 'division-facts/1', 'square-parameters/1', 'counting-words/1', 'pythagoras-parameters/1', 'unlike-fractions/1'):
             record['authorContract'] = metadata['authorContract']
         derivation = metadata.get('derivation')
@@ -166,7 +170,74 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         return False
 
 
-def process_job(remote, job, root):
+def author_and_render(remote, job, target, lost, enable_skill_revision):
+    lesson = job['lesson']
+    metadata, revision = {}, {}
+    options = {}
+    if lesson.get('version') == 3:
+        options['timeout'] = 300
+        if enable_skill_revision:
+            options['revision'] = revision
+    render_target = target
+    author_failure = None
+    diagnostics_due = True
+
+    def save_diagnostics():
+        if not save_author_diagnostics(target.parent, job['id'], metadata, author_failure):
+            print(json.dumps({'event':'author_diagnostics_unavailable','jobId':job['id']}), flush=True)
+
+    def set_phase(phase):
+        if lost.is_set():
+            raise RuntimeError('JOB_LEASE_LOST')
+        update_job(remote, job, {'phase': phase})
+        if lost.is_set():
+            raise RuntimeError('JOB_LEASE_LOST')
+
+    def correct(findings):
+        nonlocal render_target, author_failure
+        revise = revision.pop('revise')  # shared budget for source and rendered feedback
+        render_target = target / 'revision'
+        if target.is_symlink() or render_target.is_symlink() or render_target.exists():
+            raise RuntimeError('JOB_PATH_DENIED')
+        render_target.mkdir(mode=0o700, parents=True)
+        set_phase('authoring')
+        try:
+            result = revise(findings)
+        except Exception as exc:
+            author_failure = exc
+            raise
+        author_failure = None
+        return result
+
+    try:
+        try:
+            payload = author_lesson(lesson, metadata=metadata, **options)
+        except Exception as exc:
+            author_failure = exc
+            findings = revision.get('sourceFindings')
+            if not (isinstance(exc, GenerationError) and callable(revision.get('revise'))
+                    and isinstance(findings, list) and findings):
+                raise
+            payload = correct(findings)
+        if not callable(revision.get('revise')):
+            # Persist completed author diagnostics before the potentially long render.
+            save_diagnostics()
+            diagnostics_due = False
+        set_phase('rendering')
+        manifest = render_job(lesson, payload, render_target)
+        if manifest.get('status') == 'failed' and callable(revision.get('revise')):
+            findings = read_skill_feedback(render_target, lesson['questionCount'])
+            if findings:
+                payload = correct(findings)
+                set_phase('rendering')
+                manifest = render_job(lesson, payload, render_target)
+        return manifest, render_target
+    finally:
+        if diagnostics_due:
+            save_diagnostics()
+
+
+def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISION):
     if job.get('owner_id')!=OWNER or not UUID.fullmatch(str(job.get('id',''))): raise RuntimeError('JOB_OWNER_DENIED')
     if job.get('status')!='running' or not UUID.fullmatch(str(job.get('lease_token',''))): raise RuntimeError('JOB_LEASE_LOST')
     try: expires=datetime.fromisoformat(job.get('lease_until','').replace('Z','+00:00'))
@@ -190,19 +261,7 @@ def process_job(remote, job, root):
                 lost.set();return
     thread=threading.Thread(target=renew,daemon=True);thread.start()
     try:
-        # One authoring attempt per claimed job. Native lessons need no model invocation.
-        metadata = {}; author_failure = None
-        try:
-            payload=author_lesson(lesson, metadata=metadata, **({'timeout':300} if lesson.get('version')==3 else {}))
-        except Exception as exc:
-            author_failure = exc
-            raise
-        finally:
-            if not save_author_diagnostics(root, job['id'], metadata, author_failure):
-                print(json.dumps({'event':'author_diagnostics_unavailable','jobId':job['id']}),flush=True)
-        if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
-        update_job(remote,job,{'phase':'rendering'})
-        manifest=render_job(lesson,payload,target)
+        manifest, artifact_root = author_and_render(remote, job, target, lost, enable_skill_revision)
         if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
         artifacts=manifest.get('artifacts',[])
         general=lesson.get('version')==3 and manifest.get('authoringProfile')=='general-skill-source/v1'
@@ -214,9 +273,9 @@ def process_job(remote, job, root):
         check_transport(remote)
         published=[]
         for item in artifacts:
-            if (target/item['path']).is_symlink(): raise RuntimeError('ARTIFACT_PATH_DENIED')
-            path=(target/item['path']).resolve()
-            if not path.is_relative_to(target) or path.is_symlink(): raise RuntimeError('ARTIFACT_PATH_DENIED')
+            if (artifact_root/item['path']).is_symlink(): raise RuntimeError('ARTIFACT_PATH_DENIED')
+            path=(artifact_root/item['path']).resolve()
+            if not path.is_relative_to(artifact_root) or path.is_symlink(): raise RuntimeError('ARTIFACT_PATH_DENIED')
             blob=path.read_bytes()
             if not 0<len(blob)<=ARTIFACT_LIMIT or hashlib.sha256(blob).hexdigest()!=item['sha256']: raise RuntimeError('ARTIFACT_HASH_MISMATCH')
             mime='application/pdf' if item['kind']=='pdf' else 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'

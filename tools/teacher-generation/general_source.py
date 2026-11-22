@@ -80,7 +80,7 @@ def rich(value, grade, *, provider=False, location=""):
         if kind == "text":
             exact(span, ("kind", "text")); text(span["text"], 1200)
             if grade >= 7 and re.search(r"[0-9A-Za-z]", span["text"]):
-                bad("SOURCE_PLAIN_MATH", "Middle-school numbers and Latin names require typed spans")
+                bad("SOURCE_PLAIN_MATH", "Middle-school numbers and Latin names require typed spans" + (" at " + location if location else ""))
         elif kind == "math":
             exact(span, ("kind", "expression")); inspect_ast(span["expression"])
         elif kind == "formula":
@@ -244,8 +244,17 @@ def _validate_source(lesson, payload, scope, *, provider):
                     bad("SOURCE_ANSWER", "Expected typed answer")
                 item_id = f"q{qcount}-i{j}"
                 if answer.get("kind") == "computed":
-                    exact(answer, ("kind", "task", "unit")); text(answer["unit"], 50, empty=True)
+                    exact(answer, ("kind", "task", "unit"), ("notation",)); text(answer["unit"], 50, empty=True)
                     solved = validate_and_solve_task(answer["task"])
+                    if grade <= 6:
+                        from printed_elementary import printed_intent
+                        printed_intent(question, item, solved, grade, location=f"q{qcount}.item.{j}")
+                    if "notation" in answer:
+                        from compact_authoring import expression
+                        notation = answer["notation"]
+                        if (type(notation) is not str or solved["question"]["kind"] != "evaluate" or
+                                expression(notation, grade) != solved["question"]["expression"]):
+                            bad("SOURCE_NOTATION", "The printed calculation must equal its exact typed task")
                     evidence.append({"itemId": item_id, "computed": solved})
                 elif answer.get("kind") == "figure":
                     exact(answer,("kind","operation","unit"),("point",));text(answer["unit"],50,empty=True)
