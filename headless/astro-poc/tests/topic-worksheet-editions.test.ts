@@ -247,7 +247,7 @@ test('real equation, signed-number and factoring landings expose nine PDF links 
   }
 });
 
-test('real algebra landing routes all three hero topics to distinct groups and exposes the three new PDFs', async () => {
+test('real algebra landing routes all three hero topics to distinct groups and exposes the original PDFs and reviewed common-factor hints', async () => {
   const document = await renderTopic('algebraic-expressions-grade-7');
   const hero = document.querySelector('.exact-topic-copy')!;
   const ctas = [...hero.querySelectorAll('a[data-catalog-topic]')];
@@ -262,9 +262,15 @@ test('real algebra landing routes all three hero topics to distinct groups and e
     assert.equal(controls.length, 1, `one target for topic ${topicId}`);
     const groups = topicWorksheetEditionLinks(catalog, 7, topicId, `/worksheets?grade=7&topic=${topicId}`);
     assert.deepEqual([...controls[0].querySelectorAll('a')].map(a => a.getAttribute('href')),
-      groups.flatMap(group => group.levels.map(level => level.href)));
+      groups.flatMap(group => group.levels.flatMap(level =>
+        level.partialHints ? [level.href, level.partialHints.href] : [level.href])));
     expectedLegacy.push(...groups.find(group => group.editionId === 'legacy')!.levels.map(level => level.href));
   }
+  const commonFactorPdfIds = [
+    '9023d70c7ee24eb185454683d723c60b', '58f6082fb2734aa2998fa899e3c02023', '5ae9b8d9161444b1b17df22793c172ab',
+  ];
+  const hintLinks = [...hero.querySelectorAll('#topic-levels a.partial-ramzi-link')];
+  assert.deepEqual(hintLinks.map(link => link.getAttribute('href')), commonFactorPdfIds.map(id => `/ramzi-partial?pdf=${id}`));
   assert.equal(expectedLegacy.length, 9);
   assert.deepEqual([...hero.querySelectorAll('a[data-edition-id="legacy"]')].map(a => a.getAttribute('href')), expectedLegacy);
   const newPdfIds = ['b376976911234b758027329c9ea05cbf', 'b6a76fb3eccd477b9788958efefbded2', '0fe476657595498194b93cdc46e39e5f'];
