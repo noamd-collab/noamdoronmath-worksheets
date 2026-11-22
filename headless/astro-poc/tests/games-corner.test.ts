@@ -115,6 +115,7 @@ describe('games corner registry', () => {
     assert.ok(kefel);
     assert.equal(kefel.title, PUBLIC_LESSON_TITLE);
     assert.equal(kefel.description, PUBLIC_LESSON_DESCRIPTION);
+    assert.equal(kefel.badge, '(beta)');
     const pyth = ALL_GAMES.find((game) => game.slug === 'eliyahu-pythagoras');
     assert.ok(pyth);
     assert.equal(pyth.title, PYTHAGORAS_GAME_TITLE);
@@ -265,6 +266,11 @@ describe('games corner in nav, sitemap and link resolver', () => {
     for (const game of ENGINE_GAMES) assert.equal(resolveActiveNav(gamePath(game)), 'tools');
     assert.ok(header.includes('GAMES_INDEX_PATH'));
     assert.ok(header.includes('פינת המשחקים'));
+    assert.ok(header.includes('משחקים וכלים'));
+    assert.equal(header.includes('PUBLIC_LESSON_PATH'), false);
+    assert.equal(header.includes('PYTHAGORAS_GAME_PATH'), false);
+    assert.equal(header.includes('/games/kefel-mekutsar-2'), false);
+    assert.equal(header.includes('/games/eliyahu-pythagoras'), false);
   });
 
   it('keeps every game on this origin', () => {

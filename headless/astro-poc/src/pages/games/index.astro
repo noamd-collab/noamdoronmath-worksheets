@@ -58,7 +58,10 @@ const sections = [
               <a class="games-corner__card" href={gamePath(game)}>
                 <span class="games-corner__emoji" aria-hidden="true">{game.emoji}</span>
                 <span class="games-corner__grade">{game.grade}</span>
-                <h3 class="games-corner__title">{game.h1}</h3>
+                <h3 class="games-corner__title">
+                  {game.h1}
+                  {game.badge ? <span class="games-corner__badge" dir="ltr">{game.badge}</span> : null}
+                </h3>
                 <p class="games-corner__short">{game.short}</p>
                 <span class="games-corner__go">למשחק</span>
               </a>
@@ -223,6 +226,20 @@ const sections = [
     font-weight: 400;
     font-size: 20px;
     line-height: 1.3;
+  }
+  .games-corner__badge {
+    display: inline-block;
+    margin-inline-start: 6px;
+    padding: 0 6px;
+    border-radius: 999px;
+    border: 1px solid #f0c9a4;
+    background: #fff4e8;
+    color: #b85513;
+    font-family: Heebo, 'Heebo Fallback', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.65;
+    vertical-align: middle;
   }
   .games-corner__short {
     margin: 0;

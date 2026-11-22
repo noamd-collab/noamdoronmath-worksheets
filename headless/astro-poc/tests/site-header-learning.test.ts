@@ -41,8 +41,9 @@ describe('site header learning link (HEADLESS-MIGRATION-15)', () => {
     assert.ok(button, 'learning games control is a button');
     assert.match(button[1], /aria-label="משחקים"/);
     assert.match(button[2], /<span class="exact-nav-rainbow" aria-hidden="true"><span>מ<\/span><span>ש<\/span><span>ח<\/span><span>ק<\/span><span>י<\/span><span>ם<\/span><\/span>/);
-    assert.match(html, /class="exact-nav-game exact-nav-game--orange"/);
-    assert.match(html, /class="exact-nav-game exact-nav-game--green"/);
+    assert.match(html, /class="exact-nav-game exact-nav-game--pink"[^>]*>פינת המשחקים של אליהו</);
+    assert.equal(html.includes('/games/kefel-mekutsar-2'), false);
+    assert.equal(html.includes('/games/eliyahu-pythagoras'), false);
     assert.equal(html.includes('>משחקים</button>'), false);
     for (const rule of ['#c92f55', '#b85513', '#3f7f2a', '#2a60a7', 'exact-nav-game--orange', 'exact-nav-game--green']) {
       assert.ok(css.includes(rule), rule);
