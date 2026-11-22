@@ -6,7 +6,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { topicPageCatalogTopicIds, topicPagePdfParts } from '../src/lib/topicStructuredData';
 import { loadTopicPage } from '../src/lib/topicPages';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
-import { beforeNovember21Copy, renew, registryBeforeRelease, seven, three } from './fixtures/middle-090-091-094';
+import { beforeNovember21Copy, renew, registryBeforeRelease, nextRenew, seven, three } from './fixtures/middle-090-091-094';
 
 const scope = [
   [92, 'r01', 7, 46, 'G7-CPL-01'], [93, 'r02', 7, 47, 'G7-TPV-01'],
@@ -21,7 +21,7 @@ const digest = (data: unknown) => createHash('sha256').update(JSON.stringify(dat
 
 test('seven middle-school editions serve their exact student PDFs and preserve the preceding registry', () => {
   assert.deepEqual(seven.packages.map(p => [p.number, p.studentRevision, p.grade, p.topicId, p.sheetId]), scope);
-  const registry = registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), renew.packages.map(p => p.edition));
+  const registry = registryBeforeRelease(registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), nextRenew.packages.map(p => p.edition)), renew.packages.map(p => p.edition));
   const firstWave = registryBeforeRelease(registry, three.packages.map(p => p.edition));
   assert.equal(digest(firstWave), three.baselineRegistrySha256);
   const beforeSeven = registryBeforeRelease(firstWave, seven.packages.map(p => p.edition));

@@ -77,6 +77,11 @@
           "productionHref": "https://www.noamdoronmath.co.il/triangle-congruence-proofs-grade-8"
         },
         {
+          "path": "/integrated-geometry-grade-8",
+          "label": "שילוב גאומטרי",
+          "productionHref": "https://www.noamdoronmath.co.il/integrated-geometry-grade-8"
+        },
+        {
           "path": "/exterior-angle-triangle-grade-8",
           "label": "זווית חיצונית",
           "productionHref": "https://www.noamdoronmath.co.il/exterior-angle-triangle-grade-8"
@@ -454,6 +459,11 @@
       "path": "/triangle-congruence-proofs-grade-8",
       "label": "הוכחות בחפיפת משולשים",
       "productionHref": "https://www.noamdoronmath.co.il/triangle-congruence-proofs-grade-8"
+    },
+    {
+      "path": "/integrated-geometry-grade-8",
+      "label": "שילוב גאומטרי",
+      "productionHref": "https://www.noamdoronmath.co.il/integrated-geometry-grade-8"
     },
     {
       "path": "/exterior-angle-triangle-grade-8",

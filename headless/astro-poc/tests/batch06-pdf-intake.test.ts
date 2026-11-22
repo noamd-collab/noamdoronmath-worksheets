@@ -1,3 +1,4 @@
+import { nextRenew } from './fixtures/middle-090-091-094';
 import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -40,7 +41,7 @@ for (const addition of reviewed.additions) {
   }
 }
 // Batch 10 (18.11) adds a later edition on topic 9/5 (G9-QSH-01, after G9-QVL-01); batch 11 one on 9/6 (G9-QFR-01).
-for (const addition of [...reviewedBatch10.additions, ...reviewedBatch11.additions]) {
+for (const addition of [...reviewedBatch10.additions, ...reviewedBatch11.additions, ...nextRenew.packages.map(p => p.edition)]) {
   const topic = previousSsr.grades.find((g: any) => g.grade === addition.grade)
     .topics.find((t: any) => t.id === addition.topicId);
   topic.editions = topic.editions?.filter((e: any) => e.editionId !== addition.editionId);
@@ -194,7 +195,8 @@ test('eleven additive editions recover the pinned baseline after batch 5 (4db6f5
     assert.deepEqual(groups.map(g => g.editionId),
       [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId),
         ...reviewedBatch10.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId),
-        ...reviewedBatch11.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId)]);
+        ...reviewedBatch11.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId),
+        ...nextRenew.packages.filter(p => p.grade === addition.grade && p.topicId === addition.topicId).map(p => p.edition.editionId)]);
     const oldGroupCount = oldIds.length + 1;
     assert.deepEqual(groups.slice(0, oldGroupCount), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
     assert.deepEqual(groups.find(g => g.editionId === addition.editionId)!.levels.map(l => l.key), ['a', 'b', 'c']);
