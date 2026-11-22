@@ -21,9 +21,14 @@ for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.respo
     <button type="button" data-teacher-logout>התנתקות</button>
     <p id="teacher-auth-status" role="status" aria-live="polite"></p>
   </div>
+  {access.userId !== TEACHER_ACCESS_CONFIG.ownerUserId && <p class="upcoming-generation" dir="rtl"><strong>בקרוב · יצירת דפים חדשים עם AI</strong><br />עד 5 דפים למורה ביום. המכסה תתחדש בחצות לפי שעון ישראל.</p>}
   <TeacherLanding />
   <script src="/noam-learning-config.js" defer></script>
   <script src="/vendor/supabase-2.116.0.js" defer></script>
   <script src="/teachers/auth.js" defer></script>
   <link rel="stylesheet" href="/teachers/auth.css" />
 </BaseLayout>
+
+<style>
+  .upcoming-generation { max-width: 66rem; margin: 1rem auto; padding: .75rem 1rem; border-inline-start: .25rem solid #487070; background: #edf3f1; color: #252b4b; line-height: 1.6; }
+</style>

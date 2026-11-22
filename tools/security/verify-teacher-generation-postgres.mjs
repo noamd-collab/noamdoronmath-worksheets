@@ -9,6 +9,7 @@ import test from 'node:test';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const { PGlite } = await import(process.env.NOAM_PGLITE_MODULE ? pathToFileURL(process.env.NOAM_PGLITE_MODULE).href : '@electric-sql/pglite');
 const migration = await readFile(path.join(root, 'supabase/migrations/20261112185430_teacher_generation_private_pilot.sql'), 'utf8');
+const quotaMigration = await readFile(path.join(root, 'supabase/migrations/20261122040000_teacher_generation_owner_quota.sql'), 'utf8');
 const db = new PGlite();
 const owner = '80da2957-9492-4a9d-babb-28ba70dedd12';
 const other = '33333333-3333-4333-8333-333333333333';
@@ -76,6 +77,7 @@ try {
   `);
   const before = await oldState();
   await db.exec(migration);
+  await db.exec(quotaMigration);
 
   await test('migration preserves existing teacher rows, policies, constraints, grants and public storage', async () => {
     assert.deepEqual(await oldState(), before);
@@ -117,23 +119,101 @@ try {
       "update public.noam_teacher_generation_jobs set status='failed'", 'delete from public.noam_teacher_generation_jobs',
       "update public.noam_teacher_generation_workers set capabilities='{}'", 'select * from public.claim_teacher_generation_job()',
     ]) await denied(sql);
-    for (const functionName of ['noam_teacher_generation_quota()', 'claim_teacher_generation_job()']) {
+    for (const functionName of ['noam_teacher_generation_quota()', 'noam_teacher_generation_pilot_owner()', 'claim_teacher_generation_job()']) {
       const privilege = await query("select has_function_privilege('authenticated',$1,'EXECUTE') allowed", ['public.' + functionName]);
       assert.equal(privilege[0].allowed, false);
     }
   });
 
-  await test('service insert keeps fixed owner, idempotency, active-job quota and daily quota', async () => {
+  const quota = async actor => (await query(actor ? 'select public.noam_teacher_generation_quota_status($1) as q'
+                                                  : 'select public.noam_teacher_generation_quota_status() as q',
+                                      actor ? [actor] : []))[0].q;
+  await test('pilot admission remains owner-only; unlimited owner count still requires one active job and unique request keys', async () => {
     await as('service_role');
     const current = (await query('select * from public.noam_teacher_generation_jobs'))[0];
     await assert.rejects(insertJob({ id: crypto.randomUUID(), owner_id: other }), error => error.code === '42501');
     await assert.rejects(insertJob({ id: crypto.randomUUID(), request_key: current.request_key }), error => error.code === '23505');
-    await assert.rejects(insertJob({ id: crypto.randomUUID() }), error => error.code === 'PT429');
+    await assert.rejects(insertJob({ id: crypto.randomUUID() }), error => error.code === 'PT423');
     await resetJobs(); await as('service_role');
-    for (let i = 0; i < 5; i++) await insertJob({ id: crypto.randomUUID(), status: 'failed', phase: 'failed' });
-    await assert.rejects(insertJob(), error => error.code === 'PT429');
-    await db.exec("update public.noam_teacher_generation_jobs set created_at=now()-interval '25 hours'");
-    assert.equal((await insertJob()).length, 1);
+    for (let i = 0; i < 35; i++) await insertJob({ id: crypto.randomUUID(), status: 'needs_review', phase:'needs_review', result:{} });
+    assert.equal((await insertJob()).length,1);
+    await as('authenticated',google());
+    assert.equal((await quota()).dailyLimit,null); assert.equal((await quota()).remainingToday,null);
+    await denied('select public.noam_teacher_generation_quota_status($1)', [other]);
+    await as('anon');
+    await denied('select public.noam_teacher_generation_quota_status()');
+    await as('authenticated', google(owner,{is_anonymous:true}));
+    await denied('select public.noam_teacher_generation_quota_status()');
+  });
+
+  await test('ordinary teacher receives five reservations per Israel day, failed jobs free slots, retries do not consume an extra slot', async () => {
+    await resetJobs();
+    // In this isolated synthetic database, remove only pilot admission while
+    // exercising the independently installed production quota trigger.
+    await db.exec('alter table public.noam_teacher_generation_jobs disable trigger generation_pilot_owner');
+    try {
+      await as('service_role');
+      const current = await quota(other);
+      assert.equal(current.dailyLimit,5); assert.equal(current.remainingToday,5);
+      const start=(await query('select starts_at from public.noam_teacher_generation_day_bounds(statement_timestamp())'))[0].starts_at;
+      const completed={owner_id:other,status:'needs_review',phase:'needs_review',result:{}};
+      await insertJob({...completed,id:crypto.randomUUID(),created_at:new Date(+new Date(start)-1)});
+      assert.equal((await quota(other)).remainingToday,5);
+      await insertJob({...completed,id:crypto.randomUUID(),created_at:start});
+      await insertJob({owner_id:other,id:crypto.randomUUID(),phase:'failed',status:'failed'});
+      for(let i=0;i<3;i++) await insertJob({...completed,id:crypto.randomUUID()});
+      assert.equal((await quota(other)).remainingToday,1);
+      const id=crypto.randomUUID(),key=crypto.randomUUID();
+      await insertJob({owner_id:other,id,request_key:key});
+      assert.equal((await quota(other)).remainingToday,0);
+      await assert.rejects(insertJob({owner_id:other,id:crypto.randomUUID(),request_key:key}),error=>error.code==='23505');
+      await assert.rejects(insertJob({owner_id:other,id:crypto.randomUUID()}),error=>error.code==='PT423');
+      await query("update public.noam_teacher_generation_jobs set status='needs_review',phase='needs_review',result='{}' where id=$1",[id]);
+      await assert.rejects(insertJob({owner_id:other,id:crypto.randomUUID()}),error=>error.code==='PT429');
+      await query("update public.noam_teacher_generation_jobs set status='failed',phase='failed',result=null where id=$1",[id]);
+      assert.equal((await quota(other)).remainingToday,1);
+      assert.equal((await insertJob({owner_id:other,id:crypto.randomUUID()})).length,1);
+      assert.equal((await quota(owner)).dailyLimit,null);
+    } finally {
+      await as('postgres');
+      await db.exec('alter table public.noam_teacher_generation_jobs enable trigger generation_pilot_owner');
+    }
+  });
+
+  await test('competing insertion requests leave one active job and at most five ordinary reservations', async () => {
+    await resetJobs();
+    await db.exec('alter table public.noam_teacher_generation_jobs disable trigger generation_pilot_owner');
+    try {
+      await as('service_role');
+      const attempts = async row => Promise.all(Array.from({length:9}, () =>
+        insertJob({id:crypto.randomUUID(),...row}).then(()=>'accepted',error=>error.code)));
+      const active = await attempts({owner_id:owner});
+      assert.equal(active.filter(code=>code==='accepted').length,1);
+      assert.equal(active.filter(code=>code==='PT423').length,8);
+      const daily = await attempts({owner_id:other,status:'needs_review',phase:'needs_review',result:{}});
+      assert.equal(daily.filter(code=>code==='accepted').length,5);
+      assert.equal(daily.filter(code=>code==='PT429').length,4);
+    } finally {
+      await as('postgres');
+      await db.exec('alter table public.noam_teacher_generation_jobs enable trigger generation_pilot_owner');
+    }
+  });
+
+  await test('Jerusalem midnight is used on ordinary, spring and autumn clock-change dates regardless of database timezone', async () => {
+    await as('postgres');
+    await db.exec("set timezone to 'America/Los_Angeles'");
+    for(const [utc, start, reset, hours] of [
+      ['2026-03-27T12:00Z','2026-03-26T22:00Z','2026-03-27T21:00Z',23],
+      ['2026-10-25T12:00Z','2026-10-24T21:00Z','2026-10-25T22:00Z',25],
+      ['2026-11-22T21:59Z','2026-11-21T22:00Z','2026-11-22T22:00Z',24],
+      ['2026-11-22T22:00Z','2026-11-22T22:00Z','2026-11-23T22:00Z',24],
+    ]) {
+      const row=(await query('select * from public.noam_teacher_generation_day_bounds($1)',[utc]))[0];
+      assert.equal(+new Date(row.starts_at),Date.parse(start));
+      assert.equal(+new Date(row.resets_at),Date.parse(reset));
+      assert.equal((new Date(row.resets_at)-new Date(row.starts_at))/3600000,hours);
+    }
+    await db.exec("set timezone to 'UTC'");
   });
 
   await test('only service claims one queued job, and expired running work fails without paid retry', async () => {
