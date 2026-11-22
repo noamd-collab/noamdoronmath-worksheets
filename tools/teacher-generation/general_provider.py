@@ -1,7 +1,8 @@
 """Original, curriculum-bounded Hebrew authoring through the configured Qwen.
 
 The provider supplies declarative data, never executable source or approvals.
-This is one billable attempt. Validation failure never triggers a paid retry.
+The initial draft uses one provider call. The live worker can request one
+question-scoped correction after a localizable content failure.
 """
 from __future__ import annotations
 
@@ -228,7 +229,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         # Request the upstream structured format, but also include its exact
         # schema in the prompt. The configured gateway returned a nonconforming
         # AST in development despite strict=true; local validation is the only
-        # authority. There is no silent fallback or paid retry.
+        # authority. Only the worker can initiate a targeted correction.
         'response_format': {'type':'json_schema','json_schema':{
             'name':schema_name,'strict':True,'schema':schema}}, 'enable_thinking': False,
         'max_tokens': 40000, 'temperature': 0.25}

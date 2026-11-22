@@ -247,7 +247,7 @@ def request_author_json(target, key, body, measured, timeout):
     return payload
 
 def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None, allow_legacy=False, revision=None):
-    """Author one requested lesson, with at most one provider call.
+    """Author the initial requested lesson. A v3 worker may retain one revision callback.
 
     Supported native lesson authors return replayable parameters locally.
     Other lessons use the configured authoring provider. render_job
