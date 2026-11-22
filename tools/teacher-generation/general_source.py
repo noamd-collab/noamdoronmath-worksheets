@@ -143,8 +143,23 @@ def validate_figure(fig, scope):
         if type(fig["segments"]) is not list or len(fig["segments"])>10:bad("SOURCE_FIGURE","Too many coordinate segments")
         for pair in fig["segments"]:
             if type(pair) is not list or len(pair)!=2 or pair[0]==pair[1] or any(type(n) is not str or n not in names for n in pair):bad("SOURCE_FIGURE","Segments must reference existing distinct points")
+    elif kind == "triangle_angle_part" and middle and scope["topic"].get("topicId") == triangle_parts_shape.TOPIC:
+        exact(fig, ("kind", "names", "angles", "construction", "rotate"))
+        names = fig["names"]
+        angles = fig["angles"]
+        if (type(names) is not str or not re.fullmatch(r"[A-Z]{4}", names) or len(set(names)) != 4 or
+                type(angles) is not list or len(angles) != 2 or
+                any(type(a) is not int or not 20 <= a <= 82 for a in angles) or sum(angles) > 155 or
+                fig["construction"] not in triangle_parts_shape.PARTS):
+            bad("SOURCE_FIGURE", "Invalid named angle construction")
+        bounded_int(fig["rotate"], -180, 180)
     elif kind == "triangle_part" and middle and scope["topic"].get("topicId") == triangle_parts_shape.TOPIC:
-        exact(fig, ("kind", "names", "base", "left", "right", "rotate", "construction"))
+        exact(fig, ("kind", "names", "base", "left", "right", "rotate", "construction"), ("printedSides",))
+        if "printedSides" in fig:
+            sides_to_print = fig["printedSides"]
+            if (type(sides_to_print) is not list or not 1<=len(sides_to_print)<=3 or
+                    any(s not in ("base","left","right") for s in sides_to_print) or len(set(sides_to_print))!=len(sides_to_print)):
+                bad("SOURCE_FIGURE", "Choose distinct printed sides of this triangle")
         names = fig["names"]
         if type(names) is not str or not re.fullmatch(r"[A-Z]{4}", names) or len(set(names)) != 4:
             bad("SOURCE_FIGURE", "Use four different point names: apex, base endpoints, construction point")

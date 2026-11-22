@@ -18,6 +18,7 @@ from runtime_catalog import catalog, scope_for_lesson
 from validation import reject
 import no_carry_addition
 import compact_authoring
+import triangle_parts_shape
 
 
 def assemble_sections(payload, count):
@@ -239,8 +240,30 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'If an explicit teacher restriction cannot be honored by this plan (e.g. particular representations, '
             'number limits, examples or teaching goals), write the full matching title, rule, practice and challenges instead. '
             'The following source-v4 instructions govern only that alternative. ' + system)
+    geometry_options = triangle_parts_shape.design_choices(lesson, scope, plan)
+    if geometry_options:
+        definitions = dict(schema["$defs"])
+        definitions["freeSource"] = {k: v for k, v in schema.items() if k != "$defs"}
+        schema = {"type":"object","$defs":definitions,"anyOf":[
+            triangle_parts_shape.design_schema(len(plan)), {"$ref":"#/$defs/freeSource"}]}
+        user["triangleDesignMenu"] = [{"question":slot["questionNumber"],"representation":slot["representation"],
+                                       "choices":choices} for slot, choices in zip(plan, geometry_options)]
+        user["finalContractReminder"] = (
+            "Choose triangle-design/1 for revision of the selected strands. Return mode and questions, "
+            "one row per menu position: design (one of that row's exact choices), size (integer 2..9), "
+            "names (one of ABCD, MNPK, RSTH, KLMN, PQRS, EFGH), rotation (-22, 0, 22). "
+            "Choose diverse questions and parameter combinations deliberately. A grid rotation selects a grid orientation. "
+            "An explicit teacher restriction or goal that the designs cannot express requires full source instead.")
+        system = ("Read the exact teacher brief and the question menu. For a broad revision use triangle-design/1. "
+                  "You select the mathematical activity, names, scale/angle data via size and drawing orientation. "
+                  "These choices determine the questions, answer reasoning and diagrams. The compiler derives their "
+                  "exact numerical results. Return all choices yourself. Use the full-source mode only when the "
+                  "specific teacher brief is incompatible. In that mode: no trigonometry, coordinate-distance "
+                  "formula, inverse trigonometry, radians, LaTeX delimiters, or references to unprinted triangles. " + system)
     user['sourceSchema'] = schema
     schema_name = 'worksheet_authoring_choice' if addition_plan is not None else 'skill_worksheet_content'
+    if geometry_options:
+        schema_name = "triangle_worksheet_authoring_choice"
     body = {'model': chosen, 'messages': [
         {'role': 'system', 'content': system}, {'role': 'user', 'content': json.dumps(user, ensure_ascii=False)}],
         # Request the upstream structured format, but also include its exact
@@ -260,21 +283,25 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                          separators=(',',':'),ensure_ascii=False).encode()).hexdigest()})
     response = request_author_json(target, key, body, measured, timeout)
     def compile_content(payload):
+        if geometry_options and isinstance(payload, dict) and payload.get("mode") == "triangle-design/1":
+            measured["authorContract"] = "triangle-design/1"
+            payload = triangle_parts_shape.compile_design(payload, geometry_options, plan)
         if addition_plan is not None and isinstance(payload, dict) and payload.get('version') == 1:
             measured['authorContract'] = 'no-carry-addition/1'
             payload = no_carry_addition.build_source(lesson, payload, addition_plan)
-        if scope["topic"]["topicId"] == "g8:triangle_parts" and isinstance(payload, dict):
-            practice, challenges = payload.get("practice"), payload.get("challenges")
-            if isinstance(practice, list) and isinstance(challenges, list) and len(practice) + len(challenges) == len(plan):
-                from triangle_parts_shape import authored_findings
-                issues = authored_findings(practice + challenges, plan)
-                if issues:
-                    error = GeneralSourceError("TRIANGLE_SOURCE_MISMATCH", "The supplied answers or geometry plan require correction at " +
-                                               ", ".join("q" + str(i["question"]) for i in issues))
-                    error.findings = issues
-                    raise error
         payload = bind_content(payload, scope)
         payload = assemble_sections(payload, lesson['questionCount'])
+        if scope["topic"]["topicId"] == triangle_parts_shape.TOPIC and isinstance(payload, dict):
+            sections = payload.get("sections")
+            if isinstance(sections, list) and len(sections)==1 and isinstance(sections[0], dict):
+                rows = sections[0].get("questions")
+                if isinstance(rows,list) and len(rows)==len(plan):
+                    issues = triangle_parts_shape.authored_findings(rows, plan)
+                    if issues:
+                        locations = ", ".join("q"+str(i["question"]) for i in issues)
+                        error = GeneralSourceError("TRIANGLE_SOURCE_MISMATCH", "The supplied answers or geometry plan require correction at " + locations)
+                        error.findings = issues
+                        raise error
         payload = compact_authoring.expand_source(payload, lesson['gradeNumber'],
                                                   fraction_notation=scope['topic']['domain'] == 'fractions')
         payload = validate_source(lesson, payload, scope, provider=True)["source"]

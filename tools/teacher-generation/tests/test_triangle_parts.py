@@ -36,7 +36,10 @@ class TrianglePartsTests(unittest.TestCase):
             reply = provider.author_lesson(lesson, api_key="synthetic-fixture-key", model="fixture-model",
                                           base_url="https://dashscope-intl.aliyuncs.com/compatible-mode/v1")
         body = request.call_args.args[2]
-        self.assertEqual(body["response_format"]["json_schema"]["schema"], worksheet_schema(lesson, scope))
+        wire = body["response_format"]["json_schema"]["schema"]
+        old = worksheet_schema(lesson, scope)
+        self.assertEqual(wire["$defs"]["freeSource"], {k:v for k,v in old.items() if k != "$defs"})
+        self.assertEqual(wire["anyOf"][0], triangle_parts_shape.design_schema(20))
         plan = json.loads(body["messages"][1]["content"])["questionPlan"]
         self.assertEqual(len(plan), 20)
         self.assertEqual(list(dict.fromkeys(k for r in plan for k in r["conceptIds"])),
@@ -49,6 +52,93 @@ class TrianglePartsTests(unittest.TestCase):
         other_schema = json.dumps(worksheet_schema(other, scope_for_lesson(other)))
         self.assertNotIn('"triangle_part"', other_schema)
         self.assertNotIn('"half_base"', other_schema)
+
+    def test_bounded_design_is_authored_and_keeps_the_full_revision_scope(self):
+        from skill_authoring import question_plan
+        lesson=json.loads((Path(__file__).parent/"fixtures/grade8-triangle-parts-intake.json").read_bytes())
+        scope=scope_for_lesson(lesson)
+        plan=question_plan(lesson,scope)
+        options=triangle_parts_shape.design_choices(lesson,scope,plan)
+        self.assertIsNone(triangle_parts_shape.design_choices(lesson,{**scope,"selectedConcepts":scope["selectedConcepts"][:2]},plan))
+        rows=[{"design":names[0],"size":2+i%8,"names":"ABCD","rotation":0} for i,names in enumerate(options)]
+        def submit(rows):
+            with patch("provider.build_authoring_context",return_value={}), patch("provider.request_author_json",return_value={"mode":"triangle-design/1","questions":rows}) as request:
+                metadata={}
+                answer=provider.author_lesson(lesson,api_key="fixture",base_url="https://dashscope-intl.aliyuncs.com/compatible-mode/v1",model="fixture",metadata=metadata)
+                self.assertEqual(request.call_count,1)
+                self.assertEqual(metadata["authorContract"],"triangle-design/1")
+                return answer["sections"][0]["questions"]
+        generated=submit(rows)
+        self.assertEqual(len(generated),20)
+        self.assertEqual(sum(len(q["items"]) for q in generated),60)
+        self.assertEqual([q.get("drawingFromWords",False) for q in generated],[slot["representation"]=="drawingFromWords" for slot in plan])
+        self.assertEqual(sum(q.get("figure",{}).get("kind")=="coordinate_plane" for q in generated),5)
+        alt=submit([{**row,"design":opts[-1],"size":11-row["size"],"names":"PQRS","rotation":22} for row,opts in zip(rows,options)])
+        self.assertTrue(all(a!=b for a,b in zip(generated,alt)))
+        for bad in ({**rows[0],"size":True}, {k:v for k,v in rows[0].items() if k!="names"}, {**rows[0],"design":"outside"}):
+            with self.assertRaises(GeneralSourceError):
+                triangle_parts_shape.compile_design({"mode":"triangle-design/1","questions":[bad,*rows[1:]]},options,plan)
+
+    def test_bad_geometry_from_the_free_source_response_is_reported_before_render(self):
+        rows=[{"intro":"בסרטוט שני משולשים: משולש $ABC$ ומשולש $DEF$.",
+               "figure":{"kind":"triangle_part","names":"ABCM"},
+               "items":[{"prompt":"חשבו את הזווית החיצונית.","answer":{"kind":"computed","task":{"kind":"evaluate","expression":"atan(3/4)*180/pi"}}}]}]
+        findings=triangle_parts_shape.authored_findings(rows,[{"representation":"geometryFigure"}])
+        self.assertEqual([f["question"] for f in findings],[1])
+        self.assertEqual(len(findings[0]["feedback"]),2)
+
+    def test_printed_givens_sketches_and_challenges_do_not_reveal_or_repeat_earlier_tasks(self):
+        import math
+        t=triangle_parts_shape
+        easy=t._euclidean_question("equal_legs", 6, "RSTH", 0, False)
+        printed, claims=t.givens(easy["figure"])
+        self.assertIn("ST=16",printed)
+        self.assertNotIn("=19",printed)
+        self.assertEqual([v["of"] for v in claims if v["type"]=="length"],["ST"])
+        sketch=t._euclidean_question("equal_legs", 4, "ABCD", 0, True)
+        self.assertTrue(sketch["drawingFromWords"])
+        self.assertNotIn("figure",sketch)
+        self.assertIn("שני משולשים",sketch["intro"])
+        self.assertIn("לקבוע",sketch["items"][-1]["prompt"])
+        challenge=t._euclidean_question("challenge_paths",9,"EFGH",0,False)
+        self.assertIn("שחזרו",challenge["items"][0]["prompt"])
+        self.assertEqual([v["value"] for v in t.givens(challenge["figure"])[1] if v["type"]=="length"],[22])
+        ordinary=t._euclidean_question("broken_path",9,"EFGH",0,False)
+        self.assertNotEqual(ordinary["items"][0]["answer"],challenge["items"][0]["answer"])
+        for size in range(2,10):
+            for rotation in (-22,0,22):
+                for design in ("grid_midpoint","grid_disprove","grid_altitude","grid_error_proof"):
+                    q=t._grid_question(design,size,"ABCD",rotation)
+                    ps={p["name"]:(p["x"],p["y"]) for p in q["figure"]["points"]}
+                    if design=="grid_error_proof":
+                        self.assertEqual(len(q["figure"]["segments"]),6)
+                        self.assertEqual(len(ps),5)
+                        a,c,x=ps["A"],ps["C"],ps["X"]
+                        u,v=tuple(p-q for p,q in zip(a,c)),tuple(p-q for p,q in zip(x,c))
+                        self.assertAlmostEqual(math.degrees(math.acos(sum(p*q for p,q in zip(u,v))/math.hypot(*u)/math.hypot(*v))),135)
+                    else:
+                        a,b,c,d=(ps[k] for k in "ABCD")
+                        self.assertEqual(tuple((u+v)/2 for u,v in zip(b,c))==d,design!="grid_disprove")
+                        self.assertEqual(sum((u-v)*(w-z) for u,v,w,z in zip(a,d,b,c))==0,design!="grid_midpoint")
+        last=t._euclidean_question("challenge_converse",7,"MNPK",0,False)
+        self.assertIn("חופפים",last["items"][1]["answer"]["text"])
+        self.assertIn("לא נתון",last["intro"])
+
+    @unittest.skipUnless(os.getenv("MIDDLE_SKILL_PATH"),"needs pinned middle skill")
+    def test_authored_angles_match_measured_rendered_figures_for_every_geometry_parameter(self):
+        from math import hypot,acos,degrees
+        with patch.object(sys,"path",[os.environ["MIDDLE_SKILL_PATH"],*sys.path]):
+            from export import lookup
+            for design in ("apex_from_base","exterior_forward","apex_split"):
+                for size in range(2,10):
+                    fig=triangle_parts_shape._euclidean_question(design,size,"PQRS",22,False)["figure"]
+                    data=lookup(triangle_parts_shape.render(fig)).objects.as_dict()["objects"]
+                    p={k["name"]:k["xy"] for k in data["points"]}
+                    for center,reverse,wanted in (("Q","R",fig["angles"][0]),("R","Q",fig["angles"][1])):
+                        u=tuple(a-b for a,b in zip(p["P"],p[center]))
+                        v=tuple(a-b for a,b in zip(p[reverse],p[center]))
+                        angle=degrees(acos(sum(a*b for a,b in zip(u,v))/hypot(*u)/hypot(*v)))
+                        self.assertAlmostEqual(angle,wanted,places=3)
 
     def test_named_construction_validation_and_exact_quantities(self):
         from general_source import validate_figure

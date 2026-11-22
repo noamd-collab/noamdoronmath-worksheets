@@ -31,7 +31,7 @@ MIDDLE_BRIDGE = '''import json
 from pathlib import Path
 LEVELS = json.loads((Path(__file__).parent / "levels.json").read_text(encoding="utf-8"))
 def _recorded_figure(spec):
-    if spec["kind"] == "triangle_part":
+    if spec["kind"] in ("triangle_part", "triangle_angle_part"):
         import runpy
         return runpy.run_path(str(Path(__file__).with_name("triangle_parts_shape.py")))["render"](spec)
     if spec["kind"] == "coordinate_plane":
@@ -295,7 +295,7 @@ def _figure(fig, elementary, index, work):
             svg = SX.polyhedron_3d(kind="triangular_prism" if fig["shape"] == "prism" else fig["shape"], dims=tuple(fig["dimensions"]))
         else:
             raise ValueError("Unsupported elementary geometry figure")
-    elif kind == "triangle_part":
+    elif kind in ("triangle_part","triangle_angle_part"):
         svg = triangle_parts_shape.render(fig)
     elif kind=="coordinate_plane":
         from figkit_plus import plane, wide
@@ -480,7 +480,7 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
             if "figure" in question:
                 q["fig"], path = _figure(question["figure"], False, n, work)
                 q["_generalFigure"] = question["figure"]
-                if question["figure"]["kind"] == "triangle_part":
+                if question["figure"]["kind"] in ("triangle_part","triangle_angle_part"):
                     figure_data, claims = triangle_parts_shape.givens(question["figure"])
                     intro += " " + figure_data
                     q["intro"] = intro
@@ -542,7 +542,7 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
     if printed_checks:
         verification.update(scope="typed tasks and checked printed givens", printedChecks=printed_checks)
     dump(work / "verified.json", verification)
-    if any(q.get("_generalFigure", {}).get("kind") == "triangle_part" for q in qs):
+    if any(q.get("_generalFigure", {}).get("kind") in ("triangle_part","triangle_angle_part") for q in qs):
         shutil.copyfile(Path(triangle_parts_shape.__file__), work / "triangle_parts_shape.py")
     # Constant bridge: no provider-controlled source is interpolated as Python.
     (work / "content.py").write_text(MIDDLE_BRIDGE+'PACKAGE = "G'+str(lesson["gradeNumber"])+'-T90"\n', encoding="utf-8")
