@@ -32,6 +32,7 @@ const read = (file: string) => readFileSync(join(root, file), 'utf8');
 const NON_LANDING_PAGES = new Set([
   '404.astro',
   'worksheets.astro',
+  'ramzi-partial.astro', // The PDF reader opens a selected worksheet and its reviewed hints.
   'search.astro',
   // Approved static teacher entries: public Coming Soon, private catalog picker,
   // and Google sign-in. Topic/grade/marketing animation coverage is unchanged.
