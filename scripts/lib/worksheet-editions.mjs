@@ -39,6 +39,45 @@ return validateRamziReadiness;
 const LEVELS = { a: ['A', 'רמה א׳'], b: ['B', 'רמה ב׳'], c: ['E', 'מצוינות'] };
 const HASH_FIELDS = ['pdfSha256', 'canonicalSourceSha256', 'manifestSha256',
   'answerMapSha256', 'wordSourceSha256', 'hintsBundleSha256'];
+// The first Grade 7 assessment was approved as three student PDFs. Its
+// questions-only sources have no native Ramzi export. Bind this exception to
+// the independent print review, the decision on coverage, and the actual files.
+const ASSESSMENT_ONE = {
+  "editionId": "ms-20261122-g7-ast-01-r1",
+  "grade": 7,
+  "topicId": 50,
+  "nativePrefix": "G7-T141",
+  "evidence": {
+    "kind": "assessment-questions-only",
+    "scopeApprovalSha256": "ca4ce1772bbdd0df3d1d77d12d04f08232d24e7fd8c7affd985a80945d256e1c",
+    "independentReviewSha256": "81e39fda9a6b40aaf8d835fac22648ddd1be73c31f5616983babbfd0a3c73b63",
+    "freezeSha256": "eecfcd11e7cc4de158397a6aeb5743990a0f3ba30732853d4d345129c742969d"
+  },
+  "files": {
+    "a": [
+      "5ff5ffe2f35e0ff5b333d0fff2a691c38db2addf528c99167b3969422fe2e02d",
+      "5f67f148af1442441e17e17344cafd441e59b23df02a993914a94e0a17d2cb53"
+    ],
+    "b": [
+      "b0cb5dc2eee858998e54ff5105386ae7311b189f7bdb522d2ce5406b7d5a6fb5",
+      "7d3f888aa7321193c59756e73b3e83d71c98153f06e1a4db049caccb1bdf9108"
+    ],
+    "c": [
+      "814eb1686a6cdec037546896c9c515d8adb389ceb5c9a7b361685dadf8e5cbe7",
+      "c7e497bca3ddf3c823495b7ec1812f876a379c7dd9f5eec8b0c18b947dc7159f"
+    ]
+  }
+};
+function validateAssessmentPdf(row) {
+  const evidence = row.assessmentPdfEvidence;
+  keys(evidence, Object.keys(ASSESSMENT_ONE.evidence), 'assessment PDF evidence');
+  requireValue(row.grade === ASSESSMENT_ONE.grade && row.topicId === ASSESSMENT_ONE.topicId &&
+    row.nativePrefix === ASSESSMENT_ONE.nativePrefix && row.editionId === ASSESSMENT_ONE.editionId &&
+    row.publicationMode === 'pdf-only' && !row.isDefault &&
+    Object.entries(ASSESSMENT_ONE.evidence).every(([k, v]) => evidence[k] === v),
+    'assessment PDF requires the reviewed questions-only source and signed print scope');
+}
+
 const PDF_ONLY_HASH_FIELDS = ['pdfSha256', 'sourceSha256'];
 const ID = /^[a-z0-9][a-z0-9-]{0,63}$(?![\s\S])/;
 const SHA = /^[0-9a-f]{64}$/;
@@ -82,7 +121,7 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
   const records = new Set(); const canonicalRevisions = new Set(); const defaults = new Set();
   const published = new Map();
   for (const row of registry.editions) {
-    keys(row, ['grade', 'topicId', 'editionId', 'label', 'status', 'isDefault', 'levels', 'nativePrefix', 'publicationMode'], 'edition');
+    keys(row, ['grade', 'topicId', 'editionId', 'label', 'status', 'isDefault', 'levels', 'nativePrefix', 'publicationMode', 'assessmentPdfEvidence'], 'edition');
     const key = `${row.grade}:${row.topicId}`;
     const topic = topics.get(key);
     requireValue(Number.isInteger(row.grade) && row.grade >= 1 && row.grade <= 9 &&
@@ -91,6 +130,8 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
     const pdfOnly = row.publicationMode === 'pdf-only';
     requireValue(!Object.hasOwn(row, 'publicationMode') || (pdfOnly && middle),
       'publicationMode must be pdf-only for middle school only');
+    const assessmentPdf = Object.hasOwn(row, 'assessmentPdfEvidence');
+    if (assessmentPdf) validateAssessmentPdf(row);
     const hashFields = pdfOnly ? PDF_ONLY_HASH_FIELDS : HASH_FIELDS;
     // Native package numbers are independent of catalog topic IDs. Never
     // silently send a new edition to the legacy topic's question/hint bank.
@@ -108,7 +149,7 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
     const seenLevels = new Set();
     for (const level of row.levels) {
       keys(level, ['key', 'viewerLevel', 'pdfId', 'worksheetId', 'revision', ...hashFields,
-        ...(middle ? ['nativeExportSha256'] : [])], 'level');
+        ...(middle && !assessmentPdf ? ['nativeExportSha256'] : [])], 'level');
       requireValue(Object.hasOwn(LEVELS, level.key) && !seenLevels.has(level.key), 'duplicate/invalid level');
       seenLevels.add(level.key);
       requireValue(level.viewerLevel === LEVELS[level.key][0], 'viewerLevel must match a/b/c → A/B/E');
@@ -120,7 +161,12 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
       const canonicalKey = level.worksheetId + ':' + level.revision;
       requireValue(!canonicalRevisions.has(canonicalKey), 'canonical revision reused'); canonicalRevisions.add(canonicalKey);
       for (const field of hashFields) requireValue(typeof level[field] === 'string' && SHA.test(level[field]), 'invalid ' + field);
-      if (middle) requireValue(typeof level.nativeExportSha256 === 'string' && SHA.test(level.nativeExportSha256),
+      if (assessmentPdf) {
+        const [pdf, source] = ASSESSMENT_ONE.files[level.key];
+        requireValue(level.pdfSha256 === pdf && level.sourceSha256 === source &&
+          !ramzi.has(row.editionId + ':' + level.key), 'assessment PDF differs from its signed source');
+      }
+      if (middle && !assessmentPdf) requireValue(typeof level.nativeExportSha256 === 'string' && SHA.test(level.nativeExportSha256),
         'invalid nativeExportSha256');
       requireValue(!pdfHashes.has(level.pdfSha256), 'identical PDF content reused'); pdfHashes.add(level.pdfSha256);
     }
@@ -137,6 +183,7 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
     const prefix = middle ? row.nativePrefix : `G${row.grade}-T${String(row.topicId).padStart(2, '0')}`;
     const edition = { editionId: row.editionId, label: row.label, status: 'published', levels,
       ...(pdfOnly ? { publicationMode: 'pdf-only' } : {}),
+      ...(assessmentPdf ? { assessmentPdfEvidence: { ...row.assessmentPdfEvidence } } : {}),
       // PDF deliverables stay PDF-only. Only the separate, verified twelve-unit
       // readiness bundle may enable the source-bound viewer and reviewed hints.
       routing: { resolvedNoamPrefix: prefix, aiHintShown: levels.every(l => l.ramzi?.status === 'ready'),

@@ -16,8 +16,13 @@
       "required": ["grade", "topicId", "editionId", "label", "status", "isDefault", "levels"],
       "allOf": [
         { "if": { "properties": { "grade": { "minimum": 7 } } },
-          "then": { "required": ["nativePrefix"], "properties": { "levels": { "items": { "required": ["nativeExportSha256"] } } } },
-          "else": { "properties": { "nativePrefix": false, "levels": { "items": { "properties": { "nativeExportSha256": false } } } } } },
+          "then": { "required": ["nativePrefix"], "if": { "required": ["assessmentPdfEvidence"] },
+            "then": { "required": ["publicationMode"], "properties": { "grade": { "const": 7 }, "topicId": { "const": 50 },
+              "nativePrefix": { "const": "G7-T141" }, "editionId": { "const": "ms-20261122-g7-ast-01-r1" },
+              "publicationMode": { "const": "pdf-only" }, "isDefault": { "const": false },
+              "levels": { "items": { "properties": { "nativeExportSha256": false } } } } },
+            "else": { "properties": { "levels": { "items": { "required": ["nativeExportSha256"] } } } } },
+          "else": { "properties": { "nativePrefix": false, "assessmentPdfEvidence": false, "levels": { "items": { "properties": { "nativeExportSha256": false } } } } } },
         { "if": { "required": ["publicationMode"], "properties": { "publicationMode": { "const": "pdf-only" } } },
           "then": { "properties": {
             "grade": { "minimum": 7 },
@@ -35,6 +40,13 @@
         { "if": { "properties": { "grade": { "const": 9 } } }, "then": { "properties": { "nativePrefix": { "pattern": "^G9-" } } } }
       ],
       "properties": {
+        "assessmentPdfEvidence": {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "scopeApprovalSha256", "independentReviewSha256", "freezeSha256"],
+          "properties": { "kind": { "const": "assessment-questions-only" },
+            "scopeApprovalSha256": { "$ref": "#/$defs/sha256" }, "independentReviewSha256": { "$ref": "#/$defs/sha256" },
+            "freezeSha256": { "$ref": "#/$defs/sha256" } }
+        },
         "grade": { "type": "integer", "minimum": 1, "maximum": 9 },
         "nativePrefix": { "type": "string", "pattern": "^G[7-9]-T[0-9]{2,3}$(?![\\s\\S])" },
         "publicationMode": { "const": "pdf-only" },

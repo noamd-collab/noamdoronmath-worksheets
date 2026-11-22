@@ -63,7 +63,7 @@ export interface CatalogRamziReadiness {
   learningScopeUrl?: string;
 }
 
-export interface CatalogPdfOnlyLevel extends CatalogLevel {
+interface CatalogNativePdfOnlyLevel extends CatalogLevel {
   key: 'a' | 'b' | 'c';
   viewerLevel: 'A' | 'B' | 'E';
   worksheetId: string;
@@ -84,8 +84,22 @@ interface CatalogEditionBase {
   routing: CatalogRouting;
 }
 
+interface AssessmentPdfEvidence {
+  kind: 'assessment-questions-only';
+  independentReviewSha256: string;
+  scopeApprovalSha256: string;
+  freezeSha256: string;
+}
+
+type AssessmentPdfLevel = Omit<CatalogNativePdfOnlyLevel, 'nativeExportSha256' | 'ramzi'> & {
+  nativeExportSha256?: never;
+  ramzi?: never;
+};
+
+export type CatalogPdfOnlyLevel = CatalogNativePdfOnlyLevel | AssessmentPdfLevel;
+
 export type CatalogEdition = CatalogEditionBase & (
-  | { publicationMode: 'pdf-only'; levels: CatalogPdfOnlyLevel[] }
+  | { publicationMode: 'pdf-only'; assessmentPdfEvidence?: AssessmentPdfEvidence; levels: CatalogPdfOnlyLevel[] }
   | { publicationMode?: never; levels: CatalogLevel[] }
 );
 
