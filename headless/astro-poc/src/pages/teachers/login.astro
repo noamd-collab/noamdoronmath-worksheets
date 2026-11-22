@@ -11,7 +11,7 @@ const returnTo = sanitizeTeacherReturnTo(Astro.cookies.get(TEACHER_RETURN_COOKIE
   <main class="teacher-login" id="teacher-sign-in" data-teacher-auth="login" data-return-to={returnTo} tabindex="-1">
     <p class="teacher-login-eyebrow">אזור המורים</p>
     <h1>התחברות עם Google</h1>
-    <p>כלי בחירת השאלות, ההדפסה והייצוא ל־Word זמינים לכל מי שמתחבר עם Google.</p>
+    <p>{returnTo.split('?')[0] === '/teachers/generate' ? 'לאחר ההתחברות תועברו למחולל ולדפי העבודה של החשבון שלכם.' : 'כלי בחירת השאלות, ההדפסה והייצוא ל־Word זמינים לכל מי שמתחבר עם Google.'}</p>
     <button id="teacher-google-sign-in" type="button" disabled>התחברות עם Google</button>
     <p id="teacher-auth-status" role="status" aria-live="polite">טוענים את ההתחברות המאובטחת…</p>
     <p class="teacher-login-privacy">ההתחברות משמשת לזיהוי החשבון. אין בקשת גישה ל־Gmail או ל־Drive.</p>
