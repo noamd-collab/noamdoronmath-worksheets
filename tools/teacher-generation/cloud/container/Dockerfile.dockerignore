@@ -20,6 +20,8 @@
 !tools/teacher-generation/cloud/container/fixtures/general/grade9-coordinate-triangles/model-output.json
 !tools/teacher-generation/cloud/container/fixtures/general/grade9-quadratic/lesson.json
 !tools/teacher-generation/cloud/container/fixtures/general/grade9-quadratic/model-output.json
+!tools/teacher-generation/cloud/container/fixtures/general/grade9-special-right-triangle/lesson.json
+!tools/teacher-generation/cloud/container/fixtures/general/grade9-special-right-triangle/model-output.json
 !tools/teacher-generation/cloud/container/fixtures/general/manifest.json
 !tools/teacher-generation/cloud/container/fixtures/grade3-division/author-parameters.json
 !tools/teacher-generation/cloud/container/fixtures/grade3-division/canonical.json
@@ -91,8 +93,11 @@
 !tools/teacher-generation/tests/test_provider.py
 !tools/teacher-generation/tests/test_remote_worker.py
 !tools/teacher-generation/tests/test_runner_word_web.py
+!tools/teacher-generation/tests/test_triangle_lesson.py
 !tools/teacher-generation/tests/test_validation.py
 !tools/teacher-generation/tests/test_worker_shutdown.py
 !tools/teacher-generation/tests/test_wspec_ocr_tesseract.py
+!tools/teacher-generation/triangle_lesson.py
+!tools/teacher-generation/triangle_shape.py
 !tools/teacher-generation/validation.py
 !tools/teacher-generation/wspec_ocr_tesseract.py
