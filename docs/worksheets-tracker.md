@@ -1,3 +1,7 @@
+## 2026-11-22 — Grade 7 introduction to probability through relative frequency (091)
+
+The three G7-T137 student PDFs each have 20 reviewed Ramzi markers on the printed subsections. Each marker opens three text hints. The topic 28 landing also keeps the three original worksheet readers.
+
 ## 2026-11-22 — Grade 7 frequency tables, modes and dot plots (090)
 
 Each of the three G7-T136 student PDFs has 36 reviewed Ramzi markers. Each marker is bound to its printed subsection and the three approved text hints. The grade 7 frequency landing lists these PDFs under topic 25, alongside the original downloads.
