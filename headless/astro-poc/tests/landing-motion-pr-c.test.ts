@@ -47,6 +47,7 @@ const SECTION_3: Record<string, string> = {
   'isosceles-triangle-grade-8': 'isosceles',
   'isosceles-triangle-properties-grade-8': 'isosceles',
   'isosceles-triangle-grade-9': 'isosceles',
+  'special-triangles-review-grade-9': 'isosceles',
   'special-triangles-grade-7-new': 'isosceles',
   'triangle-area-grade-7': 'triangle-area',
   'triangle-calculations-grade-9': 'triangles',
@@ -99,6 +100,7 @@ const SAME_MOTION: Record<string, string> = {
   'rectangle-square-area-grade-7': 'reuses the existing area loop; there is no older picture',
   'parallelogram-trapezoid-area-grade-7': 'reuses the existing area-para loop; there is no older picture',
   'triangular-prism-volume-grade-7': 'reuses the existing prism-vol loop; there is no older picture',
+  'special-triangles-review-grade-9': 'reuses the existing isosceles loop; there is no older picture',
 };
 
 const points = (block: RegExp) => {
