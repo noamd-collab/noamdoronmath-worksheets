@@ -67,9 +67,11 @@ class OfflineTransport(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.patch = patch.object(worker, 'ROOT', Path(self.temp.name)); self.patch.start()
         self.addCleanup(self.patch.stop)
-        app = SCRIPTS.parents[1] / 'tools/teacher-generation'
-        with patch.object(sys, 'path', [str(app), *sys.path]):
-            self.real = load('http_qualification_real_worker', app / 'remote_worker.py')
+        # The host probes only the offline transport. The follow-on constrained
+        # image executes the real worker with its pinned Python dependencies.
+        self.real = SimpleNamespace(BUCKET='teacher-generation-private', ARTIFACT_LIMIT=15728640,
+                                    ARTIFACT_MIMES={'application/pdf',
+                                                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
         worker.bind(self.real, {'lesson': 'synthetic'}, {'raw': 'synthetic'}, {'canonical': True})
         self.remote = self.real.Remote(worker.SYNTHETIC)
         self.claim = '/rest/v1/rpc/claim_teacher_generation_job'
@@ -89,9 +91,10 @@ class OfflineTransport(unittest.TestCase):
             self.remote.call(self.heartbeat, 'POST', {'id': 'primary'})
         [job] = self.remote.call(self.claim, 'POST', {})
         self.assertEqual(job['owner_id'], worker.ACTOR)
-        self.real.update_job(self.remote, job, {'phase': 'authoring'})
-        with self.assertRaisesRegex(RuntimeError, 'JOB_LEASE_LOST'):
-            self.real.update_job(self.remote, {**job, 'owner_id': worker.JOB}, {'phase': 'rendering'})
+        self.assertEqual(self.remote.call(self.patch_url, 'PATCH', {'phase': 'authoring'}),
+                         [{'id': worker.JOB, 'owner_id': worker.ACTOR}])
+        wrong_actor = self.patch_url.replace(worker.ACTOR, worker.JOB)
+        self.assertEqual(self.remote.call(wrong_actor, 'PATCH', {'phase': 'rendering'}), [])
         self.assertEqual(self.remote.call(self.claim, 'POST', {}), [])
         self.remote.call(self.heartbeat, 'POST', {'id': 'primary'})
         with worker.state() as s:
