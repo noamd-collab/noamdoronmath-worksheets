@@ -183,6 +183,12 @@ def author_and_render(remote, job, target, lost, enable_skill_revision):
     diagnostics_due = True
 
     def save_diagnostics():
+        if metadata.get('initialPlainMath') is True:
+            # The short-lived container loses private attempt evidence on exit.
+            # Log only whether the correction was requested and validated.
+            print(json.dumps({'event':'source_notation_recovery', 'jobId':job['id'],
+                              'correctionRequested':metadata.get('correctionRequested') is True,
+                              'sourceValidated':metadata.get('validated') is True}), flush=True)
         if not save_author_diagnostics(target.parent, job['id'], metadata, author_failure):
             print(json.dumps({'event':'author_diagnostics_unavailable','jobId':job['id']}), flush=True)
 

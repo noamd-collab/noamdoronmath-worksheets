@@ -21,6 +21,14 @@ def solve_figure_task(figure, operation_name, point=None):
     expr=None
     if point is not None and kind!="coordinate_plane":raise ValueError("Point references are only supported by coordinate figures")
     if kind=="coordinate_plane":
+        if operation_name == "coordinate_pair":
+            selected = next((p for p in figure["points"] if p["name"] == point), None)
+            if selected is None:
+                raise ValueError("Unknown coordinate point")
+            return {"question": {"kind":"figure_measure", "operation":operation_name, "figure":deepcopy(figure), "point":point},
+                    "result": {"type":"coordinate_pair", "x":selected["x"], "y":selected["y"]},
+                    "domain": {"variables":[], "conditions":[]},
+                    "verification":{"method":"named point read from printed coordinate figure", "scope":"both coordinates in order"}}
         if operation_name in ("x_coordinate","y_coordinate"):
             match=next((p for p in figure["points"] if p["name"]==point),None)
             if match is None:raise ValueError("Unknown coordinate point")
@@ -53,6 +61,15 @@ def solve_figure_task(figure, operation_name, point=None):
             if operation_name=="vertex_count":expr=number(vertices)
             elif operation_name=="edge_count":expr=number(edges)
             elif operation_name=="face_count":expr=number(2-vertices+edges)
+    elif kind == "triangle_part":
+        base, left, right = (figure[name] for name in ("base","left","right"))
+        if operation_name == "side_count":
+            expr = number(3)
+        elif operation_name == "perimeter":
+            expr = number(base + left + right)
+        elif operation_name == "half_base" and (figure["construction"] == "median" or
+                left == right and figure["construction"] in ("altitude","angle_bisector")):
+            expr = number(base, 2)
     elif kind=="shape":
         p=figure["parameters"];shape=figure["shape"]
         if operation_name=="area":

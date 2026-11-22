@@ -260,6 +260,28 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(self.remote.uploads(), [])
         self.assertFalse(any('validationDetail' in json.dumps(c) for c in self.remote.calls))
 
+    def test_plain_math_failure_reports_one_bounded_correction_receipt(self):
+        self.use_general_lesson()
+        for attempted in (True, False):
+            with self.subTest(attempted=attempted):
+                root = self.root / str(attempted)
+                root.mkdir()
+                def author(_, *, revision, metadata, **kw):
+                    metadata.update(initialPlainMath=True, validated=False, data="PRIVATE_RESPONSE")
+                    if attempted:
+                        def correct(findings):
+                            metadata["correctionRequested"] = True
+                            raise GenerationError("SOURCE_PLAIN_MATH","PRIVATE_SECOND_RESPONSE")
+                        revision.update(revise=correct, sourceFindings=[{"kind":"mark_math"}])
+                    raise GenerationError("SOURCE_PLAIN_MATH","PRIVATE_INITIAL_RESPONSE")
+                with patch.object(worker,"author_lesson",side_effect=author), redirect_stdout(io.StringIO()) as captured:
+                    with self.assertRaises(GenerationError):
+                        worker.process_job(self.remote,self.job,root,enable_skill_revision=True)
+                self.assertEqual(json.loads(captured.getvalue()),
+                                 {"event":"source_notation_recovery","jobId":JOB_ID,
+                                  "correctionRequested":attempted,"sourceValidated":False})
+        self.assertFalse(self.remote.uploads())
+
     def test_diagnostics_keep_only_known_author_contract_versions(self):
         for index, contract in enumerate(('worksheet-parameters/2', 'worksheet-parameters/3',
                                           'no-carry-addition/1', 'worksheet-parameters/4', 'PRIVATE_SECRET', None, {'raw': 'PRIVATE_SECRET'})):

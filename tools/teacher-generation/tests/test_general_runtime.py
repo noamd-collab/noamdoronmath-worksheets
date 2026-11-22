@@ -159,6 +159,171 @@ class GeneralRuntimeTests(unittest.TestCase):
             self.assertEqual(error.exception.code, "REVISION_LIMIT")
             self.assertEqual(network.call_count, 2)
 
+    def test_one_notation_correction_covers_the_rule_and_every_affected_rich_field(self):
+        from skill_authoring import rich_fields
+        original = source(self.lesson)
+        rows = copy.deepcopy(original["sections"][0]["questions"])
+        for q in rows:
+            q.pop("star")
+        question_text = "אם x+y=12 אז חשבו."
+        marked = "אם [[x+y=12]] אז חשבו."
+        rule = "קראו [[5]] ופתרו 2x+4 = 14."
+        marked_rule = "קראו [[5]] ופתרו [[2x+4 = 14]]."
+        content = {"title": "תרגול", "rule": rule, "practice": rows[:-3], "challenges": rows[-3:]}
+        for q in rows:
+            q["intro"] = question_text
+        rows[2]["table"] = {"head":[question_text, "עמודה"], "rows":[["שורה", question_text]]}
+        # A historical typed sibling must survive correction of an adjacent prose span.
+        math_span = {"kind":"math","expression":{"type":"number","numerator":5,"denominator":1}}
+        rows[3]["items"][0]["prompt"] = [math_span, {"kind":"text","text":question_text}]
+        rows[-1]["items"][1]["answer"] = {"kind":"review", "text":question_text}
+        before = copy.deepcopy(content)
+        revision, metadata = {}, {}
+        def mock_provider(target, key, body, measured, timeout):
+            if body["response_format"]["json_schema"]["name"] != "mark_skill_math":
+                return content
+            fragments = json.loads(body["messages"][1]["content"])["fragments"]
+            self.assertCountEqual(fragments.values(), [rule,question_text])
+            self.assertNotIn("lastLesson", body["messages"][1]["content"])
+            self.assertNotIn("items", body["messages"][1]["content"])
+            measured["usage"] = {"total_tokens":48}
+            return {k: {rule: marked_rule, question_text: marked}[v] for k,v in fragments.items()}
+        with patch("provider.build_authoring_context",return_value={}), patch("provider.request_author_json",side_effect=mock_provider) as network:
+            with self.assertRaises(GenerationError) as first:
+                provider.author_lesson(self.lesson,metadata=metadata,revision=revision,**self.config)
+            self.assertEqual(first.exception.code,"SOURCE_PLAIN_MATH")
+            self.assertNotIn(question_text, str(revision["sourceFindings"]))
+            fixed = revision["revise"](revision["sourceFindings"])
+            self.assertEqual(network.call_count,2)
+            with self.assertRaises(GenerationError) as limit:
+                revision["revise"](revision["sourceFindings"])
+            self.assertEqual(limit.exception.code,"REVISION_LIMIT")
+            self.assertEqual(network.call_count,2)
+        self.assertEqual(before, content)
+        self.assertTrue(metadata["validated"])
+        self.assertEqual(metadata["revisionUsage"], {"total_tokens":48})
+        self.assertNotIn("validationError",metadata)
+        expected = copy.deepcopy(content)
+        for path, raw in rich_fields(content):
+            parent = expected
+            for key in path[:-1]:
+                parent = parent[key]
+            if raw == rule: parent[path[-1]] = marked_rule
+            elif raw == question_text: parent[path[-1]] = marked
+        from compact_authoring import spans
+        expected["practice"][3]["items"][0]["prompt"] = [math_span] + spans(marked,8)
+        from skill_authoring import bind_content
+        from general_provider import assemble_sections
+        from compact_authoring import expand_source
+        scope = scope_for_lesson(self.lesson)
+        expanded = expand_source(assemble_sections(bind_content(expected,scope),self.lesson["questionCount"]),8)
+        self.assertEqual(fixed, validate_source(self.lesson,expanded,scope,provider=True)["source"])
+        self.assertEqual(fixed["sections"][0]["questions"][3]["items"][0]["prompt"][0],math_span)
+
+    def test_canonical_source_reply_gets_format_only_repair_without_rebinding_scope(self):
+        original = source(self.lesson)
+        first = original["sections"][0]["questions"][0]
+        first["intro"] = [{"kind":"text", "text":"פתרו x+y=12."}]
+        revision, measured = {}, {}
+        with patch("provider.build_authoring_context",return_value={}), \
+             patch("provider.request_author_json",side_effect=[original, {"f1":"פתרו [[x+y=12]]."}]) as calls:
+            with self.assertRaises(GenerationError) as error:
+                provider.author_lesson(self.lesson,revision=revision,metadata=measured,**self.config)
+            self.assertEqual(error.exception.code,"SOURCE_PLAIN_MATH")
+            fixed = revision["revise"](revision["sourceFindings"])
+            self.assertEqual(calls.call_count,2)
+            self.assertTrue(measured["initialPlainMath"])
+            self.assertTrue(measured["correctionRequested"])
+            self.assertEqual(fixed["sections"][0]["conceptIds"], original["sections"][0]["conceptIds"])
+            self.assertEqual(fixed["sections"][0]["questions"][1:], original["sections"][0]["questions"][1:])
+        # A canonical reply with an unknown root is never revised to try to turn it into a worksheet.
+        revision = {}
+        with patch("provider.build_authoring_context",return_value={}), \
+             patch("provider.request_author_json",return_value={**original,"approved":True}) as calls:
+            with self.assertRaises(GenerationError):
+                provider.author_lesson(self.lesson,revision=revision,**self.config)
+            self.assertNotIn("revise",revision)
+            calls.assert_called_once()
+
+    def test_retained_grade_seven_equation_recovery_recreates_the_same_verified_worksheet(self):
+        from compact_authoring import expand_source
+        from skill_authoring import notation_correction
+        fixture = HERE / "cloud/container/fixtures/general/grade7-equation-skill"
+        lesson = json.loads((fixture / "lesson.json").read_bytes())
+        scope = scope_for_lesson(lesson)
+        source = json.loads((fixture / "model-output.json").read_bytes())
+        expected = validate_source(lesson, expand_source(source,7), scope, provider=True)
+        reply = copy.deepcopy(source)
+        item = reply["sections"][0]["questions"][0]["items"][0]
+        spans = item["prompt"]
+        plain = "".join(s["text"] if s["kind"]=="text" else s["notation"] for s in spans)
+        marked = "".join(s["text"] if s["kind"]=="text" else "[["+s["notation"]+"]]" for s in spans)
+        item["prompt"] = plain
+        with self.assertRaises(GeneralSourceError) as before:
+            validate_source(lesson, expand_source(reply,7), scope, provider=True)
+        self.assertEqual(before.exception.code,"SOURCE_PLAIN_MATH")
+        correction = notation_correction(reply,lesson,scope)
+        self.assertEqual(correction.fragments,{"f1":plain})
+        repaired = correction.apply(reply,{"f1":marked})
+        # Includes all computed answers, the original figures/policy, the full
+        # exercise texts and the original pending human-review evidence.
+        self.assertEqual(validate_source(lesson,expand_source(repaired,7),scope,provider=True),expected)
+        task = repaired["sections"][0]["questions"][5]["items"][0]["answer"]["task"]
+        task["rhs"] = {"type":"number","numerator":99,"denominator":1}
+        with self.assertRaises(GeneralSourceError) as mismatch:
+            expand_source(repaired,7)
+        self.assertEqual(mismatch.exception.code,"PRINTED_TASK_MISMATCH")
+
+    def test_notation_correction_cannot_change_facts_delimiters_or_repair_unbounded_prose(self):
+        from skill_authoring import notation_correction, source_findings, MAX_NOTATION_CHARACTERS
+        original=source(self.lesson)
+        rows=copy.deepcopy(original["sections"][0]["questions"])
+        content={"title":"תרגול","rule":"קראו [[5]] ופתרו x+y=12.","practice":rows[:-3],"challenges":rows[-3:]}
+        scope=scope_for_lesson(self.lesson)
+        correction=notation_correction(content,self.lesson,scope)
+        self.assertEqual(len(correction.fragments),1)
+        for reply in ("קראו [[5]] ופתרו [[x+y=13]].", "קראו 5 ופתרו [[x+y=12]].",
+                      "פתרו [[x+y=12]].","קראו [[5]] ופתרו [[x+y]]=12.",content["rule"]):
+            with self.subTest(reply=reply),self.assertRaises(GeneralSourceError):
+                correction.apply(content,{"f1":reply})
+        with self.assertRaises(GeneralSourceError):
+            correction.apply(content,{"f1":"קראו [[5]] ופתרו [[x+y=12]].","title":"כותרת זרה"})
+        for i,q in enumerate(rows):
+            q["intro"]=("מילה " * (MAX_NOTATION_CHARACTERS//len(rows)//5+1))+f"חשבו x+y={i+1}."
+        self.assertEqual(source_findings(content,self.lesson,scope,GeneralSourceError("SOURCE_PLAIN_MATH","x")),[])
+
+    def test_notation_brackets_cannot_split_math_into_separate_rtl_boxes(self):
+        from skill_authoring import NotationCorrection
+        for raw, malicious in (
+            ("בדקו x+y=123.", "בדקו [[x+y=1]][[23]]."),
+            ("בדקו x+y=1.25.", "בדקו [[x+y=1]].[[25]]."),
+            ("בדקו x+y=1,250.", "בדקו [[x+y=1]],[[250]]."),
+            ("בדקו AB=CD.", "בדקו [[A]][[B=CD]]."),
+            ("בדקו x+y=12.", "בדקו [[x+y]]=[[12]]."),
+            ("בדקו 25%.", "בדקו [[25]]%."),
+            ("בדקו ∠ABC.", "בדקו ∠[[ABC]]."),
+            ("בדקו x(2+3).", "בדקו [[x]][[(2+3)]]."),
+            ("בדקו A(2, 3).", "בדקו [[A]][[(2, 3)]]."),
+            ("בדקו (2, 3).", "בדקו ([[2]], [[3]])."),
+            ("בדקו −4°.", "בדקו −[[4°]]."),
+        ):
+            repair = NotationCorrection(8,False,{"f1":raw},[(("rule",),None,{0:"f1"})])
+            with self.subTest(raw=raw),self.assertRaises(GeneralSourceError) as rejected:
+                repair.apply({"rule":raw},{"f1":malicious})
+            self.assertEqual(rejected.exception.code,"REVISION_SCOPE")
+
+    def test_partial_existing_island_can_expand_only_across_an_actual_operator(self):
+        from skill_authoring import NotationCorrection
+        before = "פתרו [[x]] + 1 = [[12]]."
+        repair = NotationCorrection(8,False,{"f1":before},[(("rule",),None,{0:"f1"})])
+        result = repair.apply({"rule":before},{"f1":"פתרו [[x + 1 = 12]]."})
+        self.assertEqual([s["notation"] for s in result["rule"] if s["kind"]=="formula"],["x + 1 = 12"])
+        for raw,marked in (("[[1]]23.","[[123]]."), ("AB[[CD]].","[[ABCD]]."),
+                           ("[[2]] [[3]].","[[2 3]]."),("[[x+1]]=12.","[[x]]+[[1=12]].")):
+            with self.subTest(raw=raw),self.assertRaises(GeneralSourceError):
+                repair = NotationCorrection(8,False,{"f1":raw},[(("rule",),None,{0:"f1"})])
+                repair.apply({"rule":raw},{"f1":marked})
+
     def test_correction_rejects_unknown_or_excess_scope(self):
         from skill_authoring import correction_body, question_plan, apply_replacements
         scope = scope_for_lesson(self.lesson)

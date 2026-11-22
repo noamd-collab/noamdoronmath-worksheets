@@ -11,6 +11,7 @@ from copy import deepcopy
 import hashlib
 import html
 import re
+import shutil
 import json
 from pathlib import Path
 import sys
@@ -18,6 +19,7 @@ import sys
 from general_source import GeneralSourceError, validate_source
 from math_tasks import to_house_math, validate_and_solve_task
 from general_geometry import solve_figure_task, measure_elementary_svg
+import triangle_parts_shape
 from no_carry_addition import states_entire_task
 from printed_percentages import percentage_evidence
 from printed_tasks import match_printed_task, matching_solution_choices, printed_solve
@@ -29,6 +31,9 @@ MIDDLE_BRIDGE = '''import json
 from pathlib import Path
 LEVELS = json.loads((Path(__file__).parent / "levels.json").read_text(encoding="utf-8"))
 def _recorded_figure(spec):
+    if spec["kind"] == "triangle_part":
+        import runpy
+        return runpy.run_path(str(Path(__file__).with_name("triangle_parts_shape.py")))["render"](spec)
     if spec["kind"] == "coordinate_plane":
         from figkit_plus import plane, wide
         points = {p["name"]: (p["x"], p["y"]) for p in spec["points"]}
@@ -235,6 +240,8 @@ def _answer_text(solved, unit, grade, H=None, *, original_variable=None, notatio
         from numeric_literals import decimal_result
         decimal = decimal_result(result["value"], notation)
         answer = wrap(decimal if decimal is not None else render(result["value"]))
+    elif result["type"] == "coordinate_pair":
+        answer = wrap(f'({result["x"]}, {result["y"]})')
     elif result["type"] == "comparison":
         relation={"less": "&lt;" if H else "<", "equal": "=", "greater": "&gt;" if H else ">"}[result["relation"]]
         answer=wrap(render(solved["question"]["left"])+" "+relation+" "+render(solved["question"]["right"]))
@@ -288,6 +295,8 @@ def _figure(fig, elementary, index, work):
             svg = SX.polyhedron_3d(kind="triangular_prism" if fig["shape"] == "prism" else fig["shape"], dims=tuple(fig["dimensions"]))
         else:
             raise ValueError("Unsupported elementary geometry figure")
+    elif kind == "triangle_part":
+        svg = triangle_parts_shape.render(fig)
     elif kind=="coordinate_plane":
         from figkit_plus import plane, wide
         points={p["name"]:(p["x"],p["y"]) for p in fig["points"]}
@@ -471,6 +480,11 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
             if "figure" in question:
                 q["fig"], path = _figure(question["figure"], False, n, work)
                 q["_generalFigure"] = question["figure"]
+                if question["figure"]["kind"] == "triangle_part":
+                    figure_data, claims = triangle_parts_shape.givens(question["figure"])
+                    intro += " " + figure_data
+                    q["intro"] = intro
+                    q.setdefault("given", []).extend(claims)
             if "table" in question:
                 table = question["table"]
                 q["table"] = {"head": [rich_text(c, lesson["gradeNumber"]) for c in table["head"]], "rows": [[rich_text(c, lesson["gradeNumber"]) for c in row] for row in table["rows"]], "hcol": True}
@@ -528,6 +542,8 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
     if printed_checks:
         verification.update(scope="typed tasks and checked printed givens", printedChecks=printed_checks)
     dump(work / "verified.json", verification)
+    if any(q.get("_generalFigure", {}).get("kind") == "triangle_part" for q in qs):
+        shutil.copyfile(Path(triangle_parts_shape.__file__), work / "triangle_parts_shape.py")
     # Constant bridge: no provider-controlled source is interpolated as Python.
     (work / "content.py").write_text(MIDDLE_BRIDGE+'PACKAGE = "G'+str(lesson["gradeNumber"])+'-T90"\n', encoding="utf-8")
 

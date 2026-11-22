@@ -1,6 +1,7 @@
 """Expand bounded worksheet notation into the existing data-only source format."""
 
 from copy import deepcopy
+from itertools import groupby
 import re
 
 from general_source import GeneralSourceError, MAX_BYTES
@@ -142,11 +143,33 @@ DISPLAY_NAME = re.compile(r"sqrt|frac|___|[A-Z]{1,8}|[a-z]+")
 COORDINATE = re.compile(r"([A-Z]?)\(\s*(-?[0-9]{1,6})\s*,\s*(-?[0-9]{1,6})\s*\)")
 
 
+ANGLE_NAME = r"[∡∠]\s*(?:[A-Z]{3}|[A-Z])"
+DEGREES = r"[0-9]{1,3}(?:\.[0-9]{1,4})?\s*°"
+ANGLE_MEASURE = rf"{ANGLE_NAME}(?:\s*=\s*(?:{ANGLE_NAME}|{DEGREES}))?"
+LINE_RELATION = r"[A-Z]{2}\s*[⊥∥]\s*[A-Z]{2}"
+GEO_SYMBOLS = re.compile(rf"(?:{ANGLE_MEASURE}|{LINE_RELATION}|{DEGREES}|△\s*[A-Z]{{3}})")
+
+
+def geometric_display(source):
+    """Only generate pinned skill notation from whole, closed Unicode tokens."""
+    if not GEO_SYMBOLS.fullmatch(source):
+        return None
+    if any(len(set(name)) != len(name) for name in re.findall(r"[A-Z]+", source)):
+        invalid()
+    # These four commands are emitted by us. Input cannot contain a command.
+    source = re.sub(r"[∠∡]\s*([A-Z]+)", lambda m: r"\angle{" + m[1] + "}", source)
+    source = re.sub(r"△\s*([A-Z]+)", lambda m: r"\tri " + m[1], source)
+    source = re.sub(r"\s*([⊥∥=])\s*", lambda m: " " + {"⊥": r"\perp", "∥": r"\para", "=": "="}[m[1]] + " ", source)
+    return re.sub(r"\s+°", "°", source)
+
+
 def display_parts(value, grade):
     """Only display formulas can contain a relation, a blank or a diagram label."""
     if not isinstance(value, str) or not 1 <= len(value) <= 220:
         invalid()
     source = value.strip()
+    if grade >= 7 and (geometry := geometric_display(source)) is not None:
+        return [geometry]
     if grade < 7:
         source = elementary_operations(source)
     point = COORDINATE.fullmatch(source)
@@ -211,6 +234,7 @@ def has_written_number(value):
 def needs_display_formula(value):
     return bool(
         has_written_number(value)
+        or GEO_SYMBOLS.fullmatch(value)
         or COEFFICIENT.search(value)
         or RELATION.search(value)
         or COORDINATE.fullmatch(value)
@@ -284,11 +308,19 @@ PROSE_ATOM = re.compile(
     r"|(?P<label>[A-Z]{1,8}|[abxy])"
     rf"|(?P<comparison>{PROSE_COMPARATOR.pattern})"
 )
-HEBREW_PREFIX = re.compile(r"(?:^|\s)ו?[מבכלהש]$")
+SEGMENT_EQUALITY = rf"[A-Z]{{2}}\s*=\s*(?:[A-Z]{{2}}|{NUMBER_TOKEN.pattern})"
+LINEAR_TERM = rf"(?:{NUMBER_TOKEN.pattern}[xyab]?|[xyab])"
+LINEAR_SIDE = rf"[-−]?{LINEAR_TERM}(?:\s*[+*/−-]\s*{LINEAR_TERM}){{0,4}}"
+EQUATION_CUE = re.compile(r"(?<![א-ת])(?:[בהלו]?משוואה|[בהלו]?שוויון)(?:\s+הבא(?:ה)?)?\s*:?\s*$")
+MIDDLE_ATOM = re.compile(rf"(?P<geometric>{GEO_SYMBOLS.pattern}|{SEGMENT_EQUALITY})|"
+                         rf"(?P<equation>{LINEAR_SIDE}\s*=\s*{LINEAR_SIDE})|" + PROSE_ATOM.pattern)
+HEBREW_PREFIX = re.compile(r"(?:^|\s)(?:ו[מבכלהש]?|[מבכלהש])$")
 LABEL_CONTEXT = re.compile(
     r"(?:^|\s)(?:[ובלכמשה]{0,3}(?:נקוד(?:ה|ת|ות)|קטע(?:ים)?|צלע(?:ות)?|זווית|"
-    r"משולש|מרובע|מלבן|ריבוע|מצולע|אלכסון|ישר|ציר|קודקוד|משתנה|נעלם)|ער[ךכ]ו? של)\s+$"
+    r"משולש(?:ים| שוו[הי] (?:שוקיים|צלעות)| ישר זווית)?|מרובע|מלבן|ריבוע|מצולע|אלכסון|ישר|ציר|קודקוד|משתנה|נעלם|גובה|תיכון|"
+    r"בסיס|ניצב|יתר|אמצע|אורך|רדיוס|מיתר|קוטר)|ער[ךכ]ו? של)\s+$"
 )
+LABEL_DESCRIPTION = re.compile(r"\s+(?:הוא|היא)\s+(?:ה?גובה|ה?תיכון|ה?צלע|ה?קטע|ה?יתר|ה?בסיס|חוצה זווית|אמצע|משולש|מרובע)(?![א-ת])")
 COORDINATE_CONTEXT = re.compile(r"(?:נקוד(?:ה|ת|ות)|שיעורים|זוג סדור)\s*$")
 LABEL_SEPARATOR = re.compile(r"(?:\s+[ול][־-]?|,\s*)")
 NUMBER_LIST_PREFIX = re.compile(
@@ -321,9 +353,15 @@ def standalone_atom(prose, start, end):
 
 
 def prose_spans(prose, grade):
+    if grade >= 7:
+        # A degree value written out after an explicit angle equality is the
+        # same quantity when typeset with the skill's degrees glyph.
+        prose = re.sub(r"([∠∡]\s*(?:[A-Z]{3}|[A-Z])\s*=\s*[0-9]{1,3}(?:\.[0-9]{1,4})?)\s+מעלות(?![א-ת])",
+                      r"\g<1>°", prose)
     start = 0
     previous_label = False
-    for match in PROSE_ATOM.finditer(prose):
+    scanner = MIDDLE_ATOM if grade >= 7 else PROSE_ATOM
+    for match in scanner.finditer(prose):
         first, last = match.span()
         atom = match[0]
         if match.lastgroup == "comparison":
@@ -334,7 +372,16 @@ def prose_spans(prose, grade):
                 atom = atom[1:]
             if not standalone_atom(prose, first, last):
                 continue
-            if match.lastgroup == "number":
+            if match.lastgroup in ("geometric", "equation"):
+                if match.lastgroup == "equation" and not EQUATION_CUE.search(prose[:first]):
+                    continue
+                if (prose[:first].rstrip().endswith(("∠", "∡", "△", "⊥", "∥", "°"))
+                        or prose[last:].lstrip().startswith(("∠", "∡", "△", "⊥", "∥", "°"))):
+                    continue
+                atom = atom.translate(MATH_TRANSLATION)
+                display_parts(atom, grade)
+                span = {"kind": "formula", "notation": atom}
+            elif match.lastgroup == "number":
                 literal = display_literal(atom)
                 if literal is None:
                     continue
@@ -351,6 +398,7 @@ def prose_spans(prose, grade):
                         continue
                 elif not (
                     LABEL_CONTEXT.search(prose[:first])
+                    or (atom.isupper() and len(atom) in (2, 3, 4) and LABEL_DESCRIPTION.match(prose[last:]))
                     or (previous_label and LABEL_SEPARATOR.fullmatch(prose[start:first]))
                     or (len(atom) == 1 and re.search(r"[א-ת]", prose))
                     or (atom in {"a", "b", "x", "y"} and atom == prose.strip())
@@ -368,9 +416,59 @@ def prose_spans(prose, grade):
         yield {"kind": "text", "text": prose[start:]}
 
 
+def _span_text(span):
+    if type(span) is str:
+        return span
+    if type(span) is dict and set(span) == {"kind", "text"} and span["kind"] == "text" and type(span["text"]) is str:
+        return span["text"]
+    return None
+
+
+def provider_span_array(value, grade, *, fraction_notation=False):
+    """Expand text fields of a mixed provider reply before binding its printed tasks."""
+    if grade < 7 or not isinstance(value, (dict, list)):
+        return value
+    items = [value] if isinstance(value, dict) else value
+    if not 1 <= len(items) <= 30:
+        return value
+    result = []
+    changed = False
+    consumed = 0
+    for is_text, run in groupby(items, key=lambda span: _span_text(span) is not None):
+        fragments = list(run)
+        start = consumed
+        consumed += len(fragments)
+        if not is_text:
+            result.extend(fragments)
+            continue
+        texts = [_span_text(span) for span in fragments]
+        if not any(re.search(r"[A-Za-z0-9]", t) for t in texts):
+            result.extend(fragments)
+            continue
+        if any(not text or len(text) > 1200 for text in texts):
+            invalid()
+        # Adjacent provider text fields share the same line of ink. Tokenize
+        # that line once so, for example, "x+1=4" followed by "0" means 40.
+        parts = spans("".join(texts), grade, fraction_notation=fraction_notation)
+        if any(part["kind"] != "text" for part in parts):
+            # A pre-existing math AST has no recoverable original spelling.
+            # Without intervening prose, a new box could fuse with it into a
+            # different number, segment name, unit or expression in RTL.
+            if ((start and not _safe_math_boundary(parts[0])) or
+                    (consumed < len(items) and not _safe_math_boundary(parts[-1]))):
+                invalid()
+        result.extend(parts)
+        changed = True
+    return result if changed else value
+
+
+def _safe_math_boundary(span):
+    return span["kind"] == "text" and re.search(r"[א-ת]", span["text"]) is not None
+
+
 def spans(value, grade, *, fraction_notation=False):
     if not isinstance(value, str):
-        return value
+        return provider_span_array(value, grade, fraction_notation=fraction_notation)
     if len(value) > 2400:
         invalid()
     result = []
@@ -410,6 +508,15 @@ def spans(value, grade, *, fraction_notation=False):
         result.pop()
     if any(span["kind"] == "text" and not span["text"].strip() for span in result):
         invalid()
+    if grade >= 7:
+        # Independently laid-out LTR boxes must not split a token, even if
+        # the provider explicitly placed [[...]] in the middle of that token.
+        for index, span in enumerate(result[1:], 1):
+            if span["kind"] != "text" and result[index - 1]["kind"] != "text":
+                invalid()
+            if (span["kind"] != "text" and index >= 2 and result[index - 2]["kind"] != "text"
+                    and result[index - 1].get("text") in (".", ",", ":", "/")):
+                invalid()
     return result
 
 

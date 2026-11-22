@@ -1,0 +1,29 @@
+{
+  "level": "e",
+  "minutes": 30,
+  "topicId": "g8:triangle_parts",
+  "version": 3,
+  "lastLesson": "תרגלנו את כל המושגים שסומנו. השיעור הבא מיועד לחזרה.",
+  "lessonGoal": "practice",
+  "gradeNumber": 8,
+  "questionCount": 20,
+  "alreadyLearned": [],
+  "lessonBoundary": {
+    "kind": "curriculum_scope",
+    "version": 1,
+    "conceptIds": [
+      "g8:triangle_parts#0",
+      "g8:triangle_parts#2",
+      "g8:triangle_parts#3",
+      "g8:triangle_parts#4",
+      "g8:triangle_parts#5",
+      "g8:triangle_parts#6",
+      "g8:triangle_parts#7",
+      "g8:triangle_parts#8",
+      "g8:triangle_parts#9",
+      "g8:triangle_parts#10"
+    ],
+    "curriculumSha256": "57adca1891cbc2ef333709a6adee18045da23035f9e981f091673d2f8547527b"
+  },
+  "explicitShortSheet": false
+}

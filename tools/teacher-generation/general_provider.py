@@ -199,6 +199,23 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'For geometryFigure include an actual, named, accurately dimensioned shape. Vary geometric '
             'constructions across sections; numerically changing one drawing does not create variety. '
             'Every question and its givens must match its own construction and the selected lesson.')
+    if scope['topic'].get('topicId') == 'g8:triangle_parts':
+        system += (' For triangle parts use the triangle_part figure to draw an actual median, altitude, '
+                   'angle_bisector or side_extension. Four names ABCD mean apex A, base BC, and new point D. '
+                   'Supply base=BC, left=AB, right=AC as integer lengths. A side_extension continues BC beyond C. '
+                   'Vary genuinely different configurations and constructions. Use well-separated unequal side lengths and '
+                   'avoid angles visually indistinguishable from a right angle unless exactly right. For altitude use '
+                   'a foot strictly inside the base and away from its ends. The compiler prints these side lengths '
+                   'and the construction as givens; ask for deductions, '
+                   'not for the givens themselves. Choose the questions, original wording, answers, geometry '
+                   'and numeric data for the actual selected concepts. Use figure operation coordinate_pair for a named '
+                   'point when asking for both coordinates. Check each written numerical comparison and provide the '
+                   'requested angle magnitude, with givens solvable by the selected methods. Follow the supplied '
+                   'sketch slots exactly. No empty table cells: use a Hebrew cue for a cell to complete. Write whole '
+                   'math expressions in [[...]] and named angles as [[angle:ABC]]. Do not mix unsupported notation '
+                   'such as Ext(C) with angle names. Use Hebrew prose for exterior angles and keep only the '
+                   'actual point name in a math span. Never enclose Hebrew words in math spans. '
+                   'Never refer to an undrawn auxiliary line.')
     addition_plan = None
     if no_carry_addition.compatible(lesson):
         addition_plan = no_carry_addition.parameter_plan(lesson['questionCount'])
@@ -246,6 +263,16 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         if addition_plan is not None and isinstance(payload, dict) and payload.get('version') == 1:
             measured['authorContract'] = 'no-carry-addition/1'
             payload = no_carry_addition.build_source(lesson, payload, addition_plan)
+        if scope["topic"]["topicId"] == "g8:triangle_parts" and isinstance(payload, dict):
+            practice, challenges = payload.get("practice"), payload.get("challenges")
+            if isinstance(practice, list) and isinstance(challenges, list) and len(practice) + len(challenges) == len(plan):
+                from triangle_parts_shape import authored_findings
+                issues = authored_findings(practice + challenges, plan)
+                if issues:
+                    error = GeneralSourceError("TRIANGLE_SOURCE_MISMATCH", "The supplied answers or geometry plan require correction at " +
+                                               ", ".join("q" + str(i["question"]) for i in issues))
+                    error.findings = issues
+                    raise error
         payload = bind_content(payload, scope)
         payload = assemble_sections(payload, lesson['questionCount'])
         payload = compact_authoring.expand_source(payload, lesson['gradeNumber'],
@@ -259,8 +286,11 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             raise GeneralSourceError('AUTHOR_PLAN_MISMATCH','Source questions must follow the requested challenge and item slots')
         return payload
 
-    if (isinstance(revision, dict) and isinstance(response, dict)
-            and set(response) == {"title", "rule", "practice", "challenges"}):
+    flat_reply = isinstance(response, dict) and set(response) == {"title", "rule", "practice", "challenges"}
+    v4_reply = (isinstance(response, dict) and response.get("version") == 4
+                and set(response) == {"version", "title", "rule", "sections"})
+    can_revise = isinstance(revision, dict) and (flat_reply or v4_reply)
+    if can_revise:
         # This state never enters logs, persistent jobs, or download metadata.
         used = False
         def revise(findings):
@@ -272,6 +302,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             request, fields = correction_body(response, findings, lesson, scope, plan, context, chosen)
             observed = {}
             try:
+                measured["correctionRequested"] = True
                 replacements = request_author_json(target, key, request, observed, timeout)
                 updated = compile_content(apply_replacements(response, fields, replacements))
                 measured["validated"] = True
@@ -281,14 +312,21 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                 reject(exc.code, str(exc))
             finally:
                 measured["revisionUsage"] = observed.get("usage", {})
-        revision["revise"] = revise
+        if flat_reply:
+            revision["revise"] = revise
     try:
         payload = compile_content(response)
     except GeneralSourceError as exc:
         measured['validationError'] = {'code': exc.code, 'detail': str(exc)[:240]}
-        if isinstance(revision, dict) and "revise" in revision:
+        if exc.code == 'SOURCE_PLAIN_MATH':
+            measured['initialPlainMath'] = True
+        # Historical source-v4 replies are eligible only for content-preserving
+        # notation, never a rewrite of their trusted plan, flags or concepts.
+        if can_revise and (flat_reply or exc.code == "SOURCE_PLAIN_MATH"):
             from skill_authoring import source_findings
-            revision["sourceFindings"] = source_findings(response, lesson, scope, exc)
+            findings = source_findings(response, lesson, scope, exc)
+            if findings:
+                revision.update(revise=revise, sourceFindings=findings)
         reject(exc.code, str(exc))
     measured['validated'] = True
     return payload
