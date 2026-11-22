@@ -2833,6 +2833,14 @@
       "reason": "links to the topic, same grade, shared title word"
     },
     {
+      "key": "page:/integrated-geometry-grade-8",
+      "title": "שילוב גאומטרי לכיתה ח׳",
+      "linkedTopic": "topic:8:55",
+      "linkedTitle": "שילוב גאומטרי",
+      "verified": true,
+      "reason": "links to the topic, same grade, shared title word"
+    },
+    {
       "key": "page:/common-factor-grade-9",
       "title": "הוצאת גורם משותף לכיתה ט׳",
       "linkedTopic": "topic:9:41",

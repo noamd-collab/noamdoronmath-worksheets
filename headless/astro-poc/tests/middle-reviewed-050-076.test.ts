@@ -6,7 +6,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { topicPageCatalogTopicIds, topicPagePdfParts } from '../src/lib/topicStructuredData';
 import { loadTopicPage } from '../src/lib/topicPages';
-import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, renew } from './fixtures/middle-090-091-094';
+import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, nextRenew, renew } from './fixtures/middle-090-091-094';
 
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
@@ -15,14 +15,14 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 test('the 15 reviewed topics preserve the preceding catalog, registry and each landing page', () => {
   const releases = renew.packages;
   assert.deepEqual(releases.map(p => p.number), [50,51,52,53,54,57,58,59,60,61,71,72,74,75,76]);
-  const catalog = read('headless/catalog/catalog.v1.json');
-  const registry = read('headless/catalog/worksheet-editions.v1.json');
+  const catalog = catalogBeforePackages(read('headless/catalog/catalog.v1.json'), nextRenew.packages);
+  const registry = registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), nextRenew.packages.map(p => p.edition));
   assert.equal(digest(catalogBeforePackages(catalog, releases)), renew.baselineCatalogSha256);
   assert.equal(digest(registryBeforeRelease(registry, releases.map(p => p.edition))), renew.baselineRegistrySha256);
   const hrefs = new Set<string>();
   for (const p of releases) {
     const rawPage = read('headless/astro-poc/src/data/topic-pages/' + p.slug + '.json');
-    assert.equal(digest(copyBeforeRelease(p.slug, rawPage, renew)), p.priorPageSha256, p.slug);
+    assert.equal(digest(copyBeforeRelease(p.slug, copyBeforeRelease(p.slug, rawPage, nextRenew), renew)), p.priorPageSha256, p.slug);
     assert.ok(topicPageCatalogTopicIds(loadTopicPage(p.slug)).includes(p.topicId));
     assert.ok(p.reviewReceipts.length && p.reviewReceipts.every(r => r.verdict.startsWith('PASS') && /^[a-f0-9]{64}$/.test(r.sha256)));
     assert.equal(p.skillVersion, '7.3.3');

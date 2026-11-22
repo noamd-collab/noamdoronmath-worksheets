@@ -33,6 +33,7 @@ import adjacentVerticalAnglesGrade7 from '../data/topic-pages/adjacent-vertical-
 import linearEquationsGrade8 from '../data/topic-pages/linear-equations-grade-8.json';
 import inequalitiesGrade8 from '../data/topic-pages/inequalities-grade-8.json';
 import percentageProblemsGrade8 from '../data/topic-pages/percentage-problems-grade-8.json';
+import integratedGeometryGrade8 from '../data/topic-pages/integrated-geometry-grade-8.json';
 import coordinatePlaneGrade8 from '../data/topic-pages/coordinate-plane-grade-8.json';
 import congruenceTheoremsGrade8 from '../data/topic-pages/congruence-theorems-grade-8.json';
 import triangleCongruenceProofsGrade8 from '../data/topic-pages/triangle-congruence-proofs-grade-8.json';
@@ -677,6 +678,7 @@ export const TOPIC_PAGE_OWN_LANDING_SLUGS = [
   'equation-representations-grade-7',
   'parallelogram-trapezoid-area-grade-7',
   'triangular-prism-volume-grade-7',
+  'integrated-geometry-grade-8',
   'common-factor-grade-9',
   'factoring-identities-grade-9',
   'complete-factoring-grade-9',
@@ -1005,6 +1007,7 @@ const BY_SLUG: Record<string, TopicPageContent> = {
   'linear-equations-grade-8': linearEquationsGrade8 as TopicPageContent,
   'inequalities-grade-8': inequalitiesGrade8 as TopicPageContent,
   'percentage-problems-grade-8': percentageProblemsGrade8 as TopicPageContent,
+  'integrated-geometry-grade-8': integratedGeometryGrade8 as TopicPageContent,
   'coordinate-plane-grade-8': coordinatePlaneGrade8 as TopicPageContent,
   'congruence-theorems-grade-8': congruenceTheoremsGrade8 as TopicPageContent,
   'triangle-congruence-proofs-grade-8': triangleCongruenceProofsGrade8 as TopicPageContent,
@@ -1395,6 +1398,9 @@ const CHILD_LANDING_LINKS: Record<string, readonly FamilyRelatedTopic[]> = {
   ],
   'area-parallelogram-trapezoid-composite-grade-7': [
     { path: '/parallelogram-trapezoid-area-grade-7', label: 'שטח מקבילית וטרפז', productionHref: 'https://www.noamdoronmath.co.il/parallelogram-trapezoid-area-grade-7' },
+  ],
+  'coordinate-plane-grade-8': [
+    { path: '/integrated-geometry-grade-8', label: 'שילוב גאומטרי', productionHref: 'https://www.noamdoronmath.co.il/integrated-geometry-grade-8' },
   ],
   'equilateral-triangle-grade-9': [
     { path: '/special-triangles-review-grade-9', label: 'משולשים מיוחדים — חזרה מכיתה ז׳', productionHref: 'https://www.noamdoronmath.co.il/special-triangles-review-grade-9' },

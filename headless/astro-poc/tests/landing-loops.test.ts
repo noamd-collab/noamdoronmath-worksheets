@@ -256,7 +256,7 @@ describe('landing loop coverage', () => {
       assert.equal(hebrew.test(CSS_LOOP_IDEAS[variant]), true, slug);
     }
     // Three own-landings reuse existing CSS loops (area, area-para, prism-vol).
-    assert.equal(cssPages, 110);
+    assert.equal(cssPages, 111);
     assert.equal(topicLandingLoop(loadTopicPage('analytic-geometry-grade-9')).kind, 'film');
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('היתר'), true);
     assert.equal(CSS_LOOP_IDEAS.t306090.includes('המיתר'), false);
