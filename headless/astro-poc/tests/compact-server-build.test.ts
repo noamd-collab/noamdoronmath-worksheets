@@ -26,7 +26,7 @@ test('server compaction preserves Hebrew, literal whitespace, arithmetic and fun
     }
     export default function renderWorksheet() { return markup; }
   `;
-  const result = await render(source, { fileName: 'chunks/worksheet_test.mjs' });
+  const result = await render(source, { fileName: 'chunks/worksheet_test.mjs', moduleIds: ['/src/data/topic-pages/example.json'] });
   const load = (code: string) => import('data:text/javascript;base64,' + Buffer.from(code).toString('base64'));
   const [original, compact] = await Promise.all([load(source), load(result.code)]);
   const values = (module: any) => ({

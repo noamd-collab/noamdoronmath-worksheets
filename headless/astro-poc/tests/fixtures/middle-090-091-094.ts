@@ -10,9 +10,11 @@ import three from '../../../../docs/middle-077-078-079-pdf-20261122.json';
 
 import renew from '../../../../docs/middle-reviewed-packages-050-076-20261122.json';
 
-export { reviewed, seven, three, renew };
-const releases = [renew, three, seven, reviewed];
-const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages];
+import nextRenew from '../../../../docs/middle-renewal-wave2-20261122.json';
+
+export { reviewed, seven, three, renew, nextRenew };
+const releases = [nextRenew, renew, three, seven, reviewed];
+const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages, ...nextRenew.packages];
 export const renewalIds = allPackages.map(item => item.edition.editionId);
 // The SSR loader normalizes property insertion order without changing data.
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, (_key, item) => {
@@ -28,13 +30,16 @@ export function beforeNovember21Catalog<T>(catalog: T): T {
 
 export function catalogBeforePackages<T>(catalog: T, packages: typeof allPackages): T {
   const result: any = structuredClone(catalog);
-  for (const item of packages) {
+  for (const item of [...packages].reverse()) {
     const topic = result.grades.find((g: any) => g.grade === item.grade)?.topics.find((t: any) => t.id === item.topicId);
     assert.ok(topic, item.slug);
-    assert.deepEqual(topic.editions?.map((e: any) => e.editionId), [item.edition.editionId], item.slug);
-    assert.equal(digest(topic.editions[0]), item.generatedEditionSha256, item.slug);
-    delete topic.editions;
-    delete topic.defaultEditionId;
+    const priorIds = 'priorEditionIds' in item && Array.isArray(item.priorEditionIds) ? item.priorEditionIds : [];
+    assert.deepEqual(topic.editions?.map((e: any) => e.editionId), [...priorIds, item.edition.editionId], item.slug);
+    assert.equal(digest(topic.editions.pop()), item.generatedEditionSha256, item.slug);
+    if (!topic.editions.length) {
+      delete topic.editions;
+      delete topic.defaultEditionId;
+    }
     assert.equal(digest(topic), item.priorTopicSha256, item.slug);
   }
   return result;
@@ -61,17 +66,20 @@ export function beforeNovember21Copy<T>(slug: string, page: T): T {
 
 export function copyBeforeRelease<T>(slug: string, page: T, release: typeof releases[number]): T {
   const item = release.packages.find(p => p.slug === slug);
-  if (!item) return page;
+  const companion = release === nextRenew && slug === 'coordinate-plane-grade-8'
+    ? nextRenew.additionalLandingEdits['coordinate-plane-grade-8'] : [];
+  if (!item && !companion.length) return page;
   const result: any = structuredClone(page);
-  if (release === seven || release === renew) {
-    const edits = release.packages.find(p => p.slug === slug)?.priorCopyEdits ?? [];
-    for (const edit of edits) {
-      const parent = edit.path.slice(0, -1).reduce((node: any, key) => node[key], result);
-      const key = edit.path.at(-1)!;
-      assert.equal(strip(parent[key]), edit.after, slug);
-      parent[key] = parent[key] === edit.after ? edit.before : isolateMathRuns(edit.before);
-    }
+  const edits = item && 'priorCopyEdits' in item && Array.isArray(item.priorCopyEdits)
+    ? item.priorCopyEdits : companion;
+  for (const edit of edits) {
+    const path: (string | number)[] = edit.path;
+    const parent = path.slice(0, -1).reduce<any>((node, key) => node[key], result);
+    const key = path.at(-1)!;
+    assert.equal(strip(parent[key]), edit.after, slug);
+    parent[key] = parent[key] === edit.after ? edit.before : isolateMathRuns(edit.before);
   }
+  if (!item) return result;
   const section = result.sections.pop();
   assert.equal(strip(section.heading), item.section.heading, slug);
   assert.deepEqual(section.blocks.map((b: any) => strip(b.text)), item.section.blocks.map(b => b.text), slug);
