@@ -375,6 +375,10 @@ class WorkerTests(unittest.TestCase):
         (target / 'sheet.pdf').write_bytes(b'first failed private draft')
         return manifest
 
+    def test_production_enables_the_single_scoped_revision(self):
+        self.assertIs(worker.ENABLE_SKILL_REVISION, True)
+        self.assertIs(worker.process_job.__kwdefaults__["enable_skill_revision"], True)
+
     def test_revision_policy_does_not_reach_legacy_or_disabled_v3(self):
         for mode in ('legacy-enabled', 'general-disabled'):
             with self.subTest(mode=mode), patch.object(worker, 'author_lesson', return_value={}) as author, \

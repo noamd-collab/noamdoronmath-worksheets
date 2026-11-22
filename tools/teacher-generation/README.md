@@ -30,8 +30,7 @@ decimal zeros, thousands separators, and percent signs. A completed source-v4 do
 remains a supported input. Basic grade-two no-regrouping addition also accepts its existing
 compact parameter format. Every output goes through the same applicable skill gates.
 
-The production correction policy is disabled by default. An explicitly enabled worker can
-request one targeted revision for up to six questions when the skill identifies their
+The production worker can request one targeted revision for up to six questions when the skill identifies their
 locations and the job still owns its lease. The second provider call has a separate usage
 record. Both outputs are rebuilt in a fresh directory and rechecked before any upload.
 An infrastructure failure or an unlocalized report does not trigger a correction.
