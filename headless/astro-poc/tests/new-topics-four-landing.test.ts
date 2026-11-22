@@ -1,3 +1,4 @@
+import { beforeGrade9SpecialTrianglesReview } from './helpers/beforeGrade9SpecialTrianglesReview';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
@@ -208,7 +209,7 @@ test('worked examples, common mistakes and self-checks compute correctly', () =>
 });
 
 test('the NEW4 fence reverses exactly the four topics and rejects substitutions, moves, duplicates and edits', () => {
-  const raw = JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8'));
+  const raw = beforeGrade9SpecialTrianglesReview(JSON.parse(readFileSync(new URL('../src/data/catalog.v1.json', import.meta.url), 'utf8')));
   const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
   const gradeOf = (cat: any, grade: number) => cat.grades.find((g: any) => g.grade === grade);
   const topicOf = (cat: any, grade: number, id: number) => gradeOf(cat, grade).topics.find((t: any) => t.id === id);

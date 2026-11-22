@@ -312,6 +312,7 @@
       "12": "פונקציות גרפים קריאת גרף",
       "13": "הכנה לתיכון יחידות לימוד 4 5 חזרה",
       "20": "מקביליות צלעות נגדיות אלכסונים",
+      "21": "משולש משולשים מיוחדים שווה שוקיים שווה צלעות ישר זווית גיאומטריה חזרה מכיתה ז",
       "22": "מעוינים אלכסונים מאונכים",
       "23": "ריבועים מעוין מלבן מקביליות אלכסונים",
       "39": "טרפז בסיסים שוקיים שווה שוקיים ישר זווית שטח היקף",
@@ -20538,6 +20539,48 @@
               "pb": "5f4af33988bf48079a960691ef5cf371",
               "pc": "f7c4144305ba48f6a401d5b69526b295"
             }
+          }
+        },
+        {
+          "id": 21,
+          "title": "משולשים מיוחדים — חזרה מכיתה ז׳",
+          "description": "תרגול ברמת כיתה ז׳ בזיהוי משולשים שווי־שוקיים, שווי־צלעות וישרי־זווית ובשימוש בתכונותיהם.",
+          "group": "spiral",
+          "icon": "tritick",
+          "noamTopicId": "G9-T14",
+          "levels": [
+            {
+              "key": "a",
+              "label": "רמה א׳",
+              "pdfId": "650ad39b6ea141b4b5c19e377c6e8544",
+              "labelSource": "default"
+            },
+            {
+              "key": "b",
+              "label": "רמה ב׳",
+              "pdfId": "5d08961c3e254034ae218fb538d92efd",
+              "labelSource": "default"
+            },
+            {
+              "key": "c",
+              "label": "רמת מצוינות",
+              "pdfId": "f2d78978ee4b4674868c14eca5f8e535",
+              "labelSource": "default"
+            }
+          ],
+          "routing": {
+            "resolvedNoamPrefix": "G9-T14",
+            "aiHintShown": true,
+            "usesViewer": true,
+            "viewerPath": "worksheet-viewer-noam.html",
+            "siblingPdfQuery": {
+              "pa": "650ad39b6ea141b4b5c19e377c6e8544",
+              "pb": "5d08961c3e254034ae218fb538d92efd",
+              "pc": "f2d78978ee4b4674868c14eca5f8e535"
+            },
+            "sourceGrade": 7,
+            "sourcePrefix": "G7-T15",
+            "sourceTitle": "משולשים מיוחדים — כיתה ז׳"
           }
         },
         {
