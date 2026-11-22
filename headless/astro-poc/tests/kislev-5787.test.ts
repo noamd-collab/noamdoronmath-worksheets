@@ -32,8 +32,8 @@ describe('Kislev 5787 home greeting', () => {
     assert.match(cmp, /חודש כסלו טוב!/);
     assert.match(cmp, /שמונה לילות אור, וסכום נרות המצווה/);
     assert.match(cmp, /1\+2\+…\+8 = 36/);
-    assert.match(cmp, /define:vars=\{\{ start: KISLEV_5787_START_MS, end: KISLEV_5787_END_MS \}\}/);
-    assert.match(cmp, /classList\.add\('kislev-5787'\)/);
+    assert.match(cmp, /define:vars=\{\{ start: KISLEV_5787_START_MS, end: KISLEV_5787_END_MS, hanukkahStart: HANUKKAH_5787_START_MS, hanukkahEnd: HANUKKAH_5787_END_MS \}\}/);
+    assert.match(cmp, /else if \(now >= start && now < end\) document\.documentElement\.classList\.add\('kislev-5787'\)/);
     assert.match(cmp, /id="kislev-5787"/);
     assert.match(cmp, /data-kislev-greeting/);
     assert.match(cmp, /prefers-reduced-motion:\s*reduce/);
