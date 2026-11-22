@@ -15,6 +15,7 @@ import { beforeBatch07Catalog, beforeBatch07Copy, beforeBatch07Registry,
 import { createRequire } from 'node:module';
 import { beforeBatch08Registry } from './fixtures/batch08-pdf';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { beforeNovember21Copy } from './fixtures/middle-090-091-094';
 import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
 
 const require = createRequire(import.meta.url);
@@ -159,8 +160,9 @@ test('three landing routes add only reviewed PDF copy and preserve their complet
     assert.deepEqual(page.catalogCta, restored.catalogCta);
     assert.deepEqual(page.catalogCtas, restored.catalogCtas);
     // The 19.11 copy after the additional Ramzi activation edits this section's closing note; compare without it.
-    assert.deepEqual((beforeRamziActivationCopy(slug, page) as any).sections.at(-1), delta.appendedSection);
-    const loaded = beforeRamziActivationCopy(slug, loadTopicPage(slug)!);
+    const batchPage = beforeNovember21Copy(slug, beforeRamziActivationCopy(slug, page));
+    assert.deepEqual(batchPage.sections.at(-1), delta.appendedSection);
+    const loaded = beforeNovember21Copy(slug, beforeRamziActivationCopy(slug, loadTopicPage(slug)!));
     const sections = loaded.sections.filter(section => section.heading === delta.appendedSection.heading);
     assert.equal(sections.length, 1);
     assert.ok(sections[0].blocks.some(block => /רמה א׳/.test(block.text ?? '')));

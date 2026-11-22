@@ -6,9 +6,11 @@ import reviewed from '../../../../docs/middle-090-091-094-pdf-20261121.json';
 
 import seven from '../../../../docs/middle-b18-seven-pdf-20261122.json';
 
-export { reviewed, seven };
-const releases = [reviewed, seven];
-const allPackages = [...reviewed.packages, ...seven.packages];
+import three from '../../../../docs/middle-077-078-079-pdf-20261122.json';
+
+export { reviewed, seven, three };
+const releases = [reviewed, seven, three];
+const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages];
 export const renewalIds = allPackages.map(item => item.edition.editionId);
 // The SSR loader normalizes property insertion order without changing data.
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, (_key, item) => {
@@ -32,11 +34,19 @@ export function beforeNovember21Catalog<T>(catalog: T): T {
   return result;
 }
 
-export function beforeNovember21Registry<T>(registry: T): T {
+type RegistryEdition = { editionId: string };
+
+/** Reverse only the named release block and verify every entry, position and order. */
+export function registryBeforeRelease<T>(registry: T, expected: RegistryEdition[]): T {
   const result: any = structuredClone(registry);
-  assert.deepEqual(result.editions.slice(-renewalIds.length), allPackages.map(item => item.edition));
-  result.editions.splice(-renewalIds.length);
+  const index = result.editions.findIndex((edition: RegistryEdition) => edition.editionId === expected[0].editionId);
+  assert.ok(index >= 0, expected[0].editionId);
+  assert.deepEqual(result.editions.splice(index, expected.length), expected);
   return result;
+}
+
+export function beforeNovember21Registry<T>(registry: T): T {
+  return registryBeforeRelease(registry, allPackages.map(item => item.edition));
 }
 
 export function beforeNovember21Copy<T>(slug: string, page: T): T {
