@@ -1,3 +1,7 @@
+## 2026-11-22 — Grade 7 composite polygon area (092)
+
+The three G7-T138 worksheets each have 21 reviewed Ramzi markers on the printed subsections. Each marker opens three text hints referring to the original geometry worksheet. The shared landing keeps the original worksheet links for topics 46 and 45.
+
 ## 2026-11-22 — Grade 7 introduction to probability through relative frequency (091)
 
 The three G7-T137 student PDFs each have 20 reviewed Ramzi markers on the printed subsections. Each marker opens three text hints. The topic 28 landing also keeps the three original worksheet readers.
