@@ -17,21 +17,24 @@ stopping point. Punctuation-equivalent labels share one visible choice while
 all underlying concept IDs are preserved. Earlier curriculum eligibility is
 not proof of student mastery. Calendar alignment is not independently verified.
 
-`authoring_context.py` reads the actual pinned skill documents, curriculum,
-tool eligibility and glossary. `general_provider.py` sends the selected scope
-to the configured Qwen authoring model. It makes one bounded authoring attempt;
-validation failure never triggers an automatic billed retry. The model is not
-a reviewer and cannot assert approval.
+Every intake-v3 request resolves the selected grade, track and taught concepts against the
+same pinned worksheet skill before authoring. Exact previously qualified practice plans
+can compile locally. For other selections the skill supplies the teaching rules, the
+chronology and the stopping point to the general author. The compiler assigns selected
+concepts to practice and challenge slots, owns their numbering and creates the versioned
+source. Adding a subject from the curriculum does not require a subject-specific author.
 
-The general author returns source-v4 declarative JSON. The provider boundary
-wraps single typed spans and unambiguous Hebrew prose in span arrays before
-the canonical validator checks every field. It preserves mathematical ASTs.
+The general author supplies a title, one rule and two groups of questions. Mathematical
+tasks are parsed into bounded, verified expressions. Printed literals preserve significant
+decimal zeros, thousands separators, and percent signs. A completed source-v4 document
+remains a supported input. Basic grade-two no-regrouping addition also accepts its existing
+compact parameter format. Every output goes through the same applicable skill gates.
 
-Basic grade-two practice for the single concept ב05#1 also offers a compact
-parameter contract for 8–12 questions. The author selects operands and settings
-within a no-regrouping plan. The compiler constructs vocalized problems and
-checks each actual operand pair. Custom teacher constraints can use full
-source-v4 in the same authoring call. Other scopes use full source-v4 directly.
+The production correction policy is disabled by default. An explicitly enabled worker can
+request one targeted revision for up to six questions when the skill identifies their
+locations and the job still owns its lease. The second provider call has a separate usage
+record. Both outputs are rebuilt in a fresh directory and rechecked before any upload.
+An infrastructure failure or an unlocalized report does not trigger a correction.
 
 `general_source.py` checks closed shapes, size, volume, niqqud, allowed concepts
 and expression bounds. `math_tasks.py` verifies typed arithmetic, symbolic

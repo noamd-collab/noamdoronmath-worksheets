@@ -10,6 +10,8 @@ from urllib.parse import urlparse
 from urllib.request import Request, HTTPRedirectHandler, HTTPSHandler, build_opener
 from validation import MAX_JSON_BYTES, GenerationError, exact, integer, reject, validate_lesson, validate_model
 from author_quality import prepare_didactics
+from authoring_context import AuthoringContextError, build_authoring_context
+from runtime_catalog import catalog
 
 QWEN_HOSTS={'token-plan.maas.qwencloudapi.com','dashscope.aliyuncs.com','dashscope-intl.aliyuncs.com','dashscope-us.aliyuncs.com','cn-hongkong.dashscope.aliyuncs.com'}
 
@@ -244,7 +246,7 @@ def request_author_json(target, key, body, measured, timeout):
         measured['elapsedSeconds']=round(time.monotonic()-started,3)
     return payload
 
-def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None, allow_legacy=False):
+def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None, allow_legacy=False, revision=None):
     """Author one requested lesson, with at most one provider call.
 
     Supported native lesson authors return replayable parameters locally.
@@ -259,6 +261,12 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
     """
     cap=validate_lesson(lesson,allow_legacy=allow_legacy)
     if lesson['version'] == 3:
+        skill = cap['skill']
+        paths = {skill: os.environ.get(f'{skill.upper()}_SKILL_PATH')}
+        try:
+            context = build_authoring_context(catalog(), lesson, paths)
+        except AuthoringContextError as exc:
+            reject('AUTHOR_CONTEXT_INVALID', str(exc))
         import fraction_lesson
         if fraction_lesson.eligible(lesson):
             if metadata is not None:
@@ -291,7 +299,8 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
             return parameters(lesson)
         from general_provider import author_general_lesson
         return author_general_lesson(lesson, api_key=api_key, base_url=base_url, model=model,
-                                     timeout=timeout, metadata=metadata)
+                                     timeout=timeout, metadata=metadata, authoring_context=context,
+                                     **({"revision": revision} if revision is not None else {}))
     key=api_key or os.environ.get('QWEN_API_KEY') or os.environ.get('DASHSCOPE_API_KEY')
     base=base_url or os.environ.get('QWEN_BASE_URL')
     chosen=model or os.environ.get('QWEN_MODEL')

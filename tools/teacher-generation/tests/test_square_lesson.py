@@ -19,7 +19,8 @@ class SquareLessonTest(unittest.TestCase):
         self.lesson = json.loads((FIX / "lesson.json").read_text())
         self.source = json.loads((FIX / "model-output.json").read_text())
 
-    def test_exact_case_authors_offline_and_replays_through_validation(self):
+    @patch("provider.build_authoring_context", return_value={})
+    def test_exact_case_authors_offline_and_replays_through_validation(self, _context):
         with patch(
             "general_provider.author_general_lesson",
             side_effect=AssertionError("Unexpected paid author"),

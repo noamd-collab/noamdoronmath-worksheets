@@ -140,6 +140,38 @@ class GeneralAnswerLayoutTests(unittest.TestCase):
         self.assertEqual(_heading_key(source),_heading_key(physical)[::-1])
         self.assertNotEqual(_heading_key(source),_heading_key('תשובות אחרות'))
 
+    def test_currency_amounts_require_exact_painted_digits_sign_and_order(self):
+        font = pymupdf.Font(script=pymupdf.UCDN_SCRIPT_LATIN, language="he")
+        self.assertTrue(font.has_glyph(ord("₪")))
+        for values, passes in [
+            (["27 ₪", "27 ₪", "0 ₪"], True),
+            (["27 ₪", "0 ₪", "27 ₪"], False),
+            (["27 ₪", "", "0 ₪"], False),
+            (["27 ₪", "₪ 27", "0 ₪"], False),
+            (["27 ₪", "27 ₪₪", "0 ₪"], False),
+            (["27 ₪", "27", "0 ₪"], False),
+        ]:
+            with self.subTest(values=values), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                expected = ['<span class="ltr">'+s+'</span>' for s in ["27 ₪", "27 ₪", "0 ₪"]]
+                pdf, html = self.make(root, [expected], [[]])
+                with pymupdf.open(pdf) as doc:
+                    pg = doc[0]
+                    pg.insert_font(fontname="CashTest", fontbuffer=font.buffer)
+                    for i, value in enumerate(values):
+                        pg.insert_text((430 - i*95, 139.5), value, fontsize=12, fontname="CashTest")
+                    edited = root / "currency.pdf"
+                    doc.save(edited)
+                if passes:
+                    self.assertEqual(check_answer_order(edited, html)["formulas"], 3)
+                else:
+                    with self.assertRaisesRegex(AnswerOrderError, "GENERAL_ANSWER_VISUAL_ORDER"):
+                        check_answer_order(edited, html)
+        with tempfile.TemporaryDirectory() as temp:
+            pdf, html = self.make(Path(temp), [['<span class="ltr">27 @</span>']], [[]])
+            with self.assertRaisesRegex(AnswerOrderError, "GENERAL_ANSWER_UNSUPPORTED_MATH_TEXT"):
+                check_answer_order(pdf, html)
+
     def test_superscript_is_raised_after_its_base_not_flat_or_below(self):
         for placement in ['raised','flat','below','before']:
             with tempfile.TemporaryDirectory() as d:
