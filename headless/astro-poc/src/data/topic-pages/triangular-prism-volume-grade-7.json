@@ -1,0 +1,293 @@
+{
+  "slug": "triangular-prism-volume-grade-7",
+  "path": "/triangular-prism-volume-grade-7",
+  "grade": 7,
+  "sourceUrl": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7",
+  "fetchedAt": "2026-11-21T00:00:00.000Z",
+  "verifiedVia": "authored-own-landing-20261121",
+  "title": "נפח מנסרה משולשת לכיתה ז׳ | דף עבודה חינם",
+  "description": "למנסרה משולשת שני בסיסים משולשים ושלוש פאות מלבניות. הנפח הוא שטח הבסיס כפול גובה המנסרה.",
+  "ogImage": "https://static.wixstatic.com/media/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg/v1/fit/w_2500,h_1330,al_c/d8e7ad_14740c8b953c4257a0435ef4898e7735%7Emv2.jpeg",
+  "h1": "מנסרה משולשת — מבנה ונפח לכיתה ז׳",
+  "intro": "למנסרה משולשת שני בסיסים שהם משולשים חופפים, וביניהם שלוש פאות מלבניות. הנפח הוא שטח הבסיס המשולש כפול גובה המנסרה, המרחק שבין הבסיסים. הדפים זמינים בחינם וללא הרשמה.",
+  "sections": [
+    {
+      "heading": "הסבר ודוגמה",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כששטח הבסיס 6 סמ״ר וגובה המנסרה 5 ס״מ, הנפח הוא 30 סמ״ק.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "גובה המנסרה אינו גובה המשולש שבבסיס. אלה שני אורכים שונים.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "טעויות נפוצות",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "כופלים את היקף הבסיס במקום את שטח הבסיס.",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "משתמשים בגובה המשולש כאילו היה גובה המנסרה.",
+          "links": []
+        }
+      ]
+    },
+    {
+      "heading": "בדקו את עצמכם",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "שטח הבסיס 8 סמ״ר וגובה המנסרה 4 ס״מ. מה הנפח?",
+          "links": []
+        },
+        {
+          "type": "paragraph",
+          "text": "התשובה היא 32 סמ״ק.",
+          "links": []
+        }
+      ]
+    }
+  ],
+  "bodyFlow": [
+    {
+      "type": "paragraph",
+      "text": "למנסרה משולשת שני בסיסים שהם משולשים חופפים, וביניהם שלוש פאות מלבניות. הנפח הוא שטח הבסיס המשולש כפול גובה המנסרה, המרחק שבין הבסיסים. הדפים זמינים בחינם וללא הרשמה.",
+      "role": "intro"
+    },
+    {
+      "type": "cta",
+      "label": "מנסרה משולשת — נפח — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=47",
+      "catalogTopicId": 47
+    },
+    {
+      "type": "heading",
+      "text": "הסבר ודוגמה"
+    },
+    {
+      "type": "paragraph",
+      "text": "כששטח הבסיס 6 סמ״ר וגובה המנסרה 5 ס״מ, הנפח הוא 30 סמ״ק.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "גובה המנסרה אינו גובה המשולש שבבסיס. אלה שני אורכים שונים.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "שלושה קובצי PDF זמינים להורדה ולהדפסה: רמה א׳, רמה ב׳ ומצוינות, עם תשובות בסוף כל דף.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "טעויות נפוצות"
+    },
+    {
+      "type": "paragraph",
+      "text": "כופלים את היקף הבסיס במקום את שטח הבסיס.",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "משתמשים בגובה המשולש כאילו היה גובה המנסרה.",
+      "role": "body"
+    },
+    {
+      "type": "heading",
+      "text": "בדקו את עצמכם"
+    },
+    {
+      "type": "paragraph",
+      "text": "שטח הבסיס 8 סמ״ר וגובה המנסרה 4 ס״מ. מה הנפח?",
+      "role": "body"
+    },
+    {
+      "type": "paragraph",
+      "text": "התשובה היא 32 סמ״ק.",
+      "role": "body"
+    }
+  ],
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 21.11.2026",
+  "updatedLinePlacement": "after-sections",
+  "faqHeading": "שאלות נפוצות",
+  "faq": [
+    {
+      "question": "איך מחשבים נפח של מנסרה משולשת?",
+      "answer": "מחשבים את שטח הבסיס המשולש וכופלים בגובה המנסרה."
+    },
+    {
+      "question": "כמה דפי עבודה יש בנושא?",
+      "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+    },
+    {
+      "question": "האם יש תשובות לדפי העבודה?",
+      "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+    },
+    {
+      "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+      "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+    }
+  ],
+  "faqGroups": [
+    {
+      "heading": "שאלות נפוצות",
+      "source": "visible+jsonld",
+      "items": [
+        {
+          "question": "איך מחשבים נפח של מנסרה משולשת?",
+          "answer": "מחשבים את שטח הבסיס המשולש וכופלים בגובה המנסרה."
+        },
+        {
+          "question": "כמה דפי עבודה יש בנושא?",
+          "answer": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+        },
+        {
+          "question": "האם יש תשובות לדפי העבודה?",
+          "answer": "כן. בסוף כל דף עבודה יש דף תשובות."
+        },
+        {
+          "question": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+          "answer": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+        }
+      ]
+    }
+  ],
+  "author": {
+    "text": "נכתב ונערך על ידי נועם דורון, מורה למתמטיקה.",
+    "links": [
+      {
+        "href": "https://www.noamdoronmath.co.il/aboutus",
+        "label": "נועם דורון"
+      }
+    ]
+  },
+  "relatedTopics": [
+    {
+      "path": "/solids-box-cube-prism-grade-7",
+      "label": "תיבה, קובייה ומנסרה",
+      "productionHref": "https://www.noamdoronmath.co.il/solids-box-cube-prism-grade-7"
+    },
+    {
+      "path": "/box-and-cube-grade-7",
+      "label": "תיבה וקובייה",
+      "productionHref": "https://www.noamdoronmath.co.il/box-and-cube-grade-7"
+    }
+  ],
+  "catalogCta": {
+    "label": "מנסרה משולשת — נפח — בחירת דף ורמה",
+    "href": "/worksheets?grade=7&topic=47",
+    "source": "catalog-g7-t47",
+    "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=47",
+    "catalogTopicId": 47,
+    "catalogTopicTitle": "מנסרה משולשת חלק 1 — מבנה ונפח"
+  },
+  "catalogCtas": [
+    {
+      "label": "מנסרה משולשת — נפח — בחירת דף ורמה",
+      "href": "/worksheets?grade=7&topic=47",
+      "source": "catalog-g7-t47",
+      "productionHref": "https://noamd-collab.github.io/noamdoronmath-worksheets/?grade=7&topic=47",
+      "catalogTopicId": 47,
+      "catalogTopicTitle": "מנסרה משולשת חלק 1 — מבנה ונפח"
+    }
+  ],
+  "gradeHubHref": "/grade-7",
+  "jsonLd": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7#webpage",
+        "url": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7",
+        "name": "נפח מנסרה משולשת לכיתה ז׳ | דף עבודה חינם",
+        "description": "למנסרה משולשת שני בסיסים משולשים ושלוש פאות מלבניות. הנפח הוא שטח הבסיס כפול גובה המנסרה.",
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        },
+        "about": {
+          "@id": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7#learning-resource"
+        }
+      },
+      {
+        "@type": "LearningResource",
+        "@id": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7#learning-resource",
+        "name": "מנסרה משולשת — מבנה ונפח לכיתה ז׳",
+        "url": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7",
+        "description": "למנסרה משולשת שני בסיסים משולשים ושלוש פאות מלבניות. הנפח הוא שטח הבסיס כפול גובה המנסרה.",
+        "educationalLevel": "כיתה ז׳",
+        "learningResourceType": "דפי עבודה",
+        "teaches": "מבנה מנסרה משולשת וחישוב נפחה",
+        "isAccessibleForFree": true,
+        "inLanguage": "he",
+        "author": {
+          "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.noamdoronmath.co.il/aboutus#noam-doron",
+        "name": "נועם דורון",
+        "url": "https://www.noamdoronmath.co.il/aboutus"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "איך מחשבים נפח של מנסרה משולשת?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "מחשבים את שטח הבסיס המשולש וכופלים בגובה המנסרה."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "כמה דפי עבודה יש בנושא?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "שלושה: רמה א׳, רמה ב׳ ומצוינות. בסוף כל דף יש תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם יש תשובות לדפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "כן. בסוף כל דף עבודה יש דף תשובות."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "האם צריך להירשם כדי לפתוח את דפי העבודה?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "לא. דפי העבודה פתוחים בחינם וללא הרשמה."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "terms": {
+    "label": "תנאי השימוש",
+    "href": "https://www.noamdoronmath.co.il/conditionforfreeworksheets"
+  },
+  "images": []
+}

@@ -18,6 +18,16 @@
           "productionHref": "https://www.noamdoronmath.co.il/equations-basics-grade-7"
         },
         {
+          "path": "/equation-solution-grade-7",
+          "label": "מהו פתרון של משוואה",
+          "productionHref": "https://www.noamdoronmath.co.il/equation-solution-grade-7"
+        },
+        {
+          "path": "/one-step-equations-grade-7",
+          "label": "משוואות חד־שלביות",
+          "productionHref": "https://www.noamdoronmath.co.il/one-step-equations-grade-7"
+        },
+        {
           "path": "/pythagorean-theorem-grade-7",
           "label": "משפט פיתגורס",
           "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7"
@@ -31,6 +41,11 @@
           "path": "/algebraic-expressions-grade-7",
           "label": "ביטויים אלגבריים, הצבה וגורם משותף",
           "productionHref": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7"
+        },
+        {
+          "path": "/algebraic-language-grade-7",
+          "label": "משתנים וביטויים אלגבריים",
+          "productionHref": "https://www.noamdoronmath.co.il/algebraic-language-grade-7"
         },
         {
           "path": "/signed-numbers-grade-7",
@@ -123,9 +138,29 @@
           "productionHref": "https://www.noamdoronmath.co.il/equations-advanced-grade-7"
         },
         {
+          "path": "/simplify-then-solve-grade-7",
+          "label": "מפשטים ואז פותרים",
+          "productionHref": "https://www.noamdoronmath.co.il/simplify-then-solve-grade-7"
+        },
+        {
+          "path": "/equations-parentheses-grade-7",
+          "label": "משוואות עם סוגריים",
+          "productionHref": "https://www.noamdoronmath.co.il/equations-parentheses-grade-7"
+        },
+        {
           "path": "/equations-both-sides-word-problems-grade-7",
           "label": "משוואות בשני אגפים",
           "productionHref": "https://www.noamdoronmath.co.il/equations-both-sides-word-problems-grade-7"
+        },
+        {
+          "path": "/unknown-both-sides-grade-7",
+          "label": "הנעלם בשני האגפים",
+          "productionHref": "https://www.noamdoronmath.co.il/unknown-both-sides-grade-7"
+        },
+        {
+          "path": "/equation-representations-grade-7",
+          "label": "שלושה ייצוגים למשוואה",
+          "productionHref": "https://www.noamdoronmath.co.il/equation-representations-grade-7"
         },
         {
           "path": "/pythagoras-applications-grade-7",
@@ -138,9 +173,19 @@
           "productionHref": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7"
         },
         {
+          "path": "/rectangle-square-area-grade-7",
+          "label": "שטח מלבן וריבוע — העמקה",
+          "productionHref": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-7"
+        },
+        {
           "path": "/area-parallelogram-trapezoid-composite-grade-7",
           "label": "שטח מקבילית, טרפז ומצולעים מורכבים",
           "productionHref": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7"
+        },
+        {
+          "path": "/parallelogram-trapezoid-area-grade-7",
+          "label": "שטח מקבילית וטרפז",
+          "productionHref": "https://www.noamdoronmath.co.il/parallelogram-trapezoid-area-grade-7"
         },
         {
           "path": "/solids-box-cube-prism-grade-7",
@@ -148,9 +193,24 @@
           "productionHref": "https://www.noamdoronmath.co.il/solids-box-cube-prism-grade-7"
         },
         {
+          "path": "/box-and-cube-grade-7",
+          "label": "תיבה וקובייה",
+          "productionHref": "https://www.noamdoronmath.co.il/box-and-cube-grade-7"
+        },
+        {
+          "path": "/triangular-prism-volume-grade-7",
+          "label": "נפח מנסרה משולשת",
+          "productionHref": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7"
+        },
+        {
           "path": "/patterns-and-graphs-grade-7",
           "label": "דפוסים וגרפים",
           "productionHref": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7"
+        },
+        {
+          "path": "/number-patterns-grade-7",
+          "label": "חוקיות בסדרות",
+          "productionHref": "https://www.noamdoronmath.co.il/number-patterns-grade-7"
         },
         {
           "path": "/equilateral-triangle-grade-7",
@@ -227,6 +287,16 @@
       "productionHref": "https://www.noamdoronmath.co.il/equations-basics-grade-7"
     },
     {
+      "path": "/equation-solution-grade-7",
+      "label": "מהו פתרון של משוואה",
+      "productionHref": "https://www.noamdoronmath.co.il/equation-solution-grade-7"
+    },
+    {
+      "path": "/one-step-equations-grade-7",
+      "label": "משוואות חד־שלביות",
+      "productionHref": "https://www.noamdoronmath.co.il/one-step-equations-grade-7"
+    },
+    {
       "path": "/pythagorean-theorem-grade-7",
       "label": "משפט פיתגורס",
       "productionHref": "https://www.noamdoronmath.co.il/pythagorean-theorem-grade-7"
@@ -240,6 +310,11 @@
       "path": "/algebraic-expressions-grade-7",
       "label": "ביטויים אלגבריים, הצבה וגורם משותף",
       "productionHref": "https://www.noamdoronmath.co.il/algebraic-expressions-grade-7"
+    },
+    {
+      "path": "/algebraic-language-grade-7",
+      "label": "משתנים וביטויים אלגבריים",
+      "productionHref": "https://www.noamdoronmath.co.il/algebraic-language-grade-7"
     },
     {
       "path": "/signed-numbers-grade-7",
@@ -332,9 +407,29 @@
       "productionHref": "https://www.noamdoronmath.co.il/equations-advanced-grade-7"
     },
     {
+      "path": "/simplify-then-solve-grade-7",
+      "label": "מפשטים ואז פותרים",
+      "productionHref": "https://www.noamdoronmath.co.il/simplify-then-solve-grade-7"
+    },
+    {
+      "path": "/equations-parentheses-grade-7",
+      "label": "משוואות עם סוגריים",
+      "productionHref": "https://www.noamdoronmath.co.il/equations-parentheses-grade-7"
+    },
+    {
       "path": "/equations-both-sides-word-problems-grade-7",
       "label": "משוואות בשני אגפים",
       "productionHref": "https://www.noamdoronmath.co.il/equations-both-sides-word-problems-grade-7"
+    },
+    {
+      "path": "/unknown-both-sides-grade-7",
+      "label": "הנעלם בשני האגפים",
+      "productionHref": "https://www.noamdoronmath.co.il/unknown-both-sides-grade-7"
+    },
+    {
+      "path": "/equation-representations-grade-7",
+      "label": "שלושה ייצוגים למשוואה",
+      "productionHref": "https://www.noamdoronmath.co.il/equation-representations-grade-7"
     },
     {
       "path": "/pythagoras-applications-grade-7",
@@ -347,9 +442,19 @@
       "productionHref": "https://www.noamdoronmath.co.il/area-rectangle-perimeter-grade-7"
     },
     {
+      "path": "/rectangle-square-area-grade-7",
+      "label": "שטח מלבן וריבוע — העמקה",
+      "productionHref": "https://www.noamdoronmath.co.il/rectangle-square-area-grade-7"
+    },
+    {
       "path": "/area-parallelogram-trapezoid-composite-grade-7",
       "label": "שטח מקבילית, טרפז ומצולעים מורכבים",
       "productionHref": "https://www.noamdoronmath.co.il/area-parallelogram-trapezoid-composite-grade-7"
+    },
+    {
+      "path": "/parallelogram-trapezoid-area-grade-7",
+      "label": "שטח מקבילית וטרפז",
+      "productionHref": "https://www.noamdoronmath.co.il/parallelogram-trapezoid-area-grade-7"
     },
     {
       "path": "/solids-box-cube-prism-grade-7",
@@ -357,9 +462,24 @@
       "productionHref": "https://www.noamdoronmath.co.il/solids-box-cube-prism-grade-7"
     },
     {
+      "path": "/box-and-cube-grade-7",
+      "label": "תיבה וקובייה",
+      "productionHref": "https://www.noamdoronmath.co.il/box-and-cube-grade-7"
+    },
+    {
+      "path": "/triangular-prism-volume-grade-7",
+      "label": "נפח מנסרה משולשת",
+      "productionHref": "https://www.noamdoronmath.co.il/triangular-prism-volume-grade-7"
+    },
+    {
       "path": "/patterns-and-graphs-grade-7",
       "label": "דפוסים וגרפים",
       "productionHref": "https://www.noamdoronmath.co.il/patterns-and-graphs-grade-7"
+    },
+    {
+      "path": "/number-patterns-grade-7",
+      "label": "חוקיות בסדרות",
+      "productionHref": "https://www.noamdoronmath.co.il/number-patterns-grade-7"
     },
     {
       "path": "/equilateral-triangle-grade-7",
