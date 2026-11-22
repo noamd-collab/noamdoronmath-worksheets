@@ -14,6 +14,7 @@ from authoring_context import build_authoring_context, AuthoringContextError
 from general_source import authoring_schema, validate_source, GeneralSourceError
 from runtime_catalog import catalog, scope_for_lesson
 from validation import reject
+import no_carry_addition
 
 
 def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
@@ -61,8 +62,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
     schema['$defs']['question']=question
     section['properties']['questions']={
         'type':'array','minItems':lesson['questionCount'],'maxItems':lesson['questionCount'],
-        'prefixItems':[{'allOf':[{'$ref':'#/$defs/question'},
-            {'type':'object','properties':{'star':{'const':entry['star']}}}]} for entry in plan]}
+        'items':{'$ref':'#/$defs/question'},
+        'allOf':[{'prefixItems':[{'properties':{'star':{'const':entry['star']}}} for entry in plan]}]}
     section['properties']['conceptIds']={'const':list(lesson['lessonBoundary']['conceptIds'])}
     schema['properties']['sections']['minItems']=1
     schema['properties']['sections']['maxItems']=1
@@ -82,7 +83,11 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'contain at least the minimumItems listed in questionPlan, even for word problems. '
         'The three challenge questions need real changes of task '
         'structure, and the skill-required variety, scaffolding and subitems. '
-        'Each question intro, item prompt, rule, and table cell is an array of typed text/math/geometry spans. '
+        'Each rule, intro, item prompt, review answer text and every individual table cell is a nonempty '
+        'array of typed text/math/geometry spans, including single-span cells. For example: '
+        '{"head":[[{"kind":"text","text":"מחיר"}],[{"kind":"text","text":"כמות"}]],'
+        '"rows":[[[{"kind":"math","expression":{"type":"number","numerator":12,"denominator":1}}],'
+        '[{"kind":"math","expression":{"type":"number","numerator":3,"denominator":1}}]]]} '
         'Plain text is Hebrew prose. Put all expressions and numbers in typed math spans. '
         'CRITICAL: strings must NEVER contain dollar signs, backslashes, angle brackets, HTML or LaTeX. '
         'In middle-school text spans, ASCII digits and Latin letters are forbidden too. '
@@ -118,18 +123,43 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'Respect all expression/resource bounds. Avoid repeated or predictable exercises. '
         'Do not claim this draft is perfect, verified, or approved.'
     )
+    user = {'authoringContext': context,
+            'questionPlan': plan, 'teacherStoppingPoint': lesson['lastLesson'],
+            'selectedConcepts': scope['selectedConcepts'],
+            'finalContractReminder': 'For full source, use version 4, with three starred questions at the end and all requested subitems. Use complete Hebrew words, typed math and no markup.'}
+    addition_plan = None
+    if no_carry_addition.compatible(lesson):
+        addition_plan = no_carry_addition.parameter_plan(lesson['questionCount'])
+        # Keep the full source branch in the very same request. A teacher may
+        # add a specific constraint that the parameter options cannot express.
+        definitions = dict(schema['$defs'])
+        definitions['fullSource'] = {k:v for k,v in schema.items() if k != '$defs'}
+        schema = {'type':'object', '$defs':definitions, 'anyOf':[
+            no_carry_addition.parameter_schema(lesson['questionCount']), {'$ref':'#/$defs/fullSource'}]}
+        user.update({'additionPlan': addition_plan, 'themes': list(no_carry_addition.UNITS),
+                     'finalContractReminder': 'For ordinary no-regrouping practice choose compact version 1. Each row has theme (one-based object index) and choices (exactly five one-based pair indices). For a conflicting teacher requirement author full version 4 instead.'})
+        system = (
+            'For this selected basic two-digit addition topic there are two output modes. '
+            'Prefer compact version 1 when the supplied progression and available pairs match the teacher context. '
+            'You select the original operands to use for each exercise from the four offered pairs, and a theme '
+            'for each question. Each set of five subitems uses five successive objects starting from that theme. '
+            'The compiler builds the vocalized Hebrew and solves the selected arithmetic. '
+            'Read additionPlan in order, choose each exercise deliberately, vary pair choices, sums and settings, '
+            'and meet the requested stopping point. Return {"version":1,"questions":[{"theme":1,"choices":[2,4,1,3,2]},...]} '
+            'with the exact number of rows; do not copy sample choices. Never supply answers. '
+            'If an explicit teacher restriction cannot be honored by this plan (e.g. particular representations, '
+            'number limits, examples or teaching goals), write a complete matching version 4 worksheet instead. '
+            'The following source-v4 instructions govern only that alternative. ' + system)
+    user['sourceSchema'] = schema
+    schema_name = 'worksheet_authoring_choice' if addition_plan is not None else 'worksheet_source_v4'
     body = {'model': chosen, 'messages': [
-        {'role': 'system', 'content': system},
-        {'role': 'user', 'content': json.dumps({'authoringContext': context, 'sourceSchema':schema,
-            'questionPlan':plan,'teacherStoppingPoint':lesson['lastLesson'],
-            'selectedConcepts':scope['selectedConcepts'],
-            'finalContractReminder':'Return the JSON source version 4 defined by response_format. Exactly three starred questions, at the end. Every question has the required subitems. Write clear complete Hebrew words. Never mention a missing drawing. Never output dollar signs, backslashes, angle brackets, HTML or LaTeX inside strings.'}, ensure_ascii=False)}],
+        {'role': 'system', 'content': system}, {'role': 'user', 'content': json.dumps(user, ensure_ascii=False)}],
         # Request the upstream structured format, but also include its exact
         # schema in the prompt. The configured gateway returned a nonconforming
         # AST in development despite strict=true; local validation is the only
         # authority. There is no silent fallback or paid retry.
         'response_format': {'type':'json_schema','json_schema':{
-            'name':'worksheet_source_v4','strict':True,'schema':schema}}, 'enable_thinking': False,
+            'name':schema_name,'strict':True,'schema':schema}}, 'enable_thinking': False,
         'max_tokens': 40000, 'temperature': 0.25}
     measured = metadata if isinstance(metadata, dict) else {}
     measured.update({'purpose': 'authoring', 'requestedModel': chosen,
@@ -141,7 +171,10 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                          separators=(',',':'),ensure_ascii=False).encode()).hexdigest()})
     payload = request_author_json(target, key, body, measured, timeout)
     try:
-        validate_source(lesson, payload, scope)
+        if addition_plan is not None and isinstance(payload, dict) and payload.get('version') == 1:
+            measured['authorContract'] = 'no-carry-addition/1'
+            payload = no_carry_addition.build_source(lesson, payload, addition_plan)
+        payload = validate_source(lesson, payload, scope, provider=True)["source"]
         if len(payload['sections'])!=1:
             raise GeneralSourceError('AUTHOR_PLAN_MISMATCH','Expected one selected-topic section')
         questions=payload['sections'][0]['questions']
