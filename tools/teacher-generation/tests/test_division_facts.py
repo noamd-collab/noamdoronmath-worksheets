@@ -21,7 +21,8 @@ class DivisionFactsTest(unittest.TestCase):
         self.lesson = json.loads((FIXTURE / "lesson.json").read_text())
         self.source = json.loads((FIXTURE / "model-output.json").read_text())
 
-    def test_original_intake_is_preserved_by_offline_author(self):
+    @patch("provider.build_authoring_context", return_value={})
+    def test_original_intake_is_preserved_by_offline_author(self, _context):
         self.lesson["lastLesson"] = (
             "תרגלנו חילוק ללא שארית בתחום לוח הכפל עד 100. מצאנו את המנה בעזרת תרגיל כפל מתאים."
         )
@@ -44,7 +45,8 @@ class DivisionFactsTest(unittest.TestCase):
         )
         self.assertEqual(validate_model(self.lesson, source)["family"], "general")
 
-    def test_applicable_plans_and_teacher_context(self):
+    @patch("provider.build_authoring_context", return_value={})
+    def test_applicable_plans_and_teacher_context(self, _context):
         lesson = deepcopy(self.lesson)
         lesson["lessonBoundary"]["conceptIds"].append(facts.INVERSE)
         self.assertFalse(facts.eligible(lesson))

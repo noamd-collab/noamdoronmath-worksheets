@@ -10,7 +10,9 @@
     "grade9-square",
     "grade1-counting",
     "grade8-pythagoras",
-    "grade5-unlike-fractions"
+    "grade5-unlike-fractions",
+    "grade7-equation-skill",
+    "grade4-skill-calculation"
   ],
   "files": {
     "grade2-vocalized/lesson.json": {
@@ -92,6 +94,22 @@
     "grade5-unlike-fractions/model-output.json": {
       "bytes": 56,
       "sha256": "6d231b943ab6847a312d66d0a035f04080e9687395843564a440c3b26e6c19d0"
+    },
+    "grade7-equation-skill/lesson.json": {
+      "bytes": 554,
+      "sha256": "0c7d07db4143a9025242c887d938e914361f12cb1634387ede72a03e8abe6254"
+    },
+    "grade7-equation-skill/model-output.json": {
+      "bytes": 31612,
+      "sha256": "24121dfdd3d2941c1a4572c88362149bdcb0523262edfc4cbaffa1641e688ad0"
+    },
+    "grade4-skill-calculation/lesson.json": {
+      "bytes": 473,
+      "sha256": "9afe062f9ad84b1d3ef6ffd94df361934955be8ca5755e3f9965671c52b3a26b"
+    },
+    "grade4-skill-calculation/model-output.json": {
+      "bytes": 22138,
+      "sha256": "06a8c73fe22d6de41b50923d579762fac7dc47649790d5164b8b405e0e967989"
     }
   }
 }

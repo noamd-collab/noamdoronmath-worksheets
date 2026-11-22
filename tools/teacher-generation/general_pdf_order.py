@@ -16,7 +16,7 @@ import pymupdf
 from bs4 import BeautifulSoup, NavigableString, Tag
 from elementary_pdf_order import AnswerOrderError, compact
 
-MATH = re.compile(r"[0-9A-Za-z+\-−×÷:·=().<>≤≥,%]+")
+MATH = re.compile(r"[0-9A-Za-z+\-−×÷:·=().<>≤≥,%₪]+")
 
 @dataclass(frozen=True)
 class Superscript:
@@ -239,7 +239,7 @@ def _matches(tree, glyphs, rules, region, depth=0):
                     frozenset().union(*(m.glyphs for m in seq)),frozenset().union(*(m.rules for m in seq)))
         if not clean(match):continue
         # A standalone number/operand cannot borrow digits from a longer value.
-        if any(g.id not in match.glyphs and re.fullmatch(r"[0-9A-Za-z.]",g.text) and abs(g.axis-match.axis)<.8 and
+        if any(g.id not in match.glyphs and (re.fullmatch(r"[0-9A-Za-z.]",g.text) or g.text == "₪" and "₪" in tree) and abs(g.axis-match.axis)<.8 and
                (0<=match.box[0]-g.box[2]<max(1,g.size*.2) or 0<=g.box[0]-match.box[2]<max(1,g.size*.2)) for g in glyphs):continue
         result.append(match)
     return result

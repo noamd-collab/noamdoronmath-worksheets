@@ -25,7 +25,8 @@ class FractionLessonTests(unittest.TestCase):
         self.lesson = json.loads((FIX / "lesson.json").read_text())
         self.data = json.loads((FIX / "model-output.json").read_text())
 
-    def test_scope_and_replay(self):
+    @patch("provider.build_authoring_context", return_value={})
+    def test_scope_and_replay(self, _context):
         with patch(
             "general_provider.author_general_lesson",
             side_effect=AssertionError("Unexpected live provider"),

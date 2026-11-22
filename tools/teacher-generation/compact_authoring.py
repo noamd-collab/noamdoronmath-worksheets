@@ -1,13 +1,12 @@
 """Expand bounded worksheet notation into the existing data-only source format."""
 
 from copy import deepcopy
-from fractions import Fraction
 import re
 
 from general_source import GeneralSourceError, MAX_BYTES
 from math_tasks import MathTaskError, inspect_ast, number, operation
+from numeric_literals import COEFFICIENT, NUMBER_TOKEN, arithmetic_tokens, display_literal, elementary_operations, literal_value
 
-TOKEN = re.compile(r"[0-9]+(?:\.[0-9]+)?|sqrt|frac|[xyab+*/^(),-]")
 GEOMETRY = re.compile(r"(point|segment|triangle|angle|polygon):([A-Z]{1,8})")
 OP = {
     "+": ("add", 1),
@@ -25,15 +24,20 @@ def invalid():
     )
 
 
-def expression(value, grade, *, blank_symbol=False, printed=False):
+def expression(value, grade, *, blank_symbol=False, printed=False, spellings=None):
     if not isinstance(value, str):
         # Typed source (e.g. an older retained response) is checked as usual.
         return value
     if len(value) > 220:
         invalid()
-    parts = value.split()
-    tokens = [token for part in parts for token in TOKEN.findall(part)]
-    if not tokens or len(tokens) > 96 or "".join(tokens) != "".join(parts):
+    if grade >= 7 and COORDINATE.fullmatch(value.strip()):
+        invalid()
+    try:
+        normalized = COEFFICIENT.sub(r"*\1", value) if grade >= 7 else elementary_operations(value)
+        tokens = list(arithmetic_tokens(normalized))
+    except ValueError:
+        invalid()
+    if not tokens or len(tokens) > 96:
         invalid()
     index = 0
 
@@ -59,12 +63,20 @@ def expression(value, grade, *, blank_symbol=False, printed=False):
                 if arg["type"] == "number"
                 else operation("subtract", number(0), arg)
             )
+            if spellings is not None and id(arg) in spellings:
+                previous = spellings[id(arg)][1]
+                spelling = previous[1:] if previous.startswith("-") else "-" + previous
+                spellings[id(left)] = (left, spelling)
         elif token == "(":
             left = parse()
             expect(")")
         elif token and token[0].isdigit():
-            val = Fraction(token)
+            val = literal_value(token)
             left = number(val.numerator, val.denominator)
+            if spellings is not None and any(mark in token for mark in ",.%"):
+                if display_literal(token) is None:
+                    invalid()
+                spellings[id(left)] = (left, token)
         elif token == "frac":
             expect("(")
             numerator = parse()
@@ -135,11 +147,16 @@ def display_parts(value, grade):
     if not isinstance(value, str) or not 1 <= len(value) <= 220:
         invalid()
     source = value.strip()
+    if grade < 7:
+        source = elementary_operations(source)
     point = COORDINATE.fullmatch(source)
     if point and grade >= 7:
         return [f"{point[1]}({int(point[2])}, {int(point[3])})"]
     if source in RELATIONS:
         return [RELATIONS[source]]
+    literal = display_literal(source)
+    if literal is not None:
+        return [literal]
     parts = RELATION.split(source)
     if len(parts) > 19:
         invalid()
@@ -165,16 +182,37 @@ def display_parts(value, grade):
             return aliases[name]
 
         rewritten = DISPLAY_NAME.sub(rename, piece)
-        tree = expression(
-            rewritten, grade, blank_symbol=grade < 7 and "___" in aliases, printed=True
-        )
-        result.append((tree, {alias: name for name, alias in aliases.items()}))
+        spellings = {}
+        tree = expression(rewritten, grade, blank_symbol=grade < 7 and "___" in aliases,
+                          printed=True, spellings=spellings)
+        # In an already parsed schoolbook polynomial keep ordinary numerical
+        # coefficients adjacent to their variable. No model markup is copied.
+        if (grade >= 7 and COEFFICIENT.search(piece) and
+                re.fullmatch(r"[0-9xyab,.+()\s^\-]+", piece) and
+                not re.search(r"\^(?![0-4](?![0-9]))", piece)):
+            result.append(re.sub(r"\^([0-4])", r"^{\1}", piece.strip().replace("-", "−")))
+        else:
+            result.append((tree, {alias: name for name, alias in aliases.items()}, spellings))
     return result
+
+
+def has_written_number(value):
+    if re.search(r"[0-9](?:\.[0-9]|%)", value):
+        return True
+    if "," not in value or COORDINATE.fullmatch(value.strip()):
+        return False
+    probe = DISPLAY_NAME.sub(lambda m: m[0] if m[0] in ("frac", "sqrt") else "x", value)
+    try:
+        return any("," in token and token != "," for token in arithmetic_tokens(RELATION.sub(" ", probe)))
+    except ValueError:
+        return False
 
 
 def needs_display_formula(value):
     return bool(
-        RELATION.search(value)
+        has_written_number(value)
+        or COEFFICIENT.search(value)
+        or RELATION.search(value)
         or COORDINATE.fullmatch(value)
         or "___" in value
         or any(
@@ -184,7 +222,36 @@ def needs_display_formula(value):
     )
 
 
-FRACTION_LITERAL = re.compile(r"(?<![.0-9/])([0-9]+)\s*/\s*([0-9]+)(?![.0-9/])")
+def schoolbook_tokens(value, grade):
+    """A closed elementary calculation whose printed parentheses carry information."""
+    if grade >= 7 or not isinstance(value, str) or len(value) > 220:
+        return None
+    if not re.fullmatch(r"[0-9\s,.()+*/%_!=<>≤≥≠−-]+", value):
+        return None
+    if not re.search(r"[()+*/=<>≤≥≠]|[0-9)]\s*[-−]", value):
+        return None
+    pieces = RELATION.split(value.translate(MATH_TRANSLATION))
+    if len(pieces) > 19 or any(not part.strip() for part in pieces):
+        return None
+    tokens = []
+    for part in pieces:
+        if part in RELATIONS:
+            tokens.append(RELATIONS[part])
+            continue
+        plain = part.replace("___", "x")
+        try:
+            operands = list(arithmetic_tokens(plain))
+        except ValueError:
+            return None
+        if any(t not in {"(", ")", "+", "-", "*", "/", "x"} and display_literal(t) is None for t in operands):
+            return None
+        expression(plain, grade, blank_symbol="___" in part)
+        tokens.extend("___" if t == "x" else t for t in operands)
+    return tokens
+
+
+_FRACTION_INTEGER = r"(?:[1-9][0-9]{0,2}(?:,[0-9]{3})+|[0-9]+)"
+FRACTION_LITERAL = re.compile(rf"(?<![,.0-9/])({_FRACTION_INTEGER})\s*/\s*({_FRACTION_INTEGER})(?![,.0-9/])")
 ISLAND = r"\[\[([^\[\]]+)\]\]"
 JOINED_ISLANDS = re.compile(
     ISLAND + r"\s*([+*/^−÷×<>!=≤≥≠-](?:___|[+*/^−÷×<>!=≤≥≠ -])*)\s*" + ISLAND
@@ -193,7 +260,9 @@ MATH_TRANSLATION = str.maketrans({"−": "-", "×": "*", "·": "*", "÷": "/"})
 
 
 def fraction_literals(value):
-    return FRACTION_LITERAL.sub(r"frac(\1,\2)", value)
+    # The comma in frac(n,d) is always structural. Written groups in an
+    # original numerator or denominator must be decoded before constructing it.
+    return FRACTION_LITERAL.sub(lambda m: f"frac({m[1].replace(',', '')},{m[2].replace(',', '')})", value)
 
 
 def join_islands(value):
@@ -207,19 +276,95 @@ def join_islands(value):
         value = joined
 
 
-# An author may list standalone comparison signs in Hebrew instructions.
-# Adjacent text or digits stay in their original block for strict validation.
+# Comparison signs listed as separate options can be isolated without guessing.
 PROSE_COMPARATOR = re.compile(r"(?<![^\s(,])(!=|<=|>=|[=<>≤≥≠])(?![^\s),.:!?])")
+PROSE_ATOM = re.compile(
+    r"(?P<coordinate>[A-Z]?\(\s*[-−]?[0-9]{1,6}\s*,\s*[-−]?[0-9]{1,6}\s*\))"
+    rf"|(?P<number>[-−]?(?:{NUMBER_TOKEN.pattern})%?)"
+    r"|(?P<label>[A-Z]{1,8}|[abxy])"
+    rf"|(?P<comparison>{PROSE_COMPARATOR.pattern})"
+)
+HEBREW_PREFIX = re.compile(r"(?:^|\s)ו?[מבכלהש]$")
+LABEL_CONTEXT = re.compile(
+    r"(?:^|\s)(?:[ובלכמשה]{0,3}(?:נקוד(?:ה|ת|ות)|קטע(?:ים)?|צלע(?:ות)?|זווית|"
+    r"משולש|מרובע|מלבן|ריבוע|מצולע|אלכסון|ישר|ציר|קודקוד|משתנה|נעלם)|ער[ךכ]ו? של)\s+$"
+)
+COORDINATE_CONTEXT = re.compile(r"(?:נקוד(?:ה|ת|ות)|שיעורים|זוג סדור)\s*$")
+LABEL_SEPARATOR = re.compile(r"(?:\s+[ול][־-]?|,\s*)")
+NUMBER_LIST_PREFIX = re.compile(
+    rf"(?:רשימה|אפשרויות|מספרים)\s*:\s*(?:[-−]?{NUMBER_TOKEN.pattern}%?\s*,\s+)*$"
+)
 
 
-def prose_spans(prose):
+def standalone_atom(prose, start, end):
+    """Leave dates, ratios, ranges, algebra, identifiers and markup to strict validation."""
+    before, after = prose[:start], prose[end:]
+    # An ASCII hyphen immediately after a Hebrew prefix is punctuation (מ-25),
+    # unlike a unary minus. Handle it on the next unsigned candidate.
+    left = before.rstrip()
+    right = after.lstrip()
+    if left.endswith(("+", "-", "−", "–", "—", "×", "÷", "·", "*", "/", "^", "=", "<", ">", "≤", "≥")):
+        if not (before.endswith("-") and HEBREW_PREFIX.search(before[:-1])):
+            return False
+    if right.startswith(("+", "-", "−", "–", "—", "×", "÷", "·", "*", "/", "^", "=", "<", ">", "≤", "≥", "%")):
+        return False
+    if re.search(r"[A-Za-z0-9_.$%@#א-ת]$", before) or re.match(r"[A-Za-z0-9_$@#]", after):
+        return False
+    left_joined = re.search(r"[0-9]\s*[:,.]\s*$", before)
+    right_joined = re.match(r"\s*[:,.]\s*[0-9]", after)
+    if left_joined or right_joined:
+        if not NUMBER_LIST_PREFIX.search(before):
+            return False
+        if right_joined and not re.match(r",\s+[0-9]", after):
+            return False
+    return True
+
+
+def prose_spans(prose, grade):
     start = 0
-    for match in PROSE_COMPARATOR.finditer(prose):
-        if prose[start : match.start()].strip():
-            yield {"kind": "text", "text": prose[start : match.start()]}
-        yield {"kind": "formula", "notation": match[0]}
-        start = match.end()
-    if prose[start:].strip():
+    previous_label = False
+    for match in PROSE_ATOM.finditer(prose):
+        first, last = match.span()
+        atom = match[0]
+        if match.lastgroup == "comparison":
+            span = {"kind": "formula", "notation": atom}
+        else:
+            if atom.startswith("-") and HEBREW_PREFIX.search(prose[:first]):
+                first += 1
+                atom = atom[1:]
+            if not standalone_atom(prose, first, last):
+                continue
+            if match.lastgroup == "number":
+                literal = display_literal(atom)
+                if literal is None:
+                    continue
+                # Keep the canonical scalar representation for ordinary integers.
+                # Explicit lexical features such as 25%, 0.50 and 1,000 must
+                # survive both native renderers, including editable Word.
+                if re.fullmatch(r"(?:0|-?[1-9][0-9]*)", literal):
+                    span = {"kind": "math", "expression": expression(literal, grade, printed=True)}
+                else:
+                    span = {"kind": "formula", "notation": literal}
+            elif grade >= 7:
+                if match.lastgroup == "coordinate":
+                    if atom.startswith("(") and not COORDINATE_CONTEXT.search(prose[:first]):
+                        continue
+                elif not (
+                    LABEL_CONTEXT.search(prose[:first])
+                    or (previous_label and LABEL_SEPARATOR.fullmatch(prose[start:first]))
+                    or (len(atom) == 1 and re.search(r"[א-ת]", prose))
+                    or (atom in {"a", "b", "x", "y"} and atom == prose.strip())
+                ):
+                    continue
+                span = {"kind": "formula", "notation": atom.translate(MATH_TRANSLATION)}
+            else:
+                continue
+        if first > start:
+            yield {"kind": "text", "text": prose[start:first]}
+        yield span
+        start = last
+        previous_label = match.lastgroup in ("label", "coordinate")
+    if prose[start:]:
         yield {"kind": "text", "text": prose[start:]}
 
 
@@ -233,7 +378,7 @@ def spans(value, grade, *, fraction_notation=False):
     i = 0
     while i < len(pieces):
         prose = pieces[i]
-        result.extend(prose_spans(prose))
+        result.extend(prose_spans(prose, grade))
         if i + 1 == len(pieces):
             break
         if pieces[i + 1] != "[[" or i + 3 >= len(pieces) or pieces[i + 3] != "]]":
@@ -243,10 +388,13 @@ def spans(value, grade, *, fraction_notation=False):
             # In fraction topics a written pair 1/2 is a fraction, including
             # inside a sum. Keep the expression in the pupil's notation.
             atom = fraction_literals(atom)
+        if grade < 7 and ("x" in atom or ":" in atom):
+            from numeric_literals import elementary_operations
+            atom = elementary_operations(atom)
         geo = GEOMETRY.fullmatch(atom)
         if geo:
             result.append({"kind": "geometry", "type": geo[1], "names": geo[2]})
-        elif needs_display_formula(atom):
+        elif needs_display_formula(atom) or schoolbook_tokens(atom, grade) is not None:
             display_parts(atom, grade)
             result.append({"kind": "formula", "notation": atom})
         else:
@@ -254,6 +402,14 @@ def spans(value, grade, *, fraction_notation=False):
                 {"kind": "math", "expression": expression(atom, grade, printed=True)}
             )
         i += 4
+    # Outer whitespace is immaterial. Two adjoining mathematical tokens with
+    # only whitespace between them would otherwise print as one number/name.
+    if result and result[0].get("kind") == "text" and not result[0]["text"].strip():
+        result.pop(0)
+    if result and result[-1].get("kind") == "text" and not result[-1]["text"].strip():
+        result.pop()
+    if any(span["kind"] == "text" and not span["text"].strip() for span in result):
+        invalid()
     return result
 
 
@@ -264,7 +420,7 @@ def wire_schema(schema, statistics):
         "type": "string",
         "minLength": 1,
         "maxLength": 220,
-        "pattern": r"^[0-9a-z+*/^(),. -]+$",
+        "pattern": r"^[0-9a-z+*/^(),.:% -]+$",
     }
     defs["rich"] = {"type": "string", "minLength": 1, "maxLength": 2400}
     tasks = defs["task"]["oneOf"]
@@ -396,7 +552,19 @@ def expand_source(source, grade, *, fraction_notation=False):
                 answer = item.get("answer")
                 if isinstance(answer, dict):
                     if isinstance(answer.get("task"), dict):
-                        expand_task(answer["task"], grade, fraction_notation)
+                        task = answer["task"]
+                        if task.get("kind") == "solve":
+                            from printed_tasks import printed_solve
+                            bound = printed_solve(item.get("prompt"), task, grade)
+                            if isinstance(bound, dict):
+                                task = answer["task"] = bound
+                        raw = task.get("expression") if task.get("kind") == "evaluate" else None
+                        expand_task(task, grade, fraction_notation)
+                        if isinstance(raw, str) and has_written_number(raw):
+                            notation = raw.translate(MATH_TRANSLATION)
+                            if fraction_notation:
+                                notation = fraction_literals(notation)
+                            answer.setdefault("notation", notation)
                     if "text" in answer:
                         answer["text"] = rich(answer["text"])
     return data

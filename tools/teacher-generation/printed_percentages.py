@@ -5,6 +5,7 @@ import re
 
 from general_source import GeneralSourceError
 from math_tasks import number
+from numeric_literals import display_literal
 
 COUNT_UNITS = frozenset(
     "תלמידים ספרים פריטים עבודות עצים צופים קופסאות כלים ברגים מוצרים לחמים שיחים בקבוקים תיקיות שאלות".split()
@@ -22,6 +23,11 @@ def _plain(spans):
             a = s["expression"]
             rational = Fraction(a["numerator"], a["denominator"])
             out.append(str(rational))
+        elif s["kind"] == "formula" and (spelling := display_literal(s["notation"])) is not None:
+            # Match the printed magnitude and keep the meaning of the percent
+            # sign in the sentence. The quantity 12.50% is 25/2 percent.
+            magnitude = Fraction(spelling.removesuffix("%").replace(",", ""))
+            out.append(str(magnitude) + ("%" if spelling.endswith("%") else ""))
         else:
             return None
     return " ".join("".join(out).split())

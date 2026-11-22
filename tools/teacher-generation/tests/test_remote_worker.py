@@ -360,6 +360,213 @@ class WorkerTests(unittest.TestCase):
                 paid.assert_called_once(); self.assertEqual(remote.uploads(), [])
                 self.assertFalse(any(call[2].get('status') == 'needs_review' for call in remote.calls if call[1] == 'PATCH'))
 
+    def use_general_lesson(self):
+        self.job['lesson'] = json.loads((HERE / 'cloud/container/fixtures/general/grade4-fractions/lesson.json').read_text())
+
+    def failed_gate(self, lesson, payload, target, gate='content-truth'):
+        # Exercise the actual skill-report parser. Its private prose must not escape.
+        target.mkdir(parents=True, exist_ok=True)
+        (target / 'logs').mkdir()
+        (target / 'logs/content-truth.txt').write_text(
+            'CONTENT-TRUTH GATES: FAIL\n✗ G32 [content.json.questions#2] טענה כוללת/שלילת קיום PRIVATE_TEXT')
+        manifest = {'status': 'failed', 'skill': {'name': 'elementary'},
+                    'steps': [{'name': gate, 'status': 'FAIL'}], 'artifacts': []}
+        (target / 'manifest.json').write_text(json.dumps(manifest))
+        (target / 'sheet.pdf').write_bytes(b'first failed private draft')
+        return manifest
+
+    def test_revision_policy_does_not_reach_legacy_or_disabled_v3(self):
+        for mode in ('legacy-enabled', 'general-disabled'):
+            with self.subTest(mode=mode), patch.object(worker, 'author_lesson', return_value={}) as author, \
+                 patch.object(worker, 'render_job', side_effect=self.rendered), patch.object(worker, 'read_skill_feedback') as feedback:
+                case = self.root / mode
+                case.mkdir()
+                if mode == 'general-disabled':
+                    self.use_general_lesson()
+                    worker.process_job(self.remote, self.job, case, enable_skill_revision=False)
+                else:
+                    worker.process_job(self.remote, self.job, case, enable_skill_revision=True)
+                self.assertNotIn('revision', author.call_args.kwargs)
+                feedback.assert_not_called()
+
+    def test_one_render_correction_rechecks_lease_and_uploads_only_final_pair(self):
+        self.use_general_lesson()
+        correction = Mock()
+        def author(_, *, metadata, revision, timeout):
+            self.assertEqual(timeout, 300)
+            metadata['usage'] = {'total_tokens': 100, 'private': 'PRIVATE_TEXT'}
+            def revise(findings):
+                phases = [c[2]['phase'] for c in self.remote.calls if c[1] == 'PATCH']
+                self.assertEqual(phases, ['authoring', 'rendering', 'authoring'])
+                self.assertEqual([(x['question'], x['codes']) for x in findings], [(2, ['G32'])])
+                self.assertNotIn('PRIVATE_TEXT', str(findings))
+                metadata['revisionUsage'] = {'total_tokens': 20, 'model_text': 'PRIVATE_TEXT'}
+                return 'corrected'
+            correction.side_effect = revise
+            revision['revise'] = correction
+            return 'first'
+        def render(lesson, payload, target):
+            if payload == 'first':
+                return self.failed_gate(lesson, payload, target)
+            self.assertEqual(target, self.root / JOB_ID / 'revision')
+            self.assertEqual(list(target.iterdir()), [])
+            return self.rendered(lesson, payload, target)
+        with patch.object(worker, 'author_lesson', side_effect=author) as initial, \
+             patch.object(worker, 'render_job', side_effect=render) as renderer:
+            worker.process_job(self.remote, self.job, self.root, enable_skill_revision=True)
+        initial.assert_called_once()
+        correction.assert_called_once()
+        self.assertEqual(renderer.call_count, 2)
+        self.assertEqual([c[3]['raw'] for c in self.remote.uploads()], [b'synthetic pdf', b'synthetic docx'])
+        record = json.loads((self.root / 'author-diagnostics' / (JOB_ID + '.json')).read_text())
+        self.assertEqual((record['usage'], record['revisionUsage']), ({'total_tokens': 100}, {'total_tokens': 20}))
+        self.assertNotIn('PRIVATE_TEXT', str(record))
+        public = next(c[2]['result'] for c in self.remote.calls if c[1] == 'PATCH' and c[2].get('result'))
+        self.assertNotIn('revisionUsage', public)
+
+    def test_source_and_render_corrections_share_one_call_even_when_second_gate_fails(self):
+        self.use_general_lesson()
+        for rejected_at in ('source', 'render'):
+            with self.subTest(rejected_at=rejected_at):
+                root = self.root / rejected_at
+                root.mkdir()
+                feedback = [{'question': 2, 'codes': ['SOURCE_ANSWER']}]
+                correct = Mock(return_value='corrected')
+                def author(_, *, revision, **kwargs):
+                    revision['revise'] = correct
+                    if rejected_at == 'source':
+                        revision['sourceFindings'] = feedback
+                        raise GenerationError('SOURCE_ANSWER', 'private source')
+                    return 'first'
+                with patch.object(worker, 'author_lesson', side_effect=author), \
+                     patch.object(worker, 'render_job', side_effect=self.failed_gate) as renderer:
+                    with self.assertRaises(GenerationError) as caught:
+                        worker.process_job(self.remote, self.job, root, enable_skill_revision=True)
+                self.assertEqual(caught.exception.code, 'QUALITY_GATE_FAILED')
+                correct.assert_called_once()
+                if rejected_at == 'source':
+                    correct.assert_called_with(feedback)
+                self.assertEqual(renderer.call_count, 1 if rejected_at == 'source' else 2)
+                self.assertEqual(renderer.call_args.args[2], root / JOB_ID / 'revision')
+                self.assertFalse(self.remote.uploads())
+
+    def test_corrected_source_renders_once_and_callback_failure_stays_private(self):
+        self.use_general_lesson()
+        for success in (True, False):
+            with self.subTest(success=success):
+                root = self.root / str(success)
+                root.mkdir()
+                remote = FakeRemote()
+                def author(_, *, metadata, revision, **kwargs):
+                    def correct(findings):
+                        metadata['revisionUsage'] = {'prompt_tokens': 7, 'raw': 'PRIVATE_CALLBACK_RESPONSE'}
+                        if not success:
+                            raise GenerationError('PROVIDER_UNAVAILABLE', 'PRIVATE_CALLBACK_RESPONSE')
+                        return 'validated full source'
+                    revision.update(revise=correct, sourceFindings=[{'question': 2, 'codes': ['SOURCE_ANSWER']}])
+                    raise GenerationError('SOURCE_ANSWER', 'PRIVATE_ORIGINAL_RESPONSE')
+                with patch.object(worker, 'author_lesson', side_effect=author), \
+                     patch.object(worker, 'render_job', side_effect=self.rendered) as renderer:
+                    if success:
+                        worker.process_job(remote, self.job, root, enable_skill_revision=True)
+                        renderer.assert_called_once_with(self.job['lesson'], 'validated full source', root / JOB_ID / 'revision')
+                        self.assertEqual(len(remote.uploads()), 2)
+                    else:
+                        with self.assertRaises(GenerationError) as caught:
+                            worker.process_job(remote, self.job, root, enable_skill_revision=True)
+                        self.assertEqual(caught.exception.code, 'PROVIDER_UNAVAILABLE')
+                        renderer.assert_not_called()
+                        self.assertFalse(remote.uploads())
+                record = json.loads((root / 'author-diagnostics' / (JOB_ID + '.json')).read_text())
+                self.assertEqual(record['revisionUsage'], {'prompt_tokens': 7})
+                self.assertEqual(record['outcome'], 'passed' if success else 'failed')
+                self.assertNotIn('PRIVATE_', str(record))
+
+    def test_revision_never_follows_preexisting_directory_or_symlink(self):
+        self.use_general_lesson()
+        for symlink in (True, False):
+            with self.subTest(symlink=symlink):
+                root = self.root / str(symlink)
+                root.mkdir()
+                correct = Mock()
+                def author(_, *, revision, **kwargs):
+                    revision['revise'] = correct
+                    return 'first'
+                def render(lesson, payload, target):
+                    manifest = self.failed_gate(lesson, payload, target)
+                    path = target / 'revision'
+                    if symlink:
+                        path.symlink_to(self.root, target_is_directory=True)
+                    else:
+                        path.mkdir()
+                    return manifest
+                with patch.object(worker, 'author_lesson', side_effect=author), \
+                     patch.object(worker, 'render_job', side_effect=render):
+                    with self.assertRaisesRegex(RuntimeError, 'JOB_PATH_DENIED'):
+                        worker.process_job(self.remote, self.job, root, enable_skill_revision=True)
+                correct.assert_not_called()
+                self.assertFalse(self.remote.uploads())
+
+    def test_no_correction_on_unknown_gate_render_fault_or_unmapped_author_failure(self):
+        self.use_general_lesson()
+        for failure in ('unknown-gate', 'renderer', 'provider', 'shape', 'success'):
+            with self.subTest(failure=failure):
+                root = self.root / failure
+                root.mkdir()
+                correction = Mock()
+                def author(_, *, revision, **kwargs):
+                    revision['revise'] = correction
+                    if failure in ('provider', 'shape'):
+                        raise GenerationError('PROVIDER_UNAVAILABLE' if failure == 'provider' else 'SOURCE_SHAPE',
+                                              'private context')
+                    return 'first'
+                def render(lesson, payload, target):
+                    if failure == 'renderer':
+                        raise OSError('unavailable renderer')
+                    if failure == 'success':
+                        manifest = self.rendered(lesson, payload, target)
+                        manifest.update(authoringProfile='general-skill-source/v1', automatedChecksPassed=False,
+                                        renderingChecksPassed=True)
+                        manifest['steps'][0]['status'] = 'REVIEW'
+                        return manifest
+                    return self.failed_gate(lesson, payload, target, gate='pdf')
+                remote = FakeRemote()
+                with patch.object(worker, 'author_lesson', side_effect=author), \
+                     patch.object(worker, 'render_job', side_effect=render):
+                    if failure == 'success':
+                        worker.process_job(remote, self.job, root, enable_skill_revision=True)
+                        self.assertEqual(len(remote.uploads()), 2)
+                    else:
+                        with self.assertRaises((OSError, GenerationError)):
+                            worker.process_job(remote, self.job, root, enable_skill_revision=True)
+                        self.assertFalse(remote.uploads())
+                correction.assert_not_called()
+
+    def test_lease_loss_at_revision_blocks_expenditure_for_both_feedback_paths(self):
+        self.use_general_lesson()
+        for failure in ('source', 'render'):
+            with self.subTest(failure=failure):
+                root = self.root / failure
+                root.mkdir()
+                remote = FakeRemote()
+                correction = Mock()
+                def author(_, *, revision, **kwargs):
+                    revision['revise'] = correction
+                    if failure == 'source':
+                        remote.fail_updates = True
+                        revision['sourceFindings'] = [{'question': 1, 'codes': ['SOURCE_ANSWER']}]
+                        raise GenerationError('SOURCE_ANSWER', 'private source')
+                    return 'first'
+                def render(lesson, payload, target):
+                    remote.fail_updates = True
+                    return self.failed_gate(lesson, payload, target)
+                with patch.object(worker, 'author_lesson', side_effect=author), \
+                     patch.object(worker, 'render_job', side_effect=render):
+                    with self.assertRaisesRegex(RuntimeError, 'JOB_LEASE_LOST'):
+                        worker.process_job(remote, self.job, root, enable_skill_revision=True)
+                correction.assert_not_called()
+                self.assertFalse(remote.uploads())
+
     def test_upload_failure_never_sets_review_status_or_repeats_paid_call(self):
         self.remote.fail_upload = True
         with patch.object(worker, 'author_lesson', return_value={}) as paid, patch.object(worker, 'render_job', side_effect=self.rendered):

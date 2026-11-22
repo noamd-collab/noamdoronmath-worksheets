@@ -81,7 +81,7 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
     word_postprocess=None
     if ok and cap['skill']=='elementary':
         for name,args in [
-            ('content-truth',[skill/'scripts/lib/content_truth.py','--work',work,'--quiet']),
+            ('content-truth',[skill/'scripts/lib/content_truth.py','--work',work]),
             ('pdf',[skill/'scripts/build_pdf.py',work/'sheet.html',work/'sheet.pdf']),
             ('word',[skill/'scripts/build_docx.py',work/'sheet.html',work/'sheet.docx']),
             ('word-layout',[HERE/'docx_layout.py','--docx',work/'sheet.docx','--content',work/'content.json']),

@@ -28,7 +28,8 @@ class PythagoreanLessonTest(unittest.TestCase):
         self.lesson = json.loads((FIX / "lesson.json").read_text())
         self.source = json.loads((FIX / "model-output.json").read_text())
 
-    def test_only_exact_rehearsed_scope_uses_closed_author(self):
+    @patch("provider.build_authoring_context", return_value={})
+    def test_only_exact_rehearsed_scope_uses_closed_author(self, _context):
         with patch(
             "general_provider.author_general_lesson",
             side_effect=RuntimeError("Unexpected model call"),
