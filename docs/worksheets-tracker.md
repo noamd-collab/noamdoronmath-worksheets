@@ -1015,3 +1015,7 @@ The [six-package publication record](middle-renewal-wave6-20261122.json) identif
 ### Grade 7 two-step equations on 22 November 2026
 
 Package 081 adds three printable levels for two-step equations, with eight questions, 32 subitems and an answer key in each PDF. The [publication record](middle-renewal-wave7-20261122.json) lists the exact student files, their download checks and the independent review of revision 03.
+
+### Grade 9 transition to high school on 22 November 2026
+
+Package 119 adds three printable review worksheets for students preparing for four- and five-unit mathematics. The 180 subitems span the regular Grade 9 program. The [publication record](middle-renewal-wave8-20261122.json) binds each PDF to the frozen student source, its print checks and the independent mathematical review.

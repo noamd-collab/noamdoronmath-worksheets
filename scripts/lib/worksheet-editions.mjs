@@ -68,14 +68,43 @@ const ASSESSMENT_ONE = {
     ]
   }
 };
-function validateAssessmentPdf(row) {
-  const evidence = row.assessmentPdfEvidence;
-  keys(evidence, Object.keys(ASSESSMENT_ONE.evidence), 'assessment PDF evidence');
-  requireValue(row.grade === ASSESSMENT_ONE.grade && row.topicId === ASSESSMENT_ONE.topicId &&
-    row.nativePrefix === ASSESSMENT_ONE.nativePrefix && row.editionId === ASSESSMENT_ONE.editionId &&
+// The Grade 9 transition spans several units. The stock print gates and the
+// independent PDF review bind this edition to its questions-only sources.
+const GRADE9_BRIDGE = {
+  "editionId": "ms-20261122-g9-trn-01-r1",
+  "grade": 9,
+  "topicId": 20,
+  "nativePrefix": "G9-T134",
+  "evidence": {
+    "kind": "regular-grade-9-bridge",
+    "freezeSha256": "449a3d445c093f5ac3d57e9aa12cc8cd58233680cedb07d8465fdbca6cb180c6",
+    "independentReviewSha256": "aaa49023317ad51cac5c7f6464c1d58b2c6c6f7448ad29bf79f9622654f44f5b",
+    "stockPrintChecksSha256": "5bfd14978c567ba7f7409fbe274294791a5a6919576c2675706c2c140e9bcfa9"
+  },
+  "files": {
+    "a": [
+      "09225ad4f9af07be10729b806f16bc5316cd71c3bbd3ef95b1b54e9f8e50c3c1",
+      "89fac340f3e67106fd872117082f100358be16a82049096cc1966fd618c3dfbb"
+    ],
+    "b": [
+      "8528d92db0528acb4f3e269462d27ebe9d268ae0b96d8d7405f8c2e491bd461f",
+      "be935bc7ecf8b6cbfa7f063ddb77d5e5e86d2d7dcb1d3f44436c8b6979fc0f63"
+    ],
+    "c": [
+      "319f376e80cb8f43787c46329e7ed6313852b4e757cbc2c597591b7d6e71e565",
+      "3b4b15e81a17944c0fee62a31c023bb3e4cc3aafecd4deccf65a5500bb6e8e8d"
+    ]
+  }
+};
+
+function validatePrintSource(row, proofField, approved) {
+  const evidence = row[proofField];
+  keys(evidence, Object.keys(approved.evidence), 'print source evidence');
+  requireValue(row.grade === approved.grade && row.topicId === approved.topicId &&
+    row.nativePrefix === approved.nativePrefix && row.editionId === approved.editionId &&
     row.publicationMode === 'pdf-only' && !row.isDefault &&
-    Object.entries(ASSESSMENT_ONE.evidence).every(([k, v]) => evidence[k] === v),
-    'assessment PDF requires the reviewed questions-only source and signed print scope');
+    Object.entries(approved.evidence).every(([k, v]) => evidence[k] === v),
+    'print edition must match its reviewed source and signed scope');
 }
 
 const PDF_ONLY_HASH_FIELDS = ['pdfSha256', 'sourceSha256'];
@@ -121,7 +150,7 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
   const records = new Set(); const canonicalRevisions = new Set(); const defaults = new Set();
   const published = new Map();
   for (const row of registry.editions) {
-    keys(row, ['grade', 'topicId', 'editionId', 'label', 'status', 'isDefault', 'levels', 'nativePrefix', 'publicationMode', 'assessmentPdfEvidence'], 'edition');
+    keys(row, ['grade', 'topicId', 'editionId', 'label', 'status', 'isDefault', 'levels', 'nativePrefix', 'publicationMode', 'assessmentPdfEvidence', 'bridgePrintEvidence'], 'edition');
     const key = `${row.grade}:${row.topicId}`;
     const topic = topics.get(key);
     requireValue(Number.isInteger(row.grade) && row.grade >= 1 && row.grade <= 9 &&
@@ -131,7 +160,11 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
     requireValue(!Object.hasOwn(row, 'publicationMode') || (pdfOnly && middle),
       'publicationMode must be pdf-only for middle school only');
     const assessmentPdf = Object.hasOwn(row, 'assessmentPdfEvidence');
-    if (assessmentPdf) validateAssessmentPdf(row);
+    const bridgePdf = Object.hasOwn(row, 'bridgePrintEvidence');
+    requireValue(!(assessmentPdf && bridgePdf), 'conflicting print evidence');
+    const printSource = assessmentPdf ? ASSESSMENT_ONE : bridgePdf ? GRADE9_BRIDGE : undefined;
+    const proofField = assessmentPdf ? 'assessmentPdfEvidence' : 'bridgePrintEvidence';
+    if (printSource) validatePrintSource(row, proofField, printSource);
     const hashFields = pdfOnly ? PDF_ONLY_HASH_FIELDS : HASH_FIELDS;
     // Native package numbers are independent of catalog topic IDs. Never
     // silently send a new edition to the legacy topic's question/hint bank.
@@ -149,7 +182,7 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
     const seenLevels = new Set();
     for (const level of row.levels) {
       keys(level, ['key', 'viewerLevel', 'pdfId', 'worksheetId', 'revision', ...hashFields,
-        ...(middle && !assessmentPdf ? ['nativeExportSha256'] : [])], 'level');
+        ...(middle && !printSource ? ['nativeExportSha256'] : [])], 'level');
       requireValue(Object.hasOwn(LEVELS, level.key) && !seenLevels.has(level.key), 'duplicate/invalid level');
       seenLevels.add(level.key);
       requireValue(level.viewerLevel === LEVELS[level.key][0], 'viewerLevel must match a/b/c → A/B/E');
@@ -161,12 +194,12 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
       const canonicalKey = level.worksheetId + ':' + level.revision;
       requireValue(!canonicalRevisions.has(canonicalKey), 'canonical revision reused'); canonicalRevisions.add(canonicalKey);
       for (const field of hashFields) requireValue(typeof level[field] === 'string' && SHA.test(level[field]), 'invalid ' + field);
-      if (assessmentPdf) {
-        const [pdf, source] = ASSESSMENT_ONE.files[level.key];
+      if (printSource) {
+        const [pdf, source] = printSource.files[level.key];
         requireValue(level.pdfSha256 === pdf && level.sourceSha256 === source &&
-          !ramzi.has(row.editionId + ':' + level.key), 'assessment PDF differs from its signed source');
+          !ramzi.has(row.editionId + ':' + level.key), 'print PDF differs from its signed source');
       }
-      if (middle && !assessmentPdf) requireValue(typeof level.nativeExportSha256 === 'string' && SHA.test(level.nativeExportSha256),
+      if (middle && !printSource) requireValue(typeof level.nativeExportSha256 === 'string' && SHA.test(level.nativeExportSha256),
         'invalid nativeExportSha256');
       requireValue(!pdfHashes.has(level.pdfSha256), 'identical PDF content reused'); pdfHashes.add(level.pdfSha256);
     }
@@ -183,7 +216,7 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
     const prefix = middle ? row.nativePrefix : `G${row.grade}-T${String(row.topicId).padStart(2, '0')}`;
     const edition = { editionId: row.editionId, label: row.label, status: 'published', levels,
       ...(pdfOnly ? { publicationMode: 'pdf-only' } : {}),
-      ...(assessmentPdf ? { assessmentPdfEvidence: { ...row.assessmentPdfEvidence } } : {}),
+      ...(printSource ? { [proofField]: { ...row[proofField] } } : {}),
       // PDF deliverables stay PDF-only. Only the separate, verified twelve-unit
       // readiness bundle may enable the source-bound viewer and reviewed hints.
       routing: { resolvedNoamPrefix: prefix, aiHintShown: levels.every(l => l.ramzi?.status === 'ready'),

@@ -6,7 +6,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { topicPageCatalogTopicIds, topicPagePdfParts } from '../src/lib/topicStructuredData';
 import { loadTopicPage } from '../src/lib/topicPages';
-import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, seventhRenew, sixthRenew, fifthRenew } from './fixtures/middle-090-091-094';
+import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, eighthRenew, seventhRenew, sixthRenew, fifthRenew } from './fixtures/middle-090-091-094';
 
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
@@ -15,8 +15,8 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 test('reviewed middle-school worksheets and the first Grade 7 assessment link their frozen PDFs', () => {
   const releases = fifthRenew.packages;
   assert.deepEqual(releases.map(p => p.number), [66,68,88,89,118]);
-  const catalog = catalogBeforePackages(catalogBeforePackages(read('headless/catalog/catalog.v1.json'), seventhRenew.packages), sixthRenew.packages);
-  const registry = registryBeforeRelease(registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), seventhRenew.packages.map(p => p.edition)), sixthRenew.packages.map(p => p.edition));
+  const catalog = catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(read('headless/catalog/catalog.v1.json'), eighthRenew.packages), seventhRenew.packages), sixthRenew.packages);
+  const registry = registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), eighthRenew.packages.map(p => p.edition)), seventhRenew.packages.map(p => p.edition)), sixthRenew.packages.map(p => p.edition));
   assert.equal(digest(catalogBeforePackages(catalog, releases)), fifthRenew.baselineCatalogSha256);
   assert.equal(digest(registryBeforeRelease(registry, releases.map(p => p.edition))), fifthRenew.baselineRegistrySha256);
   const pdfs = new Set<string>();
