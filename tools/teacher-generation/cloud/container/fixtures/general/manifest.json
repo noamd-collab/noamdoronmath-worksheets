@@ -5,7 +5,11 @@
     "grade4-fractions",
     "grade9-quadratic",
     "grade9-coordinate-triangles",
-    "grade9-special-right-triangle"
+    "grade9-special-right-triangle",
+    "grade3-division-curriculum",
+    "grade9-square",
+    "grade1-counting",
+    "grade8-pythagoras"
   ],
   "files": {
     "grade2-vocalized/lesson.json": {
@@ -47,6 +51,38 @@
     "grade9-special-right-triangle/model-output.json": {
       "bytes": 200,
       "sha256": "e912d7948378fe8766d2d2af701f6b547a3d76d77367d412e2e219d7187ace44"
+    },
+    "grade3-division-curriculum/lesson.json": {
+      "bytes": 478,
+      "sha256": "ed420c7d62ee6c3e6d475831b4442e18f4526b115e04454cb79e25874887a563"
+    },
+    "grade3-division-curriculum/model-output.json": {
+      "bytes": 53,
+      "sha256": "528ce30bd940a89860288c6a79e2e56fccbe6bcad20ac1fdc6a11a0d71e2970c"
+    },
+    "grade9-square/model-output.json": {
+      "bytes": 198,
+      "sha256": "b6251fcafdbac8a6b3909d97af9456d489c01d4f974716183d4b1779ed378460"
+    },
+    "grade9-square/lesson.json": {
+      "bytes": 530,
+      "sha256": "3f818b571a5119551a59308446799705c49a89f571c1fbeecff197ee27350260"
+    },
+    "grade1-counting/model-output.json": {
+      "bytes": 56,
+      "sha256": "ba7dd2ba67091bc5d872c3bac485b8653e41900c1531e3a7c71471a2cbd3200c"
+    },
+    "grade1-counting/lesson.json": {
+      "bytes": 577,
+      "sha256": "75eb8ed8221462c88246344d53cbf3f57f7b8629d3036f421b4dfde2eabba028"
+    },
+    "grade8-pythagoras/model-output.json": {
+      "bytes": 202,
+      "sha256": "cfa3db8e76dfde9ac8710a057bad9b97237fa6d3f41df70f66ce1601303cdf8b"
+    },
+    "grade8-pythagoras/lesson.json": {
+      "bytes": 836,
+      "sha256": "994b0f609020b78ad06b657f710fe535be2639d955689da4e8995867557fd2e4"
     }
   }
 }
