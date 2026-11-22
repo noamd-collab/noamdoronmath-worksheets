@@ -29,6 +29,11 @@
     "pdfSha256": "5efc5fc4e0b907ce36d5176efe7fb188e0fabc86c0e0168f1f4d82eb17f6f38a",
     "items": 17
   },
+  "130c6070d63842e0ab3337ff186583bc": {
+    "editionId": "ms-20261122-g7-eqi-01-r1",
+    "pdfSha256": "35f85d23000e4a7840534a6cddde14c8a76f05583ec9a8da32cb27b12ae8cf0b",
+    "items": 30
+  },
   "16327a5ffa004c64a8e30e7464844218": {
     "editionId": "ms-20261117-dat-01-r1",
     "pdfSha256": "d3cddbf99e1b7a1190c098591a023b34f4b87db42de62e6df1a9e6e03f44f252",
@@ -94,6 +99,11 @@
     "pdfSha256": "c6ec451b834d397354c57f22fba7e0235665b6e69c12c5ba9972cf08a88ed2c2",
     "items": 1
   },
+  "4cdce92963e040d98fe85a0ebe87b2ef": {
+    "editionId": "ms-20261122-g7-eqi-01-r1",
+    "pdfSha256": "9a947b08e1f6f65ae7fe049f0339034598a65bbfff60363613e51f57c7898d11",
+    "items": 31
+  },
   "4ddf1fe5d627446495c8de4df39dc0e5": {
     "editionId": "ms-20261117-pbm-01-r1",
     "pdfSha256": "8ac9e78d9771576b83ffd21fad141675e4976acedb8afcb1f3a7cc00b80346f3",
@@ -108,6 +118,16 @@
     "editionId": "ms-20261118-rat-01-r1",
     "pdfSha256": "8e776b88352adb6a6df79080063b296d9664a29ea03776c5ce3bad8300b8870a",
     "items": 1
+  },
+  "58f6082fb2734aa2998fa899e3c02023": {
+    "editionId": "ms-20261122-g7-cfm-01-r1",
+    "pdfSha256": "9666b1495588db09200664a9781911bdd025069aa2682f78fd4a0b020dd44bd7",
+    "items": 21
+  },
+  "5ae9b8d9161444b1b17df22793c172ab": {
+    "editionId": "ms-20261122-g7-cfm-01-r1",
+    "pdfSha256": "b525735f954cea92eff38849dd146c56662a91f64c0f35471e218228c9c12fcb",
+    "items": 21
   },
   "696c707d9e4f42049ead576bc0563f6e": {
     "editionId": "ms-20261118-qfr-01-r1",
@@ -154,6 +174,11 @@
     "pdfSha256": "ab1622d884c51b50a1c84629d42e7eead38e189f12bbd1f5cfe5dcaad6d9473d",
     "items": 1
   },
+  "9023d70c7ee24eb185454683d723c60b": {
+    "editionId": "ms-20261122-g7-cfm-01-r1",
+    "pdfSha256": "abf63723523440426382b188ac53fced7d930966f9ad33900d39e843bcaf60c2",
+    "items": 21
+  },
   "981a6fff293544fb8b83a7a82c4d04ea": {
     "editionId": "ms-20261117-slp-01-r1",
     "pdfSha256": "e88eab4f9ac7e220374b5aba9e5f837b7f27bce5a6d065fd0860e6531c23b584",
@@ -168,6 +193,11 @@
     "editionId": "ms-20261117-prs-01-r1",
     "pdfSha256": "2d71c67e2ad26bfab74902e21be3da553dcddc0545461928e4b04b9acf7c14e7",
     "items": 1
+  },
+  "a79ded4298264814b9a35c152af6a5fe": {
+    "editionId": "ms-20261122-g7-eqi-01-r1",
+    "pdfSha256": "7552294caf841e73e1deb7b999c4008a70bfb6375b145513c1ed798fbda28f13",
+    "items": 31
   },
   "aef807ca2bdf40b89a2b79ab40d37a60": {
     "editionId": "ms-20261118-dir-01-r1",
