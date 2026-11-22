@@ -126,6 +126,12 @@ const whatsappRemovalDeltas = JSON.parse(whatsappRemovalDeltaText).files;
 // these exact hunks before the WhatsApp candidate hash; no historical hash changes.
 function beforeLearningNavRainbow(file: string, content: string): string {
   if (file !== 'public/learning.html') return content;
+  const gamesMenu = [
+    '          <a href="/math-tools">משחקים וכלים</a>\n          <a class="exact-nav-game exact-nav-game--pink" href="/games">פינת המשחקים של אליהו</a>',
+    '          <a href="/math-tools">משחקים וכלים</a>\n          <a class="exact-nav-game exact-nav-game--orange" href="/games/kefel-mekutsar-2">משחק כפל מקוצר שנייה&nbsp;(beta)</a>\n          <a class="exact-nav-game exact-nav-game--green" href="/games/eliyahu-pythagoras">משחק משפט פיתגורס</a>',
+  ] as const;
+  assert.equal(content.split(gamesMenu[0]).length, 2, 'one exact learning games menu');
+  content = content.replace(gamesMenu[0], gamesMenu[1]);
   const hunks = [
     ['noam-learning.css?v=20261118-nav-rainbow-1', 'noam-learning.css?v=20260910-mobile-1'],
     [
