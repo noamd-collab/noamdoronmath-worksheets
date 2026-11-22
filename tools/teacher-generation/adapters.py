@@ -24,7 +24,8 @@ def frac(value):
     return Fraction(value) if type(value) is int else Fraction(value["numerator"], value["denominator"])
 
 
-def elementary(lesson, payload, cap, skill, work):
+def elementary(lesson, payload, cap, skill, work, *, facts_only=False):
+    from division_facts import CHALLENGES
     quality, distractors = prepare_didactics(lesson,payload,cap)
     sys.path[:0] = [str(skill / "scripts"), str(skill / "scripts/lib")]
     import ws_html as H
@@ -53,9 +54,12 @@ def elementary(lesson, payload, cap, skill, work):
     for n,q in enumerate(payload["questions"],1):
         # A starred division task adds an inverse-operation justification, not
         # merely different numbers in the same task as an earlier question.
-        inverse_check = q["star"] and cap["topicId"] == "ג10"
+        inverse_check = q["star"] and cap["topicId"] == "ג10" and not facts_only
         instruction = (labels[q["kind"]].rstrip(":") + ". כתבו גם תרגיל כפל מתאים לבדיקת כל תשובה:"
                        if inverse_check else labels[q["kind"]])
+        division_challenge = facts_only and q["star"]
+        if division_challenge:
+            instruction = CHALLENGES[q["kind"]]
         items, answers, source_items = [], [], []
         for j,it in enumerate(q["items"]):
             l,r,a = (frac(it[k]) for k in ("left","right","answer"))
@@ -76,6 +80,23 @@ def elementary(lesson, payload, cap, skill, work):
                 answer=H.text_answer(prefix)+H.ltr(expression(it)+" = "+number(a))+H.text_answer(suffix)
             else:
                 text=H.ltr(expression(it)+" = "+H.blank("1.5cm")); answer=H.ltr(number(a))
+            if division_challenge:
+                text += '<div class="ansline"></div>'
+                if q["kind"] == "missing_operand":
+                    new_dividend, new_quotient = l + r, a + 1
+                    valid = new_quotient <= 10 and new_dividend <= 100 and new_dividend / r == new_quotient
+                    relation = number(new_dividend)+" : "+number(r)+" = "+number(new_quotient)
+                    answer += H.text_answer(". לאחר הוספת הקבוצה: ")+H.ltr(relation)
+                elif q["kind"] == "check_solution":
+                    high = wrong > a
+                    valid = (wrong * r > l) if high else (wrong * r < l)
+                    answer += H.text_answer(" המנה המוצעת גדולה מדי." if high else " המנה המוצעת קטנה מדי.")
+                else:
+                    valid = a != r and a > 0 and l / a == r
+                    relation = number(l)+" : "+number(a)+" = "+number(r)
+                    answer += H.text_answer(". התרגיל החדש: ")+H.ltr(relation)
+                ledger.claim(f"{n}.{j+1}.challenge", "בדיקת הדרישה הנוספת באתגר החילוק",
+                             (valid, {"dividend":str(l),"divisor":str(r),"quotient":str(a)}), method="closed_form")
             if inverse_check:
                 text += '<div class="ansline"></div>'
                 answer += H.text_answer(" בדיקה בכפל: ")+H.ltr(number(a)+" "+H.op("*",grade)+" "+number(r)+" = "+number(l))
@@ -98,7 +119,8 @@ def elementary(lesson, payload, cap, skill, work):
     body=[f'<body class="{"band-ab" if ab else "band-gd" if lesson["gradeNumber"]<=4 else "band-hv"}">',f'<div class="unit">{html.escape(title)}</div><hr class="unit-rule">',f'<div class="subtitle">{LEVELS[lesson["level"]]} · כיתה {grade}׳</div>', '<div class="details"><span>שם: ____________________</span><span>כיתה: ________</span><span>תאריך: __________</span></div>', '<ol class="questions">']
     for qi,q in enumerate(qs):
         # Balance the elementary pilot's exercise pages; keep whole questions together.
-        page_break=' style="break-before:page"' if qi and qi%4==0 else ''
+        starts_new_page = qi in (4, 9) if facts_only else qi > 0 and qi % 4 == 0
+        page_break=' style="break-before:page"' if starts_new_page else ''
         body.append('<li'+(' class="starred"' if q["star"] else '')+page_break+'>'+('<span class="star"></span> ' if q["star"] else '')+html.escape(q["intro"])+q["html"]+'</li>')
     body += ['</ol><div class="goodluck">'+('בְּהַצְלָחָה!' if ab else 'בהצלחה!')+'</div>', '<div class="answers" style="break-inside:avoid;page-break-inside:avoid"><h2>'+('תְּשׁוּבוֹת סוֹפִיּוֹת' if ab else 'תשובות סופיות')+'</h2><table class="ans">']
     for q in qs:

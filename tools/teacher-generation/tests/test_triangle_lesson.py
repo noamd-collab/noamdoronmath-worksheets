@@ -23,7 +23,8 @@ class NativeTriangleTest(unittest.TestCase):
         self.lesson = json.loads((FIXTURE / "lesson.json").read_text())
         self.source = json.loads((FIXTURE / "model-output.json").read_text())
 
-    def test_author_for_neutral_context_works_offline_and_replays(self):
+    @patch("provider.build_authoring_context", return_value={})
+    def test_author_for_neutral_context_works_offline_and_replays(self, _context):
         with patch(
             "general_provider.author_general_lesson",
             side_effect=AssertionError("Unexpected paid call"),
@@ -39,7 +40,8 @@ class NativeTriangleTest(unittest.TestCase):
             tr.build(self.lesson, json.loads(json.dumps(data))),
         )
 
-    def test_custom_free_text_preserves_the_full_general_author(self):
+    @patch("provider.build_authoring_context", return_value={})
+    def test_custom_free_text_preserves_the_full_general_author(self, _context):
         for field, value in (
             ("lastLesson", "רק הוכחות, בלי חישובים ובשמות קודקודים שונים."),
             ("alreadyLearned", ["בכיתה נעזרנו בחוטים צבעוניים"]),

@@ -130,8 +130,23 @@ def validate_model(lesson, payload, *, allow_legacy=False):
         from general_source import validate_source, GeneralSourceError
         from runtime_catalog import scope_for_lesson
         try:
+            import division_facts
+            import square_lesson
+            import pythagoras_lesson
+            import fraction_lesson
+            import counting_lesson
             from triangle_lesson import VERSION, validate_parameters
-            if isinstance(payload, dict) and payload.get('version') == VERSION:
+            if isinstance(payload, dict) and payload.get('version') == fraction_lesson.VERSION:
+                fraction_lesson.validate_parameters(lesson,payload)
+            elif isinstance(payload, dict) and payload.get('version') == counting_lesson.VERSION:
+                counting_lesson.validate_parameters(lesson, payload)
+            elif isinstance(payload, dict) and payload.get('version') == division_facts.VERSION:
+                division_facts.derive(lesson, payload)
+            elif isinstance(payload, dict) and payload.get('version') == square_lesson.VERSION:
+                square_lesson.validate_parameters(lesson, payload)
+            elif isinstance(payload, dict) and payload.get('version') == pythagoras_lesson.VERSION:
+                pythagoras_lesson.validate_parameters(lesson, payload)
+            elif isinstance(payload, dict) and payload.get('version') == VERSION:
                 validate_parameters(lesson, payload)
             else:
                 validate_source(lesson, payload, scope_for_lesson(lesson))

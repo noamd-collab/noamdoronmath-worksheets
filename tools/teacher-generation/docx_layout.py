@@ -36,6 +36,9 @@ def _work_line_count(question):
     if type(star) is not bool or not isinstance(intro, str):
         raise ValueError("DOCX_LAYOUT_MISMATCH: missing trusted instruction")
     if star:
+        from division_facts import CHALLENGES
+        if intro in CHALLENGES.values():
+            return 2 if intro == CHALLENGES["check_solution"] else 1
         if intro.endswith(INVERSE_INSTRUCTION_V2):
             intro = intro[:-len(INVERSE_INSTRUCTION_V2)] + ":"
         elif intro.endswith(INVERSE_INSTRUCTION):
