@@ -279,4 +279,106 @@ try {
 
   await as('postgres');
   await test('all old data remains untouched after the isolation tests', async () => assert.deepEqual(await oldState(), before));
+  await resetJobs();
+  await db.exec(`
+    alter table auth.users add email_confirmed_at timestamptz default now(),
+      add raw_app_meta_data jsonb default '{"provider":"google"}', add is_anonymous boolean default false;
+    create table auth.identities(user_id uuid references auth.users(id), provider text, provider_id text,
+      unique(provider,provider_id));
+  `);
+  const teacherB = '44444444-4444-4444-8444-444444444444';
+  await query('insert into auth.users(id) values($1)',[teacherB]);
+  await query("insert into auth.identities values($1,'google','teacher-a'),($2,'google','teacher-b')",[other,teacherB]);
+  await db.exec(await readFile(path.join(root,'supabase/migrations/20261116153658_teacher_generation_review_draft_download.sql'),'utf8'));
+  await db.exec(await readFile(path.join(root,'supabase/migrations/20261122151819_teacher_generation_public_trial.sql'),'utf8'));
+  const window = async () => (await query('select public.noam_teacher_generation_trial_window() as w'))[0].w;
+  async function sample(extra={}) {
+    const row={id:crypto.randomUUID(),owner_id:other,...extra};
+    if(row.status==='needs_review')for(const ext of ['pdf','docx']){
+      await query('insert into storage.objects(bucket_id,name) values($1,$2)',[bucket,row.owner_id+'/'+row.id+'/sheet.'+ext]);
+    }
+    return insertJob(row);
+  }
+  const finished = {status:'needs_review',phase:'needs_review',result:{automatedChecksPassed:true}};
+  const activate = `insert into noam_teacher_trial.campaign(starts_at,ends_at,enabled)
+    select t,t+interval '72 hours',true from (select statement_timestamp() as t) s
+    on conflict(singleton) do nothing`;
+  let retained; let originalWindow;
+
+  await test('campaign installs closed, publicly exposes dates only, owner is unlimited, activation is idempotent', async () => {
+    await as('anon');
+    assert.deepEqual(await window(),{active:false,startsAt:null,endsAt:null});
+    await denied('select * from noam_teacher_trial.campaign');
+    await denied('select * from noam_teacher_trial.reservations');
+    await as('service_role'); await assert.rejects(sample(),e=>e.code==='PT403');
+    const oldCompatibleOwner=await quota(owner); assert.equal(oldCompatibleOwner.mode,'owner');
+    assert.equal(oldCompatibleOwner.dailyLimit,null); assert.ok(Number.isFinite(Date.parse(oldCompatibleOwner.resetsAt)));
+    await as('postgres'); await db.exec(activate); originalWindow=await window();
+    await db.exec(activate); assert.deepEqual(await window(),originalWindow);
+    assert.equal(Date.parse(originalWindow.endsAt)-Date.parse(originalWindow.startsAt),72*3600000);
+    assert.equal(originalWindow.active,true);
+  });
+
+  await test('trial admits a verified Google identity, preserves five-total across sessions/midnight and releases failed slots', async () => {
+    await as('service_role');
+    await assert.rejects(sample(),e=>e.code==='PT503');
+    const caps={trialActorIsolation:1,profile:'general-skill-source/v1',acceptedIntakeVersions:[2,3],curriculumSha256:'57adca1891cbc2ef333709a6adee18045da23035f9e981f091673d2f8547527b'};
+    await query("insert into public.noam_teacher_generation_workers(id,updated_at,capabilities) values('primary',now()-interval '91 seconds',$1) on conflict(id) do update set updated_at=excluded.updated_at,capabilities=excluded.capabilities",[caps]);
+    await assert.rejects(sample(),e=>e.code==='PT503');
+    await query("update public.noam_teacher_generation_workers set updated_at=now()");
+    const a=(await sample())[0];
+    await assert.rejects(sample({request_key:a.request_key}),e=>e.code==='23505');
+    await assert.rejects(sample(),e=>e.code==='PT423');
+    await query("update public.noam_teacher_generation_jobs set status='failed', phase='failed' where id=$1",[a.id]);
+    assert.equal((await quota(other)).remainingTotal,5);
+    await assert.rejects(query("update public.noam_teacher_generation_jobs set status='queued',phase='queued' where id=$1",[a.id]),e=>e.code==='23514');
+    for (const parts of [[],['pdf'],['pdf','docx']]) {
+      const q=(await sample())[0];
+      for(const ext of parts)await query('insert into storage.objects(bucket_id,name) values($1,$2)',[bucket,other+'/'+q.id+'/sheet.'+ext]);
+      const result={automatedChecksPassed:parts.length!==2}; // pair with FAIL, or PASS with missing file(s)
+      const closed=await query("update public.noam_teacher_generation_jobs set status='needs_review',phase='needs_review',result=$2 where id=$1 returning status,error_code",[q.id,result]);
+      assert.deepEqual(closed,[{status:'failed',error_code:'DRAFT_NOT_AVAILABLE'}]);assert.equal((await quota(other)).remainingTotal,5);
+    }
+    const all=await Promise.allSettled(Array.from({length:9},()=>sample(finished)));
+    assert.equal(all.filter(x=>x.status==='fulfilled').length,5);
+    assert.equal(all.filter(x=>x.status==='rejected' && x.reason.code==='PT429').length,4);
+    retained=all.find(x=>x.status==='fulfilled').value[0];
+    await query("update public.noam_teacher_generation_jobs set created_at=created_at-interval '2 days' where owner_id=$1",[other]);
+    await as('authenticated',google(other)); assert.equal((await quota()).remainingTotal,0);
+    assert.equal((await quota()).mode,'trial');
+    await denied('select public.noam_teacher_generation_quota_status($1)',[teacherB]);
+    await denied('select noam_teacher_trial.google_subject($1)',[other]);
+    await denied('select * from noam_teacher_trial.reservations');
+    await as('authenticated',google(teacherB)); assert.equal((await quota()).remainingTotal,5);
+    await as('service_role'); assert.equal((await sample({owner_id:teacherB})).length,1);
+    await as('authenticated',google(other,{is_anonymous:true})); await denied('select public.noam_teacher_generation_quota_status()');
+    await as('authenticated',{sub:other,app_metadata:{provider:'email'}}); await denied('select public.noam_teacher_generation_quota_status()');
+    await as('postgres'); await query("update auth.users set email_confirmed_at=null where id=$1",[teacherB]);
+    await as('service_role'); assert.equal((await quota(teacherB)).active,false);
+  });
+
+  await test('paused/expired teachers retain only their private history and two checked files; Google credit survives cleanup and identity re-link',async()=>{
+    await as('postgres'); await db.exec("update noam_teacher_trial.campaign set enabled=false");
+    await as('authenticated',google(other)); assert.equal((await quota()).active,false);
+    assert.ok((await query('select id from public.noam_teacher_generation_jobs')).every(r=>r.id!==jobId));
+    await as('service_role');
+    await query('insert into storage.objects(bucket_id,name) values($1,$2)',[bucket,other+'/'+retained.id+'/sheet.json']);
+    await as('authenticated',google(other));
+    let files=await query('select name from storage.objects where bucket_id=$1',[bucket]);
+    assert.deepEqual(files.filter(x=>x.name.includes(retained.id)).map(x=>x.name).sort(),['docx','pdf'].map(ext=>other+'/'+retained.id+'/sheet.'+ext));
+    await as('authenticated',google(teacherB));assert.deepEqual(await query('select name from storage.objects where bucket_id=$1',[bucket]),[]);
+    await as('authenticated',google(other,{is_anonymous:true}));assert.deepEqual(await query('select name from storage.objects where bucket_id=$1',[bucket]),[]);
+    await as('service_role'); await assert.rejects(sample(),e=>e.code==='PT403');
+    await as('postgres'); await query("delete from public.noam_teacher_generation_jobs where owner_id=$1",[other]);
+    await query("delete from auth.identities where user_id=$1",[teacherB]);
+    await query("update auth.identities set user_id=$1 where user_id=$2",[teacherB,other]);
+    await query("update auth.users set email_confirmed_at=now() where id=$1",[teacherB]);
+    await as('authenticated',google(teacherB));assert.equal((await quota()).remainingTotal,0);
+    await as('postgres'); await db.exec("update noam_teacher_trial.campaign set starts_at=statement_timestamp()-interval '72 hours',ends_at=statement_timestamp(),enabled=true");
+    assert.equal((await window()).active,false);
+    await as('service_role');assert.equal((await quota(owner)).active,true);
+    for(let i=0;i<7;i++)assert.equal((await sample({...finished,owner_id:owner})).length,1);
+    await as('postgres');assert.deepEqual(await oldState(),before);
+  });
+
 } finally { await db.close(); }

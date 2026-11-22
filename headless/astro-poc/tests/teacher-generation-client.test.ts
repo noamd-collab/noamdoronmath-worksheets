@@ -7,7 +7,7 @@ import { webcrypto } from 'node:crypto';
 import { GENERATION_CURRICULUM_SHA256, parseTeacherGenerationCurriculum, getTeacherGenerationMinimumQuestionCount } from '../src/lib/teacherGenerationContract';
 
 const pageSource = readFileSync(new URL('../src/pages/teachers/generate.astro', import.meta.url), 'utf8');
-const markup = pageSource.match(/<main[\s\S]*?<\/main>/)![0];
+const markup = pageSource.match(/<main[\s\S]*?<\/main>/)![0].replace(' open={historyRequested}','');
 const shipped = readFileSync(new URL('../public/teachers/generation-v3.js', import.meta.url), 'utf8');
 const topic = { topicId: 'ג10', gradeNumber: 3, title: 'חילוק', enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [12] };
 const middle = { ...topic, topicId: 'g7:equations', gradeNumber: 7, title: 'משוואות', questionCounts: [20] };
@@ -18,7 +18,11 @@ const generalCapabilities={profile:'general-skill-source/v1',curriculumSha256:GE
  topics:curriculum.topics.map(t=>({...t,enabled:true,readiness:'private_draft',e2eVerified:false,
   levels:t.topicId.startsWith('g9m:')?['b']:t.topicId.startsWith('g9r:')?['a','e']:['b','a','e'],
   questionCounts:Array.from({length:31-getTeacherGenerationMinimumQuestionCount(t.gradeNumber)!},(_,i)=>getTeacherGenerationMinimumQuestionCount(t.gradeNumber)!+i)}))};
-type Quota = {dailyLimit:number|null;remainingToday:number|null;resetsAt:string};
+type Quota = {mode:'owner'|'trial';totalLimit:null|5;remainingTotal:number|null;startsAt:string|null;endsAt:string|null;active:boolean};
+const ownerQuota: Quota = {mode:'owner',totalLimit:null,remainingTotal:null,active:true,startsAt:null,endsAt:null};
+function trialQuota(remainingTotal:number, endsAt:string, active=true): Quota {
+  return {mode:'trial',totalLimit:5,remainingTotal,active,startsAt:new Date(Date.parse(endsAt)-72*3600000).toISOString(),endsAt};
+}
 type Reply = { ok?: boolean; status?: number; body?: any; error?: Error };
 
 function harness(options: { quota?: Quota; online?: boolean; waking?: boolean; jobs?: any[]; history?: any[]; jobDetails?: Record<string,Reply>; captcha?: boolean; emptyCapabilities?: boolean; general?: boolean; catalogMismatch?: boolean; firstHealth?: Promise<Reply>; storage?: Map<string,string>; owner?: string } = {}) {
@@ -66,7 +70,7 @@ function harness(options: { quota?: Quota; online?: boolean; waking?: boolean; j
   const calls: { url: string; init: any }[] = [], posts: any[] = [], pendingReplies: Reply[] = [], pendingReads: Reply[] = [];
   let history=options.history || [];
   const jobDetails=options.jobDetails || {};
-  let quota=options.quota;
+  let quota=options.quota ?? ownerQuota;
   let tokenPromise: Promise<string> | null = null, firstHealth=options.firstHealth;
   const verification = { ready: (cb: () => void) => cb(), execute: () => tokenPromise || Promise.resolve('local-verification-token') };
   (window as any).grecaptcha = options.captcha !== false ? verification : undefined;
@@ -132,38 +136,49 @@ function harness(options: { quota?: Quota; online?: boolean; waking?: boolean; j
 }
 
 test('the quota notice shows the verified owner exemption before planning', async()=>{
-  const app=harness({quota:{dailyLimit:null,remainingToday:null,resetsAt:new Date().toISOString()}});
+  const app=harness({quota:ownerQuota});
   await app.flush();
-  assert.match(app.element('generation-quota').textContent,/ללא מכסה יומית/);
+  assert.match(app.element('generation-quota').textContent,/ללא מכסה/);
   await app.choose();await app.submit();
   assert.equal(app.element('create-button').disabled,false);
   assert.equal(app.element('create-button').getAttribute('aria-describedby'),'generation-quota');
 });
 
-test('teachers see remaining creations before planning and regain creation at midnight', async()=>{
-  const resetsAt=new Date(Date.now()+3600000).toISOString();
-  const app=harness({quota:{dailyLimit:5,remainingToday:1,resetsAt}});
-  await app.flush();
-  assert.match(app.element('generation-quota').textContent,/5 דפים.*יצירה אחת.*חצות לפי שעון ישראל/);
-  app.setQuota({dailyLimit:5,remainingToday:0,resetsAt});
-  await app.visible();await app.choose();await app.submit();await app.click('create-button');
-  assert.equal(app.posts.length,0);
+test('trial shows one cumulative balance across midnight and releases a failed reservation', async()=>{
+  const endsAt=new Date(Date.now()+48*3600000).toISOString();
+  const app=harness({quota:trialQuota(1,endsAt)});
+  await app.flush();await app.choose();await app.submit();
+  assert.match(app.element('generation-quota').textContent,/1 מתוך 5.*לפי שעון ישראל/);
+  app.setQuota(trialQuota(0,endsAt));
+  app.advance(25*3600000);await app.visible();await app.click('create-button');
+  assert.match(app.element('generation-quota').textContent,/נוצלו כל 5/);
   assert.equal(app.element('create-button').disabled,true);
-  assert.match(app.element('generation-status').textContent,/המכסה היומית נוצלה/);
-  app.setQuota({dailyLimit:5,remainingToday:5,resetsAt:new Date(Date.parse(resetsAt)+86400000).toISOString()});
-  app.advance(3601000);await app.nextRetry();
-  assert.match(app.element('generation-quota').textContent,/נשארו לך היום 5 יצירות/);
-  assert.doesNotMatch(app.element('generation-status').textContent,/המכסה היומית נוצלה/);
+  assert.equal(app.posts.length,0);
+  app.setQuota(trialQuota(1,endsAt));await app.visible();
   assert.equal(app.element('create-button').disabled,false);
 });
 
+test('trial expiry disables a previously planned creation and keeps history open', async()=>{
+  const endsAt=new Date(Date.now()+3600000).toISOString();
+  const app=harness({quota:trialQuota(3,endsAt)});
+  await app.flush();await app.choose();await app.submit();
+  assert.equal(app.element('create-button').disabled,false);
+  app.setQuota(trialQuota(3,endsAt,false));app.advance(3601000);await app.nextRetry();
+  assert.match(app.element('generation-quota').textContent,/אינה פתוחה כעת/);
+  assert.equal(app.element('generation-history').open,true);
+  assert.equal(app.element('generator-availability').hidden,true);
+  assert.equal(app.element('generation-creator').hidden,true);
+  await app.click('create-button');
+  assert.equal(app.posts.length,0);
+});
+
 test('an active job response for the test owner never claims a daily limit', async()=>{
-  const app=harness({quota:{dailyLimit:null,remainingToday:null,resetsAt:new Date().toISOString()}});
+  const app=harness({quota:ownerQuota});
   await app.flush();await app.choose();await app.submit();
   app.pendingReplies.push({ok:false,status:423,body:{ok:false,code:'GENERATION_ACTIVE'}});
   await app.click('create-button');
   assert.match(app.element('generation-status').textContent,/כבר מכינים עבורך דף/);
-  assert.match(app.element('generation-quota').textContent,/ללא מכסה יומית/);
+  assert.match(app.element('generation-quota').textContent,/ללא מכסה/);
   assert.equal(app.posts.length,1);
 });
 
@@ -706,7 +721,7 @@ test('a saved job outside recent activity recovers by its owner-scoped ID; 404 a
  const cases=[
   {detail:{body:{ok:true,job:{...job,status:'failed',error_code:'PROVIDER_UNAVAILABLE'}}},message:/שירות הכנת השאלות/},
   {detail:{ok:false,status:404,body:{ok:false,code:'JOB_NOT_FOUND'}},message:/השמורה אינה זמינה/},
-  {detail:{ok:false,status:403,body:{ok:false,code:'TEACHER_ACCESS_DENIED'}},message:/זמינה רק לנועם/},
+  {detail:{ok:false,status:403,body:{ok:false,code:'TEACHER_ACCESS_DENIED'}},message:/חשבון Google מאומת/},
   {detail:{ok:false,status:401,body:{ok:false,error:'Unauthorized'}},message:/להתחבר שוב/}
  ];
  for(const entry of cases){

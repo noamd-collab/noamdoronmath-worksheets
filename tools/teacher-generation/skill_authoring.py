@@ -28,9 +28,10 @@ def question_plan(lesson, scope):
         })
 
     if geometry_topic(scope) and scope["topic"]["skillId"] == "middle":
-        # G83 counts drawings from words separately for each middle-school level.
-        percent = {"a": 15, "b": 20, "e": 10}[lesson["level"]]
-        sketches = max(1, (count * percent + 50) // 100)
+        # The pinned middle-school G83 gate uses 15%, 20% and 10% for
+        # levels A, B and excellence, rounded to the nearest whole question.
+        sketch_percent = {"a": 15, "b": 20, "e": 10}[lesson["level"]]
+        sketches = (count * sketch_percent + 50) // 100
         blank = {int((i + 0.5) * count / sketches) for i in range(sketches)}
         drawn = [i for i in range(count) if i not in blank]
         grids = (count + 3) // 4

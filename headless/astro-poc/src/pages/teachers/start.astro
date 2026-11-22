@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TeacherLanding from '../../components/TeacherLanding.astro';
 import { requireGoogleTeacher, TEACHER_PRIVATE_HEADERS, sanitizeTeacherReturnTo } from '../../lib/teacherAccess';
+import { readPublicGenerationTrial } from '../../lib/teacherGenerationStore';
 import { TEACHER_ACCESS_CONFIG } from '../../lib/teacherAccessConfig';
 
 export const prerender = false;
@@ -13,15 +14,21 @@ if (!access.ok) {
   } });
 }
 for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.response.headers.set(name, value);
+const owner = access.userId === TEACHER_ACCESS_CONFIG.ownerUserId;
+const trial = owner ? null : await readPublicGenerationTrial();
 ---
 <BaseLayout title="אזור המורים · כלי עבודה" description="בחירת שאלות והכנת דפי עבודה לאחר התחברות עם Google." activeNav="teachers" skipHref="#teacher-start" noindex>
   <div class="teacher-private-access" data-teacher-auth="workspace">
     <span>אזור המורים · כלי עבודה</span>
-    {access.userId === TEACHER_ACCESS_CONFIG.ownerUserId && <a href="/teachers/generate">יצירת דף חדש · ניסיון אישי</a>}
+    <a href="/teachers/generate?view=history#generation-history">הדפים שיצרתי</a>
     <button type="button" data-teacher-logout>התנתקות</button>
     <p id="teacher-auth-status" role="status" aria-live="polite"></p>
   </div>
-  {access.userId !== TEACHER_ACCESS_CONFIG.ownerUserId && <p class="upcoming-generation" dir="rtl"><strong>בקרוב · יצירת דפים חדשים עם AI</strong><br />עד 5 דפים למורה ביום. המכסה תתחדש בחצות לפי שעון ישראל.</p>}
+  {(owner || trial?.active) && <section class="trial-entry" dir="rtl" aria-labelledby="trial-entry-title">
+    <div><h2 id="trial-entry-title">{owner ? 'יצירת דף לשיעור' : 'התנסות חינם ביצירת דפי עבודה'}</h2>
+      <p>{owner ? 'אפשר להכין דפים בכל נושאי הקטלוג.' : 'עד 5 דפים בסך הכול לחשבון Google במהלך ההתנסות, בכל נושאי הקטלוג לכיתות א׳–ט׳.'}</p></div>
+    <a href="/teachers/generate">{owner ? 'ליצירת דף עבודה' : 'ליצירת דף עבודה בחינם'} ←</a>
+  </section>}
   <TeacherLanding />
   <script src="/noam-learning-config.js" defer></script>
   <script src="/vendor/supabase-2.116.0.js" defer></script>
@@ -30,5 +37,8 @@ for (const [name, value] of Object.entries(TEACHER_PRIVATE_HEADERS)) Astro.respo
 </BaseLayout>
 
 <style>
-  .upcoming-generation { max-width: 66rem; margin: 1rem auto; padding: .75rem 1rem; border-inline-start: .25rem solid #487070; background: #edf3f1; color: #252b4b; line-height: 1.6; }
+  .trial-entry { max-width: 66rem; margin: 1rem auto; padding: 1rem 1.25rem; border-inline-start: .3rem solid #487070; border-radius: .35rem; background: #edf3f1; color: #252b4b; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .trial-entry h2, .trial-entry p { margin: 0; line-height: 1.6; }
+  .trial-entry a { display: inline-flex; align-items: center; min-height: 44px; padding: .5rem 1rem; border-radius: .5rem; background: #22305a; color: white; font-weight: bold; }
+  .trial-entry a:focus-visible { outline: 3px solid #2a7c7a; outline-offset: 3px; }
 </style>

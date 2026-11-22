@@ -18,7 +18,7 @@ docker buildx build --load --platform linux/amd64 --provenance=false --sbom=fals
   --file "$task_container/Dockerfile" --tag "$task_image" "$task_root"
 test "$(docker image inspect --format '{{ index .Config.Labels "org.opencontainers.image.revision" }}' "$task_image")" = "$task_source"
 docker run --rm --platform linux/amd64 --network none --entrypoint /usr/local/bin/python \
-  "$task_image" -B -m unittest discover -s /opt/noam/app/tests -v
+  "$task_image" -B -m unittest discover -s /opt/noam/app/tests -v 2>&1 | tee "$task_output/offline-worker-tests.txt"
 docker create --platform linux/amd64 --network none --shm-size 256m --name "$task_name" \
   --entrypoint /usr/bin/tini "$task_image" -g -- /usr/local/bin/python -B \
   /opt/noam/app/cloud/container/offline_smoke.py --out /work/qualification >/dev/null

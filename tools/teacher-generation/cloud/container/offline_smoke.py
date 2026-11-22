@@ -14,7 +14,7 @@ import re
 import shutil
 import subprocess
 import sys
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 HERE = Path(__file__).resolve().parent
 APP = HERE.parents[1]
@@ -60,7 +60,15 @@ def native_preflight():
     import sympy, mpmath
     if (sympy.__version__, mpmath.__version__) != ('1.14.0', '1.3.0'):
         raise RuntimeError('Exact symbolic math runtime differs from the lock')
+    from remote_worker import heartbeat
+    fake = Mock(spec=['call'])
+    heartbeat(fake)
+    capabilities = fake.call.call_args.args[2]['capabilities']
+    if capabilities.get('trialActorIsolation') != 1:
+        raise RuntimeError('Worker heartbeat does not advertise trial account isolation')
     return {'ready': True, 'providerCalled': False, 'queueTouched': False,
+            'trialActorIsolation': capabilities['trialActorIsolation'],
+            'remoteWorkerSha256': hashlib.sha256((APP/'remote_worker.py').read_bytes()).hexdigest(),
             'python': result['python'], 'skills': result['skills'], 'helpers': versions}
 
 

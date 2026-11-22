@@ -358,6 +358,27 @@ class GeneralRuntimeTests(unittest.TestCase):
                 if not supports_figures:
                     self.assertFalse(any('representation' in row for row in rows))
 
+    def test_geometry_author_receives_level_specific_sketch_and_grid_assignments(self):
+        topic = next(t for t in catalog().topics if t["topicId"] == "g8:triangle_parts")
+        # G83 half-up targets, including the 20-question excellence case
+        # and the half-way values at 25 questions (excellence) and 30 (A).
+        for count, expected in [(20, (3, 4, 2)), (25, (4, 5, 3)), (30, (5, 6, 3))]:
+            for level, sketches in zip(("a", "b", "e"), expected):
+                lesson = {**intake(topic), "level": level, "questionCount": count}
+                with self.subTest(count=count, level=level), \
+                        patch("provider.build_authoring_context", return_value={}), \
+                        patch("provider.request_author_json", side_effect=StopIteration) as request:
+                    with self.assertRaises(StopIteration):
+                        provider.author_lesson(lesson, **self.config)
+                    args = request.call_args.args[2]["messages"]
+                    rows = json.loads(args[1]["content"])["questionPlan"]
+                    kinds = [row["representation"] for row in rows]
+                    self.assertIn("Follow each question representation", args[0]["content"])
+                    self.assertEqual(kinds.count("drawingFromWords"), sketches)
+                    grids = (count + 3) // 4
+                    self.assertEqual(kinds.count("coordinate_plane"), grids)
+                    self.assertEqual(kinds.count("geometryFigure"), count - sketches - grids)
+
     def test_author_receives_skill_content_truth_and_only_applicable_elementary_principles(self):
         from general_provider import author_guidance
         topic = catalog().topics[0]
