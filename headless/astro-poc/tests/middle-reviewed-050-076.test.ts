@@ -6,7 +6,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { topicPageCatalogTopicIds, topicPagePdfParts } from '../src/lib/topicStructuredData';
 import { loadTopicPage } from '../src/lib/topicPages';
-import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, fifthRenew, fourthRenew, thirdRenew, nextRenew, renew } from './fixtures/middle-090-091-094';
+import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, sixthRenew, fifthRenew, fourthRenew, thirdRenew, nextRenew, renew } from './fixtures/middle-090-091-094';
 
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
@@ -15,8 +15,8 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 test('the 15 reviewed topics preserve the preceding catalog, registry and each landing page', () => {
   const releases = renew.packages;
   assert.deepEqual(releases.map(p => p.number), [50,51,52,53,54,57,58,59,60,61,71,72,74,75,76]);
-  const catalog = catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(read('headless/catalog/catalog.v1.json'), fifthRenew.packages), fourthRenew.packages), thirdRenew.packages), nextRenew.packages);
-  const registry = registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), fifthRenew.packages.map(p => p.edition)), fourthRenew.packages.map(p => p.edition)), thirdRenew.packages.map(p => p.edition)), nextRenew.packages.map(p => p.edition));
+  const catalog = catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(read('headless/catalog/catalog.v1.json'), sixthRenew.packages), fifthRenew.packages), fourthRenew.packages), thirdRenew.packages), nextRenew.packages);
+  const registry = registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), sixthRenew.packages.map(p => p.edition)), fifthRenew.packages.map(p => p.edition)), fourthRenew.packages.map(p => p.edition)), thirdRenew.packages.map(p => p.edition)), nextRenew.packages.map(p => p.edition));
   assert.equal(digest(catalogBeforePackages(catalog, releases)), renew.baselineCatalogSha256);
   assert.equal(digest(registryBeforeRelease(registry, releases.map(p => p.edition))), renew.baselineRegistrySha256);
   const hrefs = new Set<string>();

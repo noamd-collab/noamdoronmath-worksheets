@@ -21,6 +21,8 @@ test('server compaction preserves Hebrew, literal whitespace, arithmetic and fun
       return first + second;
     }
     export const subtractValues = (first, second) => first - second;
+    export const editions = [{ key: 'a', optional: false }, { key: 'ב', optional: true }];
+    export const selected = (key) => editions.find(edition => edition.key === key)?.optional ?? null;
     export class WorksheetResult {
       label() { return caption; }
     }
@@ -34,6 +36,7 @@ test('server compaction preserves Hebrew, literal whitespace, arithmetic and fun
     total: module.calculateTotal(452, -137), difference: module.subtractValues(12, 5),
     names: [module.calculateTotal.name, module.subtractValues.name, module.WorksheetResult.name, module.default.name],
     rendered: module.default(), label: new module.WorksheetResult().label(),
+    editions: module.editions, selections: [module.selected('a'), module.selected('ב'), module.selected('missing')],
   });
   assert.deepEqual(values(compact), values(original));
   assert.ok(result.code.includes('תשובה'), 'Hebrew must remain UTF-8 rather than grow into ASCII escapes');

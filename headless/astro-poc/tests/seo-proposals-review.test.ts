@@ -1,4 +1,4 @@
-import { seven } from './fixtures/middle-090-091-094';
+import { seven, sixthRenew } from './fixtures/middle-090-091-094';
 import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
@@ -273,6 +273,20 @@ describe('seo proposals – generator and coverage', () => {
       if (row.description === row.currentDescription) row.description = edit.after;
       row.currentDescription = edit.after;
     }
+    const editedTopics = [];
+    for (const item of sixthRenew.packages) {
+      const edit = item.priorCopyEdits?.find(e => e.path.length === 1 && e.path[0] === 'description');
+      if (!edit) continue;
+      const row = expected.find(entry => entry.path === '/' + item.slug);
+      assert.ok(row, item.slug);
+      assert.equal(row.source, 'title:current|description:current');
+      assert.equal(row.description, edit.before);
+      assert.equal(row.currentDescription, edit.before);
+      row.description = edit.after;
+      row.currentDescription = edit.after;
+      editedTopics.push(item.number);
+    }
+    assert.deepEqual(editedTopics, [100, 101, 102, 105]);
     assert.deepEqual(proposals, expected);
   });
 

@@ -1,0 +1,1106 @@
+{
+  "schema": "middle-school-reviewed-pdf/v1",
+  "date": "2026-11-22",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 22.11.2026",
+  "baseline": "40fb068b4d21246e3d7db5f71a7d746cfb1c997f",
+  "baselineCatalogSha256": "84d0f3e79fdc7acc8f4b1a513e3076e0f248e7ec8e18feaf64ec1487bac70046",
+  "baselineRegistrySha256": "b799fffcc9de83dd23766add1846acbb1b5fab10bcee28c422b29a525dca81bd",
+  "packages": [
+    {
+      "number": 67,
+      "sheetId": "G8-PEF-01",
+      "grade": 8,
+      "topicId": 51,
+      "slug": "probability-experiments-fairness-grade-8",
+      "producerPackage": "G8-T147",
+      "studentRevision": "r03",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "e2694db7978a553b031ebb2cbaa5dda019a249cb67b8c84a7cbd66e21dacb98b",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G8-PEF-01-r03-20261122/review.json",
+          "sha256": "d6a4657ea0c25c4e8411bae7b859bec7d2267e8fd831390ff37bf3bdad40b8ba",
+          "verdict": "PASS_INDEPENDENT_STUDENT_PDF"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 9,
+          "items": 32,
+          "bytes": 54345,
+          "source": "submissions/Codex/MS-PROD-CODEX-067-r03/release/documents/G8-PEF-01/a/sheet.pdf",
+          "sha256": "f28490435cb80e5e36c84a7a064552404d6c551ea1b730cab89bf487be3afd4f",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_43fb2aecdfd94454a14919a2f19da501.pdf",
+              "status": 200,
+              "sha256": "f28490435cb80e5e36c84a7a064552404d6c551ea1b730cab89bf487be3afd4f",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_43fb2aecdfd94454a14919a2f19da501.pdf",
+              "status": 200,
+              "sha256": "f28490435cb80e5e36c84a7a064552404d6c551ea1b730cab89bf487be3afd4f",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 8,
+          "items": 32,
+          "bytes": 51819,
+          "source": "submissions/Codex/MS-PROD-CODEX-067-r03/release/documents/G8-PEF-01/b/sheet.pdf",
+          "sha256": "278c8f99476d38377826caecb5a77484319078d42b2b0cc0725e117ee1cf6512",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_32720168554b428e8fa5a02d8a5815c7.pdf",
+              "status": 200,
+              "sha256": "278c8f99476d38377826caecb5a77484319078d42b2b0cc0725e117ee1cf6512",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_32720168554b428e8fa5a02d8a5815c7.pdf",
+              "status": 200,
+              "sha256": "278c8f99476d38377826caecb5a77484319078d42b2b0cc0725e117ee1cf6512",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 9,
+          "items": 32,
+          "bytes": 55217,
+          "source": "submissions/Codex/MS-PROD-CODEX-067-r03/release/documents/G8-PEF-01/c/sheet.pdf",
+          "sha256": "92be10bf1a3dea42df119e33469a9ed9a10822114569ea3a42abc778e1d864a6",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_79aa9091429e4141ad405a296f1bd960.pdf",
+              "status": 200,
+              "sha256": "92be10bf1a3dea42df119e33469a9ed9a10822114569ea3a42abc778e1d864a6",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_79aa9091429e4141ad405a296f1bd960.pdf",
+              "status": 200,
+              "sha256": "92be10bf1a3dea42df119e33469a9ed9a10822114569ea3a42abc778e1d864a6",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "הסתברות — ניסוי והוגנות — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "משווים בין שכיחות יחסית להסתברות תאורטית ובודקים בעזרת מניית תוצאות אם לשני שחקנים יש סיכויי זכייה שווים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "8b8136313c96467035a80b9b4a3be58630921d2c17eb57d0a9ce8c5a375055f4",
+      "priorTopicSha256": "e354e54255f613ede0ef6a254e5638439ea6275d3fc15a911b502bcac5b18208",
+      "edition": {
+        "grade": 8,
+        "topicId": 51,
+        "editionId": "ms-20261122-g8-pef-01-r1",
+        "label": "הסתברות — ניסוי והוגנות · PDF",
+        "nativePrefix": "G8-T147",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "43fb2aecdfd94454a14919a2f19da501",
+            "pdfSha256": "f28490435cb80e5e36c84a7a064552404d6c551ea1b730cab89bf487be3afd4f",
+            "sourceSha256": "4e6d1659f806fee2923988d1fb3a6f916683a5dcd4366ac323f936d5db6573d8",
+            "nativeExportSha256": "34af34520746a2ccd144d2b4be76973a07bac8657a2af90c413910c8d2bb420f",
+            "worksheetId": "ms-g8-pef-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "32720168554b428e8fa5a02d8a5815c7",
+            "pdfSha256": "278c8f99476d38377826caecb5a77484319078d42b2b0cc0725e117ee1cf6512",
+            "sourceSha256": "d915b1d2b3375fd1ed4037b3f7f9622afd9a98517db6bf0afef0cf48262b0e73",
+            "nativeExportSha256": "dc08c8ce74b27247baf90f8abcd48c1200ca084c6111b23faf17acf85c1623c6",
+            "worksheetId": "ms-g8-pef-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "79aa9091429e4141ad405a296f1bd960",
+            "pdfSha256": "92be10bf1a3dea42df119e33469a9ed9a10822114569ea3a42abc778e1d864a6",
+            "sourceSha256": "a7d7fa52a35baf2440318a0450e1ca82210887cb984789993279f6cac53ab579",
+            "nativeExportSha256": "ee5b976d22a617446e67edd178e2bfb5dd3d70ca191c1437087566e9883626aa",
+            "worksheetId": "ms-g8-pef-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "e3605f0ab9e059c1bd1a11d658c062eed4e6f4965e67a55a704a6c8ab30c9f8b"
+    },
+    {
+      "number": 100,
+      "sheetId": "G9-TRA-01",
+      "grade": 9,
+      "topicId": 27,
+      "slug": "triangle-area-grade-9",
+      "producerPackage": "G9-T126",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "06e5f9170cfadeefd75da0c5480f109726f54f269b07a31ef913373896463a84",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G9-TRA-01-r02-20261122/review.json",
+          "sha256": "dfa9908a26aefad89acc4dca06bd28ca9b73452d66b9744173744b18d00cf0c7",
+          "verdict": "PASS_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 5,
+          "items": 18,
+          "bytes": 54935,
+          "source": "submissions/Codex/MS-PROD-CODEX-100-r02/release/documents/G9-TRA-01/a/sheet.pdf",
+          "sha256": "eb6df02660bee9f7972f960e6a6f88c6a22c9ff9e8636088c3d68172a49dedb0",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_5ef94b5f4a94499ebbeb01f3954f68d2.pdf",
+              "status": 200,
+              "sha256": "eb6df02660bee9f7972f960e6a6f88c6a22c9ff9e8636088c3d68172a49dedb0",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_5ef94b5f4a94499ebbeb01f3954f68d2.pdf",
+              "status": 200,
+              "sha256": "eb6df02660bee9f7972f960e6a6f88c6a22c9ff9e8636088c3d68172a49dedb0",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 5,
+          "items": 18,
+          "bytes": 54872,
+          "source": "submissions/Codex/MS-PROD-CODEX-100-r02/release/documents/G9-TRA-01/b/sheet.pdf",
+          "sha256": "5fe390dab0d95dde600d178af10192b7b2a35e3d03b23f10ad3055377d1d20d6",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_de82062ffff146ffab1484c4e11ee917.pdf",
+              "status": 200,
+              "sha256": "5fe390dab0d95dde600d178af10192b7b2a35e3d03b23f10ad3055377d1d20d6",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_de82062ffff146ffab1484c4e11ee917.pdf",
+              "status": 200,
+              "sha256": "5fe390dab0d95dde600d178af10192b7b2a35e3d03b23f10ad3055377d1d20d6",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 5,
+          "items": 18,
+          "bytes": 55748,
+          "source": "submissions/Codex/MS-PROD-CODEX-100-r02/release/documents/G9-TRA-01/c/sheet.pdf",
+          "sha256": "48d0d3edcb03c1fa5d5e543226c6e668098db659b984adb7e198f36e3a2e0798",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_793ef32a92644328812a1834556855fb.pdf",
+              "status": 200,
+              "sha256": "48d0d3edcb03c1fa5d5e543226c6e668098db659b984adb7e198f36e3a2e0798",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_793ef32a92644328812a1834556855fb.pdf",
+              "status": 200,
+              "sha256": "48d0d3edcb03c1fa5d5e543226c6e668098db659b984adb7e198f36e3a2e0798",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "שטח משולש — העמקה — לכיתה ט׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מתאימים גובה לבסיס שבחרנו, מחשבים את שטח המשולש ומשחזרים מידה חסרה. הדפים מותאמים לתוכנית המצומצמת לכיתה ט׳.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": null,
+      "priorPageSha256": "4c85247161c13d124e12ff50c6ea5097314e48b7ffaeee4aff4cf04c1e46f6d8",
+      "priorTopicSha256": "b5f5dd426436f05e82e39445a43843ea010e56789d3591f1bcefb9b3f463beb7",
+      "edition": {
+        "grade": 9,
+        "topicId": 27,
+        "editionId": "ms-20261122-g9-tra-01-r1",
+        "label": "שטח משולש — העמקה — לכיתה ט׳ · תוכנית מצומצמת · PDF",
+        "nativePrefix": "G9-T126",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "5ef94b5f4a94499ebbeb01f3954f68d2",
+            "pdfSha256": "eb6df02660bee9f7972f960e6a6f88c6a22c9ff9e8636088c3d68172a49dedb0",
+            "sourceSha256": "8f7a237e6bff8747742f94bd7d099a71cb855e8bc50b6cb32481724b6a1b398a",
+            "nativeExportSha256": "99cf552414fb62d6da0a3c866bc0a09e4ef2bf540a10a9c593fca825f208d19c",
+            "worksheetId": "ms-g9-tra-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "de82062ffff146ffab1484c4e11ee917",
+            "pdfSha256": "5fe390dab0d95dde600d178af10192b7b2a35e3d03b23f10ad3055377d1d20d6",
+            "sourceSha256": "04af68c867aef6a2d2a52a0a9df257ba58faf4ab3250ce73af46858af74e9a51",
+            "nativeExportSha256": "20612d56cb8bfdc84ebe06eef149265b9f555e45f84be9f9b8fbe006914099c9",
+            "worksheetId": "ms-g9-tra-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "793ef32a92644328812a1834556855fb",
+            "pdfSha256": "48d0d3edcb03c1fa5d5e543226c6e668098db659b984adb7e198f36e3a2e0798",
+            "sourceSha256": "6175ea496a402c38dc0da5affb71d9deb64a4a55e0d2a634a7a54febd37b91aa",
+            "nativeExportSha256": "64754c17a5300cd33d204a6e58f840929533e35225e326a929a0e94ff9d81ef0",
+            "worksheetId": "ms-g9-tra-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "28b502be193be219046637c115d44786f65c1bc72eaf605fd4b0d885d5384aca",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "דפי עבודה על שטח משולש לכיתה ט׳: בחירת בסיס וגובה, נוסחת שטח ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "דפי עבודה על שטח משולש לכיתה ט׳: בחירת בסיס וגובה, נוסחת שטח ותרגול בשלוש רמות. דפים חינמיים להדפסה עם תשובות."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            8,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "בוחרים רמת תרגול ומורידים דף להדפסה. במהדורות הקודמות שנפתחות עם רמזי אפשר לקבל רמז ליד סעיף שמופיע בו כפתור."
+        },
+        {
+          "path": [
+            "sections",
+            2,
+            "blocks",
+            1,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "בוחרים רמת תרגול ומורידים דף להדפסה. במהדורות הקודמות שנפתחות עם רמזי אפשר לקבל רמז ליד סעיף שמופיע בו כפתור."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "דפי עבודה על שטח משולש לכיתה ט׳: בחירת בסיס וגובה, נוסחת שטח ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "דפי עבודה על שטח משולש לכיתה ט׳: בחירת בסיס וגובה, נוסחת שטח ותרגול בשלוש רמות. דפים חינמיים להדפסה עם תשובות."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "דפי עבודה על שטח משולש לכיתה ט׳: בחירת בסיס וגובה, נוסחת שטח ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "דפי עבודה על שטח משולש לכיתה ט׳: בחירת בסיס וגובה, נוסחת שטח ותרגול בשלוש רמות. דפים חינמיים להדפסה עם תשובות."
+        }
+      ]
+    },
+    {
+      "number": 101,
+      "sheetId": "G9-PTA-01",
+      "grade": 9,
+      "topicId": 28,
+      "slug": "parallelogram-trapezoid-area-grade-9",
+      "producerPackage": "G9-T127",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "c9eb8ea91655838b9fab6642961710acd6c6aa75e8567dcc7c38417c798e9b50",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G9-PTA-01-r02-20261122/review.json",
+          "sha256": "b65d303a28ec9addac4395a45311521798a0a4e861637ea489d32dd2aed8e145",
+          "verdict": "PASS_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 6,
+          "items": 18,
+          "bytes": 58728,
+          "source": "submissions/Codex/MS-PROD-CODEX-101-r02/release/documents/G9-PTA-01/a/sheet.pdf",
+          "sha256": "ccc2d67ed7ccb5b723af0e110698672632728c551840dfefe781c362ddc74358",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_3218b33c4e34498097bbd3063341baab.pdf",
+              "status": 200,
+              "sha256": "ccc2d67ed7ccb5b723af0e110698672632728c551840dfefe781c362ddc74358",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_3218b33c4e34498097bbd3063341baab.pdf",
+              "status": 200,
+              "sha256": "ccc2d67ed7ccb5b723af0e110698672632728c551840dfefe781c362ddc74358",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 6,
+          "items": 18,
+          "bytes": 58736,
+          "source": "submissions/Codex/MS-PROD-CODEX-101-r02/release/documents/G9-PTA-01/b/sheet.pdf",
+          "sha256": "16d887016021291a9b9b7590e77369688abd2a6ca66fe1974bf56d1b6a482f98",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_d89ea84851f94427a54b75c6b659f7bd.pdf",
+              "status": 200,
+              "sha256": "16d887016021291a9b9b7590e77369688abd2a6ca66fe1974bf56d1b6a482f98",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_d89ea84851f94427a54b75c6b659f7bd.pdf",
+              "status": 200,
+              "sha256": "16d887016021291a9b9b7590e77369688abd2a6ca66fe1974bf56d1b6a482f98",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 6,
+          "items": 18,
+          "bytes": 59081,
+          "source": "submissions/Codex/MS-PROD-CODEX-101-r02/release/documents/G9-PTA-01/c/sheet.pdf",
+          "sha256": "a8d5be83ce6d37780b63317cfc58f464f2aed98055505004d103f1d3766dcdac",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_1251cb229f1c4d1da005ec4d2ad9e3fc.pdf",
+              "status": 200,
+              "sha256": "a8d5be83ce6d37780b63317cfc58f464f2aed98055505004d103f1d3766dcdac",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_1251cb229f1c4d1da005ec4d2ad9e3fc.pdf",
+              "status": 200,
+              "sha256": "a8d5be83ce6d37780b63317cfc58f464f2aed98055505004d103f1d3766dcdac",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "שטחים ב׳ חלק 1 — מקבילית וטרפז — לכיתה ט׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מבחינים בין צלע לגובה, מחשבים שטחי מקביליות וטרפזים ובודקים אילו שינויים במידות משמרים שטח. הדפים מותאמים לתוכנית המצומצמת לכיתה ט׳.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": null,
+      "priorPageSha256": "c821d27037f3f501276ab63649eb867847b2e5af0f91a0f8028c74d23b54b432",
+      "priorTopicSha256": "d5bc63d97c62100c82fa96174bad9342cc365ea58a4b39375ae32aa8afd85e62",
+      "edition": {
+        "grade": 9,
+        "topicId": 28,
+        "editionId": "ms-20261122-g9-pta-01-r1",
+        "label": "שטחים ב׳ חלק 1 — מקבילית וטרפז — לכיתה ט׳ · תוכנית מצומצמת · PDF",
+        "nativePrefix": "G9-T127",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "3218b33c4e34498097bbd3063341baab",
+            "pdfSha256": "ccc2d67ed7ccb5b723af0e110698672632728c551840dfefe781c362ddc74358",
+            "sourceSha256": "2d0e2d8549f9be495be64c3f872477942945059b70ccdf22a8a51973fa3989f8",
+            "nativeExportSha256": "262219c58e80bb9402772505be1a54a380ed85b6c56bfb77df165f42cbda8e9e",
+            "worksheetId": "ms-g9-pta-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "d89ea84851f94427a54b75c6b659f7bd",
+            "pdfSha256": "16d887016021291a9b9b7590e77369688abd2a6ca66fe1974bf56d1b6a482f98",
+            "sourceSha256": "8b51715da3beaf55e4c8d9fa2342ac17dfbabc74a0090d030d0e406b9592f430",
+            "nativeExportSha256": "ec280d6260b4fc266c2f93bff603e926cc5029d66a724de4f9da1ae7c0cac57d",
+            "worksheetId": "ms-g9-pta-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "1251cb229f1c4d1da005ec4d2ad9e3fc",
+            "pdfSha256": "a8d5be83ce6d37780b63317cfc58f464f2aed98055505004d103f1d3766dcdac",
+            "sourceSha256": "7e7522f86c336cc5dba3d7d296b710977af08a5b22d335b4eb611a67881749e8",
+            "nativeExportSha256": "5c9608886f190a8d2b227978ffa34c268f5ebd3712275db1a96c3ab15044df33",
+            "worksheetId": "ms-g9-pta-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "18e59d796b77dda124d3c869d08b6a623fae3a05fce4fc5ba49db9064b929ea2",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "דפי עבודה על שטח מקבילית וטרפז לכיתה ט׳: נוסחאות, בחירת בסיס וגובה ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "דפי עבודה על שטח מקבילית וטרפז לכיתה ט׳: נוסחאות, בחירת בסיס וגובה ותרגול בשלוש רמות. דפים חינמיים להדפסה עם תשובות."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            8,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "בוחרים רמת תרגול ומורידים דף להדפסה. במהדורות הקודמות שנפתחות עם רמזי אפשר לקבל רמז ליד סעיף שמופיע בו כפתור."
+        },
+        {
+          "path": [
+            "sections",
+            2,
+            "blocks",
+            1,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "בוחרים רמת תרגול ומורידים דף להדפסה. במהדורות הקודמות שנפתחות עם רמזי אפשר לקבל רמז ליד סעיף שמופיע בו כפתור."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "דפי עבודה על שטח מקבילית וטרפז לכיתה ט׳: נוסחאות, בחירת בסיס וגובה ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "דפי עבודה על שטח מקבילית וטרפז לכיתה ט׳: נוסחאות, בחירת בסיס וגובה ותרגול בשלוש רמות. דפים חינמיים להדפסה עם תשובות."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "דפי עבודה על שטח מקבילית וטרפז לכיתה ט׳: נוסחאות, בחירת בסיס וגובה ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "דפי עבודה על שטח מקבילית וטרפז לכיתה ט׳: נוסחאות, בחירת בסיס וגובה ותרגול בשלוש רמות. דפים חינמיים להדפסה עם תשובות."
+        }
+      ]
+    },
+    {
+      "number": 102,
+      "sheetId": "G9-CPA-01",
+      "grade": 9,
+      "topicId": 29,
+      "slug": "composite-polygons-area-grade-9",
+      "producerPackage": "G9-T128",
+      "studentRevision": "r03",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "d52a209d0e2dccccec7cfeff3b0d556f0adfdac8e70194b442fa9644550f67fc",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G9-CPA-01-r03-20261122/review.json",
+          "sha256": "f391e6c849a60acd810a8f35096ee3db91484b31acfd24a69659c59baefce135",
+          "verdict": "PASS_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 6,
+          "items": 18,
+          "bytes": 62690,
+          "source": "submissions/Codex/MS-PROD-CODEX-102-r03/release/documents/G9-CPA-01/a/sheet.pdf",
+          "sha256": "cc2f9c5fd329f5f7034cab49426bb30a4e5b5b7d572917119d5cf87ae9df1306",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_89031b6ae48d4639b9ff71729f2e8003.pdf",
+              "status": 200,
+              "sha256": "cc2f9c5fd329f5f7034cab49426bb30a4e5b5b7d572917119d5cf87ae9df1306",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_89031b6ae48d4639b9ff71729f2e8003.pdf",
+              "status": 200,
+              "sha256": "cc2f9c5fd329f5f7034cab49426bb30a4e5b5b7d572917119d5cf87ae9df1306",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 6,
+          "items": 18,
+          "bytes": 62351,
+          "source": "submissions/Codex/MS-PROD-CODEX-102-r03/release/documents/G9-CPA-01/b/sheet.pdf",
+          "sha256": "27f60ae225252df071d94d5c1740764f3e7db68b6d3014772f787b10ea54d40d",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_47183850b54f409ea925fb9c974d5d07.pdf",
+              "status": 200,
+              "sha256": "27f60ae225252df071d94d5c1740764f3e7db68b6d3014772f787b10ea54d40d",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_47183850b54f409ea925fb9c974d5d07.pdf",
+              "status": 200,
+              "sha256": "27f60ae225252df071d94d5c1740764f3e7db68b6d3014772f787b10ea54d40d",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 6,
+          "items": 18,
+          "bytes": 63061,
+          "source": "submissions/Codex/MS-PROD-CODEX-102-r03/release/documents/G9-CPA-01/c/sheet.pdf",
+          "sha256": "4774f32c778db6d3bb71daa9fecccfc21ea4fccf6822045a9ffc47d3de3c95d2",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_44ed6fb10fa949f792d6eae83b6bb1ab.pdf",
+              "status": 200,
+              "sha256": "4774f32c778db6d3bb71daa9fecccfc21ea4fccf6822045a9ffc47d3de3c95d2",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_44ed6fb10fa949f792d6eae83b6bb1ab.pdf",
+              "status": 200,
+              "sha256": "4774f32c778db6d3bb71daa9fecccfc21ea4fccf6822045a9ffc47d3de3c95d2",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "שטחים ב׳ חלק 2 — מצולעים מורכבים — לכיתה ט׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מפרקים מצולעים לצורות מוכרות או משלימים אותם למלבן. בודקים בנפרד כיצד שינוי במידות משפיע על השטח ועל ההיקף. הדפים מותאמים לתוכנית המצומצמת לכיתה ט׳.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": null,
+      "priorPageSha256": "03a670e8f606fc4eff486b4aa29f8d5d4b048a09680f44ea9803e664ade87499",
+      "priorTopicSha256": "7e2b5014818ac4371e284b91c8ef794f4e1fae7fa0d22dd001c752fee596a7a6",
+      "edition": {
+        "grade": 9,
+        "topicId": 29,
+        "editionId": "ms-20261122-g9-cpa-01-r1",
+        "label": "שטחים ב׳ חלק 2 — מצולעים מורכבים — לכיתה ט׳ · תוכנית מצומצמת · PDF",
+        "nativePrefix": "G9-T128",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "89031b6ae48d4639b9ff71729f2e8003",
+            "pdfSha256": "cc2f9c5fd329f5f7034cab49426bb30a4e5b5b7d572917119d5cf87ae9df1306",
+            "sourceSha256": "a7c420302905da7b7373a2846e6884ea3c7e022783c12c754236b1f9d9d0be8a",
+            "nativeExportSha256": "70e44e8c38ad3554c745bebcfa15effa6afc750ea6c5c58101922a8cb396af8b",
+            "worksheetId": "ms-g9-cpa-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "47183850b54f409ea925fb9c974d5d07",
+            "pdfSha256": "27f60ae225252df071d94d5c1740764f3e7db68b6d3014772f787b10ea54d40d",
+            "sourceSha256": "8d3a973de7e30d28d3312ccca41141c056b32d67a4b1c99e4b2d5766d58da217",
+            "nativeExportSha256": "9b0f66bbbc3fc38aa34b2765af302726557a791c358bf3e8e638971b954df53c",
+            "worksheetId": "ms-g9-cpa-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "44ed6fb10fa949f792d6eae83b6bb1ab",
+            "pdfSha256": "4774f32c778db6d3bb71daa9fecccfc21ea4fccf6822045a9ffc47d3de3c95d2",
+            "sourceSha256": "aa5d3aa8927cb2ea7ea745ead41615ca53ec80e72346bf617b6fd9816c567692",
+            "nativeExportSha256": "4ed9ab7df0d8e51d9634b3d58e1f746292b1d6570d9f0a271bb811b54e639880",
+            "worksheetId": "ms-g9-cpa-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "ba52d6097003f90dadf4aa5a16802617dc76a12aa8c7633ee072529cb58dfdf9",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "דפי עבודה על שטח מצולעים מורכבים לכיתה ט׳: פירוק צורות, חיבור וחיסור שטחים ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "דפי עבודה על שטח מצולעים מורכבים לכיתה ט׳: פירוק צורות, חיבור וחיסור שטחים ותרגול בשלוש רמות. דפים חינמיים להדפסה עם תשובות."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            8,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "בוחרים רמת תרגול ומורידים דף להדפסה. במהדורות הקודמות שנפתחות עם רמזי אפשר לקבל רמז ליד סעיף שמופיע בו כפתור."
+        },
+        {
+          "path": [
+            "sections",
+            2,
+            "blocks",
+            1,
+            "text"
+          ],
+          "before": "בדפי העבודה אפשר לבחור רמה, לפתוח את שלוש הרמות ולהיעזר ברמזים של נועם AI.",
+          "after": "בוחרים רמת תרגול ומורידים דף להדפסה. במהדורות הקודמות שנפתחות עם רמזי אפשר לקבל רמז ליד סעיף שמופיע בו כפתור."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "דפי עבודה על שטח מצולעים מורכבים לכיתה ט׳: פירוק צורות, חיבור וחיסור שטחים ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "דפי עבודה על שטח מצולעים מורכבים לכיתה ט׳: פירוק צורות, חיבור וחיסור שטחים ותרגול בשלוש רמות. דפים חינמיים להדפסה עם תשובות."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "דפי עבודה על שטח מצולעים מורכבים לכיתה ט׳: פירוק צורות, חיבור וחיסור שטחים ותרגול בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "דפי עבודה על שטח מצולעים מורכבים לכיתה ט׳: פירוק צורות, חיבור וחיסור שטחים ותרגול בשלוש רמות. דפים חינמיים להדפסה עם תשובות."
+        }
+      ]
+    },
+    {
+      "number": 105,
+      "sheetId": "G9-CPP-01",
+      "grade": 9,
+      "topicId": 32,
+      "slug": "coordinate-plane-applications-grade-9",
+      "producerPackage": "G9-T131",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "0e861d7d729ffa646d1f356b50fb6c4997aa0d25c2a6264256a7ca656763a614",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G9-CPP-01-r02-20261122/review.json",
+          "sha256": "76d3e1dc096b6421c50b6cdc26d16a506560fa40cbff274ac7c1075c18bf9790",
+          "verdict": "PASS_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 6,
+          "items": 18,
+          "bytes": 65723,
+          "source": "submissions/Codex/MS-PROD-CODEX-105-r02/release/documents/G9-CPP-01/a/sheet.pdf",
+          "sha256": "407a6a3235611539d0df7938ffe05d1bba66c2ffdb50fbf991c2713d4bf59d38",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_2294bb7ab4774380bcf83cf6d41d33e9.pdf",
+              "status": 200,
+              "sha256": "407a6a3235611539d0df7938ffe05d1bba66c2ffdb50fbf991c2713d4bf59d38",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_2294bb7ab4774380bcf83cf6d41d33e9.pdf",
+              "status": 200,
+              "sha256": "407a6a3235611539d0df7938ffe05d1bba66c2ffdb50fbf991c2713d4bf59d38",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 6,
+          "items": 18,
+          "bytes": 66050,
+          "source": "submissions/Codex/MS-PROD-CODEX-105-r02/release/documents/G9-CPP-01/b/sheet.pdf",
+          "sha256": "c6ffc1b03a9511e46e15f20c62320d59c19dfc6c327bd40da8da9855a0b4ba9c",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ffc9156b3d0b4ed68540d6201d0819c9.pdf",
+              "status": 200,
+              "sha256": "c6ffc1b03a9511e46e15f20c62320d59c19dfc6c327bd40da8da9855a0b4ba9c",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_ffc9156b3d0b4ed68540d6201d0819c9.pdf",
+              "status": 200,
+              "sha256": "c6ffc1b03a9511e46e15f20c62320d59c19dfc6c327bd40da8da9855a0b4ba9c",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 6,
+          "items": 18,
+          "bytes": 66640,
+          "source": "submissions/Codex/MS-PROD-CODEX-105-r02/release/documents/G9-CPP-01/c/sheet.pdf",
+          "sha256": "735052e7c5d8f0c3ad1d3dd52fb01243e9fe0119b6ac09fa77813633acf22367",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_e44bc4ab1353438d83cc832b55c151c2.pdf",
+              "status": 200,
+              "sha256": "735052e7c5d8f0c3ad1d3dd52fb01243e9fe0119b6ac09fa77813633acf22367",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_e44bc4ab1353438d83cc832b55c151c2.pdf",
+              "status": 200,
+              "sha256": "735052e7c5d8f0c3ad1d3dd52fb01243e9fe0119b6ac09fa77813633acf22367",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "הרחבת מערכת הצירים חלק 2 — יישום והעמקה — לכיתה ט׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "קוראים שיעורי נקודות במערכת הצירים ומחשבים מידות ושטחים בעזרת הפרשי השיעורים. הדפים מותאמים לתוכנית המצומצמת לכיתה ט׳.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": null,
+      "priorPageSha256": "cc1f5672fbf9e57622ba89bdc68e25864bf5344ce2991993131e9163912a019a",
+      "priorTopicSha256": "831871d30d978290131cd80e26c97801e1bae94ae5ddc4b942e0a3e39d93ebad",
+      "edition": {
+        "grade": 9,
+        "topicId": 32,
+        "editionId": "ms-20261122-g9-cpp-01-r1",
+        "label": "הרחבת מערכת הצירים חלק 2 — יישום והעמקה — לכיתה ט׳ · תוכנית מצומצמת · PDF",
+        "nativePrefix": "G9-T131",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "2294bb7ab4774380bcf83cf6d41d33e9",
+            "pdfSha256": "407a6a3235611539d0df7938ffe05d1bba66c2ffdb50fbf991c2713d4bf59d38",
+            "sourceSha256": "9c0544197ec5d06cbb9598b0049c4672a8fcb9aef6a07d59824455f4362fb965",
+            "nativeExportSha256": "5f78288aed280364ab3028072b61cd53b5e41cdbfccf71c65b18754db13bfd3e",
+            "worksheetId": "ms-g9-cpp-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "ffc9156b3d0b4ed68540d6201d0819c9",
+            "pdfSha256": "c6ffc1b03a9511e46e15f20c62320d59c19dfc6c327bd40da8da9855a0b4ba9c",
+            "sourceSha256": "6c4377d9aaa7dc28d745bb2e6094380fa095eb761c7d374983e35df95bfc964a",
+            "nativeExportSha256": "03bac646899b8c30b93f75ee5d52ed48d6412c6af5ff378066d8e841ed0a3d41",
+            "worksheetId": "ms-g9-cpp-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "e44bc4ab1353438d83cc832b55c151c2",
+            "pdfSha256": "735052e7c5d8f0c3ad1d3dd52fb01243e9fe0119b6ac09fa77813633acf22367",
+            "sourceSha256": "86ed2bb19a30155cb575900028b49a36e462e27f2e7a9f4bff7c9ac673ad0a19",
+            "nativeExportSha256": "2ea83af93b48fa9c0f5a93feedb5a2a252348896953e9936f6152b2ec660129e",
+            "worksheetId": "ms-g9-cpp-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "b5ee278ef34d55e485a66a8a82fe9ef333f17458be5a8c41175f81b79f6e4fe4",
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "דפי עבודה במערכת הצירים לכיתה ט׳: קריאת נקודות, חישוב אורכים ותכונות צורות. שלוש רמות תרגול חינמיות, דוגמה ורמזי נועם AI.",
+          "after": "דפי עבודה במערכת הצירים לכיתה ט׳: קריאת נקודות, חישוב אורכים ותכונות צורות. דוגמה ודפי תרגול חינמיים בשלוש רמות עם תשובות."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            8,
+            "text"
+          ],
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמז לכל סעיף שיש לצדו כפתור."
+        },
+        {
+          "path": [
+            "sections",
+            2,
+            "blocks",
+            1,
+            "text"
+          ],
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "בדפים הקודמים שנפתחים עם רמזי אפשר לקבל רמז לכל סעיף שיש לצדו כפתור."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "דפי עבודה במערכת הצירים לכיתה ט׳: קריאת נקודות, חישוב אורכים ותכונות צורות. שלוש רמות תרגול חינמיות, דוגמה ורמזי נועם AI.",
+          "after": "דפי עבודה במערכת הצירים לכיתה ט׳: קריאת נקודות, חישוב אורכים ותכונות צורות. דוגמה ודפי תרגול חינמיים בשלוש רמות עם תשובות."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "דפי עבודה במערכת הצירים לכיתה ט׳: קריאת נקודות, חישוב אורכים ותכונות צורות. שלוש רמות תרגול חינמיות, דוגמה ורמזי נועם AI.",
+          "after": "דפי עבודה במערכת הצירים לכיתה ט׳: קריאת נקודות, חישוב אורכים ותכונות צורות. דוגמה ודפי תרגול חינמיים בשלוש רמות עם תשובות."
+        }
+      ]
+    },
+    {
+      "number": 106,
+      "sheetId": "G9-EQT-01",
+      "grade": 9,
+      "topicId": 22,
+      "slug": "equilateral-triangle-grade-9",
+      "producerPackage": "G9-T132",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3-noam.claude",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "02667001dc7a45f97f774cf131258236450b6e7960bd458d7758e181d1760c1b",
+      "reviewReceipts": [
+        {
+          "name": "Independent review of the frozen student PDFs",
+          "path": "reports/CODEX-INDEPENDENT-G9-EQT-01-r02-20261122/review.json",
+          "sha256": "9021d3fa1e24b3fece37c4172317d96ef6117e51947b487f8465098ba42c507e",
+          "verdict": "PASS_PDF_ONLY"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 6,
+          "items": 18,
+          "bytes": 58079,
+          "source": "submissions/Codex/MS-PROD-CODEX-106-r02/release/documents/G9-EQT-01/a/sheet.pdf",
+          "sha256": "f2dec9ea4e4e0a67156ba06e45f38d3005f3e13aad2a822bcd3c0219c6deccc6",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c2d6c79bbd0741329d05c1bc440fa407.pdf",
+              "status": 200,
+              "sha256": "f2dec9ea4e4e0a67156ba06e45f38d3005f3e13aad2a822bcd3c0219c6deccc6",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_c2d6c79bbd0741329d05c1bc440fa407.pdf",
+              "status": 200,
+              "sha256": "f2dec9ea4e4e0a67156ba06e45f38d3005f3e13aad2a822bcd3c0219c6deccc6",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 6,
+          "items": 18,
+          "bytes": 58044,
+          "source": "submissions/Codex/MS-PROD-CODEX-106-r02/release/documents/G9-EQT-01/b/sheet.pdf",
+          "sha256": "69925eceaf71abe61c587664a3c7a3f5c63e285cc684aa010173708886c9d83e",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_890d861b53e5444ca4f9901cc395157f.pdf",
+              "status": 200,
+              "sha256": "69925eceaf71abe61c587664a3c7a3f5c63e285cc684aa010173708886c9d83e",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_890d861b53e5444ca4f9901cc395157f.pdf",
+              "status": 200,
+              "sha256": "69925eceaf71abe61c587664a3c7a3f5c63e285cc684aa010173708886c9d83e",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 6,
+          "items": 18,
+          "bytes": 58839,
+          "source": "submissions/Codex/MS-PROD-CODEX-106-r02/release/documents/G9-EQT-01/c/sheet.pdf",
+          "sha256": "166ba90a66c7fe24d34033b6bf1aef8a336cc8e5be59c6c93dcf3d26e12388d0",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_06601c9fbbe846438df5c322225b123e.pdf",
+              "status": 200,
+              "sha256": "166ba90a66c7fe24d34033b6bf1aef8a336cc8e5be59c6c93dcf3d26e12388d0",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_06601c9fbbe846438df5c322225b123e.pdf",
+              "status": 200,
+              "sha256": "166ba90a66c7fe24d34033b6bf1aef8a336cc8e5be59c6c93dcf3d26e12388d0",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "משולש שווה־צלעות — העמקה ורשות — לכיתה ט׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "משתמשים בגובה במשולש שווה־צלעות כדי לזהות משולשים ישרי־זווית וליישם את משפט הניצב שמול זווית של 30° ואת המשפט ההפוך. הדפים מותאמים לתוכנית הרגילה לכיתה ט׳.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו דף ברמה א׳, ברמה ב׳ או במצוינות. בסוף כל דף מופיעות התשובות הסופיות.",
+            "links": []
+          }
+        ]
+      },
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "904d569aa878ea81c44e7d790a01d4e2669a70aab69c71a834d7ae61a2fd2cc3",
+      "priorTopicSha256": "3d8f60c3f14212c17ee320ce0d47a9115220373217c63beda634da9d5b83a793",
+      "edition": {
+        "grade": 9,
+        "topicId": 22,
+        "editionId": "ms-20261122-g9-eqt-01-r1",
+        "label": "משולש שווה־צלעות — העמקה ורשות — לכיתה ט׳ · תוכנית רגילה · PDF",
+        "nativePrefix": "G9-T132",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "c2d6c79bbd0741329d05c1bc440fa407",
+            "pdfSha256": "f2dec9ea4e4e0a67156ba06e45f38d3005f3e13aad2a822bcd3c0219c6deccc6",
+            "sourceSha256": "8972ddcaaaa150e2a5f1c49c4a92280386868708b2c9c29fee8eb9fd4617f3a4",
+            "nativeExportSha256": "e2af47d036a8c8a224830de091aa01ae9fc156ad73f72910d90382b5cbe0d150",
+            "worksheetId": "ms-g9-eqt-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "890d861b53e5444ca4f9901cc395157f",
+            "pdfSha256": "69925eceaf71abe61c587664a3c7a3f5c63e285cc684aa010173708886c9d83e",
+            "sourceSha256": "463545dbd9a89461b947f727227c60e8460e4b16a42151d679a208c7fb39bbbc",
+            "nativeExportSha256": "dc320ad0a05391c6bbfde4b4fbe4a5643ae12fc49d596b84da1d34c5fd1bbae5",
+            "worksheetId": "ms-g9-eqt-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "06601c9fbbe846438df5c322225b123e",
+            "pdfSha256": "166ba90a66c7fe24d34033b6bf1aef8a336cc8e5be59c6c93dcf3d26e12388d0",
+            "sourceSha256": "647017388494ffb38e8815be3cd23ac29be1b88573c36784fa0c162f7c009a10",
+            "nativeExportSha256": "e59751186c5f97a7abb4ce324bb467b1035379d359e743e55971ee9db95051eb",
+            "worksheetId": "ms-g9-eqt-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "5c2cd3549f6744878230d6d0a38e7fa092728f3d1efbb567d66065c8f3a4ffbe"
+    }
+  ]
+}
