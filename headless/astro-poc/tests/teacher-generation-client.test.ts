@@ -21,7 +21,7 @@ const generalCapabilities={profile:'general-skill-source/v1',curriculumSha256:GE
 type Quota = {dailyLimit:number|null;remainingToday:number|null;resetsAt:string};
 type Reply = { ok?: boolean; status?: number; body?: any; error?: Error };
 
-function harness(options: { quota?: Quota; online?: boolean; waking?: boolean; jobs?: any[]; captcha?: boolean; emptyCapabilities?: boolean; general?: boolean; catalogMismatch?: boolean; firstHealth?: Promise<Reply>; storage?: Map<string,string>; owner?: string } = {}) {
+function harness(options: { quota?: Quota; online?: boolean; waking?: boolean; jobs?: any[]; history?: any[]; jobDetails?: Record<string,Reply>; captcha?: boolean; emptyCapabilities?: boolean; general?: boolean; catalogMismatch?: boolean; firstHealth?: Promise<Reply>; storage?: Map<string,string>; owner?: string } = {}) {
   const { document, window } = parseHTML(`<!doctype html><html><head></head><body>${markup}</body></html>`);
   const form = document.getElementById('generation-form') as any;
   form.dataset.draftOwner=options.owner ?? '00000000-0000-4000-8000-000000000001';
@@ -64,6 +64,8 @@ function harness(options: { quota?: Quota; online?: boolean; waking?: boolean; j
   class LocalDate extends Date { static now() { return now; } }
   const timers = new Map<number, { callback: () => unknown; delay: number }>();
   const calls: { url: string; init: any }[] = [], posts: any[] = [], pendingReplies: Reply[] = [], pendingReads: Reply[] = [];
+  let history=options.history || [];
+  const jobDetails=options.jobDetails || {};
   let quota=options.quota;
   let tokenPromise: Promise<string> | null = null, firstHealth=options.firstHealth;
   const verification = { ready: (cb: () => void) => cb(), execute: () => tokenPromise || Promise.resolve('local-verification-token') };
@@ -72,6 +74,12 @@ function harness(options: { quota?: Quota; online?: boolean; waking?: boolean; j
     calls.push({ url, init });
     if(url==='/teachers/generation-curriculum.json')return {ok:true,arrayBuffer:async()=>Uint8Array.from(options.catalogMismatch?Buffer.from('{}'):catalogBytes).buffer};
     if (url === '/api/noamBotConfig') return { ok: true, json: async () => ({ ok: true, active: true, siteKey: 'K'.repeat(40) }) };
+    if(url.startsWith('/api/teacherGeneration?id=')) {
+      const id=new URL(url,'https://teachers.example').searchParams.get('id')!;
+      const reply=jobDetails[id] ?? {ok:false,status:404,body:{ok:false,code:'JOB_NOT_FOUND'}};
+      if(reply.error)throw reply.error;
+      return {ok:reply.ok ?? true,status:reply.status ?? 200,json:async()=>reply.body};
+    }
     assert.equal(url, '/api/teacherGeneration', 'all requests are intercepted locally');
     if (init.method === 'POST') {
       posts.push(JSON.parse(init.body));
@@ -82,7 +90,7 @@ function harness(options: { quota?: Quota; online?: boolean; waking?: boolean; j
     const initial=firstHealth;firstHealth=undefined;
     const reply = initial ? await initial : pendingReads.shift() || {};
     if (reply.error) throw reply.error;
-    return { ok: reply.ok ?? true, status:reply.status, json: async () => reply.body || ({ ok: true, online, waking, quota, jobs: structuredClone(jobs), capabilities: options.general?{...generalCapabilities,topics:emptyCapabilities?[]:generalCapabilities.topics}:{ acceptedIntakeVersions:[2],topics: emptyCapabilities ? [] : [topic, middle, disabled] } }) };
+    return { ok: reply.ok ?? true, status:reply.status, json: async () => reply.body || ({ ok: true, online, waking, quota, history: structuredClone(history), jobs: structuredClone(jobs), capabilities: options.general?{...generalCapabilities,topics:emptyCapabilities?[]:generalCapabilities.topics}:{ acceptedIntakeVersions:[2],topics: emptyCapabilities ? [] : [topic, middle, disabled] } }) };
   };
   vm.runInNewContext(shipped, {
     document, window:browserWindow, URL, TextDecoder, fetch: fetchLocal, crypto: { subtle:webcrypto.subtle,randomUUID: () => `00000000-0000-4000-8000-${String(++uuid).padStart(12, '0')}` },
@@ -100,6 +108,7 @@ function harness(options: { quota?: Quota; online?: boolean; waking?: boolean; j
   const field = (name: string) => fields.get(name) as any;
   const dispatch = async (el: any, type: string) => { el.dispatchEvent(new window.Event(type, { bubbles: true, cancelable: true })); await flush(); };
   return { document, window, form, field, element, calls, posts, navigations, pendingReplies, pendingReads, timers, flush, dispatch, focused: () => focused,
+    setHistory(value: any[]) { history=value; },
     setQuota(value: Quota) { quota=value; },
     setOnline(value: boolean) { online = value; }, setJobs(value: any[]) { jobs = value; },
     setWaking(value: boolean) { waking = value; }, advance(ms: number) { now += ms; },
@@ -205,8 +214,9 @@ test('a lost POST receipt reconciles the owner job; return opens its history wit
  const key=JSON.parse([...storage.values()][0]).requestKey;
  const job={id:'10000000-0000-4000-8000-000000000001',request_key:key,status:'running',phase:'authoring',created_at:new Date().toISOString(),lesson:{topicId:'ג10'}};
  app.setJobs([job]);app.pendingReplies.push({error:new Error('reply lost')});await app.click('create-button');
- assert.equal(app.posts.length,1);assert.equal(app.element('generation-history').open,true);assert.match(app.element('generation-status').textContent,/מכינים את השאלות/);
- const restored=harness({storage,jobs:[{...job,status:'needs_review',phase:'needs_review',result:{automatedChecksPassed:true}}]});await restored.flush();
+ assert.equal(app.posts.length,1);assert.equal(Boolean(app.element('generation-history').open),false);assert.match(app.element('generation-status').textContent,/מכינים את השאלות/);
+ const completed={...job,status:'needs_review',phase:'needs_review',result:{automatedChecksPassed:true}};
+ const restored=harness({storage,jobs:[completed],history:[{...completed,formats:['pdf','docx']}]});await restored.flush();
  assert.equal(restored.element('generation-history').open,true);assert.ok(restored.element('generation-jobs').querySelector('a'));assert.equal(restored.element('create-button').hidden,true);
  assert.equal(restored.posts.length,0);await restored.click('new-generation');assert.equal(storage.size,0);
 });
@@ -314,7 +324,7 @@ test('cold wake polls only health for at most90 seconds, then requires explicit 
 
 test('first cloud heartbeat populates previously missing capabilities without hiding completed downloads', async () => {
   const jobs = [{ id: 'completed', status: 'needs_review', phase: 'needs_review', created_at: '2026-11-14T00:00:00Z', lesson: {}, result: { automatedChecksPassed: true } }];
-  const app = harness({ online: false, waking: true, emptyCapabilities: true, jobs }); await app.flush();
+  const app = harness({ online: false, waking: true, emptyCapabilities: true, jobs, history:[{...jobs[0],formats:['pdf','docx']}] }); await app.flush();
   app.field('gradeNumber').value = '3'; await app.dispatch(app.field('gradeNumber'), 'change');
   assert.equal(app.field('topicId').disabled, false);
   assert.equal(app.document.querySelectorAll('a.download').length, 2);
@@ -411,7 +421,8 @@ test('one failed poll recovers with a bounded GET retry and never enqueues again
   const app = harness({ jobs: [active] }); await app.flush();
   app.pendingReads.push({ error: new Error('Transient local poll failure') }); await app.poll();
   assert.equal(app.element('refresh-generation').hidden, false); assert.equal(app.element('create-button').disabled, true);
-  app.setJobs([{ ...active, status: 'needs_review', result: { automatedChecksPassed: true } }]);
+  const completed={...active,status:'needs_review',result:{automatedChecksPassed:true}};
+  app.setJobs([completed]); app.setHistory([{...completed,formats:['pdf','docx']}]);
   assert.equal(await app.nextRetry(), 2000);
   assert.equal(app.element('edit-plan').disabled, false); assert.equal(app.document.querySelectorAll('#generation-jobs a').length, 2);
   assert.equal(app.posts.length, 0);
@@ -444,17 +455,18 @@ test('completion unlocks editing and exposes only gated PDF/Word download links'
   const active = { id: 'job&one', status: 'running', phase: 'rendering', created_at: '2026-11-12T00:00:00Z', lesson: { topicId: 'ג10', lastLesson: 'לוח הכפל' } };
   const app = harness({ jobs: [active] }); await app.flush();
   assert.equal(app.element('create-button').disabled, true);
-  app.setJobs([{ ...active, status: 'needs_review', phase: 'needs_review', result: { automatedChecksPassed: true } }]); await app.poll();
+  const completed={...active,status:'needs_review',phase:'needs_review',result:{automatedChecksPassed:true}};
+  app.setJobs([completed]);app.setHistory([{...completed,formats:['pdf','docx']}]); await app.poll();
   assert.equal(app.element('edit-plan').disabled, false);
   const links = [...app.document.querySelectorAll('#generation-jobs a')];
   assert.equal(links.length, 2); assert.equal(links[0].getAttribute('href'), '/api/teacherGeneration?id=job%26one&file=pdf');
-  app.setJobs([{ ...active, status: 'needs_review', result: { automatedChecksPassed: false } }]); await app.visible();
+  app.setHistory([]);app.setJobs([{ ...active, status: 'needs_review', result: { automatedChecksPassed: false } }]); await app.visible();
   assert.equal(app.document.querySelectorAll('#generation-jobs a').length, 0);
 });
 
 test('history and plan treat model/user strings as text, never HTML', async () => {
   const attack = '<img src=x onerror="globalThis.pwned=true"><script>evil()</script>';
-  const app = harness({ jobs: [{ id: 'safe', status: 'failed', created_at: '2026-11-12T00:00:00Z', lesson: { lastLesson: attack } }] });
+  const app = harness({ history: [{ id: 'safe', status: 'needs_review', formats:['docx'], result:{automatedChecksPassed:true}, created_at: '2026-11-12T00:00:00Z', lesson: { lastLesson: attack } }] });
   await app.flush(); await app.choose(); app.field('lastLesson').value = attack; await app.submit();
   assert.equal(app.document.querySelectorAll('img,script').length, 0);
   assert.ok(app.element('generation-jobs').textContent.includes(attack)); assert.ok(app.element('plan-details').textContent.includes(attack));
@@ -512,7 +524,7 @@ test('back preserves input while changing grade clears dependent choices and use
   assert.equal(app.posts.length, 0);
 });
 
-test('optional invalid details open before focus and history stays compact until a current job is active', async () => {
+test('optional invalid details open before focus and an active job keeps the download gallery compact', async () => {
   const old = { id: 'old', status: 'needs_review', phase: 'needs_review', created_at: '2026-11-12T00:00:00Z', lesson: {}, result: { automatedChecksPassed: true } };
   const app = harness({ jobs: [old] }); await app.flush(); await app.choose();
   assert.equal(app.element('generation-history').hasAttribute('open'), false);
@@ -520,7 +532,7 @@ test('optional invalid details open before focus and history stays compact until
   assert.equal(app.element('lesson-options').open, true); assert.equal(app.form.hidden, false);
   app.field('minutes').value = '30'; await app.submit();
   app.setJobs([{ ...old, id: 'current', status: 'running', phase: 'authoring' }, old]); await app.click('create-button');
-  assert.equal(app.element('generation-history').open, true);
+  assert.equal(Boolean(app.element('generation-history').open), false);
   assert.equal(app.posts.length, 1);
 });
 
@@ -599,11 +611,11 @@ test('catalog tampering and revoked owner access fail closed before any creation
 test('general review drafts disclose human review and never expose a failed output as downloadable',async()=>{
  const result={authoringProfile:'general-skill-source/v1',automatedChecksPassed:false,renderingChecksPassed:true,humanReviewRequired:true,checks:[{status:'PASS'},{status:'REVIEW'}]};
  const job={id:'review-draft',status:'needs_review',created_at:'2026-11-16T00:00:00Z',lesson:{topicId:'g8:congruence'},result};
- const app=harness({general:true,jobs:[job]});await app.flush();
+ const app=harness({general:true,jobs:[job],history:[{...job,formats:['pdf','docx']}]});await app.flush();
  assert.equal(app.document.querySelectorAll('a.download').length,2);assert.match(app.element('generation-jobs').textContent,/ההסברים או ההוכחות דורשים בדיקה שלך/);
  assert.doesNotMatch(app.element('generation-jobs').textContent,/הבדיקות האוטומטיות עברו/);
  for(const change of [{checks:[{status:'FAIL'}]},{checks:[]},{renderingChecksPassed:false},{automatedChecksPassed:true,checks:[{status:'FAIL'}]}]) {
-  app.setJobs([{...job,result:{...result,...change}}]);await app.visible();assert.equal(app.document.querySelectorAll('a.download').length,0);
+  app.setHistory([{...job,formats:['pdf','docx'],result:{...result,...change}}]);await app.visible();assert.equal(app.document.querySelectorAll('a.download').length,0);
  }
 });
 
@@ -617,26 +629,59 @@ test('punctuation aliases share one explicit choice while preserving every selec
  assert.deepEqual(app.posts[0].lesson.lessonBoundary.conceptIds,JSON.parse(group.dataset.conceptIds));
 });
 
-test('returning to the tab shows the recorded failure reason in history without resubmitting',async()=>{
- const app=harness();await app.flush();
+test('failed current requests show their reason outside the download history without resubmitting',async()=>{
  const cases=[
   ['SOURCE_SHAPE','התוכן שנוצר לא עבר את בדיקות הדף'],
-  ['SOURCE_RICH_TEXT','התוכן שנוצר לא עבר את בדיקות הדף'],
+  ['SOURCE_PLAIN_MATH','ביטוי מתמטי בתוך טקסט רגיל'],
+  ['SOURCE_NOTATION','סימון מתמטי שגוי או לא נתמך'],
+  ['SOURCE_RICH_TEXT','מבנה הטקסט בטיוטה'],
   ['PROVIDER_UNAVAILABLE','שירות הכנת השאלות לא היה זמין'],
   ['WORKER_INTERRUPTED','עיבוד הדף בשרת נפסק'],
   ['unexpected private detail','הטיוטה לא הושלמה']
  ];
- const jobs=cases.map(([error_code],index)=>({id:'prior-'+index,status:'failed',phase:'authoring',error_code,
-  created_at:'2026-11-22T05:00:00Z',lesson:{}}));
- app.setJobs(jobs);await app.visible();
- const cards=Array.from(app.element('generation-jobs').querySelectorAll('article')) as HTMLElement[];
- assert.equal(cards.length,cases.length);
- for(const [index,card] of cards.entries()){
-  const [code,reason]=cases[index];
-  assert.match(card.textContent || '',/היצירה נעצרה בשרת/);
-  assert.ok(card.textContent?.includes(reason));
-  assert.ok(!card.textContent?.includes(code));
-  assert.equal(card.querySelector('a.download'),null);
+ for(const [error_code,reason] of cases){
+  const job={id:'10000000-0000-4000-8000-000000000001',status:'running',phase:'authoring',created_at:'2026-11-22T05:00:00Z',lesson:{}};
+  const app=harness({jobs:[job]});await app.flush();
+  app.setJobs([{...job,status:'failed',error_code}]);await app.poll();
+  assert.ok(app.element('generation-status').textContent.includes(reason));
+  assert.ok(!app.element('generation-status').textContent.includes(error_code));
+  if(error_code.startsWith('SOURCE_'))assert.match(app.element('generation-status').textContent,/אפשר לשלוח בקשה חדשה לאותו שיעור/);
+  assert.equal(app.element('generation-jobs').children.length,0);
+  assert.equal(app.element('history-empty').hidden,false);
+  assert.equal(Boolean(app.element('generation-history').open),false);
+  assert.equal(app.posts.length,0);
  }
- assert.equal(app.posts.length,0);
+});
+
+test('only storage-confirmed formats appear in history, independently of recent activity',async()=>{
+ const base={created_at:'2026-11-20T00:00:00Z',lesson:{topicId:'ג10'},status:'needs_review',result:{automatedChecksPassed:true}};
+ const jobs=[{...base,id:'running',status:'running'},{...base,id:'failed',status:'failed'},{...base,id:'no-files'}];
+ const history=[{...base,id:'pdf-only',formats:['pdf']},{...base,id:'word-only',formats:['docx']}];
+ const app=harness({jobs,history});await app.flush();
+ const links=Array.from(app.document.querySelectorAll('#generation-jobs a'),link=>link.getAttribute('href'));
+ assert.deepEqual(links,['/api/teacherGeneration?id=pdf-only&file=pdf','/api/teacherGeneration?id=word-only&file=docx']);
+ assert.equal(app.element('generation-jobs').children.length,2);
+ app.setHistory([{...base,id:'empty',formats:[]},{...base,id:'incorrect',formats:['zip']},{...base,id:'queued',status:'queued',formats:['pdf']}]);await app.visible();
+ assert.equal(app.element('history-empty').hidden,false);assert.equal(app.element('generation-jobs').children.length,0);
+});
+
+test('a saved job outside recent activity recovers by its owner-scoped ID; 404 and revoked access stop polling',async()=>{
+ const id='10000000-0000-4000-8000-000000000003';
+ const key='20000000-0000-4000-8000-000000000003';
+ const job={id,request_key:key,lesson:{topicId:'ג10'},status:'running',phase:'authoring',created_at:'2026-11-20T00:00:00Z'};
+ const storage=new Map<string,string>(),prior=harness({jobs:[job],storage});await prior.flush();
+ const outside=Array.from({length:20},(_,i)=>({...job,id:'other-'+i,request_key:'other-key-'+i,status:'failed'}));
+ const cases=[
+  {detail:{body:{ok:true,job:{...job,status:'failed',error_code:'PROVIDER_UNAVAILABLE'}}},message:/שירות הכנת השאלות/},
+  {detail:{ok:false,status:404,body:{ok:false,code:'JOB_NOT_FOUND'}},message:/השמורה אינה זמינה/},
+  {detail:{ok:false,status:403,body:{ok:false,code:'TEACHER_ACCESS_DENIED'}},message:/זמינה רק לנועם/},
+  {detail:{ok:false,status:401,body:{ok:false,error:'Unauthorized'}},message:/להתחבר שוב/}
+ ];
+ for(const entry of cases){
+  const app=harness({storage:new Map(storage),jobs:outside,jobDetails:{[id]:entry.detail}});await app.flush();
+  assert.equal(app.calls.filter(c=>c.url==='/api/teacherGeneration?id='+id).length,1);
+  assert.match(app.element('generation-status').textContent,entry.message);
+  assert.equal(app.timers.size,0);assert.equal(app.posts.length,0);
+  assert.equal(Boolean(app.element('generation-history').open),false);
+ }
 });

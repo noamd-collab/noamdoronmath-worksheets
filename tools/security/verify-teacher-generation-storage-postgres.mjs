@@ -109,4 +109,56 @@ try {
     assert.equal((await db.query("select has_function_privilege('anon','public.noam_teacher_generation_draft_downloadable(jsonb)','EXECUTE') as value")).rows[0].value,false);
     assert.equal((await db.query("select has_table_privilege('authenticated','public.noam_teacher_generation_jobs','UPDATE') as value")).rows[0].value,false);
   });
+  await db.exec(await readFile(path.join(root,'supabase/migrations/20261122050000_teacher_generation_created_worksheets.sql'),'utf8'));
+  const history=async()=> (await db.query('select * from public.noam_teacher_created_worksheets()')).rows;
+  await test('worksheet history runs under the authenticated caller and retains the private bucket and job boundaries',async()=>{
+    const signature='public.noam_teacher_created_worksheets()';
+    const fn=(await db.query('select prosecdef,provolatile,proconfig from pg_proc where oid=$1::regprocedure',[signature])).rows[0];
+    assert.equal(fn.prosecdef,false);assert.equal(fn.provolatile,'s');assert.deepEqual(fn.proconfig,['search_path=""']);
+    for(const role of ['anon','authenticated','service_role']){
+      const grant=(await db.query("select has_function_privilege($1,$2,'EXECUTE') as allowed",[role,signature])).rows[0];
+      assert.equal(grant.allowed,role==='authenticated',role);
+    }
+    await assert.rejects(asRole('anon',jwt(),history),/permission denied/);
+    for(const claims of [jwt(stranger),jwt(owner,'email'),jwt(owner,'google',true),{}]){
+      assert.deepEqual(await asRole('authenticated',claims,history),[]);
+    }
+  });
+  await test('history returns the newest 20 real drafts with only exact surviving formats, before and after newer failed requests',async()=>{
+    const jobId=n=>'30000000-0000-4000-8000-'+String(n).padStart(12,'0');
+    const lesson={topicId:'fixture-topic',lastLesson:'Fixture lesson',classContext:'Exclude from history'};
+    async function addJob(n,status,result,day) {
+      await db.query(`insert into public.noam_teacher_generation_jobs(id,owner_id,request_key,request_hash,lesson,status,phase,result,created_at)
+        values($1,$2,$1,repeat('b',64),$3,$4,$4,$5,$6)`,[jobId(n),owner,JSON.stringify(lesson),status,result===null?null:JSON.stringify(result),day]);
+    }
+    async function addObject(n,filename,targetBucket=bucket,folderOwner=owner) {
+      await db.query('insert into storage.objects(bucket_id,name) values($1,$2)',[targetBucket,`${folderOwner}/${jobId(n)}/${filename}`]);
+    }
+    const legacy={automatedChecksPassed:true};
+    for(let n=1;n<=22;n++){
+      await addJob(n,'needs_review',n===22?{...draft,privateWorkerDetail:'omit'}:legacy,'2021-01-01');
+      if(n!==21)await addObject(n,'sheet.pdf');
+      if(n!==20)await addObject(n,'sheet.docx');
+    }
+    // A later date must win over a higher ID; equal dates are ordered by ID.
+    await addJob(0,'needs_review',legacy,'2021-01-02');await addObject(0,'sheet.pdf');
+    const expectedIds=[0,...Array.from({length:19},(_,i)=>22-i)].map(jobId);
+    const first=await asRole('authenticated',jwt(),history);
+    assert.deepEqual(first.map(r=>r.id),expectedIds);
+    assert.deepEqual(first.slice(0,4).map(r=>r.formats),[['pdf'],['pdf','docx'],['docx'],['pdf']]);
+    assert.deepEqual(first[0].result,legacy);
+    assert.deepEqual(first[1].result,draft);
+    assert.deepEqual(first[0].lesson,{topicId:lesson.topicId,lastLesson:lesson.lastLesson});
+    assert.deepEqual(Object.keys(first[0]).sort(),['created_at','formats','id','lesson','phase','result','status']);
+    // A worker receipt alone cannot create a history entry. Neither can objects
+    // in a different bucket or owner folder, an approximate name, or a failed gate.
+    await addJob(30,'needs_review',{...legacy,artifacts:[{kind:'pdf'}]},'2021-01-03');
+    await addObject(30,'sheet.pdf','other-bucket');await addObject(30,'sheet.docx',bucket,stranger);
+    await addObject(30,'sheet.pdf.bak');await addObject(30,'nested/sheet.pdf');
+    await addJob(31,'needs_review',{...legacy,checks:[{status:'FAIL'}]},'2021-01-03');await addObject(31,'sheet.pdf');
+    for(let n=40;n<65;n++)await addJob(n,'failed',null,'2021-01-03');
+    await addObject(40,'sheet.pdf'); // A partial upload remains private after a worker failure.
+    await addJob(70,'queued',null,'2021-01-03');
+    assert.deepEqual(await asRole('authenticated',jwt(),history),first);
+  });
 }finally{await db.close();}
