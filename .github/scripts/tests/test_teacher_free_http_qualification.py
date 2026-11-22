@@ -67,14 +67,15 @@ class OfflineTransport(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.patch = patch.object(worker, 'ROOT', Path(self.temp.name)); self.patch.start()
         self.addCleanup(self.patch.stop)
-        self.real = SimpleNamespace(OWNER='80da2957-9492-4a9d-babb-28ba70dedd12',
-                                    BUCKET='teacher-generation-private', ARTIFACT_LIMIT=15728640,
-                                    ARTIFACT_MIMES={'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'})
+        app = SCRIPTS.parents[1] / 'tools/teacher-generation'
+        with patch.object(sys, 'path', [str(app), *sys.path]):
+            self.real = load('http_qualification_real_worker', app / 'remote_worker.py')
         worker.bind(self.real, {'lesson': 'synthetic'}, {'raw': 'synthetic'}, {'canonical': True})
         self.remote = self.real.Remote(worker.SYNTHETIC)
         self.claim = '/rest/v1/rpc/claim_teacher_generation_job'
         self.heartbeat = '/rest/v1/noam_teacher_generation_workers?on_conflict=id'
-        self.patch_url = ('/rest/v1/noam_teacher_generation_jobs?id=eq.' + worker.JOB + '&lease_token=eq.' + worker.LEASE
+        self.patch_url = ('/rest/v1/noam_teacher_generation_jobs?select=id,owner_id&id=eq.' + worker.JOB
+                          + '&owner_id=eq.' + worker.ACTOR + '&lease_token=eq.' + worker.LEASE
                           + '&status=eq.running&lease_until=gt.' + datetime.now(timezone.utc).isoformat().replace('+00:00', 'Z'))
 
     def test_refuses_any_real_key_and_unknown_remote_operation(self):
@@ -86,7 +87,11 @@ class OfflineTransport(unittest.TestCase):
     def test_one_claim_and_heartbeat_only_after_claim(self):
         with self.assertRaisesRegex(RuntimeError, 'HEARTBEAT_BEFORE_CLAIM'):
             self.remote.call(self.heartbeat, 'POST', {'id': 'primary'})
-        self.assertEqual(len(self.remote.call(self.claim, 'POST', {})), 1)
+        [job] = self.remote.call(self.claim, 'POST', {})
+        self.assertEqual(job['owner_id'], worker.ACTOR)
+        self.real.update_job(self.remote, job, {'phase': 'authoring'})
+        with self.assertRaisesRegex(RuntimeError, 'JOB_LEASE_LOST'):
+            self.real.update_job(self.remote, {**job, 'owner_id': worker.JOB}, {'phase': 'rendering'})
         self.assertEqual(self.remote.call(self.claim, 'POST', {}), [])
         self.remote.call(self.heartbeat, 'POST', {'id': 'primary'})
         with worker.state() as s:
@@ -103,7 +108,7 @@ class OfflineTransport(unittest.TestCase):
         self.remote.call(self.claim, 'POST', {})
         with self.assertRaisesRegex(RuntimeError, 'INVALID_COMPLETION'):
             self.remote.call(self.patch_url, 'PATCH', {'status': 'needs_review', 'result': {'automatedChecksPassed': False}})
-        prefix = '/storage/v1/object/' + self.real.BUCKET + '/' + self.real.OWNER + '/' + worker.JOB + '/sheet.'
+        prefix = '/storage/v1/object/' + self.real.BUCKET + '/' + worker.ACTOR + '/' + worker.JOB + '/sheet.'
         for kind, blob, mime in [('pdf', b'%PDF-fixture', 'application/pdf'),
                                  ('docx', b'PKfixture', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')]:
             self.remote.call(prefix + kind, 'POST', raw=blob, mime=mime)
@@ -112,18 +117,21 @@ class OfflineTransport(unittest.TestCase):
             artifacts = list(s['uploads'].values())
         result = {'automatedChecksPassed': True, 'humanReviewRequired': True, 'artifacts': artifacts,
                   'checks': [{'name': 'real-pipeline-check', 'status': 'PASS'}]}
-        self.assertEqual(self.remote.call(self.patch_url, 'PATCH', {'status': 'needs_review', 'result': result})[0]['status'], 'needs_review')
+        self.assertEqual(self.remote.call(self.patch_url, 'PATCH', {'status': 'needs_review', 'result': result}),
+                         [{'id': worker.JOB, 'owner_id': worker.ACTOR}])
+        with worker.state() as saved:
+            self.assertEqual(saved['job']['status'], 'needs_review')
         self.assertEqual(self.remote.call(self.patch_url, 'PATCH', {'phase': 'rendering'}), [])
 
     def test_upload_mime_duplicate_and_wrong_prefix_rejected(self):
-        prefix = '/storage/v1/object/' + self.real.BUCKET + '/' + self.real.OWNER + '/' + worker.JOB + '/sheet.pdf'
+        prefix = '/storage/v1/object/' + self.real.BUCKET + '/' + worker.ACTOR + '/' + worker.JOB + '/sheet.pdf'
         with self.assertRaisesRegex(RuntimeError, 'UNEXPECTED_UPLOAD'):
             self.remote.call(prefix, 'POST', raw=b'%PDF-test', mime='text/plain')
         self.remote.call(prefix, 'POST', raw=b'%PDF-test', mime='application/pdf')
         with self.assertRaisesRegex(RuntimeError, 'UNEXPECTED_UPLOAD'):
             self.remote.call(prefix, 'POST', raw=b'%PDF-test', mime='application/pdf')
         with self.assertRaisesRegex(RuntimeError, 'UNEXPECTED_REMOTE'):
-            self.remote.call(prefix.replace(self.real.OWNER, 'another-owner'), 'POST', raw=b'%PDF-test', mime='application/pdf')
+            self.remote.call(prefix.replace(worker.ACTOR, 'another-owner'), 'POST', raw=b'%PDF-test', mime='application/pdf')
 
     def test_author_checks_canonical_and_cannot_retry(self):
         fake_provider = SimpleNamespace(derive_author_parameters=lambda *args: {'canonical': True})

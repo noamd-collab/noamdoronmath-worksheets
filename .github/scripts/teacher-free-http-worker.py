@@ -25,6 +25,7 @@ ROOT = Path('/work/probe')
 CONFIG = Path('/ci/config.json')
 JOB = '11111111-1111-4111-8111-111111111111'
 LEASE = '22222222-2222-4222-8222-222222222222'
+ACTOR = '33333333-3333-4333-8333-333333333333'
 SYNTHETIC = 'offline-synthetic-invalid-key'
 
 
@@ -78,7 +79,7 @@ def bind(real, lesson, raw, canonical):
                     if s['claimedJobs']:
                         return []
                     s['claimedJobs'] = 1
-                    s['job'] = {'id': JOB, 'owner_id': real.OWNER, 'lesson': lesson,
+                    s['job'] = {'id': JOB, 'owner_id': ACTOR, 'lesson': lesson,
                                 'status': 'running', 'phase': 'claimed', 'lease_token': LEASE,
                                 'lease_until': (datetime.now(timezone.utc) + timedelta(minutes=20)).isoformat()}
                     return [dict(s['job'])]
@@ -90,7 +91,9 @@ def bind(real, lesson, raw, canonical):
                 if method == 'PATCH' and path.startswith('/rest/v1/noam_teacher_generation_jobs?'):
                     q = parse_qs(urlsplit(path).query)
                     job = s.get('job', {})
-                    if (q.get('id') != ['eq.' + JOB] or q.get('lease_token') != ['eq.' + LEASE]
+                    if (q.get('select') != ['id,owner_id'] or q.get('id') != ['eq.' + JOB]
+                            or q.get('owner_id') != ['eq.' + ACTOR] or job.get('owner_id') != ACTOR
+                            or q.get('lease_token') != ['eq.' + LEASE]
                             or q.get('status') != ['eq.running'] or job.get('status') != 'running'
                             or job.get('lease_token') != LEASE or len(q.get('lease_until', [])) != 1
                             or not q['lease_until'][0].startswith('gt.')):
@@ -108,8 +111,8 @@ def bind(real, lesson, raw, canonical):
                                 or not result['checks'] or any(v['status'] != 'PASS' for v in result['checks'])):
                             raise RuntimeError('INVALID_COMPLETION')
                     job.update(value)
-                    return [dict(job)]
-                prefix = '/storage/v1/object/' + real.BUCKET + '/' + real.OWNER + '/' + JOB + '/sheet.'
+                    return [{'id': job['id'], 'owner_id': job['owner_id']}]
+                prefix = '/storage/v1/object/' + real.BUCKET + '/' + ACTOR + '/' + JOB + '/sheet.'
                 if method == 'POST' and path.startswith(prefix):
                     kind = path[len(prefix):]
                     expected_mime = {'pdf': 'application/pdf', 'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'}
