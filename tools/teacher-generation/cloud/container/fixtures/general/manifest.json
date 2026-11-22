@@ -9,7 +9,8 @@
     "grade3-division-curriculum",
     "grade9-square",
     "grade1-counting",
-    "grade8-pythagoras"
+    "grade8-pythagoras",
+    "grade5-unlike-fractions"
   ],
   "files": {
     "grade2-vocalized/lesson.json": {
@@ -83,6 +84,14 @@
     "grade8-pythagoras/lesson.json": {
       "bytes": 836,
       "sha256": "994b0f609020b78ad06b657f710fe535be2639d955689da4e8995867557fd2e4"
+    },
+    "grade5-unlike-fractions/lesson.json": {
+      "bytes": 576,
+      "sha256": "17c119d2679d085f7d68c4aeec769799af1684f73481f0c35dacaf69cd5b0f48"
+    },
+    "grade5-unlike-fractions/model-output.json": {
+      "bytes": 56,
+      "sha256": "6d231b943ab6847a312d66d0a035f04080e9687395843564a440c3b26e6c19d0"
     }
   }
 }
