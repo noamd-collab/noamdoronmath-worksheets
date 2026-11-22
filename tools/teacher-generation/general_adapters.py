@@ -18,6 +18,7 @@ from general_source import GeneralSourceError, validate_source
 from math_tasks import to_house_math, validate_and_solve_task
 from general_geometry import solve_figure_task, measure_elementary_svg
 from no_carry_addition import states_entire_task
+from printed_elementary import guard_counting_input, place_answer, place_intro, validate_counting_values
 
 LETTERS = "אבגדהוזחטי"
 LEVELS = {"a": "רמה א׳", "b": "רמה ב׳", "e": "מצוינות"}
@@ -229,7 +230,7 @@ def _figure(fig, elementary, index, work):
     return svg, path.relative_to(work).as_posix()
 
 
-def compile_source(lesson, validated, scope, skill_path, work):
+def compile_source(lesson, validated, scope, skill_path, work, *, printed_answers=None):
     """Write skill build inputs. A caller must still run every applicable gate.
 
     ``validated`` is revalidated rather than trusting deserialized evidence.
@@ -246,27 +247,33 @@ def compile_source(lesson, validated, scope, skill_path, work):
     elementary = scope["topic"]["skillId"] == "elementary"
     if evidence["unverifiedAnswers"] and elementary:
         raise GeneralSourceError("UNVERIFIED_ANSWERS", "This draft contains prose or proof answers without an implemented exact verifier; no deliverable was compiled")
+    if printed_answers is not None and not elementary:
+        raise GeneralSourceError("PRINTED_TASK_MISMATCH", "Counting evidence must belong to an elementary worksheet")
     _load_skill(skill, elementary)
     (work / "figures").mkdir(exist_ok=True)
     if elementary:
-        _compile_elementary(lesson, source, evidence, scope, skill, work)
+        _compile_elementary(lesson, source, evidence, scope, skill, work, printed_answers=printed_answers)
     else:
         _compile_middle(lesson, source, evidence, scope, skill, work)
     return {"skill": scope["topic"]["skillId"], "work": str(work), "sourcePath": str(work / "worksheet-source.json"), "evidencePath": str(work / "general-evidence.json"), "unverifiedAnswerCount": len(evidence["unverifiedAnswers"]), "reviewRequired": True}
 
 
-def _compile_elementary(lesson, source, evidence, scope, skill, work):
+def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed_answers=None):
     import ws_html as H
     from content_truth import Ledger
     grade = LETTERS[lesson["gradeNumber"] - 1]
     ab = lesson["gradeNumber"] <= 2
     solved = {row["itemId"]: row["computed"] for row in evidence["computations"]}
+    if printed_answers is not None:
+        validate_counting_values(lesson, solved, printed_answers)
     ledger = Ledger(str(work / "verified.json"))
     qs, canon, n = [], [], 0
     for section in source["sections"]:
         for question in section["questions"]:
             n += 1; pieces, items, answers, source_items = [], [], [], []
-            intro = rich_text(question["intro"], grade, H)
+            revised_intro = place_intro(lesson, question)
+            intro_spans = [{"kind":"text","text":revised_intro}] if revised_intro else question["intro"]
+            intro = rich_text(intro_spans, grade, H)
             if question is section["questions"][0]:
                 pieces.append('<h3 class="section-title">' + html.escape(section["title"]) + '</h3>')
             if "table" in question:
@@ -285,6 +292,21 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work):
                 prompt = rich_text(item["prompt"], grade, H)
                 task_text = "" if states_entire_task(lesson, n-1, j-1, item) else _task_text(computed, grade, H)
                 answer = _answer_text(computed, item["answer"]["unit"], grade, H)
+                guard_counting_input(lesson, question, item, computed)
+                binding = place_answer(lesson, question, item, computed)
+                if printed_answers is not None:
+                    from counting_lesson import answer_from_prompt
+                    counted = answer_from_prompt(intro_spans, item["prompt"])
+                    if type(counted) is not int or counted != printed_answers[item_id]:
+                        raise GeneralSourceError("PRINTED_TASK_MISMATCH", "The printed words and exact counting key disagree")
+                    task_text = ""
+                    ledger.claim(f"{n}.{j}.printed", "תשובה שנבדקה מול המילים המודפסות",
+                                 {"countFromWords": counted, "evaluated": computed["result"]["value"]}, method="closed_form")
+                if binding:
+                    task_text = ""
+                    answer = "".join(H.ltr(p[0]) if isinstance(p, tuple) else html.escape(p) for p in binding.parts)
+                    ledger.claim(f"{n}.{j}.printed", "תשובת ערך המקום שהתקבלה מנתוני השאלה המודפסים",
+                                 binding.proof, method="closed_form")
                 # A fresh calculation, not a model-provided answer or boolean.
                 figure_task=item["answer"]["kind"]=="figure"
                 repeated = solve_figure_task(question["figure"],item["answer"]["operation"],item["answer"].get("point")) if figure_task else validate_and_solve_task(item["answer"]["task"])
@@ -297,7 +319,7 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work):
             if figpath:
                 q["fig"] = figpath
             qs.append((q, intro, ''.join(pieces), H.keyed(answers)))
-            canon.append({"id": f"q{n}", "n": n, "section": section["title"], "conceptIds": section["conceptIds"], "intro": question["intro"], "table": question.get("table"), "figure": question.get("figure"), "items": source_items})
+            canon.append({"id": f"q{n}", "n": n, "section": section["title"], "conceptIds": section["conceptIds"], "intro": intro_spans, "table": question.get("table"), "figure": question.get("figure"), "items": source_items})
     ledger.save()
     meta = {"band": "elementary-ab" if ab else "elementary", "grade": grade, "level": {"a":"א", "b":"ב", "e":"מצוינות"}[lesson["level"]], "topic": source["title"], "topic_id": scope["topic"]["sourceTopicId"], "domain": scope["topic"]["domain"]}
     dump(work / "content.json", {"meta": meta, "questions": [q[0] for q in qs]})
