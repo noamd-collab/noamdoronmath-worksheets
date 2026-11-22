@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-dat-01-r1",
+  "nativePrefix": "G7-T64",
+  "level": "c",
+  "levelCode": "E",
+  "title": "מנתונים גולמיים לטבלה: איסוף, ארגון ובדיקת נתונים",
+  "pdfId": "40c7eaf9fe8f41f5a10731918f71a41b",
+  "pdfSha256": "2639db5fdf4f9f9a729e2e228e883af60df709e7a8bd0705d25b6368284d2d70",
+  "canonicalSourceSha256": "3afa8ae953980ef447d4bd07090ca65b5e7205a51c294042c1137b9a0c95471f",
+  "items": [
+    {
+      "exerciseId": "G7-T64-E-Q01א",
+      "canonicalQuestionSha256": "d7eca1bdedaf6ef2a3a6a96d0e7bf2fee12354b30c9fb5ee7810d1b6b1b03c16",
+      "canonicalItemId": "ms-g7-dat-01-c-r1.question.01.item.01",
+      "sourceExerciseSha256": "bb8462effcad3c9459ea9d3a7369dba92a1f96193b3429349562aacc52ef5bed",
+      "q": 1,
+      "part": "א",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375662,
+        "y": 0.4810419940142162
+      },
+      "hintSha256": [
+        "b40dd4e4b5fd8a75d78bcb3ca96c21ebde846c3ec278286c71ebd4293600489b",
+        "1a586a67c33895cbf838a0f4f8d09e48e7330e5cc514e263dbcb6161427019c9",
+        "6a00a3a09982e4aa84a60d687731b964711ab29cfe64c13233ac2402143dcfd7"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-E-Q02א",
+      "canonicalQuestionSha256": "645a2971783ee7e586ccf34cfbb2423bff672700caf9c4f7765f75e278d4f87a",
+      "canonicalItemId": "ms-g7-dat-01-c-r1.question.02.item.01",
+      "sourceExerciseSha256": "0883e611f43234538c3819a53f21971f6a3f2576ffac01fee8893dff41242ba6",
+      "q": 2,
+      "part": "א",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.1132384960718294
+      },
+      "hintSha256": [
+        "76f50bc3c3abae57a7f5d042ff633051ff2b871f40e94dbcb08090db2cdef56f",
+        "8c0d834aa14710f91147f58c3910ea3e13d0b3b7081d9f3252acd33774443eae",
+        "cb8a880695e4f1ae489197360d382798fdb775751e5abdd637052625682f8203"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-E-Q03ב",
+      "canonicalQuestionSha256": "691bd6edceaf933c9d47202b9e29c65bc028473fd4f06f7daba04f25c60cd647",
+      "canonicalItemId": "ms-g7-dat-01-c-r1.question.03.item.02",
+      "sourceExerciseSha256": "e6d9bcaefa2acbe4cd83d86367b0ccf0830e16aba7a1e3ebcff9a81f3e2c66d4",
+      "q": 3,
+      "part": "ב",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.6989256266367374
+      },
+      "hintSha256": [
+        "e8dae0d2a9f3f3c7c45a2ce30c705f8d23317d056606e59b113eede2ef585d28",
+        "167d1b93b3a2bb9ba28559affdc3479ba6fd60af8cf1a1cc85ac8a50158935aa",
+        "2139bbc64610d9677f49ce6afac2144900b76082040547114a7622d75b40abab"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-E-Q03ג",
+      "canonicalQuestionSha256": "691bd6edceaf933c9d47202b9e29c65bc028473fd4f06f7daba04f25c60cd647",
+      "canonicalItemId": "ms-g7-dat-01-c-r1.question.03.item.03",
+      "sourceExerciseSha256": "f1e8b1414409f23288edab25a146cf336423a01f0f6f12d040c1b93726247837",
+      "q": 3,
+      "part": "ג",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375663,
+        "y": 0.7957815375982039
+      },
+      "hintSha256": [
+        "7fe58ad4a73bfc8af9e67d2743cbfa16f8ee4045238bcbbcf39ab7e71a22b3e9",
+        "2dd4c9018d98421e8db092f3f9e2bb289933e2df0c390342275800a5bf4510b0",
+        "a607b4d3ade4f0100b9726840c4092d0694500162e6d28c57c11b4f054f134a7"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-E-Q06ג",
+      "canonicalQuestionSha256": "b26ab5534422ec8bea980dccab3766260314d656a5f9e766867db37b6de33f44",
+      "canonicalItemId": "ms-g7-dat-01-c-r1.question.06.item.03",
+      "sourceExerciseSha256": "9fa436967fbc0a1e05be99d32a5376d3c616e61ae2530a37b36c0e89b663c3c9",
+      "q": 6,
+      "part": "ג",
+      "pin": {
+        "page": 5,
+        "x": 0.8311375661375663,
+        "y": 0.43248456790123446
+      },
+      "hintSha256": [
+        "6c38af6414e8337e1e364aca85cabbdbb45e205cf76ea6eb5e33adb6bede9230",
+        "facfc2c291631b382e29126eb0150cab8436d987a3bd7108edb60942084e45dd",
+        "6a5dbba22d14eb4891097f85853c835d0069c093f1eda5d1dec599cef48b56cb"
+      ]
+    }
+  ]
+}

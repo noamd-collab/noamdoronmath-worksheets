@@ -1,4 +1,5 @@
 import type { CatalogEdition, CatalogTopic } from './types';
+import { partialHintCount } from './partialHints';
 
 /** The old fields remain authoritative for all pre-edition links. */
 export function topicEditions(topic: CatalogTopic): CatalogEdition[] {
@@ -31,6 +32,9 @@ export function worksheetEditionNote(edition: CatalogEdition): string | null {
 /** Keep the legacy badge precise when additional editions also supply hints. */
 export function worksheetTopicHintLabel(topic: CatalogTopic): string | null {
   const selected = resolveEdition(topic);
+  if (topic.editions?.some(e => e.status === 'published' && e.levels.some(l => partialHintCount(e, l) > 0))) {
+    return '✦ רמזי זמין בחלק מהדפים';
+  }
   if (!selected.routing.aiHintShown) return null;
   const editions = topicEditions(topic);
   if (editions.length === 1) return '✦ רמזי AI זמין בדף הזה';

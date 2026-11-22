@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-crt-01-r1",
+  "nativePrefix": "G7-T103",
+  "level": "b",
+  "levelCode": "B",
+  "title": "שורש שלישי ובעיות הפוכות בקובייה ובתיבה; שינוי חיבורי במידות של מנסרה",
+  "pdfId": "8b322fc66e4b476db1b742532a1b46b3",
+  "pdfSha256": "e62fd9d386b7bd2ad0dcbf9d4cd5b0c1fb1d5343d131f04bd34db693d0724bdd",
+  "canonicalSourceSha256": "b30c0cfd0b85ce8753867fe08ba0437a052168c74ff95b583ce3aacc58e17558",
+  "items": [
+    {
+      "exerciseId": "G7-T103-B-Q01ב",
+      "canonicalQuestionSha256": "23311951bd956429a7f4d71c283c97f93663eae361bff3cc5b7307ff07eaab59",
+      "canonicalItemId": "ms-g7-crt-01-b-r1.question.01.item.02",
+      "sourceExerciseSha256": "428cf530e6752ed331605ed0a81a116a50cd2c53e7320e95afdfd330b384eb77",
+      "q": 1,
+      "part": "ב",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375663,
+        "y": 0.5586483539094648
+      },
+      "hintSha256": [
+        "5ab087dc728bc05fa6ab3aaf777b835fbc1a0ffb3736f51039680df53039ac7c",
+        "fa7f18f0b560fde7f572c1e8e715ae4b1178aaa065b3e60a33deb1a67d12cbf9",
+        "94c315654f3578dbde8211c920f8b63c8f72edec3c4fdd75e09f228efeb7f68a"
+      ]
+    }
+  ]
+}

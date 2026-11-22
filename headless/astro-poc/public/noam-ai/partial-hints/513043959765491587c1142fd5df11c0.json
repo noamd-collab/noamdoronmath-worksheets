@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-g7-pow-01-r1",
+  "nativePrefix": "G7-T79",
+  "level": "b",
+  "levelCode": "B",
+  "title": "חזקות עם מעריך טבעי: סימון, סדר פעולות ובסיס מכוון",
+  "pdfId": "513043959765491587c1142fd5df11c0",
+  "pdfSha256": "4aea1b8020af9a78c7fe5f5ca21eb83c190364a011fd0e17ad45a561552b92b7",
+  "canonicalSourceSha256": "386564fef4e8216266420e7e79e110a149aefc887701366b20dc9e80e17da41a",
+  "items": [
+    {
+      "exerciseId": "G7-T79-B-Q06ב",
+      "canonicalQuestionSha256": "0ed17310df116a031b29668b3cd7dc2f6d93f0ab2c2dc6ea0dba3851afac1b67",
+      "canonicalItemId": "ms-g7-pow-01-b-r1.question.06.item.02",
+      "sourceExerciseSha256": "95219f3e78e46cbf05a79f5f8ec52445a0c6e1662fa8a4ee5cdb303df78bcb63",
+      "q": 6,
+      "part": "ב",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.2659354233071454
+      },
+      "hintSha256": [
+        "520f4389468e5a658007363f8819e99bc9e1ca39da60bb7e7e93941e39dbcf79",
+        "e003eb3374c4e194786ebe5b478d3df4b5d0e9ec588d883be26361b51b910ba7",
+        "2a8bef6d724e836689947b5c414c667b9cc86d93c30c2bf629baff66f9866dd2"
+      ]
+    }
+  ]
+}

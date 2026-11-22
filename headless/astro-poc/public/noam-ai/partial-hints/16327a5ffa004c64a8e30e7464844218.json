@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-dat-01-r1",
+  "nativePrefix": "G7-T64",
+  "level": "b",
+  "levelCode": "B",
+  "title": "מנתונים גולמיים לטבלה: איסוף, ארגון ובדיקת נתונים",
+  "pdfId": "16327a5ffa004c64a8e30e7464844218",
+  "pdfSha256": "d3cddbf99e1b7a1190c098591a023b34f4b87db42de62e6df1a9e6e03f44f252",
+  "canonicalSourceSha256": "6a702349d4064ffd27524aa42926febc3959f73387783cfb210b49393365fdb3",
+  "items": [
+    {
+      "exerciseId": "G7-T64-B-Q01א",
+      "canonicalQuestionSha256": "e43e66288184b7483caab09e674a101fa9c49a0f48a5144ab7f40f6e9e98d108",
+      "canonicalItemId": "ms-g7-dat-01-b-r1.question.01.item.01",
+      "sourceExerciseSha256": "faefd9bfd9995286ff7effa1b3a8799cd9787e3fa1e627011a939fe2c91e8d38",
+      "q": 1,
+      "part": "א",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375662,
+        "y": 0.6182808641975306
+      },
+      "hintSha256": [
+        "13b5823ca7dd45cddca9c1f409d78933676146adcb1a9a4c6b41afbe4c188366",
+        "86caafc0fd5ee927b16961748f46214aae624e92c7c14d9060df3d3b6c757c21",
+        "28db140dbe763a13d671c030ec8be87670f12232d9548266b5cfb59cf10194ee"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-B-Q01ב",
+      "canonicalQuestionSha256": "e43e66288184b7483caab09e674a101fa9c49a0f48a5144ab7f40f6e9e98d108",
+      "canonicalItemId": "ms-g7-dat-01-b-r1.question.01.item.02",
+      "sourceExerciseSha256": "56ee6b161c77430b53fb1492e712c1fb57a4c5f62ec273b5c8d151c58c1d13ae",
+      "q": 1,
+      "part": "ב",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375662,
+        "y": 0.71038555929667
+      },
+      "hintSha256": [
+        "43a3c2e493e39147b8f95ecbe3a1db542c4e6581ecf398796a62a9a959831c32",
+        "0ca4c3318ca7feda147a268ca754fb924fe0fad902130f564353bb3a9dfc75ee",
+        "d7e71328d8e9fa0cfc6fb1bca71ba0fcfe0357bd748cef9998bf9f9ef2fd4872"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-B-Q01ג",
+      "canonicalQuestionSha256": "e43e66288184b7483caab09e674a101fa9c49a0f48a5144ab7f40f6e9e98d108",
+      "canonicalItemId": "ms-g7-dat-01-b-r1.question.01.item.03",
+      "sourceExerciseSha256": "a1b80f1bc8e62e77fbe10ba3f796f41891981d2819f987ad983e23d54ca29369",
+      "q": 1,
+      "part": "ג",
+      "pin": {
+        "page": 1,
+        "x": 0.8311375661375662,
+        "y": 0.8072414702581366
+      },
+      "hintSha256": [
+        "171f2d82e98ada52c6bc1dac4d94f3f625752243ea63092199d795777e18c6d0",
+        "6094d2ad4c43dc5d24349071d5d36c0df546c4fdf4aa6899475b0b0b300ff75c",
+        "5296ae817b597f09a1e5c748291a469715c146c39704d0938ea399ea60497a63"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-B-Q02א",
+      "canonicalQuestionSha256": "fdd7827cdc6a3b9d8e17e5660072c1637ae57c0a728cda8c8f26d0a71d308270",
+      "canonicalItemId": "ms-g7-dat-01-b-r1.question.02.item.01",
+      "sourceExerciseSha256": "36bf298e1a21cdc3c7536ff8a39155be533cf088df11a7b4c13af5c5ebe80ef0",
+      "q": 2,
+      "part": "א",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.3020731949120838
+      },
+      "hintSha256": [
+        "0c2c969ee7fe07d7d22ba65ec343350095810fd827825d064a03d297420269c3",
+        "6c4d93b954837f9c4d915ec6550281ad7283c17369384d18cd87e61c60a13d3e",
+        "52664e70a93e074bab1fe79b004de2f58a1f9f5a7cf2786d0f77a0f05a5b717d"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-B-Q02ג",
+      "canonicalQuestionSha256": "fdd7827cdc6a3b9d8e17e5660072c1637ae57c0a728cda8c8f26d0a71d308270",
+      "canonicalItemId": "ms-g7-dat-01-b-r1.question.02.item.03",
+      "sourceExerciseSha256": "d510c5752341afe62746f88c0b6a753c6fe2bdf6975085bd8d573d57b28ff0c0",
+      "q": 2,
+      "part": "ג",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.49103380097268984
+      },
+      "hintSha256": [
+        "01a82128775a4f1d117bb2cb243836111ef2bc178c28a58db6d1fc4b81ddf339",
+        "f4c23094b49211704e1dc140d97f402f9372d57df36d74285ace852e5cfe6168",
+        "6a68a4667bb56c2fc46fd04404157e30aedf6de59da7634b6581f89c5d048c95"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-B-Q06א",
+      "canonicalQuestionSha256": "59386e0aa4ce1b18b4dc5cd80ad2e6b4208235d1b16194edeafe758befd1e2ed",
+      "canonicalItemId": "ms-g7-dat-01-b-r1.question.06.item.01",
+      "sourceExerciseSha256": "a25133bc62c9cd5385264e1eb57f699bb8f069792dd184a0c58574ced4fc59e6",
+      "q": 6,
+      "part": "א",
+      "pin": {
+        "page": 6,
+        "x": 0.8311375661375662,
+        "y": 0.2212027497194164
+      },
+      "hintSha256": [
+        "445de885f1f7481c05b4017cd2924f4f41c5b2832aa017be78635d26b610ae17",
+        "a5e19082be4e613e917b48c0979af6f3624a5c3e9eaf0aa11eb8a56e892afbb8",
+        "b83a346db64d635bd5a588f89964411c1c48a628153b904773cad1be56170ed8"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-B-Q06ב",
+      "canonicalQuestionSha256": "59386e0aa4ce1b18b4dc5cd80ad2e6b4208235d1b16194edeafe758befd1e2ed",
+      "canonicalItemId": "ms-g7-dat-01-b-r1.question.06.item.02",
+      "sourceExerciseSha256": "b820e25560d4c64b53369383e0757937d3255296cadd54bd19424ca0059c71e6",
+      "q": 6,
+      "part": "ב",
+      "pin": {
+        "page": 6,
+        "x": 0.8311375661375662,
+        "y": 0.3133074448185559
+      },
+      "hintSha256": [
+        "46df32374e36b8d8a8690cea2f775ea777f5370fba95f0e41542e7f01844fa5e",
+        "35a8c505e02c21585020bb5f0c924f454a0e553eb0c6c5825929dbc3b29e8a24",
+        "8eb5828aca1246e830b5cd1232c94426d98f8e9939ac92d933d3f173a030fb40"
+      ]
+    },
+    {
+      "exerciseId": "G7-T64-B-Q06ג",
+      "canonicalQuestionSha256": "59386e0aa4ce1b18b4dc5cd80ad2e6b4208235d1b16194edeafe758befd1e2ed",
+      "canonicalItemId": "ms-g7-dat-01-b-r1.question.06.item.03",
+      "sourceExerciseSha256": "25ff804f4597c181d092129d22160c7c5bdca1a71160c63a35de9392f1718584",
+      "q": 6,
+      "part": "ג",
+      "pin": {
+        "page": 6,
+        "x": 0.8311375661375663,
+        "y": 0.4101633557800224
+      },
+      "hintSha256": [
+        "98cdc337f45ca34f99c85c540c510f08a9774bb37efdd4fd38595b3673c37cfc",
+        "08f6874069e38ac57d93ebdff72c6a3c30ebe7fbc639f95c6b2e17a0fa4c7d66",
+        "1b13de4b805d3b217bc7c3cd4ae5490abe4bc5876dad89157018d7f4e930d978"
+      ]
+    }
+  ]
+}

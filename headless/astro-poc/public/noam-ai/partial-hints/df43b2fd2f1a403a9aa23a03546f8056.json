@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-sol-01-r1",
+  "nativePrefix": "G7-T92",
+  "level": "b",
+  "levelCode": "B",
+  "title": "תיבה וקובייה: מבנה, פריסה, שטח פנים ונפח",
+  "pdfId": "df43b2fd2f1a403a9aa23a03546f8056",
+  "pdfSha256": "b09f90d8409cb304259f0bffd4c30239fd84504713583b0a2cc0968f294a80be",
+  "canonicalSourceSha256": "b6efd5229f0a62a7e97a8def7360a6d4cad29d0ec4a5ec9cf58c263202ff6081",
+  "items": [
+    {
+      "exerciseId": "G7-T92-B-Q09א",
+      "canonicalQuestionSha256": "ae9ac440582d398ea6bac7c08c36d43a7805a24e0e42ac44260e65ab2f37c45e",
+      "canonicalItemId": "ms-g7-sol-01-b-r1.question.09.item.01",
+      "sourceExerciseSha256": "41ba553a7e5f798c32df2131ec5375cb8963371d80abdfb4755540e566304458",
+      "q": 9,
+      "part": "א",
+      "pin": {
+        "page": 8,
+        "x": 0.8311375661375662,
+        "y": 0.39000785015775513
+      },
+      "hintSha256": [
+        "12fd3e2df0811e437b07a9ba4d6d6de53728aa1978712f85ebf4946310dba72e",
+        "336672521ef7477c739ec35e09159adff1df041892a517cd460e49d966e919aa",
+        "bf0ae6ba1cf34b6997117e42f1745426c088b647c44130704a0ffa1336055e73"
+      ]
+    }
+  ]
+}

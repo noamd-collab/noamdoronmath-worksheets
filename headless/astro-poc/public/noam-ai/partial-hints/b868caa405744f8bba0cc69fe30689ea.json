@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-pct-01-r1",
+  "nativePrefix": "G8-T98",
+  "level": "b",
+  "levelCode": "B",
+  "title": "אחוזים: חלק ושלם, שינוי ושני שלבים",
+  "pdfId": "b868caa405744f8bba0cc69fe30689ea",
+  "pdfSha256": "c5622e3edc989aef92269470cba7e30990ae7abbc8bccd1eb2c699e26abae11d",
+  "canonicalSourceSha256": "14c4be4754bc5ff7ea1f86a56a66acbad70ee3cd652edb2f31a5222b5040f83d",
+  "items": [
+    {
+      "exerciseId": "G8-T98-B-Q09ג",
+      "canonicalQuestionSha256": "e3ee9fb1aaa7cb030ba4dd511434b02b13c753d9e5b6dde299a0101d2bcf9b3c",
+      "canonicalItemId": "ms-g8-pct-01-b-r1.question.09.item.03",
+      "sourceExerciseSha256": "9a0806af1ecd607d3456b4afcebf5f8c6db7b6d2bb14583c900b91d9781e466f",
+      "q": 9,
+      "part": "ג",
+      "pin": {
+        "page": 5,
+        "x": 0.8311375661375662,
+        "y": 0.3060095772540216
+      },
+      "hintSha256": [
+        "7f937da4d93246d88c000a28c779fe586e3c55dbd6b9f4ef90c7cd298ed22702",
+        "c437cf0f69a01a853992627e3949a06381a1fa5c4c770bf52dddd1679902ae67",
+        "69ae871e71b4b8c2917ed222b0df26b9131084f824a544fc265a986d87e2e762"
+      ]
+    }
+  ]
+}

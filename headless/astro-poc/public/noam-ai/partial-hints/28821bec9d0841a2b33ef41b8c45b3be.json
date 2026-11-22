@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-prb-01-r1",
+  "nativePrefix": "G8-T88",
+  "level": "b",
+  "levelCode": "B",
+  "title": "הסתברות: מרחב מדגם, הוגנות ומאורע משלים",
+  "pdfId": "28821bec9d0841a2b33ef41b8c45b3be",
+  "pdfSha256": "d53885b236f9a919ebb19004a9ec9d8a6c4dd932a6f8d413eb298763438c2ce6",
+  "canonicalSourceSha256": "fa17bc3e1ad2fe1c10f460465aa424162fb5e29f067154d5744a5894ff95768a",
+  "items": [
+    {
+      "exerciseId": "G8-T88-B-Q10ב",
+      "canonicalQuestionSha256": "f2a1d04ec9841aebeadefb3901737544f6792fcdcb2f2bef4254e82d88c0c940",
+      "canonicalItemId": "ms-g8-prb-01-b-r1.question.10.item.02",
+      "sourceExerciseSha256": "c06730ff361c647b1533d4eab83d26e4e60f33971aa5f4bd351a2d6ade95990e",
+      "q": 10,
+      "part": "ב",
+      "pin": {
+        "page": 6,
+        "x": 0.8311375661375663,
+        "y": 0.20115021941638606
+      },
+      "hintSha256": [
+        "fefad57637a1e3c0aaef35d9edc3a8f36a3f7e65912731e901e4e26cd059fddd",
+        "9f7841f490a45d3bcfa537994f4171bd761378bca4be6f1992b2355985d85448",
+        "3d56fd655e5b96b1e8cf483f282bb98b5104c6a260e370719da1c3443d7436be"
+      ]
+    }
+  ]
+}

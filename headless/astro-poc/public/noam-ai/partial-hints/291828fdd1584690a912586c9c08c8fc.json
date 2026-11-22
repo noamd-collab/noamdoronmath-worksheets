@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-smm-01-r1",
+  "nativePrefix": "G9-T47",
+  "level": "b",
+  "levelCode": "B",
+  "title": "צורות דומות, הגדלה והקטנה, ומשפט דמיון ז.ז",
+  "pdfId": "291828fdd1584690a912586c9c08c8fc",
+  "pdfSha256": "876c454e90707196438f3e78511837564e916cf98fccea3b3ba75fe15eba50df",
+  "canonicalSourceSha256": "080c416522f1f289738db0b176167e093226f1302b80d6175caeba24e1a5bb23",
+  "items": [
+    {
+      "exerciseId": "G9-T47-B-Q04א",
+      "canonicalQuestionSha256": "87c58017f761696ac1234e39f1d90fc1903989e103416442ed739f0d37ab78de",
+      "canonicalItemId": "ms-g9-smm-01-b-r1.question.04.item.01",
+      "sourceExerciseSha256": "75328fe07f4a3d746efc1a18b8f1d63c422af1ba2fa991c709534de939ac1439",
+      "q": 4,
+      "part": "א",
+      "pin": {
+        "page": 4,
+        "x": 0.8311375661375663,
+        "y": 0.29544287317620643
+      },
+      "hintSha256": [
+        "45efa91bcd418e435a773315a733805d8c9b0668fa35d2f2babac16dd966e36f",
+        "2db189fc72b938900a9c48fd339e34ac4fb0d834f1d72e6e6a0b57b63c1db56f",
+        "e7eb989eaf1e3b2d223be93f68655fcbcfbde6c6e172e13541fa267359fdab6d"
+      ]
+    }
+  ]
+}

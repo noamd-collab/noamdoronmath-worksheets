@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261117-pow-01-r1",
+  "nativePrefix": "G9-T91",
+  "level": "b",
+  "levelCode": "B",
+  "title": "חוקי חזקות במעריכים טבעיים ואפס וחוקי שורש ריבועי",
+  "pdfId": "71679d07b2424f9f8acea50fca7f5a13",
+  "pdfSha256": "d65bac9e898b8656238118cf2bae6747779a4a5c754caa37935c0d9329851883",
+  "canonicalSourceSha256": "fc4476b99bf825b3a09bc686c4dc673413180dcf843f6a8190b276cc7233a457",
+  "items": [
+    {
+      "exerciseId": "G9-T91-B-Q06א",
+      "canonicalQuestionSha256": "0a3f0ca539daff07323219ff37c5a0ede8fe155df196ad985796f9925d4f4901",
+      "canonicalItemId": "ms-g9-pow-01-b-r1.question.06.item.01",
+      "sourceExerciseSha256": "a869e2857c01e915e8dbf653f3afe3abb1c61abd64dbc9be9864cd4394306d5d",
+      "q": 6,
+      "part": "א",
+      "pin": {
+        "page": 3,
+        "x": 0.8311375661375662,
+        "y": 0.3634208941264495
+      },
+      "hintSha256": [
+        "343c2fa8530580c507b1c88cb28807d6787e7b8ef2063d8686762957e9fa43e6",
+        "845317ead6708a88432aa6ce594654c89b24108d8a96985e79df96d1bb60cd40",
+        "e4797530f6d10718c1e690c2c40f2cd1c3364a71a68a6c77b94b6db3f921149c"
+      ]
+    }
+  ]
+}

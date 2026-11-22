@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "editionId": "ms-20261118-crc-01-r1",
+  "nativePrefix": "G8-T101",
+  "level": "a",
+  "levelCode": "A",
+  "title": "המעגל: מיתר, סימטריה, סרטוט במחוגה, היחס בין היקף לקוטר ופריסת גליל",
+  "pdfId": "8f870a62f51046d586e986d13cc9eca4",
+  "pdfSha256": "ab1622d884c51b50a1c84629d42e7eead38e189f12bbd1f5cfe5dcaad6d9473d",
+  "canonicalSourceSha256": "464d831d73f4d4e50e032fe153947b5f6ecb6ac542c911557c293d5bb4761289",
+  "items": [
+    {
+      "exerciseId": "G8-T101-A-Q03ב",
+      "canonicalQuestionSha256": "8993a97629f34b4684a4408f63f5c3e09311c9e3e2225e0ffc29a34eda48f0ab",
+      "canonicalItemId": "ms-g8-crc-01-a-r1.question.03.item.02",
+      "sourceExerciseSha256": "1be0d06016a551055dffa0e5339fa88846062376ff9f3173c499c2df8b598aea",
+      "q": 3,
+      "part": "ב",
+      "pin": {
+        "page": 2,
+        "x": 0.8311375661375662,
+        "y": 0.5835328469884026
+      },
+      "hintSha256": [
+        "f3829070a806f9042bdf9ed817d577db1c975fe963bbc6fd4141499dafc92686",
+        "81e67789b4fcb62ae9460bb62bb1fa3cfcef4a90ca8f3cff17b09fdc209422c2",
+        "417f853b85d89916166898d40c01f16684cc22062643675ca9e0d5c8b54735b0"
+      ]
+    }
+  ]
+}
