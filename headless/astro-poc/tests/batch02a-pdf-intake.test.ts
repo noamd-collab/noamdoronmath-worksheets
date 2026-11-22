@@ -1,3 +1,4 @@
+import { beforeNovember21Copy } from './fixtures/middle-090-091-094';
 import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -285,7 +286,8 @@ test('sixteen landing updates keep titles and CTAs and describe the actual serie
         assert.ok(!text.includes(banned), `${delta.slug}: ${banned}`);
       }
     }
-    const page = beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug)), flow = synthesizeBodyFlow(page);
+    const page = beforeNovember21Copy(delta.slug, beforeLandingCorrections(delta.slug, loadTopicPage(delta.slug)));
+    const flow = synthesizeBodyFlow(page);
     assert.equal(flow.filter(b => b.type === 'heading' && plain(b.text || '') === added.heading).length, 1);
     for (const block of added.blocks) assert.equal(flow.filter(b => b.type === 'paragraph' && plain(b.text || '') === block.text).length, 1);
     const faq = extractJsonLdFaq(page.jsonLd).map(f => ({ question: plain(f.question), answer: plain(f.answer) }));

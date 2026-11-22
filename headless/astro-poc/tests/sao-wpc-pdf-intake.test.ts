@@ -1,3 +1,4 @@
+import { beforeNovember21Copy } from './fixtures/middle-090-091-094';
 import { expectedElementaryPrintTopics } from './fixtures/elementary-print-topics';
 import { beforeExtra15Catalog, beforeExtra15Registry } from './fixtures/extra15-pdf';
 import assert from 'node:assert/strict';
@@ -92,9 +93,10 @@ test('teacher sources, learning regeneration and viewer dependencies reject all 
 
 test('SAO/WPC copy preserves old CTAs, visible flow, FAQ and scoped PDF availability', () => {
   for (const a of reviewed.additions) {
-    const raw = read(`headless/astro-poc/src/data/topic-pages/${a.slug}.json`);
-    const restored = beforeSaoWpcCopy(a.slug, beforeBatch05Copy(a.slug, raw));
-    const page = loadTopicPage(a.slug);
+    const current = read(`headless/astro-poc/src/data/topic-pages/${a.slug}.json`);
+    const restored = beforeSaoWpcCopy(a.slug, beforeBatch05Copy(a.slug, current));
+    const raw = beforeNovember21Copy(a.slug, current);
+    const page = beforeNovember21Copy(a.slug, loadTopicPage(a.slug));
     assert.equal(raw.updatedLine, a.slug === 'equations-both-sides-word-problems-grade-7'
       ? 'נועם דורון מתמטיקה · עודכן 17.11.2026' : 'נועם דורון מתמטיקה · עודכן 15.11.2026');
     assert.deepEqual(raw.catalogCta, restored.catalogCta); assert.deepEqual(raw.catalogCtas, restored.catalogCtas);
