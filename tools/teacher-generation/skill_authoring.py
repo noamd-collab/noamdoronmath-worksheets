@@ -128,7 +128,7 @@ def source_findings(original, lesson, scope, error):
     """Localize recoverable wire errors without disclosing text or relaxing validation."""
     import re
     instructions = {
-        "PRINTED_EXPRESSION_SCOPE": "Use a complete, independently verifiable pupil exercise. When asking for an expression, describe the operands and operations in words and leave the expression for the pupil to write. The key must contain that expression and its value.",
+        "PRINTED_EXPRESSION_SCOPE": "Keep the requested skill. For writing an expression, use 'כתבו תרגיל וחשבו את התוצאה:' followed by complete descriptions such as 'הסכום של 6 ו־4, מוכפל ב־3.' Vary the actual numbers and intended operations. Put only the matching two-operation calculation in the typed answer. The compiler prints the expression and its value in the key.",
         "PRINTED_EXPRESSION_MISMATCH": "Ensure that the comparison operands or the expression to be written exactly match the printed givens, in the same order, with the requested units.",
         "SOURCE_NOTATION": "Write each mathematical expression using supported school notation and explicit operators.",
         "SOURCE_PLAIN_MATH": "Put the complete formula or variable name in one [[...]] span inside the Hebrew sentence.",
