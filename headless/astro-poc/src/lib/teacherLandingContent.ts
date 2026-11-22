@@ -4,7 +4,7 @@ export const TEACHER_TOOL_PATH = '/teachers/app';
 export const TEACHER_LANDING_TITLE = 'אזור המורים: דפי עבודה וכלי הוראה | נועם דורון מתמטיקה';
 export const TEACHER_LANDING_H1 = 'כל השאלות לדף העבודה הבא שלך.';
 export const TEACHER_LANDING_DESCRIPTION =
-  'כלי בחירת שאלות, הדפסה וייצוא ל־Word לאחר התחברות עם Google. בקרוב: יצירת דפי עבודה חדשים עם AI לפי הכיתה והשלב בלימוד.';
+  'כלי בחירת שאלות, הדפסה וייצוא ל־Word לאחר התחברות עם Google. מידע על התנסות ביצירת דפי עבודה חדשים לפי הכיתה והחומר שנלמד.';
 
 /** Teachers FAQ: shown on /teachers and copied once into its FAQPage JSON-LD.
  * Claims stay within what the tool does today (Noam, 19.11.2026). */

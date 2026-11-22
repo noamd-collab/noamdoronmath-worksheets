@@ -8,7 +8,7 @@ import { resolveTestBrowser } from './helpers/chromium';
 import { GENERATION_CURRICULUM_SHA256, parseTeacherGenerationCurriculum, getTeacherGenerationMinimumQuestionCount } from '../src/lib/teacherGenerationContract';
 
 const source = readFileSync(new URL('../src/pages/teachers/generate.astro', import.meta.url), 'utf8');
-const markup = source.match(/<main[\s\S]*?<\/main>/)![0];
+const markup = source.match(/<main[\s\S]*?<\/main>/)![0].replace(' open={historyRequested}','');
 const css = readFileSync(new URL('../public/teachers/generation.css', import.meta.url), 'utf8');
 const script = readFileSync(new URL('../public/teachers/generation-v3.js', import.meta.url), 'utf8');
 const catalog=readFileSync(new URL('../public/teachers/generation-curriculum.json',import.meta.url),'utf8');
@@ -31,12 +31,13 @@ test('desktop and phone wizard use native keyboard validation with one visible q
         body: `<!doctype html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;font-family:Arial,sans-serif;background:#fafbf8}${css}</style></head><body>${markup}<script>${script}</script></body></html>` });
       if(url.pathname==='/teachers/generation-curriculum.json')return void request.respond({status:200,contentType:'application/json',body:catalog});
       if (url.pathname === '/api/teacherGeneration' && request.method() === 'GET') return void request.respond({ status: 200, contentType: 'application/json', body: JSON.stringify({
-        ok: true, online: true, capabilities: {profile:'general-skill-source/v1',curriculumSha256:GENERATION_CURRICULUM_SHA256,acceptedIntakeVersions:[2,3],topics }, jobs: [{ id: 'old-job', status: 'needs_review', phase: 'needs_review',
+        ok: true, online: true, quota:{mode:'trial',active:true,totalLimit:5,remainingTotal:4,startsAt:new Date().toISOString(),endsAt:new Date(Date.now()+72*3600000).toISOString()}, capabilities: {profile:'general-skill-source/v1',curriculumSha256:GENERATION_CURRICULUM_SHA256,acceptedIntakeVersions:[2,3],topics }, jobs: [{ id: 'old-job', status: 'needs_review', phase: 'needs_review',
           created_at: '2026-11-13T00:00:00Z', lesson: { topicId: 'ג10', lastLesson: 'דף קודם' }, result: { automatedChecksPassed: true } }],
       }) });
       return void request.respond({ status: 204, body: '' });
     });
     await page.goto('https://wizard.test/', { waitUntil: 'networkidle0' });
+    assert.match(await page.$eval('#generation-quota', el=>el.textContent || ''),/4 מתוך 5/);
     const screen = async (heading: string) => {
       assert.deepEqual(await page.$$eval('[data-generation-step]:not([hidden])', elements => elements.map(el => el.getAttribute('aria-labelledby'))), [heading]);
       assert.equal(await page.$$eval('[data-generation-step][hidden]', elements => elements.every(el => (el as HTMLFieldSetElement).disabled)), true);

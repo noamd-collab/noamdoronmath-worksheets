@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { readPublicGenerationTrial } from '../lib/teacherGenerationStore';
 import TeacherComingSoon from '../components/TeacherComingSoon.astro';
 import {
   TEACHER_LANDING_TITLE,
@@ -30,6 +31,8 @@ if (legacyTarget) {
     headers: { location: legacyTarget, 'cache-control': 'no-store' },
   });
 }
+const trial = await readPublicGenerationTrial();
+Astro.response.headers.set('Cache-Control', 'no-store');
 ---
 <BaseLayout
   title={TEACHER_LANDING_TITLE}
@@ -38,5 +41,5 @@ if (legacyTarget) {
   skipHref="#teacher-start"
 >
   <script type="application/ld+json" set:html={JSON.stringify(teacherFaqJsonLd)} />
-  <TeacherComingSoon />
+  <TeacherComingSoon trial={trial} />
 </BaseLayout>
