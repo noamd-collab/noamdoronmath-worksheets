@@ -132,11 +132,17 @@ def validate_model(lesson, payload, *, allow_legacy=False):
         try:
             import division_facts
             import square_lesson
+            import pythagoras_lesson
+            import counting_lesson
             from triangle_lesson import VERSION, validate_parameters
-            if isinstance(payload, dict) and payload.get('version') == division_facts.VERSION:
+            if isinstance(payload, dict) and payload.get('version') == counting_lesson.VERSION:
+                counting_lesson.validate_parameters(lesson, payload)
+            elif isinstance(payload, dict) and payload.get('version') == division_facts.VERSION:
                 division_facts.derive(lesson, payload)
             elif isinstance(payload, dict) and payload.get('version') == square_lesson.VERSION:
                 square_lesson.validate_parameters(lesson, payload)
+            elif isinstance(payload, dict) and payload.get('version') == pythagoras_lesson.VERSION:
+                pythagoras_lesson.validate_parameters(lesson, payload)
             elif isinstance(payload, dict) and payload.get('version') == VERSION:
                 validate_parameters(lesson, payload)
             else:

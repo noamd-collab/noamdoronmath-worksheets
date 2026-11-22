@@ -108,11 +108,72 @@ class GeneralRuntimeTests(unittest.TestCase):
         self.assertEqual(schema['properties']['version']['const'],4)
         self.assertEqual(body['response_format']['type'],'json_schema')
         self.assertIs(body['response_format']['json_schema']['strict'],True)
-        self.assertEqual(schema['properties']['sections']['items']['properties']['questions']['minItems'],20)
+        section=schema['properties']['sections']['items']['properties']
+        for name, count in [('practice',17),('challenges',3)]:
+            self.assertEqual((section[name]['minItems'],section[name]['maxItems']),(count,count))
+            self.assertEqual(section[name]['items'],{'$ref':'#/$defs/question'})
+            self.assertNotIn('prefixItems',section[name])
+        self.assertEqual(set(schema['$defs']['question']['required']),{'intro','items'})
         self.assertEqual(sent['teacherStoppingPoint'],self.lesson['lastLesson'])
         self.assertRegex(measured['requestSchemaSha256'],r'^[a-f0-9]{64}$')
         self.assertRegex(measured['requestBodySha256'],r'^[a-f0-9]{64}$')
         self.assertNotIn('synthetic-fixture-key',json.dumps(body))
+
+    def test_rejects_incomplete_provider_rows_and_misplaced_challenges(self):
+        # Both are real risks when a provider treats its schema as advisory.
+        for only_stars in (True, False):
+            payload=source(self.lesson)
+            questions=payload['sections'][0]['questions']
+            if only_stars:
+                questions[:]=[{'star':q['star']} for q in questions]
+                expected='SOURCE_SHAPE'
+            else:
+                questions[0]['star'],questions[-1]['star']=True,False
+                expected='AUTHOR_PLAN_MISMATCH'
+            with self.subTest(only_stars=only_stars), \
+                    patch('general_provider.build_authoring_context',return_value={}), \
+                    patch('provider.request_author_json',return_value=payload) as author, \
+                    self.assertRaises(GenerationError) as caught:
+                provider.author_lesson(self.lesson,**self.config)
+            self.assertEqual(caught.exception.code,expected)
+            author.assert_called_once()
+
+    def test_provider_schemas_match_grade_specific_printable_notation(self):
+        from general_source import authoring_schema
+        try:
+            import jsonschema
+        except ImportError:
+            self.skipTest('jsonschema is optional')
+        for topic_id, grade, power_allowed in [('א01',1,False),('ג01',3,False),('ד11',4,True)]:
+            topic=next(t for t in catalog().topics if t['topicId']==topic_id)
+            lesson=intake(topic)
+            schema=authoring_schema(lesson,scope_for_lesson(lesson))
+            check=lambda ref: jsonschema.Draft202012Validator({'$ref':ref,'$defs':schema['$defs']})
+            expression=check('#/$defs/expression')
+            number={'type':'number','numerator':2,'denominator':1}
+            with self.subTest(grade=grade):
+                self.assertFalse(expression.is_valid({'type':'symbol','name':'x'}))
+                self.assertFalse(expression.is_valid({'type':'operation','op':'sqrt','args':[number]}))
+                self.assertEqual(expression.is_valid({'type':'operation','op':'power','args':[number,number]}),power_allowed)
+                self.assertEqual(expression.is_valid({'type':'operation','op':'divide','args':[number,number]}),grade>1)
+                title=jsonschema.Draft202012Validator(schema['properties']['title'])
+                self.assertEqual(title.is_valid('מונים'),grade>2)
+                if grade==1:
+                    self.assertTrue(title.is_valid('מוֹנִים'))
+
+    def test_grouped_questions_preserve_full_content_and_bind_challenge_flags(self):
+        from general_provider import assemble_sections
+        canonical=source(self.lesson)
+        payload=copy.deepcopy(canonical)
+        section=payload['sections'][0]
+        questions=section.pop('questions')
+        for question in questions:
+            del question['star']
+        section.update(practice=questions[:-3], challenges=questions[-3:])
+        self.assertEqual(assemble_sections(payload,len(questions)),canonical)
+        section['challenges'].pop()
+        with self.assertRaises(GeneralSourceError):
+            assemble_sections(payload,len(questions))
 
     def test_singleton_table_cells_from_provider_are_validated_without_changing_math(self):
         payload = source(self.lesson)

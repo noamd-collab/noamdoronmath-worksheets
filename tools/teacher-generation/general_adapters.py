@@ -10,6 +10,7 @@ import argparse
 from copy import deepcopy
 import hashlib
 import html
+import re
 import json
 from pathlib import Path
 import sys
@@ -63,11 +64,13 @@ def _load_skill(skill, elementary):
     sys.path[:0] = [str(p) for p in paths]
 
 
-def _elementary_math(ast, grade, H):
+def _elementary_math(ast, grade, H, *, blank=False):
     kind = ast["type"]
     if kind == "number":
         return H.fmt(ast["numerator"], grade) if ast["denominator"] == 1 else H.frac(ast["numerator"], ast["denominator"], grade)
     if kind == "symbol":
+        if blank and ast["name"] == "x":
+            return "___"
         raise GeneralSourceError("ELEMENTARY_SYMBOL", "The elementary adapter has no approved symbolic-variable typography")
     op, args = ast["op"], ast["args"]
     if op == "sqrt":
@@ -75,11 +78,11 @@ def _elementary_math(ast, grade, H):
     if op == "power":
         if grade in ("א", "ב", "ג"):
             raise GeneralSourceError("ELEMENTARY_POWER", "Power typography starts in grade four")
-        return "(" + _elementary_math(args[0], grade, H) + ")<sup>" + _elementary_math(args[1], grade, H) + "</sup>"
+        return "(" + _elementary_math(args[0], grade, H, blank=blank) + ")<sup>" + _elementary_math(args[1], grade, H, blank=blank) + "</sup>"
     operator = {"add": "+", "subtract": "-", "multiply": "*", "divide": ":"}[op]
     values = []
     for arg in args:
-        value = _elementary_math(arg, grade, H)
+        value = _elementary_math(arg, grade, H, blank=blank)
         if arg["type"] == "operation":
             value = "(" + value + ")"
         values.append(value)
@@ -95,6 +98,25 @@ def _notation(span):
     return names
 
 
+def _formula(notation, grade, H):
+    from compact_authoring import display_parts
+    number_grade = LETTERS.index(grade) + 1 if H else grade
+    rendered = []
+    for part in display_parts(notation, number_grade):
+        if isinstance(part,str):
+            rendered.append(html.escape(part) if H else part)
+            continue
+        tree, aliases = part
+        if H:
+            rendered.append(_elementary_math(tree,grade,H,blank=bool(aliases)))
+        else:
+            text = to_house_math(tree)
+            rendered.append(re.sub(r"(?<![A-Za-z\\])[xyab](?![A-Za-z])",
+                                   lambda match: aliases.get(match[0],match[0]),text))
+    text = " ".join(rendered)
+    return H.ltr(text) if H else "$" + text + "$"
+
+
 def rich_text(spans, grade, H=None):
     result = []
     for span in spans:
@@ -102,9 +124,20 @@ def rich_text(spans, grade, H=None):
             result.append(html.escape(span["text"]) if H else span["text"])
         elif span["kind"] == "math":
             result.append(H.ltr(_elementary_math(span["expression"], grade, H)) if H else "$" + to_house_math(span["expression"]) + "$")
+        elif span["kind"] == "formula":
+            result.append(_formula(span["notation"],grade,H))
         elif span["kind"] == "geometry":
             result.append("$" + _notation(span) + "$")
     return "".join(result)
+
+
+def _prints_calculation(item, computed):
+    # The same exercise can arrive both in a pupil math span and its exact
+    # task. Preserve the printed span and retain the independent solution.
+    if not computed or computed["question"]["kind"] != "evaluate":
+        return False
+    mathematics = [span for span in item["prompt"] if span["kind"] != "text"]
+    return mathematics == [{"kind": "math", "expression": computed["question"]["expression"]}]
 
 
 def _task_text(solved, grade, H=None):
@@ -134,6 +167,9 @@ def _task_text(solved, grade, H=None):
             axis="x" if task["operation"]=="x_coordinate" else "y"
             return "קראו את שיעור ה־"+wrap(axis)+" של הנקודה "+wrap(task["point"])+"."
         return ""
+    if kind in ("gcd","lcm"):
+        label = "המחלק המשותף הגדול ביותר של " if kind == "gcd" else "הכפולה המשותפת הקטנה ביותר של "
+        return label + wrap(render(task["left"])) + " ושל " + wrap(render(task["right"]))
     if kind == "solve":
         return wrap(render(task["lhs"]) + " = " + render(task["rhs"]))
     if kind == "compare":
@@ -291,7 +327,8 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
             for j, item in enumerate(question["items"], 1):
                 item_id = f"q{n}-i{j}"; computed = solved[item_id]
                 prompt = rich_text(item["prompt"], grade, H)
-                task_text = "" if states_entire_task(lesson, n-1, j-1, item) else _task_text(computed, grade, H)
+                complete = states_entire_task(lesson, n-1, j-1, item) or _prints_calculation(item,computed)
+                task_text = "" if complete else _task_text(computed, grade, H)
                 answer = _answer_text(computed, item["answer"]["unit"], grade, H)
                 guard_counting_input(lesson, question, item, computed)
                 binding = place_answer(lesson, question, item, computed)
@@ -365,7 +402,8 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
                 printed = percentage_evidence(lesson, question["intro"], item, computed)
                 if printed:
                     printed_checks[item_id] = printed
-                body = prompt+(" "+_task_text(computed, lesson["gradeNumber"]) if computed and not printed else "")
+                show_task = computed and not printed and not _prints_calculation(item, computed)
+                body = prompt+(" "+_task_text(computed, lesson["gradeNumber"]) if show_task else "")
                 answer = _answer_text(computed, item["answer"]["unit"], lesson["gradeNumber"]) if computed else rich_text(item["answer"]["text"], lesson["gradeNumber"])
                 space=280 if question.get("drawingFromWords") and j==len(question["items"]) else 46 if question["star"] else 32
                 row = {"label": LETTERS[j-1], "text": body, "space": space, "answer": answer, "given": [body], "to_prove": []}
@@ -410,12 +448,15 @@ if __name__ == "__main__":
     lesson, payload, scope = load("lesson.json"), load("model-output.json"), load("curriculum-scope.json")
     import division_facts
     import square_lesson
+    import pythagoras_lesson
     import counting_lesson
     from triangle_lesson import VERSION, compile_triangle
     if payload.get("version") == counting_lesson.VERSION:
         result = counting_lesson.compile_counting(lesson, payload, scope, args.skill, wd)
     elif payload.get("version") == division_facts.VERSION:
         result = division_facts.compile_source(lesson, payload, args.skill, wd)
+    elif payload.get("version") == pythagoras_lesson.VERSION:
+        result = pythagoras_lesson.compile_pythagoras(lesson, payload, scope, args.skill, wd)
     elif payload.get("version") == square_lesson.VERSION:
         result = square_lesson.compile_square(lesson, payload, scope, args.skill, wd)
     elif payload.get("version") == VERSION:
