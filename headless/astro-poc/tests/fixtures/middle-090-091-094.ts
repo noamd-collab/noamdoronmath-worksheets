@@ -63,8 +63,8 @@ export function copyBeforeRelease<T>(slug: string, page: T, release: typeof rele
   const item = release.packages.find(p => p.slug === slug);
   if (!item) return page;
   const result: any = structuredClone(page);
-  if (release === seven) {
-    const edits = seven.packages.find(p => p.slug === slug)?.priorCopyEdits ?? [];
+  if (release === seven || release === renew) {
+    const edits = release.packages.find(p => p.slug === slug)?.priorCopyEdits ?? [];
     for (const edit of edits) {
       const parent = edit.path.slice(0, -1).reduce((node: any, key) => node[key], result);
       const key = edit.path.at(-1)!;
