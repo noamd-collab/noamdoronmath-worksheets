@@ -288,4 +288,56 @@ class PrintedElementaryTests(unittest.TestCase):
         guard_counting_input({"gradeNumber":4,"topicId":"ד01"},question,item,bad_sort)
 
 
+class PrintedPercentagesTests(unittest.TestCase):
+    @staticmethod
+    def rich_text(s):
+        return [{"kind":"text","text":s}]
+
+    def setup_item(self, intro, prompt, value, unit, lesson=None):
+        from math_tasks import validate_and_solve_task
+        from printed_percentages import percentage_evidence
+        source_lesson=lesson or {"gradeNumber":8,"topicId":"g8:percentages"}
+        item={"prompt":self.rich_text(prompt),"answer":{"kind":"computed","unit":unit}}
+        return percentage_evidence(source_lesson,self.rich_text(intro),item,validate_and_solve_task({"kind":"evaluate","expression":value}))
+
+    def test_exact_visible_base_amount_and_units(self):
+        intro="בכיתה יש 25 תלמידים."
+        prompt="כמה הם 20 אחוזים מ־25 התלמידים?"
+        check=self.setup_item(intro,prompt,number(5),"תלמידים")
+        self.assertEqual((check["role"],check["value"]),("part","5"))
+        with self.assertRaises(GeneralSourceError):self.setup_item(intro,prompt,number(4),"תלמידים")
+        with self.assertRaises(GeneralSourceError):self.setup_item(intro,prompt,number(5),"שקלים")
+        with self.assertRaises(GeneralSourceError):self.setup_item("בכיתה יש 20 תלמידים.",prompt,number(5),"תלמידים")
+        with self.assertRaises(GeneralSourceError):self.setup_item("","כמה הם 10 אחוזים מ־25 התלמידים?",number(5,2),"תלמידים")
+        self.assertEqual(self.setup_item("","כמה הם 10 אחוזים מ־25 השקלים?",number(5,2),"שקלים")["value"],"5/2")
+        self.assertIsNone(self.setup_item(intro,"מצאו את הכמות.",number(5),"תלמידים"))
+        self.assertIsNone(self.setup_item(intro,"כמה הם 20 אחוזים מ־25 התלמידים שקיבלו בונוס של 5?",number(5),"תלמידים"))
+        self.assertIsNone(self.setup_item(intro,prompt,number(5),"תלמידים",{"gradeNumber":7,"topicId":"g7:other"}))
+
+    def test_inverse_percentage_requires_its_own_known_base(self):
+        p="דנה ענתה נכון על 45 שאלות. כמה אחוזים מהשאלות ענתה דנה נכון?"
+        self.assertEqual(self.setup_item("במבחן היו 50 שאלות.",p,number(90),"אחוזים")["role"],"percentage")
+        self.assertIsNone(self.setup_item("",p,number(90),"אחוזים"))
+        self.assertIsNone(self.setup_item("במבחן היו 50 שאלות.",p.replace("ענתה דנה נכון?","ענה דני נכון?"),number(90),"אחוזים"))
+        with self.assertRaises(GeneralSourceError):self.setup_item("במבחן היו 40 שאלות.",p,number(90),"אחוזים")
+        with self.assertRaises(GeneralSourceError):self.setup_item("במבחן היו 50 שאלות.",p,number(90),"שאלות")
+
+    def test_middle_native_compiler_keeps_recipe_for_an_incomplete_instruction(self):
+        import tempfile
+        from general_adapters import _compile_middle
+        from math_tasks import validate_and_solve_task
+        task={"kind":"evaluate","expression":{"type":"operation","op":"multiply","args":[number(1,5),number(25)]}}
+        def row(prompt):
+            return {"prompt":self.rich_text(prompt),"answer":{"kind":"computed","unit":"תלמידים","task":task}}
+        q={"intro":self.rich_text("בכיתה יש 25 תלמידים."),"star":False,"items":[row("כמה הם 20 אחוזים מ־25 התלמידים?"),row("חשבו כמה תלמידים מתקבלים.")]}
+        source={"title":"אחוזים","rule":self.rich_text("חלק ממאה"),"sections":[{"title":"אחוז מתוך השלם","conceptIds":["g8:percentages#0"],"questions":[q]}]}
+        solved=validate_and_solve_task(task); evidence={"computations":[{"itemId":"q1-i1","computed":solved},{"itemId":"q1-i2","computed":solved}]}
+        scope={"topic":{"sourceTopicId":"percentages","sourceTrack":"ח","domain":"מספרי"}}
+        with tempfile.TemporaryDirectory() as tmp:
+            _compile_middle({"gradeNumber":8,"level":"b","topicId":"g8:percentages"},source,evidence,scope,None,Path(tmp))
+            items=json.loads((Path(tmp)/"worksheet-source.json").read_text())["questions"][0]["items"]
+            self.assertEqual(items[0]["text"],"כמה הם 20 אחוזים מ־25 התלמידים?")
+            self.assertIn("25",items[1]["text"])
+            self.assertEqual(set(json.loads((Path(tmp)/"verified.json").read_text())["printedChecks"]),{"q1-i1"})
+
 if __name__=="__main__":unittest.main()

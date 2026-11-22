@@ -18,6 +18,7 @@ from general_source import GeneralSourceError, validate_source
 from math_tasks import to_house_math, validate_and_solve_task
 from general_geometry import solve_figure_task, measure_elementary_svg
 from no_carry_addition import states_entire_task
+from printed_percentages import percentage_evidence
 from printed_elementary import guard_counting_input, place_answer, place_intro, validate_counting_values
 
 LETTERS = "אבגדהוזחטי"
@@ -274,7 +275,7 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
             revised_intro = place_intro(lesson, question)
             intro_spans = [{"kind":"text","text":revised_intro}] if revised_intro else question["intro"]
             intro = rich_text(intro_spans, grade, H)
-            if question is section["questions"][0]:
+            if question is section["questions"][0] and not (printed_answers is not None and len(source["sections"]) == 1):
                 pieces.append('<h3 class="section-title">' + html.escape(section["title"]) + '</h3>')
             if "table" in question:
                 table = question["table"]
@@ -341,6 +342,7 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
     solved = {row["itemId"]: row["computed"] for row in evidence["computations"]}
     qs, answers, canon, n = [], [], [], 0
     words_share={}
+    printed_checks = {}
     for section in source["sections"]:
         first = n + 1
         for question in section["questions"]:
@@ -360,7 +362,10 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
             for j, item in enumerate(question["items"], 1):
                 item_id = f"q{n}-i{j}"; computed = solved.get(item_id)
                 prompt = rich_text(item["prompt"], lesson["gradeNumber"])
-                body = prompt+(" "+_task_text(computed, lesson["gradeNumber"]) if computed else "")
+                printed = percentage_evidence(lesson, question["intro"], item, computed)
+                if printed:
+                    printed_checks[item_id] = printed
+                body = prompt+(" "+_task_text(computed, lesson["gradeNumber"]) if computed and not printed else "")
                 answer = _answer_text(computed, item["answer"]["unit"], lesson["gradeNumber"]) if computed else rich_text(item["answer"]["text"], lesson["gradeNumber"])
                 space=280 if question.get("drawingFromWords") and j==len(question["items"]) else 46 if question["star"] else 32
                 row = {"label": LETTERS[j-1], "text": body, "space": space, "answer": answer, "given": [body], "to_prove": []}
@@ -378,7 +383,7 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
                     # relation or an empty target presented as verified.
                     row["no_target_reason"] = "תוצאה של משימה מתמטית מוקלדת; נדרש לבדוק התאמה בין הניסוח, המשימה וההקשר"
                 items.append(row); answer_items.append([LETTERS[j-1], answer])
-                source_items.append({"id": item_id, "label": LETTERS[j-1], "text": body, "answer": answer, "task": computed["question"] if computed else None, "verification": "typed task only" if computed else "unverified prose/proof; owner review required"})
+                source_items.append({"id": item_id, "label": LETTERS[j-1], "text": body, "answer": answer, "task": computed["question"] if computed else None, "verification": "typed answer and printed percentage givens" if printed else "typed task only" if computed else "unverified prose/proof; owner review required"})
             qs.append(q); answers.append([n, answer_items, question["star"]])
             canon.append({"id":f"q{n}", "n":n, "intro":intro, "section":section["title"], "conceptIds":section["conceptIds"], "items":source_items, "table":question.get("table"), "figure":question.get("figure")})
     from general_source import geometry_topic
@@ -390,7 +395,10 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
         level["words_share"]={str(k):v for k,v in words_share.items()}
     dump(work / "levels.json", [level])
     dump(work / "worksheet-source.json", {"version":4, "meta":{"gradeNumber":lesson["gradeNumber"], "levelCode":lesson["level"], "topicId":lesson["topicId"]}, "questions":canon, "reviewRequired":True})
-    dump(work / "verified.json", {"version":1, "scope":"typed tasks only", "computations":evidence["computations"], "proseReviewRequired":True})
+    verification = {"version":1, "scope":"typed tasks only", "computations":evidence["computations"], "proseReviewRequired":True}
+    if printed_checks:
+        verification.update(scope="typed tasks and matching printed percentage givens", printedChecks=printed_checks)
+    dump(work / "verified.json", verification)
     # Constant bridge: no provider-controlled source is interpolated as Python.
     (work / "content.py").write_text(MIDDLE_BRIDGE+'PACKAGE = "G'+str(lesson["gradeNumber"])+'-T90"\n', encoding="utf-8")
 
@@ -402,8 +410,11 @@ if __name__ == "__main__":
     lesson, payload, scope = load("lesson.json"), load("model-output.json"), load("curriculum-scope.json")
     import division_facts
     import square_lesson
+    import counting_lesson
     from triangle_lesson import VERSION, compile_triangle
-    if payload.get("version") == division_facts.VERSION:
+    if payload.get("version") == counting_lesson.VERSION:
+        result = counting_lesson.compile_counting(lesson, payload, scope, args.skill, wd)
+    elif payload.get("version") == division_facts.VERSION:
         result = division_facts.compile_source(lesson, payload, args.skill, wd)
     elif payload.get("version") == square_lesson.VERSION:
         result = square_lesson.compile_square(lesson, payload, scope, args.skill, wd)
