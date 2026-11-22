@@ -10,6 +10,8 @@ from urllib.parse import urlparse
 from urllib.request import Request, HTTPRedirectHandler, HTTPSHandler, build_opener
 from validation import MAX_JSON_BYTES, GenerationError, exact, integer, reject, validate_lesson, validate_model
 from author_quality import prepare_didactics
+from authoring_context import AuthoringContextError, build_authoring_context
+from runtime_catalog import catalog
 
 QWEN_HOSTS={'token-plan.maas.qwencloudapi.com','dashscope.aliyuncs.com','dashscope-intl.aliyuncs.com','dashscope-us.aliyuncs.com','cn-hongkong.dashscope.aliyuncs.com'}
 
@@ -244,11 +246,11 @@ def request_author_json(target, key, body, measured, timeout):
         measured['elapsedSeconds']=round(time.monotonic()-started,3)
     return payload
 
-def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None, allow_legacy=False):
-    """Author one requested lesson, with at most one provider call.
+def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None, allow_legacy=False, revision=None):
+    """Author the initial requested lesson. A v3 worker may retain one revision callback.
 
-    The closed grade-nine triangle author returns replayable parameters locally.
-    Other supported lessons use the configured authoring provider. render_job
+    Supported native lesson authors return replayable parameters locally.
+    Other lessons use the configured authoring provider. render_job
     consumes the validated result and does not call an author.
     Caller must enforce owner auth, quota and
     job idempotency before calling. No credentials or provider response bodies
@@ -259,6 +261,37 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
     """
     cap=validate_lesson(lesson,allow_legacy=allow_legacy)
     if lesson['version'] == 3:
+        skill = cap['skill']
+        paths = {skill: os.environ.get(f'{skill.upper()}_SKILL_PATH')}
+        try:
+            context = build_authoring_context(catalog(), lesson, paths)
+        except AuthoringContextError as exc:
+            reject('AUTHOR_CONTEXT_INVALID', str(exc))
+        import fraction_lesson
+        if fraction_lesson.eligible(lesson):
+            if metadata is not None:
+                metadata.update(authorContract=fraction_lesson.VERSION, providerCalled=False, responseReceived=False)
+            return fraction_lesson.parameters(lesson)
+        import counting_lesson
+        if counting_lesson.eligible(lesson):
+            if metadata is not None:
+                metadata.update(authorContract=counting_lesson.VERSION, providerCalled=False, responseReceived=False)
+            return counting_lesson.parameters(lesson)
+        import division_facts
+        if division_facts.eligible(lesson):
+            if metadata is not None:
+                metadata.update(authorContract=division_facts.VERSION, providerCalled=False, responseReceived=False)
+            return division_facts.author(lesson)
+        import pythagoras_lesson
+        if pythagoras_lesson.eligible(lesson):
+            if metadata is not None:
+                metadata.update(authorContract=pythagoras_lesson.VERSION, providerCalled=False, responseReceived=False)
+            return pythagoras_lesson.parameters(lesson)
+        import square_lesson
+        if square_lesson.eligible(lesson):
+            if metadata is not None:
+                metadata.update(authorContract=square_lesson.VERSION, providerCalled=False, responseReceived=False)
+            return square_lesson.parameters(lesson)
         from triangle_lesson import VERSION, eligible, parameters
         if eligible(lesson):
             if metadata is not None:
@@ -266,7 +299,8 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
             return parameters(lesson)
         from general_provider import author_general_lesson
         return author_general_lesson(lesson, api_key=api_key, base_url=base_url, model=model,
-                                     timeout=timeout, metadata=metadata)
+                                     timeout=timeout, metadata=metadata, authoring_context=context,
+                                     **({"revision": revision} if revision is not None else {}))
     key=api_key or os.environ.get('QWEN_API_KEY') or os.environ.get('DASHSCOPE_API_KEY')
     base=base_url or os.environ.get('QWEN_BASE_URL')
     chosen=model or os.environ.get('QWEN_MODEL')

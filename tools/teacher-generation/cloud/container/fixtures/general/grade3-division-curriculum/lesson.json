@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "gradeNumber": 3,
+  "topicId": "ג10",
+  "level": "b",
+  "questionCount": 12,
+  "lessonGoal": "practice",
+  "minutes": 30,
+  "lastLesson": "תרגלנו חילוק בתחום לוח הכפל עד 100.",
+  "alreadyLearned": [],
+  "classLabel": "",
+  "lessonBoundary": {
+    "version": 1,
+    "kind": "curriculum_scope",
+    "curriculumSha256": "57adca1891cbc2ef333709a6adee18045da23035f9e981f091673d2f8547527b",
+    "conceptIds": [
+      "ג10#0"
+    ]
+  }
+}

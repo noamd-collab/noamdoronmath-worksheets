@@ -1,6 +1,9 @@
 import json
 import copy
 import random
+import os
+import shutil
+import tempfile
 from collections import Counter
 from pathlib import Path
 import ssl
@@ -434,6 +437,65 @@ class ProviderTests(unittest.TestCase):
         cap=copy.deepcopy(self.cap);cap.pop('requiredKindCounts')
         with self.assertRaises(GenerationError) as caught:provider.author_schema(self.lesson,cap)
         self.assertEqual(caught.exception.code,'AUTHOR_PLAN_CONFIG_INVALID')
+
+
+
+class CurriculumSkillEntryTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from cloud.container.skill_bundle import install
+        temp = tempfile.TemporaryDirectory()
+        cls.addClassCleanup(temp.cleanup)
+        cls.skill_dir = Path(temp.name) / 'skills'
+        install(HERE / 'cloud/container/skills', cls.skill_dir, HERE / 'skill-lock.json')
+        cls.skills = {f'{k.upper()}_SKILL_PATH': str(cls.skill_dir / k)
+                      for k in ('elementary', 'middle')}
+
+    def lesson(self, case):
+        return read_json(HERE / 'cloud/container/fixtures/general' / case / 'lesson.json')
+
+    def test_native_and_general_authors_enter_the_chosen_pinned_skill_once(self):
+        original = provider.build_authoring_context
+        for case, kind, native in [('grade3-division-curriculum', 'elementary', True),
+                                   ('grade9-special-right-triangle', 'middle', True),
+                                   ('grade4-fractions', 'elementary', False),
+                                   ('grade9-coordinate-triangles', 'middle', False)]:
+            lesson = self.lesson(case)
+            loaded = []
+            def measured(catalog, job, paths):
+                context = original(catalog, job, paths)
+                loaded.append(context)
+                return context
+            with self.subTest(case=case), patch.dict(os.environ, self.skills), \
+                    patch('provider.build_authoring_context', side_effect=measured) as build, \
+                    patch('general_provider.author_general_lesson') as general:
+                provider.author_lesson(lesson)
+                build.assert_called_once()
+                self.assertEqual(set(build.call_args.args[2]), {kind})
+                self.assertEqual(loaded[0]['skill']['skillId'], kind)
+                self.assertEqual(loaded[0]['teacherContext']['lastLesson'], lesson['lastLesson'])
+                if native:
+                    general.assert_not_called()
+                else:
+                    general.assert_called_once()
+                    self.assertIs(general.call_args.kwargs['authoring_context'], loaded[0])
+
+    def test_missing_swapped_or_changed_authoring_skill_blocks_native_generation(self):
+        lesson = self.lesson('grade3-division-curriculum')
+        with tempfile.TemporaryDirectory() as temp:
+            tampered = Path(temp) / 'elementary'
+            shutil.copytree(self.skill_dir / 'elementary', tampered)
+            (tampered / 'SKILL.md').write_text('Changed instruction')
+            for path in (Path(temp) / 'missing', self.skill_dir / 'middle', tampered):
+                with self.subTest(path=path.name), \
+                        patch.dict(os.environ, {'ELEMENTARY_SKILL_PATH': str(path)}), \
+                        patch('division_facts.author') as native, \
+                        patch('provider.request_author_json') as remote, \
+                        self.assertRaises(GenerationError) as caught:
+                    provider.author_lesson(lesson)
+                self.assertEqual(caught.exception.code, 'AUTHOR_CONTEXT_INVALID')
+                native.assert_not_called()
+                remote.assert_not_called()
 
 
 if __name__=='__main__':unittest.main()
