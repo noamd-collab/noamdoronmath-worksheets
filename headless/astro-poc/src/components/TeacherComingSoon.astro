@@ -1,21 +1,28 @@
 ---
 import { TEACHER_FAQ, TEACHER_LANDING_H1 } from '../lib/teacherLandingContent';
 import '../styles/teacher-landing.css';
+import type { PublicGenerationTrial } from '../lib/teacherGenerationStore';
+interface Props { trial: PublicGenerationTrial }
+const { trial } = Astro.props;
+const deadline = trial.endsAt ? new Intl.DateTimeFormat('he-IL', {dateStyle:'long', timeStyle:'short', timeZone:'Asia/Jerusalem'}).format(new Date(trial.endsAt)) : '';
 ---
 <main class="teacher-landing teacher-coming-soon" id="teacher-coming-soon">
   <section class="hero wrap" aria-labelledby="teacher-coming-soon-title">
     <div class="hero-content" id="teacher-start" tabindex="-1">
       <p class="eyebrow"><span aria-hidden="true"></span>אזור המורים</p>
-      <h1 id="teacher-coming-soon-title">{TEACHER_LANDING_H1}</h1>
-      <p class="intro">בחרו שאלות מהמאגר, התאימו את הדף לכיתה והכינו אותו להדפסה או לעריכה ב־Word.</p>
-      <p class="coming-soon-vision">בוחרים כיתה, נושא ורמה, מסמנים את השאלות שמתאימות לשיעור ומרכיבים דף אחד עם אפשרות לצרף תשובות.</p>
+      <h1 id="teacher-coming-soon-title">{trial.active ? 'דף עבודה חדש לשיעור שלך' : TEACHER_LANDING_H1}</h1>
+      {trial.active ? <p class="intro">בחרו כיתה ונושא, ספרו מה כבר לימדתם וקבלו דף תרגול עם תשובות ב־PDF וב־Word.</p> : <p class="intro">בחרו שאלות מהמאגר, התאימו את הדף לכיתה והכינו אותו להדפסה או לעריכה ב־Word.</p>}
 
-      <div class="coming-soon-status">
+      {trial.active ? <div class="coming-soon-status">
+        <h2>התנסות חינם למשך שלושה ימים</h2>
+        <p>עד 5 דפים בסך הכול לכל חשבון Google, בכל נושאי הקטלוג לכיתות א׳–ט׳. ההתנסות פתוחה עד <time datetime={trial.endsAt}>{deadline}</time> לפי שעון ישראל.</p>
+      </div> : <div class="coming-soon-status">
         <h2>נכנסים עם Google ומתחילים</h2>
-        <p>כל מי שמתחבר עם Google יכול לבחור שאלות מהמאגר, להכין דף להדפסה ולייצא ל־Word.</p>
-      </div>
+        <p>אפשר לבחור שאלות מהמאגר, להכין דף להדפסה ולייצא ל־Word.</p>
+      </div>}
       <div class="coming-soon-actions">
-        <a class="button primary" href="/teachers/login">כניסה לכלי המורים עם Google <span aria-hidden="true">←</span></a>
+        {trial.active && <a class="button primary" href="/teachers/generate">ליצירת דף עבודה בחינם <span aria-hidden="true">←</span></a>}
+        <a class={trial.active ? 'coming-soon-catalog' : 'button primary'} href="/teachers/start">לבחירת שאלות מהמאגר <span aria-hidden="true">←</span></a>
         <a class="coming-soon-catalog" href="/worksheets">לדפי העבודה הקיימים <span aria-hidden="true">↗</span></a>
       </div>
     </div>
@@ -38,12 +45,13 @@ import '../styles/teacher-landing.css';
 
   <section class="coming-soon-context wrap" aria-labelledby="coming-soon-context-title">
     <div class="section-heading">
-      <p class="eyebrow">בקרוב · יצירת דפי עבודה חדשים עם AI</p>
+      <p class="eyebrow">יצירת דפי עבודה חדשים עם AI</p>
       <h2 id="coming-soon-context-title">דף חדש שמתחיל במה שקורה בכיתה.</h2>
-      <p>אנחנו מפתחים כלי שייצור דפים חדשים לפי הכיתה, השלב בתוכנית הלימודים והמקום שבו עצרתם. השירות החדש מתוכנן להיות בתשלום; פרטי ההשקה והתמחור יפורסמו בהמשך.</p>
+      <p>במחולל בוחרים כיתה, נושא ורמה ומתארים מה כבר נלמד. הדפים שהכנתם זמינים לעיון ולהורדה ב„הדפים שלי”.</p>
+      <a class="coming-soon-catalog" href="/teachers/generate?view=history#generation-history">לדפים שיצרתי</a>
     </div>
     <ul class="coming-soon-context-list">
-      <li><h3>הכיתה שלך</h3><p>התאמה מתוכננת לרמה, לצרכים ולמטרת התרגול של התלמידים.</p></li>
+      <li><h3>הכיתה שלך</h3><p>התאמה לרמה, לצרכים ולמטרת התרגול של התלמידים.</p></li>
       <li><h3>השלב בתוכנית הלימודים</h3><p>בחירת תרגול לפי הנושא והשלב שאליהם הגעתם במהלך השנה.</p></li>
       <li><h3>השיעור האחרון</h3><p>חיבור בין מה שנלמד לאחרונה לבין החזרה וההמשך שתרצו להכין.</p></li>
     </ul>

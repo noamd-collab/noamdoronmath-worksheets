@@ -13,6 +13,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import Mock, patch
 from urllib.error import HTTPError
+from urllib.parse import parse_qs, urlsplit
 
 HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
@@ -21,6 +22,8 @@ from validation import GenerationError
 
 JOB_ID = '22222222-2222-4222-8222-222222222222'
 LEASE = '44444444-4444-4444-8444-444444444444'
+TEACHER_A = '11111111-1111-4111-8111-111111111111'
+TEACHER_B = '33333333-3333-4333-8333-333333333333'
 
 
 class FakeRemote:
@@ -28,6 +31,7 @@ class FakeRemote:
         self.calls = []
         self.claims = []
         self.fail_updates = False
+        self.job_owners = {JOB_ID:TEACHER_A}
         self.fail_upload = False
         self.fail_claim = False
         self.bucket = {'id': worker.BUCKET, 'public': False, 'file_size_limit': worker.ARTIFACT_LIMIT,
@@ -43,7 +47,11 @@ class FakeRemote:
         if method == 'GET' and 'limit=0' in path:
             return []
         if method == 'PATCH':
-            return [] if self.fail_updates else [{'id': JOB_ID}]
+            params = parse_qs(urlsplit(path).query)
+            ident = params['id'][0].removeprefix('eq.')
+            actor = self.job_owners.get(ident)
+            if self.fail_updates or params.get('owner_id') != ['eq.' + str(actor)]: return []
+            return [{'id':ident,'owner_id':actor}]
         if '/storage/' in path and self.fail_upload:
             raise RuntimeError('private upstream response details')
         return None
@@ -59,7 +67,7 @@ class WorkerTests(unittest.TestCase):
         self.root = Path(self.temp.name).resolve()
         self.lesson = json.loads((HERE / 'examples/elementary-lesson.json').read_text())
         self.lesson.update(version=2, lessonBoundary={'version':1,'kind':'division_facts','allowedDivisors':list(range(1,11)),'maxDividend':100})
-        self.job = {'id': JOB_ID, 'owner_id': worker.OWNER, 'lease_token': LEASE, 'status': 'running',
+        self.job = {'id': JOB_ID, 'owner_id': TEACHER_A, 'lease_token': LEASE, 'status': 'running',
                     'lease_until': (datetime.now(timezone.utc) + timedelta(minutes=20)).isoformat(), 'lesson': self.lesson}
         self.remote = FakeRemote()
 
@@ -113,7 +121,10 @@ class WorkerTests(unittest.TestCase):
         self.assertIn('/rpc/claim_teacher_generation_job', self.remote.calls[2][0])
         self.assertIn('noam_teacher_generation_workers', self.remote.calls[3][0])
         self.assertEqual(self.root.stat().st_mode & 0o777, 0o700)
-        self.assertEqual(self.remote.calls[3][2]['capabilities']['acceptedIntakeVersions'], [2, 3])
+        advertised_caps = self.remote.calls[3][2]['capabilities']
+        self.assertEqual(advertised_caps['acceptedIntakeVersions'], [2, 3])
+        self.assertEqual(advertised_caps['trialActorIsolation'], 1)
+        self.assertLessEqual(len(json.dumps(advertised_caps, ensure_ascii=False).encode()), 65536)
         advertised = self.remote.calls[3][2]['capabilities']['topics']
         enabled = {cap['topicId']: cap for cap in advertised if cap.get('enabled')}
         self.assertEqual(len(enabled), 232)
@@ -173,7 +184,7 @@ class WorkerTests(unittest.TestCase):
         paid.assert_called_once(); self.assertEqual(self.remote.uploads(), [])
 
     def test_invalid_owner_topic_or_lease_is_denied_before_paid_authoring(self):
-        changes = [{'owner_id': '33333333-3333-4333-8333-333333333333'}, {'id': '../escape'},
+        changes = [{'owner_id': None}, {'owner_id': '../invalid'}, {'id': '../escape'},
                    {'lease_token': None}, {'status': 'queued'},
                    {'lease_until': 'not-a-time'}, {'lease_until': '2099-01-01T00:00:00'},
                    {'lease_until': (datetime.now(timezone.utc) - timedelta(seconds=1)).isoformat()},
@@ -184,6 +195,39 @@ class WorkerTests(unittest.TestCase):
                 with self.assertRaises((RuntimeError, GenerationError)):
                     worker.process_job(self.remote, {**self.job, **change}, self.root)
                 author.assert_not_called(); renderer.assert_not_called()
+
+    def test_each_admitted_account_uploads_only_to_the_claimed_owner_and_job(self):
+        other_job = '55555555-5555-4555-8555-555555555555'
+        self.remote.job_owners[other_job] = TEACHER_B
+        for job_id, actor in self.remote.job_owners.items():
+            with patch.object(worker,'author_lesson',return_value={}), patch.object(worker,'render_job',side_effect=self.rendered):
+                worker.process_job(self.remote,{**self.job,'id':job_id,'owner_id':actor},self.root)
+        expected = {'/storage/v1/object/' + worker.BUCKET + '/' + actor + '/' + job + '/sheet.' + kind
+                    for job,actor in self.remote.job_owners.items() for kind in ('pdf','docx')}
+        self.assertEqual({row[0] for row in self.remote.uploads()},expected)
+        for url, method, _, _ in self.remote.calls:
+            if method == 'PATCH':
+                params = parse_qs(urlsplit(url).query)
+                self.assertEqual(params['select'],['id,owner_id'])
+                self.assertEqual(params['owner_id'],['eq.' + self.remote.job_owners[params['id'][0][3:]]])
+
+    def test_mismatched_durable_owner_cannot_start_authoring_or_publish_artifacts(self):
+        with patch.object(worker,'author_lesson') as paid, patch.object(worker,'render_job') as render:
+            with self.assertRaisesRegex(RuntimeError,'JOB_LEASE_LOST'):
+                worker.process_job(self.remote,{**self.job,'owner_id':TEACHER_B},self.root)
+        paid.assert_not_called()
+        render.assert_not_called()
+        self.assertFalse(self.remote.uploads())
+
+    def test_lost_owner_or_lease_during_render_prevents_both_uploads(self):
+        def render(*args):
+            result=self.rendered(*args)
+            self.remote.fail_updates=True
+            return result
+        with patch.object(worker,'author_lesson',return_value={}), patch.object(worker,'render_job',side_effect=render):
+            with self.assertRaisesRegex(RuntimeError,'JOB_LEASE_LOST'):
+                worker.process_job(self.remote,self.job,self.root)
+        self.assertFalse(self.remote.uploads())
 
     def test_lease_loss_before_authoring_never_spends_or_renders(self):
         self.remote.fail_updates = True
@@ -260,6 +304,28 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(self.remote.uploads(), [])
         self.assertFalse(any('validationDetail' in json.dumps(c) for c in self.remote.calls))
 
+    def test_plain_math_failure_reports_one_bounded_correction_receipt(self):
+        self.use_general_lesson()
+        for attempted in (True, False):
+            with self.subTest(attempted=attempted):
+                root = self.root / str(attempted)
+                root.mkdir()
+                def author(_, *, revision, metadata, **kw):
+                    metadata.update(initialPlainMath=True, validated=False, data="PRIVATE_RESPONSE")
+                    if attempted:
+                        def correct(findings):
+                            metadata["correctionRequested"] = True
+                            raise GenerationError("SOURCE_PLAIN_MATH","PRIVATE_SECOND_RESPONSE")
+                        revision.update(revise=correct, sourceFindings=[{"kind":"mark_math"}])
+                    raise GenerationError("SOURCE_PLAIN_MATH","PRIVATE_INITIAL_RESPONSE")
+                with patch.object(worker,"author_lesson",side_effect=author), redirect_stdout(io.StringIO()) as captured:
+                    with self.assertRaises(GenerationError):
+                        worker.process_job(self.remote,self.job,root,enable_skill_revision=True)
+                self.assertEqual(json.loads(captured.getvalue()),
+                                 {"event":"source_notation_recovery","jobId":JOB_ID,
+                                  "correctionRequested":attempted,"sourceValidated":False})
+        self.assertFalse(self.remote.uploads())
+
     def test_diagnostics_keep_only_known_author_contract_versions(self):
         for index, contract in enumerate(('worksheet-parameters/2', 'worksheet-parameters/3',
                                           'no-carry-addition/1', 'worksheet-parameters/4', 'PRIVATE_SECRET', None, {'raw': 'PRIVATE_SECRET'})):
@@ -329,7 +395,7 @@ class WorkerTests(unittest.TestCase):
         paid.assert_called_once()
         self.assertEqual(len(self.remote.uploads()), 2)
         for call in self.remote.uploads():
-            self.assertTrue(call[0].startswith('/storage/v1/object/teacher-generation-private/' + worker.OWNER + '/' + JOB_ID + '/sheet.'))
+            self.assertTrue(call[0].startswith('/storage/v1/object/teacher-generation-private/' + TEACHER_A + '/' + JOB_ID + '/sheet.'))
         patches = [call for call in self.remote.calls if call[1] == 'PATCH']
         self.assertTrue(all('lease_token=eq.' + LEASE in call[0] and 'status=eq.running' in call[0]
                             and 'lease_until=gt.' in call[0] for call in patches))
