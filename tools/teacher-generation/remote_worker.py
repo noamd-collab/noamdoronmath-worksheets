@@ -131,7 +131,7 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         if not UUID.fullmatch(str(job_id)): return False
         record = {'version': 1, 'jobId': job_id, 'recordedAt': utc().isoformat(),
                   'stage': 'authoring', 'outcome': 'failed' if failure else 'passed'}
-        for key in ('responseReceived', 'validated'):
+        for key in ('responseReceived', 'validated', 'providerCalled'):
             if type(metadata.get(key)) is bool: record[key] = metadata[key]
         for key in ('requestedModel', 'responseModel'):
             value = metadata.get(key)
@@ -139,7 +139,7 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         elapsed = metadata.get('elapsedSeconds')
         if type(elapsed) in (int, float) and 0 <= elapsed <= 86400: record['elapsedSeconds'] = round(elapsed, 3)
         record['usage'] = safe_usage(metadata.get('usage'))
-        if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4', 'no-carry-addition/1'):
+        if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4', 'no-carry-addition/1', 'triangle-parameters/1'):
             record['authorContract'] = metadata['authorContract']
         derivation = metadata.get('derivation')
         if isinstance(derivation, dict) and type(derivation.get('performed')) is bool:
@@ -190,7 +190,7 @@ def process_job(remote, job, root):
                 lost.set();return
     thread=threading.Thread(target=renew,daemon=True);thread.start()
     try:
-        # One model invocation per claimed job. Failures require a new owner request.
+        # One authoring attempt per claimed job. Native lessons need no model invocation.
         metadata = {}; author_failure = None
         try:
             payload=author_lesson(lesson, metadata=metadata, **({'timeout':300} if lesson.get('version')==3 else {}))

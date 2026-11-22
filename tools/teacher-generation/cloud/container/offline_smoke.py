@@ -89,7 +89,8 @@ def general_cases(output):
             fixture = root / case
             lesson = json.loads((fixture / 'lesson.json').read_text())
             source = json.loads((fixture / 'model-output.json').read_text())
-            if lesson.get('version') != 3 or source.get('version') != 4:
+            expected_source = 'triangle-parameters/1' if case == 'grade9-special-right-triangle' else 4
+            if lesson.get('version') != 3 or source.get('version') != expected_source:
                 raise RuntimeError('General fixtures must exercise the new intake and source contracts')
             validate_model(lesson, source)
             rendered = render_job(lesson, source, output / case)

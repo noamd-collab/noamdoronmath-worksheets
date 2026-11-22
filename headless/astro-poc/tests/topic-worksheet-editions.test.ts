@@ -324,6 +324,12 @@ test('both frequency landings expose six direct FRQ links while keeping their or
       assert.equal(ctas[1].getAttribute('href'), '#topic-levels-hero-26');
       assert.ok(ctas[1].textContent.includes('תרגול נוסף'));
       assert.equal(hero.querySelectorAll('#topic-levels-hero-26').length, 1);
+      const frequency090Ids = ['d1c095409f6b44c5b4b2b80493a5ec50', 'e1a2834fb3a14ca1be9d8fd85219100f', 'b2ac6fabde404b3d87570154b77c7b34'];
+      const frequency090Links = [...hero.querySelectorAll('#topic-levels a[data-edition-id="ms-20261121-frq-02-r4"]')];
+      assert.deepEqual(frequency090Links.map(pdf => [
+        pdf.getAttribute('href'), pdf.nextElementSibling?.getAttribute('href'),
+      ]), frequency090Ids.map(id => [`${catalog.config.pdfBase}${id}.pdf`, `/ramzi-partial?pdf=${id}`]));
+      assert.equal(hero.querySelectorAll('#topic-levels-hero-26 a[data-edition-id="ms-20261121-frq-02-r4"]').length, 0);
     }
     const ids = [...document.querySelectorAll('[id]')].map(element => element.id);
     assert.equal(new Set(ids).size, ids.length);
