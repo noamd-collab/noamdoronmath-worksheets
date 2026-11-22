@@ -299,6 +299,24 @@ test('real single-topic hero retains one download group and direct level-B/excel
   assert.equal(hero.querySelector('[data-topic-levels]')?.previousElementSibling, ctas.at(-1)!.parentElement);
 });
 
+test('the composite-area landing pairs package 092 with each reviewed reader and preserves both topic groups', async () => {
+  const catalog = loadCatalog();
+  const doc = await renderTopic('area-parallelogram-trapezoid-composite-grade-7');
+  const primary = doc.querySelector('#topic-levels')!;
+  const secondary = doc.querySelector('#topic-levels-hero-45')!;
+  const pdfIds = ['da6fdc37015b4f41993f1d44f2f8393a', 'bba06ae82c54499a8c6e53a49935ab70', '58b4e6d6fd1a4a808b6c114d0c5c409e'];
+  const pdfLinks = [...primary.querySelectorAll('a[data-edition-id="ms-20261122-g7-cpl-01-r1"]')];
+  assert.deepEqual(pdfLinks.map(link => [link.getAttribute('href'), link.nextElementSibling?.getAttribute('href')]),
+    pdfIds.map(id => [`${catalog.config.pdfBase}${id}.pdf`, `/ramzi-partial?pdf=${id}`]));
+  assert.equal(primary.querySelectorAll('a.partial-ramzi-link').length, 3);
+  assert.equal(secondary.querySelectorAll('a.partial-ramzi-link').length, 0);
+  for (const [topicId, group] of [[46, primary], [45, secondary]] as const) {
+    const original = topicWorksheetEditionLinks(catalog, 7, topicId, `/worksheets?grade=7&topic=${topicId}`);
+    assert.deepEqual([...group.querySelectorAll('a[data-edition-id]')].map(link => link.getAttribute('href')),
+      original.flatMap(edition => edition.levels.map(level => level.href)));
+  }
+});
+
 test('the probability introduction landing pairs each 091 PDF with its reviewed reader and preserves the original edition', async () => {
   const catalog = loadCatalog();
   const document = await renderTopic('probability-introduction-grade-7');
