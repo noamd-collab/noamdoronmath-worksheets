@@ -7,7 +7,7 @@
  const curriculumHash='57adca1891cbc2ef333709a6adee18045da23035f9e981f091673d2f8547527b';
  let catalog=[], catalogLoading=null, generalReady=false, legacyReady=false, boundaryLegacy=false, accessDenied=false;
  const labels = {queued:'ממתין ליצירה',authoring:'מכינים את השאלות',checking:'בודקים את התוכן והתשובות',rendering:'מפיקים PDF ו־Word',needs_review:'טיוטה מוכנה לעיון שלך',failed:'היצירה נעצרה בבדיקה'};
- const errors = {TEACHER_SIGN_IN_REQUIRED:'החיבור פג. יש להתחבר שוב עם Google.',TEACHER_ACCESS_DENIED:'כדי להיכנס למחולל יש להתחבר עם חשבון Google מאומת.',GENERATOR_OFFLINE:'מנוע היצירה אינו מחובר כרגע. לא נוצרה בקשה חדשה.',GENERATOR_WAKING:'ממתינים למנוע היצירה. לא נוצרה בקשה חדשה; כשהמנוע יהיה מוכן אפשר יהיה ללחוץ שוב על יצירה.',GENERATION_UNAVAILABLE:'היצירה אינה זמינה כרגע. אפשר לנסות שוב; אותה בקשה לא תיווצר פעמיים.',GENERATION_LIMIT:'נוצלו כל 5 היצירות החינמיות בתקופת ההתנסות. הדפים שהכנתם זמינים ב„הדפים שלי”.',TRIAL_CLOSED:'ההתנסות החינמית אינה פתוחה כעת. אפשר להוריד דפים שכבר הכנתם מ„הדפים שלי”.',GENERATION_ACTIVE:'כבר מכינים עבורך דף. אפשר לעקוב אחריו ב„הדפים שלי” ולהתחיל דף נוסף כשהוא יסתיים.',BOT_VERIFICATION_FAILED:'אימות הדפדפן לא הושלם. נסה שוב; אם הבעיה נמשכת, יש לאפשר את רכיב Google בדפדפן.',TOPIC_NOT_SUPPORTED_YET:'הנושא או סוג הדף עדיין אינם זמינים ליצירה.',REQUEST_CONFLICT:'הבקשה השתנתה. חזור לפרטים ואשר אותם מחדש.',LESSON_INVALID:'יש לתקן את פרטי השיעור לפני היצירה.'};
+ const errors = {TEACHER_SIGN_IN_REQUIRED:'החיבור פג. יש להתחבר שוב עם Google.',TEACHER_ACCESS_DENIED:'כדי להיכנס למחולל יש להתחבר עם חשבון Google מאומת.',GENERATOR_OFFLINE:'מנוע היצירה אינו מחובר כרגע. לא נוצרה בקשה חדשה.',GENERATOR_WAKING:'ממתינים למנוע היצירה. לא נוצרה בקשה חדשה; כשהמנוע יהיה מוכן אפשר יהיה ללחוץ שוב על יצירה.',GENERATION_UNAVAILABLE:'היצירה אינה זמינה כרגע. אפשר לנסות שוב; אותה בקשה לא תיווצר פעמיים.',GENERATION_LIMIT:'נוצלו כל 5 היצירות החינמיות בתקופת ההתנסות. הדפים שהכנתם זמינים ב„הדפים שלי”.',TRIAL_CLOSED:'ההתנסות החינמית אינה פתוחה כעת. אפשר להוריד דפים שכבר הכנתם מ„הדפים שלי”.',GENERATION_ACTIVE:'כבר מכינים עבורך דף. מצב היצירה יופיע בעמוד הזה. אפשר להתחיל דף נוסף כשהוא יסתיים.',BOT_VERIFICATION_FAILED:'אימות הדפדפן לא הושלם. נסה שוב; אם הבעיה נמשכת, יש לאפשר את רכיב Google בדפדפן.',TOPIC_NOT_SUPPORTED_YET:'הנושא או סוג הדף עדיין אינם זמינים ליצירה.',REQUEST_CONFLICT:'הבקשה השתנתה. חזור לפרטים ואשר אותם מחדש.',LESSON_INVALID:'יש לתקן את פרטי השיעור לפני היצירה.'};
  let capabilities = [], online = false, planned = null, requestKey = null, polling = null, clock = null, startedAt = null, busy = false, submitting = false;
  let submittedJobId = null, terminal = false, pollFailures = 0, refreshing = null, initialized = false, dispatchPending = false;
  let wakingUntil = null, wakingChecks = 0, verificationAttempt=null, pendingLink=null, navigationTimer=null;
@@ -59,7 +59,8 @@
   const response=await fetch(url,{credentials:'same-origin',cache:'no-store',signal:AbortSignal.timeout(15000),...init});
   const body=await response.json().catch(()=>({}));
   if(!response.ok || !body.ok) {
-   const code=body.code || body.error || ({401:'TEACHER_SIGN_IN_REQUIRED',403:'TEACHER_ACCESS_DENIED'})[response.status];
+   const authCode=({401:'TEACHER_SIGN_IN_REQUIRED',403:'TEACHER_ACCESS_DENIED'})[response.status];
+   const code=(!init && authCode) || body.code || body.error || authCode;
    const err=new Error(errors[code] || 'לא הצלחנו להשלים את הבקשה.');err.issues=body.issues;err.status=response.status;err.code=code;throw err;
   }
   return body;
@@ -178,7 +179,7 @@
   return true;
  }
  function stopClock() { clearInterval(clock); clock=null; startedAt=null; }
- function tick(phase,createdAt) { if(!startedAt) startedAt=Date.parse(createdAt) || Date.now(); clearInterval(clock); const show=()=>status((dispatchPending && phase==='queued'?'הבקשה נשמרה בתור, אך העבודה עדיין לא התחילה. רענון המצב ינסה להעיר את המנוע בלי ליצור בקשה נוספת.':(labels[phase]||labels.queued))+'… '+Math.floor((Date.now()-startedAt)/1000)+' שניות. אפשר לצאת מהדף ולחזור אל „הדפים שלי”.'); show(); clock=setInterval(show,1000); }
+ function tick(phase,createdAt) { if(!startedAt) startedAt=Date.parse(createdAt) || Date.now(); clearInterval(clock); const show=()=>status((dispatchPending && phase==='queued'?'הבקשה נשמרה בתור, אך העבודה עדיין לא התחילה. רענון המצב ינסה להעיר את המנוע בלי ליצור בקשה נוספת.':(labels[phase]||labels.queued))+'… '+Math.floor((Date.now()-startedAt)/1000)+' שניות. אפשר לצאת ולחזור לעמוד למעקב.'); show(); clock=setInterval(show,1000); }
  function scheduleRefresh(delay) {clearTimeout(polling);polling=setTimeout(()=>requestRefresh(),delay);}
  function denied(error) {return error.code==='TEACHER_ACCESS_DENIED' || error.code==='TEACHER_SIGN_IN_REQUIRED';}
  function refreshFailed(error) {
@@ -186,7 +187,7 @@
   stopClock();clearTimeout(polling);polling=null;pollFailures++;
   if(denied(error)) {
    clearTimeout(trialTimer);$('generation-quota').hidden=true;
-   accessDenied=true;restorePending=false;forgetDraft();clearPlan();form.reset?.();$('plan-details').replaceChildren();$('generation-plan').hidden=true;form.hidden=false;step=0;renderJobs([]);updateWizard();
+   accessDenied=true;restorePending=false;forgetDraft();clearPlan();form.reset?.();$('plan-details').replaceChildren();$('generation-plan').hidden=true;form.hidden=false;step=0;renderHistory([]);updateWizard();
   }
   const retry=pollFailures<=3 && !accessDenied && (wakingUntil===null || Date.now()<wakingUntil);
   status(error.message+(retry?' ננסה לבדוק שוב את המצב.':' אפשר לבדוק שוב באמצעות „רענון מצב היצירה”.'));
@@ -209,7 +210,7 @@
     throw health.reason;
    }
    if(topics.status==='rejected')throw topics.reason;
-   applyHealth(health.value);
+   return applyHealth(health.value);
   }).catch(refreshFailed).finally(()=>{refreshing=null;refreshButton.disabled=false;});
   return refreshing;
  }
@@ -239,7 +240,7 @@
   updateWizard();
  }
  const draftValidationErrors=new Set([
-  'SOURCE_SHAPE','SOURCE_RICH_TEXT','SOURCE_ADDITION_SCOPE','SOURCE_ANSWER','SOURCE_CONCEPT','SOURCE_COVERAGE',
+  'SOURCE_SHAPE','SOURCE_ADDITION_SCOPE','SOURCE_ANSWER','SOURCE_CONCEPT','SOURCE_COVERAGE',
   'SOURCE_FIGURE','SOURCE_FIGURE_TASK','SOURCE_GEOMETRY','SOURCE_ITEMS','SOURCE_JSON','SOURCE_LANGUAGE',
   'SOURCE_NIQQUD','SOURCE_NUMBER','SOURCE_QUESTIONS','SOURCE_SCOPE',
   'SOURCE_SECTIONS','SOURCE_SIZE','SOURCE_STAR','SOURCE_STARS','SOURCE_TABLE','SOURCE_TEXT','SOURCE_VERSION',
@@ -247,36 +248,49 @@
   'PROVIDER_OUTPUT_TOO_LARGE','WRONG_ANSWER','OUTSIDE_LESSON_BOUNDARY','UNVERIFIED_SOLUTION'
  ]);
  function jobFailureMessage(code) {
-  if(code==='SOURCE_PLAIN_MATH' || code==='SOURCE_NOTATION')return 'המחולל התקשה לכתוב סימון מתמטי בדף. ההפקה נעצרה לפני שנשמרו קובצי PDF ו־Word להורדה.';
+  const sourceReasons={
+   SOURCE_PLAIN_MATH:'בטיוטה הופיע ביטוי מתמטי בתוך טקסט רגיל, ולכן לא נוצר קובץ להורדה.',
+   SOURCE_NOTATION:'בטיוטה הופיע סימון מתמטי שגוי או לא נתמך, ולכן לא נוצר קובץ להורדה.',
+   SOURCE_RICH_TEXT:'מבנה הטקסט בטיוטה מנע את הפקתו בקובץ להורדה.'
+  };
+  if(Object.hasOwn(sourceReasons,code))return sourceReasons[code]+' אפשר לשלוח בקשה חדשה לאותו שיעור.';
   if(draftValidationErrors.has(code))return 'התוכן שנוצר לא עבר את בדיקות הדף. אפשר לשלוח בקשה חדשה לאותו שיעור.';
   if(['PROVIDER_UNAVAILABLE','PROVIDER_HTTP_ERROR','PROVIDER_TLS_ERROR'].includes(code))return 'שירות הכנת השאלות לא היה זמין בזמן היצירה. אפשר לנסות שוב מאוחר יותר.';
   if(code==='WORKER_INTERRUPTED' || code==='WORKER_FAILED')return 'עיבוד הדף בשרת נפסק לפני שהטיוטה הושלמה. אפשר לשלוח בקשת יצירה חדשה.';
   return 'הטיוטה לא הושלמה. כדי לנסות שוב, יש לשלוח בקשת יצירה חדשה.';
  }
- function renderJobs(jobs) {
-  const root=$('generation-jobs');root.replaceChildren();$('history-empty').hidden=jobs.length>0;
-  for(const job of jobs) {
-   const article=node('article',null,'generation-job');
-   const capability=catalog.find(t=>t.topicId===job.lesson?.topicId);
-   article.append(node('h3',capability?.title || 'דף לשיעור'));
-   const phaseLabel=job.status==='failed'?'היצירה נעצרה בשרת':(labels[job.phase]||labels[job.status]||'ממתין');
-   article.append(node('p',new Date(job.created_at).toLocaleString('he-IL')+' · '+phaseLabel));
-   article.append(node('p','נקודת העצירה: '+(job.lesson?.lastLesson || '')));
-   const result=job.result,checks=result?.checks;
+ function renderHistory(history) {
+  const root=$('generation-jobs'), worksheets=new Set();
+  root.replaceChildren();
+  for(const job of history) {
+   if(job.status!=='needs_review' || !Array.isArray(job.formats))continue;
+   const formats=['pdf','docx'].filter(kind=>job.formats.includes(kind));
+   if(!formats.length)continue;
+   const result=job.result, checks=result?.checks;
    const allPassed=result?.automatedChecksPassed===true && (checks===undefined || Array.isArray(checks) && checks.every(c=>c?.status==='PASS'));
    const reviewReady=result?.automatedChecksPassed===false && result.authoringProfile==='general-skill-source/v1' && result.renderingChecksPassed===true && result.humanReviewRequired===true && Array.isArray(checks) && checks.length>0 && checks.every(c=>c?.status==='PASS' || c?.status==='REVIEW');
-   if(job.status==='needs_review' && (allPassed || reviewReady)) {
-    article.append(node('p',allPassed?'הבדיקות האוטומטיות עברו. זו עדיין טיוטה: יש לבדוק את התוכן, העברית והעימוד לפני שימוש בכיתה.':'טיוטה לבדיקה — חלק מההסברים או ההוכחות דורשים בדיקה שלך.'));
-    const actions=node('div',null,'actions');
-    for(const [kind,title] of [['pdf','הורדת PDF לעיון'],['docx','הורדת Word לעריכה']]) { const a=node('a',title,'download');a.href=api+'?id='+encodeURIComponent(job.id)+'&file='+kind;actions.append(a); }
-    article.append(actions);
-   } else if(job.status==='failed') article.append(node('p',jobFailureMessage(job.error_code)));
-   root.append(article);
+   if(!allPassed && !reviewReady)continue;
+   worksheets.add(job.id);
+   const article=node('article',null,'generation-job');
+   const topic=catalog.find(t=>t.topicId===job.lesson?.topicId);
+   article.append(node('h3',topic?.title || 'דף לשיעור'));
+   article.append(node('p',new Date(job.created_at).toLocaleString('he-IL')+' · '+labels.needs_review));
+   if(job.lesson?.lastLesson)article.append(node('p','נקודת העצירה: '+job.lesson.lastLesson));
+   article.append(node('p',allPassed?'הבדיקות האוטומטיות עברו. יש לעיין בטיוטה לפני שימוש בכיתה.':'טיוטה לבדיקה — חלק מההסברים או ההוכחות דורשים בדיקה שלך.'));
+   const actions=node('div',null,'actions');
+   for(const kind of formats) {
+    const link=node('a',kind==='pdf'?'הורדת PDF לעיון':'הורדת Word לעריכה','download');
+    link.href=api+'?id='+encodeURIComponent(job.id)+'&file='+kind;
+    actions.append(link);
+   }
+   article.append(actions);root.append(article);
   }
+  $('history-empty').hidden=worksheets.size>0;
+  return worksheets;
  }
- function applyHealth(data) {
+ async function applyHealth(data) {
   if(pollFailures)status('');
-  accessDenied=false;online=data.online===true;pollFailures=0;
+  accessDenied=false;online=data.online===true;
   $('generation-quota').hidden=false;updateQuota(data.quota);
   if(online){wakingUntil=null;wakingChecks=0;}
   if(!online && data.waking===true && wakingUntil===null)wakingUntil=Date.now()+90000;
@@ -291,17 +305,42 @@
   $('generator-availability').hidden=Boolean(quotaBlock);
   $('generator-availability').classList.toggle('notice',!online);
   restoreDraft();
-  renderJobs(Array.isArray(data.jobs)?data.jobs:[]);
-  const current=data.jobs?.find(j=>(submittedJobId && j.id===submittedJobId) || (requestKey && j.request_key===requestKey));
+  const history=Array.isArray(data.history)?data.history:[];
+  const worksheets=renderHistory(history);
+  const jobs=Array.isArray(data.jobs)?data.jobs:[];
+  let current=jobs.find(j=>(submittedJobId && j.id===submittedJobId) || (requestKey && j.request_key===requestKey))
+   || history.find(j=>j.id===submittedJobId);
+  if(!current && uuid(submittedJobId) && !terminal && !submitting){
+   const id=submittedJobId;
+   try {
+    const details=await read(api+'?id='+encodeURIComponent(id));
+    if(submittedJobId===id)current=details.job;
+   } catch(error) {
+    if(error.status!==404)throw error;
+    if(submittedJobId===id){
+     terminal=true;attempted=false;
+     status('בקשת היצירה השמורה אינה זמינה. אפשר להתחיל דף חדש.');
+    }
+   }
+  }
+  pollFailures=0;
   if(current){submittedJobId=current.id;attempted=false;dispatchPending=current.status==='queued' && dispatchPending;}
   if(current && ['needs_review','failed'].includes(current.status))terminal=true;
-  const active=data.jobs?.find(j=>['queued','running'].includes(j.status));
+  const active=jobs.find(j=>['queued','running'].includes(j.status));
   if(active && !planned && !current){submittedJobId=active.id;requestKey=active.request_key;}
   if(current || active && !planned)saveDraft();
-  if(quotaBlock || active || (current && terminal) || (busy && !submitting))$('generation-history').open=true;
+  if(quotaBlock || (current && worksheets.has(current.id)))$('generation-history').open=true;
   const awaitingCurrent=submittedJobId && !current && !terminal;
-  if(active || awaitingCurrent) {busy=true;tick(active?.phase || 'queued',active?.created_at);$('create-button').disabled=true;$('edit-plan').disabled=true;scheduleRefresh(4000);}
-  else if(!submitting) { const wasBusy=busy;busy=false;stopClock();$('create-button').disabled=!canCreate(planned) || terminal;$('edit-plan').disabled=false;if(current && terminal)status(current.status==='failed'?jobFailureMessage(current.error_code):labels[current.status]);else if(attempted)status('טרם התקבל אישור שהבקשה נשמרה. אפשר לבדוק שוב את המצב או לשלוח שוב את אותה הבקשה.');else if(wasBusy)status('היצירה הסתיימה. התוצאה מופיעה ברשימת הדפים שלך.'); }
+  const running=current && ['queued','running'].includes(current.status)?current:active;
+  if((running || awaitingCurrent) && !terminal) {
+   busy=true;tick(running?.phase || 'queued',running?.created_at);
+   $('create-button').disabled=true;$('edit-plan').disabled=true;scheduleRefresh(4000);
+  } else if(!submitting) {
+   busy=false;stopClock();$('create-button').disabled=!canCreate(planned) || terminal;$('edit-plan').disabled=false;
+   if(current?.status==='failed')status(jobFailureMessage(current.error_code));
+   else if(current?.status==='needs_review')status(worksheets.has(current.id)?labels.needs_review:'היצירה הסתיימה. קובץ להורדה אינו מופיע בהיסטוריה כרגע.');
+   else if(attempted)status('טרם התקבל אישור שהבקשה נשמרה. אפשר לבדוק שוב את המצב או לשלוח שוב את אותה הבקשה.');
+  }
   // A timed-out POST may commit after the first owner status read. Only poll; never replay it.
   if(attempted && !submitting && !active && !awaitingCurrent && receiptChecks<3){receiptChecks++;scheduleRefresh(4000);}
   if(waking && !active && !awaitingCurrent){wakingChecks++;scheduleRefresh(Math.min(5000,Math.max(1,wakingUntil-Date.now())));}
@@ -391,7 +430,7 @@
  });
  logoutButton?.addEventListener('click',forgetDraft);
  $('create-button').addEventListener('click',async()=>{
-  if(!planned || busy || !canCreate(planned) || terminal)return;busy=true;submitting=true;$('generation-history').open=true;$('create-button').disabled=true;$('edit-plan').disabled=true;updateWizard();status('מאמתים את הדפדפן. הבקשה טרם נשלחה. יש להמתין לאישור השמירה.');
+  if(!planned || busy || !canCreate(planned) || terminal)return;busy=true;submitting=true;$('create-button').disabled=true;$('edit-plan').disabled=true;updateWizard();status('מאמתים את הדפדפן. הבקשה טרם נשלחה. יש להמתין לאישור השמירה.');
   const attempt={cancelled:false};verificationAttempt=attempt;
   try {
    const verification=await botToken();
@@ -402,7 +441,7 @@
    const created=await read(api,{method:'POST',keepalive:true,headers:{'content-type':'application/json'},body:JSON.stringify({requestKey,lesson:planned,botToken:verification})});
    submittedJobId=created.job?.id || submittedJobId;dispatchPending=created.dispatchPending===true;
    submitting=false;attempted=false;saveDraft();
-   status('הבקשה נשמרה. אפשר לצאת מהדף ולחזור אל „הדפים שלי”.');
+   status('הבקשה נשמרה. אפשר לחזור לעמוד כדי לבדוק את מצב היצירה.');
    if(!followPendingLink())await requestRefresh();
   } catch(e) {
    if(attempt.cancelled)return;

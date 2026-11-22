@@ -36,7 +36,8 @@ function fixture() {
     health: async () => { calls.push('health'); return { online: true, capabilities: { acceptedIntakeVersions: [2], topics: [{ topicId: 'ג10', gradeNumber: 3,
       enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [12] }] } }; },
     quota: async (): Promise<GenerationQuota> => ({ mode:'owner', totalLimit:null, remainingTotal:null, active:true, startsAt:null, endsAt:null }),
-    list: async () => { calls.push('list'); return []; },
+    list: async (): Promise<any[]> => { calls.push('list'); return []; },
+    createdWorksheets: async (): Promise<any[]> => { calls.push('history'); return []; },
     get: async (_id: string): Promise<any> => { calls.push('get'); return job; },
     findRequest: async (_key: string): Promise<any> => { calls.push('find'); return null; },
     enqueue: async (row: Record<string, unknown>) => { calls.push('enqueue'); assert.equal(row.owner_id, owner); return job; },
@@ -153,8 +154,21 @@ test('owner health may request a wake but only a fresh compatible heartbeat make
     const response = await handleTeacherGeneration(new Request(origin + '/api/teacherGeneration'), f.deps);
     const body = await response.json();
     assert.equal(body.online, expected); assert.equal(body.waking, !expected);
-    assert.deepEqual(f.calls, ['auth','wake','health','list']); f.calls.length = 0;
+    assert.deepEqual(f.calls, ['auth','wake','health','list','history']); f.calls.length = 0;
   }
+});
+
+test('worksheet history stays available independently of the twenty latest job statuses', async () => {
+  const f = fixture();
+  const failed = Array.from({ length: 20 }, (_, index) => ({ id: 'failed-' + index, status: 'failed' }));
+  const history = [{ id: jobId, status: 'needs_review', formats: ['pdf'] }];
+  f.store.list = async () => failed;
+  f.store.createdWorksheets = async () => history;
+  const response = await handleTeacherGeneration(new Request(origin + '/api/teacherGeneration'), f.deps);
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.deepEqual(body.jobs, failed);
+  assert.deepEqual(body.history, history);
 });
 
 test('malformed configured cloud fails closed despite a live local heartbeat, while history stays readable', async () => {
@@ -393,6 +407,11 @@ test('store reads use the user token; only enqueue uses the server key, and path
   assert.equal(new Headers(calls[1].init.headers).get('authorization'), 'Bearer unit-service-key');
   assert.equal(new Headers(calls[2].init.headers).get('authorization'), 'Bearer unit-user-token');
   assert.equal(calls[2].url, TEACHER_ACCESS_CONFIG.supabaseUrl + '/storage/v1/object/authenticated/teacher-generation-private/' + owner + '/' + jobId + '/sheet.pdf');
+  await store.createdWorksheets();
+  assert.equal(calls[3].url, TEACHER_ACCESS_CONFIG.supabaseUrl + '/rest/v1/rpc/noam_teacher_created_worksheets');
+  assert.equal(calls[3].init.method, 'POST');
+  assert.equal(calls[3].init.body, '{}');
+  assert.equal(new Headers(calls[3].init.headers).get('authorization'), 'Bearer unit-user-token');
   for (const call of calls) { assert.equal(call.init.redirect, 'error'); assert.equal(call.init.credentials, 'omit'); }
   await assert.rejects(createGenerationStore('token', async () => { throw Error('must not fetch'); }).enqueue({}), GenerationStoreError);
   await assert.rejects(store.download('../owner', jobId, 'pdf'), GenerationStoreError);
@@ -503,8 +522,10 @@ test('trial admissions require the actor-safe renderer and a remaining slot; clo
   assert.ok(!f.calls.includes('bot')&&!f.calls.includes('enqueue'));
   active=false; remaining=3; f.calls.length=0;
   f.deps.wake=async()=>{f.calls.push('wake');return 'accepted'};
+  const privateDraft={id:jobId,formats:['pdf','docx']};
+  f.store.createdWorksheets=async()=>[privateDraft];
   const history=await (await handleTeacherGeneration(new Request(origin+'/api/teacherGeneration'),f.deps)).json();
-  assert.equal(history.ok,true);assert.equal(history.quota.active,false);assert.deepEqual(history.jobs,[]);
+  assert.equal(history.ok,true);assert.equal(history.quota.active,false);assert.deepEqual(history.jobs,[]);assert.deepEqual(history.history,[privateDraft]);
   await code(await handleTeacherGeneration(post(),f.deps),403,'TRIAL_CLOSED');
   assert.ok(!f.calls.includes('health')&&!f.calls.includes('wake')&&!f.calls.includes('bot'));
   f.store.findRequest=async()=>({...job,status:'needs_review'});

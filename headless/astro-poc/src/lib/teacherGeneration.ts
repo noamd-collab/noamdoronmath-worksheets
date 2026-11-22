@@ -52,8 +52,8 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
         const health = quota.active && quota.remainingTotal !== 0
           ? await workerReadiness(store, quota, deps.wake)
           : { online: false, waking: false, capabilities: null };
-        const jobs = await store.list();
-        return reply({ ok: true, ...health, quota, jobs });
+        const [jobs, history] = await Promise.all([store.list(), store.createdWorksheets()]);
+        return reply({ ok: true, ...health, quota, jobs, history });
       }
       const job = await store.get(id);
       if (!job) return error('JOB_NOT_FOUND', 404);
