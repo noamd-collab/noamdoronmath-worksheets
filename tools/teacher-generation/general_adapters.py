@@ -17,6 +17,7 @@ import sys
 from general_source import GeneralSourceError, validate_source
 from math_tasks import to_house_math, validate_and_solve_task
 from general_geometry import solve_figure_task, measure_elementary_svg
+from no_carry_addition import states_entire_task
 
 LETTERS = "אבגדהוזחטי"
 LEVELS = {"a": "רמה א׳", "b": "רמה ב׳", "e": "מצוינות"}
@@ -282,7 +283,7 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work):
             for j, item in enumerate(question["items"], 1):
                 item_id = f"q{n}-i{j}"; computed = solved[item_id]
                 prompt = rich_text(item["prompt"], grade, H)
-                task_text = _task_text(computed, grade, H)
+                task_text = "" if states_entire_task(lesson, n-1, j-1, item) else _task_text(computed, grade, H)
                 answer = _answer_text(computed, item["answer"]["unit"], grade, H)
                 # A fresh calculation, not a model-provided answer or boolean.
                 figure_task=item["answer"]["kind"]=="figure"

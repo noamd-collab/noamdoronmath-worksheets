@@ -57,12 +57,25 @@ def bounded_int(value, lo, hi):
     return value
 
 
-def rich(value, grade):
+def rich(value, grade, *, provider=False, location=""):
+    # Only the provider boundary accepts equivalent wire representations.
+    # Do not infer the meaning of bare math, labels, markup or unknown objects.
+    if provider:
+        if type(value) in (str, dict):
+            value = [value]
+        if type(value) is list and 1 <= len(value) <= 30:
+            value = [
+                {"kind": "text", "text": span}
+                if type(span) is str and HEBREW.search(span)
+                and re.fullmatch(r"[א-ת\u05b0-\u05bc\u05c1\u05c2\u05c7\u05be\u05f3\u05f4 .,!?׳״:;…()\-]+", span)
+                else span for span in value
+            ]
+
     if type(value) is not list or not 1 <= len(value) <= 30:
-        bad("SOURCE_RICH_TEXT", "A text block needs one to thirty typed spans")
+        bad("SOURCE_RICH_TEXT", "A text block needs one to thirty typed spans" + (" at " + location if location else ""))
     for span in value:
         if type(span) is not dict:
-            bad("SOURCE_RICH_TEXT", "Expected a typed span")
+            bad("SOURCE_RICH_TEXT", "Expected a typed span" + (" at " + location if location else ""))
         kind = span.get("kind")
         if kind == "text":
             exact(span, ("kind", "text")); text(span["text"], 1200)
@@ -79,7 +92,7 @@ def rich(value, grade):
             if not low <= len(span["names"]) <= high or len(set(span["names"])) != len(span["names"]):
                 bad("SOURCE_NOTATION", "Wrong number of distinct points")
         else:
-            bad("SOURCE_RICH_TEXT", "Unsupported text span")
+            bad("SOURCE_RICH_TEXT", "Unsupported text span" + (" at " + location if location else ""))
     return deepcopy(value)
 
 
@@ -149,14 +162,14 @@ def validate_figure(fig, scope):
     return deepcopy(fig)
 
 
-def validate_source(lesson, payload, scope):
+def validate_source(lesson, payload, scope, *, provider=False):
     try:
-        return _validate_source(lesson, payload, scope)
+        return _validate_source(lesson, payload, scope, provider=provider)
     except MathTaskError as error:
         raise GeneralSourceError(error.code, "A typed mathematical task is invalid or outside the supported exact verifier") from None
 
 
-def _validate_source(lesson, payload, scope):
+def _validate_source(lesson, payload, scope, *, provider):
     """Return normalized source plus evidence, never an approval assertion."""
     try:
         size = len(json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8"))
@@ -170,12 +183,13 @@ def _validate_source(lesson, payload, scope):
     if scope["topic"]["gradeNumber"] != lesson["gradeNumber"] or scope["topic"]["topicId"] != lesson["topicId"] or lesson["level"] not in scope["levels"]:
         bad("SOURCE_SCOPE", "Lesson and trusted curriculum scope disagree")
     grade = lesson["gradeNumber"]
-    text(payload["title"], 160); rich(payload["rule"], grade)
+    normalized = deepcopy(payload)
+    text(payload["title"], 160)
+    normalized["rule"] = rich(payload["rule"], grade, provider=provider, location="rule")
     if type(payload["sections"]) is not list or not 1 <= len(payload["sections"]) <= 8:
         bad("SOURCE_SECTIONS", "Need one to eight sections")
     allowed = {c["id"] for c in scope["selectedConcepts"]}
     seen, evidence, pending, qcount, item_count, stars = set(), [], [], 0, 0, 0
-    normalized = deepcopy(payload)
     for section in normalized["sections"]:
         exact(section, ("title", "conceptIds", "questions"))
         text(section["title"], 160)
@@ -187,7 +201,7 @@ def _validate_source(lesson, payload, scope):
         for question in section["questions"]:
             exact(question, ("intro", "star", "items"), ("table", "figure", "drawingFromWords"))
             qcount += 1
-            rich(question["intro"], grade)
+            question["intro"] = rich(question["intro"], grade, provider=provider, location=f"q{qcount}.intro")
             if type(question["star"]) is not bool:
                 bad("SOURCE_STAR", "Star must be boolean")
             stars += int(question["star"])
@@ -195,13 +209,13 @@ def _validate_source(lesson, payload, scope):
                 table = question["table"]; exact(table, ("head", "rows"))
                 if type(table["head"]) is not list or not 2 <= len(table["head"]) <= 6 or type(table["rows"]) is not list or not 1 <= len(table["rows"]) <= 12:
                     bad("SOURCE_TABLE", "Table exceeds supported size")
-                for cell in table["head"]:
-                    rich(cell, grade)
-                for row in table["rows"]:
+                for col, cell in enumerate(table["head"]):
+                    table["head"][col] = rich(cell, grade, provider=provider, location=f"q{qcount}.table.head.{col+1}")
+                for row_num, row in enumerate(table["rows"], 1):
                     if type(row) is not list or len(row) != len(table["head"]):
                         bad("SOURCE_TABLE", "Table rows must have the header width")
-                    for cell in row:
-                        rich(cell, grade)
+                    for col, cell in enumerate(row):
+                        row[col] = rich(cell, grade, provider=provider, location=f"q{qcount}.table.row.{row_num}.{col+1}")
             if "figure" in question:
                 validate_figure(question["figure"], scope)
             if "drawingFromWords" in question:
@@ -213,7 +227,8 @@ def _validate_source(lesson, payload, scope):
                 bad("SOURCE_ITEMS", "Broad worksheets require at least five items per question in grades one and two, and three items otherwise")
             for j, item in enumerate(question["items"], 1):
                 exact(item, ("prompt", "answer"))
-                item_count += 1; rich(item["prompt"], grade)
+                item_count += 1
+                item["prompt"] = rich(item["prompt"], grade, provider=provider, location=f"q{qcount}.item.{j}.prompt")
                 answer = item["answer"]
                 if type(answer) is not dict:
                     bad("SOURCE_ANSWER", "Expected typed answer")
@@ -230,7 +245,8 @@ def _validate_source(lesson, payload, scope):
                     except ValueError:bad("SOURCE_FIGURE_TASK","This figure quantity has no implemented exact verifier")
                     evidence.append({"itemId":item_id,"computed":solved})
                 elif answer.get("kind") == "review":
-                    exact(answer, ("kind", "text")); rich(answer["text"], grade)
+                    exact(answer, ("kind", "text"))
+                    answer["text"] = rich(answer["text"], grade, provider=provider, location=f"q{qcount}.item.{j}.answer")
                     pending.append({"itemId": item_id, "reason": "No implemented exact verifier for this authored answer or proof"})
                 else:
                     bad("SOURCE_ANSWER", "Only computed or explicitly unverified review answers are supported")
@@ -247,6 +263,11 @@ def _validate_source(lesson, payload, scope):
         bad("SOURCE_NIQQUD", "Grades three and up use unvocalized prose")
     if grade <= 2 and any(HEBREW.search(s) and not NIQQUD.search(s) for s in _prose_strings(normalized)):
         bad("SOURCE_NIQQUD", "Grades one and two require vocalized prose in every Hebrew text field")
+    if grade == 2 and scope["topic"]["topicId"] == "ב05" and allowed == {"ב05#1"}:
+        from no_carry_addition import validate_topic_math
+        validate_topic_math(normalized)
+    if provider and len(json.dumps(normalized, ensure_ascii=False).encode("utf-8")) > MAX_BYTES:
+        bad("SOURCE_SIZE", "Source exceeds byte budget")
     return {"source": normalized, "evidence": {"version": 1, "computations": evidence,
         "unverifiedAnswers": pending, "reviewRequired": True,
         "verificationScope": "Typed tasks only. Prose-task alignment, chronology, pedagogy, figure claims and visual output require independent review.",
