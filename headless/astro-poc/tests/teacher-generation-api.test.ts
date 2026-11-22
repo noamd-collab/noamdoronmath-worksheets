@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { handleTeacherGeneration, type GenerationDependencies } from '../src/lib/teacherGeneration';
-import { createGenerationStore, GenerationStoreError, generationSessionToken } from '../src/lib/teacherGenerationStore';
+import { createGenerationStore, GenerationStoreError, generationSessionToken, readPublicGenerationTrial, type GenerationQuota } from '../src/lib/teacherGenerationStore';
 import { loadGenerationCurriculum } from '../src/lib/teacherGenerationCurriculum';
 import { parseTeacherGenerationCurriculum, GENERATION_CURRICULUM_SHA256 } from '../src/lib/teacherGenerationContract';
 import { authorizeTeacherRequest, TEACHER_SESSION_COOKIE, TEACHER_PRIVATE_HEADERS } from '../src/lib/teacherAccess';
@@ -35,7 +35,7 @@ function fixture() {
   const store = {
     health: async () => { calls.push('health'); return { online: true, capabilities: { acceptedIntakeVersions: [2], topics: [{ topicId: 'ג10', gradeNumber: 3,
       enabled: true, e2eVerified: true, levels: ['b'], questionCounts: [12] }] } }; },
-    quota: async () => ({ dailyLimit:null, remainingToday:null, resetsAt:'2026-11-22T22:00:00Z' }),
+    quota: async (): Promise<GenerationQuota> => ({ mode:'owner', totalLimit:null, remainingTotal:null, active:true, startsAt:null, endsAt:null }),
     list: async () => { calls.push('list'); return []; },
     get: async (_id: string): Promise<any> => { calls.push('get'); return job; },
     findRequest: async (_key: string): Promise<any> => { calls.push('find'); return null; },
@@ -77,7 +77,7 @@ test('status uses the authorized database session for the Jerusalem allowance an
   const f=fixture();
   const response=await handleTeacherGeneration(new Request(origin+'/api/teacherGeneration?ownerId=untrusted&dailyLimit=0'),f.deps);
   assert.deepEqual((await response.json()).quota,await f.store.quota());
-  const remaining={dailyLimit:5,remainingToday:2,resetsAt:'2026-11-23T00:00:00+02:00'};
+  const remaining={mode:'trial',totalLimit:5,remainingTotal:2,active:true,startsAt:'2026-11-22T15:00:00Z',endsAt:'2026-11-25T15:00:00Z'};
   const store=createGenerationStore('unit-user-token',async(url,init)=>{
     assert.equal(new URL(String(url)).pathname,'/rest/v1/rpc/noam_teacher_generation_quota_status');
     assert.deepEqual(JSON.parse(String(init?.body)),{});
@@ -87,11 +87,14 @@ test('status uses the authorized database session for the Jerusalem allowance an
   assert.deepEqual(await store.quota(),remaining);
 });
 
-test('active creation and exhausted daily quota have distinct responses, gateway throttles stay service errors', async () => {
+test('active creation and exhausted trial quota have distinct responses, gateway throttles stay service errors', async () => {
   for(const [status,body,expected] of [
     [423,{code:'PT423',message:'GENERATION_ACTIVE'},'GENERATION_ACTIVE'],
     [429,{code:'PT429',message:'GENERATION_LIMIT'},'GENERATION_LIMIT'],
     [429,{error:'rate limit'},'GENERATION_UNAVAILABLE'],
+    [403,{code:'PT403',message:'TRIAL_CLOSED'},'TRIAL_CLOSED'],
+    [503,{code:'PT503',message:'TRIAL_WORKER_UNAVAILABLE'},'GENERATOR_OFFLINE'],
+    [403,{code:'42501',message:'GENERATION_ACCESS_DENIED'},'GENERATION_UNAVAILABLE'],
   ] as const){
     const store=createGenerationStore('unit-user-token',async()=>Response.json(body,{status}),'fixture-server-key');
     await assert.rejects(store.enqueue({}),e=>e instanceof GenerationStoreError && e.code===expected);
@@ -131,7 +134,7 @@ test('owner can download an explicit general review draft only with successful r
  }
 });
 
-test('anonymous and non-owner requests never wake cloud compute, including health GET', async () => {
+test('anonymous and denied identities never wake cloud compute, including health GET', async () => {
   for (const status of [401, 403] as const) for (const request of [post(), new Request(origin + '/api/teacherGeneration')]) {
     const f = fixture();
     f.deps.authorize = async () => { f.calls.push('auth'); return { ok: false, status, code: status === 401 ? 'TEACHER_SIGN_IN_REQUIRED' : 'TEACHER_ACCESS_DENIED' }; };
@@ -255,7 +258,7 @@ test('invalid input and cross-origin POST cannot wake, while job and download GE
   }
 });
 
-test('no session and authenticated non-owner stop before curriculum, bot or storage work', async () => {
+test('no session and an identity without a confirmed Google link stop before curriculum, bot or storage work', async () => {
   const f = fixture(); delete f.deps.authorize;
   await code(await handleTeacherGeneration(post(), f.deps), 401, 'TEACHER_SIGN_IN_REQUIRED');
   assert.deepEqual(f.calls, []);
@@ -467,4 +470,44 @@ test('fresh old-worker heartbeats cannot advertise v2 readiness or enqueue but h
     const store=createGenerationStore('token',async()=>Response.json([{updated_at:new Date().toISOString(),capabilities:{acceptedIntakeVersions}}]));
     assert.equal((await store.health()).online,false);
   }
+});
+
+test('public trial status uses only anonymous window metadata and fails closed', async () => {
+  const window = {active:true, startsAt:'2026-11-22T15:00:00Z', endsAt:'2026-11-25T15:00:00Z'};
+  const result = await readPublicGenerationTrial(async (url, init) => {
+    assert.match(String(url), /\/rpc\/noam_teacher_generation_trial_window$/);
+    assert.equal(new Headers(init?.headers).has('authorization'),false);
+    return Response.json({...window, ignored:'never public'});
+  });
+  assert.deepEqual(result,window);
+  for (const response of [new Response('',{status:503}),Response.json({...window,endsAt:window.startsAt}),Response.json({active:true,startsAt:null,endsAt:null})])
+    assert.deepEqual(await readPublicGenerationTrial(async()=>response),{active:false,startsAt:null,endsAt:null});
+});
+
+test('trial admissions require the actor-safe renderer and a remaining slot; closed history and accepted retries stay readable',async()=>{
+  const user='44444444-4444-4444-8444-444444444444';
+  const f=fixture();
+  f.deps.authorize=async()=>({ok:true,userId:user,expiresAt:2e9});
+  let remaining=5, active=true, marker:number|undefined;
+  f.store.quota=async()=>({mode:'trial',totalLimit:5,remainingTotal:remaining,active,
+    startsAt:'2026-11-22T15:00:00Z',endsAt:'2026-11-25T15:00:00Z'});
+  const baseline=await f.store.health();f.calls.length=0;
+  f.store.health=async()=>({...baseline,capabilities:{...baseline.capabilities,trialActorIsolation:marker}});
+  f.store.enqueue=async(row)=>{assert.equal(row.owner_id,user);f.calls.push('enqueue');return job;};
+  await code(await handleTeacherGeneration(post(),f.deps),503,'GENERATOR_OFFLINE');
+  assert.ok(!f.calls.includes('enqueue')&&!f.calls.includes('bot'));
+  marker=1;
+  assert.equal((await handleTeacherGeneration(post(input({owner_id:owner})),f.deps)).status,202);
+  assert.deepEqual(f.calls.filter(v=>v==='bot'||v==='enqueue'),['bot','enqueue']);
+  f.calls.length=0; remaining=0; await code(await handleTeacherGeneration(post(),f.deps),429,'GENERATION_LIMIT');
+  assert.ok(!f.calls.includes('bot')&&!f.calls.includes('enqueue'));
+  active=false; remaining=3; f.calls.length=0;
+  f.deps.wake=async()=>{f.calls.push('wake');return 'accepted'};
+  const history=await (await handleTeacherGeneration(new Request(origin+'/api/teacherGeneration'),f.deps)).json();
+  assert.equal(history.ok,true);assert.equal(history.quota.active,false);assert.deepEqual(history.jobs,[]);
+  await code(await handleTeacherGeneration(post(),f.deps),403,'TRIAL_CLOSED');
+  assert.ok(!f.calls.includes('health')&&!f.calls.includes('wake')&&!f.calls.includes('bot'));
+  f.store.findRequest=async()=>({...job,status:'needs_review'});
+  assert.equal((await (await handleTeacherGeneration(post(),f.deps)).json()).reused,true);
+  assert.ok(!f.calls.includes('enqueue'));
 });

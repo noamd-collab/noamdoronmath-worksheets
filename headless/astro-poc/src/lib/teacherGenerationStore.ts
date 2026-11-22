@@ -16,7 +16,7 @@ export function workerAcceptsCurriculumIntake(capabilities: any): boolean {
 export type GenerationState = typeof GENERATION_STATES[number];
 export const uuid = (v: unknown): v is string => typeof v === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(v);
 export class GenerationStoreError extends Error {
-  constructor(public readonly code: 'GENERATION_UNAVAILABLE' | 'GENERATION_ACTIVE' | 'GENERATION_LIMIT' | 'REQUEST_CONFLICT', public readonly status = 503) { super(code); }
+  constructor(public readonly code: 'GENERATION_UNAVAILABLE' | 'GENERATOR_OFFLINE' | 'GENERATION_ACTIVE' | 'GENERATION_LIMIT' | 'TRIAL_CLOSED' | 'REQUEST_CONFLICT', public readonly status = 503) { super(code); }
 }
 
 async function readBoundedText(response: Response, maximum: number): Promise<string> {
@@ -38,6 +38,40 @@ async function readBoundedText(response: Response, maximum: number): Promise<str
   const bytes = new Uint8Array(length); let offset = 0;
   for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
   return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+}
+
+export interface PublicGenerationTrial {
+  active: boolean;
+  startsAt: string | null;
+  endsAt: string | null;
+}
+export interface GenerationQuota extends PublicGenerationTrial {
+  mode: 'owner' | 'trial';
+  totalLimit: 5 | null;
+  remainingTotal: number | null;
+}
+function validWindow(value: any): boolean {
+  return typeof value?.active === 'boolean' && (
+    (value.startsAt === null && value.endsAt === null) ||
+    (typeof value.startsAt === 'string' && typeof value.endsAt === 'string' &&
+     Date.parse(value.endsAt) - Date.parse(value.startsAt) === 72 * 60 * 60 * 1000));
+}
+
+/** Anonymous eligibility for public pages. No job data, token or compute wake. */
+export async function readPublicGenerationTrial(fetcher: typeof fetch = fetch): Promise<PublicGenerationTrial> {
+  const config = TEACHER_ACCESS_CONFIG;
+  try {
+    const response = await fetcher(config.supabaseUrl + '/rest/v1/rpc/noam_teacher_generation_trial_window', {
+      method: 'POST', headers: { apikey: config.supabaseAnonKey, 'content-type': 'application/json' },
+      body: '{}', credentials: 'omit', redirect: 'error', cache: 'no-store', signal: AbortSignal.timeout(2500),
+    });
+    if (response.ok) {
+      const data = JSON.parse(await readBoundedText(response, 2048));
+      if (validWindow(data) && (!data.active || data.startsAt !== null))
+        return { active: data.active, startsAt: data.startsAt, endsAt: data.endsAt };
+    }
+  } catch { /* Public pages remain available if campaign status cannot be verified. */ }
+  return { active: false, startsAt: null, endsAt: null };
 }
 
 /** Only called after the fixed project's Auth server has authorized this request.
@@ -67,13 +101,17 @@ export function createGenerationStore(token: string, fetcher: typeof fetch = fet
         // Never return provider SQL details, cookies or request data to the browser.
         if (privileged && response.status === 409) throw new GenerationStoreError('REQUEST_CONFLICT', 409);
         if (privileged && response.status === 423) throw new GenerationStoreError('GENERATION_ACTIVE', 423);
-        if (privileged && response.status === 429) {
+        if (privileged && ([403, 429, 503].includes(response.status))) {
           // A gateway may itself throttle requests. Only the database's exact
           // quota exception means the teacher has used five creations.
           const text = await readBoundedText(response, 2048);
           let providerError: { code?: string; message?: string } | null = null;
           try { providerError = JSON.parse(text); } catch { /* Not the database quota response. */ }
-          if (providerError?.code === 'PT429' && providerError.message === 'GENERATION_LIMIT')
+          if (response.status === 503 && providerError?.code === 'PT503' && providerError.message === 'TRIAL_WORKER_UNAVAILABLE')
+            throw new GenerationStoreError('GENERATOR_OFFLINE', 503);
+          if (response.status === 403 && providerError?.code === 'PT403' && providerError.message === 'TRIAL_CLOSED')
+            throw new GenerationStoreError('TRIAL_CLOSED', 403);
+          if (response.status === 429 && providerError?.code === 'PT429' && providerError.message === 'GENERATION_LIMIT')
             throw new GenerationStoreError('GENERATION_LIMIT', 429);
         }
         throw new GenerationStoreError('GENERATION_UNAVAILABLE');
@@ -92,15 +130,16 @@ export function createGenerationStore(token: string, fetcher: typeof fetch = fet
       const age = Date.now() - Date.parse(row?.updated_at);
       return { online: Number.isFinite(age) && age >= -10000 && age < 90000 && workerAcceptsCurrentIntake(row?.capabilities), capabilities: row?.capabilities ?? null };
     },
-    async quota(): Promise<{ dailyLimit: 5 | null; remainingToday: number | null; resetsAt: string }> {
+    async quota(): Promise<GenerationQuota> {
       const quota = await request('/rest/v1/rpc/noam_teacher_generation_quota_status', {
         method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}',
       });
-      const validCount = quota?.dailyLimit === null ? quota.remainingToday === null :
-        quota?.dailyLimit === 5 && Number.isInteger(quota.remainingToday) && quota.remainingToday >= 0 && quota.remainingToday <= 5;
-      if (!validCount || typeof quota.resetsAt !== 'string' || !Number.isFinite(Date.parse(quota.resetsAt)))
-        throw new GenerationStoreError('GENERATION_UNAVAILABLE');
-      return { dailyLimit: quota.dailyLimit, remainingToday: quota.remainingToday, resetsAt: quota.resetsAt };
+      const owner = quota?.mode === 'owner' && quota.totalLimit === null && quota.remainingTotal === null && quota.active === true;
+      const trial = quota?.mode === 'trial' && quota.totalLimit === 5 && Number.isInteger(quota.remainingTotal) &&
+        quota.remainingTotal >= 0 && quota.remainingTotal <= 5 && (!quota.active || quota.startsAt !== null);
+      if (!validWindow(quota) || !(owner || trial)) throw new GenerationStoreError('GENERATION_UNAVAILABLE');
+      const { mode, totalLimit, remainingTotal, startsAt, endsAt, active } = quota;
+      return { mode, totalLimit, remainingTotal, startsAt, endsAt, active };
     },
     async list() { return request('/rest/v1/noam_teacher_generation_jobs?select=' + columns + '&order=created_at.desc&limit=20'); },
     async get(id: string) {
