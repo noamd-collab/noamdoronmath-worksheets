@@ -46,6 +46,43 @@ const activationDeltas = JSON.parse(activationDeltaText).files;
 const legalPrivacyDeltaText = read('tests/fixtures/legal-privacy-reviewed-delta.json');
 assert.equal(sha256(legalPrivacyDeltaText), '3953c82c1b08b81cf1b2bf76d977f11d6457f0cdeed2c74c2de4cacbe0b38753');
 const legalPrivacyDeltas = JSON.parse(legalPrivacyDeltaText).files;
+
+// Restore the single GET and its two stale-response guards from f25bd4798.
+function beforeManifestRecovery(content: string): string {
+  const requests = content.match(/^  function isCurrentLoad\(\)\{\n[\s\S]*?^  return fetchManifest\(\)$/gm) || [];
+  assert.equal(requests.length, 1, 'one manifest retry block');
+  assert.equal(sha256(requests[0]), 'e78fbfb98a1dbcfebd00ce0a307dcc72f5b96dc5210bde4cca5258cdf6573838', 'exact manifest retry block');
+  const priorRequest = [
+    '  return fetch(MANIFEST_PATH, { cache:"default" })',
+    '    .then(function(response){',
+    '      if (!response.ok){ throw new Error("manifest " + response.status); }',
+    '      return response.json();',
+    '    })',
+  ].join('\n');
+  let result = content.replace(requests[0], priorRequest);
+  const guards = [
+    ['      if(!isCurrentLoad()){throw new Error("MANIFEST_SUPERSEDED");}', '      if(loadVersion!==noamManifestLoadVersion||requestedSearch!==location.search){throw new Error("MANIFEST_SUPERSEDED");}'],
+    ['      if(!isCurrentLoad()){return null;}', '      if(loadVersion!==noamManifestLoadVersion){return null;}'],
+  ];
+  for (const [current, prior] of guards) {
+    assert.equal(result.split(current).length, 2, 'one reviewed stale-response guard');
+    result = result.replace(current, prior);
+  }
+  return result;
+}
+
+it('reverses only the reviewed manifest recovery in both released viewer files', () => {
+  for (const [file, priorHash] of [
+    ['../../worksheet-viewer-noam.html', 'c328e7cb8a58500c80db412f32dd7da478743834c6809184f0b1471001810441'],
+    ['public/worksheet-viewer-noam.html', '9c1eedb0bb2a1ea831831cb1a8920adf0caf2c38d35ec4cfc0b5612fefa1b226'],
+  ]) {
+    const source = read(file);
+    assert.equal(sha256(beforeManifestRecovery(source)), priorHash, file);
+    assert.throws(() => beforeManifestRecovery(source.replace('error.status===408', 'error.status===404')));
+    assert.throws(() => beforeManifestRecovery(source.replace('if(!isCurrentLoad()){return null;}', 'if(loadVersion!==noamManifestLoadVersion){return null;}')));
+  }
+});
+
 // Restore the two intentional edition-reader changes before checking the historic hashes.
 function beforeThreeDigitEditions(content: string): string {
   const hunks: [string, string][] = [
@@ -67,7 +104,7 @@ function beforeThreeDigitEditions(content: string): string {
 }
 
 function beforeLegalPrivacy(file: string, content: string): string {
-  if (file === 'public/worksheet-viewer-noam.html') content = beforeThreeDigitEditions(content);
+  if (file === 'public/worksheet-viewer-noam.html') content = beforeThreeDigitEditions(beforeManifestRecovery(content));
   const delta = legalPrivacyDeltas.find((entry: any) => entry.file === file);
   if (!delta) return content;
   assert.equal(sha256(content), delta.candidateSha256, file + ' exact legal privacy candidate');
@@ -148,7 +185,7 @@ function beforeDrawingControlPause(content: string): string {
 }
 
 it('first567 drawing policy changes only the reviewed line in the root mirror', () => {
-  const current = beforeDrawingControlPause(beforeThreeDigitEditions(readFileSync(join(root, '../../worksheet-viewer-noam.html'), 'utf8')));
+  const current = beforeDrawingControlPause(beforeThreeDigitEditions(beforeManifestRecovery(read('../../worksheet-viewer-noam.html'))));
   assert.equal(sha256(current), '232f80e06dea7d7f410c2a03ad0c09ffbd6bfb9721bd5542e2a98260d7d2d6a9', 'exact root drawing policy candidate');
   assert.equal(sha256(beforeDrawingPolicy(current)), '91433585be9d6d4ec2bf3887bbafecec5b310f235382f56ebfcbe23de645e05c');
   assert.throws(() => beforeDrawingPolicy(current.replace('G7-T86', 'G7-T99')));
