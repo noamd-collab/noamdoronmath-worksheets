@@ -571,6 +571,7 @@
     {
      "reply": "replies/L2-p1-c1.txt",
      "format": "text",
+     "sha256": "42584c8681616995d5ba7c606a47876d8c5622022319cb562a277da96352b3f7",
      "required": [
       "q19",
       "q2",

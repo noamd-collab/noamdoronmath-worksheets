@@ -53,6 +53,12 @@ def recorded_text(case_id, correction=None):
     return (CORPUS / (name['reply'] if isinstance(name, dict) else name)).read_text(encoding='utf-8')
 
 
+def notation_only(wire):
+    """L1-p2 reserve 2 without its "0 = 0" yes/no item, which decides nothing: item 1 in its place."""
+    wire['items'][1] = deepcopy(wire['items'][0])
+    return wire
+
+
 def question(case_id, group, number, correction=None):
     """One recorded question: practice/challenges/reserves by one-based position, or a correction key."""
     reply = reply_of(case_id, correction)
@@ -109,7 +115,9 @@ class LiveCauses(unittest.TestCase):
         failure = self.check('L1-p2', wire)
         self.assertEqual(failure['code'], 'PRINTED_ANSWER_LEAK')
         # Also when the earlier result is printed as a given of a later item, or as its printed calculation.
-        for case_id, group, number in (('L1-p1', 'practice', 12), ('L1-p1', 'practice', 17),
+        # (L1-p1 practice 17, "112 / 2" after the item keyed 112, now prints its prompt without the task:
+        # test_live2_print.)
+        for case_id, group, number in (('L1-p1', 'practice', 12),
                                        ('L1-p3-a2', 'challenges', 3), ('L1-p3', 'challenges', 1)):
             with self.subTest(case=case_id, group=group, number=number):
                 self.assertEqual(self.code(case_id, question(case_id, group, number)), 'PRINTED_ANSWER_LEAK')
@@ -336,12 +344,15 @@ class LiveCauses(unittest.TestCase):
                 ('L1-g8-a2', 'q13', None, 1),          # F4 a printed frac shows its numerator and denominator
                 ('L1-p1', 'challenges', 3, None),       # F6 d1, d2
                 ('L1-g8', 'practice', 17, None),        # F7 [[x%]]
-                ('L1-p2', 'reserves', 2, None),         # F9 [[a=1, b=-6, c=9]]
+                ('L1-p2', 'reserves', 2, 'trivial'),    # F9 [[a=1, b=-6, c=9]] (its "0 = 0" item: test_live2_print)
                 ('L1-p1', 'practice', 10, None),        # F10 a window that leaves out a point
                 ('L1-p3-a2', 'practice', 14, None)):    # F10 a window past 10
             with self.subTest(case=case_id, group=group, number=number):
+                if correction == 'trivial':
+                    self.assertIsNone(self.check(case_id, notation_only(question(case_id, group, number))))
+                    continue
                 self.assertIsNone(self.check(case_id, question(case_id, group, number, correction)))
-        rows = self.printed('L1-p2', question('L1-p2', 'reserves', 2))
+        rows = self.printed('L1-p2', notation_only(question('L1-p2', 'reserves', 2)))
         self.assertIn('$a = 1$, $b = −6$, $c = 9$', rows[0][0])
 
     # G76: the questions over the dominance cap are named.

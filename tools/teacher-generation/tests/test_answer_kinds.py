@@ -233,7 +233,9 @@ class DecisionWireTests(unittest.TestCase):
         self.refused("ג03", "חשבו.", "כמה הם [[24 : 6]]?", decide("eq", "24/6", "4"), code="PRINTED_ANSWER_KIND")
         self.refused("ג03", "חשבו.", "[[24 : 6]]", decide("eq", "24/6", "4"), code="PRINTED_ANSWER_KIND")
         self.refused("ג10", "מצאו.", "דני כתב ש-[[32 : 4 = 7]]. האם דני טעה?", decide("ne", "32/4", "7"), code="PRINTED_ANSWER_KIND")
-        self.refused("g7:equations", "בדקו.", "האם [[x=5]] הוא פתרון של המשוואה [[x + 3 = 8]]?", decide("eq", "5+3", "8"),
+        # "Is [[x=5]] a solution of ...?" prints the value as the letter's assignment (test_live2_print);
+        # an assignment of another letter is still a relation that cannot be decided.
+        self.refused("g7:equations", "בדקו.", "האם [[y=5]] הוא פתרון של המשוואה [[x + 3 = 8]]?", decide("eq", "5+3", "8"),
                      code="PRINTED_ANSWER_KIND")
 
     def test_true_false_forms_and_a_question_asked_once_for_the_group(self):

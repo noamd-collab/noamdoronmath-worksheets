@@ -469,11 +469,44 @@ _ASKS_EQUATION = re.compile(
     r"(?<![א-ת])(?:מה|מהי|מהו|איזו|איזה)\s+(?:(?:הייתה|היה|היא|הוא)\s+)?ה?(?:משווא(?:ה|ות)|ביטוי|תרגיל)(?![א-ת])[^?.!]*\?")
 
 
+# A key's unit and the size the item asks for: an area unit for a width, or a length unit for an area, is a wrong key.
+_AREA_UNIT = re.compile(r"(?:סמ|דצמ|קמ|ממ|מ)[\"״]ר|(?:סנטי|דצי|קילו|מילי)?מטר(?:ים)?\s+(?:רבוע|מרובע)(?:ים)?|יחידות\s+שטח")
+_LENGTH_UNIT = re.compile(r"(?:ס|מ|דצ|ק)[\"״]מ|מ['׳]|(?:סנטי|דצי|קילו|מילי)?מטר(?:ים)?|יחידות\s+אורך")
+_ASKS_LENGTH = re.compile(r"(?<![א-ת])[ובלהמש]{0,3}(?:אורכ|אורך|רוחב|גובה|צלע|היקף|היקפ|אלכסונ|רדיוס|קוטר|מרחק)")
+_ASKS_AREA = re.compile(r"(?<![א-ת])[ובלהמש]{0,3}שטח")
+_ASKING = re.compile(r"(?<![א-ת])(?:מה|מהו|מהי|מצאו|חשבו|כמה|בכמה|כתבו)(?![א-ת])")
+
+
+def check_unit_size(item):
+    """Refuse a key whose unit measures another size than the one the item asks for.
+
+    The asked sentence is the last one with a question or an instruction word.
+    "מהו רוחב השולחן" keyed in דצמ"ר (live round 1, g9r quadratics) prints a width
+    in square decimetres; "מהו שטח ..." keyed in ס"מ prints an area as a length.
+    A sentence that names both sizes ("בכמה סמ"ר גדל השטח כשמאריכים את הצלע")
+    decides nothing here.
+    """
+    unit = item["answer"].get("unit") or ""
+    if not unit.strip():
+        return
+    sentences = [part for part in re.split(r"[.?!]", _words(item["prompt"])) if _ASKING.search(part)]
+    if not sentences:
+        return
+    asked = sentences[-1]
+    if re.search(r"(?<![א-ת])[ובלהמש]{0,3}מכפל", asked):
+        return  # a product of lengths measures an area
+    length, area = bool(_ASKS_LENGTH.search(asked)), bool(_ASKS_AREA.search(asked))
+    if (length and not area and _AREA_UNIT.search(unit)) or (
+            area and not length and _LENGTH_UNIT.fullmatch(unit.strip()) and not _AREA_UNIT.search(unit)):
+        raise GeneralSourceError("PRINTED_ANSWER_KIND", "The key's unit measures another size than the item asks for")
+
+
 def check_key_print(question, item, solved, grade):
     """The checks of what the key prints beside its own item, at source validation where a refusal is recoverable.
 
     Returns the solved task narrowed to the solutions the item asks for.
     """
+    check_unit_size(item)
     words = _words(item["prompt"])
     asked = _ASKS_EQUATION.search(words)
     if grade >= 7 and asked and words[asked.end():].strip(" .") and solved.get("result", {}).get("type") != "decision":
@@ -514,8 +547,22 @@ def terminating_decimal(node):
     return ("−" if n < 0 else "") + str(integer) + ("." + "".join(digits) if digits else "")
 
 
-def answer_leak(question, keys):
-    """The first item that prints the key of an earlier item of the same question, or None.
+def printed_keys(question, solutions):
+    """{item number: its solved task narrowed to the solutions its key prints}, for computed items.
+
+    ``solutions`` holds the solved task of each item in order (None for an item
+    without one). The same map validate_question builds for answer_leak, so
+    the printer withholds exactly the tasks the validation expected withheld.
+    """
+    keys = {}
+    for j, (item, solved) in enumerate(zip(question["items"], solutions), 1):
+        if solved is not None and item["answer"].get("kind") == "computed":
+            keys[j] = narrowed(solved, chosen_solutions(question, item, solved))
+    return keys
+
+
+def earlier_answers(question, keys):
+    """{item number: the earlier items' key values its print may not show}, or None for an independent item.
 
     ``keys`` maps an item number (one-based) to its solved computed task. An
     item from the second on may not show a number that an earlier item's key
@@ -527,27 +574,97 @@ def answer_leak(question, keys):
     question whose intro or table states numbers that the items share, and an
     item whose words refer back to earlier results. Independent drill items
     under an instruction without numbers (a letter such as [[x]] is not one)
-    share small numbers by chance and stay as they are.
+    share small numbers by chance and stay as they are (None).
     """
     shown = visible_numbers(question["intro"]) | visible_numbers(_table_spans(question))
     shared = bool(shown)
-    answered = set()
+    answered, guard = set(), {}
     for j, item in enumerate(question["items"], 1):
-        if not (shared or BACK_REFERENCE.search(_words(item["prompt"]))):
-            shown |= visible_numbers(item["prompt"])
-            answered |= _key_values(keys.get(j))
+        guard[j] = (frozenset(value for value in answered - shown if abs(value) not in (0, 1))
+                    if shared or BACK_REFERENCE.search(_words(item["prompt"])) else None)
+        shown |= visible_numbers(item["prompt"])
+        answered |= _key_values(keys.get(j))
+    return guard
+
+
+def _task_terms(solved):
+    """The numbers the typed task prints after its prompt (not the exponents of powers, not a figure's)."""
+    return _written_terms({k: v for k, v in solved["question"].items() if k != "figure"}, set(), exponents=False)
+
+
+# A prompt that only says "compute" or "solve": it asks for the task printed after it and means nothing alone.
+_BARE_DIRECTIVE = re.compile(
+    r"(?:(?:חשבו|פתרו|מצאו|השלימו|כתבו|רשמו|בדקו)(?: את)?"
+    r"(?: התוצאה| התרגיל| התרגילים| הביטוי| ערך הביטוי| הערך| המשוואה| החישוב| הסכום| ההפרש| המכפלה| המנה)?"
+    r"(?: של| הבא| הבאה| הבאים| הזה| הזאת)?|מהי התוצאה(?: של)?|מהו הערך(?: של)?|כמה זה)?\s*[:.?!]?")
+
+
+# A quantity the pupil can find from the question without a printed calculation: a size, a price, a number.
+_QUANTITY = re.compile(
+    r"(?<![א-ת])[ובלמהש]{0,3}(?:שטח|היקף|אורכ|אורך|רוחב|גובה|גודל|זווי|אלכסונ|צלע|בסיס|רדיוס|קוטר|נפח|מחיר|עלות"
+    r"|מספר|הפרש|סכום|מכפלת|מנת|מחצית|ממוצע|משקל|מהירות|מרחק|כמות|גיל)|(?<![א-ת])כמה\s+(?!זה(?![א-ת]))[א-ת]")
+
+
+# Constants a pupil supplies from the shape or the operation named: half, a double, four sides, a right angle.
+_STRUCTURAL = frozenset({Fraction(2), Fraction(3), Fraction(4), Fraction(90), Fraction(180), Fraction(360),
+                         Fraction(1, 2), Fraction(1, 3), Fraction(1, 4)})
+
+
+def needs_task(item):
+    """True when the prompt means nothing without the task printed after it.
+
+    A bare instruction ("חשבו:", "חשבו את התוצאה") or a prompt that names no
+    quantity and no object ("חשבו ישירות לפי סדר הפעולות") asks for the
+    printed calculation itself. A prompt that names what to find ("חשבו את
+    היקף המעוין", "מהו גודל הזווית ∡BAD") may stand alone.
+    """
+    words = " ".join(_words(item["prompt"]).split())
+    return bool(_BARE_DIRECTIVE.fullmatch(words)) or ("@" not in words and not _QUANTITY.search(words))
+
+
+def stands_alone(question, item, solved, withheld):
+    """Whether the prompt can be printed without its typed task.
+
+    The prompt names what to find, and the pupil can form the calculation
+    from the page: every number of the task is an earlier answer (withheld),
+    a number the intro, the table or an earlier prompt prints (in digits or in
+    words), or a constant of the shape or the operation (2, 3, 4, 90, 180,
+    360, a half, a third, a quarter). "1/5 · 25" under "חשבו כמה תלמידים
+    מתקבלים" does not: 1/5 is printed nowhere, so the task stays and the
+    question is a leak.
+    """
+    if needs_task(item):
+        return False
+    available = set(withheld) | _STRUCTURAL | visible_numbers(question["intro"]) | visible_numbers(_table_spans(question))
+    available |= word_numbers(_words(question["intro"]) + " " + _words(item["prompt"]))
+    for earlier in question["items"]:
+        if earlier is item:
+            break
+        available |= visible_numbers(earlier["prompt"])
+    return {value for value in _task_terms(solved) if abs(value) not in (0, 1)} <= available
+
+
+def answer_leak(question, keys):
+    """The first item that prints the key of an earlier item of the same question, or None.
+
+    What an item prints is its prompt and, when shows_task prints it, its
+    typed task (earlier_answers says which numbers it may not show). A task
+    that would print an earlier answer is left out when the prompt stands
+    alone (shows_task with ``withheld``, stands_alone). A prompt that needs
+    that task, and a prompt that prints the answer itself, are refused.
+    """
+    guard = earlier_answers(question, keys)
+    for j, item in enumerate(question["items"], 1):
+        withheld = guard[j]
+        if withheld is None:
             continue
         printed = visible_numbers(item["prompt"], exponents=False)
         solved = keys.get(j)
-        if solved is not None and shows_task(question, item, solved):
+        if solved is not None and shows_task(question, item, solved, withheld=withheld):
             # The typed task is printed after this prompt, so its numbers are printed too.
-            printed |= _written_terms({k: v for k, v in solved["question"].items() if k != "figure"}, set(),
-                                      exponents=False)
-        leaked = {value for value in printed & (answered - shown) if abs(value) not in (0, 1)}
-        if leaked:
+            printed |= _task_terms(solved)
+        if printed & withheld:
             return j
-        shown |= visible_numbers(item["prompt"])
-        answered |= _key_values(keys.get(j))
     return None
 
 
@@ -618,7 +735,7 @@ BACK_REFERENCE = re.compile(
     r"(?:שתי|שני|בין) ה?תוצאות|ב?סעיף [א-ט]['׳]?|ב?סעיפים)(?![א-ת])")
 
 
-def shows_task(question, item, solved, *, intro=None):
+def shows_task(question, item, solved, *, intro=None, withheld=None):
     """Whether the typed task is printed after the pupil prompt.
 
     It is printed only for a prompt that carries no mathematics of its own,
@@ -627,7 +744,19 @@ def shows_task(question, item, solved, *, intro=None):
     would repeat the exercise or reveal the operation. The same holds for a
     question about a story or a table that is printed once for all its items,
     and for an item whose words continue the pupil's own earlier answers.
+
+    ``withheld`` (earlier_answers) are the earlier items' answers this item
+    may not print: a task that shows one ("2 · 62" after the item keyed 62)
+    is not printed when the prompt stands alone, and the prompt asks alone.
+    Otherwise it is printed, and answer_leak refuses the question. Every
+    printer passes it, so the page is the one the validation read.
     """
+    if withheld and _task_terms(solved) & withheld and stands_alone(question, item, solved, withheld):
+        return False
+    return _shows_task(question, item, solved, intro=intro)
+
+
+def _shows_task(question, item, solved, *, intro=None):
     task = solved["question"]
     if task.get("kind") == "figure_measure":
         return True

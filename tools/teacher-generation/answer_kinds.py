@@ -49,7 +49,8 @@ DECISION_GUIDE = (
     "R is eq, ne, lt, le, gt or ge for the comparison that the sentence states, in its printed order, "
     "or divisible / not_divisible (left by right; use right 2 for even and odd). For membership in a printed "
     "list use relation in or not_in with \"values\":[E,...] in place of right. E uses only the numbers and "
-    "calculations printed in that item. Never write the yes or the no: the compiler decides the claim and "
+    "calculations printed in that item, and its two sides are never the same number or expression "
+    "('9 = 9' decides nothing). Never write the yes or the no: the compiler decides the claim and "
     "prints the verdict with its calculation. Ask one decidable claim per item, e.g. "
     "'האם המנה של [[56 : 8]] גדולה מ־[[5]]?' with relation gt, left 56/8, right 5, or "
     "'האם [[32 : 4 = 7]] נכון?' with relation eq, left 32/4, right 7. The whole answer object is "
@@ -424,6 +425,15 @@ def _equation(span, grade):
         return None
 
 
+def _assigned(equation):
+    """The value of a printed assignment such as "x = 5" (either way round), else None."""
+    _, lhs, rhs = equation
+    for name, value in ((lhs, rhs), (rhs, lhs)):
+        if name == {"type": "symbol", "name": "x"} and isinstance(value, dict) and value.get("type") == "number":
+            return Fraction(value["numerator"], value["denominator"])
+    return None
+
+
 def _rational(tree):
     value = tree if isinstance(tree, dict) and tree.get("type") == "number" else _value(tree)
     return Fraction(value["numerator"], value["denominator"]) if isinstance(value, dict) and value.get("type") == "number" else None
@@ -481,6 +491,11 @@ def _solution_claim(prompt, sentence, task, result, form, grade):
         if tree is None or tree.get("type") != "number":
             return None
         numbers.append(Fraction(tree["numerator"], tree["denominator"]))
+    values = [equation for equation in equations if _assigned(equation) is not None]
+    if len(equations) == 2 and not numbers and len(values) == 1 and equations[0][0] == equations[1][0]:
+        # "Is [[x = 5]] a solution of [[x + 3 = 8]]?": the value is printed as the letter's assignment.
+        numbers = [_assigned(values[0])]
+        equations = [equation for equation in equations if equation is not values[0]]
     typed = [_rational(task["left"]), _rational(task["right"])]
     if None in typed:
         return None
@@ -532,23 +547,107 @@ def _solution_claim(prompt, sentence, task, result, form, grade):
                      "equations": len(equations)})
 
 
+_LABELED = re.compile(r"\s*(?:∠\s*[A-Z]{1,3}|[A-Z]{1,3})\s*=\s*(-?[0-9]+(?:\.[0-9]+)?)\s*°?\s*")
+
+
+def _labeled_value(span):
+    """A printed measure of a named object, "∠BAD = 110°" or "OB = 5", read as the number it prints."""
+    found = _LABELED.fullmatch(span["notation"]) if span["kind"] == "formula" else None
+    return {"kind": "formula", "notation": found[1]} if found else span
+
+
+def _value_at(tree, letter, value):
+    """The value of a printed expression when its one letter has the printed value; None otherwise."""
+    if not _has_symbol(tree):
+        return _rational(tree)
+    solved = validate_and_solve_task({"kind": "substitute", "expression": tree,
+                                      "values": {letter: number(value.numerator, value.denominator)}})
+    return _rational(solved["result"]["value"])
+
+
+def _substitution_claim(prompt, segments, start, stop, sentence, task, result, form, grade):
+    """"For [[x = 5]], is [[(x + 2)^2]] greater than [[x^2 + 20]]?" decided from the print, or None.
+
+    One printed assignment of a letter; in the question sentence, one printed
+    expression in that letter (or a number) before the relation word and one
+    after it. Each side's value at the printed value is the print's; the typed
+    claim must state the same relation with the same values in that order.
+    Anything else is None, and the caller refuses the question as before.
+    """
+    if _NEGATION.search(sentence) or _WRONG.search(sentence) or task.get("relation") not in _HOLDS:
+        return None
+    cue = _relation_word(sentence.replace("@", " "))
+    if cue is None or cue[3] or cue[2] is not None or cue[0] not in _HOLDS:
+        return None
+    assignments, sides = [], []
+    for first, _last, span, _text in segments:
+        if span["kind"] == "text":
+            continue
+        equation = _equation(span, grade)
+        if equation is not None:
+            if _assigned(equation) is None:
+                return None
+            assignments.append(equation)
+        elif span["kind"] == "math":
+            sides.append((first, span["expression"]))
+        elif (tree := _closed(span, grade)) is not None:
+            sides.append((first, tree))
+        else:
+            return None
+    if len(assignments) != 1 or len(sides) != 2:
+        return None
+    letter, value = assignments[0][0], _assigned(assignments[0])
+    place = start + cue[1]
+    (before, first_tree), (after, second_tree) = sides
+    if not start <= before < place <= after < stop:
+        return None
+    try:
+        pair = [_value_at(first_tree, letter, value), _value_at(second_tree, letter, value)]
+        typed = [_rational(task["left"]), _rational(task["right"])]
+    except (MathTaskError, KeyError, TypeError, ZeroDivisionError):
+        return None
+    if None in pair or None in typed:
+        return None
+    relation = cue[0]
+    if task["relation"] == _MIRROR.get(relation):
+        relation, pair = task["relation"], pair[::-1]
+    holds = _HOLDS[relation](*pair)
+    if task["relation"] != relation or typed != pair or holds != result["holds"]:
+        _mismatch("The typed claim is not the printed comparison at the printed value")
+    return Decision(holds, form, _steps([task["left"], task["right"]], result),
+                    {"rule": "substitution_claim", "relation": relation, "holds": holds, "bound": "print"})
+
+
 def bind_decision(question, item, solved, grade):
     """Tie a decided claim to the printed question and return the printable decision.
 
     None for any other task. Raises when the item is not a yes/no question
     about one decidable relation, or when the typed claim is not that question.
+    A claim that the print binds but whose two sides are the same ("9 = 9" for
+    "do both methods give the same result?", "13 = 13" for "is it a rhombus?")
+    decides nothing: the question is refused, so a reserve replaces it.
     """
+    decision = _bind_decision(question, item, solved, grade)
+    task = solved["question"]
+    if decision is not None and "right" in task and task["left"] == task["right"]:
+        _refuse_kind("Both sides of the claim are the same: the question decides nothing")
+    return decision
+
+
+def _bind_decision(question, item, solved, grade):
     task, result = solved["question"], solved.get("result", {})
     if task.get("kind") != "decide" or result.get("type") != "decision":
         return None
-    prompt, intro = item["prompt"], question["intro"]
+    # A printed measure of a named object ("∠BAD = 110°", "OB = 5") is that number on the page.
+    prompt, intro = [_labeled_value(span) for span in item["prompt"]], question["intro"]
     text, segments = _layout(prompt)
     intro_text, _ = _layout(intro)
     form, start, stop, judged = _question_sentence(text, intro_text)
     sentence = judged[start:stop]
     statements = [_printed_statement(span, grade) for span in prompt]
     if any(statement is False for statement in statements):
-        claim = _solution_claim(prompt, sentence, task, result, form, grade)
+        claim = (_solution_claim(prompt, sentence, task, result, form, grade)
+                 or _substitution_claim(prompt, segments, start, stop, sentence, task, result, form, grade))
         if claim is not None:
             return claim
         _refuse_kind("A printed relation with a blank or a letter cannot be decided")
@@ -567,7 +666,10 @@ def bind_decision(question, item, solved, grade):
         # truth comes from the print; the typed claim has to agree with it.
         cue = _relation_word(sentence.replace("@", " "))
         bare = not re.sub(r"האם|אם|בדקו|קבעו|החליטו|בררו|זה|זו|כי|[@\s.,:?!־-]", "", sentence)
-        if len(statements) != 1 or operations or not (bare or (cue and cue[3])):
+        # Words that restate the printed sign ("האם שתי הדרכים נותנות אותה תוצאה? בדקו האם [[A = B]]")
+        # ask the same question as the statement.
+        restated = bool(cue) and not cue[3] and cue[2] is None and len(statements) == 1 and cue[0] == statements[0][0]
+        if len(statements) != 1 or operations or not (bare or (cue and cue[3]) or restated):
             _refuse_kind("Ask whether the one printed statement is right, with nothing else to decide in the item")
         relation, left, right = statements[0]
         printed = validate_and_solve_task({"kind": "decide", "relation": relation, "left": left, "right": right})["result"]

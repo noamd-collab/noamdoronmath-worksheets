@@ -29,6 +29,13 @@ independent checkers of milestone 2 read exactly these sheets, and the tests
 in `tests/test_live2_checkers.py` hold the engine to their findings. The
 lessons are the round-1 lesson files, which round 2 sent unchanged.
 
+The three grade-9 lessons that round 2 did not deliver are here too, every
+author and correction reply byte for byte: `L2-p1` (g9r:rhombus a), `L2-p2`
+(g9r:quad_eq_applications a) and `L2-p3` (g9r:parallels_trapezoid e), each
+with its second author attempt (`-a2`) and the correction that followed the
+first (`-c1`; `L2-p1-c1.txt` is not JSON and is declared as text). The tests in
+`tests/test_live2_print.py` read them.
+
 ## Origin
 
 The fourteen Qwen replies are all the raw Qwen first replies that existed on

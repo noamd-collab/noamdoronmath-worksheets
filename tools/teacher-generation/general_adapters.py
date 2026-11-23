@@ -22,7 +22,7 @@ from no_carry_addition import needs_printed_task, states_entire_task
 from printed_percentages import percentage_evidence
 from printed_tasks import match_printed_task, matching_solution_choices, printed_solve, printed_table_row
 from printed_elementary import guard_counting_input, place_intro, printed_intent, validate_counting_values
-from printed_parts import answer_form, bind_parts, carries_data, chosen_solutions, comparison_blank, narrowed, printed_calculation, shows_task
+from printed_parts import answer_form, bind_parts, carries_data, chosen_solutions, comparison_blank, earlier_answers, narrowed, printed_calculation, printed_keys, shows_task
 from answer_kinds import TEACHER_CHECK, bind_decision
 
 LETTERS = "אבגדהוזחטי"
@@ -541,7 +541,7 @@ def compile_source(lesson, validated, scope, skill_path, work, *, printed_answer
 _PARTS_NUMBER = re.compile(r"(?<![.\d])\d{4,}(?![\d])")
 
 
-def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *, intro_spans, printed_answers, printed_fractions):
+def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *, intro_spans, printed_answers, printed_fractions, withheld=None):
     """Render one item: the pupil line and its key, each bound to what is printed.
 
     Every binder either proves that the prompt already shows the exercise or
@@ -625,7 +625,12 @@ def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *
         if calculation:
             bound = True
             ledger.claim(f"{n}.{j}.calculation", "התשובה היא ערך התרגיל המודפס", calculation, method="closed_form")
-    show = not bound and (shows_task(seen, item, computed) or needs_printed_task(lesson, n-1, j-1, item))
+    forced = not bound and needs_printed_task(lesson, n-1, j-1, item)
+    if forced and not shows_task(seen, item, computed, withheld=withheld) and shows_task(seen, item, computed):
+        # The calculation this item must print shows an earlier item's answer.
+        raise GeneralSourceError("PRINTED_ANSWER_LEAK", "An item prints the answer of an earlier item of the same question")
+    # An earlier item's answer in the typed task keeps the task off the page (withheld, validated by answer_leak).
+    show = not bound and (shows_task(seen, item, computed, withheld=withheld) or forced)
     task_text = _task_text(computed, grade, H, notation=notation) if show else ""
     # A fresh calculation, not a model-provided answer or boolean.
     repeated = solve_figure_task(question["figure"],item["answer"]["operation"],item["answer"].get("point")) if figure_task else validate_and_solve_task(item["answer"]["task"])
@@ -664,6 +669,9 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                     raise GeneralSourceError("UNVERIFIED_FIGURE","The rendered elementary figure has no passing measured-SVG assertion", question=n)
                 ledger.claim(str(n),"בדיקת הנתונים בשרטוט המודפס",measurement,method="figure_assert")
                 pieces.append(H.fig(svg))
+            # The earlier answers each item's printed task may not show (validated by answer_leak).
+            seen = dict(question, intro=intro_spans)
+            withheld = earlier_answers(seen, printed_keys(seen, [solved.get(f"q{n}-i{k}") for k in range(1, len(question["items"]) + 1)]))
             for j, item in enumerate(question["items"], 1):
                 item_id = f"q{n}-i{j}"; computed = solved.get(item_id)
                 if computed is None and item["answer"]["kind"] not in ("label", "open"):
@@ -671,7 +679,7 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                 try:
                     body, answer = _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger,
                                                     intro_spans=intro_spans, printed_answers=printed_answers,
-                                                    printed_fractions=printed_fractions)
+                                                    printed_fractions=printed_fractions, withheld=withheld[j])
                 except GeneralSourceError as error:
                     # A later stage replaces exactly this question.
                     raise error.at(n, j)
@@ -728,6 +736,8 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
             intro = rich_text(question["intro"], lesson["gradeNumber"])
             q = {"n": n, "intro": intro, "star": question["star"], "items": items, "to_prove": []}
             solutions = [solved.get(f"q{n}-i{j}") for j in range(1, len(question["items"]) + 1)]
+            # The earlier answers each item's printed task may not show (validated by answer_leak).
+            withheld = earlier_answers(question, printed_keys(question, solutions))
             bank = matching_solution_choices(question, solutions, lesson["gradeNumber"])
             if bank:
                 options, reused = bank
@@ -789,7 +799,7 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
                 if printed:
                     printed_checks[item_id] = printed
                 show_task = (computed and not printed and not _prints_calculation(item, computed, lesson["gradeNumber"])
-                             and shows_task(question, item, computed))
+                             and shows_task(question, item, computed, withheld=withheld[j]))
                 body = prompt+(" "+_task_text(computed, lesson["gradeNumber"], notation=item["answer"].get("notation")) if show_task else "")
                 # The key prints only the solutions that the item's words ask for.
                 keyed = narrowed(computed, chosen_solutions(question, item, computed)) if computed and not decision else computed

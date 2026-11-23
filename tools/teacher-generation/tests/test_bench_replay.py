@@ -49,12 +49,14 @@ class CorpusTests(unittest.TestCase):
     def test_corpus_holds_the_recorded_replies_and_nothing_private(self):
         index = json.loads((CORPUS / 'index.json').read_text(encoding='utf-8'))
         cases = index['cases']
-        self.assertEqual(len(cases), 35)
-        self.assertEqual(len({case['id'] for case in cases}), 35)
-        self.assertEqual([sum(case['provider'] == name for case in cases) for name in ('qwen', 'gemini')], [14, 21])
+        self.assertEqual(len(cases), 41)
+        self.assertEqual(len({case['id'] for case in cases}), 41)
+        self.assertEqual([sum(case['provider'] == name for case in cases) for name in ('qwen', 'gemini')], [14, 27])
         self.assertEqual(sum(case['id'].startswith('L1-') for case in cases), 13)
-        # Live round 2: the three delivered sheets that the independent checkers read.
-        self.assertEqual(sorted(case['id'] for case in cases if case['id'].startswith('L2-')), ['L2-g3', 'L2-g7', 'L2-g8'])
+        # Live round 2: the three delivered sheets that the independent checkers read, and the
+        # three grade-9 lessons that did not deliver, each with its second attempt.
+        self.assertEqual(sorted(case['id'] for case in cases if case['id'].startswith('L2-')),
+                         ['L2-g3', 'L2-g7', 'L2-g8', 'L2-p1', 'L2-p1-a2', 'L2-p2', 'L2-p2-a2', 'L2-p3', 'L2-p3-a2'])
         corrections = [entry for case in cases for entry in case['corrections']]
         listed = ({case['firstReply'] for case in cases} | {case['lesson'] for case in cases}
                   | {case['repairedReply'] for case in cases if 'repairedReply' in case}
