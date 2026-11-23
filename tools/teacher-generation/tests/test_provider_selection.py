@@ -304,7 +304,7 @@ class ReplyExampleTests(unittest.TestCase):
                 self.assertEqual(sent['replyExample'], reply_example(lesson['gradeNumber']))
 
 
-class ErrorMappingTests(unittest.TestCase):
+class TransportCase(unittest.TestCase):
     def call(self, *outcomes, target=provider.GEMINI_CHAT_URL, key=GEMINI_KEY):
         body = {'model': 'm', 'messages': [{'role': 'system', 'content': 's'}, {'role': 'user', 'content': '{}'}],
                 'response_format': {'type': 'json_object'}}
@@ -317,6 +317,8 @@ class ErrorMappingTests(unittest.TestCase):
                 failure = exc
         return result, failure, measured, transport, sleep
 
+
+class ErrorMappingTests(TransportCase):
     def test_schema_rejection_is_a_distinct_diagnostic_under_the_existing_code(self):
         for envelope in ({'error': {'code': 400, 'message': SCHEMA_REJECTION, 'status': 'INVALID_ARGUMENT'}},
                          [{'error': {'code': 400, 'message': SCHEMA_REJECTION, 'status': 'INVALID_ARGUMENT'}}]):
@@ -377,7 +379,26 @@ class ErrorMappingTests(unittest.TestCase):
             with self.subTest(raw=raw):
                 _, failure, measured, transport, _ = self.call(Reply(raw))
                 self.assertEqual(failure.code, 'PROVIDER_INVALID_RESPONSE')
+                self.assertEqual(measured['replyDefect'], 'envelope')
                 self.assertEqual(len(transport.requests), 1)
+
+    def test_finished_reply_that_is_not_json_is_rejected_whole_with_its_own_label(self):
+        # Shape captured live from gemini-3.8-flash: one stray character where "}}]" closes a question.
+        good = '{"practice": [{"intro": "א", "items": [{"prompt": "ב", "answer": {"kind": "review", "text": "ג."}}]}, {"intro": "ד", "items": []}]}'
+        stray = good.replace('"}}]}, {"intro"', '"\u5de1}, {"intro"')
+        self.assertEqual(json.loads(good)['practice'][1]['intro'], 'ד')
+        result, failure, measured, transport, sleep = self.call(completion(stray))
+        self.assertIsNone(result)
+        self.assertEqual(failure.code, 'PROVIDER_INVALID_RESPONSE')
+        self.assertEqual((measured['replyDefect'], measured['finishReason'], measured['httpStatus']), ('content_not_json', 'stop', 200))
+        self.assertEqual(measured['usage']['completion_tokens'], 7000)
+        self.assertEqual((len(transport.requests), sleep.call_count), (1, 0))
+        # The unparsed text stays reachable for a later salvage stage; this layer never repairs it.
+        raw = completion(stray).raw
+        self.assertEqual(provider.author_reply_text(raw, {}), stray)
+        result, failure, measured, _, _ = self.call(completion(good))
+        self.assertIsNone(failure)
+        self.assertNotIn('replyDefect', measured)
         _, failure, _, _, _ = self.call(Reply(b' ' * (provider.MAX_JSON_BYTES + 100_001)))
         self.assertEqual(failure.code, 'PROVIDER_OUTPUT_TOO_LARGE')
 
@@ -405,7 +426,7 @@ class ErrorMappingTests(unittest.TestCase):
         self.assertEqual(provider.safe_http_diagnostic(closed), {'body': 'unreadable'})
 
 
-class RetryTests(ErrorMappingTests):
+class RetryTests(TransportCase):
     def test_rate_limit_or_unavailable_is_tried_once_more_for_both_providers(self):
         for target, key in ((provider.GEMINI_CHAT_URL, GEMINI_KEY), (QWEN_URL, QWEN_KEY)):
             for status in (429, 503):

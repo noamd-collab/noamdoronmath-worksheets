@@ -468,8 +468,8 @@ def fetch_author_reply(target, key, body, measured, timeout):
 FINISH_REASONS=('stop','length','content_filter','tool_calls','function_call')
 
 
-def parse_author_reply(raw, measured):
-    """Check the chat envelope and return the model's JSON object. Never retried."""
+def author_reply_text(raw, measured):
+    """Check the chat envelope and return the model's content text, unparsed."""
     invalid=False
     try:
         if len(raw)>MAX_JSON_BYTES+100_000: reject('PROVIDER_OUTPUT_TOO_LARGE','Provider response exceeded limit')
@@ -487,18 +487,33 @@ def parse_author_reply(raw, measured):
         if finish!='stop': reject('PROVIDER_INCOMPLETE','Provider did not finish its JSON output')
         text=choice['message']['content']
         if not isinstance(text,str) or len(text.encode())>MAX_JSON_BYTES: reject('PROVIDER_OUTPUT_TOO_LARGE','Invalid provider content')
-        def pairs(values):
-            result={}
-            for k,v in values:
-                if k in result: reject('INVALID_MODEL_OUTPUT','Duplicate model JSON key')
-                result[k]=v
-            return result
-        return json.loads(text,object_pairs_hook=pairs,parse_constant=lambda _: reject('INVALID_MODEL_OUTPUT','Nonfinite number'))
+        return text
     except (ValueError,KeyError,TypeError,IndexError,AttributeError) as exc:
         if isinstance(exc,GenerationError): raise
         invalid=True
     if invalid:
+        measured['replyDefect']='envelope'
         reject('PROVIDER_INVALID_RESPONSE','Provider response did not match the expected JSON envelope')
+
+
+def parse_author_reply(raw, measured):
+    """Return the model's JSON object, strictly parsed. Never retried or repaired here."""
+    text=author_reply_text(raw,measured)
+    def pairs(values):
+        result={}
+        for k,v in values:
+            if k in result: reject('INVALID_MODEL_OUTPUT','Duplicate model JSON key')
+            result[k]=v
+        return result
+    try:
+        return json.loads(text,object_pairs_hook=pairs,parse_constant=lambda _: reject('INVALID_MODEL_OUTPUT','Nonfinite number'))
+    except GenerationError:
+        raise
+    except (ValueError,RecursionError):
+        # A finished reply whose text is not JSON: seen live from gemini-3.8-flash
+        # in json_object mode (a stray character in place of closing brackets).
+        measured['replyDefect']='content_not_json'
+    reject('PROVIDER_INVALID_RESPONSE','Provider response did not match the expected JSON envelope')
 
 
 def request_author_json(target, key, body, measured, timeout):
