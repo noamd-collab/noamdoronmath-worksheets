@@ -34,9 +34,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "$2^{3}$",
+    "key": "$8$"
    }
   },
   {
@@ -72,9 +72,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "$\\sqrt{49}$",
+    "key": "$7$"
    }
   },
   {
@@ -91,9 +91,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "UNSUPPORTED_POWER"
+    "outcome": "pass",
+    "printed": "$2^{5}$",
+    "key": "$32$"
    }
   },
   {
@@ -110,9 +110,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "UNSUPPORTED_POWER"
+    "outcome": "pass",
+    "printed": "$10^{6}$",
+    "key": "$1000000$"
    }
   },
   {
@@ -170,9 +170,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "UNSUPPORTED_POWER"
+    "outcome": "pass",
+    "printed": "$x^{5} · x^{3}$",
+    "key": "$x^{8}$"
    }
   },
   {
@@ -189,11 +189,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "$x^{2} · x^{3}$ $x^{2} · x^{3}$",
+    "outcome": "pass",
+    "printed": "$x^{2} · x^{3}$",
     "key": "$x^{5}$"
    }
   },
@@ -272,16 +269,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "print_adds_numbers"
-    ],
-    "notes": [
-     "key numbers ['60'] != expected ['2', '2', '3', '5']"
-    ],
-    "printed": "60 ((2 x 2) x 3) x 5",
-    "key": "60"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   }
  ]

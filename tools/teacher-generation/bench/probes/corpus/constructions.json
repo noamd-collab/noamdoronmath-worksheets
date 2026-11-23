@@ -39,11 +39,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "שרטטו משולש שצלעותיו 3 ס״מ, 4 ס״מ ו־ 5 ס״מ. מה היקפו? (3 + 4) + 5",
+    "outcome": "pass",
+    "printed": "שרטטו משולש שצלעותיו 3 ס״מ, 4 ס״מ ו־ 5 ס״מ. מה היקפו?",
     "key": "12 ס״מ"
    }
   },
@@ -64,16 +61,9 @@
     "key": []
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "key_repeats_question"
-    ],
-    "notes": [
-     "key numbers ['12'] != expected []"
-    ],
-    "printed": "ציירו על הרשת מלבן ששטחו 12 משבצות.",
-    "key": "12"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_ANSWER_KIND"
    }
   },
   {
@@ -113,11 +103,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "שרטטו מעוין $ABCD$ שאלכסוניו $6$ ס״מ ו־$8$ ס״מ, וחשבו את אורך הצלע. $\\sqrt{3^{2} + 4^{2}}$",
+    "outcome": "pass",
+    "printed": "שרטטו מעוין $ABCD$ שאלכסוניו $6$ ס״מ ו־$8$ ס״מ, וחשבו את אורך הצלע.",
     "key": "$5$ ס״מ"
    }
   }

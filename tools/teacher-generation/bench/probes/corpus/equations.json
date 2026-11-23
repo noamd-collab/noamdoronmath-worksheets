@@ -18,7 +18,7 @@
    },
    "recorded": {
     "outcome": "pass",
-    "printed": "$2 · x + 3 = 9$",
+    "printed": "$2x + 3 = 9$",
     "key": "$x = 3$"
    }
   },
@@ -59,9 +59,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "$3(x + 2) = 12$",
+    "key": "$x = 2$"
    }
   },
   {
@@ -120,11 +120,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "$2x + 3 = 9$ $\\f{9 − 3}{2}$",
+    "outcome": "pass",
+    "printed": "$2x + 3 = 9$",
     "key": "$3$"
    }
   },
@@ -145,7 +142,7 @@
    },
    "recorded": {
     "outcome": "pass",
-    "printed": "$5 · t − 4 = 11$",
+    "printed": "$5t − 4 = 11$",
     "key": "$t = 3$"
    }
   },
@@ -186,9 +183,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "$x^{2} = 16$",
+    "key": "$x = −4$, $x = 4$"
    }
   },
   {
@@ -260,11 +257,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "$x + y = 5$ וגם $x − y = 1$ $x + y = 5$; $x − y = 1$",
+    "outcome": "pass",
+    "printed": "$x + y = 5$ וגם $x − y = 1$",
     "key": "$x = 3$, $y = 2$"
    }
   },
@@ -333,9 +327,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "___ + 5 = 9",
+    "key": "4"
    }
   },
   {
@@ -352,9 +346,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "___ + 5 = 9",
+    "key": "4"
    }
   },
   {
@@ -393,7 +387,7 @@
    },
    "recorded": {
     "outcome": "pass",
-    "printed": "פתרו את המשוואה. $2 · x + 3 = 9$",
+    "printed": "פתרו את המשוואה. $2x + 3 = 9$",
     "key": "$x = 3$"
    }
   },
@@ -416,9 +410,9 @@
     ]
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "מצאו את המספר החסר במשוואה 2 x ___ + 3 = 9 .",
+    "key": "3"
    }
   },
   {

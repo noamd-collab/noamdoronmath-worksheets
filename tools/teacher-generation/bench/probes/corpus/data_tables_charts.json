@@ -35,11 +35,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "כמה ספרים נקראו ביום שני? 15",
+    "outcome": "pass",
+    "printed": "כמה ספרים נקראו ביום שני?",
     "key": "15 ספרים"
    }
   },
@@ -77,11 +74,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "כמה ספרים נקראו בסך הכול? (12 + 15) + 9",
+    "outcome": "pass",
+    "printed": "כמה ספרים נקראו בסך הכול?",
     "key": "36 ספרים"
    }
   },
@@ -139,11 +133,8 @@
     "unit": "ספרים"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "כמה ספרים נקראו ביום שני? 15",
+    "outcome": "pass",
+    "printed": "כמה ספרים נקראו ביום שני?",
     "key": "15 ספרים"
    }
   },
@@ -180,12 +171,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_repeats_question"
-    ],
-    "printed": "| יום | ספרים | | ראשון | 12 |",
-    "key": "12"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -222,11 +210,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "בכמה ספרים נקראו ביום שני יותר מביום שלישי? 15 − 9",
+    "outcome": "pass",
+    "printed": "בכמה ספרים נקראו ביום שני יותר מביום שלישי?",
     "key": "6 ספרים"
    }
   },
@@ -268,11 +253,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "שורה 1 12 + 15",
+    "outcome": "pass",
+    "printed": "שורה 1",
     "key": "27"
    }
   },
@@ -310,11 +292,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "מהי השכיחות היחסית של הציון $80$? $\\f{5}{20}$",
+    "outcome": "pass",
+    "printed": "מהי השכיחות היחסית של הציון $80$?",
     "key": "$\\f{1}{4}$"
    }
   },
@@ -348,11 +327,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "כַּמָּה יְלָדִים בָּחֲרוּ בְּתַפּוּחַ? 6",
+    "outcome": "pass",
+    "printed": "כַּמָּה יְלָדִים בָּחֲרוּ בְּתַפּוּחַ?",
     "key": "6 יְלָדִים"
    }
   },
@@ -390,11 +366,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "שורה 1 4 + (3 x 2)",
+    "outcome": "pass",
+    "printed": "שורה 1",
     "key": "10"
    }
   },
@@ -475,7 +448,7 @@
     "flags": [
      "print_adds_numbers"
     ],
-    "printed": "חשבו את הביטוי שבשורה הראשונה. 10 + (2 x 3)",
+    "printed": "חשבו את הביטוי שבשורה הראשונה. 10 + 2 x 3",
     "key": "16"
    }
   }

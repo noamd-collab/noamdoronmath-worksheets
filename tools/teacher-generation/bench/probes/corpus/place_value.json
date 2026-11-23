@@ -22,9 +22,9 @@
     ]
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "345 = ___ מאות + ___ עשרות + ___ אחדות",
+    "key": "3 מאות, 4 עשרות, 5 אחדות"
    }
   },
   {
@@ -47,9 +47,9 @@
     ]
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "47 = ___ עֲשָׂרוֹת + ___ יְחִידוֹת",
+    "key": "4 עֲשָׂרוֹת, 7 יְחִידוֹת"
    }
   },
   {
@@ -72,16 +72,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "key_repeats_question"
-    ],
-    "notes": [
-     "key numbers ['47'] != expected ['4', '7']"
-    ],
+    "outcome": "pass",
     "printed": "בַּמִּסְפָּר 47 יֵשׁ ___ עֲשָׂרוֹת וְ־___ יְחִידוֹת.",
-    "key": "47"
+    "key": "4 עֲשָׂרוֹת, 7 יְחִידוֹת"
    }
   },
   {
@@ -127,11 +120,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "ארבעים וחמישה אלף מאתיים שלושים ושמונה 45,238",
+    "outcome": "pass",
+    "printed": "ארבעים וחמישה אלף מאתיים שלושים ושמונה",
     "key": "45,238"
    }
   },
@@ -154,11 +144,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "במספר 45,238 , מהו הערך של הספרה 5 ? 5,000",
+    "outcome": "pass",
+    "printed": "במספר 45,238 , מהו הערך של הספרה 5 ?",
     "key": "5,000"
    }
   },
@@ -181,11 +168,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "מהי ספרת העשיריות במספר 3.47 ? 4",
+    "outcome": "pass",
+    "printed": "מהי ספרת העשיריות במספר 3.47 ?",
     "key": "4"
    }
   },
@@ -208,11 +192,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "3.47 = 3 + 0.4 + ___ 3.47 − 3 − 0.4",
+    "outcome": "pass",
+    "printed": "3.47 = 3 + 0.4 + ___",
     "key": "0.07"
    }
   },
@@ -257,9 +238,9 @@
     ]
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "4,507 = ___ אלפים + ___ מאות + ___ עשרות + ___ אחדות",
+    "key": "4 אלפים, 5 מאות, 0 עשרות, 7 אחדות"
    }
   },
   {

@@ -15,11 +15,8 @@
     "unit": "ס״מ"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "3 מטרים = ___ ס״מ 3 x 100",
+    "outcome": "pass",
+    "printed": "3 מטרים = ___ ס״מ",
     "key": "300 ס״מ"
    }
   },
@@ -37,11 +34,8 @@
     "unit": "ס״מ"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "3 מ׳ = ___ ס״מ 3 x 100",
+    "outcome": "pass",
+    "printed": "3 מ׳ = ___ ס״מ",
     "key": "300 ס״מ"
    }
   },
@@ -65,16 +59,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "answer_beside_question"
-    ],
-    "notes": [
-     "key numbers ['235'] != expected ['2', '35']"
-    ],
-    "printed": "235 ס״מ = ___ מטרים ו־___ ס״מ 235",
-    "key": "235"
+    "outcome": "pass",
+    "printed": "235 ס״מ = ___ מטרים ו־___ ס״מ",
+    "key": "2 מטרים ו־ 35 ס״מ"
    }
   },
   {
@@ -91,11 +78,8 @@
     "unit": "מ׳"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "2.5 ק״מ = ___ מ׳ 2.5 x 1,000",
+    "outcome": "pass",
+    "printed": "2.5 ק״מ = ___ מ׳",
     "key": "2500 מ׳"
    }
   },
@@ -132,11 +116,8 @@
     "unit": "סמ״ק"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "2 ליטר = ___ סמ״ק 2 x 1,000",
+    "outcome": "pass",
+    "printed": "2 ליטר = ___ סמ״ק",
     "key": "2,000 סמ״ק"
    }
   },
@@ -154,11 +135,8 @@
     "unit": "ליטר"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "3 מ״ק = ___ ליטר 3 x 1,000",
+    "outcome": "pass",
+    "printed": "3 מ״ק = ___ ליטר",
     "key": "3,000 ליטר"
    }
   },
@@ -214,11 +192,8 @@
     "unit": "סַנְטִימֶטְרִים"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "אֹרֶךְ הָעִפָּרוֹן 12 סַנְטִימֶטְרִים וְאֹרֶךְ הַמַּחַק 5 סַנְטִימֶטְרִים. בְּכַמָּה הָעִפָּרוֹן אָרֹךְ יוֹתֵר? 12 − 5",
+    "outcome": "pass",
+    "printed": "אֹרֶךְ הָעִפָּרוֹן 12 סַנְטִימֶטְרִים וְאֹרֶךְ הַמַּחַק 5 סַנְטִימֶטְרִים. בְּכַמָּה הָעִפָּרוֹן אָרֹךְ יוֹתֵר?",
     "key": "7 סַנְטִימֶטְרִים"
    }
   },

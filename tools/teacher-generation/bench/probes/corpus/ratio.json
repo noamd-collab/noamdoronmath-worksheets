@@ -26,13 +26,12 @@
    "recorded": {
     "outcome": "wrong_print",
     "flags": [
-     "key_mismatch",
-     "print_adds_numbers"
+     "key_mismatch"
     ],
     "notes": [
      "key lacks ':'"
     ],
-    "printed": "בכיתה 12 בנים ו־ 18 בנות. מהו היחס בין הבנים לבנות? 12 : 18",
+    "printed": "בכיתה 12 בנים ו־ 18 בנות. מהו היחס בין הבנים לבנות?",
     "key": "2 3"
    }
   },
@@ -155,11 +154,8 @@
     "unit": "ק״מ"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "קנה המידה במפה הוא 1:50,000. מרחק במפה 4 ס״מ. מהו המרחק במציאות בק״מ? (4 x 50,000) : 100,000",
+    "outcome": "pass",
+    "printed": "קנה המידה במפה הוא 1:50,000. מרחק במפה 4 ס״מ. מהו המרחק במציאות בק״מ?",
     "key": "2 ק״מ"
    }
   },

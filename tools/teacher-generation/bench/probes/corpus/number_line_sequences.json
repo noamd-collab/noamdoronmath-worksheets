@@ -15,11 +15,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "איזה מספר נמצא באמצע בין 340 ל־ 360 על ישר המספרים? (340 + 360) : 2",
+    "outcome": "pass",
+    "printed": "איזה מספר נמצא באמצע בין 340 ל־ 360 על ישר המספרים?",
     "key": "350"
    }
   },
@@ -37,11 +34,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "מהו המספר העוקב של 399 ? 399 + 1",
+    "outcome": "pass",
+    "printed": "מהו המספר העוקב של 399 ?",
     "key": "400"
    }
   },
@@ -64,11 +58,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "10 , 20 , ___, 40 20 + 10",
+    "outcome": "pass",
+    "printed": "10 , 20 , ___, 40",
     "key": "30"
    }
   },
@@ -92,16 +83,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "answer_beside_question"
-    ],
-    "notes": [
-     "key numbers ['15'] != expected ['15', '20']"
-    ],
-    "printed": "5 , 10 , ___, ___, 25 15",
-    "key": "15"
+    "outcome": "pass",
+    "printed": "5 , 10 , ___, ___, 25",
+    "key": "15 , 20"
    }
   },
   {
@@ -147,11 +131,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "5 , 10 , 15 , ... 20",
+    "outcome": "pass",
+    "printed": "5 , 10 , 15 , ...",
     "key": "20"
    }
   },
@@ -172,16 +153,9 @@
     "key": []
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "key_repeats_question"
-    ],
-    "notes": [
-     "key numbers ['350'] != expected []"
-    ],
-    "printed": "סמנו על ישר המספרים את המספר 350 .",
-    "key": "350"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -228,13 +202,12 @@
    "recorded": {
     "outcome": "wrong_print",
     "flags": [
-     "key_mismatch",
-     "answer_beside_question"
+     "key_mismatch"
     ],
     "notes": [
      "key numbers ['1'] != expected ['1', '2']"
     ],
-    "printed": "בין אילו שני מספרים שלמים נמצא השבר 7 4 ? 1",
+    "printed": "בין אילו שני מספרים שלמים נמצא השבר 7 4 ?",
     "key": "1"
    }
   }

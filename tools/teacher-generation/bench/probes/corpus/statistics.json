@@ -20,11 +20,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "הציונים: 80 , 90 , 100 80 , 90 , 100",
+    "outcome": "pass",
+    "printed": "הציונים: 80 , 90 , 100",
     "key": "90"
    }
   },
@@ -71,11 +68,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "הציונים: 80, 90, 100 80 , 90 , 100",
+    "outcome": "pass",
+    "printed": "הציונים: 80, 90, 100",
     "key": "90"
    }
   },
@@ -100,11 +94,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "הנתונים: $3$, $7$, $8$, $12$, $15$ $3$, $7$, $8$, $12$, $15$",
+    "outcome": "pass",
+    "printed": "הנתונים: $3$, $7$, $8$, $12$, $15$",
     "key": "$8$"
    }
   },
@@ -155,9 +146,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_PLAIN_MATH"
+    "outcome": "pass",
+    "printed": "הנתונים: $3$, $7$, $8$, $12$, $15$",
+    "key": "$8$"
    }
   },
   {
@@ -181,11 +172,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "הנתונים: $3$, $7$, $7$, $12$, $15$ $3$, $7$, $7$, $12$, $15$",
+    "outcome": "pass",
+    "printed": "הנתונים: $3$, $7$, $7$, $12$, $15$",
     "key": "$7$"
    }
   },
@@ -203,11 +191,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "הציונים: $80$, $90$, $100$ $\\f{80 + 90 + 100}{3}$",
+    "outcome": "pass",
+    "printed": "הציונים: $80$, $90$, $100$",
     "key": "$90$"
    }
   },
@@ -230,11 +215,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "הציונים: 80 , 90 , 100 80 , 90 , 100",
+    "outcome": "pass",
+    "printed": "הציונים: 80 , 90 , 100",
     "key": "90"
    }
   }

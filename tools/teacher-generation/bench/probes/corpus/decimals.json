@@ -58,16 +58,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "key_repeats_question"
-    ],
-    "notes": [
-     "key numbers ['3', '10'] != expected ['0.3']"
-    ],
-    "printed": "3 10",
-    "key": "3 10"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -90,16 +83,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "key_repeats_question"
-    ],
-    "notes": [
-     "key numbers ['0.25'] != expected ['1', '4']"
-    ],
-    "printed": "0.25",
-    "key": "0.25"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -121,11 +107,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "3.47 3.5",
+    "outcome": "pass",
+    "printed": "3.47",
     "key": "3.5"
    }
   },
@@ -200,9 +183,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "0.5 + 1.25",
+    "key": "1.75"
    }
   },
   {
@@ -229,15 +212,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch"
-    ],
-    "notes": [
-     "key numbers ['1', '2', '9', '20'] != expected ['0.5', '0.45']"
-    ],
-    "printed": "השלימו את הסימן. 1 2 ___ 9 20",
-    "key": "1 2 > 9 20"
+    "outcome": "pass",
+    "printed": "השלימו את הסימן. 0.5 ___ 0.45",
+    "key": "0.5 > 0.45"
    }
   }
  ]

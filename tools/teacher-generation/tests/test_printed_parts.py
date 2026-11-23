@@ -248,8 +248,15 @@ class WirePathTests(unittest.TestCase):
         self.assertEqual(refused("ג25", "חשבו.", "מחיר: [[12.50]] ₪", evaluate("12.50")), ("PRINTED_TASK_MISMATCH", 1, 1))
         self.assertEqual(refused("ג02", "כתבו את המספר.", "המספר הוא [[350]].", evaluate("350")), ("PRINTED_TASK_MISMATCH", 1, 1))
         self.assertEqual(refused("ה28", "כתבו.", "[[0.25]]", evaluate("0.25")), ("PRINTED_TASK_MISMATCH", 1, 1))
-        # A change of form is a task: a fraction for a printed decimal, another number, a calculation.
+        # A fraction in lowest terms keyed as that fraction is the same echo.
+        self.assertEqual(refused("ה28", "כתבו כשבר עשרוני.", "[[frac(3,10)]]", evaluate("frac(3,10)")), ("PRINTED_TASK_MISMATCH", 1, 1))
+        self.assertEqual(refused("ה13", "כתבו את השבר.", "[[frac(7,3)]]", evaluate("frac(7,3)")), ("PRINTED_TASK_MISMATCH", 1, 1))
+        # A change of form is a task: a decimal or a fraction for the other spelling, a reduced
+        # fraction, a mixed number when one is asked for, another number, a calculation.
         wire("ה28", "כתבו כשבר פשוט.", "[[0.25]]", evaluate("frac(1,4)"))
+        wire("ה28", "כתבו כשבר עשרוני.", "[[frac(3,10)]]", evaluate("0.3"))
+        wire("ה09", "צמצמו.", "[[frac(6,8)]]", evaluate("frac(6,8)"))
+        wire("ה13", "כתבו כמספר מעורב.", "[[frac(7,3)]]", evaluate("frac(7,3)"))
         wire("ה28", "מהי ספרת העשיריות במספר?", "[[3.47]]", evaluate("4"))
         wire("ג02", "חשבו.", "מהו המספר העוקב של [[399]]?", evaluate("399 + 1"))
         # Two printed numbers, a blank or a printed calculation leave something to do.

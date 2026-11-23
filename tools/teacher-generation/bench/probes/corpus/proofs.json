@@ -42,9 +42,10 @@
     "text": "לפי צ.ז.צ"
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "נתון: $AB = DE$. הוכיחו כי המשולשים חופפים.",
+    "key": "לפי צ.ז.צ"
    }
   },
   {
@@ -99,9 +100,10 @@
     "text": "לפי ההגדרה"
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "נתון $AB \\para CD$. הוכיחו.",
+    "key": "לפי ההגדרה"
    }
   },
   {

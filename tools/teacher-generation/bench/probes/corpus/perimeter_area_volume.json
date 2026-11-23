@@ -15,11 +15,8 @@
     "unit": "ס״מ"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "מלבן שאורכו 6 ס״מ ורוחבו 4 ס״מ. 2 x (6 + 4)",
+    "outcome": "pass",
+    "printed": "מלבן שאורכו 6 ס״מ ורוחבו 4 ס״מ.",
     "key": "20 ס״מ"
    }
   },
@@ -93,11 +90,8 @@
     "unit": "סמ״ר"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "ריבוע שאורך צלעו 5 ס״מ. 5 x 5",
+    "outcome": "pass",
+    "printed": "ריבוע שאורך צלעו 5 ס״מ.",
     "key": "25 סמ״ר"
    }
   },
@@ -115,11 +109,8 @@
     "unit": "cm²"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "ריבוע שאורך צלעו 5 ס״מ. 5 x 5",
+    "outcome": "pass",
+    "printed": "ריבוע שאורך צלעו 5 ס״מ.",
     "key": "25 cm²"
    }
   },
@@ -137,11 +128,8 @@
     "unit": "ס״מ²"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "ריבוע שאורך צלעו 5 ס״מ. (5) 2",
+    "outcome": "pass",
+    "printed": "ריבוע שאורך צלעו 5 ס״מ.",
     "key": "25 ס״מ²"
    }
   },
@@ -159,11 +147,8 @@
     "unit": "סמ״ק"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "תיבה שמידותיה 3 ס״מ, 4 ס״מ ו־ 5 ס״מ. (3 x 4) x 5",
+    "outcome": "pass",
+    "printed": "תיבה שמידותיה 3 ס״מ, 4 ס״מ ו־ 5 ס״מ.",
     "key": "60 סמ״ק"
    }
   },
@@ -200,11 +185,8 @@
     "unit": "סמ״ר"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "בסיס 8 ס״מ וגובה 5 ס״מ. (8 x 5) : 2",
+    "outcome": "pass",
+    "printed": "בסיס 8 ס״מ וגובה 5 ס״מ.",
     "key": "20 סמ״ר"
    }
   },
@@ -222,9 +204,9 @@
     "unit": "סמ״ק"
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "רדיוס הבסיס $3$ ס״מ והגובה $10$ ס״מ.",
+    "key": "$90\\pi$ סמ״ק"
    }
   },
   {
@@ -241,9 +223,9 @@
     "unit": "סמ״ק"
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "רדיוס הבסיס $3$ ס״מ והגובה $10$ ס״מ. הציבו $\\pi = 3.14$.",
+    "key": "$282.6$ סמ״ק"
    }
   },
   {
@@ -256,9 +238,10 @@
     "text": "[[90*pi]] סמ״ק"
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "רדיוס הבסיס $3$ ס״מ והגובה $10$ ס״מ. בטאו בעזרת $\\pi$.",
+    "key": "$90\\pi$ סמ״ק"
    }
   },
   {
@@ -275,11 +258,8 @@
     "unit": "סמ״ר"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "מלבן שאורכו $6$ ס״מ ורוחבו $4$ ס״מ. $6 · 4$",
+    "outcome": "pass",
+    "printed": "מלבן שאורכו $6$ ס״מ ורוחבו $4$ ס״מ.",
     "key": "$24$ סמ״ר"
    }
   },
@@ -316,11 +296,8 @@
     "unit": "ס״מ²"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "מלבן שאורכו $6$ ס״מ ורוחבו $4$ ס״מ. $6 · 4$",
+    "outcome": "pass",
+    "printed": "מלבן שאורכו $6$ ס״מ ורוחבו $4$ ס״מ.",
     "key": "$24$ ס״מ²"
    }
   }

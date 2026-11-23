@@ -16,11 +16,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "7 ___ 9 7 ___ 9",
+    "outcome": "pass",
+    "printed": "7 ___ 9",
     "key": "7 < 9"
    }
   },
@@ -39,11 +36,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "345 ___ 354 345 ___ 354",
+    "outcome": "pass",
+    "printed": "345 ___ 354",
     "key": "345 < 354"
    }
   },
@@ -62,11 +56,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "345 x 354 345 ___ 354",
+    "outcome": "pass",
+    "printed": "345 ___ 354",
     "key": "345 < 354"
    }
   },
@@ -85,11 +76,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "345 ☐ 354 345 ___ 354",
+    "outcome": "pass",
+    "printed": "345 ___ 354",
     "key": "345 < 354"
    }
   },
@@ -132,11 +120,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "345 או 354 ? 354",
+    "outcome": "pass",
+    "printed": "345 או 354 ?",
     "key": "354"
    }
   },
@@ -155,11 +140,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "3 + 4 ___ 9 − 1 3 + 4 ___ 9 − 1",
+    "outcome": "pass",
+    "printed": "3 + 4 ___ 9 − 1",
     "key": "3 + 4 < 9 − 1"
    }
   },
@@ -178,11 +160,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "2 5 ___ 3 5 2 5 ___ 3 5",
+    "outcome": "pass",
+    "printed": "2 5 ___ 3 5",
     "key": "2 5 < 3 5"
    }
   },
@@ -210,16 +189,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "print_adds_numbers"
-    ],
-    "notes": [
-     "key numbers ['1', '2', '9', '20'] != expected ['0.5', '0.45']"
-    ],
-    "printed": "0.5 ___ 0.45 1 2 ___ 9 20",
-    "key": "1 2 > 9 20"
+    "outcome": "pass",
+    "printed": "0.5 ___ 0.45",
+    "key": "0.5 > 0.45"
    }
   },
   {
@@ -244,13 +216,12 @@
    "recorded": {
     "outcome": "wrong_print",
     "flags": [
-     "key_mismatch",
-     "print_adds_numbers"
+     "key_mismatch"
     ],
     "notes": [
      "key lacks 'כן'"
     ],
-    "printed": "האם 345 < 354 ? 345 ___ 354",
+    "printed": "האם 345 < 354 ?",
     "key": "345 < 354"
    }
   },
@@ -277,13 +248,12 @@
    "recorded": {
     "outcome": "wrong_print",
     "flags": [
-     "key_mismatch",
-     "answer_beside_question"
+     "key_mismatch"
     ],
     "notes": [
      "key numbers ['345'] != expected ['345', '354', '435']"
     ],
-    "printed": "354 , 345 , 435 345",
+    "printed": "354 , 345 , 435",
     "key": "345"
    }
   },
@@ -353,13 +323,12 @@
    "recorded": {
     "outcome": "wrong_print",
     "flags": [
-     "key_mismatch",
-     "print_adds_numbers"
+     "key_mismatch"
     ],
     "notes": [
      "key lacks 'כן'"
     ],
-    "printed": "האם 32 : 4 = 8 נכון? 32 : 4 ___ 8",
+    "printed": "האם 32 : 4 = 8 נכון?",
     "key": "32 : 4 = 8"
    }
   },
@@ -388,13 +357,12 @@
    "recorded": {
     "outcome": "wrong_print",
     "flags": [
-     "key_mismatch",
-     "print_adds_numbers"
+     "key_mismatch"
     ],
     "notes": [
      "key lacks 'נכון'"
     ],
-    "printed": "נכון או לא נכון: 32 : 4 = 8 32 : 4 ___ 8",
+    "printed": "נכון או לא נכון: 32 : 4 = 8",
     "key": "32 : 4 = 8"
    }
   },
@@ -420,13 +388,12 @@
    "recorded": {
     "outcome": "wrong_print",
     "flags": [
-     "key_mismatch",
-     "print_adds_numbers"
+     "key_mismatch"
     ],
     "notes": [
      "key lacks 'לא נכון'"
     ],
-    "printed": "נכון או לא נכון: 32 : 4 = 9 32 : 4 ___ 9",
+    "printed": "נכון או לא נכון: 32 : 4 = 9",
     "key": "32 : 4 < 9"
    }
   },
@@ -444,11 +411,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "מספר חולק ב- 6 והתקבל 7 . מהו המספר? 6 x 7",
+    "outcome": "pass",
+    "printed": "מספר חולק ב- 6 והתקבל 7 . מהו המספר?",
     "key": "42"
    }
   }

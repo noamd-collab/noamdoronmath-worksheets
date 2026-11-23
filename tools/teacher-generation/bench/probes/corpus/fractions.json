@@ -34,9 +34,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "1 2 + 1 4 = ___",
+    "key": "3 4"
    }
   },
   {
@@ -53,9 +53,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "1 2 + 1 4 = ___",
+    "key": "3 4"
    }
   },
   {
@@ -126,11 +126,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "6 8 3 4",
+    "outcome": "pass",
+    "printed": "6 8",
     "key": "3 4"
    }
   },
@@ -154,11 +151,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "צמצמו: 6 8 3 4",
+    "outcome": "pass",
+    "printed": "צמצמו: 6 8",
     "key": "3 4"
    }
   },
@@ -183,16 +177,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "key_repeats_question"
-    ],
-    "notes": [
-     "key numbers ['7', '3'] != expected ['2', '1', '3']"
-    ],
+    "outcome": "pass",
     "printed": "7 3",
-    "key": "7 3"
+    "key": "2 1 3"
    }
   },
   {
@@ -266,15 +253,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch"
-    ],
-    "notes": [
-     "key numbers ['7', '2'] != expected ['3', '1', '2']"
-    ],
-    "printed": "((2 + 1 3 ) + 1) + 1 6",
-    "key": "7 2"
+    "outcome": "pass",
+    "printed": "2 + 1 3 + 1 + 1 6",
+    "key": "3 1 2"
    }
   },
   {
@@ -296,11 +277,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "כמה הם 2 3 מתוך 12 ? 2 3 x 12",
+    "outcome": "pass",
+    "printed": "כמה הם 2 3 מתוך 12 ?",
     "key": "8"
    }
   },
@@ -323,11 +301,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "חֲצִי מִ־ 8 הוּא ___ 4",
+    "outcome": "pass",
+    "printed": "חֲצִי מִ־ 8 הוּא ___",
     "key": "4"
    }
   },
@@ -351,11 +326,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "איזה חלק מהשלם הוא חלק אחד מתוך 4 חלקים שווים? 1 4",
+    "outcome": "pass",
+    "printed": "איזה חלק מהשלם הוא חלק אחד מתוך 4 חלקים שווים?",
     "key": "1 4"
    }
   },
@@ -450,9 +422,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "1 2 ___ 1 4",
+    "key": "1 2 > 1 4"
    }
   },
   {
@@ -495,15 +467,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch"
-    ],
-    "notes": [
-     "key numbers ['7', '2'] != expected ['3', '1', '2']"
-    ],
-    "printed": "חשבו. ((2 + 1 3 ) + 1) + 1 6",
-    "key": "7 2"
+    "outcome": "pass",
+    "printed": "חשבו. 2 + 1 3 + 1 + 1 6",
+    "key": "3 1 2"
    }
   }
  ]

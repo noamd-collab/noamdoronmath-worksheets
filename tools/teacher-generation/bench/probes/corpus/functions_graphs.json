@@ -18,11 +18,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "נתונה הפונקציה $y = 2x + 3$. חשבו את $y$ כאשר $x = 4$. $2 · x + 3$ עבור $x = 4$",
+    "outcome": "pass",
+    "printed": "נתונה הפונקציה $y = 2x + 3$. חשבו את $y$ כאשר $x = 4$.",
     "key": "$11$"
    }
   },
@@ -43,9 +40,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "נתונה הפונקציה $xy = 2x + 3$. חשבו את $f · 4$.",
+    "key": "$11$"
    }
   },
   {
@@ -62,11 +59,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "הישר עובר דרך הנקודות $A(1, 2)$ ו־$B(3, 8)$. חשבו את השיפוע. $\\f{8 − 2}{3 − 1}$",
+    "outcome": "pass",
+    "printed": "הישר עובר דרך הנקודות $A(1, 2)$ ו־$B(3, 8)$. חשבו את השיפוע.",
     "key": "$3$"
    }
   },
@@ -84,11 +78,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "הישר עובר דרך הנקודות $(1, 2)$ ו־$(3, 8)$. חשבו את השיפוע. $\\f{8 − 2}{3 − 1}$",
+    "outcome": "pass",
+    "printed": "הישר עובר דרך הנקודות $(1, 2)$ ו־$(3, 8)$. חשבו את השיפוע.",
     "key": "$3$"
    }
   },
@@ -106,11 +97,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "מהו השיפוע של הישר $y = −2x + 5$? $−2$",
+    "outcome": "pass",
+    "printed": "מהו השיפוע של הישר $y = −2x + 5$?",
     "key": "$−2$"
    }
   },

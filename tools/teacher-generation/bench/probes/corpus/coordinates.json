@@ -89,11 +89,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "מהו המרחק בין $A(2, 3)$ ל־$B(2, −4)$? $3 + 4$",
+    "outcome": "pass",
+    "printed": "מהו המרחק בין $A(2, 3)$ ל־$B(2, −4)$?",
     "key": "$7$"
    }
   },
@@ -141,11 +138,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "הנקודה $A(2, 3)$ נמצאת על הגרף. מהו שיעור ה־$y$ שלה? $3$",
+    "outcome": "pass",
+    "printed": "הנקודה $A(2, 3)$ נמצאת על הגרף. מהו שיעור ה־$y$ שלה?",
     "key": "$3$"
    }
   },

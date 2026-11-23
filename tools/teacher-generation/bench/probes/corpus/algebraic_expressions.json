@@ -15,12 +15,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "$2 · x + 3 · x$ $2 · x + 3 · x$",
-    "key": "$5 · x$"
+    "outcome": "pass",
+    "printed": "$2x + 3x$",
+    "key": "$5x$"
    }
   },
   {
@@ -37,12 +34,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "$2x + 3x − 5$ $2 · x + 3 · x − 5$",
-    "key": "$5 · x − 5$"
+    "outcome": "pass",
+    "printed": "$2x + 3x − 5$",
+    "key": "$5x − 5$"
    }
   },
   {
@@ -59,9 +53,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "$3(x + 2)$",
+    "key": "$3x + 6$"
    }
   },
   {
@@ -78,12 +72,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "$3 · \\g{x + 2}$ $3 · \\g{x + 2}$",
-    "key": "$3 · x + 6$"
+    "outcome": "pass",
+    "printed": "$3\\g{x + 2}$",
+    "key": "$3x + 6$"
    }
   },
   {
@@ -100,12 +91,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "$3 · \\g{x + 2}$ $3 · \\g{x + 2}$",
-    "key": "$3 · x + 6$"
+    "outcome": "pass",
+    "printed": "$3\\g{x + 2}$",
+    "key": "$3x + 6$"
    }
   },
   {
@@ -122,9 +110,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "$(x + 2)(x − 3)$",
+    "key": "$x^{2} − x − 6$"
    }
   },
   {
@@ -141,12 +129,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "$x^{2} − 9$ $x^{2} − 9$",
-    "key": "$\\g{x − 3} · \\g{x + 3}$"
+    "outcome": "pass",
+    "printed": "$x^{2} − 9$",
+    "key": "$\\g{x − 3}\\g{x + 3}$"
    }
   },
   {
@@ -163,9 +148,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "$x^{2} − 9$",
+    "key": "$\\g{x − 3}\\g{x + 3}$"
    }
   },
   {
@@ -182,9 +167,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "$2ab + 3ab$",
+    "key": "$5ab$"
    }
   },
   {
@@ -201,9 +186,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "$2xy − xy$",
+    "key": "$xy$"
    }
   },
   {
@@ -223,11 +208,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "הציבו $x = 3$ בביטוי $2x + 1$. $2 · x + 1$ עבור $x = 3$",
+    "outcome": "pass",
+    "printed": "הציבו $x = 3$ בביטוי $2x + 1$.",
     "key": "$7$"
    }
   },
@@ -260,7 +242,7 @@
     "outcome": "pass",
     "unverified": true,
     "printed": "המחיר של $m$ עטים שכל אחד עולה $3$ שקלים",
-    "key": "$3 · m$"
+    "key": "$3m$"
    }
   },
   {
@@ -296,11 +278,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "$\\f{x^{2} − 9}{x + 3}$ $\\f{x^{2} − 9}{x + 3}$",
+    "outcome": "pass",
+    "printed": "$\\f{x^{2} − 9}{x + 3}$",
     "key": "$x − 3$. תחום ההצבה: $x + 3 \\neq 0$"
    }
   },
@@ -319,8 +298,8 @@
    },
    "recorded": {
     "outcome": "pass",
-    "printed": "כנסו איברים דומים. $2 · x + 3 · x$",
-    "key": "$5 · x$"
+    "printed": "כנסו איברים דומים. $2x + 3x$",
+    "key": "$5x$"
    }
   }
  ]

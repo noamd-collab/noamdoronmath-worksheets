@@ -15,11 +15,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "כמה צלעות יש למשושה? 6",
+    "outcome": "pass",
+    "printed": "כמה צלעות יש למשושה?",
     "key": "6"
    }
   },
@@ -82,11 +79,8 @@
     "unit": "מעלות"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "זווית בת 90 ° היא זווית ישרה. בכמה מעלות גדולה ממנה זווית בת 120 °? 120 − 90",
+    "outcome": "pass",
+    "printed": "זווית בת 90 ° היא זווית ישרה. בכמה מעלות גדולה ממנה זווית בת 120 °?",
     "key": "30 מעלות"
    }
   },
@@ -216,9 +210,9 @@
     "unit": "מעלות"
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "במשולש $\\tri ABC$ נתון $\\angle{ABC} = 50°$ ו־$\\angle{BCA} = 60°$. חשבו את $\\angle{CAB}$.",
+    "key": "$70$ מעלות"
    }
   },
   {
@@ -235,11 +229,8 @@
     "unit": "מעלות"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "במשולש $\\tri ABC$ נתון $\\angle{ABC} = 50°$ ו־$\\angle{BCA} = 60°$. חשבו את $\\angle{CAB}$. $180 − 50 − 60$",
+    "outcome": "pass",
+    "printed": "במשולש $\\tri ABC$ נתון $\\angle{ABC} = 50°$ ו־$\\angle{BCA} = 60°$. חשבו את $\\angle{CAB}$.",
     "key": "$70$ מעלות"
    }
   },
@@ -348,11 +339,8 @@
     "rotate": 0
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "במקבילית $ABCD$ נתון $AB = 8$ ס״מ ו־$BC = 5$ ס״מ. חשבו את ההיקף. $2 · \\g{8 + 5}$",
+    "outcome": "pass",
+    "printed": "במקבילית $ABCD$ נתון $AB = 8$ ס״מ ו־$BC = 5$ ס״מ. חשבו את ההיקף.",
     "key": "$26$ ס״מ"
    }
   },
@@ -370,9 +358,9 @@
     "unit": "ס״מ"
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_PLAIN_MATH"
+    "outcome": "pass",
+    "printed": "במקבילית $ABCD$ נתון $AB = 8$ ס״מ ו־$BC = 5$ ס״מ. חשבו את ההיקף.",
+    "key": "$26$ ס״מ"
    }
   }
  ]

@@ -234,7 +234,7 @@ def printed_calculation(question, item, solved, grade):
     _reject("The typed answer is not the value of the printed calculation")
 
 
-def echoed_given(item, solved, *, authored=False):
+def echoed_given(item, solved, *, authored=False, mixed=False):
     """Refuse a key that only repeats the one number that the prompt prints.
 
     A prompt that is nothing but "60", keyed by the value of 2 x 2 x 3 x 5, asks
@@ -242,12 +242,14 @@ def echoed_given(item, solved, *, authored=False):
 
     A typed task that is one bare number has nothing to calculate. When the
     prompt prints that same number and no other number, blank or calculation,
-    and the key would spell it the same way (an integer, or a decimal for a
-    task typed in decimals), the pupil reads the answer in the question. A
-    change of form (a fraction for a printed decimal, a reduced or mixed
-    fraction) is not an echo and is left to its own binders. This second rule
-    applies to an authored reply only (``authored``): a local author may state
-    a count that the pupil then checks against the printed words.
+    and the key would spell it the same way, the pupil reads the answer in the
+    question: an integer; a decimal for a task typed in decimals; a fraction
+    that is printed in lowest terms and keyed as a fraction. A change of form
+    is not an echo and is left to its own binders: a fraction for a printed
+    decimal, a reduced fraction, a mixed number when the question asks for one
+    (``mixed``). This second rule applies to an authored reply only
+    (``authored``): a local author may state a count that the pupil then
+    checks against the printed words.
     """
     typed = _scalar(solved)
     task = solved["question"]
@@ -259,15 +261,26 @@ def echoed_given(item, solved, *, authored=False):
                 and typed not in task_numbers(task):
             _reject("The key repeats the only printed number; the requested form cannot be verified")
         return
-    if (not authored or task["expression"].get("type") != "number"
-            or any(token.kind in ("blank", "math") for token in tokens)):
+    if not authored or task["expression"].get("type") != "number":
         return
-    shown = [token for token in tokens if token.kind == "num"]
-    if len(shown) != 1 or shown[0].value != typed:
+    shown = []  # (value, written decimal, written fraction in lowest terms)
+    for token in tokens:
+        if token.kind == "num":
+            shown.append((token.value, "." in token.raw, False))
+        elif token.kind == "math" and token.value.get("kind") == "math" and token.value["expression"].get("type") == "number":
+            written = token.value["expression"]
+            exact = Fraction(written["numerator"], written["denominator"])
+            shown.append((exact, False, exact.denominator == written["denominator"] > 1))
+        elif token.kind in ("blank", "math"):
+            return
+    if len(shown) != 1 or shown[0][0] != typed:
         return
     notation = item["answer"].get("notation")
     decimal_key = isinstance(notation, str) and re.search(r"[0-9]\.[0-9]", notation) and "frac" not in notation
-    if typed.denominator == 1 or (decimal_key and "." in shown[0].raw):
+    _, decimal, lowest_terms = shown[0]
+    improper = abs(typed.numerator) > typed.denominator
+    if (typed.denominator == 1 or (decimal_key and decimal)
+            or (lowest_terms and not decimal_key and not (mixed and improper))):
         _reject("The key repeats the only printed number; there is nothing to calculate")
 
 
@@ -590,7 +603,7 @@ def check_item(question, item, solved, grade, *, authored=False):
         from answer_kinds import bind_decision, refuse_dummy_key
         # A drawing or a construction keyed by a number is told its answer kind first.
         refuse_dummy_key(question, item, solved, grade)
-        echoed_given(item, solved, authored=authored)
+        echoed_given(item, solved, authored=authored, mixed="mixed" in answer_form(question, item, solved))
         return bind_decision(question, item, solved, grade)
     return None
 

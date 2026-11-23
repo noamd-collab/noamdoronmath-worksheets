@@ -23,16 +23,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "print_adds_numbers"
-    ],
-    "notes": [
-     "key lacks '20.40'"
-    ],
-    "printed": "דנה קנתה מחברת ב־ 12.50 שקלים ועט ב־ 7.90 שקלים. כמה שילמה? 12.50 + 7.90",
-    "key": "20.4 שקלים"
+    "outcome": "pass",
+    "printed": "דנה קנתה מחברת ב־ 12.50 שקלים ועט ב־ 7.90 שקלים. כמה שילמה?",
+    "key": "20.40 שקלים"
    }
   },
   {
@@ -49,11 +42,8 @@
     "unit": "₪"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "דנה שילמה 50 ₪ על קנייה של 37 ₪. כמה עודף קיבלה? 50 − 37",
+    "outcome": "pass",
+    "printed": "דנה שילמה 50 ₪ על קנייה של 37 ₪. כמה עודף קיבלה?",
     "key": "13 ₪"
    }
   },
@@ -73,7 +63,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -90,11 +80,8 @@
     "unit": "אגורות"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "3 שקלים ו־ 50 אגורות = ___ אגורות (3 x 100) + 50",
+    "outcome": "pass",
+    "printed": "3 שקלים ו־ 50 אגורות = ___ אגורות",
     "key": "350 אגורות"
    }
   },
@@ -112,11 +99,8 @@
     "unit": "שְׁקָלִים"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "לְדָנִי יֵשׁ 20 שְׁקָלִים. הוּא קָנָה כַּדּוּר בְּ־ 8 שְׁקָלִים. כַּמָּה כֶּסֶף נִשְׁאַר לוֹ? 20 − 8",
+    "outcome": "pass",
+    "printed": "לְדָנִי יֵשׁ 20 שְׁקָלִים. הוּא קָנָה כַּדּוּר בְּ־ 8 שְׁקָלִים. כַּמָּה כֶּסֶף נִשְׁאַר לוֹ?",
     "key": "12 שְׁקָלִים"
    }
   },

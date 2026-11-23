@@ -48,13 +48,12 @@
    "recorded": {
     "outcome": "wrong_print",
     "flags": [
-     "key_mismatch",
-     "answer_beside_question"
+     "key_mismatch"
     ],
     "notes": [
      "key numbers ['8'] != expected ['8', '15']"
     ],
-    "printed": "השעה עכשיו 7:30. מה תהיה השעה בעוד 45 דקות? 8",
+    "printed": "השעה עכשיו 7:30. מה תהיה השעה בעוד 45 דקות?",
     "key": "8"
    }
   },
@@ -80,13 +79,12 @@
    "recorded": {
     "outcome": "wrong_print",
     "flags": [
-     "key_mismatch",
-     "answer_beside_question"
+     "key_mismatch"
     ],
     "notes": [
      "key numbers ['8'] != expected ['8', '15']"
     ],
-    "printed": "השעה עכשיו 7 : 30 . מה תהיה השעה בעוד 45 דקות? 8",
+    "printed": "השעה עכשיו 7 : 30 . מה תהיה השעה בעוד 45 דקות?",
     "key": "8"
    }
   },
@@ -133,11 +131,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "2 שעות ו־ 15 דקות = ___ דקות (2 x 60) + 15",
+    "outcome": "pass",
+    "printed": "2 שעות ו־ 15 דקות = ___ דקות",
     "key": "135 דקות"
    }
   },
@@ -161,16 +156,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "answer_beside_question"
-    ],
-    "notes": [
-     "key numbers ['135'] != expected ['2', '15']"
-    ],
-    "printed": "135 דקות = ___ שעות ו־___ דקות 135",
-    "key": "135"
+    "outcome": "pass",
+    "printed": "135 דקות = ___ שעות ו־___ דקות",
+    "key": "2 שעות ו־ 15 דקות"
    }
   },
   {
@@ -187,11 +175,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "answer_beside_question"
-    ],
-    "printed": "הַמָּחוֹג הַקָּטָן מַצְבִּיעַ עַל 7 וְהַמָּחוֹג הַגָּדוֹל עַל 12 . מָה הַשָּׁעָה? 7",
+    "outcome": "pass",
+    "printed": "הַמָּחוֹג הַקָּטָן מַצְבִּיעַ עַל 7 וְהַמָּחוֹג הַגָּדוֹל עַל 12 . מָה הַשָּׁעָה?",
     "key": "7"
    }
   },

@@ -83,16 +83,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "key_repeats_question"
-    ],
-    "notes": [
-     "key numbers ['845', '7'] != expected ['120', '5']"
-    ],
+    "outcome": "pass",
     "printed": "845 : 7",
-    "key": "845 7"
+    "key": "120 (שארית 5 )"
    }
   },
   {
@@ -115,16 +108,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "answer_beside_question"
-    ],
-    "notes": [
-     "key numbers ['47', '5'] != expected ['9', '2']"
-    ],
-    "printed": "47 : 5 = ___ שארית ___ 47 : 5",
-    "key": "47 5"
+    "outcome": "pass",
+    "printed": "47 : 5 = ___ שארית ___",
+    "key": "9 (שארית 2 )"
    }
   },
   {
@@ -147,9 +133,9 @@
     ]
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "47 : 5 = ___ (שארית ___)",
+    "key": "9 (שארית 2 )"
    }
   },
   {
@@ -185,9 +171,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "324 x 15",
+    "key": "4,860"
    }
   },
   {
@@ -223,9 +209,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "1,845 : 15",
+    "key": "123"
    }
   },
   {
@@ -267,16 +253,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch",
-     "answer_beside_question"
-    ],
-    "notes": [
-     "key numbers ['845', '7'] != expected ['120', '5']"
-    ],
+    "outcome": "pass",
     "printed": "חשבו. 845 : 7",
-    "key": "845 7"
+    "key": "120 (שארית 5 )"
    }
   }
  ]

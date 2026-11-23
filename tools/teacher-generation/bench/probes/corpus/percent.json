@@ -15,11 +15,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "כמה הם 25% מתוך 80 ? 25% x 80",
+    "outcome": "pass",
+    "printed": "כמה הם 25% מתוך 80 ?",
     "key": "20"
    }
   },
@@ -37,11 +34,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "כמה הם 25% מתוך 80 ? (25 : 100) x 80",
+    "outcome": "pass",
+    "printed": "כמה הם 25% מתוך 80 ?",
     "key": "20"
    }
   },
@@ -59,9 +53,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "25% x 80",
+    "key": "20"
    }
   },
   {
@@ -83,11 +77,8 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "1 4 1 4 x 100",
+    "outcome": "pass",
+    "printed": "1 4",
     "key": "25 %"
    }
   },
@@ -110,9 +101,9 @@
     ]
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "0.25 = ___ %",
+    "key": "25"
    }
   },
   {
@@ -129,11 +120,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "20% מהמספר הם 16 . מהו המספר? 16 : 20%",
+    "outcome": "pass",
+    "printed": "20% מהמספר הם 16 . מהו המספר?",
     "key": "80"
    }
   },
@@ -151,11 +139,8 @@
     "unit": "שקלים"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "מחיר חולצה הוא $120$ שקלים. המחיר ירד ב־$15%$. מהו המחיר החדש? $120 · \\g{1 − 15%}$",
+    "outcome": "pass",
+    "printed": "מחיר חולצה הוא $120$ שקלים. המחיר ירד ב־$15%$. מהו המחיר החדש?",
     "key": "$102$ שקלים"
    }
   },
@@ -173,11 +158,8 @@
     "unit": "%"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "כמה אחוזים הם $30$ מתוך $120$? $\\f{30}{120} · 100$",
+    "outcome": "pass",
+    "printed": "כמה אחוזים הם $30$ מתוך $120$?",
     "key": "$25$ %"
    }
   },
@@ -195,11 +177,8 @@
     "unit": "%"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "מחיר עלה מ־$80$ ל־$100$ שקלים. בכמה אחוזים עלה המחיר? $\\f{100 − 80}{80} · 100$",
+    "outcome": "pass",
+    "printed": "מחיר עלה מ־$80$ ל־$100$ שקלים. בכמה אחוזים עלה המחיר?",
     "key": "$25$ %"
    }
   },
@@ -217,11 +196,8 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "כמה הם $15%$ מ־$80$? $\\f{15}{100} · 80$",
+    "outcome": "pass",
+    "printed": "כמה הם $15%$ מ־$80$?",
     "key": "$12$"
    }
   }
