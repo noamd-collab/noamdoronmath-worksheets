@@ -1,0 +1,1341 @@
+{
+ "title": "הריבוע ותכונותיו",
+ "rule": "ריבוע הוא מרובע שבו כל הצלעות שוות וכל הזוויות ישרות ([[90°]]). ריבוע משלב את כל תכונות המלבן ואת כל תכונות המעוין: אלכסוניו שווים זה לזה, חוצים זה את זה, מאונכים זה לזה וחוצים את זוויות הריבוע ([[45°]] לכל זווית חלקית). דוגמה: אם בריבוע אורך הצלע הוא [[6]] ס\"מ, אז היקפו הוא [[4 * 6 = 24]] ס\"מ ושטחו הוא [[6 * 6 = 36]] סמ\"ר.",
+ "practice": [
+  {
+   "intro": "לפניכם ריבוע [[polygon:ABCD]]. בריבוע כל ארבע הצלעות שוות באורכן וכל הזוויות שוות ל־[[90°]]. בצעו את הצעד הראשון: זהו את שוויון הצלעות והזוויות.",
+   "items": [
+    {
+     "prompt": "נתון כי [[AB = 7]] ס\"מ. מהו אורך הצלע [[BC]]?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "7"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "מהו גודל הזווית [[angle:ABC]] במעלות?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "90"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "מהו היקף הריבוע [[polygon:ABCD]]?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 7"
+      },
+      "unit": "ס\"מ"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "square",
+    "parameters": {
+     "a": 7
+    },
+    "names": "ABCD",
+    "rotate": 0
+   }
+  },
+  {
+   "intro": "במערכת הצירים שלפניכם מסורטט ריבוע [[polygon:ABCD]]. נתונים הקודקודים: [[A(0,0)]], [[B(0,4)]], [[C(4,4)]], [[D(4,0)]]. בצעו את הצעד הראשון וקבעו את מידות הריבוע מתוך הקודקודים.",
+   "items": [
+    {
+     "prompt": "מהו אורך הצלע [[AB]] ביחידות אורך?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 - 0"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "מהו אורך הצלע [[AD]] ביחידות אורך?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 - 0"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "חשבו את שטח הריבוע [[polygon:ABCD]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 4"
+      },
+      "unit": "יחידות שטח"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -2,
+     6
+    ],
+    "yr": [
+     -2,
+     6
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 0,
+      "y": 0
+     },
+     {
+      "name": "B",
+      "x": 0,
+      "y": 4
+     },
+     {
+      "name": "C",
+      "x": 4,
+      "y": 4
+     },
+     {
+      "name": "D",
+      "x": 4,
+      "y": 0
+     }
+    ],
+    "segments": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "B",
+      "C"
+     ],
+     [
+      "C",
+      "D"
+     ],
+     [
+      "D",
+      "A"
+     ]
+    ],
+    "placement": "wide"
+   }
+  },
+  {
+   "intro": "סרטטו לפי התיאור: נתון ריבוע [[polygon:KLMN]] שבו אורך כל צלע הוא [[9]] ס\"מ. השלימו את השלב החסר בהגדרת הריבוע.",
+   "items": [
+    {
+     "prompt": "סרטטו את הריבוע במחברתכם. מהו סכום כל ארבע הזוויות בריבוע במעלות?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 90"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "חשבו את היקף הריבוע [[polygon:KLMN]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 9"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "האם כל מרובע שבו כל הזוויות ישרות הוא בהכרח ריבוע?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "decide",
+       "relation": "eq",
+       "left": "0",
+       "right": "1"
+      },
+      "unit": ""
+     }
+    }
+   ],
+   "drawingFromWords": true
+  },
+  {
+   "intro": "בסרטוט שלפניכם מופיע ריבוע [[polygon:ABCD]]. אורך צלעו הוא [[5]] ס\"מ. חשבו את המדדים המגדירים את הריבוע.",
+   "items": [
+    {
+     "prompt": "חשבו את היקף הריבוע.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 5"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "חשבו את שטח הריבוע.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "5 * 5"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "נתון מלבן שאורכי צלעותיו הם [[5]] ס\"מ ו־[[5]] ס\"מ. האם מלבן זה הוא ריבוע?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "decide",
+       "relation": "eq",
+       "left": "5",
+       "right": "5"
+      },
+      "unit": ""
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "square",
+    "parameters": {
+     "a": 5
+    },
+    "names": "ABCD",
+    "rotate": 0
+   }
+  },
+  {
+   "intro": "לפניכם ריבוע [[polygon:EFGH]] המסובב מעט ביחס לאופק. גם במצב זה כל תכונות ההגדרה של הריבוע נשמרות.",
+   "items": [
+    {
+     "prompt": "נתון כי [[EF = 8]] ס\"מ. מהו אורך הצלע [[GH]]?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "8"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "מהו גודל הזווית [[angle:EFG]] במעלות?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "90"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "חשבו את היקף הריבוע [[polygon:EFGH]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 8"
+      },
+      "unit": "ס\"מ"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "square",
+    "parameters": {
+     "a": 8
+    },
+    "names": "EFGH",
+    "rotate": 45
+   }
+  },
+  {
+   "intro": "במערכת הצירים שלפניכם מסורטט ריבוע [[polygon:ABCD]]. אלכסוני הריבוע נחתכים בנקודה [[M(3,3)]]. קראו את הנתונים וענו על השאלות.",
+   "items": [
+    {
+     "prompt": "הקודקוד [[A]] נמצא בראשית הצירים [[(0,0)]]. מהו אורך הקטע [[AM]] בריבוע אם ידוע כי [[AC = 2 * AM]] ואורך [[AC]] הוא כ־[[8.48]] יחידות?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "8.48 / 2"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "אלכסוני הריבוע מאונכים זה לזה. מהו גודל הזווית [[angle:AMB]] במעלות?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "90"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "אלכסון הריבוע חוצה את זווית הריבוע. מהו גודל הזווית [[angle:MAB]] במעלות?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "90 / 2"
+      },
+      "unit": "מעלות"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -1,
+     7
+    ],
+    "yr": [
+     -1,
+     7
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 0,
+      "y": 0
+     },
+     {
+      "name": "B",
+      "x": 0,
+      "y": 6
+     },
+     {
+      "name": "C",
+      "x": 6,
+      "y": 6
+     },
+     {
+      "name": "D",
+      "x": 6,
+      "y": 0
+     }
+    ],
+    "segments": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "B",
+      "C"
+     ],
+     [
+      "C",
+      "D"
+     ],
+     [
+      "D",
+      "A"
+     ],
+     [
+      "A",
+      "C"
+     ],
+     [
+      "B",
+      "D"
+     ]
+    ],
+    "placement": "wide"
+   }
+  },
+  {
+   "intro": "בסרטוט שלפניכם נתון ריבוע [[polygon:ABCD]] שאלכסוניו נפגשים בנקודה [[M]]. נתון: [[AC = 12]] ס\"מ.",
+   "items": [
+    {
+     "prompt": "מהו אורך האלכסון [[BD]] בס\"מ?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "12"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "מהו אורך הקטע [[AM]] בס\"מ?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "12 / 2"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "מהו גודל הזווית [[angle:AMD]] במעלות בין שני האלכסונים?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "90"
+      },
+      "unit": "מעלות"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "square",
+    "parameters": {
+     "a": 12
+    },
+    "names": "ABCD",
+    "rotate": 0
+   }
+  },
+  {
+   "intro": "בסרטוט נתון ריבוע [[polygon:ABCD]] שבו אלכסון [[segment:AC]] מחלק את הזווית [[angle:DAB]] לשתי זוויות שוות.",
+   "items": [
+    {
+     "prompt": "סרטטו את הריבוע ואת האלכסון. מהו גודל הזווית [[angle:CAB]] במעלות?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "90 / 2"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "נתון כי [[AB = 10]] ס\"מ. מהו היקף הריבוע?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 10"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "האם המשולש [[polygon:ABC]] הוא משולש ישר־זווית ושווה־שוקיים?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "decide",
+       "relation": "eq",
+       "left": "10",
+       "right": "10"
+      },
+      "unit": ""
+     }
+    }
+   ],
+   "drawingFromWords": true
+  },
+  {
+   "intro": "מסגרת לתמונה בנויה בצורת ריבוע [[polygon:ABCD]]. אורך צלע המסגרת הוא [[20]] ס\"מ. אלכסוני המסגרת מחוזקים בפסי מתכת.",
+   "items": [
+    {
+     "prompt": "חשבו את השטח הכולל של התמונה התחומה במסגרת.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "20 * 20"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "הנגר מניח סרט קישוט מסביב למסגרת כולה. מהו אורך הסרט הנדרש?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 20"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "מהי הזווית שנוצרת בין שני פסי המתכת של האלכסונים בנקודת החיתוך שלהם?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "90"
+      },
+      "unit": "מעלות"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "square",
+    "parameters": {
+     "a": 20
+    },
+    "names": "ABCD",
+    "rotate": 0
+   }
+  },
+  {
+   "intro": "לפניכם שני מרובעים: מלבן שאורכי צלעותיו הם [[6]] ס\"מ ו־[[10]] ס\"מ, ומעוין שכל צלעותיו באורך [[6]] ס\"מ וזוויותיו אינן ישרות.",
+   "items": [
+    {
+     "prompt": "מהי התכונה הקיימת במעוין אך אינה מתקיימת במלבן זה?",
+     "answer": {
+      "kind": "review",
+      "text": "במעוין כל הצלעות שוות באורכן, ואילו במלבן זה הצלעות הסמוכות אינן שוות."
+     }
+    },
+    {
+     "prompt": "מהי התכונה הקיימת במלבן אך אינה מתקיימת במעוין זה?",
+     "answer": {
+      "kind": "review",
+      "text": "במלבן כל הזוויות ישרות ([[90°]]), ואילו במעוין זה הזוויות אינן ישרות."
+     }
+    },
+    {
+     "prompt": "מרובע שהוא גם מלבן (כל זוויותיו ישרות) וגם מעוין (כל צלעותיו שוות) נקרא:",
+     "answer": {
+      "kind": "review",
+      "text": "ריבוע"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "rectangle",
+    "parameters": {
+     "w": 10,
+     "h": 6
+    },
+    "names": "ABCD",
+    "rotate": 0
+   }
+  },
+  {
+   "intro": "במערכת הצירים שלפניכם נתון מלבן [[polygon:ABCD]] שקודקודיו: [[A(0,0)]], [[B(0,5)]], [[C(k,5)]], [[D(k,0)]]. אנו מעוניינים שהמלבן יהיה גם מעוין, כלומר שיהיה ריבוע.",
+   "items": [
+    {
+     "prompt": "מהו אורך הצלע [[AB]] ביחידות אורך?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "5 - 0"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "כדי שהמלבן יהיה גם מעוין (ולכן ריבוע), צלעותיו הסמוכות חייבות להיות שוות. מה צריך להיות הערך החיובי של [[k]]?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "solve",
+       "lhs": "k",
+       "rhs": "5",
+       "variable": "x"
+      },
+      "unit": ""
+     }
+    },
+    {
+     "prompt": "כאשר [[k = 5]], מהו שטח הריבוע שמתקבל?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "5 * 5"
+      },
+      "unit": "יחידות שטח"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -1,
+     7
+    ],
+    "yr": [
+     -1,
+     7
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 0,
+      "y": 0
+     },
+     {
+      "name": "B",
+      "x": 0,
+      "y": 5
+     },
+     {
+      "name": "C",
+      "x": 5,
+      "y": 5
+     },
+     {
+      "name": "D",
+      "x": 5,
+      "y": 0
+     }
+    ],
+    "segments": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "B",
+      "C"
+     ],
+     [
+      "C",
+      "D"
+     ],
+     [
+      "D",
+      "A"
+     ]
+    ],
+    "placement": "wide"
+   }
+  },
+  {
+   "intro": "בסרטוט שלפניכם נתון מעוין [[polygon:ABCD]] שבו כל הצלעות שוות לאורך [[8]] ס\"מ.",
+   "items": [
+    {
+     "prompt": "אם נתון כי אחת מזוויות המעוין היא זווית ישרה ([[90°]]), מהו גודל שלוש הזוויות האחרות?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "90"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "איזה מרובע מיוחד מתקבל ממעוין שבו אחת הזוויות ישרה?",
+     "answer": {
+      "kind": "review",
+      "text": "ריבוע"
+     }
+    },
+    {
+     "prompt": "חשבו את היקף הריבוע שנוצר.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 8"
+      },
+      "unit": "ס\"מ"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "rhombus",
+    "parameters": {
+     "d1": 8,
+     "d2": 8
+    },
+    "names": "ABCD",
+    "rotate": 0
+   }
+  },
+  {
+   "intro": "נתונים כמה מרובעים. עליכם למיין ולקבוע לאיזו קטגוריה שייך המרובע הנתון.",
+   "items": [
+    {
+     "prompt": "מרובע שבו כל ארבע הצלעות שוות וכל ארבע הזוויות ישרות הוא:",
+     "answer": {
+      "kind": "review",
+      "text": "ריבוע"
+     }
+    },
+    {
+     "prompt": "מלבן שאלכסוניו מאונכים זה לזה הוא:",
+     "answer": {
+      "kind": "review",
+      "text": "ריבוע"
+     }
+    },
+    {
+     "prompt": "האם שטח ריבוע שצלעו [[7]] ס\"מ שווה ל־[[49]] סמ\"ר?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "decide",
+       "relation": "eq",
+       "left": "7 * 7",
+       "right": "49"
+      },
+      "unit": ""
+     }
+    }
+   ],
+   "drawingFromWords": true
+  },
+  {
+   "intro": "בסרטוט שלפניכם נתונים שני ריבועים: ריבוע א' שאורך צלעו [[3]] ס\"מ, וריבוע ב' שאורך צלעו [[6]] ס\"מ.",
+   "items": [
+    {
+     "prompt": "חשבו את היקפו של ריבוע א'.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 3"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "חשבו את היקפו של ריבוע ב'.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 6"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "פי כמה גדול שטח ריבוע ב' משטח ריבוע א'?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(6 * 6) / (3 * 3)"
+      },
+      "unit": ""
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "square",
+    "parameters": {
+     "a": 6
+    },
+    "names": "ABCD",
+    "rotate": 0
+   }
+  },
+  {
+   "intro": "במערכת הצירים שלפניכם מסורטט ריבוע [[polygon:ABCD]]. קודקודי הריבוע הם: [[A(1,1)]], [[B(1,5)]], [[C(5,5)]], [[D(5,1)]]. נתון גם ישר העובר בנקודות [[(0,0)]] ו־[[(6,6)]] החוצה את הריבוע לאורך האלכסון [[segment:AC]].",
+   "items": [
+    {
+     "prompt": "בחרו את הנתון המתאים וחשבו את אורך צלע הריבוע [[AB]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "5 - 1"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "חשבו את היקף הריבוע [[polygon:ABCD]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * (5 - 1)"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "חשבו את שטח הריבוע [[polygon:ABCD]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 4"
+      },
+      "unit": "יחידות שטח"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     0,
+     7
+    ],
+    "yr": [
+     0,
+     7
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 1,
+      "y": 1
+     },
+     {
+      "name": "B",
+      "x": 1,
+      "y": 5
+     },
+     {
+      "name": "C",
+      "x": 5,
+      "y": 5
+     },
+     {
+      "name": "D",
+      "x": 5,
+      "y": 1
+     }
+    ],
+    "segments": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "B",
+      "C"
+     ],
+     [
+      "C",
+      "D"
+     ],
+     [
+      "D",
+      "A"
+     ],
+     [
+      "A",
+      "C"
+     ]
+    ],
+    "placement": "wide"
+   }
+  },
+  {
+   "intro": "בסרטוט נתון ריבוע [[polygon:ABCD]]. אורך אלכסוני הריבוע הוא [[10]] ס\"מ. ניתן לחשב את שטח הריבוע בשתי דרכים שונות: דרך א' – כמכפלת אלכסונים חלקי [[2]] (תכונת מעוין). דרך ב' – כסכום שטחי ארבעה משולשים ישרי־זווית שחצאי אלכסוניהם באורך [[5]] ס\"מ.",
+   "items": [
+    {
+     "prompt": "חשבו את שטח הריבוע לפי דרך א': [[(10 * 10) / 2]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(10 * 10) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "חשבו את שטח משולש בודד מתוך הארבעה: [[(5 * 5) / 2]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(5 * 5) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "הכפילו את שטח המשולש הבודד ב־[[4]] כדי לקבל את שטח הריבוע כולו לפי דרך ב'.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * (25 / 2)"
+      },
+      "unit": "סמ\"ר"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "square",
+    "parameters": {
+     "a": 10
+    },
+    "names": "ABCD",
+    "rotate": 0
+   }
+  },
+  {
+   "intro": "בסרטוט שלפניכם נתון ריבוע [[polygon:ABCD]]. אורך צלע הריבוע מובע בעזרת ביטוי אלגברי: [[AB = 3*x + 2]] ס\"מ, ונתון כי [[BC = 14]] ס\"מ.",
+   "items": [
+    {
+     "prompt": "בריבוע כל הצלעות שוות. פתרו את המשוואה [[3*x + 2 = 14]] ומצאו את [[x]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "solve",
+       "lhs": "3*x + 2",
+       "rhs": "14",
+       "variable": "x"
+      },
+      "unit": ""
+     }
+    },
+    {
+     "prompt": "מהו אורך הצלע [[CD]] בס\"מ?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "14"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "חשבו את היקף הריבוע בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 14"
+      },
+      "unit": "ס\"מ"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "square",
+    "parameters": {
+     "a": 14
+    },
+    "names": "ABCD",
+    "rotate": 0
+   }
+  }
+ ],
+ "challenges": [
+  {
+   "intro": "נתון ריבוע ששטחו ידוע, ועליכם לפעול לאחור כדי לגלות את שאר מדדי הריבוע.",
+   "items": [
+    {
+     "prompt": "סרטטו סקיצה של ריבוע ששטחו [[64]] סמ\"ר. מהו אורך צלע הריבוע?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "sqrt(64)"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "מהו היקף הריבוע ששטחו [[64]] סמ\"ר?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 8"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "האם ריבוע שהיקפו [[32]] ס\"מ הוא בהכרח בעל שטח של [[64]] סמ\"ר?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "decide",
+       "relation": "eq",
+       "left": "(32 / 4) * (32 / 4)",
+       "right": "64"
+      },
+      "unit": ""
+     }
+    }
+   ],
+   "drawingFromWords": true
+  },
+  {
+   "intro": "תלמיד טען כי במערכת הצירים הנקודות [[A(0,0)]], [[B(0,4)]], [[C(5,4)]], [[D(5,0)]] יוצרות ריבוע. בדקו את טענתו ומצאו את הטעות.",
+   "items": [
+    {
+     "prompt": "חשבו את אורך הקטע [[AB]] ביחידות אורך.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 - 0"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "חשבו את אורך הקטע [[BC]] ביחידות אורך.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "5 - 0"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "האם המרובע [[polygon:ABCD]] הוא ריבוע?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "decide",
+       "relation": "eq",
+       "left": "4",
+       "right": "5"
+      },
+      "unit": ""
+     }
+    }
+   ],
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -1,
+     7
+    ],
+    "yr": [
+     -1,
+     6
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 0,
+      "y": 0
+     },
+     {
+      "name": "B",
+      "x": 0,
+      "y": 4
+     },
+     {
+      "name": "C",
+      "x": 5,
+      "y": 4
+     },
+     {
+      "name": "D",
+      "x": 5,
+      "y": 0
+     }
+    ],
+    "segments": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "B",
+      "C"
+     ],
+     [
+      "C",
+      "D"
+     ],
+     [
+      "D",
+      "A"
+     ]
+    ],
+    "placement": "wide"
+   }
+  },
+  {
+   "intro": "בסרטוט שלפניכם נתון ריבוע [[polygon:ABCD]] שאורך צלעו [[6]] ס\"מ. בתוך הריבוע חסום ריבוע קטן יותר [[polygon:EFGH]] שנוצר מחיבור אמצעי הצלעות של הריבוע הגדול.",
+   "items": [
+    {
+     "prompt": "חשבו את שטח הריבוע הגדול [[polygon:ABCD]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "6 * 6"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "הריבוע הפנימי מחלק את הריבוע הגדול לארבעה משולשים שווי־שוקיים שכל אחד משטחם הוא [[(3 * 3) / 2 = 4.5]] סמ\"ר. מהו סכום שטחי ארבעת המשולשים?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 4.5"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "חשבו את שטח הריבוע הפנימי [[polygon:EFGH]] על ידי חיסור שטח המשולשים משטח הריבוע הגדול.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "36 - 18"
+      },
+      "unit": "סמ\"ר"
+     }
+    }
+   ],
+   "figure": {
+    "kind": "shape",
+    "shape": "square",
+    "parameters": {
+     "a": 6
+    },
+    "names": "ABCD",
+    "rotate": 0
+   }
+  }
+ ],
+ "reserves": [
+  {
+   "group": "practice",
+   "conceptId": "g9m:square#0",
+   "question": {
+    "intro": "נתונה סדרה של ריבועים שאורכי צלעותיהם הולכים וגדלים: צלע ריבוע א' היא [[2]] ס\"מ, צלע ריבוע ב' היא [[4]] ס\"מ, וצלע ריבוע ג' היא [[6]] ס\"מ.",
+    "items": [
+     {
+      "prompt": "חשבו את היקף ריבוע א'.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "4 * 2"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "חשבו את היקף ריבוע ב'.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "4 * 4"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "חשבו את היקף ריבוע ג'.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "4 * 6"
+       },
+       "unit": "ס\"מ"
+      }
+     }
+    ],
+    "figure": {
+     "kind": "shape",
+     "shape": "square",
+     "parameters": {
+      "a": 4
+     },
+     "names": "ABCD",
+     "rotate": 0
+    }
+   }
+  },
+  {
+   "group": "practice",
+   "conceptId": "g9m:square#1",
+   "question": {
+    "intro": "בסרטוט נתון ריבוע [[polygon:ABCD]] שאלכסוניו נחתכים בנקודה [[O]]. אורך חצי אלכסון [[segment:OA]] הוא [[5]] ס\"מ.",
+    "items": [
+     {
+      "prompt": "מהו אורך האלכסון המלא [[AC]] בס\"מ?",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "2 * 5"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "מהו אורך האלכסון השני [[BD]] בס\"מ?",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "10"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "מהו גודל הזווית [[angle:AOB]] במעלות?",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "90"
+       },
+       "unit": "מעלות"
+      }
+     }
+    ],
+    "figure": {
+     "kind": "shape",
+     "shape": "square",
+     "parameters": {
+      "a": 7
+     },
+     "names": "ABCD",
+     "rotate": 0
+    }
+   }
+  },
+  {
+   "group": "practice",
+   "conceptId": "g9m:square#2",
+   "question": {
+    "intro": "בסרטוט שלפניכם נתון מלבן שאלכסוניו שווים ל־[[10]] ס\"מ ומאונכים זה לזה.",
+    "items": [
+     {
+      "prompt": "מלבן שאלכסוניו מאונכים זה לזה הוא גם מעוין, ולכן הוא:",
+      "answer": {
+       "kind": "review",
+       "text": "ריבוע"
+      }
+     },
+     {
+      "prompt": "מהו גודל הזווית שבין אלכסון הריבוע לבין אחת מצלעותיו במעלות?",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "45"
+       },
+       "unit": "מעלות"
+      }
+     },
+     {
+      "prompt": "חשבו את שטח המרובע לפי נוסחת שטח מעוין (מכפלת האלכסונים חלקי [[2]]).",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "(10 * 10) / 2"
+       },
+       "unit": "סמ\"ר"
+      }
+     }
+    ],
+    "figure": {
+     "kind": "shape",
+     "shape": "square",
+     "parameters": {
+      "a": 10
+     },
+     "names": "ABCD",
+     "rotate": 0
+    }
+   }
+  },
+  {
+   "group": "challenges",
+   "conceptId": "g9m:square#3",
+   "question": {
+    "intro": "דני חישב את היקף הריבוע על ידי הכפלת אורך הצלע ב־[[4]], ומיכל חישבה את שטח הריבוע על ידי העלאת אורך הצלע בריבוע. בצעו את השיטה על ריבוע שאורך צלעו [[11]] ס\"מ.",
+    "items": [
+     {
+      "prompt": "חשבו את היקף הריבוע לפי שיטת דני.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "4 * 11"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "חשבו את שטח הריבוע לפי שיטת מיכל.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "11 * 11"
+       },
+       "unit": "סמ\"ר"
+      }
+     },
+     {
+      "prompt": "האם ייתכן ריבוע שבו ערכו המספרי של ההיקף שווה לערכו המספרי של השטח אם צלעו [[4]] ס\"מ?",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "decide",
+        "relation": "eq",
+        "left": "4 * 4",
+        "right": "4 * 4"
+       },
+       "unit": ""
+      }
+     }
+    ],
+    "figure": {
+     "kind": "shape",
+     "shape": "square",
+     "parameters": {
+      "a": 11
+     },
+     "names": "ABCD",
+     "rotate": 0
+    }
+   }
+  }
+ ]
+}

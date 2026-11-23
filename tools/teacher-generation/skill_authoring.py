@@ -10,7 +10,7 @@ from math_tasks import MathTaskError
 from skill_feedback import FEEDBACK as GATE_FEEDBACK
 from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 from claim_words import claim_lint
-from figure_probe import figure_refusal
+from figure_probe import drawing_key, figure_refusal
 from lesson_select import CHALLENGES, PRACTICE, reserve_groups
 import compact_authoring
 
@@ -486,6 +486,17 @@ GATE_INSTRUCTION = (
     "for the same concept and group: state every given in the item itself, ask for one checkable result, "
     "and type the task that computes exactly that result.")
 MISSING_INSTRUCTION = "No usable question was written for this position. Write one new question for its plan row."
+# What the measures of a middle-school shape figure draw (general_adapters._shape_call), so a
+# correction can give the pinned constructors a figure they draw.
+FIGURE_PARAMETERS = (
+    "Shape measures: trapezoid a = bottom base AB, b = top base CD, h = height, dx = how far D lies right of A; "
+    "an isosceles trapezoid has a > b and dx = (a - b) / 2, a right trapezoid dx = 0, and the intro must then say "
+    "טרפז שווה־שוקיים or טרפז ישר־זווית. Parallelogram a = AB, b = AD, angle = angle A; equal a and b only for a "
+    "rhombus and angle 90 only for a rectangle, each named in the intro. Rhombus d1 = AC and d2 = BD differ. "
+    "Triangle a = BC, b = CA, c = AB; two equal sides or a right angle only when the intro says שווה־שוקיים or "
+    "ישר־זווית. Two sides the question does not make equal differ by more than a tenth, the two bases of a "
+    "trapezoid by more than a sixth. A figure marks only what "
+    "the intro states, so never draw the property an item asks the pupil to find.")
 REFERENCE_INSTRUCTION = (
     "This question points at another question of the sheet, and that sheet changed. Write it again so that it "
     "stands alone: state its own givens and never mention another question by number or position.")
@@ -500,7 +511,7 @@ def correction_instructions(lesson, scope):
         "SOURCE_PLAIN_MATH": "Put the complete formula or variable name in one [[...]] span inside the Hebrew sentence.",
         "SOURCE_TABLE": "Use self-contained printed givens in each item; remove any reference to an absent table from the intro and every item. If a table is essential to the taught skill, supply it as a question-level table object with head and rows arrays, never pipes or Markdown in prompt text.",
         "DRAWING_POLICY": "Rewrite the complete question and its items in words using only printed givens. Remove all diagrams, sketches, drawing instructions and references to figures; keep the selected mathematical skill.",
-        "SOURCE_FIGURE": "Use the construction and all of its labelled points as specified by the question plan. For a coordinate plane include every point and segment and integer limits that contain the origin. When the skill cannot draw the figure, choose other measures: sides that are not equal in the question must differ clearly, a right angle appears only where the question gives one, and no point stands on an axis next to the axis number it would hide.",
+        "SOURCE_FIGURE": "Use the construction and all of its labelled points as specified by the question plan. For a coordinate plane include every point and segment and integer limits that contain the origin. When the skill cannot draw the figure, choose other measures: sides that are not equal in the question must differ clearly, a right angle appears only where the question gives one, and no point stands on an axis next to the axis number it would hide. " + FIGURE_PARAMETERS,
         "SOURCE_FIGURE_TASK": "Ask for a figure quantity supported by its actual construction; keep all named vertices and their stated measurements consistent.",
         "PRINTED_ANSWER_KIND": "The answer kind does not fit what the item asks. " + DECISION_GUIDE + " A requested equation needs a complete equation. If the goal is quantitative, rewrite the question and its intro to ask only for the exact scalar you can verify.",
         "PRINTED_TASK_MISMATCH": "Solve the exercise again using the exact givens in the printed prompt, including the displayed operand order, units and missing value. Correct the printed task and typed answer together. In a decide task the relation and the order of left and right are those of the printed sentence, every number and calculation printed in the item appears in the claim, and the claim uses no number that is not printed.",
@@ -607,21 +618,28 @@ def question_refusal(wire, index, lesson, scope, *, challenge):
     return examine_question(wire, index, lesson, scope, challenge=challenge)[0]
 
 
-def question_codes(wire, lesson, scope, *, challenge, index=1, refusals=None):
+def question_codes(wire, lesson, scope, *, challenge, index=1, refusals=None, drawings=None):
     """Every reason one wire question may not be printed, as codes. [] for a usable question.
 
     After the validation of examine_question, an elementary question is read
     for the claim words that the content-truth gates refuse (claim_words): the
     gate would fail the built sheet on them, so the question is replaced first.
     ``refusals``, when a dict, keeps the refusal under id(wire) for a caller
-    that builds a correction request.
+    that builds a correction request. ``drawings``, when a dict, keeps under
+    id(wire) the identity of the drawing a usable middle-school question
+    prints (figure_probe.drawing_key), for the sheet's figure-reuse limit.
     """
     refusal, validated = examine_question(wire, index, lesson, scope, challenge=challenge)
     if refusal is None and scope["topic"]["skillId"] == "middle" and "figure" in validated:
-        # The render draws the figure with the pinned constructors; one they refuse is refused here.
-        refusal = figure_refusal(validated["figure"])
+        # The render draws the figure with the pinned constructors, routed by what
+        # the intro states; one they refuse is refused here.
+        from general_adapters import declared_properties
+        declared = declared_properties(validated)
+        refusal = figure_refusal(validated["figure"], declared=declared)
         if refusal is not None:
             refusal = GeneralSourceError(refusal.code, f"{refusal} at q{index}.figure", question=index)
+        elif isinstance(drawings, dict):
+            drawings[id(wire)] = drawing_key(validated["figure"], declared=declared)
     if refusal is not None:
         if isinstance(refusals, dict):
             refusals[id(wire)] = refusal

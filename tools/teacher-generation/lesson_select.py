@@ -80,17 +80,35 @@ def _entry(row):
     return group, question, tuple(row.get("concepts") or ())
 
 
+@dataclass(frozen=True)
+class Shared:
+    """A limit over the whole sheet: at most ``cap`` printed questions with one key.
+
+    ``key(question)`` names something a question prints that the sheet may
+    repeat only ``cap`` times (a drawing), or None. Over the limit, the
+    questions later in printed order are bad with ``code``; a question
+    offered later (a reserve, a correction) is bad when its key is already
+    printed ``cap`` times.
+    """
+    key: object
+    cap: int
+    code: str
+    stage: str = "sheet"
+
+
 class Selection:
     """The state of one sheet while questions are examined, replaced, filled or dropped.
 
     ``planned`` and ``reserves`` are sequences of {"group", "question",
     "concepts"}; a planned row whose question is None is a position the
-    author left empty. Call screen() once, then reject(), fill() and
-    shorten() as later checks require.
+    author left empty. ``shared`` is an optional Shared limit over the whole
+    sheet. Call screen() once, then reject(), fill() and shorten() as later
+    checks require.
     """
 
-    def __init__(self, planned, reserves, predicate):
+    def __init__(self, planned, reserves, predicate, shared=None):
         self.predicate = predicate
+        self.shared = shared
         self.slots = []
         for number, row in enumerate(planned, 1):
             group, question, concepts = _entry(row)
@@ -132,6 +150,34 @@ class Selection:
     def _judge(self, question, challenge, number):
         return tuple(str(code) for code in (self.predicate(question, challenge, number) or ()))
 
+    def _key(self, question):
+        try:
+            return self.shared.key(question) if self.shared is not None and question is not None else None
+        except Exception:  # noqa: BLE001 - a key that cannot be read limits nothing; the render's gate still runs
+            return None
+
+    def _full(self, question, slot):
+        """The shared limit's code when ``question`` in ``slot`` would print its key once too often, else ()."""
+        key = self._key(question)
+        if key is None:
+            return ()
+        printed = sum(1 for other in self.slots
+                      if other is not slot and other.question is not None and self._key(other.question) == key)
+        return (self.shared.code,) if printed >= self.shared.cap else ()
+
+    def _over(self):
+        """The printed questions over the shared limit: all but the first ``cap`` of each key, in printed order."""
+        if self.shared is None:
+            return []
+        seen, over = {}, []
+        for slot in self.layout():
+            key = self._key(slot.question)
+            if key is not None:
+                seen[key] = seen.get(key, 0) + 1
+                if seen[key] > self.shared.cap:
+                    over.append(slot)
+        return over
+
     def _remove(self, slot, codes, stage):
         slot.removed, slot.question, slot.codes, slot.judged = slot.question, None, tuple(codes), False
         slot.event = {"question": slot.number, "group": slot.group, "codes": list(codes), "stage": stage,
@@ -150,7 +196,7 @@ class Selection:
         pool.sort(key=lambda reserve: (not set(reserve.concepts) & set(slot.concepts), reserve.number))
         for reserve in pool:
             reserve.used = True
-            reserve.codes = self._judge(reserve.question, challenge, slot.number)
+            reserve.codes = self._judge(reserve.question, challenge, slot.number) or self._full(reserve.question, slot)
             if not reserve.codes:
                 self._place(slot, reserve.question, "reserve", challenge,
                             "reserve" if group == slot.group else "reserve_as_practice", reserve=reserve.number)
@@ -183,6 +229,9 @@ class Selection:
                 self._remove(slot, codes, stage)
             else:
                 slot.judged = True
+        # The sheet's shared limit: the earliest printed questions keep their key.
+        for slot in self._over():
+            self._remove(slot, (self.shared.code,), self.shared.stage)
         return self._refill()
 
     def reject(self, findings, stage="gate"):
@@ -199,7 +248,8 @@ class Selection:
         if not slot.missing:
             raise ValueError("Only a missing position can be filled")
         challenge = slot.group == CHALLENGES
-        codes = self._judge(question, challenge, number) if question is not None else (NO_QUESTION,)
+        codes = ((self._judge(question, challenge, number) or self._full(question, slot))
+                 if question is not None else (NO_QUESTION,))
         if codes:
             if slot.event is not None:
                 slot.event.setdefault("refused", []).append(list(codes))

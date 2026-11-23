@@ -1,0 +1,38 @@
+{
+ "level": "e",
+ "minutes": 30,
+ "topicId": "g9r:parallels_trapezoid",
+ "version": 3,
+ "lastLesson": "למדנו את כל המשפטים....",
+ "lessonGoal": "practice",
+ "gradeNumber": 9,
+ "questionCount": 20,
+ "alreadyLearned": [],
+ "lessonBoundary": {
+  "kind": "curriculum_scope",
+  "version": 1,
+  "conceptIds": [
+   "g9r:parallels_trapezoid#0",
+   "g9r:parallels_trapezoid#1",
+   "g9r:parallels_trapezoid#2",
+   "g9r:parallels_trapezoid#3",
+   "g9r:parallels_trapezoid#4",
+   "g9r:parallels_trapezoid#5",
+   "g9r:parallels_trapezoid#6",
+   "g9r:parallels_trapezoid#7",
+   "g9r:parallels_trapezoid#8",
+   "g9r:parallels_trapezoid#9",
+   "g9r:parallels_trapezoid#10",
+   "g9r:parallels_trapezoid#11",
+   "g9r:parallels_trapezoid#12",
+   "g9r:parallels_trapezoid#13",
+   "g9r:parallels_trapezoid#14",
+   "g9r:parallels_trapezoid#15",
+   "g9r:parallels_trapezoid#16",
+   "g9r:parallels_trapezoid#17",
+   "g9r:parallels_trapezoid#18"
+  ],
+  "curriculumSha256": "57adca1891cbc2ef333709a6adee18045da23035f9e981f091673d2f8547527b"
+ },
+ "explicitShortSheet": false
+}

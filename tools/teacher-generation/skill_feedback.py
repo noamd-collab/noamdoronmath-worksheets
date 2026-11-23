@@ -33,6 +33,12 @@ FEEDBACK = {
         "different point set on the grid, with its own measures; a new diagonal or altitude on the same shape "
         "is still the same shape."
     ),
+    "G75": (
+        "Two other questions of this sheet already print exactly this drawing, and at most two questions may "
+        "share one drawing. Give this question its own figure: a different shape or point set with its own "
+        "measures, or, on a coordinate grid, the point or segment this question adds. Keep every given and "
+        "name of the question consistent with the new figure."
+    ),
 }
 
 
@@ -613,12 +619,42 @@ def parse_g76(line, step="middle-build"):
     return [_finding("G76", step, question) for question in questions[cap:]]
 
 
+_REUSE = re.compile(r"the same drawing serves (questions [0-9]{1,2}(?:, [0-9]{1,2}){1,29}"
+                    r"(?:; questions [0-9]{1,2}(?:, [0-9]{1,2}){1,29}){0,9}) \(cap is ([0-9])\)")
+
+
+def parse_g75(line, step="middle-build"):
+    """G75 figure variety: the questions over the REUSE cap, named; anything else unnamed.
+
+    emit_html.assert_figure_variety lists, for each SVG that serves more than
+    ``cap`` questions, the questions it serves in printed order. The first
+    ``cap`` of each keep the drawing and the rest are named, so that replacing
+    them brings every drawing under the cap. COVER and OBJECTS are about the
+    whole sheet and name no question.
+    """
+    found = _REUSE.search(line)
+    rest = line if found is None else line[:found.start()] + line[found.end():]
+    rows = []
+    if found is not None:
+        cap = int(found[2])
+        for group in found[1].split("; "):
+            questions = [int(n) for n in group[len("questions "):].split(", ")]
+            if not 1 <= cap < len(questions):
+                return [_finding("G75", step)]
+            rows += [_finding("G75", step, question) for question in questions[cap:]]
+    if found is None or re.search(r"a figure sheet with drawings on|drawn questions but only", rest):
+        rows.append(_finding("G75", step))
+    return rows
+
+
 def parse_build_plus_log(text, step="middle-build"):
     header = re.search(r"^AssertionError: G84-chronology FAIL on level '[abc]' \([^\n]+\):\n", text, re.M)
     if not header:
         gate = re.search(r"^AssertionError: (G[0-9]{2})\b.*$", text, re.M)
         if gate and gate[1] == "G76":
             return parse_g76(gate[0], step)
+        if gate and gate[1] == "G75":
+            return parse_g75(gate[0], step)
         return [_finding(gate[1] if gate else "BUILD_PLUS", step)]
     rows = []
     for line in text[header.end():].splitlines():

@@ -1,0 +1,1431 @@
+{
+ "title": "מעוין: תכונות, משפטים הפוכים וחישובי שטח",
+ "rule": "מעוין הוא מרובע שכל צלעותיו שוות. במעוין האלכסונים מאונכים זה לזה, חוצים זה את זה וחוצים את זוויות המעוין. שטח מעוין שווה למחצית מכפלת אלכסוניו, כלומר [[(d1 * d2) / 2]].",
+ "practice": [
+  {
+   "intro": "בסרטוט שלפניכם נתון מעוין [[ABCD]]. נתון כי אורך הצלע הוא [[AB = 7]] ס\"מ.",
+   "figure": {
+    "kind": "shape",
+    "shape": "rhombus",
+    "parameters": {
+     "d1": 8,
+     "d2": 6
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "חשבו את אורך הצלע [[BC]] בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "7"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "חשבו את אורך הצלע [[CD]] בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "7"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "חשבו את היקף המעוין [[ABCD]] בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 7"
+      },
+      "unit": "ס\"מ"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "במערכת הצירים שלפניכם משורטט מעוין [[ABCD]] שקודקודיו מונחים על הצירים: [[A(0, 4)]], [[B(3, 0)]], [[C(0, -4)]], [[D(-3, 0)]]. ראשית הצירים היא [[O(0, 0)]].",
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -5,
+     5
+    ],
+    "yr": [
+     -5,
+     5
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 0,
+      "y": 4
+     },
+     {
+      "name": "B",
+      "x": 3,
+      "y": 0
+     },
+     {
+      "name": "C",
+      "x": 0,
+      "y": -4
+     },
+     {
+      "name": "D",
+      "x": -3,
+      "y": 0
+     }
+    ],
+    "segments": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "B",
+      "C"
+     ],
+     [
+      "C",
+      "D"
+     ],
+     [
+      "D",
+      "A"
+     ],
+     [
+      "A",
+      "C"
+     ],
+     [
+      "B",
+      "D"
+     ]
+    ],
+    "placement": "wide"
+   },
+   "items": [
+    {
+     "prompt": "מצאו את אורך האלכסון [[AC]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 - (-4)"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "מצאו את אורך האלכסון [[BD]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "3 - (-3)"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "חשבו את שטח המעוין [[ABCD]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(8 * 6) / 2"
+      },
+      "unit": "יחידות שטח"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "בסרטוט שלפניכם מעוין [[ABCD]]. אלכסוני המעוין נחתכים בנקודה [[M]]. נתון: [[angle:ABM = 28]].",
+   "figure": {
+    "kind": "shape",
+    "shape": "rhombus",
+    "parameters": {
+     "d1": 10,
+     "d2": 6
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "מהו גודלה של הזווית [[angle:AMB]] במעלות?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "90"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "חשבו את גודלה של הזווית [[angle:BAM]] במעלות.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "90 - 28"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "חשבו את גודלה של זווית המעוין [[angle:BAD]] במעלות.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "2 * 62"
+      },
+      "unit": "מעלות"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "סרטטו מעוין [[ABCD]] שבו אורך הצלע הוא [[9]] ס\"מ. ענו על השאלות על פי הגדרת המעוין ותכונותיו.",
+   "drawingFromWords": true,
+   "items": [
+    {
+     "prompt": "חשבו את היקף המעוין בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 9"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "אם גובה המעוין הוא [[6]] ס\"מ, חשבו את שטח המעוין בסמ\"ר (צלע כפול גובה).",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "9 * 6"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "האם שטח מעוין זה שווה ל־[[54]] סמ\"ר?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "decide",
+       "relation": "eq",
+       "left": "9 * 6",
+       "right": "54"
+      },
+      "unit": ""
+     }
+    }
+   ]
+  },
+  {
+   "intro": "בסרטוט שלפניכם מקבילית [[ABCD]]. אנו בוחנים תנאים לכך שהמקבילית תהיה מעוין.",
+   "figure": {
+    "kind": "shape",
+    "shape": "parallelogram",
+    "parameters": {
+     "a": 7,
+     "angle": 65,
+     "b": 5
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "נתון [[AB = 2*x + 3]] ו־[[BC = x + 8]]. איזה ערך של [[x]] הופך שתי צלעות סמוכות אלה לשוות, כך שהמקבילית תהיה מעוין?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "solve",
+       "lhs": "2*x + 3",
+       "rhs": "x + 8",
+       "variable": "x"
+      },
+      "unit": ""
+     }
+    },
+    {
+     "prompt": "עבור [[x = 5]], מהו אורך צלע המעוין בס\"מ?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "5 + 8"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "מהו היקף המעוין המתקבל בס\"מ?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 13"
+      },
+      "unit": "ס\"מ"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "בסרטוט שלפניכם מקבילית [[ABCD]] שאלכסוניה נחתכים בנקודה [[M]]. נתון: [[angle:AMB = 3*x + 15]].",
+   "figure": {
+    "kind": "shape",
+    "shape": "parallelogram",
+    "parameters": {
+     "a": 8,
+     "angle": 70,
+     "b": 6
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "על פי המשפט ההפוך, מקבילית שאלכסוניה מאונכים היא מעוין. מצאו את [[x]] שעבורו [[angle:AMB = 90]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "solve",
+       "lhs": "3*x + 15",
+       "rhs": "90",
+       "variable": "x"
+      },
+      "unit": ""
+     }
+    },
+    {
+     "prompt": "אם נתון גם [[AM = 4]] ס\"מ ו־[[BM = 3]] ס\"מ במעוין זה, מהו אורך הצלע [[AB]] בס\"מ לפי משפט פיתגורס?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "5"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "חשבו את היקף המעוין בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 5"
+      },
+      "unit": "ס\"מ"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "במערכת הצירים נתונות הנקודות [[A(0, 5)]], [[B(6, 0)]], [[C(0, -5)]], [[D(-6, 0)]]. הנקודות יוצרות מרובע [[ABCD]].",
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -8,
+     8
+    ],
+    "yr": [
+     -7,
+     7
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 0,
+      "y": 5
+     },
+     {
+      "name": "B",
+      "x": 6,
+      "y": 0
+     },
+     {
+      "name": "C",
+      "x": 0,
+      "y": -5
+     },
+     {
+      "name": "D",
+      "x": -6,
+      "y": 0
+     }
+    ],
+    "segments": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "B",
+      "C"
+     ],
+     [
+      "C",
+      "D"
+     ],
+     [
+      "D",
+      "A"
+     ],
+     [
+      "A",
+      "C"
+     ],
+     [
+      "B",
+      "D"
+     ]
+    ],
+    "placement": "wide"
+   },
+   "items": [
+    {
+     "prompt": "מהו אורך האלכסון [[AC]]?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "5 - (-5)"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "מהו אורך האלכסון [[BD]]?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "6 - (-6)"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "האלכסונים חוצים זה את זה ומאונכים על הצירים. חשבו את שטח המעוין [[ABCD]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(10 * 12) / 2"
+      },
+      "unit": "יחידות שטח"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "בסרטוט שלפניכם נתון מעוין [[ABCD]] שבו [[angle:ABC = 110]]. האלכסון [[BD]] מסורטט.",
+   "figure": {
+    "kind": "shape",
+    "shape": "rhombus",
+    "parameters": {
+     "d1": 9,
+     "d2": 7
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "במעוין האלכסון חוצה את זוויות המעוין. חשבו את גודלה של הזווית [[angle:ABD]] במעלות.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "110 / 2"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "חשבו את גודלה של הזווית הסמוכה [[angle:BCD]] במעלות, היודע שסכום זוויות סמוכות במעוין הוא [[180]] מעלות.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "180 - 110"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "חשבו את גודלה של הזווית [[angle:BCA]] במעלות (הנוצרת עם האלכסון [[AC]]).",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "70 / 2"
+      },
+      "unit": "מעלות"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "נתונים שלושה מעוינים שונים. נתונה טבלה עם אורכי האלכסונים שלהם. עיינו בנתונים וענו על השאלות.",
+   "table": {
+    "head": [
+     "מעוין",
+     "אלכסון ראשון [[d1]] (ס\"מ)",
+     "אלכסון שני [[d2]] (ס\"מ)"
+    ],
+    "rows": [
+     [
+      "מעוין א'",
+      "[[6]]",
+      "[[10]]"
+     ],
+     [
+      "מעוין ב'",
+      "[[8]]",
+      "[[8]]"
+     ],
+     [
+      "מעוין ג'",
+      "[[4]]",
+      "[[14]]"
+     ]
+    ]
+   },
+   "items": [
+    {
+     "prompt": "חשבו את שטחו של מעוין א' בסמ\"ר.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(6 * 10) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "חשבו את שטחו של מעוין ב' בסמ\"ר.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(8 * 8) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "השוו בין שטח מעוין א' לשטח מעוין ג' ששטחו [[(4 * 14) / 2 = 28]] סמ\"ר.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "compare",
+       "left": "30",
+       "right": "28"
+      },
+      "unit": ""
+     }
+    }
+   ]
+  },
+  {
+   "intro": "במערכת הצירים שלפניכם משורטט מעוין [[ABCD]] שמרכזו בראשית הצירים [[O(0, 0)]]. קודקודיו הם [[A(0, 3)]], [[B(4, 0)]], [[C(0, -3)]], [[D(-4, 0)]]. אורך הצלע הוא [[AB = 5]]. נתון פרט נוסף: שיפוע הישר [[AB]] הוא [[-3/4]].",
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -6,
+     6
+    ],
+    "yr": [
+     -5,
+     5
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 0,
+      "y": 3
+     },
+     {
+      "name": "B",
+      "x": 4,
+      "y": 0
+     },
+     {
+      "name": "C",
+      "x": 0,
+      "y": -3
+     },
+     {
+      "name": "D",
+      "x": -4,
+      "y": 0
+     }
+    ],
+    "segments": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "B",
+      "C"
+     ],
+     [
+      "C",
+      "D"
+     ],
+     [
+      "D",
+      "A"
+     ],
+     [
+      "A",
+      "C"
+     ],
+     [
+      "B",
+      "D"
+     ]
+    ],
+    "placement": "wide"
+   },
+   "items": [
+    {
+     "prompt": "בחרו את אורך האלכסון [[AC]] מתוך נתוני הקודקודים.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "3 - (-3)"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "בחרו את אורך האלכסון [[BD]] מתוך נתוני הקודקודים.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 - (-4)"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "חשבו את שטח המעוין תוך שימוש באלכסונים בלבד.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(6 * 8) / 2"
+      },
+      "unit": "יחידות שטח"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "סרטטו מעוין [[ABCD]] שאלכסוניו נחתכים בנקודה [[M]], כך ש־[[AC = 12]] ס\"מ ו־[[BD = 16]] ס\"מ. אלכסוני המעוין חוצים זה את זה ומאונכים זה לזה.",
+   "drawingFromWords": true,
+   "items": [
+    {
+     "prompt": "דרך א': חשבו את שטח המשולש ישר־הזווית [[ABM]] בסמ\"ר (שניצביו הם מחציות האלכסונים: [[6]] ס\"מ ו־[[8]] ס\"מ).",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(6 * 8) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "הכפילו את שטח המשולש [[ABM]] ב־[[4]] כדי למצוא את שטח המעוין כולו בסמ\"ר.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 24"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "דרך ב': חשבו ישירות את שטח המעוין בעזרת נוסחת מכפלת האלכסונים חלקי [[2]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(12 * 16) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "בסרטוט שלפניכם מקבילית [[ABCD]]. נתון כי [[angle:BAC = 3*x - 5]] ו־[[angle:DAC = x + 25]]. האלכסון [[AC]] הוא אלכסון המקבילית.",
+   "figure": {
+    "kind": "shape",
+    "shape": "parallelogram",
+    "parameters": {
+     "a": 9,
+     "angle": 60,
+     "b": 7
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "מקבילית שבה אלכסון חוצה זווית היא מעוין. מצאו את ערכו של [[x]] שעבורו [[angle:BAC = angle:DAC]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "solve",
+       "lhs": "3*x - 5",
+       "rhs": "x + 25",
+       "variable": "x"
+      },
+      "unit": ""
+     }
+    },
+    {
+     "prompt": "הציבו את [[x = 15]] וחשבו את גודל הזווית [[angle:BAC]] במעלות.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "3 * 15 - 5"
+      },
+      "unit": "מעלות"
+     }
+    },
+    {
+     "prompt": "חשבו את זווית המעוין השלמה [[angle:BAD]] במעלות.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "2 * 40"
+      },
+      "unit": "מעלות"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "בסרטוט שלפניכם מרובע [[ABCD]] שבו כל הצלעות שוות: [[AB = 3*x + 1]], [[BC = 4*x - 3]], [[CD = 13]], [[DA = 13]].",
+   "figure": {
+    "kind": "shape",
+    "shape": "rhombus",
+    "parameters": {
+     "d1": 8,
+     "d2": 6
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "מצאו את [[x]] מתוך המשוואה [[3*x + 1 = 13]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "solve",
+       "lhs": "3*x + 1",
+       "rhs": "13",
+       "variable": "x"
+      },
+      "unit": ""
+     }
+    },
+    {
+     "prompt": "בדקו: מהו הערך של [[4*x - 3]] כאשר [[x = 4]]?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "4 * 4 - 3"
+      },
+      "unit": ""
+     }
+    },
+    {
+     "prompt": "האם מרובע שכל ארבע צלעותיו שוות ל־[[13]] ס\"מ הוא מעוין?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "decide",
+       "relation": "eq",
+       "left": "13",
+       "right": "13"
+      },
+      "unit": ""
+     }
+    }
+   ]
+  },
+  {
+   "intro": "במערכת הצירים משורטט מעוין [[ABCD]] שאלכסוניו על הצירים: [[A(0, a)]], [[B(6, 0)]], [[C(0, -a)]], [[D(-6, 0)]]. ידוע כי שטח המעוין הוא [[48]] יחידות שטח.",
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -8,
+     8
+    ],
+    "yr": [
+     -6,
+     6
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 0,
+      "y": 4
+     },
+     {
+      "name": "B",
+      "x": 6,
+      "y": 0
+     },
+     {
+      "name": "C",
+      "x": 0,
+      "y": -4
+     },
+     {
+      "name": "D",
+      "x": -6,
+      "y": 0
+     }
+    ],
+    "segments": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "B",
+      "C"
+     ],
+     [
+      "C",
+      "D"
+     ],
+     [
+      "D",
+      "A"
+     ],
+     [
+      "A",
+      "C"
+     ],
+     [
+      "B",
+      "D"
+     ]
+    ],
+    "placement": "wide"
+   },
+   "items": [
+    {
+     "prompt": "מהו אורך האלכסון [[BD]]?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "6 - (-6)"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "מצאו את אורך האלכסון [[AC]] מתוך המשוואה [[(12 * AC) / 2 = 48]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "solve",
+       "lhs": "6 * x",
+       "rhs": "48",
+       "variable": "x"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "מכיוון ש־[[AC = 8]], מצאו את שיעור ה־[[y]] החיובי של הנקודה [[A]], המסומן ב־[[a]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "8 / 2"
+      },
+      "unit": ""
+     }
+    }
+   ]
+  },
+  {
+   "intro": "בסרטוט שלפניכם מעוין ששטחו [[60]] סמ\"ר. נתון כי אורך אחד האלכסונים הוא [[10]] ס\"מ.",
+   "figure": {
+    "kind": "shape",
+    "shape": "rhombus",
+    "parameters": {
+     "d1": 10,
+     "d2": 7
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "הציבו במשוואת השטח [[(10 * d) / 2 = 60]] ומצאו את אורך האלכסון השני [[d]] בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "solve",
+       "lhs": "5 * x",
+       "rhs": "60",
+       "variable": "x"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "חשבו את מחצית האלכסון הראשון (בס\"מ).",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "10 / 2"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "חשבו את מחצית האלכסון השני (בס\"מ).",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "12 / 2"
+      },
+      "unit": "ס\"מ"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "בסרטוט שלפניכם מעוין [[ABCD]]. נתון כי אורך הצלע הוא [[10]] ס\"מ, ואורך אחד האלכסונים הוא [[16]] ס\"מ. אלכסוני המעוין נחתכים בנקודה [[M]].",
+   "figure": {
+    "kind": "shape",
+    "shape": "rhombus",
+    "parameters": {
+     "d1": 8,
+     "d2": 6
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "חשבו את אורך מחצית האלכסון הנתון: [[AM = 16 / 2]] בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "16 / 2"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "במשולש ישר־הזווית [[ABM]], היתר הוא [[AB = 10]] ואחד הניצבים הוא [[AM = 8]]. לפי משפט פיתגורס [[8^2 + BM^2 = 10^2]], מצאו את אורך הניצב השני [[BM]] בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "solve",
+       "lhs": "x^2 + 64",
+       "rhs": "100",
+       "variable": "x"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "חשבו את שטח המעוין בסמ\"ר (האלכסונים הם [[16]] ס\"מ ו־[[2 * 6 = 12]] ס\"מ).",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(16 * 12) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "סרטטו מעוין שבו אורך אלכסון אחד הוא [[14]] ס\"מ ואורך האלכסון השני הוא [[20]] ס\"מ.",
+   "drawingFromWords": true,
+   "items": [
+    {
+     "prompt": "חשבו את מכפלת האלכסונים בסמ\"ר.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "14 * 20"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "חשבו את שטח המעוין בסמ\"ר.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(14 * 20) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "האם שטח המעוין שווה ל־[[140]] סמ\"ר?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "decide",
+       "relation": "eq",
+       "left": "(14 * 20) / 2",
+       "right": "140"
+      },
+      "unit": ""
+     }
+    }
+   ]
+  }
+ ],
+ "challenges": [
+  {
+   "intro": "בסרטוט שלפניכם מעוין [[ABCD]]. נתון כי היקף המעוין הוא [[40]] ס\"מ, ואורך אחד האלכסונים הוא [[12]] ס\"מ. אלכסוני המעוין נחתכים בנקודה [[M]].",
+   "figure": {
+    "kind": "shape",
+    "shape": "rhombus",
+    "parameters": {
+     "d1": 8,
+     "d2": 6
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "חשבו לאחור את אורך צלע המעוין מתוך ההיקף בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "40 / 4"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "במשולש ישר־הזווית [[ABM]], היתר הוא צלע המעוין שמצאתם, ומחצית האלכסון הנתון היא [[6]] ס\"מ. מצאו את מחצית האלכסון השני [[BM]] בס\"מ.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "solve",
+       "lhs": "x^2 + 36",
+       "rhs": "100",
+       "variable": "x"
+      },
+      "unit": "ס\"מ"
+     }
+    },
+    {
+     "prompt": "חשבו את שטח המעוין בסמ\"ר.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(12 * 16) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    }
+   ]
+  },
+  {
+   "intro": "תלמיד טען כי הנקודות [[A(0, 4)]], [[B(5, 0)]], [[C(0, -4)]], [[D(-3, 0)]] יוצרות מעוין במערכת הצירים, משום שאלכסוני המרובע מאונכים זה לזה על הצירים.",
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -6,
+     7
+    ],
+    "yr": [
+     -6,
+     6
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 0,
+      "y": 4
+     },
+     {
+      "name": "B",
+      "x": 5,
+      "y": 0
+     },
+     {
+      "name": "C",
+      "x": 0,
+      "y": -4
+     },
+     {
+      "name": "D",
+      "x": -3,
+      "y": 0
+     }
+    ],
+    "segments": [
+     [
+      "A",
+      "B"
+     ],
+     [
+      "B",
+      "C"
+     ],
+     [
+      "C",
+      "D"
+     ],
+     [
+      "D",
+      "A"
+     ],
+     [
+      "A",
+      "C"
+     ],
+     [
+      "B",
+      "D"
+     ]
+    ],
+    "placement": "wide"
+   },
+   "items": [
+    {
+     "prompt": "חשבו את המרחק מראשית הצירים [[O(0,0)]] לקודקוד [[B]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "5"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "חשבו את המרחק מראשית הצירים [[O(0,0)]] לקודקוד [[D]].",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "3"
+      },
+      "unit": "יחידות אורך"
+     }
+    },
+    {
+     "prompt": "האם ראשית הצירים חוצה את האלכסון [[BD]]? האם טענת התלמיד שהמרובע הוא מעוין נכונה?",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "decide",
+       "relation": "eq",
+       "left": "5",
+       "right": "3"
+      },
+      "unit": ""
+     }
+    }
+   ]
+  },
+  {
+   "intro": "נתונים שני מעוינים: מעוין א' שאלכסוניו הם [[8]] ס\"מ ו־[[18]] ס\"מ, ומעוין ב' שאלכסוניו הם [[12]] ס\"מ ו־[[12]] ס\"מ.",
+   "figure": {
+    "kind": "shape",
+    "shape": "rhombus",
+    "parameters": {
+     "d1": 9,
+     "d2": 7
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "items": [
+    {
+     "prompt": "חשבו את שטחו של מעוין א' בסמ\"ר.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(8 * 18) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "חשבו את שטחו של מעוין ב' בסמ\"ר.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "evaluate",
+       "expression": "(12 * 12) / 2"
+      },
+      "unit": "סמ\"ר"
+     }
+    },
+    {
+     "prompt": "השוו בין שטח מעוין א' לשטח מעוין ב'.",
+     "answer": {
+      "kind": "computed",
+      "task": {
+       "kind": "compare",
+       "left": "72",
+       "right": "72"
+      },
+      "unit": ""
+     }
+    }
+   ]
+  }
+ ],
+ "reserves": [
+  {
+   "group": "practice",
+   "conceptId": "g9r:rhombus#0",
+   "question": {
+    "intro": "נתון מעוין שהיקפו הוא [[48]] ס\"מ.",
+    "items": [
+     {
+      "prompt": "חשבו את אורך צלע המעוין בס\"מ.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "48 / 4"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "אם נגדיל כל צלע ב־[[3]] ס\"מ, מה יהיה אורך הצלע החדשה בס\"מ?",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "12 + 3"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "חשבו את היקף המעוין המוגדל בס\"מ.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "4 * 15"
+       },
+       "unit": "ס\"מ"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "group": "practice",
+   "conceptId": "g9r:rhombus#2",
+   "question": {
+    "intro": "בסרטוט שלפניכם מקבילית שבה אורכי שתי צלעות סמוכות מבוטאים באמצעות [[x]]: צלע אחת היא [[3*x - 4]] והצלע השנייה היא [[x + 6]].",
+    "figure": {
+     "kind": "shape",
+     "shape": "parallelogram",
+     "parameters": {
+      "a": 8,
+      "angle": 60,
+      "b": 6
+     },
+     "names": "ABCD",
+     "rotate": 0
+    },
+    "items": [
+     {
+      "prompt": "פתרו את המשוואה [[3*x - 4 = x + 6]] למציאת [[x]] שהופך את המקבילית למעוין.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "solve",
+        "lhs": "3*x - 4",
+        "rhs": "x + 6",
+        "variable": "x"
+       },
+       "unit": ""
+      }
+     },
+     {
+      "prompt": "חשבו את אורך צלע המעוין עבור [[x = 5]].",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "5 + 6"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "חשבו את היקף המעוין המתקבל בס\"מ.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "4 * 11"
+       },
+       "unit": "ס\"מ"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "group": "practice",
+   "conceptId": "g9r:rhombus#5",
+   "question": {
+    "intro": "במעוין [[ABCD]] האלכסונים נחתכים בנקודה [[O]]. נתון כי [[AC = 10]] ס\"מ ו־[[BD = 24]] ס\"מ.",
+    "items": [
+     {
+      "prompt": "חשבו את אורך הקטע [[AO]] בס\"מ.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "10 / 2"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "חשבו את אורך הקטע [[BO]] בס\"מ.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "24 / 2"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "חשבו את אורך צלע המעוין [[AB]] בס\"מ לפי משפט פיתגורס: [[sqrt(5^2 + 12^2)]].",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "13"
+       },
+       "unit": "ס\"מ"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "group": "challenges",
+   "conceptId": "g9r:rhombus#7",
+   "question": {
+    "intro": "בסרטוט שלפניכם מרובע [[ABCD]] שאלכסוניו מאונכים זה לזה. נתון כי שטחו של המרובע הוא [[36]] סמ\"ר, ואורך האלכסון [[AC]] הוא [[9]] ס\"מ.",
+    "figure": {
+     "kind": "shape",
+     "shape": "rhombus",
+     "parameters": {
+      "d1": 8,
+      "d2": 6
+     },
+     "names": "ABCD",
+     "rotate": 0
+    },
+    "items": [
+     {
+      "prompt": "הניחו כי שטח המרובע מחושב כמחצית מכפלת אלכסוניו: [[(9 * BD) / 2 = 36]]. מצאו את אורך האלכסון [[BD]] בס\"מ.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "solve",
+        "lhs": "4.5 * x",
+        "rhs": "36",
+        "variable": "x"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "אם בנוסף נתון שהאלכסונים חוצים זה את זה, מהו אורך חצי האלכסון [[BD]] בס\"מ?",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "evaluate",
+        "expression": "8 / 2"
+       },
+       "unit": "ס\"מ"
+      }
+     },
+     {
+      "prompt": "האם מרובע שאלכסוניו מאונכים וחוצים זה את זה הוא בהכרח מעוין? בדקו אם שוויון התכונות מתקיים.",
+      "answer": {
+       "kind": "computed",
+       "task": {
+        "kind": "decide",
+        "relation": "eq",
+        "left": "8 / 2",
+        "right": "4"
+       },
+       "unit": ""
+      }
+     }
+    ]
+   }
+  }
+ ]
+}
