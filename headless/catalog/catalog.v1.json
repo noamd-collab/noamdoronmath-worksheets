@@ -10570,40 +10570,40 @@
                 {
                   "key": "a",
                   "label": "רמה א׳",
-                  "pdfId": "9c12ed7fe3c848e79a6f04dc61008c9b",
+                  "pdfId": "771321f5df4c4e5192a3d29af1b51211",
                   "labelSource": "edition",
                   "viewerLevel": "A",
                   "learningId": "g7-t35-a-e-ms-20261122-g7-tse-01-r1",
-                  "nativeExportSha256": "6c2c9f729bc0fb1826c11246d6392cd756f8f9925bfd98a2de0c0ff7a9623292",
-                  "pdfSha256": "893cf6df710fb626bf1115d14ea6115b55c568f35cc05b697345baff7fd400aa",
-                  "revision": 1,
-                  "sourceSha256": "5e640dafa7999806fdc41fee7fd7ea2165162d79e3733c46281461c9439142d9",
+                  "nativeExportSha256": "7fcda9985bdd69bd9247c1f3694b7de631ea3ef2519b48bd8ab1e7b64eda3d8b",
+                  "pdfSha256": "54c0f52e7b3f9ef0e8fddc3ea1ac9823ac2cb94d428164732d7adf4dabbc360e",
+                  "revision": 2,
+                  "sourceSha256": "d5b3134fc7075d42ca94c258921b84fd142659b1f726b826d8792c191a6308fb",
                   "worksheetId": "ms-g7-tse-01-a-r1"
                 },
                 {
                   "key": "b",
                   "label": "רמה ב׳",
-                  "pdfId": "7834c162417140c5b673f1be700f1022",
+                  "pdfId": "fd35f3536091402fa865b230624c0f5f",
                   "labelSource": "edition",
                   "viewerLevel": "B",
                   "learningId": "g7-t35-b-e-ms-20261122-g7-tse-01-r1",
-                  "nativeExportSha256": "ed451ce139e55c1b7bf65e7b63757cc0cecd1e6fce658cc03b2c636cd23f9c18",
-                  "pdfSha256": "1c1b4723a99477fc771ce99f5568b697aa7ec1390766c230f584d22b0f8470ef",
-                  "revision": 1,
-                  "sourceSha256": "8e496ae616ccd8d0fd7fa3680150c4a61ca39622798849339f44d40d0b980f80",
+                  "nativeExportSha256": "f3cbb85c0dce228f153c93523532406061a64c922721dc0c39a85a808d06ba23",
+                  "pdfSha256": "0e35bd513d161d6c1c99777b02a3a83d4c6a688fd47acc43242a5d210c9263b3",
+                  "revision": 2,
+                  "sourceSha256": "049b6f0ff9ec556a643f3b7714254ee454166e6c7a225823fe194689bd8ffb2c",
                   "worksheetId": "ms-g7-tse-01-b-r1"
                 },
                 {
                   "key": "c",
                   "label": "מצוינות",
-                  "pdfId": "546d365047014893b4c0c3fc46bd4a4e",
+                  "pdfId": "46391b99cf7744468ac6e1214f292800",
                   "labelSource": "edition",
                   "viewerLevel": "E",
                   "learningId": "g7-t35-c-e-ms-20261122-g7-tse-01-r1",
-                  "nativeExportSha256": "58674565a3e593d7c32d32cbae829f0a3c7d641af9200033fc74cc9d29481a6f",
-                  "pdfSha256": "5aae2a6b375f348deb8aabd91af302d8fe274c0e071464aff440ddf2b59dacd8",
-                  "revision": 1,
-                  "sourceSha256": "efa2cc2231e47732a0248c4e2a59009d6e480dc6105cacd4f1d774d10796966b",
+                  "nativeExportSha256": "9c04a3b86b94dadabb7d4487775dc869968cdb3da54ec71bb3394a7921f8ab16",
+                  "pdfSha256": "8f49982de0b8566f978189c3a8fda17f9f2d4474efd9877a7ffa60c1cbb4a433",
+                  "revision": 2,
+                  "sourceSha256": "bee177cb61bf57eb2e4f65bcf8b9d57d0430563832282a565d31edc1b803e410",
                   "worksheetId": "ms-g7-tse-01-c-r1"
                 }
               ],
@@ -10614,9 +10614,9 @@
                 "usesViewer": false,
                 "viewerPath": "worksheet-viewer-noam.html",
                 "siblingPdfQuery": {
-                  "pa": "9c12ed7fe3c848e79a6f04dc61008c9b",
-                  "pb": "7834c162417140c5b673f1be700f1022",
-                  "pc": "546d365047014893b4c0c3fc46bd4a4e"
+                  "pa": "771321f5df4c4e5192a3d29af1b51211",
+                  "pb": "fd35f3536091402fa865b230624c0f5f",
+                  "pc": "46391b99cf7744468ac6e1214f292800"
                 }
               },
               "status": "published"
