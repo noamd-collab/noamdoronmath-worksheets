@@ -16,9 +16,11 @@ from authoring_context import build_authoring_context, AuthoringContextError
 from general_source import validate_source, GeneralSourceError, geometry_topic
 from lesson_select import CHALLENGES, NO_QUESTION, PRACTICE, Selection
 from skill_authoring import (MAX_CORRECTED, bind_content, correction_instructions, examine_frame, instruction_for,
-                             notation_correction, question_codes, question_plan, refers_to_another_question,
-                             refusal_feedback, reserve_plan, revision_request, split_reserves, trim_rule,
-                             worksheet_schema)
+                             notation_correction, planned_count, question_codes, question_plan,
+                             refers_to_another_question, refusal_feedback, reserve_plan, revision_request,
+                             short_items, split_reserves, trim_rule, worksheet_schema)
+from lesson_select import minimum_count
+import author_request
 from source_normalize import normalize_question, normalize_rich, normalize_source
 from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 from runtime_catalog import catalog, scope_for_lesson
@@ -65,7 +67,7 @@ def failure_code(codes, stage='source'):
     """
     import re
     code = codes[0] if codes else NO_QUESTION
-    if code == NO_QUESTION:
+    if code in (NO_QUESTION, author_request.DUPLICATE):
         return 'AUTHOR_PLAN_MISMATCH'
     if (stage not in ('source', 'correction') or code in ('QUESTION_REFERENCE', 'REJECTED')
             or not re.fullmatch(r'[A-Z_]{1,60}', code)):
@@ -91,12 +93,16 @@ class Draft:
     requested lesson, with the question count rewritten after shorten().
     """
 
-    def __init__(self, flat, reserves, lesson, scope, plan, *, compile_sheet, ask, context, model, measured):
+    def __init__(self, flat, reserves, lesson, scope, plan, *, compile_sheet, ask, context, model, measured,
+                 duplicates=(), minimum=None):
         self.requested = self.lesson = lesson
         self.scope, self.plan = scope, plan
         self.title, self.rule = flat['title'], flat['rule']
         self._compile, self._ask, self._context, self._model, self._measured = compile_sheet, ask, context, model, measured
+        # Planned questions that repeat a question of another author part (author_request.duplicates).
+        self._duplicates = tuple(duplicates)
         self._instructions = correction_instructions(lesson, scope)
+        self._instructions.setdefault(author_request.DUPLICATE, DUPLICATE_INSTRUCTION)
         self._refusals = {}
         self._printed = []
         self.corrections = 0
@@ -132,7 +138,8 @@ class Draft:
                 written.add(text)
                 spare.append(row)
         self.repeated_reserves = len(reserves) + len(extra) - len(spare)
-        self.selection = Selection(planned, spare, self._judge)
+        # A sheet planned shorter than the request (an opening sheet) keeps the request's floor.
+        self.selection = Selection(planned, spare, self._judge, minimum=minimum)
         self.selection.screen()
 
     @staticmethod
@@ -143,6 +150,8 @@ class Draft:
             return repr(id(question))
 
     def _judge(self, question, challenge, number):
+        if any(question is twin for twin in self._duplicates):
+            return [author_request.DUPLICATE]
         return question_codes(question, self.requested, self.scope, challenge=challenge, index=number,
                               refusals=self._refusals)
 
@@ -335,6 +344,11 @@ class Draft:
 
 
 
+DUPLICATE_INSTRUCTION = (
+    "This question repeats a typed task or the whole task structure of another question of the sheet. Write a "
+    "new question for its plan row with its own givens, new numbers and a different task structure.")
+
+
 AUTHOR_REFERENCES = {
     "SKILL.md", "references/authoring-principles-he.md", "references/gradation-guidance-he.md",
     "references/style.md", "references/answer-quality.md", "references/content-truth.md",
@@ -382,7 +396,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
     context = author_guidance(context, scope)
     measured = metadata if isinstance(metadata, dict) else {}
 
-    def request_content(system, user, schema, schema_name, contract, max_tokens):
+    def build_body(system, user, schema, schema_name, max_tokens):
         user['sourceSchema'] = schema
         body = {'model': chosen, 'messages': [
             {'role': 'system', 'content': system}, {'role': 'user', 'content': json.dumps(user, ensure_ascii=False)}],
@@ -395,8 +409,10 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'max_tokens': max_tokens, 'temperature': 0.25}
         # Qwen keeps this exact body. A provider without the strict schema gets
         # json_object, with the schema above and one valid example in the prompt.
-        body = author_body(target, body, example=reply_example(lesson['gradeNumber'])
+        return author_body(target, body, example=reply_example(lesson['gradeNumber'])
                            if schema_name == 'skill_worksheet_content' else None)
+
+    def note_request(body, schema, contract):
         measured.update({'purpose': 'authoring', 'requestedModel': chosen,
                          'validated': False, 'responseReceived': False,
                          'authorContract': contract,
@@ -404,6 +420,10 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                              separators=(',',':'),ensure_ascii=False).encode()).hexdigest(),
                          'requestBodySha256':hashlib.sha256(json.dumps(body,sort_keys=True,
                              separators=(',',':'),ensure_ascii=False).encode()).hexdigest()})
+
+    def request_content(system, user, schema, schema_name, contract, max_tokens):
+        body = build_body(system, user, schema, schema_name, max_tokens)
+        note_request(body, schema, contract)
         return request_author_json(target, key, body, measured, timeout)
 
     import square_lesson
@@ -425,8 +445,10 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             measured['validated'] = True
             return payload
 
-    schema = worksheet_schema(lesson, scope)
-    plan = question_plan(lesson, scope)
+    # An opening sheet may plan fewer questions than requested, sized by its minutes (skill_authoring.planned_count).
+    count = planned_count(lesson)
+    schema = worksheet_schema(lesson, scope, count=count)
+    plan = question_plan(lesson, scope, count=count)
     reserves = reserve_plan(lesson, scope)
     elementary = scope["topic"]["skillId"] == "elementary"
     system = (
@@ -517,8 +539,11 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'questionPlan come first and are entry-level and guided: each asks for one small step, and its intro '
             'names that step in plain words. The rule introduces the idea itself in words a pupil can read before '
             'any exercise, with one worked example. Assume no knowledge beyond the teacher stopping point, and '
-            'keep the challenges within what this one sheet has shown.')
-    user = {'authoringContext': context,
+            'keep the challenges within what this one sheet has shown. The first questions use small, friendly '
+            'numbers and one operation each; the difficulty rises only after the guided questions.')
+    # The skill documents open the system message as a byte-stable prefix (author_request.document_prefix).
+    prefix, author_context = author_request.document_prefix(author_request.trim_context(context))
+    user = {'authoringContext': author_context,
             'questionPlan': plan,
             'reservePlan': reserves,
             'teacherStoppingPoint': lesson['lastLesson'],
@@ -583,7 +608,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                'do not reuse earlier false statements or drills in the final three challenges. '
                'A new noun or changed operands alone do not constitute a new '
                'activity. If a proposed activity requires an untaught operation, adapt it within scope.')
-    if lesson["minutes"] / lesson["questionCount"] <= 1.8:
+    if short_items(lesson):
         system += (' For this time budget give exactly minimumItems short subitems in every question. '
                    'Each subitem must ask for one checkable result. The key of a computed task is its one computed value: '
                    'avoid asking for a name, a choice, an explanation or multiple results while giving a numeric answer. '
@@ -643,7 +668,27 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
     if session is not None:
         # For the worker's second attempt: a reply was requested for this sheet.
         session['requested'] = True
-    response = request_content(system, user, schema, schema_name, 'worksheet-source/4', 40000)
+    from provider import author_provider
+    parts = (author_request.slice_count(author_request.slice_setting(author_provider()), len(plan), len(reserves))
+             if addition_plan is None else 1)
+    pieces = author_request.slice_plan(plan, reserves, parts) if parts > 1 else None
+    if pieces is None:
+        response = request_content(prefix + system, user, schema, schema_name, 'worksheet-source/4', 40000)
+    else:
+        # Parallel parts of one plan: the same system text and plans, each part's own rows and schema.
+        bodies = [build_body(prefix + system + author_request.SLICE_RULE, author_request.part_user(user, piece),
+                             author_request.part_schema(schema, piece), schema_name, 40000) for piece in pieces]
+        note_request(bodies[0], schema, 'worksheet-source/4')
+        # Set before the calls: the worker sizes a second attempt by how the first one was written.
+        measured['authorSlices'] = {'parts': len(pieces), 'duplicates': 0}
+        try:
+            replies, observed = author_request.send_parts(
+                bodies, lambda body, seen: request_author_json(target, key, body, seen, timeout))
+        except BaseException as exc:
+            author_request.merge_measurements(measured, getattr(exc, 'observed', None) or [])
+            raise
+        author_request.merge_measurements(measured, observed)
+        response, reserve_parts, question_parts = author_request.join(plan, pieces, replies)
     if session is not None:
         session['replyReceived'] = True
     # Single-reading spellings become contract notation once, on arrival, so the
@@ -652,6 +697,17 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
     rewrites = []
     response = normalize_source(response, lesson['gradeNumber'], topic=scope['topic'], notes=rewrites)
     measured['sourceRewrites'] = len(rewrites)
+    twins = ()
+    if pieces is not None:
+        # Parts cannot see each other: a question that repeats another part's task or template is refused.
+        def compared(question):
+            try:
+                return normalize_question(question, lesson['gradeNumber'], topic_id=scope['topic'].get('topicId'),
+                                          domain=scope['topic'].get('domain'))[0]
+            except Exception:  # noqa: BLE001 - the normaliser never decides
+                return question
+        twins, response, found = author_request.duplicates(response, reserve_parts, question_parts, plan, read=compared)
+        measured['authorSlices'] = {'parts': len(pieces), 'duplicates': found}
 
     def compile_content(payload, sheet_lesson=lesson, stars=3):
         """The whole-sheet validation. ``sheet_lesson`` and ``stars`` differ only for a salvaged sheet."""
@@ -691,7 +747,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                 pass
         draft = Draft(flat, reserve_rows, lesson, scope, plan, compile_sheet=compile_content,
                       ask=lambda body, observed: request_author_json(target, key, body, observed, timeout),
-                      context=context, model=chosen, measured=measured)
+                      context=context, model=chosen, measured=measured, duplicates=twins,
+                      minimum=minimum_count(lesson['questionCount']))
         measured['reserves'] = {'offered': len(reserve_rows), 'dropped': dropped + draft.repeated_reserves}
         if session is not None:
             session['draft'] = draft

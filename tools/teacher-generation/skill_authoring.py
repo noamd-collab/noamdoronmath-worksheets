@@ -3,6 +3,7 @@
 from copy import deepcopy
 from dataclasses import dataclass
 import json
+import math
 import re
 
 from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich, text, validate_question
@@ -11,13 +12,47 @@ from skill_feedback import FEEDBACK as GATE_FEEDBACK
 from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 from claim_words import claim_lint
 from figure_probe import figure_refusal
-from lesson_select import CHALLENGES, PRACTICE, reserve_groups
+from lesson_select import CHALLENGES, PRACTICE, minimum_count, reserve_groups
 import compact_authoring
 
 # The questions one correction call may rewrite. More missing questions than
 # this are a failed reply, not a correction.
 MAX_CORRECTED = 8
 MAX_RESERVES = 8
+
+
+# An opening sheet is sized by its minutes. The checkers of live round 2 found
+# 60 items for a 30-minute first lesson about three times too many: about 1.5
+# minutes per item fits a first lesson.
+INTRODUCE_MINUTES_PER_ITEM = 1.5
+
+
+def minimum_items(lesson):
+    """The fewest items a question may have (general_source.validate_question)."""
+    return 5 if lesson["gradeNumber"] <= 2 else 3
+
+
+def short_items(lesson):
+    """Whether every question gets exactly its minimum of short items.
+
+    A time budget of 1.8 minutes or less per question, and every opening sheet.
+    """
+    return lesson.get("lessonGoal") == "introduce" or lesson.get("minutes", 60) / lesson["questionCount"] <= 1.8
+
+
+def planned_count(lesson):
+    """How many questions the author is asked for.
+
+    The request's count, except for an opening sheet: as many questions of
+    minimum_items as its minutes hold at INTRODUCE_MINUTES_PER_ITEM, never more
+    than requested and never below the shortest sheet the worker may deliver
+    for the request (lesson_select.minimum_count). The site's request is not changed.
+    """
+    requested = lesson["questionCount"]
+    if lesson.get("lessonGoal") != "introduce" or not INTRODUCE_MINUTES_PER_ITEM:
+        return requested
+    target = math.ceil(lesson["minutes"] / (INTRODUCE_MINUTES_PER_ITEM * minimum_items(lesson)))
+    return max(minimum_count(requested), min(requested, target))
 
 
 def entry_questions(lesson, challenges=3):
@@ -28,15 +63,18 @@ def entry_questions(lesson, challenges=3):
     return min(ordinary, max(2, (ordinary + 3) // 4))
 
 
-def question_plan(lesson, scope, *, challenges=3):
+def question_plan(lesson, scope, *, challenges=3, count=None):
     """Schedule every selected concept across practice, then revisit it in challenges.
 
     ``challenges`` is the number of starred questions at the end of the sheet:
-    three as authored, two when a salvaged sheet lost one. The plan depends on
-    the lesson goal in one respect only: an introductory sheet marks its
-    opening questions as guided entry questions.
+    three as authored, two when a salvaged sheet lost one. ``count`` is the
+    number of planned questions when it differs from the request
+    (planned_count). The plan depends on the lesson goal in one respect only:
+    an introductory sheet marks its opening questions as guided entry questions,
+    as many as for the requested count: a sheet planned shorter keeps its
+    guided opening and loses practice.
     """
-    count = lesson["questionCount"]
+    count = lesson["questionCount"] if count is None else count
     ordinary = count - challenges
     concepts = scope["selectedConcepts"]
     rows = []
@@ -49,9 +87,9 @@ def question_plan(lesson, scope, *, challenges=3):
             "questionNumber": i + 1,
             "group": stage,
             "conceptIds": [c["id"] for c in concepts[first:stop]],
-            "minimumItems": 5 if lesson["gradeNumber"] <= 2 else 3,
+            "minimumItems": minimum_items(lesson),
         })
-    for row in rows[:entry_questions(lesson, challenges)]:
+    for row in rows[:min(count - challenges, entry_questions(lesson, challenges))]:
         row["role"] = "guided_entry"
 
     if geometry_topic(scope) and scope["topic"]["skillId"] == "middle":
@@ -83,8 +121,13 @@ def reserve_plan(lesson, scope):
             for i, group in enumerate(groups)]
 
 
-def worksheet_schema(lesson, scope):
-    """Ask for educational content only. The compiler owns scope, versions and layout."""
+def worksheet_schema(lesson, scope, *, count=None):
+    """Ask for educational content only. The compiler owns scope, versions and layout.
+
+    ``count`` is the number of planned questions when it differs from the
+    request (planned_count); the reserves follow the request.
+    """
+    count = lesson["questionCount"] if count is None else count
     canonical = authoring_schema(lesson, scope)
     definitions = canonical["$defs"]
     props = canonical["properties"]
@@ -93,9 +136,9 @@ def worksheet_schema(lesson, scope):
     question["required"].remove("star")
     definitions["question"] = question
     content = {"title": props["title"], "rule": props["rule"]}
-    for group, count in (("practice", lesson["questionCount"] - 3), ("challenges", 3)):
+    for group, size in (("practice", count - 3), ("challenges", 3)):
         content[group] = {"type": "array", "items": {"$ref": "#/$defs/question"},
-                          "minItems": count, "maxItems": count}
+                          "minItems": size, "maxItems": size}
     # Reserve questions, each tagged with its group and concept. The author is
     # asked for all of them; a reply without them is still accepted (split_reserves).
     reserves = len(reserve_groups(lesson["questionCount"]))
@@ -104,7 +147,7 @@ def worksheet_schema(lesson, scope):
         "properties": {"group": {"enum": [PRACTICE, CHALLENGES]},
                        "conceptId": {"enum": [c["id"] for c in scope["selectedConcepts"]]},
                        "question": {"$ref": "#/$defs/question"}}}}
-    if lesson.get("minutes", 60) / lesson["questionCount"] <= 1.8:
+    if short_items(lesson):
         items = question["properties"]["items"]
         items["maxItems"] = items["minItems"]
     # Planned geometry slots are not bound to a required figure kind on the

@@ -41,6 +41,8 @@ QWEN = {'QWEN_API_KEY': QWEN_KEY, 'QWEN_MODEL': 'qwen3.8-flash',
         'QWEN_BASE_URL': 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1'}
 QWEN_URL = QWEN['QWEN_BASE_URL'] + '/chat/completions'
 GEMINI = {'TEACHER_AUTHOR_PROVIDER': 'gemini', 'GEMINI_API_KEY': GEMINI_KEY}
+# Gemini writes a sheet in parallel parts unless told otherwise (author_request.slice_setting).
+GEMINI_ONE = {**GEMINI, 'TEACHER_AUTHOR_SLICES': '1'}
 SCHEMA_REJECTION = ('The specified schema produces a constraint that has too many states for serving. '
                     'Typical causes of this error are schemas with lots of text or long array length limits.')
 
@@ -52,6 +54,23 @@ class Reply:
     def __enter__(self): return self
     def __exit__(self, *args): pass
     def read(self, limit): return self.raw[:limit]
+
+
+class PerPart:
+    """Fake opener for parallel author parts: one fresh queue of outcomes per part, from ``make(part)``."""
+    def __init__(self, make):
+        import threading
+        self.make, self.queues, self.requests, self.lock = make, {}, [], threading.Lock()
+    def open(self, request, timeout=None):
+        from bench import engine
+        part = engine.part_of(json.loads(request.data))
+        with self.lock:
+            self.requests.append(request)
+            queue = self.queues.setdefault(part['part'] if part else None, self.make(part))
+            outcome = queue.pop(0)
+        if isinstance(outcome, BaseException):
+            raise outcome
+        return outcome
 
 
 class Transport:
@@ -162,7 +181,7 @@ class RequestBodyTests(unittest.TestCase):
 
     def test_exact_gemini_request(self):
         transport, measured = Transport(completion(flat_reply(self.lesson))), {}
-        self.author({**QWEN, **GEMINI}, transport, metadata=measured)
+        self.author({**QWEN, **GEMINI_ONE}, transport, metadata=measured)
         self.assertEqual(len(transport.requests), 1)
         request = transport.requests[0]
         self.assertEqual(request.full_url, provider.GEMINI_CHAT_URL)
@@ -195,6 +214,35 @@ class RequestBodyTests(unittest.TestCase):
         self.assertEqual((measured['httpStatus'], measured['attempts'], measured['finishReason']), (200, 1, 'stop'))
         self.assertTrue(measured['validated'])
         self.assertGreaterEqual(measured['elapsedSeconds'], 0)
+
+    def test_exact_gemini_part_requests(self):
+        from bench import engine
+        import author_request
+        whole = flat_reply(self.lesson)
+        transport, measured = PerPart(lambda part: [completion(engine.cut_reply(whole, part))]), {}
+        # Every slot holds the same example question: the questions of parts 2 and 3 repeat part 1's
+        # (author_request.duplicates) and no reserve replaces them.
+        with self.assertRaises(GenerationError) as caught:
+            self.author({**QWEN, **GEMINI}, transport, metadata=measured)
+        self.assertEqual(caught.exception.code, 'AUTHOR_PLAN_MISMATCH')
+        self.assertEqual(len(transport.requests), 3)                     # auto: twenty questions in three parts
+        bodies = [json.loads(request.data) for request in transport.requests]
+        for request, body in zip(transport.requests, bodies):
+            self.assertEqual((request.full_url, request.get_header('Authorization')), (provider.GEMINI_CHAT_URL, 'Bearer ' + GEMINI_KEY))
+            self.assertNotIn(QWEN_KEY.encode(), request.data)
+            self.assertNotIn(GEMINI_KEY.encode(), request.data)
+            self.assertEqual(body['response_format'], {'type': 'json_object'})
+            self.assertTrue(body['messages'][0]['content'].endswith(author_request.SLICE_RULE + provider.GEMINI_REPLY_RULE))
+            sent = json.loads(body['messages'][1]['content'])
+            self.assertEqual(list(sent)[-3:], ['slice', 'sourceSchema', 'replyExample'])
+            self.assertEqual(sent['sourceSchema'], author_request.part_schema(worksheet_schema(self.lesson, self.scope), sent['slice']))
+        self.assertEqual(sorted(json.loads(b['messages'][1]['content'])['slice']['part'] for b in bodies), [1, 2, 3])
+        self.assertEqual(len({b['messages'][0]['content'] for b in bodies}), 1)
+        # One record for the attempt: the parts' tokens summed, the longest part's time.
+        self.assertEqual(measured['usage'], {'prompt_tokens': 27000, 'completion_tokens': 21000, 'total_tokens': 48000,
+                                             'completion_tokens_details': {'reasoning_tokens': 900}})
+        self.assertEqual(measured['authorSlices'], {'parts': 3, 'duplicates': 13})
+        self.assertEqual((measured['provider'], measured['responseModel'], measured['httpStatus']), ('gemini', 'gemini-3.8-flash', 200))
 
     def test_default_qwen_request_keeps_strict_schema_and_has_no_example(self):
         transport, measured = Transport(completion(flat_reply(self.lesson), model='qwen3.8-flash')), {}
@@ -294,7 +342,7 @@ class ReplyExampleTests(unittest.TestCase):
         for lesson in lessons:
             with self.subTest(grade=lesson['gradeNumber'], topic=lesson['topicId']):
                 transport, measured = Transport(completion(flat_reply(lesson))), {}
-                with environment(GEMINI), patch('provider.build_authoring_context', return_value={}), \
+                with environment(GEMINI_ONE), patch('provider.build_authoring_context', return_value={}), \
                         patch('provider.build_opener', return_value=transport):
                     source = provider.author_lesson(lesson, metadata=measured)
                 self.assertTrue(measured['validated'])
@@ -575,7 +623,7 @@ class RedactionTests(unittest.TestCase):
         for label, outcomes in self.outcomes(GEMINI_KEY):
             with self.subTest(label=label), tempfile.TemporaryDirectory() as tmp:
                 measured, transport = {}, Transport(*outcomes)
-                with environment({**QWEN, **GEMINI}), patch('provider.build_authoring_context', return_value={}), \
+                with environment({**QWEN, **GEMINI_ONE}), patch('provider.build_authoring_context', return_value={}), \
                         patch('provider.build_opener', return_value=transport), patch('provider.time.sleep'), \
                         self.assertRaises(GenerationError) as caught:
                     provider.author_lesson(lesson, metadata=measured, timeout=5)
@@ -583,6 +631,26 @@ class RedactionTests(unittest.TestCase):
                 saved = (Path(tmp) / 'author-diagnostics' / (job + '.json')).read_text()
                 self.assert_clean(label, saved, json.dumps(measured, ensure_ascii=False), str(caught.exception))
                 self.assertNotIn(QWEN_KEY.encode(), transport.requests[0].data)
+
+    def test_a_failure_of_parallel_parts_writes_no_secret_either(self):
+        from remote_worker import save_author_diagnostics
+        lesson = intake(next(t for t in catalog().topics if t['topicId'] == 'g8:percentages'))
+        job = '11111111-2222-4333-8444-555555555555'
+        for label, _ in self.outcomes(GEMINI_KEY):
+            with self.subTest(label=label), tempfile.TemporaryDirectory() as tmp:
+                measured = {}
+                transport = PerPart(lambda part, label=label: dict(self.outcomes(GEMINI_KEY))[label])
+                with environment({**QWEN, **GEMINI}), patch('provider.build_authoring_context', return_value={}), \
+                        patch('provider.build_opener', return_value=transport), patch('provider.time.sleep'), \
+                        self.assertRaises(GenerationError) as caught:
+                    provider.author_lesson(lesson, metadata=measured, timeout=5)
+                self.assertEqual(len(transport.queues), 3)
+                self.assertTrue(save_author_diagnostics(Path(tmp), job, measured, caught.exception))
+                saved = (Path(tmp) / 'author-diagnostics' / (job + '.json')).read_text()
+                self.assert_clean(label, saved, json.dumps(measured, ensure_ascii=False), str(caught.exception),
+                                  repr(caught.exception), ''.join(traceback.format_exception(caught.exception)))
+                for request in transport.requests:
+                    self.assertNotIn(QWEN_KEY.encode(), request.data)
 
     def test_missing_or_invalid_configuration_messages_name_no_value(self):
         for values in ({'TEACHER_AUTHOR_PROVIDER': GEMINI_KEY}, {**GEMINI, 'GEMINI_MODEL': GEMINI_KEY},
