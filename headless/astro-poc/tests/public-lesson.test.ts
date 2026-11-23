@@ -1,5 +1,5 @@
 /**
- * Public lesson: permanent path, indexable on production, linked from the home card.
+ * Public lesson: permanent path, indexable on production, linked from Eliyahu's games corner.
  */
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
@@ -54,24 +54,22 @@ describe('public lesson menu page', () => {
     assert.ok(xml.includes(`${SITE_CANONICAL_ORIGIN}/math-tools`));
   });
 
-  it('is offered from the home page card and Eliyahu\'s games corner', () => {
+  it('is offered from Eliyahu\'s games corner and not from a home promo card', () => {
     const home = readFileSync(fromTest('../src/pages/index.astro'), 'utf8');
-    const card = readFileSync(fromTest('../src/components/GamePromoCard.astro'), 'utf8');
     const header = readFileSync(fromTest('../src/components/SiteHeader.astro'), 'utf8');
     const corner = readFileSync(fromTest('../src/lib/eliyahuGames.ts'), 'utf8');
     const gamesPage = readFileSync(fromTest('../src/pages/games/index.astro'), 'utf8');
-    assert.ok(home.includes('GamePromoCard'));
-    assert.ok(card.includes('חדש!'));
-    assert.ok(card.includes('data-home-game-promo'));
-    assert.ok(card.includes('kefel-mekutsar-card.webp'));
-    assert.ok(card.includes('PUBLIC_LESSON_PATH'));
+    assert.equal(existsSync(fromTest('../src/components/GamePromoCard.astro')), false);
+    assert.equal(home.includes('GamePromoCard'), false);
+    assert.equal(home.includes('data-home-game-promo'), false);
+    assert.equal(home.includes('נסו את המשחק החדש!'), false);
     assert.equal(header.includes('PUBLIC_LESSON_PATH'), false);
     assert.equal(header.includes('/games/kefel-mekutsar-2'), false);
+    assert.ok(header.includes('פינת המשחקים של אליהו'));
     assert.ok(corner.includes("slug: 'kefel-mekutsar-2'"));
     assert.ok(corner.includes("badge: '(beta)'"));
     assert.ok(gamesPage.includes('game.badge'));
     assert.ok(gamesPage.includes('gamePath(game)'));
-    assert.ok(existsSync(fromTest('../public/games/kefel-mekutsar-card.webp')));
     assert.equal(existsSync(fromTest('../src/pages/l')), false);
     assert.equal(existsSync(fromTest('../src/lib/secretLesson.ts')), false);
   });
