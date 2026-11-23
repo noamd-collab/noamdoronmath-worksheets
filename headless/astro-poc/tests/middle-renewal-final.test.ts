@@ -51,7 +51,7 @@ test('twelve reviewed topics retain their previous catalog and offer all 36 stud
       assert.equal(page.description, 'תרגול לקראת משימת ההערכה הראשונה בכיתה ח׳. שאלות בפיתגורס, יחס, אחוזים, מעגל וזוויות בשלוש רמות, עם תשובות להדפסה.');
     }
     if (pack.number === 103 || pack.number === 104) {
-      const priorHints = 'במהדורה הקודמת שנפתחת עם רמזי אפשר לקרוא רמז לצד סעיף שמופיע בו כפתור רמז.';
+      const priorHints = 'בדף העבודה של המהדורה הקודמת, שנפתחת עם רמזי, אפשר לקרוא רמז לצד סעיף שמופיע בו כפתור רמז.';
       const block = pack.number === 103 ? 1 : 2;
       assert.equal(page.sections[2].blocks[block].text, priorHints);
       assert.equal(page.bodyFlow[pack.number === 103 ? 8 : 9].text, priorHints);
