@@ -27,7 +27,10 @@ from collections import Counter
 from decimal import Decimal, InvalidOperation
 import re
 
-NUMBER = re.compile(r'(?<![\w.])[0-9]{1,3}(?:,[0-9]{3})+(?:\.[0-9]+)?|[0-9]+(?:\.[0-9]+)?')
+NUMBER = re.compile(r'(?<![\w.])[0-9]{1,3}(?:,[0-9]{3})+(?:\.[0-9]+)?|[0-9]+(?:\.[0-9]+)?|(?<![\w.])\.[0-9]+')
+# A raised digit is the same numeral as the digit after a caret: x² shows a 2.
+RAISED = re.compile(r'[⁰¹²³⁴⁵⁶⁷⁸⁹]+')
+RAISED_DIGITS = str.maketrans('⁰¹²³⁴⁵⁶⁷⁸⁹', '0123456789')
 RELATION = re.compile(r'[<>=≤≥≠]|\\(?:leq|geq|neq)\b')
 BLANK = re.compile(r'_{2,}')
 ISLAND = re.compile(r'\[\[[^\[\]]*\]\]')
@@ -44,9 +47,16 @@ FLAGS = {
 
 
 def numbers(text):
-    """Numerals of a text as canonical strings: 45,238 -> 45238, 12.50 -> 12.5."""
+    """Numerals of a text as canonical strings: 45,238 -> 45238, 12.50 -> 12.5.
+
+    A numeral is read as a reader sees it, whatever its spelling: a raised
+    digit is that digit (x² -> 2) and a decimal written without its zero is
+    the same decimal (.5 -> 0.5).
+    """
     found = []
-    for raw in NUMBER.findall(text or ''):
+    # An exponent is a numeral of its own, apart from its base: 2³ -> 2, 3.
+    text = RAISED.sub(lambda match: ' ' + match[0].translate(RAISED_DIGITS) + ' ', text or '')
+    for raw in NUMBER.findall(text):
         try:
             value = Decimal(raw.replace(',', ''))
         except InvalidOperation:

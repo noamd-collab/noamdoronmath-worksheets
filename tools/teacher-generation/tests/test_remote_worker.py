@@ -435,9 +435,11 @@ class WorkerTests(unittest.TestCase):
         target.mkdir(parents=True, exist_ok=True)
         (target / 'logs').mkdir()
         (target / 'logs/content-truth.txt').write_text(
-            'CONTENT-TRUTH GATES: FAIL\n✗ G32 [content.json.questions#2] טענה כוללת/שלילת קיום PRIVATE_TEXT')
+            'CONTENT-TRUTH GATES: FAIL\n ✗ G32  [content.json.questions#2]  טענה כוללת/שלילת קיום PRIVATE_TEXT\n'
+            '1 blocking content defect(s). Do not deliver.\n')
+        # As the runner records a failed step: with the log that the gate report reads.
         manifest = {'status': 'failed', 'skill': {'name': 'elementary'},
-                    'steps': [{'name': gate, 'status': 'FAIL'}], 'artifacts': []}
+                    'steps': [{'name': gate, 'status': 'FAIL', 'exitCode': 1, 'log': 'logs/' + gate + '.txt'}], 'artifacts': []}
         (target / 'manifest.json').write_text(json.dumps(manifest))
         (target / 'sheet.pdf').write_bytes(b'first failed private draft')
         return manifest
@@ -449,7 +451,7 @@ class WorkerTests(unittest.TestCase):
     def test_revision_policy_does_not_reach_legacy_or_disabled_v3(self):
         for mode in ('legacy-enabled', 'general-disabled'):
             with self.subTest(mode=mode), patch.object(worker, 'author_lesson', return_value={}) as author, \
-                 patch.object(worker, 'render_job', side_effect=self.rendered), patch.object(worker, 'read_skill_feedback') as feedback:
+                 patch.object(worker, 'render_job', side_effect=self.rendered), patch.object(worker, 'blocking_feedback') as feedback:
                 case = self.root / mode
                 case.mkdir()
                 if mode == 'general-disabled':

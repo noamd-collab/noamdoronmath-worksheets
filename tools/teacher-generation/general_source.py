@@ -268,7 +268,7 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
                     bad("SOURCE_NOTATION", "The printed calculation must equal its exact typed task")
             from printed_parts import check_item
             try:
-                decision = check_item(question, item, solved, grade)
+                decision = check_item(question, item, solved, grade, authored=provider)
             except GeneralSourceError as error:
                 if error.code == "PRINTED_ANSWER_KIND":
                     # A drawing outside geometry is refused as a drawing, whatever its answer.

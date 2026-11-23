@@ -238,6 +238,34 @@ class WirePathTests(unittest.TestCase):
         # A bare number keyed by a calculation that equals it asks for the calculation itself.
         self.refused("ה05", "פרקו לגורמים ראשוניים.", "[[60]]", evaluate("2 * 2 * 3 * 5"))
 
+    def test_a_bare_number_that_the_prompt_already_prints_is_not_a_key(self):
+        def refused(topic, intro, prompt, answer):
+            with self.assertRaises(GeneralSourceError) as caught:
+                wire(topic, intro, prompt, answer)
+            return (caught.exception.code, caught.exception.question, caught.exception.item)
+
+        # The normaliser moves the unit out of the island; what is left asks for nothing.
+        self.assertEqual(refused("ג25", "חשבו.", "מחיר: [[12.50]] ₪", evaluate("12.50")), ("PRINTED_TASK_MISMATCH", 1, 1))
+        self.assertEqual(refused("ג02", "כתבו את המספר.", "המספר הוא [[350]].", evaluate("350")), ("PRINTED_TASK_MISMATCH", 1, 1))
+        self.assertEqual(refused("ה28", "כתבו.", "[[0.25]]", evaluate("0.25")), ("PRINTED_TASK_MISMATCH", 1, 1))
+        # A change of form is a task: a fraction for a printed decimal, another number, a calculation.
+        wire("ה28", "כתבו כשבר פשוט.", "[[0.25]]", evaluate("frac(1,4)"))
+        wire("ה28", "מהי ספרת העשיריות במספר?", "[[3.47]]", evaluate("4"))
+        wire("ג02", "חשבו.", "מהו המספר העוקב של [[399]]?", evaluate("399 + 1"))
+        # Two printed numbers, a blank or a printed calculation leave something to do.
+        wire("ג02", "איזה מספר גדול יותר?", "[[345]] או [[354]]?", evaluate("354"))
+        wire("ג08", "חשבו.", "[[124]] + [[0]] = ___", evaluate("124 + 0"))
+        # A local author may state a count that the pupil checks against the printed words.
+        lesson = lesson_for("ג02")
+        scope = scope_for_lesson(lesson)
+        question = {"intro": "ספרו וכתבו כמה יש.", "star": False, "items": [
+            {"prompt": "כד, סל, גג. דן אמר: [[3]]", "answer": evaluate("3")}] * 3}
+        expanded = compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]}, 3)
+        local = expanded["sections"][0]["questions"][0]
+        validate_question(copy.deepcopy(local), 3, scope, provider=False, qcount=1, evidence=[], pending=[])
+        with self.assertRaises(GeneralSourceError):
+            validate_question(copy.deepcopy(local), 3, scope, provider=True, qcount=1, evidence=[], pending=[])
+
     def test_written_spelling_of_a_comparison_survives_expansion(self):
         _, item, solved, _ = wire("ה29", "השוו.", "השלימו את הסימן.", compare("0.5", "0.45"))
         self.assertEqual(item["answer"]["notation"], "0.5 ___ 0.45")

@@ -13,7 +13,8 @@
    "lessonGoal": {
     "recordedAs": "introduce",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "A-order",
@@ -27,7 +28,8 @@
    "lessonGoal": {
     "recordedAs": "introduce",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "A-equations",
@@ -41,7 +43,8 @@
    "lessonGoal": {
     "recordedAs": "introduce",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "A-percent",
@@ -55,7 +58,8 @@
    "lessonGoal": {
     "recordedAs": "introduce",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "A-square",
@@ -69,7 +73,8 @@
    "lessonGoal": {
     "recordedAs": "introduce",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "B-division",
@@ -83,7 +88,8 @@
    "lessonGoal": {
     "recordedAs": "introduce",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "B-order",
@@ -97,7 +103,8 @@
    "lessonGoal": {
     "recordedAs": "introduce",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "B-equations",
@@ -111,7 +118,8 @@
    "lessonGoal": {
     "recordedAs": "introduce",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "B-percent",
@@ -125,7 +133,8 @@
    "lessonGoal": {
     "recordedAs": "introduce",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "B-square",
@@ -139,7 +148,8 @@
    "lessonGoal": {
     "recordedAs": "introduce",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "T1-triangle",
@@ -153,7 +163,8 @@
    "lessonGoal": {
     "recordedAs": "practice",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "T2-triangle",
@@ -167,7 +178,8 @@
    "lessonGoal": {
     "recordedAs": "practice",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "S-g4calc",
@@ -181,7 +193,8 @@
    "lessonGoal": {
     "recordedAs": "practice",
     "replayedAs": "practice"
-   }
+   },
+   "provider": "qwen"
   },
   {
    "id": "S-g7eq",
@@ -192,6 +205,85 @@
    "model": "qwen (model id not recorded)",
    "recorded": "2026-11-22 ~09:02Z",
    "origin": "shared-engine-qa",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "provider": "qwen"
+  },
+  {
+   "id": "G-division",
+   "lesson": "lessons/gemini-g3-division.json",
+   "firstReply": "replies/G-division.json",
+   "firstReplySha256": "3eba5563e380173cb9ed4b656ed3c4ddecdf6e026c7736d300d2e95bf5833794",
+   "corrections": [],
+   "provider": "gemini",
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 14:07Z",
+   "origin": "stage-1 provider capture (engine 4f902f9c9)",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   }
+  },
+  {
+   "id": "G-order",
+   "lesson": "lessons/gemini-g4-order.json",
+   "firstReply": "replies/G-order.json",
+   "firstReplySha256": "5942af308d9f124873e4c855ed497372e0f5e1816abfab933aaa0b4bad1a143f",
+   "corrections": [],
+   "provider": "gemini",
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 14:08Z",
+   "origin": "stage-1 provider capture (engine 4f902f9c9)",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   }
+  },
+  {
+   "id": "G-equations",
+   "lesson": "lessons/gemini-g7-equations.json",
+   "firstReply": "replies/G-equations.txt",
+   "firstReplySha256": "4be545332a528bdd0d48ed773b081a6cab0f9c63ca5ec1b1ebd51ddedfd89276",
+   "corrections": [],
+   "provider": "gemini",
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 14:09Z",
+   "origin": "stage-1 provider capture (engine 4f902f9c9)",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "firstReplyFormat": "text",
+   "repairedReply": "replies/G-equations.repaired.json",
+   "repairedReplySha256": "52c139b589d907bdcced3cc96e7037a3649af7079b31403f066fd18f74a5a302"
+  },
+  {
+   "id": "G-percent",
+   "lesson": "lessons/gemini-g8-percent.json",
+   "firstReply": "replies/G-percent.json",
+   "firstReplySha256": "37699e7ca537288900259ea1df1b7fadabcf10ef6f42b451c50e966e148dc569",
+   "corrections": [],
+   "provider": "gemini",
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 14:10Z",
+   "origin": "stage-1 provider capture (engine 4f902f9c9)",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   }
+  },
+  {
+   "id": "G-square",
+   "lesson": "lessons/gemini-g9m-square.json",
+   "firstReply": "replies/G-square.json",
+   "firstReplySha256": "908334a18527e8cd4bd8bd56eec13dfc95d2af50a9d4ce535b0c51d56713b7a0",
+   "corrections": [],
+   "provider": "gemini",
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 14:10Z",
+   "origin": "stage-1 provider capture (engine 4f902f9c9)",
    "lessonGoal": {
     "recordedAs": "practice",
     "replayedAs": "practice"

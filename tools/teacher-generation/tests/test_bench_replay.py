@@ -7,6 +7,7 @@ BENCH_RENDER_TESTS=1.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -47,22 +48,34 @@ class CorpusTests(unittest.TestCase):
     def test_corpus_holds_the_recorded_replies_and_nothing_private(self):
         index = json.loads((CORPUS / 'index.json').read_text(encoding='utf-8'))
         cases = index['cases']
-        self.assertEqual(len(cases), 14)
-        self.assertEqual(len({case['id'] for case in cases}), 14)
-        listed = {case['firstReply'] for case in cases} | {case['lesson'] for case in cases}
-        on_disk = {str(p.relative_to(CORPUS)) for p in CORPUS.rglob('*.json')
-                   if p.parent.name in ('lessons', 'replies')}
+        self.assertEqual(len(cases), 19)
+        self.assertEqual(len({case['id'] for case in cases}), 19)
+        self.assertEqual([sum(case['provider'] == name for case in cases) for name in ('qwen', 'gemini')], [14, 5])
+        listed = ({case['firstReply'] for case in cases} | {case['lesson'] for case in cases}
+                  | {case['repairedReply'] for case in cases if 'repairedReply' in case})
+        on_disk = {str(p.relative_to(CORPUS)) for p in CORPUS.rglob('*')
+                   if p.is_file() and p.parent.name in ('lessons', 'replies')}
         self.assertEqual(listed, on_disk)
         for case in cases:
             lesson = json.loads((CORPUS / case['lesson']).read_text(encoding='utf-8'))
-            reply = json.loads((CORPUS / case['firstReply']).read_text(encoding='utf-8'))
+            recorded = (CORPUS / case['firstReply']).read_bytes()
+            self.assertEqual(hashlib.sha256(recorded).hexdigest(), case['firstReplySha256'])
             # A substituted goal is declared as a pair, never applied silently.
             self.assertEqual(case['lessonGoal']['recordedAs'], lesson['lessonGoal'])
             self.assertIn(case['lessonGoal']['replayedAs'], ('practice', 'review'))
-            self.assertEqual(set(reply), {'title', 'rule', 'practice', 'challenges'})
             self.assertFalse(lesson.get('classLabel'))
-        blob = ''.join(p.read_text(encoding='utf-8') for p in CORPUS.rglob('*.json')
-                       if p.parent.name in ('lessons', 'replies'))
+            if case.get('firstReplyFormat') == 'text':
+                # Kept as the model's text because it is not JSON; its hand repair is declared and pinned.
+                with self.assertRaises(ValueError):
+                    json.loads(recorded.decode('utf-8'))
+                repaired = (CORPUS / case['repairedReply']).read_bytes()
+                self.assertEqual(hashlib.sha256(repaired).hexdigest(), case['repairedReplySha256'])
+                reply = json.loads(repaired.decode('utf-8'))
+            else:
+                reply = json.loads(recorded.decode('utf-8'))
+            self.assertEqual(set(reply), {'title', 'rule', 'practice', 'challenges'})
+        blob = ''.join(p.read_text(encoding='utf-8') for p in CORPUS.rglob('*')
+                       if p.is_file() and p.parent.name in ('lessons', 'replies'))
         for forbidden in ('@', 'http', 'Bearer', 'sk-', 'api_key', 'apiKey', 'eyJ', 'token', 'secret'):
             self.assertNotIn(forbidden, blob)
 
@@ -210,6 +223,20 @@ class ReplayTests(unittest.TestCase):
                 self.assertTrue({'question', 'group', 'code', 'field', 'substring'} <= set(row))
             # Nothing that varies between runs belongs in the stable record.
             self.assertNotIn(str(self.scratch), json.dumps(case, ensure_ascii=False))
+
+    def test_a_reply_that_is_not_json_is_rejected_as_live_and_examined_from_its_declared_repair(self):
+        results = self.replay(only=('G-equations', 'G-division'), render=False)
+        cases = {case['id']: case for case in results['cases']}
+        text, parsed = cases['G-equations'], cases['G-division']
+        self.assertEqual((text['provider'], text['reply']), ('gemini', {'format': 'text', 'questionsFrom': 'repairedReply'}))
+        # The engine's own reply reader refuses the recorded text; nothing is repaired on the way in.
+        self.assertEqual((text['finalStatus'], text['finalCode']), ('failed', 'PROVIDER_INVALID_RESPONSE'))
+        self.assertEqual((text['author']['requests'], text['author']['answeredFromRecording']), (1, 1))
+        self.assertFalse(text['author']['correction']['requested'])
+        self.assertEqual(text['questions']['total'], 20)
+        self.assertEqual(parsed['reply'], {'format': 'json', 'questionsFrom': 'firstReply'})
+        self.assertEqual(results['summary']['byProvider']['gemini']['cases'], 2)
+        self.assertEqual(results['summary']['byProvider']['gemini']['questions'], 40)
 
     def test_results_files_are_written_and_compared(self):
         out = Path(tempfile.mkdtemp(prefix='out-', dir=self.scratch))

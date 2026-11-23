@@ -22,7 +22,7 @@ from urllib.error import HTTPError
 from provider import author_lesson, safe_transport_measurements, safe_usage
 from gate_policy import public_review_findings, public_teacher_notes
 from runner import render_job
-from skill_feedback import read_skill_feedback
+from skill_feedback import blocking_feedback
 from validation import GenerationError, capabilities, validate_lesson
 from preflight import check as check_readiness
 
@@ -245,7 +245,10 @@ def author_and_render(remote, job, target, lost, enable_skill_revision):
         set_phase('rendering')
         manifest = render_job(lesson, payload, render_target)
         if manifest.get('status') == 'failed' and callable(revision.get('revise')):
-            findings = read_skill_feedback(render_target, lesson['questionCount'])
+            # The delivery policy's own view: only the questions that block, each
+            # with a fixed instruction. Editorial findings ask for nothing, and a
+            # blocking finding that names no question cannot be corrected.
+            findings = blocking_feedback(render_target, lesson['questionCount'])
             if findings:
                 payload = correct(findings)
                 set_phase('rendering')

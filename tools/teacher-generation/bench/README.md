@@ -36,8 +36,8 @@ The pinned skills are unpacked from the archives that ship with the engine
   checks, so "delivered" here is the worker's decision, not a copy of it.
   Replaced: `update_job`, `check_transport`, `heartbeat`, the remote object
   (uploads are accepted in memory) and `provider.request_author_json`.
-  Wrapped to observe only: `author_lesson`, `render_job`,
-  `read_skill_feedback`.
+  Wrapped to observe only: `author_lesson`, `render_job` and the worker's
+  reader of a failed render (`blocking_feedback`).
 - A single reply goes through `general_provider.author_general_lesson` (the
   compile path) with the transport replaced, and the printed pupil text and
   key come from `general_adapters.compile_source`, the call the render's first

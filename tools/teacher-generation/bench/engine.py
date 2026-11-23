@@ -10,7 +10,8 @@ the model transport, guard the network, call the engine's own entry points
 Engine names this module depends on:
 
 * `remote_worker`: `process_job`, `update_job`, `check_transport`, `heartbeat`,
-  and the names it imports: `author_lesson`, `render_job`, `read_skill_feedback`.
+  and the names it imports: `author_lesson`, `render_job`, and its feedback
+  reader (`blocking_feedback`, earlier `read_skill_feedback`).
 * `provider.request_author_json(target, key, body, metadata, timeout)`.
 * `general_provider.author_general_lesson`, `general_adapters.compile_source`.
 * `cloud/container/skill_bundle.install` and the bundled skill archives.
@@ -164,10 +165,16 @@ class RecordedReplies:
     correction) is answered only by a recorded reply whose keys are exactly the
     keys that request requires; otherwise the run stops with
     REPLAY_REPLY_NOT_RECORDED, because inventing a reply would be a model call.
+
+    `first_text` is for a recorded reply that is kept as the model's content
+    text because it is not JSON. It is handed to the engine's own reply reader
+    (`provider.parse_author_reply`) inside the envelope of a finished
+    completion, so the engine rejects it exactly as it would live.
     """
 
-    def __init__(self, first, corrections=()):
+    def __init__(self, first, corrections=(), first_text=None):
         self.first = first
+        self.first_text = first_text
         self.corrections = [c for c in corrections if isinstance(c, dict)]
         self.calls = []
 
@@ -175,6 +182,12 @@ class RecordedReplies:
         from validation import GenerationError
         entry = describe_call(body)
         self.calls.append(entry)
+        if len(self.calls) == 1 and self.first_text is not None:
+            import provider
+            entry['answered'] = True
+            envelope = json.dumps({'choices': [{'finish_reason': 'stop',
+                                                'message': {'content': self.first_text}}]}).encode()
+            return provider.parse_author_reply(envelope, metadata if isinstance(metadata, dict) else {})
         if len(self.calls) == 1:
             reply = self.first
         else:
@@ -346,7 +359,10 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
     seen = {'phases': [], 'final': None, 'first': None, 'metadata': {}, 'revision': None,
             'renders': [], 'feedback': [], 'authorSeconds': 0.0}
     real_author, real_render = remote_worker.author_lesson, remote_worker.render_job
-    real_feedback = getattr(remote_worker, 'read_skill_feedback', None)
+    # The worker's reader of a failed render: the gate policy's view, or the older closed one.
+    feedback_name = next((name for name in ('blocking_feedback', 'read_skill_feedback')
+                          if hasattr(remote_worker, name)), None)
+    real_feedback = getattr(remote_worker, feedback_name, None) if feedback_name else None
 
     def on_update(_remote, _job_row, values):
         if 'phase' in values and 'status' not in values:
@@ -409,8 +425,8 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
             stack.enter_context(patch.object(owner, name, replacement))
         stack.enter_context(patch.object(remote_worker, 'author_lesson', author))
         stack.enter_context(patch.object(remote_worker, 'render_job', rendering))
-        if hasattr(remote_worker, 'read_skill_feedback'):  # observation only
-            stack.enter_context(patch.object(remote_worker, 'read_skill_feedback', feedback))
+        if feedback_name:  # observation only
+            stack.enter_context(patch.object(remote_worker, feedback_name, feedback))
         try:
             remote_worker.process_job(remote, job, root)
             final = seen['final'] or {}

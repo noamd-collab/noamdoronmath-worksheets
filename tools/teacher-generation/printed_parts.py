@@ -234,20 +234,41 @@ def printed_calculation(question, item, solved, grade):
     _reject("The typed answer is not the value of the printed calculation")
 
 
-def echoed_given(item, solved):
-    """Refuse a key that only repeats the one number of a bare prompt.
+def echoed_given(item, solved, *, authored=False):
+    """Refuse a key that only repeats the one number that the prompt prints.
 
     A prompt that is nothing but "60", keyed by the value of 2 x 2 x 3 x 5, asks
     for the expression itself. The exact kernel cannot key a requested form.
+
+    A typed task that is one bare number has nothing to calculate. When the
+    prompt prints that same number and no other number, blank or calculation,
+    and the key would spell it the same way (an integer, or a decimal for a
+    task typed in decimals), the pupil reads the answer in the question. A
+    change of form (a fraction for a printed decimal, a reduced or mixed
+    fraction) is not an echo and is left to its own binders. This second rule
+    applies to an authored reply only (``authored``): a local author may state
+    a count that the pupil then checks against the printed words.
     """
     typed = _scalar(solved)
     task = solved["question"]
-    if typed is None or task.get("kind") != "evaluate" or task["expression"].get("type") != "operation":
+    if typed is None or task.get("kind") != "evaluate":
         return
     tokens = read_tokens(item["prompt"])
-    if len(tokens) == 1 and tokens[0].kind == "num" and tokens[0].value == typed \
-            and typed not in task_numbers(task):
-        _reject("The key repeats the only printed number; the requested form cannot be verified")
+    if task["expression"].get("type") == "operation":
+        if len(tokens) == 1 and tokens[0].kind == "num" and tokens[0].value == typed \
+                and typed not in task_numbers(task):
+            _reject("The key repeats the only printed number; the requested form cannot be verified")
+        return
+    if (not authored or task["expression"].get("type") != "number"
+            or any(token.kind in ("blank", "math") for token in tokens)):
+        return
+    shown = [token for token in tokens if token.kind == "num"]
+    if len(shown) != 1 or shown[0].value != typed:
+        return
+    notation = item["answer"].get("notation")
+    decimal_key = isinstance(notation, str) and re.search(r"[0-9]\.[0-9]", notation) and "frac" not in notation
+    if typed.denominator == 1 or (decimal_key and "." in shown[0].raw):
+        _reject("The key repeats the only printed number; there is nothing to calculate")
 
 
 def comparison_blank(item, solved, grade):
@@ -556,18 +577,20 @@ def bind_parts(question, item, solved, grade):
     return binding
 
 
-def check_item(question, item, solved, grade):
+def check_item(question, item, solved, grade, *, authored=False):
     """Run every printed-answer binder at source validation, where a refusal is recoverable.
 
     Returns the bound decision of a yes/no item, and None for every other item.
+    ``authored`` marks a reply written by the author model.
     """
     bind_parts(question, item, solved, grade)
     if item["answer"].get("kind") == "computed":
         comparison_blank(item, solved, grade)
         printed_calculation(question, item, solved, grade)
-        echoed_given(item, solved)
         from answer_kinds import bind_decision, refuse_dummy_key
+        # A drawing or a construction keyed by a number is told its answer kind first.
         refuse_dummy_key(question, item, solved, grade)
+        echoed_given(item, solved, authored=authored)
         return bind_decision(question, item, solved, grade)
     return None
 

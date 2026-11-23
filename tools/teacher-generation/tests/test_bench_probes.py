@@ -49,6 +49,18 @@ class VerdictTests(unittest.TestCase):
     def test_numbers_are_compared_by_value(self):
         self.assertEqual(verdict.numbers('45,238 ועוד 12.50, frac(2,5) ו־$x^{2}$'), ['45238', '12.5', '2', '5', '2'])
 
+    def test_a_numeral_is_read_whatever_its_spelling(self):
+        # A raised digit is the digit, apart from its base; a decimal without its zero is that decimal.
+        self.assertEqual(verdict.numbers('[[x² - 9]]'), verdict.numbers('$x^{2} − 9$'))
+        self.assertEqual(verdict.numbers('[[2³]]'), ['2', '3'])
+        self.assertEqual(verdict.numbers('[[.5 + 1.25]]'), verdict.numbers('0.5 + 1.25'))
+        self.assertEqual(verdict.numbers('סוף המשפט. 5 תפוחים'), ['5'])
+        # The written exercise printed as written is not "numbers the prompt did not carry".
+        self.assertEqual(verdict.item_flags('[[x² - 9]]', '$x^{2} − 9$', '$\\g{x − 3}\\g{x + 3}$', None)[0], [])
+        self.assertEqual(verdict.item_flags('[[.5 + 1.25]]', '0.5 + 1.25', '1.75', None)[0], [])
+        # Printing the exercise a second time still is.
+        self.assertEqual(verdict.item_flags('[[x² - 9]]', '$x^{2} − 9$ $x^{2} − 9$', '$x$', None)[0], ['print_adds_numbers'])
+
     def test_clean_prints_are_not_flagged(self):
         self.assertEqual(self.flags('[[348 + 276]]', '348 + 276', '624'), [])
         # The intended form: a bare instruction, then the exercise once.

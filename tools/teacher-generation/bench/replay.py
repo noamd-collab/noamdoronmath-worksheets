@@ -62,15 +62,33 @@ def lesson_facts(lesson):
     return facts
 
 
+def load_reply(corpus, case):
+    """The recorded first reply: (reply for the transport, text or None, reply to examine, its source).
+
+    A case with `firstReplyFormat: "text"` keeps the model's content text
+    because it is not JSON. The transport replays that text; the engine
+    rejects it as it did live. Its questions can be examined only through a
+    declared `repairedReply`, a hand repair that is never replayed.
+    """
+    corpus = Path(corpus)
+    text = (corpus / case['firstReply']).read_text(encoding='utf-8')
+    if case.get('firstReplyFormat') != 'text':
+        first = json.loads(text)
+        return first, None, first, 'firstReply'
+    if case.get('repairedReply'):
+        return None, text, json.loads((corpus / case['repairedReply']).read_text(encoding='utf-8')), 'repairedReply'
+    return None, text, None, None
+
+
 def replay_case(case, corpus, skills, work, *, render=True):
     """Returns (stable record, run record)."""
     corpus = Path(corpus)
     lesson, goal = load_lesson(corpus, case)
-    first = json.loads((corpus / case['firstReply']).read_text(encoding='utf-8'))
+    recorded, recorded_text, first, examined = load_reply(corpus, case)
     corrections = [json.loads((corpus / name).read_text(encoding='utf-8')) for name in case.get('corrections', [])]
     local = engine.native_contract(lesson)
     route = 'general' if local else 'worker'
-    transport = engine.RecordedReplies(first, corrections)
+    transport = engine.RecordedReplies(recorded, corrections, first_text=recorded_text)
     outcome = engine.run_job(lesson, transport, Path(work) / case['id'], seed='replay/' + case['id'],
                              route=route, render=render)
     renders = [report.render_record(entry, attempt) for attempt, entry in enumerate(outcome['renders'], 1)]
@@ -107,7 +125,9 @@ def replay_case(case, corpus, skills, work, *, render=True):
 
     total = len(isolate.reply_questions(first))
     record = {
-        'id': case['id'], 'origin': case.get('origin'), 'model': case.get('model'), 'recorded': case.get('recorded'),
+        'id': case['id'], 'origin': case.get('origin'), 'provider': case.get('provider'),
+        'model': case.get('model'), 'recorded': case.get('recorded'),
+        'reply': {'format': 'text' if recorded_text is not None else 'json', 'questionsFrom': examined},
         'lesson': lesson_facts(lesson), 'lessonGoal': goal,
         'route': route, 'localAuthor': local,
         'delivered': outcome['delivered'], 'finalStatus': final, 'finalCode': outcome['code'],
@@ -153,8 +173,17 @@ def summarise(records, refused):
         for finding in (record['renders'][0]['gateFindings'] if record['renders'] else []):
             name = finding['gate'] or finding['step']
             gates[name] = gates.get(name, 0) + 1
+    providers = {}
+    for record in records:
+        row = providers.setdefault(record.get('provider') or 'unknown',
+                                   {'cases': 0, 'delivered': 0, 'questions': 0, 'failingAlone': 0})
+        row['cases'] += 1
+        row['delivered'] += int(record['delivered'])
+        row['questions'] += record['questions']['total']
+        row['failingAlone'] += record['questions']['failingAlone']
     return {'cases': cases, 'delivered': delivered,
             'deliveredRate': round(delivered / cases, 4) if cases else None,
+            'byProvider': dict(sorted(providers.items())),
             'finalStatus': {name: sum(r['finalStatus'] == name for r in records)
                             for name in sorted({r['finalStatus'] for r in records})},
             'failureClasses': dict(sorted(classes.items())),
@@ -182,11 +211,20 @@ def markdown(summary, records, env):
         if r['author']['correction']['requested']:
             asked = r['author']['correction']['questions']
             correction = f"{len(asked)} q" + ('' if r['author']['correction']['answered'] else ' (not recorded)')
-        rows.append([r['id'], r['lesson']['topicId'], r['lesson']['questionCount'], r['route'],
+        rows.append([r['id'], r.get('provider') or '—', r['lesson']['topicId'], r['lesson']['questionCount'], r['route'],
                      'pass' if first and first['ok'] else (first or {}).get('code', r['finalCode']),
                      f"{r['questions']['failingAlone']} of {r['questions']['total']}", correction, render, r['finalStatus']])
-    lines += [report.table(['Case', 'Topic', 'Q', 'Route', 'First pass', 'Fail alone', 'Correction asked',
+    lines += [report.table(['Case', 'Provider', 'Topic', 'Q', 'Route', 'First pass', 'Fail alone', 'Correction asked',
                             'First render', 'Final'], rows), '']
+    if len(summary['byProvider']) > 1:
+        lines += ['## By provider', '',
+                  report.table(['Provider', 'Cases', 'Delivered', 'Questions', 'Fail alone'],
+                               [[name, row['cases'], row['delivered'], row['questions'], row['failingAlone']]
+                                for name, row in summary['byProvider'].items()]), '']
+    repaired = [r['id'] for r in records if r['reply']['questionsFrom'] == 'repairedReply']
+    if repaired:
+        lines += [f"Recorded as text that is not JSON: {', '.join(repaired)}. The replay sends the text as recorded; "
+                  'the question counts of such a case come from its declared hand repair.', '']
     lines += ['## Failure classes', '', report.table(['Class', 'Cases'], list(summary['failureClasses'].items())), '']
     if summary['questions']['byCode']:
         lines += ['## Questions rejected alone, by code', '',
