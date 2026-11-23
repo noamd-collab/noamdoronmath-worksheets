@@ -438,9 +438,15 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                 q["fig"] = figpath
             qs.append((q, intro, ''.join(pieces), H.keyed(answers)))
             canon.append({"id": f"q{n}", "n": n, "section": section["title"], "conceptIds": section["conceptIds"], "intro": intro_spans, "table": question.get("table"), "figure": question.get("figure"), "items": source_items})
+    # The pinned content schema is {n, intro, items, answer, fig}. The star stays
+    # in the HTML, where G50 counts it; in content.json the pinned difficulty
+    # proxy (G61) would add two points to exactly the three challenge questions.
+    gate_questions = [{k: v for k, v in q[0].items() if k != "star"} for q in qs]
+    from claim_words import register
+    register(ledger, gate_questions)
     ledger.save()
     meta = {"band": "elementary-ab" if ab else "elementary", "grade": grade, "level": {"a":"א", "b":"ב", "e":"מצוינות"}[lesson["level"]], "topic": source["title"], "topic_id": scope["topic"]["sourceTopicId"], "domain": scope["topic"]["domain"]}
-    dump(work / "content.json", {"meta": meta, "questions": [q[0] for q in qs]})
+    dump(work / "content.json", {"meta": meta, "questions": gate_questions})
     dump(work / "worksheet-source.json", {"version": 4, "meta": dict(meta, gradeNumber=lesson["gradeNumber"], levelCode={"a":"A", "b":"B", "e":"E"}[lesson["level"]], topicId=lesson["topicId"]), "questions": canon, "reviewRequired": True})
     template = (skill / "assets/worksheet_template_elementary.html").read_text(encoding="utf-8")
     head = template.split("<body", 1)[0]

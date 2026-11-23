@@ -66,12 +66,30 @@ compiler and native skill gates. Each job uses an isolated directory.
 A result is always `needs_review` or `failed`, never publication approval:
 
 - All PASS steps and both exact output files produce `automatedChecksPassed`.
-- A genuine FAIL exposes no downloadable artifacts.
+- A blocking failure exposes no downloadable artifacts.
+- Version 3 lessons follow one delivery policy (`gate_policy.py`). Every gate
+  outcome has a class. Truth findings (the mathematics, the key or its print
+  form) and policy findings (chronology, drawings, signs, brand) block; when
+  the gate output names questions, `manifest.gate.questions` lists them.
+  Editorial findings (difficulty spread, repeated item structure, star count,
+  page fill) do not block: the step is recorded as REVIEW and
+  `reviewFindings` carries the code, the questions and a fixed Hebrew teacher
+  note. An unknown line, a timeout or a crashed step blocks.
+  `skill_feedback.gate_report` reads every finding of a work folder.
+- `paren_order.py` measures again the one documented false positive of the
+  pinned bracket gate G51 (a correctly printed product of two bracketed
+  groups). A reversed pair still fails.
+- `claim_words.py` records in the ledger a closed-pattern reading of the words
+  that the pinned truth gates G32/G33 search for ("לכל תלמיד", conditional
+  "אילו"). Universal claims and requests to enumerate still fail.
+- `runner.precheck_job` builds `content.json` and runs only the content-truth
+  and house gates that read it, before any PDF or Word file exists.
 - A narrowly verified middle-skill didactic REVIEW may produce a private draft
   with `automatedChecksPassed: false`, `renderingChecksPassed: true` and explicit
   review findings. `didactic_review.py` reconciles only the pinned driver's
   documented REVIEW-only exit discrepancy, checks every other gate and output
-  hash, and reruns the pinned checker. It never converts FAIL to REVIEW.
+  hash, and reruns the pinned checker. It never converts a FAIL finding to
+  REVIEW.
 - API, UI and private-storage RLS use equivalent readiness rules. Only exact
   owner PDF/DOCX paths can be downloaded; source, logs and keys remain private.
 
