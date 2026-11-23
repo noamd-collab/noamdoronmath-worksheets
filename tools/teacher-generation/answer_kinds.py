@@ -40,6 +40,10 @@ VERDICTS = {
 # What the author is told wherever the answer kinds are described. One text,
 # so that the request, the correction and the validator cannot drift apart.
 DECISION_GUIDE = (
+    "A decide task is only for a comparison, a divisibility or a membership of quantities that the item itself "
+    "prints. A question about a property, about 'always' (תמיד), 'necessarily' (בהכרח), 'can it be' (האם ייתכן) "
+    "or about whether two methods agree has no decide form: ask instead for a quantity that the pupil computes "
+    "(in middle school a proof or an explanation uses review). Never invent values to make a claim decidable. "
     "A yes/no or true/false question ('האם ...?', 'נכון או לא נכון') never has a number as its answer. "
     "Give it a computed answer whose task is {\"kind\":\"decide\",\"relation\":R,\"left\":E,\"right\":E}: "
     "R is eq, ne, lt, le, gt or ge for the comparison that the sentence states, in its printed order, "
@@ -48,7 +52,9 @@ DECISION_GUIDE = (
     "calculations printed in that item. Never write the yes or the no: the compiler decides the claim and "
     "prints the verdict with its calculation. Ask one decidable claim per item, e.g. "
     "'האם המנה של [[56 : 8]] גדולה מ־[[5]]?' with relation gt, left 56/8, right 5, or "
-    "'האם [[32 : 4 = 7]] נכון?' with relation eq, left 32/4, right 7. A question that offers two outcomes "
+    "'האם [[32 : 4 = 7]] נכון?' with relation eq, left 32/4, right 7. The whole answer object is "
+    "{\"kind\":\"computed\",\"task\":{\"kind\":\"decide\",\"relation\":\"gt\",\"left\":\"56/8\",\"right\":\"5\"},\"unit\":\"\"}. "
+    "A question that offers two outcomes "
     "('קטן או גדול מ...') is not a yes/no question: give it a compare task with the two printed sides.")
 ELEMENTARY_KINDS_GUIDE = (
     "Two more answer kinds exist for grades 1-6 only. {\"kind\":\"open\"} is for an item with no single answer "
@@ -327,6 +333,8 @@ _CUES = (
     ("in", None, _word(r"נמצא(?:ת|ים|ות)?|מופיע(?:ה|ים|ות)?|שייך|שייכת|ברשימה")),
 )
 _MORE = re.compile(r"(?<![א-ת])(?:(" + _GREATER + "|" + _SMALLER + r")\s+יותר|יותר\s+(?=" + _GREATER + "|" + _SMALLER + r"))(?![א-ת])")
+# "הבסיס הגדול", "הצלע הקצרה": with the article the adjective names a thing; it asks about no relation.
+_ATTRIBUTIVE = re.compile(r"(?<![א-ת])[וש]?ה(?:" + _GREATER + "|" + _SMALLER + r")(?![א-ת])")
 _CORRECT = _word(r"נכון|נכונה|נכונים|נכונות|מתקיים|מתקיימת|צודק|צודקת|צודקים|צדק|צדקה")
 _WRONG = _word(r"טעה|טעתה|טעו|טעות|טעויות|שגוי|שגויה|שגויים|שגויות|שגה|שגתה")
 _NEGATION = re.compile(r"(?<![א-ת])(?:לא|אינו|אינה|אינם|אינן|אין)(?![א-ת])")
@@ -352,6 +360,8 @@ def _relation_word(sentence):
         # "גדול יותר" is one word of comparison, not two.
         more = text.index("יותר", match.start())
         text = _blank(text, more, more + len("יותר"))
+    for match in list(_ATTRIBUTIVE.finditer(text)):
+        text = _blank(text, match.start(), match.end())
     found = []
     for relation, divisor, cue in _CUES:
         for match in list(cue.finditer(text)):
@@ -390,6 +400,138 @@ def _steps(sides, result):
     return tuple(steps)
 
 
+_SOLUTION_WORD = re.compile(r"(?<![א-ת])[ושה]{0,2}פתרו(?:ן|נות|נה|נו|נם|נן|נותיה|נותיהן)(?![א-ת])")
+_LETTER = re.compile(r"(?<![A-Za-z])[a-z](?![A-Za-z])")
+_THE_SOLUTION = re.compile(r"(?<![א-ת])[וש]?הפתרון(?![א-ת])")
+
+
+def _equation(span, grade):
+    """(letter, lhs, rhs) of a printed equation in one letter, such as "x + 7 = 12"; else None."""
+    if span["kind"] != "formula":
+        return None
+    from compact_authoring import RELATION, expression
+    pieces = RELATION.split(span["notation"])
+    if len(pieces) != 3 or pieces[1] != "=":
+        return None
+    letters = {letter for piece in (pieces[0], pieces[2]) for letter in _LETTER.findall(piece)}
+    if len(letters) != 1:
+        return None
+    letter = letters.pop()
+    sides = [_LETTER.sub("x", piece) for piece in (pieces[0], pieces[2])]
+    try:
+        return letter, expression(sides[0], grade), expression(sides[1], grade)
+    except GeneralSourceError:
+        return None
+
+
+def _rational(tree):
+    value = tree if isinstance(tree, dict) and tree.get("type") == "number" else _value(tree)
+    return Fraction(value["numerator"], value["denominator"]) if isinstance(value, dict) and value.get("type") == "number" else None
+
+
+def _solutions(lhs, rhs):
+    result = validate_and_solve_task({"kind": "solve", "lhs": lhs, "rhs": rhs, "variable": "x"})["result"]
+    if result.get("classification") != "finite":
+        return None
+    return [Fraction(v["numerator"], v["denominator"]) for v in result["values"] if v.get("type") == "number"]
+
+
+def _has_symbol(tree):
+    return isinstance(tree, dict) and (tree.get("type") == "symbol" or any(
+        _has_symbol(arg) for arg in tree.get("args", ()) if isinstance(arg, dict)))
+
+
+def _at(tree, value):
+    """The value of one side of the printed equation at x = value."""
+    if not _has_symbol(tree):
+        return _rational(tree)
+    solved = validate_and_solve_task({"kind": "substitute", "expression": tree,
+                                      "values": {"x": number(value.numerator, value.denominator)}})
+    return _rational(solved["result"]["value"])
+
+
+_HOLDS = {"eq": lambda a, b: a == b, "ne": lambda a, b: a != b, "lt": lambda a, b: a < b,
+          "le": lambda a, b: a <= b, "gt": lambda a, b: a > b, "ge": lambda a, b: a >= b}
+
+
+def _solution_claim(prompt, sentence, task, result, form, grade):
+    """A yes/no question about the solution of a printed equation in one letter, or None.
+
+    Three readings, each decided from the print: "is [[5]] a solution of
+    [[x + 7 = 12]]?" (the value substituted into both sides), "is the solution
+    of [[5x = 45]] greater than [[8]]?" (the one solution against the printed
+    number) and "do [[x + 4 = 10]] and [[2x = 12]] have the same solution?"
+    (the two solutions). The typed claim must say the same thing: its relation,
+    and sides whose values are those of the print. Anything else is None, and
+    the caller refuses the question as before.
+    """
+    if not _SOLUTION_WORD.search(sentence) or _NEGATION.search(sentence) or _WRONG.search(sentence):
+        return None
+    if task.get("relation") not in _HOLDS:
+        return None
+    equations, numbers = [], []
+    for span in prompt:
+        if span["kind"] == "text":
+            continue
+        equation = _equation(span, grade)
+        if equation is not None:
+            equations.append(equation)
+            continue
+        tree = _closed(span, grade)
+        if tree is None or tree.get("type") != "number":
+            return None
+        numbers.append(Fraction(tree["numerator"], tree["denominator"]))
+    typed = [_rational(task["left"]), _rational(task["right"])]
+    if None in typed:
+        return None
+    cue = _relation_word(sentence.replace("@", " "))
+    try:
+        if len(equations) == 1 and len(numbers) == 1 and (cue is None or cue[3]):
+            # Is the printed number a solution? Both sides at that value.
+            _, lhs, rhs = equations[0]
+            if _THE_SOLUTION.search(sentence):
+                # "Is the solution 3?" reads as "is 3 the only solution": only an equation with one solution.
+                found = _solutions(lhs, rhs)
+                if not found or len(found) != 1:
+                    return None
+            printed = [_at(lhs, numbers[0]), _at(rhs, numbers[0])]
+            if None in printed:
+                return None
+            relation, agrees = "eq", sorted(typed) == sorted(printed)
+            holds = printed[0] == printed[1]
+        elif len(equations) == 1 and len(numbers) == 1 and cue and cue[0] in _HOLDS and not cue[3]:
+            # Is the one solution in this relation to the printed number?
+            _, lhs, rhs = equations[0]
+            found = _solutions(lhs, rhs)
+            if not found or len(found) != 1:
+                return None
+            relation, pair = cue[0], [found[0], numbers[0]]
+            agrees = typed == (pair[::-1] if task["relation"] == _MIRROR.get(relation) else pair)
+            if task["relation"] == _MIRROR.get(relation):
+                relation = task["relation"]
+                pair = pair[::-1]
+            holds = _HOLDS[relation](*pair)
+        elif len(equations) == 2 and not numbers and cue and cue[0] in ("eq", "ne") and not cue[3]:
+            # Do the two printed equations have the same solution?
+            found = [_solutions(lhs, rhs) for _, lhs, rhs in equations]
+            if any(not row or len(row) != 1 for row in found):
+                return None
+            relation, pair = cue[0], [found[0][0], found[1][0]]
+            agrees = sorted(typed) == sorted(pair)
+            holds = _HOLDS[relation](*pair)
+        else:
+            return None
+    except (MathTaskError, GeneralSourceError, KeyError, TypeError, ZeroDivisionError):
+        return None
+    # The print decides; the typed claim has to say the same thing.
+    if task["relation"] != relation or not agrees or holds != result["holds"]:
+        _mismatch("The typed claim is not the printed question about the solution")
+    sides = [task["left"], task["right"]]
+    return Decision(holds, form, _steps(sides, result),
+                    {"rule": "solution_claim", "relation": task["relation"], "holds": holds, "bound": "print",
+                     "equations": len(equations)})
+
+
 def bind_decision(question, item, solved, grade):
     """Tie a decided claim to the printed question and return the printable decision.
 
@@ -406,6 +548,9 @@ def bind_decision(question, item, solved, grade):
     sentence = judged[start:stop]
     statements = [_printed_statement(span, grade) for span in prompt]
     if any(statement is False for statement in statements):
+        claim = _solution_claim(prompt, sentence, task, result, form, grade)
+        if claim is not None:
+            return claim
         _refuse_kind("A printed relation with a blank or a letter cannot be decided")
     operations = [tree for span in prompt if (tree := _closed(span, grade)) is not None and tree.get("type") == "operation"]
     shared = intro + _table_spans(question)

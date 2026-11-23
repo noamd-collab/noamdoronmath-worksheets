@@ -5,11 +5,12 @@ from dataclasses import dataclass
 import json
 import re
 
-from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich, validate_question
+from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich, text, validate_question
 from math_tasks import MathTaskError
 from skill_feedback import FEEDBACK as GATE_FEEDBACK
 from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 from claim_words import claim_lint
+from figure_probe import figure_refusal
 from lesson_select import CHALLENGES, PRACTICE, reserve_groups
 import compact_authoring
 
@@ -370,18 +371,23 @@ def notation_correction(original, lesson, scope):
     return NotationCorrection(grade, fractions, fragments, blocks) if blocks else None
 
 
-def revision_request(rows, lesson, scope, context, model, title, rule):
+def revision_request(rows, lesson, scope, context, model, title, rule, *, fix_rule=None):
     """The one correction request: rewrite exactly the questions in ``rows``.
 
     Each row is {"key", "question", "plan", "original", "findings"}: the reply
     field, the planned position, its plan row, the refused question (None when
     the author left the position empty) and the fixed instructions for it.
+    ``fix_rule``, the instruction for a refused rule, also asks for the rule
+    again at the key "rule"; the request may then hold no question at all.
     Returns (request body, reply keys in row order).
     """
-    if not isinstance(rows, list) or not 1 <= len(rows) <= MAX_CORRECTED or len({row["key"] for row in rows}) != len(rows):
+    least = 0 if fix_rule else 1
+    if not isinstance(rows, list) or not least <= len(rows) <= MAX_CORRECTED or len({row["key"] for row in rows}) != len(rows):
         raise GeneralSourceError("REVISION_SCOPE", "No bounded set of worksheet questions to correct")
     keys = [row["key"] for row in rows]
     properties = {name: {"$ref": "#/$defs/question"} for name in keys}
+    if fix_rule:
+        properties["rule"] = {"type": "string", "minLength": 1, "maxLength": 1200}
     schema = {"type": "object", "properties": properties, "required": list(properties),
               "additionalProperties": False, "$defs": worksheet_schema(lesson, scope)["$defs"]}
     skill = context.get("skill", {})
@@ -394,6 +400,8 @@ def revision_request(rows, lesson, scope, context, model, title, rule):
             "title": title, "rule": rule,
             "questionsToCorrect": [{"question": row["question"], "plan": row["plan"], "original": row["original"],
                                     "findings": row["findings"]} for row in rows]}
+    if fix_rule:
+        user["ruleToCorrect"] = {"rule": rule, "findings": [fix_rule]}
     guidance = (
         "Revise only the indicated Hebrew math questions within their exact teaching scope, skill and level. "
         "Respond with the replacement question objects at the given keys, including all their pupil items. "
@@ -407,6 +415,8 @@ def revision_request(rows, lesson, scope, context, model, title, rule):
         "For quantitative answers, use a computed task with the operands and the unit asked for. "
         "Use only the task fields in the supplied schema. Never claim approval or output code. "
         + DECISION_GUIDE + (" " + ELEMENTARY_KINDS_GUIDE if lesson["gradeNumber"] <= 6 else "")
+        + (" The sheet's rule was refused as well (ruleToCorrect): return it again at the key rule, with the same "
+           "teaching content in plain Hebrew and valid [[...]] notation." if fix_rule else "")
     )
     return {"model": model, "messages": [{"role": "system", "content": guidance},
             {"role": "user", "content": json.dumps(user, ensure_ascii=False)}],
@@ -490,12 +500,13 @@ def correction_instructions(lesson, scope):
         "SOURCE_PLAIN_MATH": "Put the complete formula or variable name in one [[...]] span inside the Hebrew sentence.",
         "SOURCE_TABLE": "Use self-contained printed givens in each item; remove any reference to an absent table from the intro and every item. If a table is essential to the taught skill, supply it as a question-level table object with head and rows arrays, never pipes or Markdown in prompt text.",
         "DRAWING_POLICY": "Rewrite the complete question and its items in words using only printed givens. Remove all diagrams, sketches, drawing instructions and references to figures; keep the selected mathematical skill.",
-        "SOURCE_FIGURE": "Use the construction and all of its labelled points as specified by the question plan. For a coordinate plane include every point and segment and integer limits that contain the origin.",
+        "SOURCE_FIGURE": "Use the construction and all of its labelled points as specified by the question plan. For a coordinate plane include every point and segment and integer limits that contain the origin. When the skill cannot draw the figure, choose other measures: sides that are not equal in the question must differ clearly, a right angle appears only where the question gives one, and no point stands on an axis next to the axis number it would hide.",
         "SOURCE_FIGURE_TASK": "Ask for a figure quantity supported by its actual construction; keep all named vertices and their stated measurements consistent.",
         "PRINTED_ANSWER_KIND": "The answer kind does not fit what the item asks. " + DECISION_GUIDE + " A requested equation needs a complete equation. If the goal is quantitative, rewrite the question and its intro to ask only for the exact scalar you can verify.",
         "PRINTED_TASK_MISMATCH": "Solve the exercise again using the exact givens in the printed prompt, including the displayed operand order, units and missing value. Correct the printed task and typed answer together. In a decide task the relation and the order of left and right are those of the printed sentence, every number and calculation printed in the item appears in the claim, and the claim uses no number that is not printed.",
         "SOURCE_NIQQUD": "Apply the required grade-specific Hebrew pointing to every word of this question and its answers.",
         "SOURCE_RICH_TEXT": "Use plain Hebrew strings with [[...]] for mathematics in every rich field.",
+        "PRINTED_ANSWER_LEAK": "A later item of this question prints the answer of an earlier item, so the pupil reads that answer on the sheet. Never write an earlier result into a later prompt; refer to it in words, such as 'המספר שמצאתם בסעיף א', or give the later item its own new givens.",
     }
     grade = lesson["gradeNumber"]
     if grade <= 6:
@@ -523,6 +534,45 @@ def instruction_for(code, instructions, *, gate=False):
 
 
 _BROKEN = (KeyError, TypeError, IndexError, AttributeError, ValueError, RecursionError)
+
+
+def examine_frame(title, rule, lesson, scope):
+    """The refusal of a sheet's title or rule examined alone, as the whole sheet examines them; None when both pass."""
+    try:
+        text(title, 160)
+        expanded = compact_authoring.expand_source({"version": 4, "title": title, "rule": rule, "sections": []},
+            lesson["gradeNumber"], topic=scope["topic"], fraction_notation=scope["topic"]["domain"] == "fractions")
+        rich(expanded["rule"], lesson["gradeNumber"], provider=True, location="rule")
+    except (GeneralSourceError, MathTaskError) as exc:
+        return exc
+    except _BROKEN:
+        return GeneralSourceError("SOURCE_SHAPE", "The rule does not have the shape of the worksheet contract")
+    return None
+
+
+def _sentences(value):
+    """The sentences of a rule, split after . ! or ? outside [[...]]."""
+    masked = re.sub(r"\[\[[^\[\]]*\]\]", lambda m: "#" * len(m[0]), value)
+    cuts = [m.end() for m in re.finditer(r"[.!?](?=\s)", masked)]
+    pieces = [value[a:b].strip() for a, b in zip([0] + cuts, cuts + [len(value)])]
+    return [piece for piece in pieces if piece]
+
+
+def trim_rule(title, rule, lesson, scope):
+    """The rule without each whole sentence that is refused on its own, or None.
+
+    A refused rule used to end the whole author attempt. When at least one
+    sentence stands, the rule keeps the sentences that pass, in their order,
+    and the result is examined again as a whole. Nothing is rewritten.
+    """
+    if not isinstance(rule, str):
+        return None
+    sentences = _sentences(rule)
+    kept = [sentence for sentence in sentences if examine_frame(title, sentence, lesson, scope) is None]
+    if not kept or len(kept) == len(sentences):
+        return None
+    trimmed = " ".join(kept)
+    return trimmed if examine_frame(title, trimmed, lesson, scope) is None else None
 
 
 def examine_question(wire, index, lesson, scope, *, challenge):
@@ -567,6 +617,11 @@ def question_codes(wire, lesson, scope, *, challenge, index=1, refusals=None):
     that builds a correction request.
     """
     refusal, validated = examine_question(wire, index, lesson, scope, challenge=challenge)
+    if refusal is None and scope["topic"]["skillId"] == "middle" and "figure" in validated:
+        # The render draws the figure with the pinned constructors; one they refuse is refused here.
+        refusal = figure_refusal(validated["figure"])
+        if refusal is not None:
+            refusal = GeneralSourceError(refusal.code, f"{refusal} at q{index}.figure", question=index)
     if refusal is not None:
         if isinstance(refusals, dict):
             refusals[id(wire)] = refusal
@@ -595,7 +650,7 @@ def refers_to_another_question(wire):
 
 
 _ISLAND = re.compile(r"\[\[[^\[\]]*\]\]")
-_LOCATION = re.compile(r" at q[1-9][0-9]?\.(intro|item\.[1-9](?:\.(?:prompt|answer))?|table(?:\.[a-z0-9.]+)?)\b")
+_LOCATION = re.compile(r" at q[1-9][0-9]?\.(intro|figure|item\.[1-9](?:\.(?:prompt|answer))?|table(?:\.[a-z0-9.]+)?)\b")
 MAX_LOCATION_CHECKS = 24
 # An instruction with no mathematics, accepted in every grade (pointed in grades one and two).
 NEUTRAL_INTRO = {True: "פִּתְרוּ.", False: "פתרו."}

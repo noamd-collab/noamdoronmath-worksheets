@@ -38,6 +38,13 @@ it is expanded and validated by itself (notation, typed task, printed-key binder
 answer kinds) and, in elementary school, read for the claim words of the truth gates.
 Any code it raises (a notation fault, a printed-key refusal, a kernel limit such as a
 power beyond the bound) makes it a bad question to replace, never a failed sheet.
+In middle school its figure is also drawn with the pinned constructors
+(`figure_probe.py`), so a figure the skill refuses is a refused question
+(`SOURCE_FIGURE`) and not an unnamed render failure. The rule is examined alone
+too: a refused rule loses each sentence that is refused on its own, or is asked for
+again in the one correction call. A finished reply that is not JSON as a whole is
+read question by question (`reply_salvage.py`); a question that does not decode
+counts as refused.
 `lesson_select.py` chooses the sheet: a bad question takes a reserve of its own group;
 a practice reserve may stand in for a challenge only while two real challenges remain,
 and is then printed as an ordinary question. It knows nothing about the wire format or

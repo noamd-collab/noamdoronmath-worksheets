@@ -132,6 +132,7 @@ GATES = {
     "LOAD_PACKAGE": (TRUTH, False),   # build_v72.py:191
     "BUILD_PLUS": (TRUTH, False),     # build_v72.py:208 any build gate the reader cannot name
     "G84": (POLICY, True),            # build_plus.py:228 a term taught later than the lesson
+    "G76": (POLICY, True),            # gate_variety.py:361 DOMINANCE names the questions over the cap; SCALE/PART name none
     "PLAIN_MATH": (TRUTH, False),     # check_plain_math.py
     "VERIFY_EXPORT": (TRUTH, False),  # verify_export.py
     "SELFCHECK": (TRUTH, False),      # selfcheck_noam_package.py, any rule but K6

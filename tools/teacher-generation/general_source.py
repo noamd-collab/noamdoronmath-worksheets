@@ -206,6 +206,22 @@ def validate_prose(value, grade, scope, *, require_hebrew=False):
         bad("SOURCE_NIQQUD", "Grades one and two require vocalized prose in every Hebrew text field")
 
 
+def check_printed_variable(question, item, answer, solved):
+    """The letter that a solve task's key prints in place of its contract letter (compact_authoring.rename_unknown).
+
+    It is a single lowercase letter outside x, y, a and b that the question
+    itself prints, and the task solves for x.
+    """
+    name = answer["printedVariable"]
+    task = solved["question"]
+    printed = [span.get("notation", "") for span in question["intro"] + item["prompt"] if span.get("kind") == "formula"]
+    printed += [span.get("text", "") for span in question["intro"] + item["prompt"] if span.get("kind") == "text"]
+    if (type(name) is not str or not re.fullmatch(r"[a-z]", name) or name in "xyab"
+            or task.get("kind") != "solve" or task.get("variable") != "x"
+            or not any(re.search(r"(?<![A-Za-z])" + name + r"(?![A-Za-z])", text) for text in printed)):
+        bad("SOURCE_NOTATION", "A printed variable must be a letter that the question prints")
+
+
 def validate_question(question, grade, scope, *, provider, qcount, evidence, pending):
     """Validate and normalize one expanded question, preserving its printed position."""
     exact(question, ("intro", "star", "items"), ("table", "figure", "drawingFromWords"))
@@ -236,6 +252,7 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
             bad("SOURCE_FIGURE","A drawing-from-words task must leave the requested figure blank")
     if type(question["items"]) is not list or not (5 if grade <= 2 else 3) <= len(question["items"]) <= 9:
         bad("SOURCE_ITEMS", "Broad worksheets require at least five items per question in grades one and two, and three items otherwise")
+    keys = {}  # the solved task of each computed item, for the leak check below
     for j, item in enumerate(question["items"], 1):
         exact(item, ("prompt", "answer"))
         item["prompt"] = rich(item["prompt"], grade, provider=provider, location=f"q{qcount}.item.{j}.prompt")
@@ -244,8 +261,10 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
             bad("SOURCE_ANSWER", "Expected typed answer")
         item_id = f"q{qcount}-i{j}"
         if answer.get("kind") == "computed":
-            exact(answer, ("kind", "task", "unit"), ("notation",)); text(answer["unit"], 50, empty=True)
+            exact(answer, ("kind", "task", "unit"), ("notation", "printedVariable")); text(answer["unit"], 50, empty=True)
             solved = validate_and_solve_task(answer["task"])
+            if "printedVariable" in answer:
+                check_printed_variable(question, item, answer, solved)
             from printed_tasks import match_printed_task, printed_table_row, validate_computed_request
             validate_computed_request(question, item, solved, grade, location=f"q{qcount}.item.{j}")
             match_printed_task(item, solved, grade)
@@ -278,6 +297,7 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
                         raise policy.at(qcount, j)
                 raise error.at(qcount, j)
             evidence.append({"itemId": item_id, "computed": solved})
+            keys[j] = solved
             if decision is not None and decision.proof["bound"] == "story":
                 # The verdict is exact for the typed claim. That the claim reads a
                 # story correctly is as unverified as in any word problem; a yes or
@@ -319,6 +339,11 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
                             else "No key is printed; the teacher checks this item"})
         else:
             bad("SOURCE_ANSWER", "Supported answers: computed, figure, label or open in elementary, review in middle school")
+    from printed_parts import answer_leak
+    leak = answer_leak(question, keys)
+    if leak is not None:
+        raise GeneralSourceError("PRINTED_ANSWER_LEAK", "An item prints the answer of an earlier item of the same question",
+                                 question=qcount, item=leak)
     validate_prose(question, grade, scope)
 
 

@@ -66,9 +66,11 @@ def load_reply(corpus, case):
     """The recorded first reply: (reply for the transport, text or None, reply to examine, its source).
 
     A case with `firstReplyFormat: "text"` keeps the model's content text
-    because it is not JSON. The transport replays that text; the engine
-    rejects it as it did live. Its questions can be examined only through a
-    declared `repairedReply`, a hand repair that is never replayed.
+    because it is not JSON. The transport replays that text and the engine's
+    own reply reader decides what it can read, as it did live. Its questions
+    are examined through a declared `repairedReply`, a hand repair that is
+    never replayed, or else as the engine's salvage reads them (a question
+    it cannot decode is listed as not an object).
     """
     corpus = Path(corpus)
     text = (corpus / case['firstReply']).read_text(encoding='utf-8')
@@ -77,18 +79,40 @@ def load_reply(corpus, case):
         return first, None, first, 'firstReply'
     if case.get('repairedReply'):
         return None, text, json.loads((corpus / case['repairedReply']).read_text(encoding='utf-8')), 'repairedReply'
+    from reply_salvage import salvage
+    salvaged = salvage(text)
+    if salvaged is not None:
+        return None, text, salvaged[0], 'salvage'
     return None, text, None, None
 
 
-def replay_case(case, corpus, skills, work, *, render=True):
+def correction_path(entry):
+    return entry['reply'] if isinstance(entry, dict) else entry
+
+
+def load_correction(corpus, entry):
+    """A recorded correction reply: parsed JSON, or, for `format: "text"`, the text and the keys it answered.
+
+    A text correction is not JSON as recorded. It answers only a request for
+    exactly its recorded keys, and the engine's own reply reader decides what
+    can be read from it, as it did live.
+    """
+    text = (Path(corpus) / correction_path(entry)).read_text(encoding='utf-8')
+    if isinstance(entry, dict) and entry.get('format') == 'text':
+        return engine.TextReply(text, entry['required'])
+    return json.loads(text)
+
+
+def replay_case(case, corpus, skills, work, *, render=True, corrections_mode='exact'):
     """Returns (stable record, run record)."""
     corpus = Path(corpus)
     lesson, goal = load_lesson(corpus, case)
     recorded, recorded_text, first, examined = load_reply(corpus, case)
-    corrections = [json.loads((corpus / name).read_text(encoding='utf-8')) for name in case.get('corrections', [])]
+    corrections = [load_correction(corpus, entry) for entry in case.get('corrections', [])]
     local = engine.native_contract(lesson)
     route = 'general' if local else 'worker'
-    transport = engine.RecordedReplies(recorded, corrections, first_text=recorded_text)
+    transport = engine.RecordedReplies(recorded, corrections if corrections_mode != 'none' else (),
+                                       first_text=recorded_text, subsets=corrections_mode == 'subset')
     outcome = engine.run_job(lesson, transport, Path(work) / case['id'], seed='replay/' + case['id'],
                              route=route, render=render)
     renders = [report.render_record(entry, attempt) for attempt, entry in enumerate(outcome['renders'], 1)]
@@ -286,7 +310,7 @@ def compare(before, after):
     return head, lines
 
 
-def run(corpus=CORPUS, only=(), out=None, work=None, render=True, skills=None):
+def run(corpus=CORPUS, only=(), out=None, work=None, render=True, skills=None, corrections='exact'):
     """Replay the selected cases. Returns the results document; writes files when `out` is given.
 
     `skills` may name already installed skill folders; otherwise the bundled
@@ -302,11 +326,12 @@ def run(corpus=CORPUS, only=(), out=None, work=None, render=True, skills=None):
     records, runs = [], []
     with engine.engine_environment(skills), engine.network_guard() as refused:
         for case in cases:
-            record, timing = replay_case(case, corpus, skills, work, render=render)
+            record, timing = replay_case(case, corpus, skills, work, render=render, corrections_mode=corrections)
             records.append(record)
             runs.append(timing)
     env = report.environment()
-    results = {'version': 1, 'rendered': render, 'summary': summarise(records, refused), 'cases': records}
+    results = {'version': 1, 'rendered': render, 'corrections': corrections,
+               'summary': summarise(records, refused), 'cases': records}
     if out:
         out.mkdir(parents=True, exist_ok=True)
         report.write_json(out / 'results.json', results)
@@ -322,12 +347,17 @@ def main(argv=None):
     parser.add_argument('--out', help='New folder for results.json, summary.md and run.json (default: a temp folder)')
     parser.add_argument('--work', help='Folder for render output and the skill cache (default: <out>/work)')
     parser.add_argument('--no-render', action='store_true', help='Stop after the author stage')
+    parser.add_argument('--corrections', choices=('exact', 'subset', 'none'), default='exact',
+                        help='exact: a recorded correction answers only a request for exactly its keys (default); '
+                             'subset: it also answers a request for some of its keys, with those questions '
+                             '(a what-if: the live request would have differed); none: no correction is answered, '
+                             'so only reserves and a shorter sheet can save a case')
     parser.add_argument('--compare', help='An earlier results.json to report changes against')
     args = parser.parse_args(argv)
     out = Path(args.out) if args.out else Path(tempfile.mkdtemp(prefix='teacher-replay-'))
     if (out / 'results.json').exists():
         parser.error(f'{out} already holds results; choose a new folder')
-    results = run(args.corpus, args.case, out, args.work, render=not args.no_render)
+    results = run(args.corpus, args.case, out, args.work, render=not args.no_render, corrections=args.corrections)
     print((out / 'summary.md').read_text(encoding='utf-8'))
     if args.compare:
         head, lines = compare(json.loads(Path(args.compare).read_text(encoding='utf-8')), results)

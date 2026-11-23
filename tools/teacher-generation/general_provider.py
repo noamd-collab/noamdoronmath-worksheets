@@ -15,10 +15,11 @@ import os
 from authoring_context import build_authoring_context, AuthoringContextError
 from general_source import validate_source, GeneralSourceError, geometry_topic
 from lesson_select import CHALLENGES, NO_QUESTION, PRACTICE, Selection
-from skill_authoring import (MAX_CORRECTED, bind_content, correction_instructions, instruction_for,
+from skill_authoring import (MAX_CORRECTED, bind_content, correction_instructions, examine_frame, instruction_for,
                              notation_correction, question_codes, question_plan, refers_to_another_question,
-                             refusal_feedback, reserve_plan, revision_request, split_reserves, worksheet_schema)
-from source_normalize import normalize_question, normalize_source
+                             refusal_feedback, reserve_plan, revision_request, split_reserves, trim_rule,
+                             worksheet_schema)
+from source_normalize import normalize_question, normalize_rich, normalize_source
 from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 from runtime_catalog import catalog, scope_for_lesson
 from validation import reject
@@ -100,6 +101,17 @@ class Draft:
         self._printed = []
         self.corrections = 0
         self.sheet_error = None
+        # The rule is examined alone, as each question is. A refused rule loses each
+        # sentence that is refused on its own; when that is not enough, the one
+        # correction call asks for the rule again. Unmarked mathematics keeps its own
+        # repair (the notation correction), so it is left to the whole-sheet check.
+        self.rule_refusal, self.rule_trimmed = examine_frame(self.title, self.rule, lesson, scope), False
+        if self.rule_refusal is not None and self.rule_refusal.code == 'SOURCE_PLAIN_MATH':
+            self.rule_refusal = None
+        elif self.rule_refusal is not None and self.rule_refusal.code.startswith('SOURCE_'):
+            trimmed = trim_rule(self.title, self.rule, lesson, scope)
+            if trimmed is not None:
+                self.rule, self.rule_refusal, self.rule_trimmed = trimmed, None, True
         authored = {PRACTICE: list(flat['practice']), CHALLENGES: list(flat['challenges'])}
         taken = {PRACTICE: 0, CHALLENGES: 0}
         planned = []
@@ -134,6 +146,13 @@ class Draft:
         return question_codes(question, self.requested, self.scope, challenge=challenge, index=number,
                               refusals=self._refusals)
 
+    def _normalise_rule(self, rule):
+        try:
+            return normalize_rich(rule, self.requested['gradeNumber'], topic_id=self.scope['topic'].get('topicId'),
+                                  domain=self.scope['topic'].get('domain'), path='rule')[0]
+        except Exception:  # noqa: BLE001 - the normaliser never decides; examine_frame does
+            return rule
+
     def _normalise(self, question):
         try:
             return normalize_question(question, self.requested['gradeNumber'], topic_id=self.scope['topic'].get('topicId'),
@@ -164,7 +183,7 @@ class Draft:
 
     def report(self):
         """Counts and codes only (lesson_select.Selection.summary) plus the corrections used."""
-        return {**self.selection.summary(), 'corrections': self.corrections}
+        return {**self.selection.summary(), 'corrections': self.corrections, 'ruleTrimmed': self.rule_trimmed}
 
     # ------------------------------------------------------------------ the sheet
 
@@ -245,7 +264,7 @@ class Draft:
 
     def needs_model(self):
         """Whether one correction call could help the current sheet."""
-        return bool(self.selection.missing()) or self._notation_fix() is not None
+        return bool(self.selection.missing()) or self._notation_fix() is not None or self.rule_refusal is not None
 
     def _feedback(self, slot, *, locate=True):
         """The fixed instruction of each code; with ``locate`` also the field and substring of a source fault."""
@@ -288,19 +307,25 @@ class Draft:
                 # Challenges first: a sheet needs two of them; then in sheet order.
                 slots = sorted(sorted(slots, key=lambda slot: (slot.group != CHALLENGES, slot.number))[:MAX_CORRECTED],
                                key=lambda slot: slot.number)
-                if not slots:
+                fix_rule = (instruction_for(self.rule_refusal.code, self._instructions)
+                            if self.rule_refusal is not None else None)
+                if not slots and fix_rule is None:
                     return
                 rows = [{'key': f'q{slot.number}', 'question': slot.number, 'plan': self.plan[slot.number - 1],
                          'original': slot.removed if isinstance(slot.removed, dict) else None,
                          'findings': self._feedback(slot)} for slot in slots]
                 request, keys = revision_request(rows, self.requested, self.scope, self._context, self._model,
-                                                 self.title, self.rule)
+                                                 self.title, self.rule, fix_rule=fix_rule)
                 reply = self._ask(request, observed)
                 if type(reply) is not dict:
                     raise GeneralSourceError('REVISION_SCOPE', 'The correction reply is not an object of questions')
                 for slot, key in zip(slots, keys):
                     row = reply.get(key)
                     self.selection.fill(slot.number, self._normalise(row) if isinstance(row, dict) else None)
+                if fix_rule is not None and isinstance(reply.get('rule'), str):
+                    rule = self._normalise_rule(reply['rule'])
+                    if examine_frame(self.title, rule, self.requested, self.scope) is None:
+                        self.rule, self.rule_refusal, self.sheet_error = rule, None, None
             # A restored challenge may now let a practice reserve stand in for another one.
             self.selection.screen('correction')
         except GeneralSourceError as exc:
@@ -496,7 +521,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'selectedConcepts': scope['selectedConcepts'],
             'finalContractReminder': 'Put all ordinary questions in practice and exactly three challenge questions in challenges; a challenge changes the reasoning, not the number of operations, digits or bracket depth. Put the reserve questions of reservePlan in reserves. Each question has intro and items. Use complete Hebrew words, typed math and no markup.'}
     activities = (
-        'recognize and read the given quantities or properties',
+        'read a given quantity from the data and compute one value from it',
         'work one direct case using the selected concept',
         'complete a missing part from known data',
         'apply the concept in an everyday situation',
@@ -506,7 +531,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'match an example to a stated category and give a checkable result',
         'compare a short explicit set of data in each item; use a table only if it is included in table.head and table.rows',
         'choose needed data from a brief situation containing an extra detail',
-        'compare two proposed methods on a concrete new example',
+        'carry out two proposed methods on a concrete new example and give the number that each one yields',
         'recover one missing value from an example under an explicit constraint',
         'organize and interpret a sequence of cases',
         'use two sensible bounds as a check while computing one requested value',
@@ -518,9 +543,9 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'model a short everyday decision with a single measurable output',
         'decide how changing one datum changes the answer',
         'find one missing input in a small table where all givens are present',
-        'classify a new example using the defining property',
+        'classify a new example by computing the measure that its defining property names',
         'connect an estimate to a separately stated exact result',
-        'contrast two related configurations using an explicit criterion',
+        'contrast two related configurations by computing, for each, the quantity that an explicit criterion names',
         'use the taught relationship in the opposite direction',
         'combine two previously used operations in a fresh setting',
     )
@@ -532,7 +557,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'meet the new idea in one small concrete case; the intro names the single step to take',
         'take the same first step again with new numbers, the step still named in the intro',
         'complete one missing step of a short worked example of the new idea',
-        'say which of two small given cases shows the new idea, using its defining property',
+        'compute the defining measure of a small given case that shows the new idea',
         'take the first step on a case that looks slightly different from the worked example',
     )
     entry = sum(1 for row in plan if row.get('role') == 'guided_entry')
@@ -547,7 +572,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             row['activity'] = activities[(len(plan) - 3 - entry + spare) % len(activities)]
             spare += 1
         else:
-            row['activity'] = 'decide which of two given worked methods fits a new case, and carry it out'
+            row['activity'] = 'carry out a given worked method on a new case and give the number that it yields'
     system += (' Follow each activity when it fits the selected concept. Keep its mathematical task '
                'structure distinct from the preceding question. Within each question use distinct '
                'purposeful subitems. Every actual exercise, data set and claim must appear only once; '

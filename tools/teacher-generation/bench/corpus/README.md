@@ -3,6 +3,21 @@
 Nineteen first replies of the author model to real lesson requests, with the
 requests, for `bench/replay.py`: fourteen from Qwen and five from Gemini.
 `index.json` names the provider, the model, the round and the time of each case.
+Thirteen more cases (`L1-*`, Gemini) come from live round 1; see below.
+
+## Live round 1 (`L1-*`)
+
+Thirteen cases from the first live run of the lesson skill (2026-11-23,
+`gemini-3.8-flash`, engine aec77f4e, eight lessons): every author reply and
+every correction reply of that run, byte for byte. A second author attempt of
+the same job is its own case with the suffix `-a2`. Two replies are kept as
+text because they are not JSON: `L1-p1-a2` (a first reply) and
+`replies/L1-p3-c1.txt` (a correction, declared in the index with the keys its
+request asked for). The square lesson ran live through the general author with
+its introduction contract bypassed, so it is replayed as `practice`; the other
+opening sheets are replayed as recorded. The engine now asks for other
+questions than the recorded corrections answer, so with the default
+`--corrections exact` most of them are not replayed.
 
 ## Origin
 

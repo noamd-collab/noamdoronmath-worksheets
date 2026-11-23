@@ -74,22 +74,104 @@ def task_numbers(task):
     return _numbers({k: v for k, v in task.items() if k != "figure"}, set())
 
 
-def visible_numbers(spans):
-    """Every number that a pupil can read in these spans."""
+def _written_terms(tree, found, *, exponents=True):
+    """The numbers written in a printed expression: a stacked fraction shows its numerator and denominator.
+
+    ``exponents=False`` leaves out the exponent of a power, which a pupil reads
+    as the form of the power and not as a quantity.
+    """
+    if isinstance(tree, dict):
+        if tree.get("type") == "number" and "numerator" in tree:
+            found.add(Fraction(tree["numerator"], tree["denominator"]))
+            if tree["denominator"] != 1:
+                found.update((Fraction(abs(tree["numerator"])), Fraction(tree["denominator"])))
+        elif not exponents and tree.get("type") == "operation" and tree.get("op") == "power":
+            _written_terms(tree.get("args", [None])[0], found, exponents=False)
+        else:
+            for child in tree.values():
+                _written_terms(child, found, exponents=exponents)
+    elif isinstance(tree, list):
+        for child in tree:
+            _written_terms(child, found, exponents=exponents)
+    return found
+
+
+_POWER_EXPONENT = re.compile(r"\^\s*(?:\(\s*[-−]?[0-9]+\s*\)|[-−]?[0-9]+)")
+
+
+def visible_numbers(spans, *, exponents=True):
+    """Every number that a pupil can read in these spans.
+
+    A written fraction a/b counts as a/b and as its two written numbers.
+    ``exponents=False`` leaves out the exponents of powers.
+    """
     found = set()
     for span in spans:
         if span["kind"] == "math":
-            _numbers(span["expression"], found)
+            _written_terms(span["expression"], found, exponents=exponents)
             continue
         text = span.get("text") if span["kind"] == "text" else span.get("notation", "")
-        for match in NUMBER_TOKEN.finditer(text or ""):
+        text = text or ""
+        if not exponents:
+            text = _POWER_EXPONENT.sub(" ", text)
+        for match in NUMBER_TOKEN.finditer(text):
             value = literal_value(match[0])
             found.add(value)
-            if (text or "")[match.end():match.end() + 1] == "%":
+            if text[match.end():match.end() + 1] == "%":
                 found.add(value / 100)
-        for pair in re.finditer(r"frac\(\s*([0-9]+)\s*,\s*([1-9][0-9]*)\s*\)", text or ""):
+        for pair in re.finditer(r"frac\(\s*([0-9]+)\s*,\s*([1-9][0-9]*)\s*\)", text):
             found.add(Fraction(int(pair[1]), int(pair[2])))
     return found
+
+
+def _key_values(solved):
+    """The numbers an answer key prints for one computed item: its value, or each of its solutions."""
+    result = solved.get("result", {}) if isinstance(solved, dict) else {}
+    if result.get("type") == "expression":
+        rows = [result.get("value")]
+    elif result.get("type") == "solutions" and result.get("classification") == "finite":
+        rows = result.get("values") or []
+    else:
+        return set()
+    return {Fraction(row["numerator"], row["denominator"]) for row in rows
+            if isinstance(row, dict) and row.get("type") == "number" and "numerator" in row}
+
+
+def answer_leak(question, keys):
+    """The first item that prints the key of an earlier item of the same question, or None.
+
+    ``keys`` maps an item number (one-based) to its solved computed task. An
+    item from the second on may not show a number that an earlier item's key
+    prints, unless the intro, the table or an earlier prompt shows it too:
+    otherwise the pupil reads that answer beside a later item. 0 and 1 are not
+    read as a leaked answer, and neither is the exponent of a power.
+
+    Only items that continue one another are read this way: those of a
+    question whose intro or table states numbers that the items share, and an
+    item whose words refer back to earlier results. Independent drill items
+    under an instruction without numbers (a letter such as [[x]] is not one)
+    share small numbers by chance and stay as they are.
+    """
+    shown = visible_numbers(question["intro"]) | visible_numbers(_table_spans(question))
+    shared = bool(shown)
+    answered = set()
+    for j, item in enumerate(question["items"], 1):
+        if not (shared or BACK_REFERENCE.search(_words(item["prompt"]))):
+            shown |= visible_numbers(item["prompt"])
+            answered |= _key_values(keys.get(j))
+            continue
+        printed = visible_numbers(item["prompt"], exponents=False)
+        solved = keys.get(j)
+        if solved is not None and shows_task(question, item, solved):
+            # The typed task is printed after this prompt, so its numbers are printed too.
+            printed |= _written_terms({k: v for k, v in solved["question"].items() if k != "figure"}, set(),
+                                      exponents=False)
+        leaked = {value for value in printed & (answered - shown) if abs(value) not in (0, 1)}
+        if leaked:
+            return j
+        shown |= visible_numbers(item["prompt"])
+        answered |= _key_values(keys.get(j))
+    return None
 
 
 def carries_data(spans):

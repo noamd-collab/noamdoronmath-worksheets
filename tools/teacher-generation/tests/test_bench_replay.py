@@ -22,6 +22,7 @@ HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
 from bench import engine, isolate, replay, report  # noqa: E402
 from validation import GenerationError  # noqa: E402
+from reply_salvage import salvage  # noqa: E402
 
 CORPUS = HERE / 'bench/corpus'
 MARKUP = '<script>'
@@ -48,11 +49,14 @@ class CorpusTests(unittest.TestCase):
     def test_corpus_holds_the_recorded_replies_and_nothing_private(self):
         index = json.loads((CORPUS / 'index.json').read_text(encoding='utf-8'))
         cases = index['cases']
-        self.assertEqual(len(cases), 19)
-        self.assertEqual(len({case['id'] for case in cases}), 19)
-        self.assertEqual([sum(case['provider'] == name for case in cases) for name in ('qwen', 'gemini')], [14, 5])
+        self.assertEqual(len(cases), 32)
+        self.assertEqual(len({case['id'] for case in cases}), 32)
+        self.assertEqual([sum(case['provider'] == name for case in cases) for name in ('qwen', 'gemini')], [14, 18])
+        self.assertEqual(sum(case['id'].startswith('L1-') for case in cases), 13)
+        corrections = [entry for case in cases for entry in case['corrections']]
         listed = ({case['firstReply'] for case in cases} | {case['lesson'] for case in cases}
-                  | {case['repairedReply'] for case in cases if 'repairedReply' in case})
+                  | {case['repairedReply'] for case in cases if 'repairedReply' in case}
+                  | {replay.correction_path(entry) for entry in corrections})
         on_disk = {str(p.relative_to(CORPUS)) for p in CORPUS.rglob('*')
                    if p.is_file() and p.parent.name in ('lessons', 'replies')}
         self.assertEqual(listed, on_disk)
@@ -62,18 +66,33 @@ class CorpusTests(unittest.TestCase):
             self.assertEqual(hashlib.sha256(recorded).hexdigest(), case['firstReplySha256'])
             # A substituted goal is declared as a pair, never applied silently.
             self.assertEqual(case['lessonGoal']['recordedAs'], lesson['lessonGoal'])
-            self.assertIn(case['lessonGoal']['replayedAs'], ('practice', 'review'))
+            # Live round 1 ran its opening sheets as opening sheets; only the square lesson had its
+            # introduction contract bypassed, so it is replayed as practice.
+            self.assertIn(case['lessonGoal']['replayedAs'], ('practice', 'review', case['lessonGoal']['recordedAs']))
             self.assertFalse(lesson.get('classLabel'))
             if case.get('firstReplyFormat') == 'text':
-                # Kept as the model's text because it is not JSON; its hand repair is declared and pinned.
+                # Kept as the model's text because it is not JSON; a hand repair, when there is one, is declared and pinned.
                 with self.assertRaises(ValueError):
                     json.loads(recorded.decode('utf-8'))
-                repaired = (CORPUS / case['repairedReply']).read_bytes()
-                self.assertEqual(hashlib.sha256(repaired).hexdigest(), case['repairedReplySha256'])
-                reply = json.loads(repaired.decode('utf-8'))
+                if 'repairedReply' in case:
+                    repaired = (CORPUS / case['repairedReply']).read_bytes()
+                    self.assertEqual(hashlib.sha256(repaired).hexdigest(), case['repairedReplySha256'])
+                    reply = json.loads(repaired.decode('utf-8'))
+                else:
+                    reply = salvage(recorded.decode('utf-8'))[0]
             else:
                 reply = json.loads(recorded.decode('utf-8'))
-            self.assertEqual(set(reply), {'title', 'rule', 'practice', 'challenges'})
+            self.assertIn(set(reply), ({'title', 'rule', 'practice', 'challenges'},
+                                       {'title', 'rule', 'practice', 'challenges', 'reserves'}))
+            for entry in case['corrections']:
+                if isinstance(entry, dict):
+                    # A correction kept as text answers exactly the keys its request asked for.
+                    text = (CORPUS / entry['reply']).read_bytes()
+                    self.assertEqual(hashlib.sha256(text).hexdigest(), entry['sha256'])
+                    self.assertEqual((entry['format'], set(salvage(text.decode('utf-8'))[0])),
+                                     ('text', set(entry['required'])))
+                else:
+                    self.assertTrue(all(key.startswith('q') for key in json.loads((CORPUS / entry).read_text(encoding='utf-8'))))
         blob = ''.join(p.read_text(encoding='utf-8') for p in CORPUS.rglob('*')
                        if p.is_file() and p.parent.name in ('lessons', 'replies'))
         for forbidden in ('@', 'http', 'Bearer', 'sk-', 'api_key', 'apiKey', 'eyJ', 'token', 'secret'):
@@ -224,20 +243,21 @@ class ReplayTests(unittest.TestCase):
             # Nothing that varies between runs belongs in the stable record.
             self.assertNotIn(str(self.scratch), json.dumps(case, ensure_ascii=False))
 
-    def test_a_reply_that_is_not_json_is_rejected_as_live_and_examined_from_its_declared_repair(self):
+    def test_a_reply_that_is_not_json_is_read_by_question_as_live_and_examined_from_its_declared_repair(self):
         results = self.replay(only=('G-equations', 'G-division'), render=False)
         cases = {case['id']: case for case in results['cases']}
         text, parsed = cases['G-equations'], cases['G-division']
         self.assertEqual((text['provider'], text['reply']), ('gemini', {'format': 'text', 'questionsFrom': 'repairedReply'}))
-        # The engine's own reply reader refuses the recorded text; nothing is repaired on the way in.
-        self.assertEqual(text['author']['firstPass']['code'], 'PROVIDER_INVALID_RESPONSE')
-        # A reply that is unusable as a whole gets one second author call. It was never
-        # recorded, so the replay stops there and says which failure asked for it.
-        self.assertEqual((text['finalStatus'], text['finalCode']), ('needs_unrecorded_reply', 'REPLAY_REPLY_NOT_RECORDED'))
+        # The engine's own reply reader keeps every question that decodes on its own; the
+        # three whose brackets a stray character replaced are lost and count as refused.
+        self.assertEqual(text['author']['firstPass']['code'], 'AUTHOR_PLAN_MISMATCH')
+        # The reply predates reserves: one correction is asked for the three positions. It was
+        # never recorded, so it counts as a failed correction and the sheet is shorter.
+        self.assertEqual(text['finalStatus'], 'authored')
         self.assertEqual((text['author']['requests'], text['author']['answeredFromRecording']), (2, 1))
-        self.assertEqual((text['ladder']['attempts'], text['ladder']['corrections'], text['ladder']['firstCode']),
-                         (2, 0, 'PROVIDER_INVALID_RESPONSE'))
-        self.assertEqual(results['summary']['secondAttemptsNotRecorded'], 1)
+        self.assertEqual((text['ladder']['attempts'], text['ladder']['corrections'], text['ladder']['correctionFailed']),
+                         (1, 1, True))
+        self.assertEqual(results['summary']['secondAttemptsNotRecorded'], 0)
         self.assertEqual(text['questions']['total'], 20)
         self.assertEqual(parsed['reply'], {'format': 'json', 'questionsFrom': 'firstReply'})
         self.assertEqual(results['summary']['byProvider']['gemini']['cases'], 2)

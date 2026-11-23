@@ -56,7 +56,16 @@ Rules (code, where, example before -> after)
                                               נקודה A -> נקודה [[point:A]]; מרובע ABCD -> [[polygon:ABCD]];
                                               AD הוא תיכון -> [[segment:AD]] הוא תיכון
   TYPED_RELATION     7-9     field            [[angle:ABC]] = [[50°]] -> [[∠ABC]] = [[50°]]
-  ANGLE_THREE_LETTER 7-9     question         [[angle:A]], ∠A, זווית A with figure ABCD -> angle BAD
+  TYPED_NAME_INSIDE  7-9     island           [[angle:A + angle:B]] -> [[∠A + ∠B]];
+                                              [[angle:DAB = 70]] מעלות -> [[∠DAB = 70°]]
+  ANGLE_THREE_LETTER 7-9     question         [[angle:A]], ∠A, זווית A with figure ABCD -> angle BAD;
+                                              also inside a formula: [[∠D = 70°]] -> [[∠ADC = 70°]]
+  SIGN_ISLAND        1-9     field            הסימן [[%]] -> הסימן %
+  NAMED_VALUES       7-9     island           [[a=1, b=-6, c=9]] -> [[a = 1]], [[b = -6]], [[c = 9]]
+  FIGURE_WINDOW      7-9     figure           a coordinate window that leaves out a point or passes 10 ->
+                                              the points' range with a margin of 1, inside -10..10
+  DECIDE_WRAPPER     1-9     answer           {"kind": "decide", relation, left, right} with the unit on the
+                                              item -> {"kind": "computed", "task": {...}, "unit": ""}
 
 Deliberately not rewritten (two readings, or not printable): 3,5 (decimal or
 list), 7:30 and every colon in ratio and measurement topics (time or ratio),
@@ -79,6 +88,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from fractions import Fraction
+import json
 import re
 
 MAX_ISLAND = 220
@@ -210,6 +220,16 @@ _APPOSITION = re.compile(rf"(?:הנעלם|המשתנה|האות|המספר הח�
 _HEBREW_HYPHEN = re.compile(rf"[{HEB}][־-]\s*$")
 _MISSING_NUMBER = "המספר החסר"
 _MISSING_NUMBER_POINTED = "הַמִּסְפָּר הֶחָסֵר"
+# A typed name is a whole island of its own. Inside a larger formula an angle
+# or a triangle is written with its sign, as the formula grammar reads it.
+_TYPED_ALONE = re.compile(r"\s*(?:point|segment|triangle|angle|polygon):[A-Z]{1,8}\s*")
+_TYPED_INSIDE = re.compile(r"(?<![A-Za-z])(angle|triangle):([A-Z]{1,3})(?![A-Za-z0-9_])")
+# An angle set equal to a bare number is measured in degrees; a following מעלות repeats the sign.
+_ANGLE_DEGREES = re.compile(
+    r"\[\[(∠\s*[A-Z]{1,3}\s*=\s*[0-9]{1,3}(?:\.[0-9]{1,4})?)\s*(°?)\]\](\s+מעלות(?![א-ת]))?")
+_NAMED_VALUE = r"\s*[a-z]\s*=\s*[-−]?[0-9]+(?:\.[0-9]+)?\s*"
+_NAMED_VALUES = re.compile(_NAMED_VALUE + r"(?:," + _NAMED_VALUE + r")+")
+_ANGLE_INSIDE = re.compile(r"∠\s*([A-Z])(?![A-Za-z0-9_])")
 _ANGLE_ISLAND = re.compile("\\[\\[(angle:|[∠\u2221\u2222]\\s*)([A-Z])\\]\\]")
 _ANGLE_SIGN = re.compile("[∠\u2221\u2222]\\s*([A-Z])(?![A-Za-z0-9_'’′])")
 _ANGLE_WORD = re.compile(rf"({_PREFIX}זווית\s+)([A-Z])(?![A-Za-z0-9_'’′]|\s*[=<>≤≥≠+*/^(])")
@@ -434,6 +454,9 @@ def _formula(content, context, *, task=False):
         content = note("SCHOOL_OPERATOR", content, _school_operators(content, context, task))
     elif context.grade >= 7:
         content = note("GEOMETRY_SIGN", content, _geometry_signs(content))
+        if not task and not _TYPED_ALONE.fullmatch(content):
+            content = note("TYPED_NAME_INSIDE", content, _TYPED_INSIDE.sub(
+                lambda m: {"angle": "∠", "triangle": "△"}[m[1]] + m[2], content))
     return content
 
 
@@ -460,6 +483,13 @@ def _island(content, context):
         if formula is None or _HEBREW.search(formula) or "₪" in formula or not formula.strip():
             return original
         return note("UNIT_OUT", original, _island(formula.strip(), context) + " " + unit)
+    if content.strip() == "%":
+        # An island that holds only the percent sign is the sign, in prose.
+        return note("SIGN_ISLAND", original, "%")
+    if context.grade >= 7 and _NAMED_VALUES.fullmatch(content):
+        # [[a=1, b=-6, c=9]] lists three givens: one island each.
+        parts = [re.sub(r"\s*=\s*", " = ", part.strip()) for part in content.split(",")]
+        return note("NAMED_VALUES", original, ", ".join("[[" + part + "]]" for part in parts))
     content = _formula(content, context)
     marks = _TRAILING_MARKS.fullmatch(content)
     suffix = ""
@@ -664,6 +694,8 @@ def _across_islands(text, context):
         joined = _TYPED_LEFT.sub(lambda m: plain(m[1], m[2]), text)
         joined = _TYPED_RIGHT.sub(lambda m: m[1] + plain(m[2], m[3]), joined)
         text = note("TYPED_RELATION", text, joined)
+        text = note("TYPED_NAME_INSIDE", text, _ANGLE_DEGREES.sub(
+            lambda m: m[0] if m[2] and not m[3] else "[[" + m[1] + "°]]", text))
     return text
 
 
@@ -985,6 +1017,12 @@ def _three_letter_angles(question, context):
                 name = _interior_angle(figure, match[2]) if match else None
                 if name:
                     parts[index] = "[[" + ("angle:" if match[1] == "angle:" else "∠") + name + "]]"
+                elif not match:
+                    # A one-letter angle inside a larger formula: [[∠A + ∠B]], [[∠D = 70°]].
+                    def inside(found):
+                        name = _interior_angle(figure, found[1])
+                        return "∠" + name if name else found[0]
+                    parts[index] = _ANGLE_INSIDE.sub(inside, part)
             else:
                 def sign(match):
                     name = _interior_angle(figure, match[1])
@@ -1025,7 +1063,74 @@ def _fields(question, context):
             answer["unit"] = _guarded(_plain, answer["unit"], context)
 
 
+_DECIDE_FIELDS = frozenset(("kind", "relation", "left", "right"))
+
+
+def _decide_wrapper(question, context):
+    """A decide task written as the answer itself: {"kind": "decide", relation, left, right}.
+
+    Seen live: the model closed the answer after the claim and put the unit
+    on the item. The task has one reading, so the answer becomes
+    {"kind": "computed", "task": {...}, "unit"} with the unit from either place.
+    """
+    items = question.get("items")
+    for number, item in enumerate(items if isinstance(items, list) else (), 1):
+        answer = item.get("answer") if isinstance(item, dict) else None
+        if not isinstance(answer, dict) or answer.get("kind") != "decide":
+            continue
+        units = [box["unit"] for box in (answer, item) if "unit" in box]
+        if (set(answer) - {"unit"} != _DECIDE_FIELDS or set(item) - {"prompt", "answer", "unit"}
+                or len(units) > 1 or not all(isinstance(unit, str) for unit in units)):
+            continue
+        context.path = f"item.{number}.answer"
+        task = {key: answer[key] for key in ("kind", "relation", "left", "right")}
+        item.pop("unit", None)
+        item["answer"] = {"kind": "computed", "task": task, "unit": units[0] if units else ""}
+        context.note("DECIDE_WRAPPER", json.dumps(answer, ensure_ascii=False, sort_keys=True),
+                     json.dumps(item["answer"], ensure_ascii=False, sort_keys=True))
+
+
+def _figure_window(question, context):
+    """A coordinate window that does not hold its points is recomputed from them.
+
+    The points are what the question is about. When the window, widened to
+    the origin as the compiler does, still leaves one out or passes the -10..10
+    limit, it becomes the range of the points and the origin with a margin of
+    1, inside the limit.
+    """
+    figure = question.get("figure")
+    if not isinstance(figure, dict) or figure.get("kind") != "coordinate_plane" or context.grade < 7:
+        return
+    points = figure.get("points")
+    if not isinstance(points, list) or not points or not all(
+            isinstance(p, dict) and type(p.get("x")) is int and type(p.get("y")) is int
+            and -10 <= p["x"] <= 10 and -10 <= p["y"] <= 10 for p in points):
+        return
+    window = {}
+    for axis in ("x", "y"):
+        span = figure.get(axis + "r")
+        values = [p[axis] for p in points] + [0]
+        if isinstance(span, list) and len(span) == 2 and all(type(v) is int and -10 <= v <= 10 for v in span):
+            # The compiler already widens a window to the origin (expand_source); that window stands.
+            low, high = min(0, span[0]), max(0, span[1])
+            if low <= min(values) and max(values) <= high and 2 <= high - low <= 16:
+                window[axis] = span
+                continue
+        low, high = max(-10, min(values) - 1), min(10, max(values) + 1)
+        if not 2 <= high - low <= 16:
+            return
+        window[axis] = [low, high]
+    for axis in ("x", "y"):
+        if figure.get(axis + "r") != window[axis]:
+            context.path = "figure." + axis + "r"
+            before = json.dumps(figure.get(axis + "r"))
+            figure[axis + "r"] = window[axis]
+            context.note("FIGURE_WINDOW", before, json.dumps(window[axis]))
+
+
 def _question(question, context):
+    _decide_wrapper(question, context)
+    _figure_window(question, context)
     _fields(question, context)
     rule = (_elementary_unknowns if 1 <= context.grade <= 6 else
             _three_letter_angles if context.grade >= 7 else None)

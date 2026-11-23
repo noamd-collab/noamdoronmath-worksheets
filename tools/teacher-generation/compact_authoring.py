@@ -199,7 +199,9 @@ COORDINATE = re.compile(r"([A-Z]?)\(\s*(-?[0-9]{1,6})\s*,\s*(-?[0-9]{1,6})\s*\)"
 
 ANGLE_NAME = r"∠\s*(?:[A-Z]{3}|[A-Z])"
 DEGREES = r"[0-9]{1,3}(?:\.[0-9]{1,4})?\s*°"
-ANGLE_MEASURE = rf"{ANGLE_NAME}(?:\s*=\s*(?:{ANGLE_NAME}|{DEGREES}))?"
+# One angle or a sum of angles; a chain of equal angles that may end in a measure.
+ANGLE_TERM = rf"{ANGLE_NAME}(?:\s*\+\s*{ANGLE_NAME}){{0,3}}"
+ANGLE_MEASURE = rf"{ANGLE_TERM}(?:\s*=\s*{ANGLE_TERM}){{0,3}}(?:\s*=\s*{DEGREES})?"
 LINE_RELATION = r"[A-Z]{2}\s*[⊥∥]\s*[A-Z]{2}"
 GEO_SYMBOLS = re.compile(rf"(?:{ANGLE_MEASURE}|{LINE_RELATION}|{DEGREES}|△\s*[A-Z]{{3}})")
 
@@ -213,7 +215,7 @@ def geometric_display(source):
     # These four commands are emitted by us. Input cannot contain a command.
     source = re.sub(r"∠\s*([A-Z]+)", lambda m: r"\angle{" + m[1] + "}", source)
     source = re.sub(r"△\s*([A-Z]+)", lambda m: r"\tri " + m[1], source)
-    source = re.sub(r"\s*([⊥∥=])\s*", lambda m: " " + {"⊥": r"\perp", "∥": r"\para", "=": "="}[m[1]] + " ", source)
+    source = re.sub(r"\s*([⊥∥=+])\s*", lambda m: " " + {"⊥": r"\perp", "∥": r"\para", "=": "=", "+": "+"}[m[1]] + " ", source)
     return re.sub(r"\s+°", "°", source)
 
 
@@ -252,6 +254,9 @@ def display_parts(value, grade):
     literal = display_literal(source)
     if literal is not None:
         return [literal]
+    if grade >= 7 and re.fullmatch(r"[a-z]%", source):
+        # "p%": a letter's percent, printed as written and never computed.
+        return [source]
     parts = RELATION.split(source)
     if len(parts) > 19:
         invalid()
@@ -264,7 +269,7 @@ def display_parts(value, grade):
 
         def alias(name):
             if name != "___" and (
-                grade < 7 or not re.fullmatch(r"[a-z]|[A-Z]{1,8}", name)
+                grade < 7 or not re.fullmatch(r"[a-z]|[A-Z]{1,8}|∠[A-Z]{1,3}|[a-z][0-9]", name)
             ):
                 invalid()
             if name not in aliases:
@@ -280,9 +285,18 @@ def display_parts(value, grade):
             if grade >= 7 and re.fullmatch(r"[xyab]{2,4}", name) and len(set(name)) == len(name):
                 # A product of distinct variables, 2ab: every letter is its own name.
                 return "".join(alias(letter) for letter in name)
-            return alias(name)
+            return alias(re.sub(r"\s+", "", name))
 
-        rewritten = DISPLAY_NAME.sub(rename, piece)
+        names = DISPLAY_NAME
+        if grade >= 7:
+            # An angle is one name (∠BAD = 3x); d1 is a subscripted name, unless its
+            # letter also stands alone, where x2 could be a product.
+            bare = set(re.findall(r"(?<![A-Za-z0-9_])[xy](?![A-Za-z0-9_])", piece))
+            subscript = r"(?<![A-Za-z0-9_])[a-z][0-9](?![0-9A-Za-z_.])"
+            names = re.compile(r"∠\s*[A-Z]{1,3}(?![A-Za-z])|" + subscript + "|" + DISPLAY_NAME.pattern)
+            if any(re.search(r"(?<![A-Za-z0-9_])" + letter + r"[0-9]", piece) for letter in bare):
+                names = re.compile(r"∠\s*[A-Z]{1,3}(?![A-Za-z])|" + DISPLAY_NAME.pattern)
+        rewritten = names.sub(rename, piece)
         spellings = {}
         # Two diagram labels side by side are not a product.
         tree = expression(rewritten, grade, blank_symbol=grade < 7 and "___" in aliases,
@@ -295,8 +309,17 @@ def display_parts(value, grade):
                 not re.search(rf"\^(?!(?:{_EXPONENTS})(?![0-9]))", piece)):
             result.append(re.sub(rf"\^({_EXPONENTS})(?![0-9])", r"^{\1}", piece.strip().replace("-", "−")))
         else:
-            result.append((tree, {alias: name for name, alias in aliases.items()}, spellings))
+            result.append((tree, {alias: printed_name(name) for name, alias in aliases.items()}, spellings))
     return result
+
+
+def printed_name(name):
+    """How a display name prints: ∠BAD as \\angle{BAD}, d1 as d_{1}, any other name as written."""
+    if name.startswith("∠"):
+        return r"\angle{" + name[1:] + "}"
+    if re.fullmatch(r"[a-z][0-9]", name):
+        return name[0] + "_{" + name[1] + "}"
+    return name
 
 
 def has_written_number(value):
@@ -314,6 +337,7 @@ def has_written_number(value):
 def needs_display_formula(value):
     return bool(
         has_written_number(value)
+        or re.fullmatch(r"[a-z]%", value)
         or GEO_SYMBOLS.fullmatch(value)
         or COEFFICIENT.search(value)
         or IMPLICIT_PRODUCT.search(value)
@@ -656,6 +680,30 @@ def wire_schema(schema, statistics):
         tasks.remove(stats)
 
 
+_TASK_LETTER = re.compile(r"(?<![A-Za-z])[a-z](?![A-Za-z])")
+
+
+def rename_unknown(task):
+    """Write the unknown of a solve task with a contract letter; return its printed letter, or None.
+
+    A model may solve for the letter that the question prints ("c", "h",
+    "m"). When that letter is the task's only letter and is not x, y, a or b,
+    it becomes the first contract letter the task does not use, and the key
+    prints the original letter again (printedVariable).
+    """
+    variable = task.get("variable")
+    sides = [task.get("lhs"), task.get("rhs")]
+    if (not isinstance(variable, str) or not re.fullmatch(r"[a-z]", variable) or variable in VARIABLES
+            or not all(isinstance(side, str) for side in sides)):
+        return None
+    letters = {letter for side in sides for letter in _TASK_LETTER.findall(side)}
+    if letters != {variable}:
+        return None
+    task["lhs"], task["rhs"] = (_TASK_LETTER.sub("x", side) for side in sides)
+    task["variable"] = "x"
+    return variable
+
+
 def expand_task(task, grade, fraction_notation):
     def expr(value):
         if isinstance(value, str):
@@ -833,8 +881,14 @@ def expand_source(source, grade, *, fraction_notation=False, topic=None, notes=N
                     item["prompt"] = rich(item["prompt"])
                 answer = item.get("answer")
                 if isinstance(answer, dict):
+                    # Only the compiler names a printed variable (below); a reply cannot.
+                    answer.pop("printedVariable", None)
                     if isinstance(answer.get("task"), dict):
                         task = answer["task"]
+                        if grade >= 7 and task.get("kind") == "solve":
+                            renamed = rename_unknown(task)
+                            if renamed:
+                                answer["printedVariable"] = renamed
                         if task.get("kind") == "solve":
                             from printed_tasks import printed_solve
                             bound = printed_solve(item.get("prompt"), task, grade)

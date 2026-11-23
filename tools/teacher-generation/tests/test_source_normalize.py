@@ -371,7 +371,8 @@ class QuestionTests(unittest.TestCase):
             "items": [
                 {"prompt": "מהו גודל הזווית $\\angle{ACB}$?", "answer": evaluate("70", "מעלות")},
                 {"prompt": "מהו גודל זווית הראש $\\angle{BAC}$?", "answer": evaluate("180-70-70", "מעלות")},
-                {"prompt": "מהו גודל הזווית $\\angle{BAD}$?", "answer": evaluate("40/2", "מעלות")},
+                # Typed from the givens: "40/2" would print item ב's key 40 beside item ג (PRINTED_ANSWER_LEAK).
+                {"prompt": "מהו גודל הזווית $\\angle{BAD}$?", "answer": evaluate("(180-70-70)/2", "מעלות")},
             ]}
         expanded, evidence = compiled(question, "g8:triangle_parts")
         self.assertEqual(rich_text(expanded["intro"], 8),
@@ -480,3 +481,75 @@ class SeamAndSafetyTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class LiveRoundOneNotation(unittest.TestCase):
+    """Islands and figures recorded in live round 1 (bench/corpus L1-*) that have one reading."""
+
+    def test_typed_angles_inside_a_formula_take_their_sign_and_degrees(self):
+        for before, after in (
+                ("נתון כי [[angle:DAB = 70]] מעלות.", "נתון כי [[∠DAB = 70°]]."),
+                ("נתון כי [[angle:BCD = 120]] מעלות. חשבו", "נתון כי [[∠BCD = 120°]]. חשבו"),
+                ("אם [[angle:DAB = 70]] מעלות.", "אם [[∠DAB = 70°]]."),
+                ("נתון כי [[angle:AOB = 90]] מעלות.", "נתון כי [[∠AOB = 90°]]."),
+                ("נתון כי [[angle:BAC = 35]] מעלות.", "נתון כי [[∠BAC = 35°]]."),
+                ("נתון כי [[angle:D = 70°]].", "נתון כי [[∠D = 70°]]."),
+                ("שתי זוויות הבסיס העליון, [[angle:A + angle:B]].", "שתי זוויות הבסיס העליון, [[∠A + ∠B]]."),
+                ("נתון כי [[angle:A = 100°]] ו־[[angle:D = 80°]].", "נתון כי [[∠A = 100°]] ו־[[∠D = 80°]]."),
+                ("נתון כי [[angle:D = 65°]].", "נתון כי [[∠D = 65°]]."),
+                ("נתון כי [[angle:A = 3*x]] ו־[[angle:D = 2*x]].", "נתון כי [[∠A = 3*x]] ו־[[∠D = 2*x]]."),
+                ("טרפז ישר־זווית שבו [[angle:A = angle:D = 90°]].", "טרפז ישר־זווית שבו [[∠A = ∠D = 90°]]."),
+                ("[[angle:ABC]] = [[50°]]", "[[∠ABC]] = [[50°]]")):
+            with self.subTest(before=before):
+                result, notes = normalize_rich(before, 9, domain="גיאומטרי")
+                self.assertEqual(result, after)
+                self.assertNotEqual(accepted(result, 9), "SOURCE_NOTATION")
+        # A typed name that is the whole island keeps its form.
+        self.assertEqual(normalize_rich("חשבו את [[angle:ADC]].", 9)[0], "חשבו את [[angle:ADC]].")
+
+    def test_a_figure_names_a_one_letter_angle_inside_a_formula(self):
+        trapezoid = {"kind": "shape", "shape": "trapezoid", "parameters": {"a": 9, "b": 5, "h": 4, "dx": 1},
+                     "names": "ABCD", "rotate": 0}
+        wire = {"intro": "בסרטוט טרפז.", "figure": trapezoid, "items": [
+            {"prompt": "נתון כי [[angle:D = 70°]]. חשבו את [[angle:A + angle:B]].", "answer": evaluate("180-70")}]}
+        prompt = normalize_question(wire, 9)[0]["items"][0]["prompt"]
+        self.assertEqual(prompt, "נתון כי [[∠ADC = 70°]]. חשבו את [[∠BAD + ∠ABC]].")
+        self.assertEqual(rich_text(accepted(prompt, 9), 9),
+                         r"נתון כי $\angle{ADC} = 70°$. חשבו את $\angle{BAD} + \angle{ABC}$.")
+        self.assertEqual(rich_text(accepted("[[∠BAD = 3*x]]", 9), 9), r"$\angle{BAD} = 3x$")
+
+    def test_subscripted_names_print_with_their_subscript(self):
+        for before, printed in (("[[d1 = 14]]", r"$d_{1} = 14$"), ("[[d1 = 3*x]]", r"$d_{1} = 3x$"),
+                                ("[[(d1 * d2) / 2]]", r"$\f{d_{1} · d_{2}}{2}$")):
+            with self.subTest(before=before):
+                self.assertEqual(rich_text(accepted(before, 9), 9), printed)
+        # x2 next to a bare x could be a product: not a name.
+        self.assertEqual(accepted("[[x2 + x = 5]]", 9), "SOURCE_NOTATION")
+
+    def test_percent_signs_and_named_values(self):
+        self.assertEqual(normalize_rich("הסימן [[%]] מייצג מאית", 8)[0], "הסימן % מייצג מאית")
+        for value in ("[[p%]] מתוך", "המהוות [[x%]] מסך הנקודות"):
+            with self.subTest(value=value):
+                self.assertNotIsInstance(accepted(value, 8), str)
+        self.assertEqual(rich_text(accepted("[[p%]] מתוך", 8), 8), "$p%$ מתוך")
+        self.assertEqual(normalize_rich("שבה [[a=1, b=-6, c=9]].", 9)[0], "שבה [[a = 1]], [[b = -6]], [[c = 9]].")
+        # A list that is not only names set to numbers stays as it is.
+        self.assertEqual(normalize_rich("[[a=1, b]]", 9)[0], "[[a=1, b]]")
+
+    def test_a_window_that_leaves_out_a_point_or_passes_ten_is_recomputed(self):
+        rhombus = {"kind": "coordinate_plane", "xr": [-1, 9], "yr": [-1, 8], "placement": "wide",
+                   "points": [{"name": "M", "x": 2, "y": 3}, {"name": "A", "x": 2, "y": 6}, {"name": "B", "x": 6, "y": 3},
+                              {"name": "C", "x": 2, "y": 0}, {"name": "D", "x": -2, "y": 3}],
+                   "segments": [["A", "B"], ["B", "C"], ["C", "D"], ["D", "A"], ["A", "C"], ["B", "D"]]}
+        trapezoid = {"kind": "coordinate_plane", "xr": [0, 11], "yr": [0, 7], "placement": "wide",
+                     "points": [{"name": "A", "x": 2, "y": 5}, {"name": "B", "x": 7, "y": 5},
+                                {"name": "C", "x": 9, "y": 1}, {"name": "D", "x": 1, "y": 1}],
+                     "segments": [["A", "B"], ["B", "C"], ["C", "D"], ["D", "A"]]}
+        for figure, xr, yr in ((rhombus, [-3, 7], [-1, 8]), (trapezoid, [-1, 10], [0, 7])):
+            with self.subTest(xr=figure["xr"]):
+                result, notes = normalize_question({"intro": "x", "figure": figure, "items": []}, 9)
+                self.assertEqual((result["figure"]["xr"], result["figure"]["yr"]), (xr, yr))
+                self.assertIn("FIGURE_WINDOW", {note["code"] for note in notes})
+        # A window the compiler widens to the origin is left to the compiler.
+        near = {**trapezoid, "xr": [1, 9]}
+        self.assertEqual(normalize_question({"intro": "x", "figure": near, "items": []}, 9)[0]["figure"]["xr"], [1, 9])

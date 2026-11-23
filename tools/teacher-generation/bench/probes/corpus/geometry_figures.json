@@ -248,9 +248,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "נתון: $\\angle{A} + \\angle{B} + \\angle{C} = 180°$. מצאו את $\\angle{C}$ אם $\\angle{A} = 50°$ ו־$\\angle{B} = 60°$.",
+    "key": "$70$"
    }
   },
   {
@@ -269,9 +269,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "rejected",
-    "stage": "source",
-    "code": "SOURCE_NOTATION"
+    "outcome": "pass",
+    "printed": "זוויות צמודות: $\\angle{ABC} = 2x + 10$° ו־$\\angle{CBD} = 3x$°. מצאו את $x$.",
+    "key": "$x = 34$"
    }
   },
   {

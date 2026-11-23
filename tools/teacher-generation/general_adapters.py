@@ -188,8 +188,11 @@ def _formula_text(notation, grade, H):
             # A blank or a segment name keeps the sign: 3 · ___, AB · CD.
             text = to_house_math(tree,number_spellings=spellings,
                                  schoolbook=all(re.fullmatch("[a-z]",name) for name in aliases.values()))
-            rendered.append(re.sub(r"(?<![A-Za-z\\])[xyab](?![A-Za-z])",
-                                   lambda match: aliases.get(match[0],match[0]),text))
+            # Every letter of the rendering is a symbol, also where two stand together (bx, ax^2);
+            # only the house macros (\f, \g, \sqrt, \pi) are words, and they are kept.
+            rendered.append(re.sub(r"\\[A-Za-z]+|[xyab]",
+                                   lambda match: match[0] if match[0].startswith("\\") else aliases.get(match[0],match[0]),
+                                   text))
     return " ".join(rendered)
 
 
@@ -397,6 +400,48 @@ def _decision_text(decision, grade, H=None):
     return text + (". " + ", ".join(reasons) if reasons else "")
 
 
+# The refusals of the pinned figure constructors: a shape they will not draw
+# and a layout their checker refuses. Anything else is a fault, not a refusal.
+FIGURE_REFUSALS = ("ShapeError", "LayoutError", "ValueError")
+
+
+def figure_refused(exc):
+    """Whether an exception of a figure constructor is one of its refusals."""
+    return any(cls.__name__ in FIGURE_REFUSALS for cls in type(exc).__mro__)
+
+
+def _wider(span, limit=10):
+    """An axis window two units wider: one unit on each side, both on one side at the limit."""
+    low, high = span[0] - 1, span[1] + 1
+    if high > limit:
+        low, high = low - (high - limit), limit
+    if low < -limit:
+        low, high = -limit, min(limit, high + (-limit - low))
+    return [low, high]
+
+
+def _shape_call(fig):
+    """The pinned constructor and its arguments for a validated shape.
+
+    A shape whose given measures have only one reading is drawn as that
+    shape: a parallelogram with equal adjacent sides is the rhombus with that
+    side and angle, and a trapezoid whose leg leaves the base at offset 0 is
+    the right trapezoid. Everything else is passed on unchanged.
+    """
+    shape, params = fig["shape"], dict(fig["parameters"])
+    if shape == "parallelogram" and params.get("a") == params.get("b"):
+        return "rhombus", {"a": params["a"], "angle": params["angle"]}
+    if shape == "triangle":
+        params["variant"] = "sss"
+    elif shape == "trapezoid":
+        if params.get("dx") == 0:
+            params.pop("dx")
+            params["variant"] = "right"
+        else:
+            params["variant"] = "scalene"
+    return shape, params
+
+
 def _figure(fig, elementary, index, work):
     """Invoke only explicit trusted skill constructors with validated fields."""
     kind = fig["kind"]
@@ -415,16 +460,20 @@ def _figure(fig, elementary, index, work):
         # figkit.figure_family. A Euclidean fam tag would incorrectly collapse
         # distinct coordinate graphs into one declared shape (G76 contract).
         builder=wide if fig.get("placement")=="wide" else plane
-        svg=builder(tuple(fig["xr"]),tuple(fig["yr"]),points=[(xy,name) for name,xy in points.items()],solid=[(points[a],points[b]) for a,b in fig["segments"]])
+        draw=lambda xr, yr: builder(tuple(xr),tuple(yr),points=[(xy,name) for name,xy in points.items()],solid=[(points[a],points[b]) for a,b in fig["segments"]])
+        try:
+            svg=draw(fig["xr"], fig["yr"])
+        except Exception as exc:  # noqa: BLE001 - only the skill's layout refusal is retried
+            if type(exc).__name__ != "LayoutError":
+                raise
+            # A letter that falls on an axis number: the same points in a window
+            # two units wider move the ticks. A second refusal stands.
+            svg=draw(_wider(fig["xr"]), _wider(fig["yr"]))
     else:
         import shapekit as SK
-        params = dict(fig["parameters"])
-        if fig["shape"] == "triangle":
-            params["variant"] = "sss"
-        elif fig["shape"] == "trapezoid":
-            params["variant"] = "scalene"
-        fam = "general." + fig["shape"]
-        g, data = SK.shape(fig["shape"], rotate=fig["rotate"], names=fig["names"], marks=True, fam=fam, **params)
+        shape, params = _shape_call(fig)
+        fam = "general." + shape
+        g, data = SK.shape(shape, rotate=fig["rotate"], names=fig["names"], marks=True, fam=fam, **params)
         svg = SK.finish(g, fam)
     path = work / "figures" / f"q{index}.svg"
     path.write_text(svg, encoding="utf-8")
@@ -678,7 +727,13 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
             if n == first:
                 q["part"] = [section["title"], str(first)+"–"+str(first+len(section["questions"])-1)]
             if "figure" in question:
-                q["fig"], path = _figure(question["figure"], False, n, work)
+                try:
+                    q["fig"], path = _figure(question["figure"], False, n, work)
+                except Exception as exc:  # noqa: BLE001 - only the pinned constructors' refusals are named
+                    if not figure_refused(exc):
+                        raise
+                    # A figure the pinned constructors refuse names its question, which a later stage replaces.
+                    raise GeneralSourceError("SOURCE_FIGURE", "The pinned skill cannot draw this figure").at(n) from None
                 q["_generalFigure"] = question["figure"]
             if "table" in question:
                 table = question["table"]
@@ -704,6 +759,12 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
                     computed["domain"]["variables"] = [label]
                 if isinstance(label, str):
                     printed = {"rule": "printed_equation", "variable": label}
+                elif computed and item["answer"].get("printedVariable"):
+                    # The question's own letter, which the compiler wrote as x (rename_unknown).
+                    label = item["answer"]["printedVariable"]
+                    computed = deepcopy(computed)
+                    computed["result"]["variable"] = label
+                    computed["domain"]["variables"] = [label]
                 if bound:
                     printed = bound.proof
                 if sign:

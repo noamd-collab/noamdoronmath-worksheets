@@ -66,6 +66,12 @@ instead of attributing failures.
 - `replay.py` writes `results.json` and `summary.md` (identical for identical
   engine behaviour: no timings, paths or file hashes) and `run.json` (timings,
   work folders, delivered files, machine facts).
+- `--corrections` chooses how recorded correction replies answer: `exact`
+  (default) only a request for exactly the recorded keys; `subset` also a
+  request for some of them, with those questions (a what-if: the live request
+  would have named fewer questions); `none` answers no correction, so only
+  reserves and a shorter sheet can save a case. A correction kept as text
+  (`format: "text"` in the index) goes through the engine's own reply reader.
 - `needs_unrecorded_reply` means the repair ladder ended without a sheet and
   the engine asked for a second full author reply that was never recorded. The
   replay stops there; it never invents a reply. A correction that was never

@@ -531,7 +531,13 @@ def author_reply_text(raw, measured):
 
 
 def parse_author_reply(raw, measured):
-    """Return the model's JSON object, strictly parsed. Never retried or repaired here."""
+    """Return the model's JSON object, strictly parsed. Never retried or repaired here.
+
+    A finished worksheet or correction reply whose text as a whole is not
+    JSON is read question by question (reply_salvage): each question that
+    decodes strictly on its own is kept in its place and examined like any
+    other; one that does not is lost and counts as refused.
+    """
     text=author_reply_text(raw,measured)
     def pairs(values):
         result={}
@@ -547,6 +553,13 @@ def parse_author_reply(raw, measured):
         # A finished reply whose text is not JSON: seen live from gemini-3.8-flash
         # in json_object mode (a stray character in place of closing brackets).
         measured['replyDefect']='content_not_json'
+    from reply_salvage import salvage
+    salvaged=salvage(text)
+    if salvaged is not None:
+        reply,lost=salvaged
+        # Counts only: the lost text is never kept.
+        measured['replySalvaged']={'questionsLost':lost}
+        return reply
     reject('PROVIDER_INVALID_RESPONSE','Provider response did not match the expected JSON envelope')
 
 

@@ -160,6 +160,13 @@ def describe_call(body):
             'maxTokens': body.get('max_tokens'), 'temperature': body.get('temperature')}
 
 
+class TextReply:
+    """A recorded correction kept as the model's content text, with the keys its request asked for."""
+
+    def __init__(self, text, required):
+        self.text, self.required = text, tuple(required)
+
+
 class RecordedReplies:
     """Stand-in for `provider.request_author_json` that answers from recorded replies.
 
@@ -174,27 +181,48 @@ class RecordedReplies:
     completion, so the engine rejects it exactly as it would live.
     """
 
-    def __init__(self, first, corrections=(), first_text=None):
+    def __init__(self, first, corrections=(), first_text=None, subsets=False):
         self.first = first
         self.first_text = first_text
+        # What-if mode: a recorded correction also answers a request for some of its keys.
+        self.subsets = subsets
         self.corrections = [c for c in corrections if isinstance(c, dict)]
+        # A correction kept as the model's text: (the keys its request asked for, the text).
+        self.text_corrections = [(frozenset(c.required), c.text) for c in corrections if isinstance(c, TextReply)]
         self.calls = []
+
+    @staticmethod
+    def _read_text(text, metadata):
+        """The engine's own reply reader on a recorded content text, inside a finished completion."""
+        import provider
+        envelope = json.dumps({'choices': [{'finish_reason': 'stop', 'message': {'content': text}}]}).encode()
+        return provider.parse_author_reply(envelope, metadata if isinstance(metadata, dict) else {})
 
     def __call__(self, target, key, body, metadata, timeout):
         from validation import GenerationError
         entry = describe_call(body)
         self.calls.append(entry)
         if len(self.calls) == 1 and self.first_text is not None:
-            import provider
             entry['answered'] = True
-            envelope = json.dumps({'choices': [{'finish_reason': 'stop',
-                                                'message': {'content': self.first_text}}]}).encode()
-            return provider.parse_author_reply(envelope, metadata if isinstance(metadata, dict) else {})
+            return self._read_text(self.first_text, metadata)
         if len(self.calls) == 1:
             reply = self.first
         else:
             wanted = set(entry['required'])
             reply = next((c for c in self.corrections if set(c) == wanted), None)
+            text = next((t for keys, t in self.text_corrections if keys == wanted), None)
+            if reply is None and text is None and self.subsets and wanted:
+                larger = next((c for c in self.corrections if wanted <= set(c)), None)
+                reply = {key: larger[key] for key in wanted} if larger is not None else None
+                if reply is None:
+                    text = next((t for keys, t in self.text_corrections if wanted <= keys), None)
+                    if text is not None:
+                        entry['answered'] = True
+                        read = self._read_text(text, metadata)
+                        return {key: read.get(key) for key in wanted} if isinstance(read, dict) else read
+            if reply is None and text is not None:
+                entry['answered'] = True
+                return self._read_text(text, metadata)
             if reply is None:
                 entry['answered'] = False
                 raise GenerationError('REPLAY_REPLY_NOT_RECORDED',

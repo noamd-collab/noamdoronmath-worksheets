@@ -27,6 +27,12 @@ FEEDBACK = {
     "D12": "State the unknown and all necessary givens. Keep the unknown's value out of the pupil text, diagram and hints. Put the verified result in the answer key.",
     "K6": "Use only point or segment names defined by the matching figure. In construction-from-words questions, describe the construction and omit unsupported figure declarations.",
     "G84": "Replace the premature concept with reasoning that uses only the selected outcomes and the documented prerequisites.",
+    "G76": (
+        "Too many questions of this sheet draw the same shape. At most one question in five of the drawn "
+        "questions (and never fewer than two) may share one shape or point set. Draw a different shape, or a "
+        "different point set on the grid, with its own measures; a new diagonal or altitude on the same shape "
+        "is still the same shape."
+    ),
 }
 
 
@@ -579,16 +585,40 @@ def parse_selfcheck_log(text, step="middle-build"):
             if re.match(r"^\s*\.\.\. [0-9]+ more\s*$", line):
                 rows.append(_finding("SELFCHECK", step))
             continue
-        mark = re.match(r"\s*K6 q([1-9][0-9]?) given names ", line)
-        rows.append(_finding("K6", step, int(mark[1])) if mark
+        # "K6 q4 given names ..." or, for one item, "K6 q16a given names ...".
+        mark = re.match(r"\s*K6 q([1-9][0-9]?)([a-i])? given names ", line)
+        rows.append(_finding("K6", step, int(mark[1]), "abcdefghi".index(mark[2]) + 1 if mark[2] else None) if mark
                     else _finding("K6" if rule[1] == "K6" else "SELFCHECK", step))
     return rows
+
+
+_DOMINANCE = re.compile(r"DOMINANCE: one shape carries ([0-9]{1,2}) of the [0-9]{1,2} drawn questions "
+                        r"\(([0-9]{1,2}(?:, [0-9]{1,2}){0,29})\) \S the cap at this size is ([0-9]{1,2})\.")
+
+
+def parse_g76(line, step="middle-build"):
+    """G76 variety scales: the questions over the DOMINANCE cap, named; anything else unnamed.
+
+    The gate lists the questions that draw the busiest shape and the cap. The
+    first ``cap`` of them stay and the rest are named, so that replacing them
+    brings the shape under the cap. A SCALE or PART finding is about the
+    whole sheet and names no question.
+    """
+    found = _DOMINANCE.search(line)
+    if found is None or re.search(r"\b(?:SCALE|PART):", line):
+        return [_finding("G76", step)]
+    questions, cap = [int(n) for n in found[2].split(", ")], int(found[3])
+    if len(questions) != int(found[1]) or not 1 <= cap < len(questions):
+        return [_finding("G76", step)]
+    return [_finding("G76", step, question) for question in questions[cap:]]
 
 
 def parse_build_plus_log(text, step="middle-build"):
     header = re.search(r"^AssertionError: G84-chronology FAIL on level '[abc]' \([^\n]+\):\n", text, re.M)
     if not header:
-        gate = re.search(r"^AssertionError: (G[0-9]{2})\b", text, re.M)
+        gate = re.search(r"^AssertionError: (G[0-9]{2})\b.*$", text, re.M)
+        if gate and gate[1] == "G76":
+            return parse_g76(gate[0], step)
         return [_finding(gate[1] if gate else "BUILD_PLUS", step)]
     rows = []
     for line in text[header.end():].splitlines():
