@@ -304,7 +304,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             payload = no_carry_addition.build_source(lesson, payload, addition_plan)
         payload = bind_content(payload, scope)
         payload = assemble_sections(payload, lesson['questionCount'])
-        payload = compact_authoring.expand_source(payload, lesson['gradeNumber'],
+        payload = compact_authoring.expand_source(payload, lesson['gradeNumber'], topic=scope['topic'],
                                                   fraction_notation=scope['topic']['domain'] == 'fractions')
         payload = validate_source(lesson, payload, scope, provider=True)["source"]
         if len(payload['sections'])!=1:

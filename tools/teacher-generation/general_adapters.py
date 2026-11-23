@@ -80,6 +80,8 @@ def _elementary_math(ast, grade, H, *, blank=False, number_spellings=None):
         if blank and ast["name"] == "x":
             return "___"
         raise GeneralSourceError("ELEMENTARY_SYMBOL", "The elementary adapter has no approved symbolic-variable typography")
+    if kind == "constant":
+        raise GeneralSourceError("ELEMENTARY_SYMBOL", "The elementary adapter has no approved typography for a named constant")
     op, args = ast["op"], ast["args"]
     if op == "sqrt":
         raise GeneralSourceError("ELEMENTARY_SQRT", "Roots are outside elementary signs")

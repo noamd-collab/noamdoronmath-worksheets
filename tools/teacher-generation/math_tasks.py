@@ -24,7 +24,11 @@ MAX_NODES = 128
 MAX_DEPTH = 12
 MAX_INPUT_INTEGER = 1_000_000
 MAX_RESULT_INTEGER = 1_000_000_000_000
-MAX_POWER = 4
+# An input exponent. The value it produces is bounded separately: a symbolic
+# power by MAX_DEGREE, a numeric one by MAX_COEFFICIENT_BITS while it is
+# computed and by MAX_RESULT_INTEGER when it is printed (10^12 is the largest
+# power of ten that fits).
+MAX_POWER = 12
 MAX_DEGREE = 8
 MAX_COEFFICIENT_BITS = 160
 MAX_RESULT_NODES = 512
@@ -34,6 +38,9 @@ MAX_RESULT_DEPTH = 24
 MAX_EXPANDED_TERMS = 64
 MAX_RADICAL_ATOMS = 4
 SYMBOLS = {name: S.Symbol(name, real=True) for name in ("x", "y", "a", "b")}
+# An exact real constant is a leaf of its own: it is neither a variable to
+# solve or substitute, nor a rational coefficient.
+CONSTANTS = {"pi": S.pi}
 BINARY = frozenset(("add", "subtract", "multiply", "divide", "power"))
 
 
@@ -100,6 +107,10 @@ def inspect_ast(ast, budget=None, depth=0):
         exact(ast, ("type", "name"), "symbol")
         if type(ast["name"]) is not str or ast["name"] not in SYMBOLS:
             fail("INVALID_AST", "Unknown symbol")
+    elif kind == "constant":
+        exact(ast, ("type", "name"), "constant")
+        if type(ast["name"]) is not str or ast["name"] not in CONSTANTS:
+            fail("INVALID_AST", "Unknown constant")
     elif kind == "operation":
         exact(ast, ("type", "op", "args"), "operation")
         op = ast["op"]
@@ -113,7 +124,8 @@ def inspect_ast(ast, budget=None, depth=0):
             inspect_ast(arg, budget, depth + 1)
         if op == "power":
             exponent = ast["args"][1]
-            limit = MAX_DEGREE if budget.result else MAX_POWER
+            # Printing re-inspects an authored expression with the result budget.
+            limit = max(MAX_DEGREE, MAX_POWER) if budget.result else MAX_POWER
             if exponent["type"] != "number" or exponent["denominator"] != 1 or abs(exponent["numerator"]) > limit:
                 fail("UNSUPPORTED_POWER", "Power requires a bounded integer literal exponent")
     else:
@@ -131,8 +143,8 @@ class AlgebraCost:
 def _fingerprint(ast):
     if ast["type"] == "number":
         return ("number", ast["numerator"], ast["denominator"])
-    if ast["type"] == "symbol":
-        return ("symbol", ast["name"])
+    if ast["type"] in ("symbol", "constant"):
+        return (ast["type"], ast["name"])
     return (ast["op"], tuple(_fingerprint(arg) for arg in ast["args"]))
 
 
@@ -162,7 +174,7 @@ def _algebra_cost(ast):
     repeated monomials. Distinct sqrt syntax is a conservative radical-rank
     bound; no factorization or symbolic equality is needed to enforce it.
     """
-    if ast["type"] in ("number", "symbol"):
+    if ast["type"] in ("number", "symbol", "constant"):
         return AlgebraCost()
     op, args = ast["op"], ast["args"]
     if op in ("add", "multiply") and len(args) > 2:
@@ -204,6 +216,8 @@ class Compiler:
             return Compiled(S.Rational(n, d), 0, 0, max(abs(n).bit_length(), d.bit_length(), 1))
         if kind == "symbol":
             return Compiled(SYMBOLS[ast["name"]], 1, 0, 1)
+        if kind == "constant":
+            return Compiled(CONSTANTS[ast["name"]], 0, 0, 2)
         op, args = ast["op"], ast["args"]
         if op in ("add", "multiply") and len(args) > 2:
             return self.compile(_fold(op, args))
@@ -283,6 +297,8 @@ def _ast(expression):
         return number(n, d)
     if expression.is_Symbol and expression in SYMBOLS.values():
         return {"type": "symbol", "name": str(expression)}
+    if expression is S.pi:
+        return {"type": "constant", "name": "pi"}
     if expression.is_Add:
         return _fold("add", [_ast(x) for x in expression.as_ordered_terms()])
     if expression.is_Mul:
@@ -334,6 +350,8 @@ def to_house_math(ast, *, number_spellings=None, schoolbook=False) -> str:
             return sign + (str(abs(n)) if d == 1 else r"\f{" + str(abs(n)) + "}{" + str(d) + "}")
         if kind == "symbol":
             return node["name"]
+        if kind == "constant":
+            return r"\pi"
         op, args = node["op"], node["args"]
         parts = [emit(arg) for arg in args]
         group = lambda text: r"\g{" + text + "}"
@@ -401,9 +419,19 @@ def to_house_math(ast, *, number_spellings=None, schoolbook=False) -> str:
             return '−'+right
         if schoolbook and juxtaposed(args[0], args[1]) and not right.startswith('−'):
             return left+right
+        # A numerical coefficient is written against the constant: 25π.
+        if args[0]["type"] == "number" and args[0]["numerator"] >= 0 and _pi_factor(args[1]):
+            return left + right
         return left+" · "+right
 
     return emit(ast)
+
+
+def _pi_factor(node):
+    """π or a positive integer power of π, the right factor of a printed coefficient."""
+    if node["type"] == "operation" and node["op"] == "power":
+        node = node["args"][0]
+    return node == {"type": "constant", "name": "pi"}
 
 
 def _original_symbols(ast):
@@ -507,6 +535,8 @@ def _rational_shape(ast):
         return 0, 0, max(abs(ast["numerator"]).bit_length(), ast["denominator"].bit_length(), 1)
     if ast["type"] == "symbol":
         return 1, 0, 1
+    if ast["type"] == "constant":
+        fail("UNSUPPORTED_EQUATION", "Solver input requires rational coefficients")
     op, args = ast["op"], ast["args"]
     if op in ("add", "multiply") and len(args) > 2:
         return _rational_shape(_fold(op, args))

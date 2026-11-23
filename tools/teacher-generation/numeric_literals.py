@@ -8,10 +8,11 @@ from math_tasks import MAX_INPUT_INTEGER
 
 NUMBER_TOKEN = re.compile(r"(?:[1-9][0-9]{0,2}(?:,[0-9]{3})+|[0-9]+)(?:\.[0-9]+)?")
 PLAIN_TOKEN = re.compile(r"[0-9]+(?:\.[0-9]+)?")
-_SYNTAX = re.compile(r"sqrt|frac|[xyab+*/^(),-]")
+_SYNTAX = re.compile(r"sqrt|frac|pi|π|[xyab+*/^(),-]")
 _LITERAL = re.compile(rf"[+-]?{NUMBER_TOKEN.pattern}%?")
 COEFFICIENT = re.compile(r"(?<=[0-9])([xyab])(?![A-Za-z0-9_])")
-_SCHOOL_OPERATION = re.compile(r"(?:(?<=[0-9)])|(?<=___))\s+([x:])\s+(?=[0-9(]|___)")
+# A percentage is a complete operand too: 25% x 80.
+_SCHOOL_OPERATION = re.compile(r"(?:(?<=[0-9)%])|(?<=___))\s+([x:])\s+(?=[0-9(]|___)")
 
 
 def elementary_operations(source):

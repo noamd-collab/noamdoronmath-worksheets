@@ -405,7 +405,7 @@ def source_findings(original, lesson, scope, error):
         try:
             question ={**wire, "star": index > len(groups[0])}
             expanded = compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]},
-                lesson["gradeNumber"], fraction_notation=scope["topic"]["domain"] == "fractions")
+                lesson["gradeNumber"], topic=scope["topic"], fraction_notation=scope["topic"]["domain"] == "fractions")
             validate_question(expanded["sections"][0]["questions"][0], lesson["gradeNumber"], scope,
                               provider=True, qcount=index, evidence=[], pending=[])
         except (GeneralSourceError, MathTaskError) as exc:
