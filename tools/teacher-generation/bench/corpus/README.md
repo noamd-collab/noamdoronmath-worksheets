@@ -56,7 +56,11 @@ problems are the model's invented characters.
 ## The substituted lesson goal
 
 The ten `A-*` and `B-*` lessons were recorded with `lessonGoal: "introduce"`,
-which this line rejects before authoring. Their index entries carry
+which the engine rejected before authoring when they were recorded. The general
+author accepts that goal now, but the substitution stays so that the replay
+keeps measuring the same path: with `introduce` the square lesson would take
+its own introductory contract, which the recorded reply does not answer. Their
+index entries carry
 
 ```json
 "lessonGoal": {"recordedAs": "introduce", "replayedAs": "practice"}

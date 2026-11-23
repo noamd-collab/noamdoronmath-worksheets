@@ -35,8 +35,6 @@ class SquareLessonTest(unittest.TestCase):
             lesson_source.build(self.lesson, json.loads(json.dumps(source))),
         )
 
-    @unittest.skip("The live line rejects lessonGoal=introduce in validation.validate_lesson; "
-                   "the introductory square contract stays dormant until that goal is enabled.")
     @patch("provider.build_authoring_context", return_value={})
     def test_introduction_uses_real_provider_contract_and_replays_its_selected_geometry(self, _context):
         lesson = dict(self.lesson, lessonGoal="introduce")

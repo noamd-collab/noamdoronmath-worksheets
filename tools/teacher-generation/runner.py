@@ -32,13 +32,15 @@ def verify_skill(kind, path):
     return root,pin
 
 
-def _open_job(lesson, model_payload, workdir, skill_paths, allow_legacy, *, elementary_general_only=False):
+def _open_job(lesson, model_payload, workdir, skill_paths, allow_legacy, *, elementary_general_only=False, salvaged_from=None):
     """Validate, verify the pinned skill and open the isolated work folder.
 
     Returns None, before anything is written, when ``elementary_general_only``
     is set and the lesson is not a version 3 elementary lesson.
+    ``salvaged_from`` is the requested question count of a shorter, salvaged
+    sheet (validation.validate_lesson); only the worker passes it.
     """
-    cap=validate_model(lesson,model_payload,allow_legacy=allow_legacy)
+    cap=validate_model(lesson,model_payload,allow_legacy=allow_legacy,salvaged_from=salvaged_from)
     from division_facts import VERSION as division_version
     general=lesson['version']==3
     native_division=general and model_payload.get('version')==division_version
@@ -119,7 +121,7 @@ def lesson_gate(job, lesson):
     return report,decide(report,failed)
 
 
-def precheck_job(lesson, model_payload, workdir, skill_paths=None):
+def precheck_job(lesson, model_payload, workdir, skill_paths=None, *, salvaged_from=None):
     """Elementary pre-pass: build content.json and run only the gates that read it.
 
     No PDF, no Word file and no provider call, so a caller can replace the
@@ -132,7 +134,7 @@ def precheck_job(lesson, model_payload, workdir, skill_paths=None):
       not_applicable  not a version 3 elementary lesson; nothing was written
     The gates that need the rendered PDF or Word file still run in render_job.
     """
-    job=_open_job(lesson,model_payload,workdir,skill_paths,False,elementary_general_only=True)
+    job=_open_job(lesson,model_payload,workdir,skill_paths,False,elementary_general_only=True,salvaged_from=salvaged_from)
     if job is None:
         return {'version':1,'status':'not_applicable','steps':[],'gate':None}
     if job.run('trusted-adapter',job.adapter_args):
@@ -170,7 +172,7 @@ def unverified_answers(work):
         return None
 
 
-def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy=False):
+def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy=False, salvaged_from=None):
     """Validate first, build into a new directory, return manifest. No provider calls.
 
     Ready-for-human-review is never publication approval. A failed gate returns
@@ -181,8 +183,11 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
     whose failed steps hold only editorial findings is delivered as
     needs_review with those findings in reviewFindings; anything else that
     fails stays failed, and manifest['gate'] says which questions are named.
+
+    ``salvaged_from`` is the question count the teacher asked for when the
+    worker renders a shorter, salvaged sheet; the manifest records it.
     """
-    job=_open_job(lesson,model_payload,workdir,skill_paths,allow_legacy)
+    job=_open_job(lesson,model_payload,workdir,skill_paths,allow_legacy,salvaged_from=salvaged_from)
     cap,general,native_division,adapter,skill,pin=job.cap,job.general,job.native_division,job.adapter,job.skill,job.pin
     work,steps,run=job.work,job.steps,job.run
     ok=run('trusted-adapter',job.adapter_args)
@@ -286,6 +291,8 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
             artifacts.append({'path':name,'sha256':sha(path),'bytes':path.stat().st_size,'kind':'pdf' if name.endswith('.pdf') else 'docx'})
     manifest={'version':1,'status':'needs_review' if ok else 'failed','automatedChecksPassed':bool(ok and len(artifacts)==2 and all(s['status']=='PASS' for s in steps)),'skill':{'name':cap['skill'],'version':pin['version'],'sha256':pin['sha256']},'topicId':lesson['topicId'],'gradeNumber':lesson['gradeNumber'],'modelInputSha256':sha(work/'model-output.json'),'adapterSha256':sha(HERE/'adapters.py'),'steps':steps,'artifacts':artifacts if ok else [],'review':{'mathematical':'exact typed arithmetic verified; prose/template review pending','visual':'pending; every final PDF page and actual Word rendering must be inspected','curriculum':'bounded topic allowlist; free-text progress is not independently verified','publication':'not approved; private owner preview only'}}
     manifest['lessonBoundary']=lesson.get('lessonBoundary')
+    if salvaged_from is not None:
+        manifest['requestedQuestionCount']=salvaged_from
     if general:
         manifest['adapterSha256']=sha(adapter)
         manifest['authoringProfile']='general-skill-source/v1'

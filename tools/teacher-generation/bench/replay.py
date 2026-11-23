@@ -92,21 +92,22 @@ def replay_case(case, corpus, skills, work, *, render=True):
     outcome = engine.run_job(lesson, transport, Path(work) / case['id'], seed='replay/' + case['id'],
                              route=route, render=render)
     renders = [report.render_record(entry, attempt) for attempt, entry in enumerate(outcome['renders'], 1)]
-    for record, engine_feedback in zip(renders, outcome['skillFeedback']):
-        record['engineFeedback'] = engine_feedback
     author = outcome['author']
     answered = sum(1 for call in author['calls'] if call.get('answered'))
-    unanswered = [call for call in author['calls'] if call.get('answered') is False]
+    # A request for a second full draft is not a correction: it asks for the whole sheet again.
+    drafts = ('skill_worksheet_content', 'worksheet_authoring_choice')
+    unanswered = [call for call in author['calls'] if call.get('answered') is False and call.get('schema') not in drafts]
+    corrections = [call for call in author['calls'][1:] if call.get('schema') not in drafts]
     asked = sorted(f['question'] for f in author['sourceFindings'] if f.get('question'))
-    if not asked and outcome['skillFeedback']:
-        asked = sorted(f['question'] for f in outcome['skillFeedback'][0] if f.get('question'))
     if outcome['delivered']:
         final = 'delivered'
     elif outcome['status'] == 'authored':
         final = 'authored'
     elif outcome['code'] == 'REPLAY_REPLY_NOT_RECORDED':
-        # The engine wanted a correction that was never recorded. Offline this
-        # is where the job stops; with a model it could still go either way.
+        # The engine's ladder ended without a sheet and it asked for a second
+        # full author reply, which was never recorded. Offline the job stops
+        # here; with a model it could still go either way. An unrecorded
+        # correction does not stop a job: the ladder goes on to a shorter sheet.
         final = 'needs_unrecorded_reply'
     else:
         final = 'failed'
@@ -135,18 +136,22 @@ def replay_case(case, corpus, skills, work, *, render=True):
         'author': {
             'contract': author['contract'], 'firstPass': author['firstPass'],
             'requests': len(author['calls']), 'answeredFromRecording': answered,
-            'correction': {'requested': author['correctionRequested'], 'questions': asked,
+            'correction': {'requested': bool(corrections), 'questions': asked,
                            'requiredKeys': unanswered[0]['required'] if unanswered else None,
-                           'answered': not unanswered if author['correctionRequested'] else None},
+                           'answered': not unanswered if corrections else None},
             'timeoutSeconds': author['timeoutSeconds'],
         },
         'replyShape': isolate.reply_shape(first),
         'questions': {'total': total, 'failingAlone': len(questions)},
         'questionFailures': questions, 'frameFailure': frame,
+        # The worker's repair ladder: attempts, corrections, replaced and dropped questions.
+        'ladder': outcome['ladder'], 'prechecks': outcome['prechecks'],
         'renders': renders,
         'delivery': ({'checks': outcome['result'].get('checks'),
                       'automatedChecksPassed': outcome['result'].get('automatedChecksPassed'),
-                      'reviewFindings': outcome['result'].get('reviewFindings', [])}
+                      'reviewFindings': outcome['result'].get('reviewFindings', []),
+                      'salvage': outcome['result'].get('salvage'),
+                      'unverifiedAnswers': outcome['result'].get('unverifiedAnswers')}
                      if outcome.get('result') else None),
     }
     if note:
@@ -181,8 +186,11 @@ def summarise(records, refused):
         row['delivered'] += int(record['delivered'])
         row['questions'] += record['questions']['total']
         row['failingAlone'] += record['questions']['failingAlone']
-    return {'cases': cases, 'delivered': delivered,
+    shorter = sum(1 for r in records if r['delivered'] and (r['ladder'].get('dropped') or 0) > 0)
+    return {'cases': cases, 'delivered': delivered, 'deliveredShorter': shorter,
             'deliveredRate': round(delivered / cases, 4) if cases else None,
+            'correctionsNotRecorded': sum(1 for r in records if r['ladder'].get('correctionFailed')),
+            'secondAttemptsNotRecorded': sum(1 for r in records if r['finalStatus'] == 'needs_unrecorded_reply'),
             'byProvider': dict(sorted(providers.items())),
             'finalStatus': {name: sum(r['finalStatus'] == name for r in records)
                             for name in sorted({r['finalStatus'] for r in records})},
@@ -209,13 +217,25 @@ def markdown(summary, records, env):
             render = 'pass' if root['status'] == 'needs_review' else 'fail: ' + ', '.join(failed or [root.get('error', '?')])
         correction = '—'
         if r['author']['correction']['requested']:
-            asked = r['author']['correction']['questions']
-            correction = f"{len(asked)} q" + ('' if r['author']['correction']['answered'] else ' (not recorded)')
+            keys = r['author']['correction']['requiredKeys'] or r['author']['correction']['questions']
+            correction = f"{len(keys)} q" + ('' if r['author']['correction']['answered'] else ' (not recorded)')
+        ladder = r['ladder']
+        salvage = []
+        if ladder.get('replaced'):
+            salvage.append(f"replaced {ladder['replaced']}")
+        if ladder.get('dropped'):
+            salvage.append(f"dropped {ladder['dropped']}, prints {ladder.get('printed')}")
+        if ladder.get('firstCode'):
+            salvage.append(f"2nd attempt after {ladder['firstCode']}")
         rows.append([r['id'], r.get('provider') or '—', r['lesson']['topicId'], r['lesson']['questionCount'], r['route'],
                      'pass' if first and first['ok'] else (first or {}).get('code', r['finalCode']),
-                     f"{r['questions']['failingAlone']} of {r['questions']['total']}", correction, render, r['finalStatus']])
+                     f"{r['questions']['failingAlone']} of {r['questions']['total']}", correction,
+                     '; '.join(salvage) or '—', render, r['finalStatus']])
     lines += [report.table(['Case', 'Provider', 'Topic', 'Q', 'Route', 'First pass', 'Fail alone', 'Correction asked',
-                            'First render', 'Final'], rows), '']
+                            'Ladder', 'First render', 'Final'], rows), '']
+    lines += [f"Delivered with fewer questions than requested: {summary['deliveredShorter']}. "
+              f"Corrections the engine asked for that were never recorded: {summary['correctionsNotRecorded']}. "
+              f"Second author replies it asked for that were never recorded: {summary['secondAttemptsNotRecorded']}.", '']
     if len(summary['byProvider']) > 1:
         lines += ['## By provider', '',
                   report.table(['Provider', 'Cases', 'Delivered', 'Questions', 'Fail alone'],
@@ -235,8 +255,10 @@ def markdown(summary, records, env):
     missing = sorted(name for name, present in env['tools'].items() if not present)
     if missing:
         lines += [f"Not installed on this machine: {', '.join(missing)}. {env['note']}", '']
-    lines += ['`needs_unrecorded_reply` means the engine asked the model for a correction that was never recorded; '
-              'the replay stops there instead of inventing one.', '']
+    lines += ['`needs_unrecorded_reply` means the repair ladder ended without a sheet and the engine asked for a second '
+              'full author reply that was never recorded; the replay stops there instead of inventing one. A correction '
+              'that was never recorded does not stop a job: it counts as a failed correction and the ladder goes on to '
+              'a shorter sheet.', '']
     return '\n'.join(lines)
 
 

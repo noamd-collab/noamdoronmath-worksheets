@@ -230,9 +230,14 @@ class ReplayTests(unittest.TestCase):
         text, parsed = cases['G-equations'], cases['G-division']
         self.assertEqual((text['provider'], text['reply']), ('gemini', {'format': 'text', 'questionsFrom': 'repairedReply'}))
         # The engine's own reply reader refuses the recorded text; nothing is repaired on the way in.
-        self.assertEqual((text['finalStatus'], text['finalCode']), ('failed', 'PROVIDER_INVALID_RESPONSE'))
-        self.assertEqual((text['author']['requests'], text['author']['answeredFromRecording']), (1, 1))
-        self.assertFalse(text['author']['correction']['requested'])
+        self.assertEqual(text['author']['firstPass']['code'], 'PROVIDER_INVALID_RESPONSE')
+        # A reply that is unusable as a whole gets one second author call. It was never
+        # recorded, so the replay stops there and says which failure asked for it.
+        self.assertEqual((text['finalStatus'], text['finalCode']), ('needs_unrecorded_reply', 'REPLAY_REPLY_NOT_RECORDED'))
+        self.assertEqual((text['author']['requests'], text['author']['answeredFromRecording']), (2, 1))
+        self.assertEqual((text['ladder']['attempts'], text['ladder']['corrections'], text['ladder']['firstCode']),
+                         (2, 0, 'PROVIDER_INVALID_RESPONSE'))
+        self.assertEqual(results['summary']['secondAttemptsNotRecorded'], 1)
         self.assertEqual(text['questions']['total'], 20)
         self.assertEqual(parsed['reply'], {'format': 'json', 'questionsFrom': 'firstReply'})
         self.assertEqual(results['summary']['byProvider']['gemini']['cases'], 2)
@@ -294,16 +299,22 @@ class ReplayTests(unittest.TestCase):
         self.assertEqual((fixed['author']['requests'], fixed['author']['answeredFromRecording']), (2, 2))
         self.assertTrue(fixed['author']['correction']['answered'])
 
-    def test_a_goal_the_engine_rejects_is_reported_not_rewritten(self):
+    def test_an_opening_sheet_is_replayed_with_its_own_goal_and_a_rejected_goal_is_reported(self):
         lesson = json.loads((CORPUS / 'lessons/g3-division.json').read_text(encoding='utf-8'))
         reply = json.loads((CORPUS / 'replies/A-division.json').read_text(encoding='utf-8'))
         self.assertEqual(lesson['lessonGoal'], 'introduce')
         folder = write_corpus(Path(self.scratch) / 'c-goal', 'goal', lesson, reply)
         case = self.replay(folder, render=False)['cases'][0]
         self.assertEqual(case['lessonGoal'], {'recordedAs': 'introduce', 'replayedAs': 'introduce'})
-        if case['finalStatus'] == 'failed' and case['author']['firstPass'] is None:
-            self.assertEqual(case['failureClass'], 'LESSON:' + case['finalCode'])
-            self.assertEqual(case['author']['requests'], 0)
+        # The general author accepts an opening sheet: the reply reaches it and is examined.
+        self.assertGreaterEqual(case['author']['requests'], 1)
+        self.assertEqual((case['route'], case['author']['contract']), ('worker', 'worksheet-source/4'))
+        # A goal the engine does not support stops before any request and is reported as a lesson failure.
+        folder = write_corpus(Path(self.scratch) / 'c-assessment', 'assessment', {**lesson, 'lessonGoal': 'assessment'}, reply)
+        case = self.replay(folder, render=False)['cases'][0]
+        self.assertEqual((case['finalStatus'], case['finalCode'], case['failureClass']),
+                         ('failed', 'UNSUPPORTED_GOAL', 'LESSON:UNSUPPORTED_GOAL'))
+        self.assertEqual(case['author']['requests'], 0)
 
     @unittest.skipUnless(os.environ.get('BENCH_RENDER_TESTS') == '1', 'Set BENCH_RENDER_TESTS=1 to run the skill render')
     def test_full_pipeline_through_the_skill_render_and_gates(self):

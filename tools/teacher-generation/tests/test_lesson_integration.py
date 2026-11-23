@@ -150,7 +150,7 @@ class QuestionPredicateTests(unittest.TestCase):
         content['practice'][0]['intro'] = 'חשבו [[4 @ 2]].'
         self.assertEqual(self.findings(content, 'SOURCE_COVERAGE'), [])
         # More bad questions than one correction may carry is a sheet failure too.
-        for row in content['practice'][:7]:
+        for row in content['practice'][:9]:
             row['intro'] = 'חשבו [[4 @ 2]].'
         self.assertEqual(self.findings(content, 'SOURCE_NOTATION'), [])
 

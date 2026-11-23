@@ -82,6 +82,7 @@
 !tools/teacher-generation/general_source.py
 !tools/teacher-generation/generation-curriculum.json
 !tools/teacher-generation/lesson_boundary.py
+!tools/teacher-generation/lesson_select.py
 !tools/teacher-generation/math_tasks.py
 !tools/teacher-generation/model-output.schema.json
 !tools/teacher-generation/native_geometry.py
@@ -133,6 +134,7 @@
 !tools/teacher-generation/tests/test_general_source.py
 !tools/teacher-generation/tests/test_island_grammar.py
 !tools/teacher-generation/tests/test_lesson_boundary.py
+!tools/teacher-generation/tests/test_lesson_select.py
 !tools/teacher-generation/tests/test_math_tasks.py
 !tools/teacher-generation/tests/test_numeric_literals.py
 !tools/teacher-generation/tests/test_paren_order.py

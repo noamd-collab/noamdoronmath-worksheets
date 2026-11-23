@@ -93,7 +93,7 @@ class PlanTests(unittest.TestCase):
             self.assertIn('Dry run: no model call was made.', out)
             code, out, _ = run_main(['--dry-run', '--topics', 'ג01,g7:equations', '--list'])
             self.assertIn('Plan: 6 cases (grade 3: 3, grade 7: 3).', out)
-            self.assertIn('at most 12 (2 per case)', out)
+            self.assertIn('at most 24 (4 per case)', out)   # two author calls and two corrections per job
             for name in ('g3-01-b-q12-m30', 'g3-01-a-q12-m30', 'g3-01-e-q12-m30', 'g7-equations-e-q20-m30'):
                 self.assertIn(name, out)
 
@@ -278,7 +278,7 @@ class RunTests(unittest.TestCase):
         self.assertEqual((result['delivered'], result['failureClass']), (False, 'WORKER:WORKER_INTERRUPTED'))
         summary = json.loads((root / 'summary.json').read_text(encoding='utf-8'))
         # Nothing is known about the stopped process, so its whole reservation is charged.
-        self.assertEqual((summary['thisRun']['calls'], summary['thisRun']['outputTokensCharged']), (2, 50_000))
+        self.assertEqual((summary['thisRun']['calls'], summary['thisRun']['outputTokensCharged']), (4, 104_000))
         self.launch = lambda attempt, timeout: ('Traceback: the case process broke', 1)
         _, text = self.live('--max-calls', '40', '--max-output-tokens', '900000', '--topics',
                             'ד08,ד09,ד10,ד11,ד12', '--levels', 'b')

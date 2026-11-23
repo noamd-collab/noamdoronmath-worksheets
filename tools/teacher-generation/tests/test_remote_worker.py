@@ -60,6 +60,70 @@ class FakeRemote:
         return [call for call in self.calls if '/storage/v1/object/' in call[0] and call[1] == 'POST']
 
 
+class FakeDraft:
+    """Stands in for general_provider.Draft: the methods the worker's ladder drives, and a count of each use."""
+
+    def __init__(self, lesson, *, missing=(), reserves=0, code='SOURCE_ANSWER', can_shorten=False, fix=True):
+        self.requested = self.lesson = lesson
+        self._missing, self.reserves, self.code, self.can_shorten, self.fix = list(missing), reserves, code, can_shorten, fix
+        self.corrections = self.sourced = 0
+        self.replaced, self.swapped, self.dropped = [], 0, 0
+        self.on_correct = None
+
+    def missing(self):
+        return list(self._missing)
+
+    def needs_model(self):
+        return bool(self._missing)
+
+    def first_refusal(self):
+        from general_source import GeneralSourceError
+        return GeneralSourceError(self.code, 'A planned question was refused and nothing replaced it')
+
+    def correct(self):
+        self.corrections += 1
+        if self.on_correct is not None:
+            self.on_correct()
+        if self.fix:
+            self.swapped += len(self._missing)
+            self._missing = []
+
+    def shorten(self):
+        if not (self._missing and self.can_shorten):
+            return False
+        self.dropped += len(self._missing)
+        self.lesson = {**self.requested, 'questionCount': self.requested['questionCount'] - self.dropped}
+        self._missing = []
+        return True
+
+    def source(self):
+        if self._missing:
+            raise self.first_refusal()
+        self.sourced += 1
+        return 'sheet-%d' % (self.sourced - 1)
+
+    def replace(self, named, stage='gate'):
+        self.replaced.append({question: list(codes) for question, codes in named.items()})
+        for question in named:
+            if self.reserves:
+                self.reserves -= 1
+                self.swapped += 1
+            else:
+                self._missing.append(question)
+        return len(named)
+
+    def report(self):
+        codes = {}
+        for named in self.replaced:
+            for found in named.values():
+                for code in found[:1]:
+                    codes[code] = codes.get(code, 0) + 1
+        return {'planned': self.requested['questionCount'], 'printed': self.lesson['questionCount'],
+                'replaced': self.swapped, 'byReserve': 0, 'byCorrection': 0, 'dropped': self.dropped, 'missing': 0,
+                'reservesOffered': 0, 'reservesRefused': 0, 'codes': codes, 'replacedCodes': codes,
+                'droppedCodes': {self.code: self.dropped} if self.dropped else {}, 'corrections': self.corrections}
+
+
 class WorkerTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -263,7 +327,9 @@ class WorkerTests(unittest.TestCase):
         author.assert_called_once(); renderer.assert_not_called()
         self.assertNotIn('PRIVATE_', output.getvalue())
         event = json.loads(output.getvalue())
-        self.assertEqual(event, {'event': 'generation_failed', 'jobId': JOB_ID, 'code': 'PROVIDER_UNAVAILABLE'})
+        # One sanitised line: the code, and where the job failed.
+        self.assertEqual(event, {'event': 'generation_failed', 'jobId': JOB_ID, 'code': 'PROVIDER_UNAVAILABLE',
+                                 'stage': 'author', 'question': None, 'gate': None})
         failures = [call for call in self.remote.calls if call[1] == 'PATCH' and call[2].get('status') == 'failed']
         self.assertEqual(len(failures), 1)
         self.assertEqual(self.remote.uploads(), [])
@@ -313,10 +379,12 @@ class WorkerTests(unittest.TestCase):
                 def author(_, *, revision, metadata, **kw):
                     metadata.update(initialPlainMath=True, validated=False, data="PRIVATE_RESPONSE")
                     if attempted:
-                        def correct(findings):
+                        draft = FakeDraft(self.job['lesson'], missing=[4], code="SOURCE_PLAIN_MATH")
+                        def correct():
                             metadata["correctionRequested"] = True
                             raise GenerationError("SOURCE_PLAIN_MATH","PRIVATE_SECOND_RESPONSE")
-                        revision.update(revise=correct, sourceFindings=[{"kind":"mark_math"}])
+                        draft.on_correct = correct
+                        revision["draft"] = draft
                     raise GenerationError("SOURCE_PLAIN_MATH","PRIVATE_INITIAL_RESPONSE")
                 with patch.object(worker,"author_lesson",side_effect=author), redirect_stdout(io.StringIO()) as captured:
                     with self.assertRaises(GenerationError):
@@ -430,28 +498,78 @@ class WorkerTests(unittest.TestCase):
     def use_general_lesson(self):
         self.job['lesson'] = json.loads((HERE / 'cloud/container/fixtures/general/grade4-fractions/lesson.json').read_text())
 
-    def failed_gate(self, lesson, payload, target, gate='content-truth'):
+    def failed_gate(self, lesson, payload, target, gate='content-truth', question=2, **kwargs):
         # Exercise the actual skill-report parser. Its private prose must not escape.
         target.mkdir(parents=True, exist_ok=True)
         (target / 'logs').mkdir()
         (target / 'logs/content-truth.txt').write_text(
-            'CONTENT-TRUTH GATES: FAIL\n ✗ G32  [content.json.questions#2]  טענה כוללת/שלילת קיום PRIVATE_TEXT\n'
-            '1 blocking content defect(s). Do not deliver.\n')
-        # As the runner records a failed step: with the log that the gate report reads.
+            'CONTENT-TRUTH GATES: FAIL\n ✗ G32  [content.json.questions#%d]  טענה כוללת/שלילת קיום PRIVATE_TEXT\n'
+            '1 blocking content defect(s). Do not deliver.\n' % question)
+        # As the runner records a failed step and its delivery decision (gate_policy.decide).
+        named = gate == 'content-truth'
         manifest = {'status': 'failed', 'skill': {'name': 'elementary'},
-                    'steps': [{'name': gate, 'status': 'FAIL', 'exitCode': 1, 'log': 'logs/' + gate + '.txt'}], 'artifacts': []}
+                    'steps': [{'name': 'trusted-adapter', 'status': 'PASS'},
+                              {'name': gate, 'status': 'FAIL', 'exitCode': 1, 'log': 'logs/' + gate + '.txt'}], 'artifacts': [],
+                    'gate': {'version': 1, 'action': 'replace' if named else 'fail', 'complete': True,
+                             'blocking': [{'code': 'G32', 'class': 'truth', 'step': gate, 'question': question}] if named
+                             else [{'code': 'PDF_BUILD', 'class': 'truth', 'step': gate}],
+                             'questions': [question] if named else [], 'review': []}}
         (target / 'manifest.json').write_text(json.dumps(manifest))
         (target / 'sheet.pdf').write_bytes(b'first failed private draft')
         return manifest
 
-    def test_production_enables_the_single_scoped_revision(self):
+    def rendered_general(self, lesson, payload, target, **kwargs):
+        # As render_job reports a version 3 sheet: REVIEW steps are allowed, the profile is named.
+        manifest = self.rendered(lesson, payload, target)
+        manifest.update(authoringProfile='general-skill-source/v1', renderingChecksPassed=True,
+                        reviewFindings=[], unverifiedAnswers=[{'question': 2, 'item': 1, 'kind': 'open'},
+                                                              {'question': 5, 'item': 3, 'kind': 'open'}])
+        return manifest
+
+    def clean_precheck(self, lesson, payload, target, **kwargs):
+        return {'version': 1, 'status': 'clean', 'steps': [], 'gate': {'action': 'deliver', 'blocking': [], 'questions': []}}
+
+    def general_author(self, drafts, *, received=True, fail=None):
+        """An author that hands the worker one prepared draft per call, as the general provider does."""
+        calls = []
+        def author(_, *, metadata, revision, timeout):
+            self.assertEqual(timeout, 300)
+            calls.append(revision)
+            revision['requested'] = True
+            failure = fail[len(calls) - 1] if fail and len(calls) <= len(fail) else None
+            if failure is not None and not received:
+                raise failure
+            revision['replyReceived'] = True
+            draft = drafts[len(calls) - 1] if len(calls) <= len(drafts) else None
+            if draft is not None:
+                revision['draft'] = draft
+            if failure is not None:
+                raise failure
+            return draft.source() if draft is not None else 'first'
+        author.calls = calls
+        return author
+
+    def run_general(self, author, render, *, root=None, remote=None, precheck=None):
+        with patch.object(worker, 'author_lesson', side_effect=author) as initial, \
+             patch.object(worker, 'render_job', side_effect=render) as renderer, \
+             patch.object(worker, 'precheck_job', side_effect=precheck or self.clean_precheck) as checker:
+            worker.process_job(remote or self.remote, self.job, root or self.root, enable_skill_revision=True)
+        return initial, renderer, checker
+
+    def final_result(self, remote=None):
+        return next(c[2]['result'] for c in (remote or self.remote).calls if c[1] == 'PATCH' and c[2].get('result'))
+
+    def test_production_enables_the_repair_ladder_with_its_hard_limits(self):
         self.assertIs(worker.ENABLE_SKILL_REVISION, True)
         self.assertIs(worker.process_job.__kwdefaults__["enable_skill_revision"], True)
+        self.assertEqual((worker.AUTHOR_CALLS, worker.CORRECTION_CALLS, worker.MODEL_CALL_WINDOW), (2, 2, 150))
+        self.assertEqual((worker.PRECHECK_PASSES, worker.FULL_RENDERS), (2, 2))
 
-    def test_revision_policy_does_not_reach_legacy_or_disabled_v3(self):
+    def test_ladder_does_not_reach_legacy_or_disabled_v3(self):
         for mode in ('legacy-enabled', 'general-disabled'):
             with self.subTest(mode=mode), patch.object(worker, 'author_lesson', return_value={}) as author, \
-                 patch.object(worker, 'render_job', side_effect=self.rendered), patch.object(worker, 'blocking_feedback') as feedback:
+                 patch.object(worker, 'render_job', side_effect=self.rendered) as renderer, \
+                 patch.object(worker, 'precheck_job') as precheck:
                 case = self.root / mode
                 case.mkdir()
                 if mode == 'general-disabled':
@@ -460,140 +578,221 @@ class WorkerTests(unittest.TestCase):
                 else:
                     worker.process_job(self.remote, self.job, case, enable_skill_revision=True)
                 self.assertNotIn('revision', author.call_args.kwargs)
-                feedback.assert_not_called()
+                precheck.assert_not_called()
+                # One render, straight into the job folder.
+                self.assertEqual(renderer.call_args.args[2], case / JOB_ID)
 
-    def test_one_render_correction_rechecks_lease_and_uploads_only_final_pair(self):
+    def test_a_gate_named_question_is_swapped_and_only_the_final_pair_is_uploaded(self):
         self.use_general_lesson()
-        correction = Mock()
-        def author(_, *, metadata, revision, timeout):
-            self.assertEqual(timeout, 300)
-            metadata['usage'] = {'total_tokens': 100, 'private': 'PRIVATE_TEXT'}
-            def revise(findings):
-                phases = [c[2]['phase'] for c in self.remote.calls if c[1] == 'PATCH']
-                self.assertEqual(phases, ['authoring', 'rendering', 'authoring'])
-                self.assertEqual([(x['question'], x['codes']) for x in findings], [(2, ['G32'])])
-                self.assertNotIn('PRIVATE_TEXT', str(findings))
-                metadata['revisionUsage'] = {'total_tokens': 20, 'model_text': 'PRIVATE_TEXT'}
-                return 'corrected'
-            correction.side_effect = revise
-            revision['revise'] = correction
-            return 'first'
-        def render(lesson, payload, target):
-            if payload == 'first':
+        draft = FakeDraft(self.job['lesson'], reserves=1)
+        folders = []
+        def render(lesson, payload, target, **kwargs):
+            folders.append(target)
+            self.assertFalse(target.exists())   # every render gets a folder nothing has used
+            if len(folders) == 1:
                 return self.failed_gate(lesson, payload, target)
-            self.assertEqual(target, self.root / JOB_ID / 'revision')
-            self.assertEqual(list(target.iterdir()), [])
-            return self.rendered(lesson, payload, target)
-        with patch.object(worker, 'author_lesson', side_effect=author) as initial, \
-             patch.object(worker, 'render_job', side_effect=render) as renderer:
-            worker.process_job(self.remote, self.job, self.root, enable_skill_revision=True)
+            return self.rendered_general(lesson, payload, target)
+        initial, renderer, checker = self.run_general(self.general_author([draft]), render)
         initial.assert_called_once()
-        correction.assert_called_once()
+        self.assertEqual(draft.replaced, [{2: ['G32']}])      # the gate's own question and code
+        self.assertEqual(draft.corrections, 0)                 # a reserve filled it: no model call
         self.assertEqual(renderer.call_count, 2)
+        self.assertEqual(len(set(folders)), 2)
+        self.assertTrue(all(folder.parent == self.root / JOB_ID for folder in folders))
         self.assertEqual([c[3]['raw'] for c in self.remote.uploads()], [b'synthetic pdf', b'synthetic docx'])
+        phases = [c[2]['phase'] for c in self.remote.calls if c[1] == 'PATCH' and 'phase' in c[2]]
+        self.assertEqual(phases, ['authoring', 'rendering', 'rendering', 'checking', 'needs_review'])
+        self.assertNotIn('PRIVATE_TEXT', json.dumps(self.final_result(), ensure_ascii=False))
+
+    def test_reserves_exhausted_spends_one_correction_then_rechecks_the_lease(self):
+        self.use_general_lesson()
+        draft = FakeDraft(self.job['lesson'])
+        def render(lesson, payload, target, **kwargs):
+            return self.failed_gate(lesson, payload, target) if payload == 'sheet-0' else self.rendered_general(lesson, payload, target)
+        def correct():
+            phases = [c[2]['phase'] for c in self.remote.calls if c[1] == 'PATCH']
+            self.assertEqual(phases, ['authoring', 'rendering', 'authoring'])   # the lease is confirmed before the call
+        draft.on_correct = correct
+        self.run_general(self.general_author([draft]), render)
+        self.assertEqual(draft.corrections, 1)
+        result = self.final_result()
+        self.assertEqual(result['salvage'], {'attempts': 1, 'corrections': 1, 'requestedQuestions': 12, 'printedQuestions': 12,
+                                             'replaced': {'count': 1, 'codes': {'G32': 1}},
+                                             'dropped': {'count': 0, 'codes': {}}, 'gate': 'deliver'})
         record = json.loads((self.root / 'author-diagnostics' / (JOB_ID + '.json')).read_text())
-        self.assertEqual((record['usage'], record['revisionUsage']), ({'total_tokens': 100}, {'total_tokens': 20}))
-        self.assertNotIn('PRIVATE_TEXT', str(record))
-        public = next(c[2]['result'] for c in self.remote.calls if c[1] == 'PATCH' and c[2].get('result'))
-        self.assertNotIn('revisionUsage', public)
+        self.assertEqual((record['authorCalls'], record['correctionCalls']), (1, 1))
 
-    def test_source_and_render_corrections_share_one_call_even_when_second_gate_fails(self):
+    def test_a_job_spends_at_most_two_corrections_and_two_author_calls(self):
         self.use_general_lesson()
-        for rejected_at in ('source', 'render'):
-            with self.subTest(rejected_at=rejected_at):
-                root = self.root / rejected_at
+        # Each draft: missing at the source, then again after the gate names a question.
+        drafts = [FakeDraft(self.job['lesson'], missing=[3], code='SOURCE_ANSWER', fix=True) for _ in range(3)]
+        def render(lesson, payload, target, **kwargs):
+            return self.failed_gate(lesson, payload, target)
+        fail = [GenerationError('SOURCE_ANSWER', 'private source')] * 3
+        with self.assertRaises(GenerationError) as caught:
+            self.run_general(self.general_author(drafts, fail=fail), render)
+        # First attempt: one correction for the source, one for the gate's question, and the
+        # gate fails again. Second attempt: no correction is left for its missing question.
+        self.assertEqual(caught.exception.code, 'SOURCE_ANSWER')
+        self.assertEqual([draft.corrections for draft in drafts], [2, 0, 0])
+        self.assertEqual([draft.sourced for draft in drafts], [2, 0, 0])
+        self.assertEqual(caught.exception.job_failure, {'stage': 'source', 'question': None, 'gate': None, 'attempts': 2,
+                                                        'corrections': 2, 'firstCode': 'QUALITY_GATE_FAILED'})
+        self.assertFalse(self.remote.uploads())
+
+    def test_no_model_call_starts_after_the_window(self):
+        self.use_general_lesson()
+        for late in ('correction', 'second-attempt'):
+            with self.subTest(late=late), patch.object(worker, 'MODEL_CALL_WINDOW', 0):
+                root = self.root / late
                 root.mkdir()
-                feedback = [{'question': 2, 'codes': ['SOURCE_ANSWER']}]
-                correct = Mock(return_value='corrected')
-                def author(_, *, revision, **kwargs):
-                    revision['revise'] = correct
-                    if rejected_at == 'source':
-                        revision['sourceFindings'] = feedback
-                        raise GenerationError('SOURCE_ANSWER', 'private source')
-                    return 'first'
-                with patch.object(worker, 'author_lesson', side_effect=author), \
-                     patch.object(worker, 'render_job', side_effect=self.failed_gate) as renderer:
-                    with self.assertRaises(GenerationError) as caught:
-                        worker.process_job(self.remote, self.job, root, enable_skill_revision=True)
-                self.assertEqual(caught.exception.code, 'QUALITY_GATE_FAILED')
-                correct.assert_called_once()
-                if rejected_at == 'source':
-                    correct.assert_called_with(feedback)
-                self.assertEqual(renderer.call_count, 1 if rejected_at == 'source' else 2)
-                self.assertEqual(renderer.call_args.args[2], root / JOB_ID / 'revision')
-                self.assertFalse(self.remote.uploads())
+                draft = FakeDraft(self.job['lesson'], missing=[3] if late == 'correction' else [], code='SOURCE_ANSWER')
+                fail = [GenerationError('SOURCE_ANSWER', 'x')] if late == 'correction' else [GenerationError('SOURCE_SHAPE', 'x')]
+                author = self.general_author([draft if late == 'correction' else None], fail=fail)
+                with self.assertRaises(GenerationError) as caught:
+                    self.run_general(author, self.rendered, root=root)
+                self.assertEqual(len(author.calls), 1)
+                self.assertEqual(draft.corrections, 0)
+                self.assertEqual(caught.exception.code, 'SOURCE_ANSWER' if late == 'correction' else 'SOURCE_SHAPE')
 
-    def test_corrected_source_renders_once_and_callback_failure_stays_private(self):
+    def test_a_reply_unusable_as_a_whole_gets_exactly_one_second_attempt(self):
         self.use_general_lesson()
-        for success in (True, False):
-            with self.subTest(success=success):
-                root = self.root / str(success)
+        for code, received in (('PROVIDER_INVALID_RESPONSE', False), ('SOURCE_SHAPE', True), ('AUTHOR_PLAN_MISMATCH', True)):
+            with self.subTest(code=code):
+                root = self.root / code
                 root.mkdir()
                 remote = FakeRemote()
-                def author(_, *, metadata, revision, **kwargs):
-                    def correct(findings):
-                        metadata['revisionUsage'] = {'prompt_tokens': 7, 'raw': 'PRIVATE_CALLBACK_RESPONSE'}
-                        if not success:
-                            raise GenerationError('PROVIDER_UNAVAILABLE', 'PRIVATE_CALLBACK_RESPONSE')
-                        return 'validated full source'
-                    revision.update(revise=correct, sourceFindings=[{'question': 2, 'codes': ['SOURCE_ANSWER']}])
-                    raise GenerationError('SOURCE_ANSWER', 'PRIVATE_ORIGINAL_RESPONSE')
-                with patch.object(worker, 'author_lesson', side_effect=author), \
-                     patch.object(worker, 'render_job', side_effect=self.rendered) as renderer:
-                    if success:
-                        worker.process_job(remote, self.job, root, enable_skill_revision=True)
-                        renderer.assert_called_once_with(self.job['lesson'], 'validated full source', root / JOB_ID / 'revision')
-                        self.assertEqual(len(remote.uploads()), 2)
-                    else:
-                        with self.assertRaises(GenerationError) as caught:
-                            worker.process_job(remote, self.job, root, enable_skill_revision=True)
-                        self.assertEqual(caught.exception.code, 'PROVIDER_UNAVAILABLE')
-                        renderer.assert_not_called()
-                        self.assertFalse(remote.uploads())
-                record = json.loads((root / 'author-diagnostics' / (JOB_ID + '.json')).read_text())
-                self.assertEqual(record['revisionUsage'], {'prompt_tokens': 7})
-                self.assertEqual(record['outcome'], 'passed' if success else 'failed')
-                self.assertNotIn('PRIVATE_', str(record))
+                second = FakeDraft(self.job['lesson'])
+                calls = []
+                def author(_, *, metadata, revision, timeout):
+                    calls.append(revision)
+                    revision['requested'] = True
+                    if len(calls) == 1:
+                        if received:
+                            revision['replyReceived'] = True
+                        raise GenerationError(code, 'PRIVATE_FIRST_REPLY')
+                    revision.update(replyReceived=True, draft=second)
+                    return second.source()
+                initial, renderer, _ = self.run_general(author, self.rendered_general, root=root, remote=remote)
+                self.assertEqual(initial.call_count, 2)
+                renderer.assert_called_once()
+                self.assertEqual(renderer.call_args.args[2].parent, root / JOB_ID)
+                self.assertEqual(self.final_result(remote)['salvage']['attempts'], 2)
+                self.assertEqual(len(remote.uploads()), 2)
+        # A second unusable reply ends the job: there is no third call.
+        root = self.root / 'twice'
+        root.mkdir()
+        author = self.general_author([None, None], fail=[GenerationError('SOURCE_SHAPE', 'x')] * 2)
+        with self.assertRaises(GenerationError):
+            self.run_general(author, self.rendered, root=root)
+        self.assertEqual(len(author.calls), 2)
 
-    def test_revision_never_follows_preexisting_directory_or_symlink(self):
+    def test_a_provider_that_did_not_answer_is_not_called_again(self):
+        self.use_general_lesson()
+        for code in ('PROVIDER_UNAVAILABLE', 'PROVIDER_HTTP_ERROR', 'PROVIDER_TLS_ERROR', 'PROVIDER_NOT_CONFIGURED'):
+            with self.subTest(code=code):
+                root = self.root / code
+                root.mkdir()
+                author = self.general_author([], received=False, fail=[GenerationError(code, 'private')])
+                with self.assertRaises(GenerationError) as caught:
+                    self.run_general(author, self.rendered, root=root)
+                self.assertEqual((len(author.calls), caught.exception.code), (1, code))
+        # A correction that gets no answer closes the job to a second attempt as well.
+        root = self.root / 'correction'
+        root.mkdir()
+        draft = FakeDraft(self.job['lesson'], missing=[3], code='SOURCE_ANSWER')
+        draft.on_correct = Mock(side_effect=GenerationError('PROVIDER_UNAVAILABLE', 'PRIVATE_CALLBACK_RESPONSE'))
+        author = self.general_author([draft], fail=[GenerationError('SOURCE_ANSWER', 'PRIVATE_ORIGINAL_RESPONSE')])
+        with self.assertRaises(GenerationError) as caught:
+            self.run_general(author, self.rendered, root=root)
+        self.assertEqual((len(author.calls), draft.corrections, caught.exception.code), (1, 1, 'SOURCE_ANSWER'))
+        record = json.loads((root / 'author-diagnostics' / (JOB_ID + '.json')).read_text())
+        self.assertEqual(record['outcome'], 'failed')
+        self.assertNotIn('PRIVATE_', str(record))
+
+    def test_a_shorter_sheet_is_delivered_with_its_note_and_the_requested_count(self):
+        self.use_general_lesson()
+        draft = FakeDraft(self.job['lesson'], missing=[3, 7], code='SOURCE_ANSWER', can_shorten=True)
+        draft.on_correct = Mock(side_effect=GenerationError('INVALID_MODEL_OUTPUT', 'private'))
+        seen = {}
+        def render(lesson, payload, target, **kwargs):
+            seen.update(count=lesson['questionCount'], kwargs=kwargs)
+            return self.rendered_general(lesson, payload, target)
+        def precheck(lesson, payload, target, **kwargs):
+            seen['precheck'] = (lesson['questionCount'], kwargs)
+            return self.clean_precheck(lesson, payload, target)
+        author = self.general_author([draft], fail=[GenerationError('SOURCE_ANSWER', 'private')])
+        self.run_general(author, render, precheck=precheck)
+        # The sheet's own lesson carries the rewritten count; the request travels beside it.
+        self.assertEqual((seen['count'], seen['kwargs']), (10, {'salvaged_from': 12}))
+        self.assertEqual(seen['precheck'], (10, {'salvaged_from': 12}))
+        self.assertEqual(self.job['lesson']['questionCount'], 12)
+        result = self.final_result()
+        self.assertEqual(result['salvage']['dropped'], {'count': 2, 'codes': {'SOURCE_ANSWER': 2}})
+        self.assertEqual((result['salvage']['requestedQuestions'], result['salvage']['printedQuestions']), (12, 10))
+        note = [row for row in result['reviewFindings'] if row['code'] == 'SHORTER_SHEET']
+        self.assertEqual(len(note), 1)
+        self.assertEqual(note[0]['count'], 2)
+        self.assertIn('פחות שאלות', note[0]['note'])
+        # Printed answers no kernel verified: their count by kind, and the note with their positions.
+        self.assertEqual(result['unverifiedAnswers'], {'open': 2})
+        self.assertEqual([(row['kind'], row['count']) for row in result['teacherNotes']], [('open', 2)])
+        self.assertLess(len(json.dumps(result, ensure_ascii=False).encode()), 32000)
+
+    def test_the_pre_pass_replaces_named_questions_twice_before_any_render(self):
+        self.use_general_lesson()
+        draft = FakeDraft(self.job['lesson'], reserves=3)
+        rounds = []
+        def precheck(lesson, payload, target, **kwargs):
+            rounds.append(target)
+            self.assertFalse(target.exists())
+            if len(rounds) <= 2:
+                target.mkdir(parents=True)
+                return {'version': 1, 'status': 'replace', 'steps': [{'name': 'trusted-adapter', 'status': 'PASS'}],
+                        'gate': {'action': 'replace', 'questions': [len(rounds)],
+                                 'blocking': [{'code': 'G66', 'class': 'policy', 'step': 'house-gates', 'question': len(rounds)}]}}
+            return self.clean_precheck(lesson, payload, target)
+        initial, renderer, checker = self.run_general(self.general_author([draft]), self.rendered, precheck=precheck)
+        self.assertEqual(draft.replaced, [{1: ['G66']}, {2: ['G66']}])
+        self.assertEqual(checker.call_count, 2)       # at most two passes, then the render decides
+        renderer.assert_called_once()
+        self.assertEqual(renderer.call_args.args[1], 'sheet-2')
+        self.assertEqual(draft.corrections, 0)
+
+    def test_a_job_folder_that_already_holds_the_next_folder_is_refused(self):
         self.use_general_lesson()
         for symlink in (True, False):
             with self.subTest(symlink=symlink):
                 root = self.root / str(symlink)
                 root.mkdir()
-                correct = Mock()
-                def author(_, *, revision, **kwargs):
-                    revision['revise'] = correct
-                    return 'first'
-                def render(lesson, payload, target):
+                draft = FakeDraft(self.job['lesson'], reserves=1)
+                def render(lesson, payload, target, **kwargs):
                     manifest = self.failed_gate(lesson, payload, target)
-                    path = target / 'revision'
-                    if symlink:
-                        path.symlink_to(self.root, target_is_directory=True)
-                    else:
-                        path.mkdir()
+                    for name in ('check-1-2', 'render-1-3'):
+                        path = target.parent / name
+                        if symlink:
+                            path.symlink_to(self.root, target_is_directory=True)
+                        else:
+                            path.mkdir()
                     return manifest
-                with patch.object(worker, 'author_lesson', side_effect=author), \
-                     patch.object(worker, 'render_job', side_effect=render):
-                    with self.assertRaisesRegex(RuntimeError, 'JOB_PATH_DENIED'):
-                        worker.process_job(self.remote, self.job, root, enable_skill_revision=True)
-                correct.assert_not_called()
+                with self.assertRaisesRegex(RuntimeError, 'JOB_PATH_DENIED'):
+                    self.run_general(self.general_author([draft]), render, root=root)
                 self.assertFalse(self.remote.uploads())
 
-    def test_no_correction_on_unknown_gate_render_fault_or_unmapped_author_failure(self):
+    def test_no_repair_on_an_unnamed_gate_a_render_fault_or_a_failure_without_a_draft(self):
         self.use_general_lesson()
-        for failure in ('unknown-gate', 'renderer', 'provider', 'shape', 'success'):
+        for failure in ('unknown-gate', 'renderer', 'provider', 'success'):
             with self.subTest(failure=failure):
                 root = self.root / failure
                 root.mkdir()
-                correction = Mock()
+                draft = FakeDraft(self.job['lesson'], reserves=2)
                 def author(_, *, revision, **kwargs):
-                    revision['revise'] = correction
-                    if failure in ('provider', 'shape'):
-                        raise GenerationError('PROVIDER_UNAVAILABLE' if failure == 'provider' else 'SOURCE_SHAPE',
-                                              'private context')
+                    revision['requested'] = True
+                    if failure == 'provider':
+                        raise GenerationError('PROVIDER_UNAVAILABLE', 'private context')
+                    revision['draft'] = draft        # no replyReceived: this author is not the general provider
                     return 'first'
-                def render(lesson, payload, target):
+                def render(lesson, payload, target, **kwargs):
                     if failure == 'renderer':
                         raise OSError('unavailable renderer')
                     if failure == 'success':
@@ -604,41 +803,56 @@ class WorkerTests(unittest.TestCase):
                         return manifest
                     return self.failed_gate(lesson, payload, target, gate='pdf')
                 remote = FakeRemote()
-                with patch.object(worker, 'author_lesson', side_effect=author), \
-                     patch.object(worker, 'render_job', side_effect=render):
-                    if failure == 'success':
-                        worker.process_job(remote, self.job, root, enable_skill_revision=True)
-                        self.assertEqual(len(remote.uploads()), 2)
-                    else:
-                        with self.assertRaises((OSError, GenerationError)):
-                            worker.process_job(remote, self.job, root, enable_skill_revision=True)
-                        self.assertFalse(remote.uploads())
-                correction.assert_not_called()
+                if failure == 'success':
+                    self.run_general(author, render, root=root, remote=remote)
+                    self.assertEqual(len(remote.uploads()), 2)
+                else:
+                    with self.assertRaises((OSError, GenerationError)) as caught:
+                        self.run_general(author, render, root=root, remote=remote)
+                    self.assertFalse(remote.uploads())
+                    if failure == 'unknown-gate':
+                        self.assertEqual(caught.exception.job_failure, {'stage': 'render', 'question': None, 'gate': 'PDF_BUILD',
+                                                                        'attempts': 1, 'corrections': 0})
+                self.assertEqual((draft.replaced, draft.corrections), ([], 0))
 
-    def test_lease_loss_at_revision_blocks_expenditure_for_both_feedback_paths(self):
+    def test_lease_loss_blocks_a_correction_and_a_second_attempt(self):
         self.use_general_lesson()
-        for failure in ('source', 'render'):
+        for failure in ('source', 'render', 'second-attempt'):
             with self.subTest(failure=failure):
                 root = self.root / failure
                 root.mkdir()
                 remote = FakeRemote()
-                correction = Mock()
+                draft = FakeDraft(self.job['lesson'], missing=[3] if failure == 'source' else [], code='SOURCE_ANSWER')
+                calls = []
                 def author(_, *, revision, **kwargs):
-                    revision['revise'] = correction
+                    calls.append(1)
+                    revision.update(requested=True, replyReceived=True)
+                    if failure == 'second-attempt':
+                        remote.fail_updates = True
+                        raise GenerationError('SOURCE_SHAPE', 'private source')
+                    revision['draft'] = draft
                     if failure == 'source':
                         remote.fail_updates = True
-                        revision['sourceFindings'] = [{'question': 1, 'codes': ['SOURCE_ANSWER']}]
                         raise GenerationError('SOURCE_ANSWER', 'private source')
                     return 'first'
-                def render(lesson, payload, target):
+                def render(lesson, payload, target, **kwargs):
                     remote.fail_updates = True
                     return self.failed_gate(lesson, payload, target)
-                with patch.object(worker, 'author_lesson', side_effect=author), \
-                     patch.object(worker, 'render_job', side_effect=render):
-                    with self.assertRaisesRegex(RuntimeError, 'JOB_LEASE_LOST'):
-                        worker.process_job(remote, self.job, root, enable_skill_revision=True)
-                correction.assert_not_called()
+                with self.assertRaisesRegex(RuntimeError, 'JOB_LEASE_LOST'):
+                    self.run_general(author, render, root=root, remote=remote)
+                self.assertEqual((len(calls), draft.corrections), (1, 0))
                 self.assertFalse(remote.uploads())
+
+    def test_failure_line_is_fixed_labels_codes_and_small_numbers_only(self):
+        detail = worker.failure_detail(GenerationError('X', 'PRIVATE'), {
+            'stage': 'PRIVATE stage', 'question': 'PRIVATE', 'gateCode': 'G32 PRIVATE', 'attempts': 9,
+            'corrections': 1, 'firstCode': 'private-code', 'text': 'PRIVATE'})
+        self.assertEqual(detail, {'stage': 'author', 'question': None, 'gate': None, 'corrections': 1})
+        self.assertEqual(worker.failure_detail(None, {'stage': 'precheck', 'question': 7, 'gateCode': 'G66', 'attempts': 2,
+                                                      'corrections': 0, 'firstCode': 'SOURCE_SHAPE'}, None),
+                         {'stage': 'precheck', 'question': 7, 'gate': 'G66', 'attempts': 2, 'corrections': 0,
+                          'firstCode': 'SOURCE_SHAPE'})
+        self.assertEqual(worker.failure_detail(None, {'stage': 'render'}, 'upload')['stage'], 'upload')
 
     def test_upload_failure_never_sets_review_status_or_repeats_paid_call(self):
         self.remote.fail_upload = True

@@ -73,8 +73,8 @@ def author_settings():
         return provider.author_provider(), urlparse(target).hostname, model
     except GenerationError as exc:
         return exc.code
-CALLS_PER_CASE = 2          # the engine asks for one draft and at most one correction
-TOKENS_PER_CASE = 50_000    # reserve per running case; the engine's own request ceilings fit inside
+CALLS_PER_CASE = 4          # the engine's ladder: at most two author calls and two corrections per job
+TOKENS_PER_CASE = 104_000   # reserve per running case: two drafts (40,000 each) and two corrections (12,000 each)
 CASE_SECONDS = 1200         # the bounded worker's wall limit for one job
 
 
@@ -214,7 +214,7 @@ def case_worker(folder):
         'calls': calls, 'usage': usage, 'chargedOutputTokens': charged,
         'costUsd': {'scenarios': scenarios,
                     'unavailable': sorted({c['unavailableReason'] for c in costs if 'unavailableReason' in c})},
-        'renders': renders, 'engineFeedback': outcome['skillFeedback'],
+        'renders': renders, 'ladder': outcome['ladder'], 'prechecks': outcome['prechecks'],
         'delivery': outcome.get('result'), 'diagnostics': outcome['diagnostics'],
         'artifacts': artifacts, 'jobDir': str(outcome['jobDir']), 'attempt': folder.name,
         'seconds': {**outcome['seconds'], 'wall': round(time.monotonic() - started, 3)},

@@ -105,7 +105,13 @@ class GeneralRuntimeTests(unittest.TestCase):
         sent=json.loads(body['messages'][1]['content'])
         self.assertEqual(sent['authoringContext'],context)
         schema=body['response_format']['json_schema']['schema']
-        self.assertEqual(set(schema['required']), {'title', 'rule', 'practice', 'challenges'})
+        self.assertEqual(set(schema['required']), {'title', 'rule', 'practice', 'challenges', 'reserves'})
+        # Four reserves for a twenty-question sheet, each tagged with its group and concept.
+        reserve = schema['properties']['reserves']
+        self.assertEqual((reserve['minItems'], reserve['maxItems']), (4, 4))
+        self.assertEqual(reserve['items']['required'], ['group', 'conceptId', 'question'])
+        self.assertEqual(reserve['items']['properties']['question'], {'$ref': '#/$defs/question'})
+        self.assertEqual([row['group'] for row in sent['reservePlan']], ['practice'] * 3 + ['challenges'])
         self.assertFalse(schema['additionalProperties'])
         self.assertEqual(body['response_format']['type'],'json_schema')
         self.assertIs(body['response_format']['json_schema']['strict'],True)
@@ -337,7 +343,7 @@ class GeneralRuntimeTests(unittest.TestCase):
         scope = scope_for_lesson(self.lesson)
         rows = question_plan(self.lesson, scope)
         flat = {"title":"כותרת", "rule":"הנחיה", "practice":[{}]*17, "challenges":[{}]*3}
-        for indexes in ([], [False], [0], [21], [3,3], list(range(1,8))):
+        for indexes in ([], [False], [0], [21], [3,3], list(range(1,10))):
             with self.subTest(indexes=indexes), self.assertRaises(GeneralSourceError):
                 correction_body(flat, [{"question":i,"feedback":["fix"]} for i in indexes],
                     self.lesson, scope, rows, {}, "test")

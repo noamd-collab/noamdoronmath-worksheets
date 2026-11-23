@@ -10,8 +10,10 @@ the model transport, guard the network, call the engine's own entry points
 Engine names this module depends on:
 
 * `remote_worker`: `process_job`, `update_job`, `check_transport`, `heartbeat`,
-  and the names it imports: `author_lesson`, `render_job`, and its feedback
-  reader (`blocking_feedback`, earlier `read_skill_feedback`).
+  `author_and_render` (its `summary` argument is the repair ladder's own
+  record) and the names it imports: `author_lesson`, `render_job`,
+  `precheck_job`.
+* `general_provider.Draft` (through the worker's session): `selection.record`.
 * `provider.request_author_json(target, key, body, metadata, timeout)`.
 * `general_provider.author_general_lesson`, `general_adapters.compile_source`.
 * `cloud/container/skill_bundle.install` and the bundled skill archives.
@@ -356,13 +358,10 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
     root.mkdir(parents=True, exist_ok=True)
     job = _job(lesson, seed)
     remote = _FakeRemote()
-    seen = {'phases': [], 'final': None, 'first': None, 'metadata': {}, 'revision': None,
-            'renders': [], 'feedback': [], 'authorSeconds': 0.0}
+    seen = {'phases': [], 'final': None, 'first': None, 'metadata': {}, 'revision': None, 'sessions': [],
+            'renders': [], 'prechecks': [], 'summary': None, 'authorSeconds': 0.0}
     real_author, real_render = remote_worker.author_lesson, remote_worker.render_job
-    # The worker's reader of a failed render: the gate policy's view, or the older closed one.
-    feedback_name = next((name for name in ('blocking_feedback', 'read_skill_feedback')
-                          if hasattr(remote_worker, name)), None)
-    real_feedback = getattr(remote_worker, feedback_name, None) if feedback_name else None
+    real_precheck, real_ladder = remote_worker.precheck_job, remote_worker.author_and_render
 
     def on_update(_remote, _job_row, values):
         if 'phase' in values and 'status' not in values:
@@ -371,10 +370,14 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
             seen['final'] = values
 
     def author(job_lesson, **options):
+        # Called once per author attempt of the worker's ladder. `first` stays the first attempt's outcome.
         seen['metadata'] = options.get('metadata') if isinstance(options.get('metadata'), dict) else {}
         seen['revision'] = options.get('revision')
+        if isinstance(options.get('revision'), dict):
+            seen['sessions'].append(options['revision'])
         seen['timeout'] = options.get('timeout')
         started = time.monotonic()
+        outcome_of_call = {'ok': True}
         try:
             if route == 'general':
                 validate_lesson(job_lesson)
@@ -383,12 +386,29 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
             else:
                 payload = real_author(job_lesson, **options)
         except GenerationError as exc:
-            seen['first'] = {'ok': False, 'code': exc.code, 'detail': str(exc)[:300]}
+            outcome_of_call = {'ok': False, 'code': exc.code, 'detail': str(exc)[:300]}
             raise
         finally:
-            seen['authorSeconds'] = round(time.monotonic() - started, 3)
-        seen['first'] = {'ok': True}
+            seen['authorSeconds'] = round(seen['authorSeconds'] + time.monotonic() - started, 3)
+            if seen['first'] is None:
+                seen['first'] = outcome_of_call
         return payload
+
+    def ladder(*args, **kwargs):
+        # The worker's own record of its repair ladder, read after the job ends.
+        seen['summary'] = kwargs.get('summary')
+        return real_ladder(*args, **kwargs)
+
+    def prechecking(job_lesson, payload, target, *args, **kwargs):
+        if not render:
+            raise StopBeforeRender()
+        entry = {'dir': Path(target), 'status': None, 'questions': []}
+        seen['prechecks'].append(entry)
+        result = real_precheck(job_lesson, payload, target, *args, **kwargs)
+        gate = result.get('gate') or {}
+        entry.update(status=result.get('status'), questions=list(gate.get('questions') or []),
+                     codes=sorted({row.get('code') for row in gate.get('blocking') or [] if row.get('code')}))
+        return result
 
     def rendering(job_lesson, payload, target, *args, **kwargs):
         if not render:
@@ -405,11 +425,6 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
             entry['seconds'] = round(time.monotonic() - started, 3)
         return entry['manifest']
 
-    def feedback(workdir, question_count):
-        findings = real_feedback(workdir, question_count)
-        seen['feedback'].append([{'question': f.get('question'), 'codes': f.get('codes')} for f in findings])
-        return findings
-
     outcome = {'status': 'failed', 'delivered': False, 'code': None}
     started = time.monotonic()
     with ExitStack() as stack:
@@ -425,8 +440,9 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
             stack.enter_context(patch.object(owner, name, replacement))
         stack.enter_context(patch.object(remote_worker, 'author_lesson', author))
         stack.enter_context(patch.object(remote_worker, 'render_job', rendering))
-        if feedback_name:  # observation only
-            stack.enter_context(patch.object(remote_worker, feedback_name, feedback))
+        # Observation only.
+        stack.enter_context(patch.object(remote_worker, 'precheck_job', prechecking))
+        stack.enter_context(patch.object(remote_worker, 'author_and_render', ladder))
         try:
             remote_worker.process_job(remote, job, root)
             final = seen['final'] or {}
@@ -444,8 +460,12 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
             outcome.update(code='WORKER_FAILED', detail=f'{type(exc).__name__}: {str(exc)[:200]}')
     metadata = seen['metadata']
     calls = list(getattr(transport, 'calls', []))
-    revision = seen['revision'] if isinstance(seen['revision'], dict) else {}
+    # The first attempt's session holds the engine's localisation of the first reply.
+    revision = seen['sessions'][0] if seen['sessions'] else {}
     findings = revision.get('sourceFindings')
+    outcome['ladder'] = _ladder_record(seen['summary'], seen['sessions'])
+    outcome['prechecks'] = [{'status': entry['status'], 'questions': entry['questions'],
+                             'codes': entry.get('codes', [])} for entry in seen['prechecks']]
     outcome['phases'] = seen['phases']
     outcome['author'] = {
         'route': route,
@@ -453,7 +473,8 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
         'firstPass': seen['first'],
         'modelCalls': sum(1 for call in calls if 'refused' not in call),
         'calls': calls,
-        'correctionRequested': metadata.get('correctionRequested') is True or len(calls) > 1,
+        # A second full draft is another author call, not a correction.
+        'correctionRequested': any(call.get('schema') in ('revise_skill_questions', 'mark_skill_math') for call in calls),
         'sourceValidated': metadata.get('validated') is True if 'validated' in metadata else None,
         'timeoutSeconds': seen.get('timeout'),
         # The engine's own localisation, as handed to its correction request.
@@ -463,13 +484,35 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
     outcome['renders'] = [{'dir': entry['dir'], 'manifest': entry['manifest'],
                            'error': entry.get('error'), 'seconds': entry.get('seconds')}
                           for entry in seen['renders']]
-    outcome['skillFeedback'] = seen['feedback']
     outcome['uploads'] = remote.uploads
     outcome['diagnostics'] = _read_json(root / 'author-diagnostics' / (job['id'] + '.json'))
     outcome['jobDir'] = root / job['id']
     outcome['seconds'] = {'total': round(time.monotonic() - started, 3), 'author': seen['authorSeconds'],
                           'render': round(sum(entry.get('seconds') or 0 for entry in seen['renders']), 3)}
     return outcome
+
+
+def _ladder_record(summary, sessions):
+    """What the worker's repair ladder did: counts, codes and question numbers. No worksheet text."""
+    summary = summary if isinstance(summary, dict) else {}
+    record = {key: summary[key] for key in ('attempts', 'corrections', 'replaced', 'byReserve', 'byCorrection',
+                                             'dropped', 'printed', 'gate', 'firstCode', 'stage', 'question',
+                                             'gateCode') if key in summary}
+    record['correctionFailed'] = summary.get('correctionFailed') is True
+    attempts = []
+    for session in sessions:
+        draft = session.get('draft') if isinstance(session, dict) else None
+        if draft is None:
+            attempts.append({'draft': False, 'replyReceived': isinstance(session, dict) and session.get('replyReceived') is True})
+            continue
+        report = draft.report()
+        attempts.append({'draft': True, 'planned': report['planned'], 'printed': report['printed'],
+                         'missing': report['missing'], 'dropped': report['dropped'],
+                         'reservesOffered': report['reservesOffered'], 'reservesRefused': report['reservesRefused'],
+                         'events': [{key: event[key] for key in ('question', 'group', 'codes', 'stage', 'action')}
+                                    for event in draft.selection.record]})
+    record['attemptRecords'] = attempts
+    return record
 
 
 def native_contract(lesson):

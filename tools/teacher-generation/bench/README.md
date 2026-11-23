@@ -36,8 +36,9 @@ The pinned skills are unpacked from the archives that ship with the engine
   checks, so "delivered" here is the worker's decision, not a copy of it.
   Replaced: `update_job`, `check_transport`, `heartbeat`, the remote object
   (uploads are accepted in memory) and `provider.request_author_json`.
-  Wrapped to observe only: `author_lesson`, `render_job` and the worker's
-  reader of a failed render (`blocking_feedback`).
+  Wrapped to observe only: `author_lesson`, `render_job`, `precheck_job` and
+  `author_and_render`, whose `summary` argument is the repair ladder's own
+  record (attempts, corrections, replaced and dropped questions).
 - A single reply goes through `general_provider.author_general_lesson` (the
   compile path) with the transport replaced, and the printed pupil text and
   key come from `general_adapters.compile_source`, the call the render's first
@@ -65,8 +66,14 @@ instead of attributing failures.
 - `replay.py` writes `results.json` and `summary.md` (identical for identical
   engine behaviour: no timings, paths or file hashes) and `run.json` (timings,
   work folders, delivered files, machine facts).
-- `needs_unrecorded_reply` means the engine asked for a correction that was
-  never recorded. The replay stops there; it never invents a reply.
+- `needs_unrecorded_reply` means the repair ladder ended without a sheet and
+  the engine asked for a second full author reply that was never recorded. The
+  replay stops there; it never invents a reply. A correction that was never
+  recorded does not stop a job: it counts as a failed correction, the ladder
+  goes on to a shorter sheet, and `ladder.correctionFailed` records it.
+- Each case carries `ladder`: the worker's attempts and corrections, the
+  questions replaced and dropped, and per author attempt the selection events
+  (question, group, codes, stage, action). No worksheet text.
 - A local render may check less than the worker image: without poppler the
   elementary page-fill check is deferred with a warning, and without tesseract
   the middle-school figure reader cannot run. Each render lists its skipped

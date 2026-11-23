@@ -28,7 +28,7 @@ class TableTests(unittest.TestCase):
         self.assertTrue(all(kind in (TRUTH, POLICY, EDITORIAL) and type(named) is bool
                             for kind, named in policy.GATES.values()))
         editorial = {code for code, (kind, _) in policy.GATES.items() if kind == EDITORIAL}
-        self.assertEqual(editorial, {"G50", "G61", "G62", "PAGE_FILL", "PAGE_GAP", "DIDACTIC_REVIEW"})
+        self.assertEqual(editorial, {"G50", "G61", "G62", "PAGE_FILL", "PAGE_GAP", "DIDACTIC_REVIEW", "SHORTER_SHEET"})
         self.assertEqual(set(policy.NOTES), editorial)
         for note in policy.NOTES.values():
             self.assertRegex(note, r"^[א-ת0-9 ,.:()★-]+$")

@@ -62,6 +62,9 @@ def reply_questions(reply):
         for index, question in enumerate(group):
             numbered = name in ('practice', 'challenges')
             number += numbered
+            if name == 'reserves' and isinstance(question, dict) and isinstance(question.get('question'), dict):
+                # A reserve is {"group", "conceptId", "question"}: examine the question it carries.
+                question = question['question']
             rows.append((number if numbered else None, name, index, question))
     return rows
 

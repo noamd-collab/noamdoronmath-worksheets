@@ -24,20 +24,51 @@ chronology and the stopping point to the general author. The compiler assigns se
 concepts to practice and challenge slots, owns their numbering and creates the versioned
 source. Adding a subject from the curriculum does not require a subject-specific author.
 
-The general author supplies a title, one rule and two groups of questions. Mathematical
+The general author supplies a title, one rule, two groups of questions and a few
+reserve questions (three beside fewer than 16 planned questions, four beside fewer
+than 24, otherwise five), each tagged with its group and concept. Reserves are
+optional on arrival: a reply without them still compiles. Mathematical
 tasks are parsed into bounded, verified expressions. Printed literals preserve significant
 decimal zeros, thousands separators, and percent signs. A completed source-v4 document
 remains a supported input. Basic grade-two no-regrouping addition also accepts its existing
 compact parameter format. Every output goes through the same applicable skill gates.
 
-The production worker can request one targeted revision for up to six questions when the skill identifies their
-locations and the job still owns its lease. The second provider call has a separate usage
-record. Both outputs are rebuilt in a fresh directory and rechecked before any upload.
-An infrastructure failure or an unlocalized report does not trigger a correction.
-A question is localized by one predicate, `skill_authoring.question_refusal`: the
-question is expanded and validated alone, and any code it raises (a notation
-fault, a printed-key refusal, a kernel limit such as a power beyond the bound)
-makes it a bad question to replace, never a failed sheet.
+Every question is examined alone by one predicate, `skill_authoring.question_codes`:
+it is expanded and validated by itself (notation, typed task, printed-key binders,
+answer kinds) and, in elementary school, read for the claim words of the truth gates.
+Any code it raises (a notation fault, a printed-key refusal, a kernel limit such as a
+power beyond the bound) makes it a bad question to replace, never a failed sheet.
+`lesson_select.py` chooses the sheet: a bad question takes a reserve of its own group;
+a practice reserve may stand in for a challenge only while two real challenges remain,
+and is then printed as an ordinary question. It knows nothing about the wire format or
+a topic. The unchanged whole-sheet validation runs on the chosen sheet.
+
+The production worker repairs a version 3 job in this order, each step only when the one
+before left a deficit (`remote_worker.author_and_render`, through `general_provider.Draft`):
+
+1. reserve questions, with no model call;
+2. ONE targeted correction call for the missing questions only (at most eight), each with
+   the fixed instruction of its code and the exact field and substring that carries the fault;
+3. a shorter sheet: at least three quarters of the requested questions, never fewer than six,
+   with at least two real challenges. The lesson of that sheet carries the rewritten count
+   and the request travels beside it (`salvaged_from`); the result holds a `SHORTER_SHEET` note;
+4. ONE second full author call, when the first reply is unusable as a whole (not JSON, wrong
+   shape, plan mismatch) or the steps above ended without a sheet.
+
+Before the PDF and Word steps the worker runs `runner.precheck_job` and replaces the questions
+it names (at most two rounds). After a render it follows `manifest.gate`: `deliver` is a
+`needs_review` sheet with its notes; `replace` swaps the named questions and renders once more
+in a fresh folder; `fail` goes to step 4. Hard limits per job: two author calls, two correction
+calls, and no model call starts later than 150 seconds after the claim. A call that got no
+answer from the provider closes the job to further calls. The lease is confirmed before every
+model call and every render. A delivered result carries `salvage` (attempts, corrections,
+replaced questions by code, dropped questions, the gate decision), `reviewFindings`,
+`teacherNotes` and `unverifiedAnswers` (a count by kind). A failed job stores its code only;
+the worker logs one `generation_failed` line with the code, the stage, the question and the gate.
+
+`lessonGoal: "introduce"` is accepted for version 3 lessons that the general author writes: the
+request states that this is an opening sheet and the plan marks its first questions as guided
+entry questions. Each local author keeps its own eligibility rule; `assessment` stays unsupported.
 
 `source_normalize.py` runs once on the reply when it arrives
 (`general_provider.author_general_lesson`), so the compile, the notation correction

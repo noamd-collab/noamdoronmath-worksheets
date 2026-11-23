@@ -55,6 +55,7 @@ def general_capabilities(legacy):
                                'levels':old['levels'],'questionCounts':old['questionCounts']}
         topics.append(entry)
     return {'version':1,'scope':'Owner-only skill-authored drafts; every output runs its applicable gates and requires human review.',
-            'unsupported':['assessment','introduce'],
+            # An opening sheet (introduce) is accepted for the version 3 intake only.
+            'unsupported':['assessment'],
             'profile': PROFILE, 'curriculumSha256': CURRICULUM_SHA256,
             'acceptedIntakeVersions': [2, 3], 'topics': topics}
