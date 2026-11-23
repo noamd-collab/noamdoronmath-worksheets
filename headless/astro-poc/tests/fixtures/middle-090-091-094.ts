@@ -68,6 +68,47 @@ export function registryBeforeRelease<T>(registry: T, expected: RegistryEdition[
   return result;
 }
 
+/**
+ * A later correction may replace a published revision in place and record the
+ * revision it replaced under `replaces`. Put that earlier revision back, after
+ * checking the current rows exactly, so that a baseline recorded between the
+ * release and its correction still hashes to its recorded value.
+ */
+export function catalogBeforeReplacedRevisions<T>(catalog: T): T {
+  const result: any = structuredClone(catalog);
+  for (const item of allPackages as any[]) {
+    if (!item.replaces) continue;
+    const topic = result.grades.find((g: any) => g.grade === item.grade)?.topics.find((t: any) => t.id === item.topicId);
+    const index = topic?.editions?.findIndex((e: any) => e.editionId === item.edition.editionId) ?? -1;
+    assert.ok(index >= 0, item.slug);
+    const current = topic.editions[index];
+    assert.equal(digest(current), item.generatedEditionSha256, item.slug);
+    const earlier = item.replaces.edition;
+    assert.deepEqual(earlier.levels.map((l: any) => l.key), current.levels.map((l: any) => l.key), item.slug);
+    const restored = {
+      ...current,
+      levels: current.levels.map((level: any, i: number) => ({ ...level, ...earlier.levels[i] })),
+      routing: { ...current.routing, siblingPdfQuery: Object.fromEntries(earlier.levels.map((l: any) => ['p' + l.key, l.pdfId])) },
+    };
+    assert.equal(digest(restored), item.replaces.generatedEditionSha256, item.slug);
+    topic.editions[index] = restored;
+  }
+  return result;
+}
+
+export function registryBeforeReplacedRevisions<T>(registry: T): T {
+  const result: any = structuredClone(registry);
+  for (const item of allPackages as any[]) {
+    if (!item.replaces) continue;
+    const index = result.editions.findIndex((edition: RegistryEdition) => edition.editionId === item.edition.editionId);
+    assert.ok(index >= 0, item.slug);
+    assert.deepEqual(result.editions[index], item.edition, item.slug);
+    assert.equal(item.replaces.edition.editionId, item.edition.editionId, item.slug);
+    result.editions[index] = structuredClone(item.replaces.edition);
+  }
+  return result;
+}
+
 export function beforeNovember21Registry<T>(registry: T): T {
   return registryBeforeRelease(registry, allPackages.map(item => item.edition));
 }

@@ -32,7 +32,19 @@ test('the Grade 7 two-step equations topic links exactly the three reviewed work
     assert.equal(pack.grade, 7);
     assert.equal(pack.topicId, 35);
     assert.equal(pack.producerPackage, 'G7-T127');
-    assert.equal(pack.studentRevision, 'r03');
+    assert.equal(pack.studentRevision, 'r06');
+    // The corrected revision replaced r03 in place on 23.11.2026; the record keeps what it replaced.
+    assert.equal(pack.replaces.studentRevision, 'r03');
+    assert.equal(pack.replaces.replacedOn, '2026-11-23');
+    assert.equal(pack.replaces.replacedBy, pack.studentRevision);
+    assert.ok(pack.replaces.reason.length > 0 && /^[a-f0-9]{64}$/.test(pack.replaces.generatedEditionSha256));
+    assert.equal(pack.replaces.edition.editionId, pack.edition.editionId);
+    assert.deepEqual(pack.replaces.edition.levels.map(l => [l.worksheetId, l.revision]), pack.edition.levels.map(l => [l.worksheetId, l.revision - 1]));
+    const replaced = new Set(pack.replaces.edition.levels.flatMap(l => [l.pdfId, l.pdfSha256, l.sourceSha256, l.nativeExportSha256]));
+    assert.ok(pack.edition.levels.every(l => [l.pdfId, l.pdfSha256, l.sourceSha256, l.nativeExportSha256].every(value => !replaced.has(value))));
+    const published = JSON.stringify(loadCatalog());
+    assert.ok(pack.replaces.edition.levels.every(l => !published.includes(l.pdfId) && !published.includes(l.pdfSha256)));
+    assert.deepEqual(pack.reviewReceipts.map(r => r.verdict), ['PASS_STUDENT_PDF_ESSENTIALS', 'PASS_STUDENT_PDF_ESSENTIALS']);
     assert.ok(pack.studentFiles.every(file => file.pages === 9 && file.items === 32));
     assert.ok(pack.skillVersion.startsWith('7.3.3'));
     assert.deepEqual(pack.priorEditionIds, []);
@@ -44,7 +56,7 @@ test('the Grade 7 two-step equations topic links exactly the three reviewed work
     for (const [i,level] of pack.edition.levels.entries()) {
       const file = pack.studentFiles[i];
       assert.ok(file.items > 0 && file.pages > 0);
-      assert.equal(level.revision, 1);
+      assert.equal(level.revision, 2);
       assert.deepEqual(file.downloads.map(d => new URL(d.url).hostname), ['static.wixstatic.com','www.noamdoronmath.co.il']);
       assert.ok(file.downloads.every(d => d.status === 200 && d.match && d.sha256 === level.pdfSha256));
       assert.equal(added.levels[i].href, file.downloads[0].url);
