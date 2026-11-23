@@ -266,10 +266,22 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
                     bad("SOURCE_NOTATION", "The printed calculation must equal its exact typed task")
             from printed_parts import check_item
             try:
-                check_item(question, item, solved, grade)
+                decision = check_item(question, item, solved, grade)
             except GeneralSourceError as error:
+                if error.code == "PRINTED_ANSWER_KIND":
+                    # A drawing outside geometry is refused as a drawing, whatever its answer.
+                    try:
+                        validate_prose({"intro": question["intro"], "prompt": item["prompt"]}, grade, scope)
+                    except GeneralSourceError as policy:
+                        raise policy.at(qcount, j)
                 raise error.at(qcount, j)
             evidence.append({"itemId": item_id, "computed": solved})
+            if decision is not None and decision.proof["bound"] == "story":
+                # The verdict is exact for the typed claim. That the claim reads a
+                # story correctly is as unverified as in any word problem; a yes or
+                # a no hides a misreading, so the teacher is told.
+                pending.append({"itemId": item_id, "question": qcount, "item": j, "kind": "decision",
+                                "reason": "The decided claim was typed from a story; its reading of the words is unverified"})
         elif answer.get("kind") == "figure":
             exact(answer,("kind","operation","unit"),("point",));text(answer["unit"],50,empty=True)
             if "figure" not in question or answer["operation"] not in FIGURE_OPERATIONS:
@@ -285,9 +297,26 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
         elif answer.get("kind") == "review":
             exact(answer, ("kind", "text"))
             answer["text"] = rich(answer["text"], grade, provider=provider, location=f"q{qcount}.item.{j}.answer")
-            pending.append({"itemId": item_id, "reason": "No implemented exact verifier for this authored answer or proof"})
+            pending.append({"itemId": item_id, "question": qcount, "item": j, "kind": "review",
+                            "reason": "No implemented exact verifier for this authored answer or proof"})
+        elif answer.get("kind") in ("label", "open"):
+            # A name that no kernel computes, or a task that has no key at all.
+            # Both are listed for the teacher; neither is ever a verified answer.
+            from answer_kinds import check_label, check_open
+            try:
+                if answer["kind"] == "label":
+                    exact(answer, ("kind", "text")); text(answer["text"], 40)
+                    check_label(question, item, grade)
+                else:
+                    exact(answer, ("kind",))
+                    check_open(question, item, grade)
+            except GeneralSourceError as error:
+                raise error.at(qcount, j)
+            pending.append({"itemId": item_id, "question": qcount, "item": j, "kind": answer["kind"],
+                            "reason": "A label is printed as authored; no exact verifier" if answer["kind"] == "label"
+                            else "No key is printed; the teacher checks this item"})
         else:
-            bad("SOURCE_ANSWER", "Only computed or explicitly unverified review answers are supported")
+            bad("SOURCE_ANSWER", "Supported answers: computed, figure, label or open in elementary, review in middle school")
     validate_prose(question, grade, scope)
 
 
@@ -396,6 +425,10 @@ def authoring_schema(lesson, scope):
                    obj({"type": {"const": "operation"}, "op": {"enum": binary_ops}, "args": arr(expr, 2, 2)})]
     tasks = [obj({"kind": {"enum": ["evaluate", "simplify", "factor", "expand"]}, "expression": expr}),
              obj({"kind": {"const": "compare"}, "left": expr, "right": expr}),
+             # A yes/no question: the kernel decides the claim, the author never writes the verdict.
+             obj({"kind": {"const": "decide"}, "relation": {"enum": ["eq", "ne", "lt", "le", "gt", "ge", "divisible", "not_divisible"]},
+                  "left": expr, "right": expr}),
+             obj({"kind": {"const": "decide"}, "relation": {"enum": ["in", "not_in"]}, "left": expr, "values": arr(expr, 2, 12)}),
              obj({"kind": {"const": "statistics"}, "operation": {"enum": ["mean", "median", "mode", "range", "sort"]},
                   "values": arr(rational, 1, 64)})]
     spans = [obj({"kind": {"const": "text"}, "text": prose_st}),
@@ -424,6 +457,12 @@ def authoring_schema(lesson, scope):
     answers = [obj({"kind": {"const": "computed"}, "task": task, "unit": unit_schema})]
     if scope["topic"]["skillId"] == "middle":
         answers.append(obj({"kind": {"const": "review"}, "text": rt}))
+    else:
+        # A short Hebrew name for a naming question, and an item that the teacher checks.
+        label_schema = {"type": "string", "minLength": 1, "maxLength": 40, "pattern": r"^[^0-9A-Za-z\[\]<>$\\]*$"}
+        if grade <= 2:
+            label_schema["allOf"] = [vocalized]
+        answers += [obj({"kind": {"const": "label"}, "text": label_schema}), obj({"kind": {"const": "open"}})]
     answer = {"oneOf": answers}
     figures = []
     if scope["topic"]["skillId"] == "middle" and geometry_topic(scope):

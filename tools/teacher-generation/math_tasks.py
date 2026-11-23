@@ -704,6 +704,65 @@ def _statistics_task(task):
                       "exact rational descriptive statistics; all tied repeated modes returned")
 
 
+DECISION_RELATIONS = ("eq", "ne", "lt", "le", "gt", "ge", "divisible", "not_divisible", "in", "not_in")
+MAX_DECISION_VALUES = 12
+
+
+def _decide_task(task):
+    """Decide one closed claim exactly; the author never supplies its truth value.
+
+    The claim is an order or equality of two numeric expressions, divisibility
+    of one natural number by another, or membership of a value in a short
+    list. ``holds`` says whether the claim as typed is true. The exact values
+    are returned with it, so a key can show why.
+    """
+    relation = task.get("relation")
+    if type(relation) is not str or relation not in DECISION_RELATIONS:
+        fail("INVALID_TASK", "Unknown decision relation")
+    listed = relation in ("in", "not_in")
+    exact(task, ("kind", "relation", "left", "values" if listed else "right"), "decision")
+    others = task["values"] if listed else [task["right"]]
+    if type(others) is not list or (listed and not 2 <= len(others) <= MAX_DECISION_VALUES):
+        fail("INVALID_TASK", "A membership decision needs two to twelve listed values")
+    expressions = [task["left"], *others]
+    budget = Budget()
+    for expression in expressions:
+        inspect_ast(expression, budget)
+    _check_canonical_budget(expressions)
+    costs = [_algebra_cost(expression) for expression in expressions]
+    for cost in costs[1:]:
+        _combine_cost(costs[0], cost, "subtract")
+    if any(_original_symbols(expression) for expression in expressions):
+        fail("UNSUPPORTED_TASK", "A decision requires numeric expressions")
+    compiler = Compiler()
+    values = [compiler.compile(expression).expr for expression in expressions]
+    if any(value.has(S.zoo, S.oo, -S.oo, S.nan) or value.is_real is not True for value in values):
+        fail("UNDEFINED_TASK", "A decided value is not finite and real")
+    left, rest = values[0], values[1:]
+    result = {"type": "decision", "relation": relation, "left": _result_ast(left)}
+    if listed:
+        member = any(_compare_exact(left, value) == 0 for value in rest)
+        holds = member == (relation == "in")
+        result["values"] = [_result_ast(value) for value in rest]
+    elif relation in ("divisible", "not_divisible"):
+        if not (left.is_Integer and rest[0].is_Integer) or left < 0 or rest[0] <= 0:
+            fail("INVALID_TASK", "Divisibility needs a natural number and a positive whole divisor")
+        quotient, remainder = divmod(int(left), int(rest[0]))
+        holds = (remainder == 0) == (relation == "divisible")
+        result.update(right=_result_ast(rest[0]), quotient=number(quotient), remainder=number(remainder))
+    else:
+        sign = _compare_exact(left, rest[0])
+        holds = {"eq": sign == 0, "ne": sign != 0, "lt": sign < 0, "le": sign <= 0,
+                 "gt": sign > 0, "ge": sign >= 0}[relation]
+        result.update(right=_result_ast(rest[0]), order={-1: "less", 0: "equal", 1: "greater"}[sign])
+    result["holds"] = holds
+    question_math = {"left": to_house_math(task["left"])}
+    question_math["values" if listed else "right"] = (
+        [to_house_math(value) for value in others] if listed else to_house_math(task["right"]))
+    return _pack_task(task, question_math, [], [], result,
+                      "exact comparison, integer division or list membership of closed numeric expressions")
+
+
 def validate_and_solve_task(task) -> dict:
     """Validate a closed task and compute its exact answer; no provider/IO calls.
 
@@ -713,6 +772,8 @@ def validate_and_solve_task(task) -> dict:
     Also finite degree-two ``solve_system`` with two variables/equations;
     one-variable rational quadratic ``inequality`` with lt/le/gt/ge relation;
     ``statistics`` with 1..64 literal rationals and mean/median/mode/range/sort.
+    ``decide`` a closed claim ``relation/left/right`` (or ``values`` for a
+    list); its result is ``holds``, never an authored yes or no.
     Returned ``domain`` restrictions always apply to the original task.
     """
     if type(task) is not dict or type(task.get("kind")) is not str:
@@ -732,8 +793,9 @@ def validate_and_solve_task(task) -> dict:
         integer(answer,MAX_RESULT_INTEGER,"integer pair result")
         return _pack_task(task,f"{kind}({a},{b})",set(),[],
                           {"type":"expression","value":number(answer)},"Euclidean algorithm")
-    if kind in ("solve_system", "inequality", "statistics"):
-        return {"solve_system": _solve_system_task, "inequality": _inequality_task, "statistics": _statistics_task}[kind](task)
+    if kind in ("solve_system", "inequality", "statistics", "decide"):
+        return {"solve_system": _solve_system_task, "inequality": _inequality_task, "statistics": _statistics_task,
+                "decide": _decide_task}[kind](task)
     keys = {
         "evaluate": ("kind", "expression"), "simplify": ("kind", "expression"),
         "factor": ("kind", "expression"), "expand": ("kind", "expression"),

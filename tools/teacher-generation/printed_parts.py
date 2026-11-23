@@ -172,6 +172,8 @@ def shows_task(question, item, solved, *, intro=None):
     task = solved["question"]
     if task.get("kind") == "figure_measure":
         return True
+    if task.get("kind") == "decide":
+        return False  # the printed question is the claim; the claim beside it would be its answer
     prompt = item["prompt"]
     if reveals_answer(solved) or carries_data(prompt):
         return False
@@ -555,12 +557,19 @@ def bind_parts(question, item, solved, grade):
 
 
 def check_item(question, item, solved, grade):
-    """Run every printed-answer binder at source validation, where a refusal is recoverable."""
+    """Run every printed-answer binder at source validation, where a refusal is recoverable.
+
+    Returns the bound decision of a yes/no item, and None for every other item.
+    """
     bind_parts(question, item, solved, grade)
     if item["answer"].get("kind") == "computed":
         comparison_blank(item, solved, grade)
         printed_calculation(question, item, solved, grade)
         echoed_given(item, solved)
+        from answer_kinds import bind_decision, refuse_dummy_key
+        refuse_dummy_key(question, item, solved, grade)
+        return bind_decision(question, item, solved, grade)
+    return None
 
 
 # ----------------------------------------------------------- the written form

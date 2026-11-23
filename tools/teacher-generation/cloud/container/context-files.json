@@ -2,6 +2,7 @@
   "version": 1,
   "files": [
     "tools/teacher-generation/adapters.py",
+    "tools/teacher-generation/answer_kinds.py",
     "tools/teacher-generation/author_quality.py",
     "tools/teacher-generation/authoring_context.py",
     "tools/teacher-generation/benchmark.py",
