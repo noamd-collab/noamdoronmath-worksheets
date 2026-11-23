@@ -66,8 +66,8 @@ _AFTER_EACH = (
                 rf"|מה(?:{_GROUPS}){_END}))"), "per_unit"),
 )
 _BEFORE_EACH = (
-    re.compile(rf"(?:^|[^{_LETTER}])(?:{_IMPERATIVES})\s+ו?$"),
-    re.compile(rf"(?:^|[^{_LETTER}])התאימו(?:\s+[^\s.?!:;\n]{{1,20}}){{1,4}}\s+ו?$"),
+    re.compile(rf"(?:^|[^{_LETTER}])(?:{_IMPERATIVES})\s+$"),
+    re.compile(rf"(?:^|[^{_LETTER}])התאימו(?:\s+[^\s.?!:;\n]{{1,20}}){{1,4}}\s+$"),
 )
 _CONDITIONAL = (
     re.compile(rf"\s+(?:לא\s+)?(?:היה|הייתה|הייתי|היית|היינו|הייתם){_END}"),
@@ -85,13 +85,12 @@ def _each(text, start, end):
         # Only the conjunction ו may be attached: "שלכל" is "that for every".
         if prefix != "ו" or re.match(rf"[{_LETTER}]", before[-2:-1] or " "):
             return None
-        before = before[:-1] + " "
-        prefix = " "
+        before = before[:-1]
     rest = text[end:].lstrip(" ")
     for pattern, reading in _AFTER_EACH:
         if pattern.match(rest):
             return reading
-    if any(pattern.search(before + ("" if before.endswith(" ") else " ")) for pattern in _BEFORE_EACH):
+    if any(pattern.search(before) for pattern in _BEFORE_EACH):
         return "instruction"
     return None
 
