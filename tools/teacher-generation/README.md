@@ -39,7 +39,11 @@ An infrastructure failure or an unlocalized report does not trigger a correction
 and expression bounds. `math_tasks.py` verifies typed arithmetic, symbolic
 operations, bounded equations/systems, inequalities and descriptive statistics.
 No model string is passed to eval, exec or a symbolic expression parser.
-Computed answers are derived from the same typed task printed in the question.
+Computed answers are derived from the typed task. The task is printed after
+a prompt only when the prompt carries no numbers of its own, and never when the
+print would be the answer; `printed_parts.py` and the other `printed_*` binders
+tie the key to an exercise that the prompt already shows. A prompt with several
+blanks gets one answer for each blank, or the question is refused.
 Prose, reasoning and pedagogical correspondence still require human review.
 
 `general_adapters.py` compiles only trusted templates. Typed figures are

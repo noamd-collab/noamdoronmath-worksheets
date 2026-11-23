@@ -21,8 +21,8 @@ from general_geometry import solve_figure_task, measure_elementary_svg
 from no_carry_addition import needs_printed_task, states_entire_task
 from printed_percentages import percentage_evidence
 from printed_tasks import match_printed_task, matching_solution_choices, printed_solve, printed_table_row
-from printed_elementary import guard_counting_input, place_answer, place_intro, printed_intent, validate_counting_values
-from printed_parts import answer_form, bind_parts, comparison_blank, printed_calculation, shows_task
+from printed_elementary import guard_counting_input, place_intro, printed_intent, validate_counting_values
+from printed_parts import answer_form, bind_parts, carries_data, comparison_blank, printed_calculation, shows_task
 
 LETTERS = "אבגדהוזחטי"
 LEVELS = {"a": "רמה א׳", "b": "רמה ב׳", "e": "מצוינות"}
@@ -177,7 +177,10 @@ def _formula_text(notation, grade, H):
         if H:
             rendered.append(_elementary_math(tree,grade,H,blank=bool(aliases),number_spellings=spellings))
         else:
-            text = to_house_math(tree,number_spellings=spellings,schoolbook=True)
+            # Only genuine one-letter variables sit next to their coefficient.
+            # A blank or a segment name keeps the sign: 3 · ___, AB · CD.
+            text = to_house_math(tree,number_spellings=spellings,
+                                 schoolbook=all(re.fullmatch("[a-z]",name) for name in aliases.values()))
             rendered.append(re.sub(r"(?<![A-Za-z\\])[xyab](?![A-Za-z])",
                                    lambda match: aliases.get(match[0],match[0]),text))
     return " ".join(rendered)
@@ -628,7 +631,10 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
                 if bound and bound.label:
                     answer = bound.label + " (" + answer + ")"
                 space=280 if question.get("drawingFromWords") and j==len(question["items"]) else 46 if question["star"] else 32
-                row = {"label": LETTERS[j-1], "text": body, "space": space, "answer": answer, "given": [body], "to_prove": []}
+                # The item's stated givens. Without a printed task, the numbers of a
+                # shared story live in the intro, and the pinned checks must see them there.
+                given = [body] if show_task or not computed or not carries_data(question["intro"]) else [body, intro]
+                row = {"label": LETTERS[j-1], "text": body, "space": space, "answer": answer, "given": given, "to_prove": []}
                 result = computed["result"] if computed else {}
                 if result.get("classification") == "finite" and result.get("variable"):
                     row["variables"] = computed["domain"]["variables"]

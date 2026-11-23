@@ -17,8 +17,7 @@ import re
 from general_source import GeneralSourceError
 from math_tasks import validate_and_solve_task
 from numeric_literals import NUMBER_TOKEN, literal_value
-from printed_elementary import (PrintedAnswer, Token, _json_number, _unpointed, blank_count,
-                                place_answer, read_tokens)
+from printed_elementary import PrintedAnswer, _json_number, _unpointed, blank_count, place_answer, read_tokens
 
 
 def _reject(reason="The printed question and its typed answer do not agree"):
@@ -131,14 +130,21 @@ NUMBER_WORD = re.compile(
     r"שבע(?:ה|ים)?|שמונ(?:ה|ים)|תשע(?:ה|ים)?|עשר(?:ה|ים)?|מאה|מאתיים|אלף|אלפיים|חצי|שליש|רבע)(?![א-ת])")
 
 
+# The pupil's own earlier work supplies the data: "the expression you wrote", "both results".
+BACK_REFERENCE = re.compile(
+    r"(?<![א-ת])(?:ה?קודמ(?:ת|ים|ות)?|ה?קודם|שכתבתם|שמצאתם|שקיבלתם|שחישבתם|שבניתם|שפתרתם|"
+    r"(?:שתי|שני|בין) ה?תוצאות|ב?סעיף [א-ט]['׳]?|ב?סעיפים)(?![א-ת])")
+
+
 def shows_task(question, item, solved, *, intro=None):
     """Whether the typed task is printed after the pupil prompt.
 
     It is printed only for a prompt that carries no mathematics of its own,
-    and never when the print would be the answer. A prompt with numbers is a
+    and never when the print would be an answer. A prompt with numbers is a
     complete exercise or a word problem; printing the calculation after it
     would repeat the exercise or reveal the operation. The same holds for a
-    question about a story or a table that is printed once for all its items.
+    question about a story or a table that is printed once for all its items,
+    and for an item whose words continue the pupil's own earlier answers.
     """
     task = solved["question"]
     if task.get("kind") == "figure_measure":
@@ -146,14 +152,15 @@ def shows_task(question, item, solved, *, intro=None):
     prompt = item["prompt"]
     if reveals_answer(solved) or carries_data(prompt):
         return False
-    leaves = task_numbers(task)
-    table = visible_numbers(_table_spans(question))
-    if leaves and leaves <= table:
-        return False
     words = _words(prompt).strip()
+    leaves = task_numbers(task)
+    if BACK_REFERENCE.search(words):
+        return False
     if words.endswith("?"):
-        shared = visible_numbers(question["intro"] if intro is None else intro) | table
-        if NUMBER_WORD.search(words) or (leaves and leaves <= shared):
+        # A question about a story or a table that is printed once for all items.
+        shared = visible_numbers(question["intro"] if intro is None else intro)
+        shared |= visible_numbers(_table_spans(question))
+        if NUMBER_WORD.search(words) or leaves & shared:
             return False
     return True
 
@@ -260,6 +267,7 @@ def comparison_blank(item, solved, grade):
 
 # ------------------------------------------------------- quotient and remainder
 _REMAINDER = re.compile(r"(?<![א-ת])[ובלה]{0,2}שארית(?![א-ת])")
+_LEFTOVER = re.compile(r"(?<![א-ת])ו?(?:נשאר(?:ו|ות|ים|ת)?|יישאר(?:ו)?|תישאר(?:נה)?|נותר(?:ו|ות|ים|ה)?|ייוותר(?:ו)?)(?![א-ת])")
 
 
 def _division(tree):
@@ -275,8 +283,13 @@ def remainder_answer(question, item, solved, grade):
     """Key a division with remainder as "9 (שארית 2)", never as the fraction 47/5."""
     typed = _scalar(solved)
     prompt = item["prompt"]
-    words = _words(prompt)
-    if typed is None or not (_REMAINDER.search(words) or _REMAINDER.search(_words(question["intro"]))):
+    words = _words(prompt) + " " + _words(question["intro"])
+    typed_division = _division(solved["question"].get("expression"))
+    # Until a quotient is taught as a fraction (grade five), a whole-number
+    # division that does not come out even has a remainder, said or not.
+    uneven = (typed_division is not None and typed_division[0] >= typed_division[1]
+              and typed is not None and typed.denominator != 1)
+    if typed is None or not (_REMAINDER.search(words) or (uneven and (grade <= 4 or _LEFTOVER.search(words)))):
         return None
     blanks = blank_count(prompt)
     if blanks > 2:
@@ -293,7 +306,6 @@ def remainder_answer(question, item, solved, grade):
             except GeneralSourceError:
                 shown.append(None)
     shown = [pair for pair in shown if pair]
-    typed_division = _division(solved["question"].get("expression"))
     if len(shown) > 1:
         return None
     if shown:
@@ -491,7 +503,11 @@ def bind_parts(question, item, solved, grade):
     if binding is None and kind in ("computed", "figure"):
         blanks = max(blank_count(item["prompt"]), _row_blanks(question, item["prompt"]))
         if blanks >= 2 and _answers(solved) != blanks:
-            _reject("The prompt has several blanks and the typed task answers only one of them")
+            from printed_tasks import match_printed_task
+            # "המספר החסר הוא ___: [[___ + 4 = 17]]" names one unknown twice,
+            # and its binder has already solved the printed equation for it.
+            if kind != "computed" or not match_printed_task(item, solved, grade):
+                _reject("The prompt has several blanks and the typed task answers only one of them")
     return binding
 
 
