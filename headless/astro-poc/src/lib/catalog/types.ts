@@ -91,6 +91,12 @@ interface AssessmentPdfEvidence {
   freezeSha256: string;
 }
 
+interface StudentPrintEvidence {
+  kind: 'reviewed-student-print';
+  freezeSha256: string;
+  independentReviewSha256: string;
+}
+
 interface BridgePrintEvidence {
   kind: 'regular-grade-9-bridge';
   independentReviewSha256: string;
@@ -106,7 +112,7 @@ type ReviewedPrintLevel = Omit<CatalogNativePdfOnlyLevel, 'nativeExportSha256' |
 export type CatalogPdfOnlyLevel = CatalogNativePdfOnlyLevel | ReviewedPrintLevel;
 
 export type CatalogEdition = CatalogEditionBase & (
-  | { publicationMode: 'pdf-only'; assessmentPdfEvidence?: AssessmentPdfEvidence; bridgePrintEvidence?: BridgePrintEvidence; levels: CatalogPdfOnlyLevel[] }
+  | { publicationMode: 'pdf-only'; assessmentPdfEvidence?: AssessmentPdfEvidence; bridgePrintEvidence?: BridgePrintEvidence; studentPrintEvidence?: StudentPrintEvidence; levels: CatalogPdfOnlyLevel[] }
   | { publicationMode?: never; levels: CatalogLevel[] }
 );
 

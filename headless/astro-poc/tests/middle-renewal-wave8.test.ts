@@ -6,7 +6,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { topicPageCatalogTopicIds, topicPagePdfParts } from '../src/lib/topicStructuredData';
 import { loadTopicPage } from '../src/lib/topicPages';
-import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, eighthRenew } from './fixtures/middle-090-091-094';
+import { catalogAtRelease, registryAtRelease, catalogBeforePackages, catalogBeforeReplacedRevisions, copyBeforeRelease, registryBeforeRelease, registryBeforeReplacedRevisions, eighthRenew } from './fixtures/middle-090-091-094';
 
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
@@ -15,8 +15,9 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 test('the regular Grade 9 transition topic links the three print-only bridge levels', () => {
   const releases = eighthRenew.packages;
   assert.deepEqual(releases.map(p => p.number), [119]);
-  const catalog = read('headless/catalog/catalog.v1.json');
-  const registry = read('headless/catalog/worksheet-editions.v1.json');
+  // The wave 8 baseline recorded 081 r03. Check and peel the later PDFs, then restore that exact revision.
+  const catalog = catalogBeforeReplacedRevisions(catalogAtRelease(read('headless/catalog/catalog.v1.json'), eighthRenew));
+  const registry = registryBeforeReplacedRevisions(registryAtRelease(read('headless/catalog/worksheet-editions.v1.json'), eighthRenew));
   assert.equal(digest(catalogBeforePackages(catalog, releases)), eighthRenew.baselineCatalogSha256);
   assert.equal(digest(registryBeforeRelease(registry, releases.map(p => p.edition))), eighthRenew.baselineRegistrySha256);
   assert.equal(releases.flatMap(p => p.studentFiles).reduce((total, file) => total + file.items, 0), 180);

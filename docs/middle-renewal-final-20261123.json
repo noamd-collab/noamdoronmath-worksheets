@@ -1,0 +1,2243 @@
+{
+  "schema": "middle-school-reviewed-pdf/v1",
+  "date": "2026-11-23",
+  "updatedLine": "נועם דורון מתמטיקה · עודכן 23.11.2026",
+  "baseline": "d5f309f12c3509f14749332ce7a978240c8128e6",
+  "baselineCatalogSha256": "bc5b9b46bd3a9e9baba36e0dda2a8d188c441ae225e16bbdca2b01d4e9691d3d",
+  "baselineRegistrySha256": "8e45a87de4834224a5896958ef31014f44b002410d53cdffad3b807cfbfb6e0b",
+  "packages": [
+    {
+      "number": 103,
+      "sheetId": "G9-TPV-01",
+      "grade": 9,
+      "topicId": 30,
+      "slug": "triangular-prism-volume-grade-9",
+      "producerPackage": "G9-T129",
+      "studentRevision": "r03",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "PDF publication candidate for qualified Grade 9 review/enrichment. Existing skill G71/G88 match the prerequisite grade, not Grade 9 as an annual unit. No native Ramzi export or live hints are claimed."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "e25c5503e01eedf010e3ec5493b0edcd17fd7f49296861adfefb83577c42be25",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-103-r03/reports/delta-review.json",
+          "sha256": "8a6c9973ab01de8df5bc0545bf4dee559516203bc4c62634302b73cf335bd44f",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 8,
+          "items": 21,
+          "bytes": 68410,
+          "source": "submissions/Codex/MS-PROD-CODEX-103-r03/proofs/a.pdf",
+          "sha256": "86e4c66462abf7144e678542cfa20d6d7c8093420e34728a603086dfd1d2cbd5",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_278a8cb61d83478cb7ba0d0c770629d5.pdf",
+              "status": 200,
+              "sha256": "86e4c66462abf7144e678542cfa20d6d7c8093420e34728a603086dfd1d2cbd5",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_278a8cb61d83478cb7ba0d0c770629d5.pdf",
+              "status": 200,
+              "sha256": "86e4c66462abf7144e678542cfa20d6d7c8093420e34728a603086dfd1d2cbd5",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 8,
+          "items": 21,
+          "bytes": 69450,
+          "source": "submissions/Codex/MS-PROD-CODEX-103-r03/proofs/b.pdf",
+          "sha256": "3c6dfa50ffbf515251d04780dda3a44b29779a0b368a4f96d13ed9984dc77927",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a1d9b492dbfc4a93b66aea959115c088.pdf",
+              "status": 200,
+              "sha256": "3c6dfa50ffbf515251d04780dda3a44b29779a0b368a4f96d13ed9984dc77927",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a1d9b492dbfc4a93b66aea959115c088.pdf",
+              "status": 200,
+              "sha256": "3c6dfa50ffbf515251d04780dda3a44b29779a0b368a4f96d13ed9984dc77927",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 8,
+          "items": 21,
+          "bytes": 73592,
+          "source": "submissions/Codex/MS-PROD-CODEX-103-r03/proofs/c.pdf",
+          "sha256": "42d992903ee5b153d6d7ed5757cc4743cbf54d3ba10ce2d60586b5ce0ffbe883",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a1cbd818e8fd43bbb7485a9574a82f54.pdf",
+              "status": 200,
+              "sha256": "42d992903ee5b153d6d7ed5757cc4743cbf54d3ba10ce2d60586b5ce0ffbe883",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a1cbd818e8fd43bbb7485a9574a82f54.pdf",
+              "status": 200,
+              "sha256": "42d992903ee5b153d6d7ed5757cc4743cbf54d3ba10ce2d60586b5ce0ffbe883",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "מנסרה משולשת לכיתה ט׳ — מבנה ונפח — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "חזרה למי שכבר למדו מנסרות, או העשרה בהנחיית המורה. מזהים פאות ומקצועות, מבחינים בין גובה המשולש למרחק בין הבסיסים ומחשבים נפח של מנסרה ישרה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "דפי עבודה על נפח מנסרה משולשת לכיתה ט׳: זיהוי בסיס וגובה, חישוב שטח הבסיס ונפח המנסרה בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "חזרה למי שכבר למדו מנסרות, או העשרה בהנחיית המורה. מזהים פאות ומקצועות, מבחינים בין גובה המשולש למרחק בין הבסיסים ומחשבים נפח של מנסרה ישרה."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "מזהים את בסיסי המנסרה ואת גובהה ומחשבים נפח מנסרה משולשת. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "חזרה למי שכבר למדו מנסרות, או העשרה בהנחיית המורה. מזהים פאות ומקצועות, מבחינים בין גובה המשולש למרחק בין הבסיסים ומחשבים נפח של מנסרה ישרה."
+        },
+        {
+          "path": [
+            "sections",
+            2,
+            "blocks",
+            1,
+            "text"
+          ],
+          "before": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+          "after": "בדף העבודה של המהדורה הקודמת, שנפתחת עם רמזי, אפשר לקרוא רמז לצד סעיף שמופיע בו כפתור רמז."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "מזהים את בסיסי המנסרה ואת גובהה ומחשבים נפח מנסרה משולשת. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "חזרה למי שכבר למדו מנסרות, או העשרה בהנחיית המורה. מזהים פאות ומקצועות, מבחינים בין גובה המשולש למרחק בין הבסיסים ומחשבים נפח של מנסרה ישרה."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            8,
+            "text"
+          ],
+          "before": "בדף העבודה אפשר לבקש רמז מנועם AI ולהמשיך לנסות באופן עצמאי.",
+          "after": "בדף העבודה של המהדורה הקודמת, שנפתחת עם רמזי, אפשר לקרוא רמז לצד סעיף שמופיע בו כפתור רמז."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "דפי עבודה על נפח מנסרה משולשת לכיתה ט׳: זיהוי בסיס וגובה, חישוב שטח הבסיס ונפח המנסרה בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "חזרה למי שכבר למדו מנסרות, או העשרה בהנחיית המורה. מזהים פאות ומקצועות, מבחינים בין גובה המשולש למרחק בין הבסיסים ומחשבים נפח של מנסרה ישרה."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "דפי עבודה על נפח מנסרה משולשת לכיתה ט׳: זיהוי בסיס וגובה, חישוב שטח הבסיס ונפח המנסרה בשלוש רמות. בחינם, ללא הרשמה ועם רמזים מיידיים של נועם AI.",
+          "after": "חזרה למי שכבר למדו מנסרות, או העשרה בהנחיית המורה. מזהים פאות ומקצועות, מבחינים בין גובה המשולש למרחק בין הבסיסים ומחשבים נפח של מנסרה ישרה."
+        }
+      ],
+      "priorUpdatedLine": null,
+      "priorPageSha256": "32a8e0f61cfd1e03b93a2a8a827c5986421b5897b61a894082715186135aaaaa",
+      "priorTopicSha256": "367dd22963a1df692e862f1171e3c0e53b77cd57c0504a0310744fe440652b93",
+      "edition": {
+        "grade": 9,
+        "topicId": 30,
+        "editionId": "ms-20261123-g9-tpv-01-r1",
+        "label": "מנסרה משולשת לכיתה ט׳ — מבנה ונפח · PDF",
+        "nativePrefix": "G9-T129",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "e25c5503e01eedf010e3ec5493b0edcd17fd7f49296861adfefb83577c42be25",
+          "independentReviewSha256": "8a6c9973ab01de8df5bc0545bf4dee559516203bc4c62634302b73cf335bd44f"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "278a8cb61d83478cb7ba0d0c770629d5",
+            "pdfSha256": "86e4c66462abf7144e678542cfa20d6d7c8093420e34728a603086dfd1d2cbd5",
+            "sourceSha256": "e93e4cec660f6e47b5279feb2c8dd8ab4e2543674915b0ad1456e3b07e491548",
+            "worksheetId": "ms-g9-tpv-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "a1d9b492dbfc4a93b66aea959115c088",
+            "pdfSha256": "3c6dfa50ffbf515251d04780dda3a44b29779a0b368a4f96d13ed9984dc77927",
+            "sourceSha256": "acb724f76e07c5c98069779724102fbd15c6f3c51d1eb4c58a916f061b94c35c",
+            "worksheetId": "ms-g9-tpv-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "a1cbd818e8fd43bbb7485a9574a82f54",
+            "pdfSha256": "42d992903ee5b153d6d7ed5757cc4743cbf54d3ba10ce2d60586b5ce0ffbe883",
+            "sourceSha256": "b0b3c03a3d2c7ffbda2074d4503ec6efbb953e6bf650ab5cb1c1f4ba618139f5",
+            "worksheetId": "ms-g9-tpv-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "47676dde59908d72511ff1a52901f3ab9e1cca7fb9f023d9c2388ac734237bce"
+    },
+    {
+      "number": 104,
+      "sheetId": "G9-TPS-01",
+      "grade": 9,
+      "topicId": 31,
+      "slug": "triangular-prism-surface-area-grade-9",
+      "producerPackage": "G9-T130",
+      "studentRevision": "r03",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "PDF publication candidate for qualified Grade 9 review/enrichment. Existing skill G71/G88 match the prerequisite grade, not Grade 9 as an annual unit. No native Ramzi export or live hints are claimed."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "448e0f78f484513a8901f8045d44ad02f25aa943b3ee34c465029e2b75316aea",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-104-r03/reports/delta-review.json",
+          "sha256": "668763f2fe13a04dead49c2dec5ca54ef639ff9e66a2bbb839fd729e27c9f3c3",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 7,
+          "items": 18,
+          "bytes": 61413,
+          "source": "submissions/Codex/MS-PROD-CODEX-104-r03/proofs/a.pdf",
+          "sha256": "c634675a92193983b67f511b7696214c49c91e8799a5a9b2d505153dba8d2f63",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_bf4ad7e853ac406ebd8f7ef68cee3e67.pdf",
+              "status": 200,
+              "sha256": "c634675a92193983b67f511b7696214c49c91e8799a5a9b2d505153dba8d2f63",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_bf4ad7e853ac406ebd8f7ef68cee3e67.pdf",
+              "status": 200,
+              "sha256": "c634675a92193983b67f511b7696214c49c91e8799a5a9b2d505153dba8d2f63",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 7,
+          "items": 18,
+          "bytes": 64777,
+          "source": "submissions/Codex/MS-PROD-CODEX-104-r03/proofs/b.pdf",
+          "sha256": "b8a7ee52c93a195a5a63fd9865160edb0c2855661da995bc4b8adc6d6f2fc431",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_4514135935074822968a6a546665aeab.pdf",
+              "status": 200,
+              "sha256": "b8a7ee52c93a195a5a63fd9865160edb0c2855661da995bc4b8adc6d6f2fc431",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_4514135935074822968a6a546665aeab.pdf",
+              "status": 200,
+              "sha256": "b8a7ee52c93a195a5a63fd9865160edb0c2855661da995bc4b8adc6d6f2fc431",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 7,
+          "items": 18,
+          "bytes": 64746,
+          "source": "submissions/Codex/MS-PROD-CODEX-104-r03/proofs/c.pdf",
+          "sha256": "5f6ee8211a75c0a6cceba895753e8a77d26a963a5f09f7a688990a79fcbbae77",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b7c0328a73784f7e9cdae2aab583f859.pdf",
+              "status": 200,
+              "sha256": "5f6ee8211a75c0a6cceba895753e8a77d26a963a5f09f7a688990a79fcbbae77",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b7c0328a73784f7e9cdae2aab583f859.pdf",
+              "status": 200,
+              "sha256": "5f6ee8211a75c0a6cceba895753e8a77d26a963a5f09f7a688990a79fcbbae77",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "מנסרה משולשת לכיתה ט׳ — שטח פנים — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "חזרה למי שכבר למדו את מבנה המנסרה, או העשרה בהנחיית המורה. קוראים פריסה של מנסרה משולשת, מזהים את שני הבסיסים ואת שלוש פאות המעטפת ומחשבים שטח פנים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "תרגול שטח מעטפת ושטח פנים של מנסרה משולשת ישרה לכיתה ט׳. דפי עבודה חינמיים ברמות א׳, ב׳ ומצוינות, עם דוגמה ורמזי נועם AI, ללא הרשמה.",
+          "after": "חזרה למי שכבר למדו את מבנה המנסרה, או העשרה בהנחיית המורה. קוראים פריסה של מנסרה משולשת, מזהים את שני הבסיסים ואת שלוש פאות המעטפת ומחשבים שטח פנים."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "מחשבים את שטחי שני הבסיסים והמעטפת של מנסרה משולשת ישרה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "חזרה למי שכבר למדו את מבנה המנסרה, או העשרה בהנחיית המורה. קוראים פריסה של מנסרה משולשת, מזהים את שני הבסיסים ואת שלוש פאות המעטפת ומחשבים שטח פנים."
+        },
+        {
+          "path": [
+            "sections",
+            2,
+            "blocks",
+            2,
+            "text"
+          ],
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "בדף העבודה של המהדורה הקודמת, שנפתחת עם רמזי, אפשר לקרוא רמז לצד סעיף שמופיע בו כפתור רמז."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "מחשבים את שטחי שני הבסיסים והמעטפת של מנסרה משולשת ישרה. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "חזרה למי שכבר למדו את מבנה המנסרה, או העשרה בהנחיית המורה. קוראים פריסה של מנסרה משולשת, מזהים את שני הבסיסים ואת שלוש פאות המעטפת ומחשבים שטח פנים."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            9,
+            "text"
+          ],
+          "before": "זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "בדף העבודה של המהדורה הקודמת, שנפתחת עם רמזי, אפשר לקרוא רמז לצד סעיף שמופיע בו כפתור רמז."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "תרגול שטח מעטפת ושטח פנים של מנסרה משולשת ישרה לכיתה ט׳. דפי עבודה חינמיים ברמות א׳, ב׳ ומצוינות, עם דוגמה ורמזי נועם AI, ללא הרשמה.",
+          "after": "חזרה למי שכבר למדו את מבנה המנסרה, או העשרה בהנחיית המורה. קוראים פריסה של מנסרה משולשת, מזהים את שני הבסיסים ואת שלוש פאות המעטפת ומחשבים שטח פנים."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "תרגול שטח מעטפת ושטח פנים של מנסרה משולשת ישרה לכיתה ט׳. דפי עבודה חינמיים ברמות א׳, ב׳ ומצוינות, עם דוגמה ורמזי נועם AI, ללא הרשמה.",
+          "after": "חזרה למי שכבר למדו את מבנה המנסרה, או העשרה בהנחיית המורה. קוראים פריסה של מנסרה משולשת, מזהים את שני הבסיסים ואת שלוש פאות המעטפת ומחשבים שטח פנים."
+        }
+      ],
+      "priorUpdatedLine": null,
+      "priorPageSha256": "38b20816008d39ef628064f9be9949966c55bd43ec771156148ce041df01cf6d",
+      "priorTopicSha256": "0aa0d8cf5bd5bb88ca24f734647b7faaab81a8f1daaf966a22289792ed0f7dee",
+      "edition": {
+        "grade": 9,
+        "topicId": 31,
+        "editionId": "ms-20261123-g9-tps-01-r1",
+        "label": "מנסרה משולשת לכיתה ט׳ — שטח פנים · PDF",
+        "nativePrefix": "G9-T130",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "448e0f78f484513a8901f8045d44ad02f25aa943b3ee34c465029e2b75316aea",
+          "independentReviewSha256": "668763f2fe13a04dead49c2dec5ca54ef639ff9e66a2bbb839fd729e27c9f3c3"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "bf4ad7e853ac406ebd8f7ef68cee3e67",
+            "pdfSha256": "c634675a92193983b67f511b7696214c49c91e8799a5a9b2d505153dba8d2f63",
+            "sourceSha256": "34b68d0232f42cd9667edd942bb2671b56e8b720b1d29152e9e96aaf7c0b45bf",
+            "worksheetId": "ms-g9-tps-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "4514135935074822968a6a546665aeab",
+            "pdfSha256": "b8a7ee52c93a195a5a63fd9865160edb0c2855661da995bc4b8adc6d6f2fc431",
+            "sourceSha256": "c136a7dd03ae31c84ce5954b6332fbfa68201359a534823acf42373ae0c51d66",
+            "worksheetId": "ms-g9-tps-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "b7c0328a73784f7e9cdae2aab583f859",
+            "pdfSha256": "5f6ee8211a75c0a6cceba895753e8a77d26a963a5f09f7a688990a79fcbbae77",
+            "sourceSha256": "83040759d436eb76da7500ded7893203f33d41f7b5f5a02662901b8eb3854e2c",
+            "worksheetId": "ms-g9-tps-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "b41f285dfe1887f01a05cd51959f48b9f8a0635f4c1ea4795664f7429542566e"
+    },
+    {
+      "number": 107,
+      "sheetId": "G9-CPT-01",
+      "grade": 9,
+      "topicId": 23,
+      "slug": "congruent-polygons-transformations-grade-9",
+      "producerPackage": "G9-T133",
+      "studentRevision": "r03",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "PDF publication candidate for qualified Grade 9 review/enrichment. Existing skill G71/G88 match the prerequisite grade, not Grade 9 as an annual unit. No native Ramzi export or live hints are claimed."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "1afdc565c65a12c5c24e6de0c84d0593010151d94d7d1db32baafa2e80f06b79",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-107-r03/reports/delta-review.json",
+          "sha256": "174923e4a08079183262c4aa74b22528795bf5d6243057b207e427a5dfb01fc1",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 8,
+          "items": 24,
+          "bytes": 88043,
+          "source": "submissions/Codex/MS-PROD-CODEX-107-r03/proofs/a.pdf",
+          "sha256": "09360f9ca165af3cdd63867322f59fbc6157660503fe6212c1391e58fede09ff",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_fa74f2e2a3694ecaa2ff5a438edcf69f.pdf",
+              "status": 200,
+              "sha256": "09360f9ca165af3cdd63867322f59fbc6157660503fe6212c1391e58fede09ff",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_fa74f2e2a3694ecaa2ff5a438edcf69f.pdf",
+              "status": 200,
+              "sha256": "09360f9ca165af3cdd63867322f59fbc6157660503fe6212c1391e58fede09ff",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 8,
+          "items": 24,
+          "bytes": 84404,
+          "source": "submissions/Codex/MS-PROD-CODEX-107-r03/proofs/b.pdf",
+          "sha256": "44826efa5c3dcc53066de54f423af3d21dbcfba3e8fe6e72c2097ffe79035f74",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_71d8470342854d1ca052932a90a918ec.pdf",
+              "status": 200,
+              "sha256": "44826efa5c3dcc53066de54f423af3d21dbcfba3e8fe6e72c2097ffe79035f74",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_71d8470342854d1ca052932a90a918ec.pdf",
+              "status": 200,
+              "sha256": "44826efa5c3dcc53066de54f423af3d21dbcfba3e8fe6e72c2097ffe79035f74",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 8,
+          "items": 24,
+          "bytes": 88295,
+          "source": "submissions/Codex/MS-PROD-CODEX-107-r03/proofs/c.pdf",
+          "sha256": "7c303b1d8897885873b066f67ecad8c2238b64f8001b609a695928c3005e65e2",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_d5be315e79744591a7992890478c93f3.pdf",
+              "status": 200,
+              "sha256": "7c303b1d8897885873b066f67ecad8c2238b64f8001b609a695928c3005e65e2",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_d5be315e79744591a7992890478c93f3.pdf",
+              "status": 200,
+              "sha256": "7c303b1d8897885873b066f67ecad8c2238b64f8001b609a695928c3005e65e2",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "מצולעים חופפים והעתקות לכיתה ט׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "חזרה למי שכבר למדו הזזה, שיקוף וסיבוב, או העשרה בהנחיית המורה. מתאימים קודקודים וצלעות ובודקים כיצד נשמרים אורכים וזוויות בהעתקה.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "description"
+          ],
+          "before": "טרנספורמציות לכיתה ט׳: הזזה, סיבוב ושיקוף, זיהוי צורות חופפות וקריאת נקודות במערכת צירים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית.",
+          "after": "חזרה למי שכבר למדו הזזה, שיקוף וסיבוב, או העשרה בהנחיית המורה. מתאימים קודקודים וצלעות ובודקים כיצד נשמרים אורכים וזוויות בהעתקה."
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "מתרגלים הזזה, שיקוף וסיבוב, ומזהים צורות חופפות ששומרות על אורכים וזוויות, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "חזרה למי שכבר למדו הזזה, שיקוף וסיבוב, או העשרה בהנחיית המורה. מתאימים קודקודים וצלעות ובודקים כיצד נשמרים אורכים וזוויות בהעתקה."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "מתרגלים הזזה, שיקוף וסיבוב, ומזהים צורות חופפות ששומרות על אורכים וזוויות, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה. זקוקים לרמז? פתחו את דף העבודה והיעזרו בנועם AI.",
+          "after": "חזרה למי שכבר למדו הזזה, שיקוף וסיבוב, או העשרה בהנחיית המורה. מתאימים קודקודים וצלעות ובודקים כיצד נשמרים אורכים וזוויות בהעתקה."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "טרנספורמציות לכיתה ט׳: הזזה, סיבוב ושיקוף, זיהוי צורות חופפות וקריאת נקודות במערכת צירים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית.",
+          "after": "חזרה למי שכבר למדו הזזה, שיקוף וסיבוב, או העשרה בהנחיית המורה. מתאימים קודקודים וצלעות ובודקים כיצד נשמרים אורכים וזוויות בהעתקה."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "טרנספורמציות לכיתה ט׳: הזזה, סיבוב ושיקוף, זיהוי צורות חופפות וקריאת נקודות במערכת צירים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה, לתרגול בכיתה ובבית.",
+          "after": "חזרה למי שכבר למדו הזזה, שיקוף וסיבוב, או העשרה בהנחיית המורה. מתאימים קודקודים וצלעות ובודקים כיצד נשמרים אורכים וזוויות בהעתקה."
+        }
+      ],
+      "priorUpdatedLine": null,
+      "priorPageSha256": "c1c703d522da99382717c1d2037f1dd647399b53bda40f6cf448c7be4e9afbac",
+      "priorTopicSha256": "533d617fc9030a32867c9246cca9ba60bc36825c3e9a5a0b0aed96cc5ba65469",
+      "edition": {
+        "grade": 9,
+        "topicId": 23,
+        "editionId": "ms-20261123-g9-cpt-01-r1",
+        "label": "מצולעים חופפים והעתקות לכיתה ט׳ · PDF",
+        "nativePrefix": "G9-T133",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "1afdc565c65a12c5c24e6de0c84d0593010151d94d7d1db32baafa2e80f06b79",
+          "independentReviewSha256": "174923e4a08079183262c4aa74b22528795bf5d6243057b207e427a5dfb01fc1"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "fa74f2e2a3694ecaa2ff5a438edcf69f",
+            "pdfSha256": "09360f9ca165af3cdd63867322f59fbc6157660503fe6212c1391e58fede09ff",
+            "sourceSha256": "2c3dd0c3a6afd8c621f67e4563865f42935f840b87ec23be728648dc28fd1e77",
+            "worksheetId": "ms-g9-cpt-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "71d8470342854d1ca052932a90a918ec",
+            "pdfSha256": "44826efa5c3dcc53066de54f423af3d21dbcfba3e8fe6e72c2097ffe79035f74",
+            "sourceSha256": "bfc268c7e83cb835db3304001aeddf6a43db7b49676aea6d7afaa5d8b7166be1",
+            "worksheetId": "ms-g9-cpt-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "d5be315e79744591a7992890478c93f3",
+            "pdfSha256": "7c303b1d8897885873b066f67ecad8c2238b64f8001b609a695928c3005e65e2",
+            "sourceSha256": "5d1f2fe7c962821ea0e2426e80160fa8e7826db7c3f71fb36ea5aed30e0bd626",
+            "worksheetId": "ms-g9-cpt-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "6e1a21772f6d67cbf087fbc42f22ad559bef9473afeac036ec2712a4093c3dbb"
+    },
+    {
+      "number": 108,
+      "sheetId": "G8-DGN-01",
+      "grade": 8,
+      "topicId": 1,
+      "slug": "prior-knowledge-diagnostic-grade-8",
+      "producerPackage": "G8-T154",
+      "studentRevision": "r03",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "G70 is an annual whole-sheet gate. The reviewed, purpose-limited PDF retains its documented coverage exception. A working student-facing Ramzi export for this revision is not part of this delivery.",
+        "G71 remains flagged for the prerequisite/diagnostic topic cross-map in stock 7.3.3; this PDF is assigned by cohort or cutoff. Verify local part IDs before enabling hints."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "5f1bf287077914227ac8c0a511f4b9f9c53a59ea51e6c66dc19969d79a0c306b",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-108-r03/reports/final-review.json",
+          "sha256": "dc3614045dec08458acb34fbafc16c71e9bf2cff187f4fc4e12036eaade5ec47",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 12,
+          "items": 60,
+          "bytes": 86468,
+          "source": "submissions/Codex/MS-PROD-CODEX-108-r03/pdf/a.pdf",
+          "sha256": "17895a60e16ca1c45e95162525678ac1bc24522ae08c0ceda005c7dfce327879",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_bffb88a1deeb4db89730057b82354757.pdf",
+              "status": 200,
+              "sha256": "17895a60e16ca1c45e95162525678ac1bc24522ae08c0ceda005c7dfce327879",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_bffb88a1deeb4db89730057b82354757.pdf",
+              "status": 200,
+              "sha256": "17895a60e16ca1c45e95162525678ac1bc24522ae08c0ceda005c7dfce327879",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 13,
+          "items": 60,
+          "bytes": 90441,
+          "source": "submissions/Codex/MS-PROD-CODEX-108-r03/pdf/b.pdf",
+          "sha256": "18931048af529a9ab013f5a1f7fceb9ac0aa7d26b3616c51f3fcf65821581c55",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b25e007a592147d3b80a222476147ded.pdf",
+              "status": 200,
+              "sha256": "18931048af529a9ab013f5a1f7fceb9ac0aa7d26b3616c51f3fcf65821581c55",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b25e007a592147d3b80a222476147ded.pdf",
+              "status": 200,
+              "sha256": "18931048af529a9ab013f5a1f7fceb9ac0aa7d26b3616c51f3fcf65821581c55",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 14,
+          "items": 60,
+          "bytes": 93877,
+          "source": "submissions/Codex/MS-PROD-CODEX-108-r03/pdf/c.pdf",
+          "sha256": "ddb93cb7bd1c12acbcd03f8614ffdc558ac0c63a4c1bdaf1e8a2f86a7c380d8d",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_825a9303f15d4b4f8cee49fc00cebeef.pdf",
+              "status": 200,
+              "sha256": "ddb93cb7bd1c12acbcd03f8614ffdc558ac0c63a4c1bdaf1e8a2f86a7c380d8d",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_825a9303f15d4b4f8cee49fc00cebeef.pdf",
+              "status": 200,
+              "sha256": "ddb93cb7bd1c12acbcd03f8614ffdc558ac0c63a4c1bdaf1e8a2f86a7c380d8d",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "אבחון קדם־ידע לפתיחת כיתה ח׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "אבחון כניסה מדגמי לכיתה ח׳ לפי החומר שנלמד בכיתה ז׳ בתשפ״ו. הנושאים כוללים מספרים מכוונים, ביטויים ומשוואות, מערכת צירים וזוויות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "דף אבחון לתחילת כיתה ח׳ שבודק את הידע מכיתה ז׳: חישובים במספרים מכוונים ובשברים, ביטויים אלגבריים, קריאת נקודות במערכת צירים וחלוקה לפי יחס. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "אבחון כניסה מדגמי לכיתה ח׳ לפי החומר שנלמד בכיתה ז׳ בתשפ״ו. הנושאים כוללים מספרים מכוונים, ביטויים ומשוואות, מערכת צירים וזוויות."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "דף אבחון לתחילת כיתה ח׳ שבודק את הידע מכיתה ז׳: חישובים במספרים מכוונים ובשברים, ביטויים אלגבריים, קריאת נקודות במערכת צירים וחלוקה לפי יחס. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "אבחון כניסה מדגמי לכיתה ח׳ לפי החומר שנלמד בכיתה ז׳ בתשפ״ו. הנושאים כוללים מספרים מכוונים, ביטויים ומשוואות, מערכת צירים וזוויות."
+        }
+      ],
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "47e59ce65a0088e2aaadaf598e18c056a45efb4f64805256c1913a13fdc4e5a1",
+      "priorTopicSha256": "f7378ad9f90e55e1bc52882436e78dadf8ebeea40fb06ec9a335f26a9ebc833c",
+      "edition": {
+        "grade": 8,
+        "topicId": 1,
+        "editionId": "ms-20261123-g8-dgn-01-r1",
+        "label": "אבחון קדם־ידע לפתיחת כיתה ח׳ · PDF",
+        "nativePrefix": "G8-T154",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "5f1bf287077914227ac8c0a511f4b9f9c53a59ea51e6c66dc19969d79a0c306b",
+          "independentReviewSha256": "dc3614045dec08458acb34fbafc16c71e9bf2cff187f4fc4e12036eaade5ec47"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "bffb88a1deeb4db89730057b82354757",
+            "pdfSha256": "17895a60e16ca1c45e95162525678ac1bc24522ae08c0ceda005c7dfce327879",
+            "sourceSha256": "67c4de4fc7f96cc38be8cc620d2c6aaa6f68f7d684fecfd2c65a58dc99897eeb",
+            "worksheetId": "ms-g8-dgn-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "b25e007a592147d3b80a222476147ded",
+            "pdfSha256": "18931048af529a9ab013f5a1f7fceb9ac0aa7d26b3616c51f3fcf65821581c55",
+            "sourceSha256": "2c028eddfc2f3f2d308b89e00c360ee8fd072977d3b72183a4d05803cbdf10a5",
+            "worksheetId": "ms-g8-dgn-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "825a9303f15d4b4f8cee49fc00cebeef",
+            "pdfSha256": "ddb93cb7bd1c12acbcd03f8614ffdc558ac0c63a4c1bdaf1e8a2f86a7c380d8d",
+            "sourceSha256": "de3311ad1a4b54c6192cbf4551d8ce36fdb8f9dc7e3a86dbe7c114bde384a853",
+            "worksheetId": "ms-g8-dgn-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "2f3e2da19357499e8103f7bf731a4d5504b7b757fba51116d970d49f139b461f"
+    },
+    {
+      "number": 109,
+      "sheetId": "G8-MYD-01",
+      "grade": 8,
+      "topicId": 34,
+      "slug": "midyear-diagnostic-grade-8",
+      "producerPackage": "G8-T155",
+      "studentRevision": "r03",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "G70 is an annual whole-sheet gate. The reviewed, purpose-limited PDF retains its documented coverage exception. A working student-facing Ramzi export for this revision is not part of this delivery."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "95b614b6d463c215071f4129b3dc2d2cc355432ab1307618ce0f816371293b14",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-109-r03/reports/final-review.json",
+          "sha256": "e191dd8da5a12624a127d241d0e7c8159613e89566e9d9728a0e97b81d243e58",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 13,
+          "items": 60,
+          "bytes": 108946,
+          "source": "submissions/Codex/MS-PROD-CODEX-109-r03/pdf/a.pdf",
+          "sha256": "7e417b38d547fba89d8bbad5ea7595ad90d60686e1fe2c612c3e252a7e5ef45e",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c9bd168ececd48bca34a725c8af0fca7.pdf",
+              "status": 200,
+              "sha256": "7e417b38d547fba89d8bbad5ea7595ad90d60686e1fe2c612c3e252a7e5ef45e",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_c9bd168ececd48bca34a725c8af0fca7.pdf",
+              "status": 200,
+              "sha256": "7e417b38d547fba89d8bbad5ea7595ad90d60686e1fe2c612c3e252a7e5ef45e",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 13,
+          "items": 60,
+          "bytes": 112933,
+          "source": "submissions/Codex/MS-PROD-CODEX-109-r03/pdf/b.pdf",
+          "sha256": "a05f9f3c33de73fa705775c7a5b968961c757526b6ba06c5d3a01af7e90899dd",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_88f482cfc30d4c2b8495b89f2543ff5f.pdf",
+              "status": 200,
+              "sha256": "a05f9f3c33de73fa705775c7a5b968961c757526b6ba06c5d3a01af7e90899dd",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_88f482cfc30d4c2b8495b89f2543ff5f.pdf",
+              "status": 200,
+              "sha256": "a05f9f3c33de73fa705775c7a5b968961c757526b6ba06c5d3a01af7e90899dd",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 14,
+          "items": 60,
+          "bytes": 113049,
+          "source": "submissions/Codex/MS-PROD-CODEX-109-r03/pdf/c.pdf",
+          "sha256": "cc2cbd683298f14f157a44a0171c783bab776f1b1d6b2959b3842d4f36e964bf",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c323ea14652347e6a40655f59aca8eb0.pdf",
+              "status": 200,
+              "sha256": "cc2cbd683298f14f157a44a0171c783bab776f1b1d6b2959b3842d4f36e964bf",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_c323ea14652347e6a40655f59aca8eb0.pdf",
+              "status": 200,
+              "sha256": "cc2cbd683298f14f157a44a0171c783bab776f1b1d6b2959b3842d4f36e964bf",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "אבחון אמצע השנה בכיתה ח׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "אבחון מדגמי לסוף ינואר, בדגש על אלגברה, לאחר הוראת חפיפה בסיסית והשוואה בין שני מקורות נתונים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "דף אבחון לאמצע כיתה ח׳ שבודק את נושאי המחצית הראשונה: משוואות עם סוגריים ועם מכנים, אחוזים, פונקציות וקריאת גרפים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "אבחון מדגמי לסוף ינואר, בדגש על אלגברה, לאחר הוראת חפיפה בסיסית והשוואה בין שני מקורות נתונים."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "דף אבחון לאמצע כיתה ח׳ שבודק את נושאי המחצית הראשונה: משוואות עם סוגריים ועם מכנים, אחוזים, פונקציות וקריאת גרפים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "אבחון מדגמי לסוף ינואר, בדגש על אלגברה, לאחר הוראת חפיפה בסיסית והשוואה בין שני מקורות נתונים."
+        }
+      ],
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "6aa2af2254636ec7f9119e181532ae86d635f600e082178d2786e36acb4c04a5",
+      "priorTopicSha256": "c58c961ac8da493bda1af03eb8dda1660f943f4073c9e92bc4964e0a7366b22d",
+      "edition": {
+        "grade": 8,
+        "topicId": 34,
+        "editionId": "ms-20261123-g8-myd-01-r1",
+        "label": "אבחון אמצע השנה בכיתה ח׳ · PDF",
+        "nativePrefix": "G8-T155",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "95b614b6d463c215071f4129b3dc2d2cc355432ab1307618ce0f816371293b14",
+          "independentReviewSha256": "e191dd8da5a12624a127d241d0e7c8159613e89566e9d9728a0e97b81d243e58"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "c9bd168ececd48bca34a725c8af0fca7",
+            "pdfSha256": "7e417b38d547fba89d8bbad5ea7595ad90d60686e1fe2c612c3e252a7e5ef45e",
+            "sourceSha256": "ed652f12c80b44d70738a3834d082acce7623b8ebdc46f3584636e8ab0c57cb6",
+            "worksheetId": "ms-g8-myd-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "88f482cfc30d4c2b8495b89f2543ff5f",
+            "pdfSha256": "a05f9f3c33de73fa705775c7a5b968961c757526b6ba06c5d3a01af7e90899dd",
+            "sourceSha256": "18b807f0ab82b7ce161f8861dbb39f25686c3191b682a03b26111b019ebd92ad",
+            "worksheetId": "ms-g8-myd-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "c323ea14652347e6a40655f59aca8eb0",
+            "pdfSha256": "cc2cbd683298f14f157a44a0171c783bab776f1b1d6b2959b3842d4f36e964bf",
+            "sourceSha256": "4f0c7a42f70dd400d9db8e4d3e798ca0cce4f96e65f41da2d0fe1d31b0f532c5",
+            "worksheetId": "ms-g8-myd-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "6a68d0e4a9e8c4a20301af544be6b50faff0ed442ec4ff5143b458aaed1b25dd"
+    },
+    {
+      "number": 111,
+      "sheetId": "G8-NRP-01",
+      "grade": 8,
+      "topicId": 56,
+      "slug": "non-routine-problems-grade-8",
+      "producerPackage": "G8-T157",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.4-dev",
+      "waivers": [],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "9119a1dba5344bd43ca5c366c8006f83a43ed63840d58e76babe3be9d9a27ee8",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-111-r02/reports/visual-verification.json",
+          "sha256": "f735cd99520f9f39405e3d2e7c5086bdf45bed686f5705542212abad3c4bc020",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 14,
+          "items": 60,
+          "bytes": 80094,
+          "source": "submissions/Codex/MS-PROD-CODEX-111-r02/packages/G8-T157/out/a.pdf",
+          "sha256": "34d92406f6c0acd26d4db70e49f5d2dc021bcadb68c10386fafa10e84e5860a2",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b54d114575ca4b8c9370e9751a475d92.pdf",
+              "status": 200,
+              "sha256": "34d92406f6c0acd26d4db70e49f5d2dc021bcadb68c10386fafa10e84e5860a2",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b54d114575ca4b8c9370e9751a475d92.pdf",
+              "status": 200,
+              "sha256": "34d92406f6c0acd26d4db70e49f5d2dc021bcadb68c10386fafa10e84e5860a2",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 14,
+          "items": 60,
+          "bytes": 83476,
+          "source": "submissions/Codex/MS-PROD-CODEX-111-r02/packages/G8-T157/out/b.pdf",
+          "sha256": "454c468b51b0731967f88e954aba463ab9257ea1d2680e2cb9c54f4af093c9b4",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b489df5b0d2f4667a9c65a067ae43470.pdf",
+              "status": 200,
+              "sha256": "454c468b51b0731967f88e954aba463ab9257ea1d2680e2cb9c54f4af093c9b4",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b489df5b0d2f4667a9c65a067ae43470.pdf",
+              "status": 200,
+              "sha256": "454c468b51b0731967f88e954aba463ab9257ea1d2680e2cb9c54f4af093c9b4",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 16,
+          "items": 60,
+          "bytes": 88347,
+          "source": "submissions/Codex/MS-PROD-CODEX-111-r02/packages/G8-T157/out/c.pdf",
+          "sha256": "3fda795510127fa7298beb6562313affce240fe07cc25989aa002e860a18d563",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_e6a467b7126a4d29ae9f1b3369e85de7.pdf",
+              "status": 200,
+              "sha256": "3fda795510127fa7298beb6562313affce240fe07cc25989aa002e860a18d563",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_e6a467b7126a4d29ae9f1b3369e85de7.pdf",
+              "status": 200,
+              "sha256": "3fda795510127fa7298beb6562313affce240fe07cc25989aa002e860a18d563",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "בעיות לא שגרתיות לכיתה ח׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "דפי העמקה לאחר לימוד הסתברות בכיתה ח׳. מתרגלים בחירת אסטרטגיה בחיתוך ובחיבור צורות, בביטויים שקולים, בשחזור נתונים ובמניית תוצאות שוות־הסתברות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "דף העמקה עם בעיות חשיבה שאין להן דרך פתרון אחת מוכנה: בעיות בהסתברות, בממוצע, באלגברה ובגאומטריה, שבהן בוחרים אסטרטגיה ומנמקים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "דפי העמקה לאחר לימוד הסתברות בכיתה ח׳. מתרגלים בחירת אסטרטגיה בחיתוך ובחיבור צורות, בביטויים שקולים, בשחזור נתונים ובמניית תוצאות שוות־הסתברות."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "דף העמקה עם בעיות חשיבה שאין להן דרך פתרון אחת מוכנה: בעיות בהסתברות, בממוצע, באלגברה ובגאומטריה, שבהן בוחרים אסטרטגיה ומנמקים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "דפי העמקה לאחר לימוד הסתברות בכיתה ח׳. מתרגלים בחירת אסטרטגיה בחיתוך ובחיבור צורות, בביטויים שקולים, בשחזור נתונים ובמניית תוצאות שוות־הסתברות."
+        }
+      ],
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "b9a20a45ca2610cff2d9270516ef726fc88df9b1e9e064840afa148edd663d59",
+      "priorTopicSha256": "e2a46bb1c36bd28d185ef84c628d0cc747177cbfb8a23393853cee54a623fbce",
+      "edition": {
+        "grade": 8,
+        "topicId": 56,
+        "editionId": "ms-20261123-g8-nrp-01-r1",
+        "label": "בעיות לא שגרתיות לכיתה ח׳ · PDF",
+        "nativePrefix": "G8-T157",
+        "publicationMode": "pdf-only",
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "b54d114575ca4b8c9370e9751a475d92",
+            "pdfSha256": "34d92406f6c0acd26d4db70e49f5d2dc021bcadb68c10386fafa10e84e5860a2",
+            "sourceSha256": "048800fc9d15cde8082f3e8b5a3e1ae54ae3a54757cbdee7dda93f14997e2047",
+            "nativeExportSha256": "852e433d73fc87768f84da39cf4d3746f54333934a28cb196f98c58a49309096",
+            "worksheetId": "ms-g8-nrp-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "b489df5b0d2f4667a9c65a067ae43470",
+            "pdfSha256": "454c468b51b0731967f88e954aba463ab9257ea1d2680e2cb9c54f4af093c9b4",
+            "sourceSha256": "76a31148f4105c96cb384214df1f091f16d63f25ede81e0cddddb4c68eaf7831",
+            "nativeExportSha256": "38d47b8162ce7cde1ba7b85e7dcafa2c4b54eda020cd04653d62015bb8a6bf9e",
+            "worksheetId": "ms-g8-nrp-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "e6a467b7126a4d29ae9f1b3369e85de7",
+            "pdfSha256": "3fda795510127fa7298beb6562313affce240fe07cc25989aa002e860a18d563",
+            "sourceSha256": "3825de620c460380bd74d3d389410bfd1d5e641a29b8d7db5c6648cb7bfdc271",
+            "nativeExportSha256": "a22bdb29014de1b950ace5cb2dd137fcd427f4933138521f054695f3cb5e3d4c",
+            "worksheetId": "ms-g8-nrp-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "5e8e169e2eec85af148ea125330c313fdd6ea662bf4d3f4b2602ad2777f33e2b"
+    },
+    {
+      "number": 112,
+      "sheetId": "G8-INV-01",
+      "grade": 8,
+      "topicId": 57,
+      "slug": "investigation-generalization-grade-8",
+      "producerPackage": "G8-T158",
+      "studentRevision": "r04",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "G70 is an annual whole-sheet gate. The reviewed, purpose-limited PDF retains its documented coverage exception. A working student-facing Ramzi export for this revision is not part of this delivery."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "0cbece773eb3f4efb0e0a2e62b779c4cd1e63515bb6524688bf5e9fd22640313",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-112-r04/reports/final-review.json",
+          "sha256": "23b6cb2ae3b8a92f849474dedd6bff79ef394543838baacf10532b61381c80c4",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 13,
+          "items": 60,
+          "bytes": 90130,
+          "source": "submissions/Codex/MS-PROD-CODEX-112-r04/pdf/a.pdf",
+          "sha256": "114451e395a950fcab607e216ad900035d184219b04a5cdfa703dd87a516bec1",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_9d0dd2fbdb7f4b8c988d4281b7d67d13.pdf",
+              "status": 200,
+              "sha256": "114451e395a950fcab607e216ad900035d184219b04a5cdfa703dd87a516bec1",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_9d0dd2fbdb7f4b8c988d4281b7d67d13.pdf",
+              "status": 200,
+              "sha256": "114451e395a950fcab607e216ad900035d184219b04a5cdfa703dd87a516bec1",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 14,
+          "items": 60,
+          "bytes": 91237,
+          "source": "submissions/Codex/MS-PROD-CODEX-112-r04/pdf/b.pdf",
+          "sha256": "9d15d28b653f5548ef0a22db2b94c45c22a8f6a93708deb9f65ee6c4edef567f",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_4268f6cae21c4189a21ad1bf2a596990.pdf",
+              "status": 200,
+              "sha256": "9d15d28b653f5548ef0a22db2b94c45c22a8f6a93708deb9f65ee6c4edef567f",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_4268f6cae21c4189a21ad1bf2a596990.pdf",
+              "status": 200,
+              "sha256": "9d15d28b653f5548ef0a22db2b94c45c22a8f6a93708deb9f65ee6c4edef567f",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 14,
+          "items": 60,
+          "bytes": 94028,
+          "source": "submissions/Codex/MS-PROD-CODEX-112-r04/pdf/c.pdf",
+          "sha256": "c205068b5c16de5ceacbd35fcab6c535160d69c04f322ad2a6eeea8b648fa7c3",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_40127794b7ab445c867466072c532a58.pdf",
+              "status": 200,
+              "sha256": "c205068b5c16de5ceacbd35fcab6c535160d69c04f322ad2a6eeea8b648fa7c3",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_40127794b7ab445c867466072c532a58.pdf",
+              "status": 200,
+              "sha256": "c205068b5c16de5ceacbd35fcab6c535160d69c04f322ad2a6eeea8b648fa7c3",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "חקר והכללה בכיתה ח׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "בעיות חקר והכללה לאחר לימוד אי־שוויונות ופיתגורס במרחב בחודש מאי. התלמידים בודקים דוגמאות, מנסחים כללים ומנמקים.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "דף העמקה שבו חוקרים תבניות מספריות וגאומטריות: אוספים דוגמאות, מנסחים השערה, בודקים אותה ומנמקים הכללה בעזרת אלגברה. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "בעיות חקר והכללה לאחר לימוד אי־שוויונות ופיתגורס במרחב בחודש מאי. התלמידים בודקים דוגמאות, מנסחים כללים ומנמקים."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "דף העמקה שבו חוקרים תבניות מספריות וגאומטריות: אוספים דוגמאות, מנסחים השערה, בודקים אותה ומנמקים הכללה בעזרת אלגברה. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "בעיות חקר והכללה לאחר לימוד אי־שוויונות ופיתגורס במרחב בחודש מאי. התלמידים בודקים דוגמאות, מנסחים כללים ומנמקים."
+        }
+      ],
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "5eeb7d82ae5377af0dabe77aad635ca18806c7b251e45cfd884674db4e5bfcd4",
+      "priorTopicSha256": "b497cbcb000b24546dd3c9d1f0166d381e9f3b5264bdac8bfb7ca3149fad5776",
+      "edition": {
+        "grade": 8,
+        "topicId": 57,
+        "editionId": "ms-20261123-g8-inv-01-r1",
+        "label": "חקר והכללה בכיתה ח׳ · PDF",
+        "nativePrefix": "G8-T158",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "0cbece773eb3f4efb0e0a2e62b779c4cd1e63515bb6524688bf5e9fd22640313",
+          "independentReviewSha256": "23b6cb2ae3b8a92f849474dedd6bff79ef394543838baacf10532b61381c80c4"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "9d0dd2fbdb7f4b8c988d4281b7d67d13",
+            "pdfSha256": "114451e395a950fcab607e216ad900035d184219b04a5cdfa703dd87a516bec1",
+            "sourceSha256": "6aef715ba81387d5de0051c0be831fc91f1e6296a672e14294f2403f40375e1a",
+            "worksheetId": "ms-g8-inv-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "4268f6cae21c4189a21ad1bf2a596990",
+            "pdfSha256": "9d15d28b653f5548ef0a22db2b94c45c22a8f6a93708deb9f65ee6c4edef567f",
+            "sourceSha256": "4eff51efd9951384b13e091a9885cb9de9d55d09573959f69ef9e9bbcb6af2e3",
+            "worksheetId": "ms-g8-inv-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "40127794b7ab445c867466072c532a58",
+            "pdfSha256": "c205068b5c16de5ceacbd35fcab6c535160d69c04f322ad2a6eeea8b648fa7c3",
+            "sourceSha256": "d8db595ded3bf33ba1e90afbf87eb75194f7e6aa84ed00899d80b0722bf812b5",
+            "worksheetId": "ms-g8-inv-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "2f77fc9224d080d5dca9d286164b7b3c314d8274a3a48f3f7b15ed5cc9874e45"
+    },
+    {
+      "number": 113,
+      "sheetId": "G8-SUM-01",
+      "grade": 8,
+      "topicId": 58,
+      "slug": "summary-review-grade-8",
+      "producerPackage": "G8-T159",
+      "studentRevision": "r03",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "Official broad-year stock G70 is FAIL. Annual review covers 20 primary questions allocated 2 numeric / 8 geometric / 6 algebra / 4 uncertainty; independent ceilings demand 23. Local scope approval applies to this PDF only.",
+        "PDF-only release. The question index is local source, not a native Ramzi export."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "a94a90e00bb9d34e441d0dfabd92403a8195e2e5c5718edc12583a8a7722853b",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-113-r03/reports/independent-review.json",
+          "sha256": "0ea972c09b6e545a6b78ed01869015eb69016bc332fe55ff0afaa48fcc581244",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 13,
+          "items": 60,
+          "bytes": 102961,
+          "source": "submissions/Codex/MS-PROD-CODEX-113-r03/release/pdf/a.pdf",
+          "sha256": "1f07fb14b0717c928d336478499b1dd6cdb984ac0e337e86f19bd5851ccb69fe",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a61ab73685f94063803f2d1caa689a98.pdf",
+              "status": 200,
+              "sha256": "1f07fb14b0717c928d336478499b1dd6cdb984ac0e337e86f19bd5851ccb69fe",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a61ab73685f94063803f2d1caa689a98.pdf",
+              "status": 200,
+              "sha256": "1f07fb14b0717c928d336478499b1dd6cdb984ac0e337e86f19bd5851ccb69fe",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 13,
+          "items": 60,
+          "bytes": 105464,
+          "source": "submissions/Codex/MS-PROD-CODEX-113-r03/release/pdf/b.pdf",
+          "sha256": "f7877cbf058488104a60590b66602a3d086d451ef3e3a70e6d8aa70ba5138dd3",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_433068c8af4c49f19dfd8ea9075bb103.pdf",
+              "status": 200,
+              "sha256": "f7877cbf058488104a60590b66602a3d086d451ef3e3a70e6d8aa70ba5138dd3",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_433068c8af4c49f19dfd8ea9075bb103.pdf",
+              "status": 200,
+              "sha256": "f7877cbf058488104a60590b66602a3d086d451ef3e3a70e6d8aa70ba5138dd3",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 14,
+          "items": 60,
+          "bytes": 109221,
+          "source": "submissions/Codex/MS-PROD-CODEX-113-r03/release/pdf/c.pdf",
+          "sha256": "fae69062a9018b4e0e3c1c0ace7fc74be47a796affdfb2814a96f42011a9f5db",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a9b4b2ce91f247c7892fe66964085b64.pdf",
+              "status": 200,
+              "sha256": "fae69062a9018b4e0e3c1c0ace7fc74be47a796affdfb2814a96f42011a9f5db",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a9b4b2ce91f247c7892fe66964085b64.pdf",
+              "status": 200,
+              "sha256": "fae69062a9018b4e0e3c1c0ace7fc74be47a796affdfb2814a96f42011a9f5db",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "חזרה מסכמת בכיתה ח׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "חזרה במתמטיקה לסוף כיתה ח׳ בשלוש רמות. 20 שאלות בכל דף בתחומים מספרים, גאומטריה, אלגברה ואי־ודאות, עם תשובות בסוף.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "דף חזרה רוחבי על כל פרקי כיתה ח׳: שאלות משולבות באלגברה ובפונקציות, בעיות תנועה, קנה מידה, נתונים וגאומטריה. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "חזרה במתמטיקה לסוף כיתה ח׳ בשלוש רמות. 20 שאלות בכל דף בתחומים מספרים, גאומטריה, אלגברה ואי־ודאות, עם תשובות בסוף."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "דף חזרה רוחבי על כל פרקי כיתה ח׳: שאלות משולבות באלגברה ובפונקציות, בעיות תנועה, קנה מידה, נתונים וגאומטריה. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "חזרה במתמטיקה לסוף כיתה ח׳ בשלוש רמות. 20 שאלות בכל דף בתחומים מספרים, גאומטריה, אלגברה ואי־ודאות, עם תשובות בסוף."
+        }
+      ],
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "b01d13ae14ee391329c8ae0be3a0ed4021ec4c0f6bdba1ce52984f51f3f135fc",
+      "priorTopicSha256": "6014ad9d841995cbb3b9d5bb991c404ecb09080f7cdcc92dd1a54ba8500eef2d",
+      "edition": {
+        "grade": 8,
+        "topicId": 58,
+        "editionId": "ms-20261123-g8-sum-01-r1",
+        "label": "חזרה מסכמת בכיתה ח׳ · PDF",
+        "nativePrefix": "G8-T159",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "a94a90e00bb9d34e441d0dfabd92403a8195e2e5c5718edc12583a8a7722853b",
+          "independentReviewSha256": "0ea972c09b6e545a6b78ed01869015eb69016bc332fe55ff0afaa48fcc581244"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "a61ab73685f94063803f2d1caa689a98",
+            "pdfSha256": "1f07fb14b0717c928d336478499b1dd6cdb984ac0e337e86f19bd5851ccb69fe",
+            "sourceSha256": "75d3dd1d496938240f23e07e76dadf9b827af3802df430012958f11c40c4c09b",
+            "worksheetId": "ms-g8-sum-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "433068c8af4c49f19dfd8ea9075bb103",
+            "pdfSha256": "f7877cbf058488104a60590b66602a3d086d451ef3e3a70e6d8aa70ba5138dd3",
+            "sourceSha256": "2d9ccac3f65e0344c353f1626975d2f9dbcda908061d1750ba6eab2c8995ce2d",
+            "worksheetId": "ms-g8-sum-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "a9b4b2ce91f247c7892fe66964085b64",
+            "pdfSha256": "fae69062a9018b4e0e3c1c0ace7fc74be47a796affdfb2814a96f42011a9f5db",
+            "sourceSha256": "66d1cf90a1bf6f526b2287b2afbc3f3eaf134ceef77e469baa20dd2af41cd892",
+            "worksheetId": "ms-g8-sum-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "a453d0b9f15865c9e8844e6707ee740a2dcde41ff831f56767e712211b70096f"
+    },
+    {
+      "number": 114,
+      "sheetId": "G8-SAS-01",
+      "grade": 8,
+      "topicId": 59,
+      "slug": "summative-assessment-grade-8",
+      "producerPackage": "G8-T160",
+      "studentRevision": "r04",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "G70 is an annual whole-sheet gate. The reviewed, purpose-limited PDF retains its documented coverage exception. A working student-facing Ramzi export for this revision is not part of this delivery."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "894d8cb3d1af01f42626838a7f6d86830a58e42e102f6ce1dd5ae2feb6888c6d",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-114-r04/reports/final-review.json",
+          "sha256": "a8f4ba92e8577100b0643e0c63426a59bbbe469fbf2da17fe75b02b738e41b8e",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 9,
+          "items": 42,
+          "bytes": 83725,
+          "source": "submissions/Codex/MS-PROD-CODEX-114-r04/pdf/a.pdf",
+          "sha256": "da2406b4e6463f263ddbd91b7d39a07015d7fa42ef3a066e30fadcffdb1fa820",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_bf58be94c732486798feb00dff6a71dc.pdf",
+              "status": 200,
+              "sha256": "da2406b4e6463f263ddbd91b7d39a07015d7fa42ef3a066e30fadcffdb1fa820",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_bf58be94c732486798feb00dff6a71dc.pdf",
+              "status": 200,
+              "sha256": "da2406b4e6463f263ddbd91b7d39a07015d7fa42ef3a066e30fadcffdb1fa820",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 10,
+          "items": 42,
+          "bytes": 89279,
+          "source": "submissions/Codex/MS-PROD-CODEX-114-r04/pdf/b.pdf",
+          "sha256": "c4ce5e6a22dffd14f9796b9eb792ee9e74583043eeeb29dffef5ce94550ae226",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_5fc03f0704f84ac18898ad379b1d97d2.pdf",
+              "status": 200,
+              "sha256": "c4ce5e6a22dffd14f9796b9eb792ee9e74583043eeeb29dffef5ce94550ae226",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_5fc03f0704f84ac18898ad379b1d97d2.pdf",
+              "status": 200,
+              "sha256": "c4ce5e6a22dffd14f9796b9eb792ee9e74583043eeeb29dffef5ce94550ae226",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 10,
+          "items": 42,
+          "bytes": 91590,
+          "source": "submissions/Codex/MS-PROD-CODEX-114-r04/pdf/c.pdf",
+          "sha256": "d7c813bebf6ddff9238ef60ed99eac03b99899a8ad68ceb329e9d4b0e3dffde5",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_5d16d8f1b5c5464e969e594f0f1333d0.pdf",
+              "status": 200,
+              "sha256": "d7c813bebf6ddff9238ef60ed99eac03b99899a8ad68ceb329e9d4b0e3dffde5",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_5d16d8f1b5c5464e969e594f0f1333d0.pdf",
+              "status": 200,
+              "sha256": "d7c813bebf6ddff9238ef60ed99eac03b99899a8ad68ceb329e9d4b0e3dffde5",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "הערכה מסכמת בכיתה ח׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "מבחן מסכם בית־ספרי מקורי לכיתה ח׳. הוא כולל 14 שאלות בארבעה תחומים, 100 נקודות וזמן עבודה מוצע של 80 דקות.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "מבחן מסכם לסוף כיתה ח׳ שמשלב את נושאי השנה: אלגברה, פונקציות וישרים במערכת צירים, נתונים והסתברות וגאומטריה. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "מבחן מסכם בית־ספרי מקורי לכיתה ח׳. הוא כולל 14 שאלות בארבעה תחומים, 100 נקודות וזמן עבודה מוצע של 80 דקות."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "מבחן מסכם לסוף כיתה ח׳ שמשלב את נושאי השנה: אלגברה, פונקציות וישרים במערכת צירים, נתונים והסתברות וגאומטריה. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "מבחן מסכם בית־ספרי מקורי לכיתה ח׳. הוא כולל 14 שאלות בארבעה תחומים, 100 נקודות וזמן עבודה מוצע של 80 דקות."
+        }
+      ],
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "eef01239c54fab981032469b0646c34cecb75a97ee70d3c5dab1721d01900e23",
+      "priorTopicSha256": "2e62a89918de3eb15cacd304f1ffb86dd83eb56d1222e1106914919d58d1e139",
+      "edition": {
+        "grade": 8,
+        "topicId": 59,
+        "editionId": "ms-20261123-g8-sas-01-r1",
+        "label": "הערכה מסכמת בכיתה ח׳ · PDF",
+        "nativePrefix": "G8-T160",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "894d8cb3d1af01f42626838a7f6d86830a58e42e102f6ce1dd5ae2feb6888c6d",
+          "independentReviewSha256": "a8f4ba92e8577100b0643e0c63426a59bbbe469fbf2da17fe75b02b738e41b8e"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "bf58be94c732486798feb00dff6a71dc",
+            "pdfSha256": "da2406b4e6463f263ddbd91b7d39a07015d7fa42ef3a066e30fadcffdb1fa820",
+            "sourceSha256": "9cb0e2bcab5154705116524640fea2f7ef18e2a4900d1443187c26558dc27b8b",
+            "worksheetId": "ms-g8-sas-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "5fc03f0704f84ac18898ad379b1d97d2",
+            "pdfSha256": "c4ce5e6a22dffd14f9796b9eb792ee9e74583043eeeb29dffef5ce94550ae226",
+            "sourceSha256": "32d55ff15b2954d95ab474970d0d752ba0a4a6ae5a0812520a82c09cd545f078",
+            "worksheetId": "ms-g8-sas-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "5d16d8f1b5c5464e969e594f0f1333d0",
+            "pdfSha256": "d7c813bebf6ddff9238ef60ed99eac03b99899a8ad68ceb329e9d4b0e3dffde5",
+            "sourceSha256": "832aa118f4bde82e38d61c46865c78579688615c3afdd86e6b306f38d7bfaa96",
+            "worksheetId": "ms-g8-sas-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "20f97b0ad72b83202a1571637eebff72c4f34146ab007a2433f1b428c5161f7b"
+    },
+    {
+      "number": 115,
+      "sheetId": "G8-EYD-01",
+      "grade": 8,
+      "topicId": 60,
+      "slug": "end-of-year-diagnostic-grade-8",
+      "producerPackage": "G8-T161",
+      "studentRevision": "r07",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "G70 is an annual whole-sheet gate. The reviewed, purpose-limited PDF retains its documented coverage exception. A working student-facing Ramzi export for this revision is not part of this delivery."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "59b0c20370e30f9687dd95431830d674779fe467b4bf25261a71c7d271378dda",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-115-r07/reports/final-review.json",
+          "sha256": "062a4d021c7f6429b6ce639528cc6d51e5568fcbc17a89a485611bdc59d3baa4",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 10,
+          "items": 42,
+          "bytes": 91663,
+          "source": "submissions/Codex/MS-PROD-CODEX-115-r07/pdf/a.pdf",
+          "sha256": "c8ed02f9dd65fcc32ebe8aa32182633077918abe423c2d3778fa3cbcfa4c7f2e",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_8e49af4fc1d3441882f46c8a9ad5105c.pdf",
+              "status": 200,
+              "sha256": "c8ed02f9dd65fcc32ebe8aa32182633077918abe423c2d3778fa3cbcfa4c7f2e",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_8e49af4fc1d3441882f46c8a9ad5105c.pdf",
+              "status": 200,
+              "sha256": "c8ed02f9dd65fcc32ebe8aa32182633077918abe423c2d3778fa3cbcfa4c7f2e",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 11,
+          "items": 42,
+          "bytes": 96441,
+          "source": "submissions/Codex/MS-PROD-CODEX-115-r07/pdf/b.pdf",
+          "sha256": "c9dabd00b2825cdf14e37e827babb8b70ee7d9b4de308931db91555cec2f87f7",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_460c7db38b144412a8e8292914c51fcb.pdf",
+              "status": 200,
+              "sha256": "c9dabd00b2825cdf14e37e827babb8b70ee7d9b4de308931db91555cec2f87f7",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_460c7db38b144412a8e8292914c51fcb.pdf",
+              "status": 200,
+              "sha256": "c9dabd00b2825cdf14e37e827babb8b70ee7d9b4de308931db91555cec2f87f7",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 12,
+          "items": 42,
+          "bytes": 101043,
+          "source": "submissions/Codex/MS-PROD-CODEX-115-r07/pdf/c.pdf",
+          "sha256": "65480b4d3c592208eb5f90b942cb5c1da7931dcee05c45d69dda0de463017885",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_f07d23875ebb4434832584c2e167e300.pdf",
+              "status": 200,
+              "sha256": "65480b4d3c592208eb5f90b942cb5c1da7931dcee05c45d69dda0de463017885",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_f07d23875ebb4434832584c2e167e300.pdf",
+              "status": 200,
+              "sha256": "65480b4d3c592208eb5f90b942cb5c1da7931dcee05c45d69dda0de463017885",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "אבחון סוף שנה בכיתה ח׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "אבחון מדגמי לסוף כיתה ח׳ ובו 14 שאלות לאיתור פערים בארבעה תחומים. שאלת פיתגורס בודקת חישוב במישור.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "דף אבחון לסוף כיתה ח׳ שממפה מה צריך לחזק לפני כיתה ט׳: קנה מידה, חזקות, ביטויים ומשוואות, פונקציות וגרפים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "אבחון מדגמי לסוף כיתה ח׳ ובו 14 שאלות לאיתור פערים בארבעה תחומים. שאלת פיתגורס בודקת חישוב במישור."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "דף אבחון לסוף כיתה ח׳ שממפה מה צריך לחזק לפני כיתה ט׳: קנה מידה, חזקות, ביטויים ומשוואות, פונקציות וגרפים. דף העבודה זמין בחינם וללא הרשמה, עם תשובות בסוף הדף.",
+          "after": "אבחון מדגמי לסוף כיתה ח׳ ובו 14 שאלות לאיתור פערים בארבעה תחומים. שאלת פיתגורס בודקת חישוב במישור."
+        }
+      ],
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "063a076b40495c1dbd03a77752542b7833315640bae7123b7af3183b35fdd52f",
+      "priorTopicSha256": "a12e494b8c39bbd35a70bd89b0d3820440d2772bc73367d8789ae7ca3589b0f0",
+      "edition": {
+        "grade": 8,
+        "topicId": 60,
+        "editionId": "ms-20261123-g8-eyd-01-r1",
+        "label": "אבחון סוף שנה בכיתה ח׳ · PDF",
+        "nativePrefix": "G8-T161",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "59b0c20370e30f9687dd95431830d674779fe467b4bf25261a71c7d271378dda",
+          "independentReviewSha256": "062a4d021c7f6429b6ce639528cc6d51e5568fcbc17a89a485611bdc59d3baa4"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "8e49af4fc1d3441882f46c8a9ad5105c",
+            "pdfSha256": "c8ed02f9dd65fcc32ebe8aa32182633077918abe423c2d3778fa3cbcfa4c7f2e",
+            "sourceSha256": "be5440e2ba550e71c3d24e742b7a82bae614df42231cafb20475a52c688583b0",
+            "worksheetId": "ms-g8-eyd-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "460c7db38b144412a8e8292914c51fcb",
+            "pdfSha256": "c9dabd00b2825cdf14e37e827babb8b70ee7d9b4de308931db91555cec2f87f7",
+            "sourceSha256": "2f128ccda7f491f18fd910a3c0c8b70bdf8f1f30bb1cc1bce08bb3a265204bd1",
+            "worksheetId": "ms-g8-eyd-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "f07d23875ebb4434832584c2e167e300",
+            "pdfSha256": "65480b4d3c592208eb5f90b942cb5c1da7931dcee05c45d69dda0de463017885",
+            "sourceSha256": "66ac9c661d1ec9d5d283b483b700621a11a9a33fb0277f8ba9e6111a0d53161d",
+            "worksheetId": "ms-g8-eyd-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "df22f062fd660748fea523272a233a3c8dffdfd9b25c839472d9649cd1f3d174"
+    },
+    {
+      "number": 116,
+      "sheetId": "G8-AST-01",
+      "grade": 8,
+      "topicId": 64,
+      "slug": "assessment-task-1-grade-8",
+      "producerPackage": "G8-T162",
+      "studentRevision": "r02",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "Official broad-year stock G70 is FAIL. This local preparation set samples the first Grade 8 assessment topics; the official assessment has a single 50-point literacy question. Level C stock G73 WARN is a terminal 12 in an answer sentence, with all 28 markers verified.",
+        "PDF-only release. The question index is local source, not a native Ramzi export."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "ec9b1ae72ad77da8310bbd944b90485f7a45d73bd27bdf377037065e37fa015a",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-116-r02/reports/independent-review.json",
+          "sha256": "c1bb137a16344447c5ffd4cb1c476d7d26ad81a21df5598833c3e63a2543dc39",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 10,
+          "items": 42,
+          "bytes": 71242,
+          "source": "submissions/Codex/MS-PROD-CODEX-116-r02/release/pdf/a.pdf",
+          "sha256": "cef4c6eaff334fd5873fe019fb14d60aa5fb4b785e46ae2cf7bac36dbaa42d1f",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_0e3a2b2eaffd49639e71a01b122f17ff.pdf",
+              "status": 200,
+              "sha256": "cef4c6eaff334fd5873fe019fb14d60aa5fb4b785e46ae2cf7bac36dbaa42d1f",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_0e3a2b2eaffd49639e71a01b122f17ff.pdf",
+              "status": 200,
+              "sha256": "cef4c6eaff334fd5873fe019fb14d60aa5fb4b785e46ae2cf7bac36dbaa42d1f",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 10,
+          "items": 42,
+          "bytes": 73608,
+          "source": "submissions/Codex/MS-PROD-CODEX-116-r02/release/pdf/b.pdf",
+          "sha256": "1ae0c8c61e6633cf64617e7b9700c9d2bcbfc3df8fc9a2779918e3a81bb59958",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_a679bd44f394423eb1fadd41a06191c7.pdf",
+              "status": 200,
+              "sha256": "1ae0c8c61e6633cf64617e7b9700c9d2bcbfc3df8fc9a2779918e3a81bb59958",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_a679bd44f394423eb1fadd41a06191c7.pdf",
+              "status": 200,
+              "sha256": "1ae0c8c61e6633cf64617e7b9700c9d2bcbfc3df8fc9a2779918e3a81bb59958",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 11,
+          "items": 42,
+          "bytes": 78036,
+          "source": "submissions/Codex/MS-PROD-CODEX-116-r02/release/pdf/c.pdf",
+          "sha256": "d82b1bc7381e4a2405c4fce735d20c9ab10c1a9c38cc6fbc11a2a253f9df3363",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_c5a9e3d468d5498bbf13b4e8d20320d1.pdf",
+              "status": 200,
+              "sha256": "d82b1bc7381e4a2405c4fce735d20c9ab10c1a9c38cc6fbc11a2a253f9df3363",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_c5a9e3d468d5498bbf13b4e8d20320d1.pdf",
+              "status": 200,
+              "sha256": "d82b1bc7381e4a2405c4fce735d20c9ab10c1a9c38cc6fbc11a2a253f9df3363",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "תרגול לקראת משימת ההערכה הראשונה — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "תרגול במתמטיקה לקראת משימת ההערכה הראשונה בכיתה ח׳. מתרגלים יחס וקנה מידה, אחוזים, זוויות, פיתגורס, מעגל ומשוואות בשלוש רמות, עם תשובות בסוף.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "title"
+          ],
+          "before": "משימת הערכה 1 לכיתה ח׳ | דפי עבודה חינם",
+          "after": "תרגול לקראת משימת ההערכה הראשונה לכיתה ח׳ | דפי עבודה חינם"
+        },
+        {
+          "path": [
+            "description"
+          ],
+          "before": "משימת הערכה 1 לכיתה ח׳: משפט פיתגורס, שינויים באחוזים, היקף ושטח מעגל וזוויות בין ישרים מקבילים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "תרגול לקראת משימת ההערכה הראשונה בכיתה ח׳. שאלות בפיתגורס, יחס, אחוזים, מעגל וזוויות בשלוש רמות, עם תשובות להדפסה."
+        },
+        {
+          "path": [
+            "h1"
+          ],
+          "before": "משימת הערכה 1 לכיתה ח׳: פיתגורס, אחוזים, מעגל וזוויות",
+          "after": "תרגול לקראת משימת ההערכה הראשונה לכיתה ח׳: פיתגורס, אחוזים, מעגל וזוויות"
+        },
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "משימת הערכה שמשלבת כמה נושאים מכיתה ח׳: משפט פיתגורס במשולשים ישרי זווית, שינויים עוקבים באחוזים, היקף ושטח של מעגל וזוויות בין ישרים מקבילים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+          "after": "תרגול במתמטיקה לקראת משימת ההערכה הראשונה בכיתה ח׳. מתרגלים יחס וקנה מידה, אחוזים, זוויות, פיתגורס, מעגל ומשוואות בשלוש רמות, עם תשובות בסוף."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "משימת הערכה שמשלבת כמה נושאים מכיתה ח׳: משפט פיתגורס במשולשים ישרי זווית, שינויים עוקבים באחוזים, היקף ושטח של מעגל וזוויות בין ישרים מקבילים. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+          "after": "תרגול במתמטיקה לקראת משימת ההערכה הראשונה בכיתה ח׳. מתרגלים יחס וקנה מידה, אחוזים, זוויות, פיתגורס, מעגל ומשוואות בשלוש רמות, עם תשובות בסוף."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "name"
+          ],
+          "before": "משימת הערכה 1 לכיתה ח׳ | דפי עבודה חינם",
+          "after": "תרגול לקראת משימת ההערכה הראשונה לכיתה ח׳ | דפי עבודה חינם"
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            0,
+            "description"
+          ],
+          "before": "משימת הערכה 1 לכיתה ח׳: משפט פיתגורס, שינויים באחוזים, היקף ושטח מעגל וזוויות בין ישרים מקבילים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "תרגול לקראת משימת ההערכה הראשונה בכיתה ח׳. שאלות בפיתגורס, יחס, אחוזים, מעגל וזוויות בשלוש רמות, עם תשובות להדפסה."
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "name"
+          ],
+          "before": "משימת הערכה 1 לכיתה ח׳: פיתגורס, אחוזים, מעגל וזוויות",
+          "after": "תרגול לקראת משימת ההערכה הראשונה לכיתה ח׳: פיתגורס, אחוזים, מעגל וזוויות"
+        },
+        {
+          "path": [
+            "jsonLd",
+            "@graph",
+            1,
+            "description"
+          ],
+          "before": "משימת הערכה 1 לכיתה ח׳: משפט פיתגורס, שינויים באחוזים, היקף ושטח מעגל וזוויות בין ישרים מקבילים. דפי עבודה ברמות א׳, ב׳ ומצוינות, בחינם וללא הרשמה.",
+          "after": "תרגול לקראת משימת ההערכה הראשונה בכיתה ח׳. שאלות בפיתגורס, יחס, אחוזים, מעגל וזוויות בשלוש רמות, עם תשובות להדפסה."
+        }
+      ],
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "7d83351c1df8d515bf37a57a8c0b6df73efb8028a96cce9b14e6fcc388d1ac1b",
+      "priorTopicSha256": "249b62ada074ee4829a3afa8ca73af677976e036671680bc7c31da6ebd5bca1b",
+      "edition": {
+        "grade": 8,
+        "topicId": 64,
+        "editionId": "ms-20261123-g8-ast-01-r1",
+        "label": "תרגול לקראת משימת ההערכה הראשונה · PDF",
+        "nativePrefix": "G8-T162",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "ec9b1ae72ad77da8310bbd944b90485f7a45d73bd27bdf377037065e37fa015a",
+          "independentReviewSha256": "c1bb137a16344447c5ffd4cb1c476d7d26ad81a21df5598833c3e63a2543dc39"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "0e3a2b2eaffd49639e71a01b122f17ff",
+            "pdfSha256": "cef4c6eaff334fd5873fe019fb14d60aa5fb4b785e46ae2cf7bac36dbaa42d1f",
+            "sourceSha256": "d2da5f66a2f9f32a3743901d8fe9873a152f95b5f803b6d1c4b202fa6a033ce2",
+            "worksheetId": "ms-g8-ast-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "a679bd44f394423eb1fadd41a06191c7",
+            "pdfSha256": "1ae0c8c61e6633cf64617e7b9700c9d2bcbfc3df8fc9a2779918e3a81bb59958",
+            "sourceSha256": "94e35a75f94dd06b39b04b4abaa9ae5d0b57680075775c851101df7ab5e85255",
+            "worksheetId": "ms-g8-ast-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "c5a9e3d468d5498bbf13b4e8d20320d1",
+            "pdfSha256": "d82b1bc7381e4a2405c4fce735d20c9ab10c1a9c38cc6fbc11a2a253f9df3363",
+            "sourceSha256": "ea227a9ccce5f35da4bf0afbe555e94154bbd8dfa222c2126bdf904472564379",
+            "worksheetId": "ms-g8-ast-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "15ebb0f6dc0cdd8d0483d99671c7c902102bd8aee5eec72f98f663d652a9a02d"
+    },
+    {
+      "number": 117,
+      "sheetId": "G7-ANN-01",
+      "grade": 7,
+      "topicId": 49,
+      "slug": "annual-review-grade-7",
+      "producerPackage": "G7-T140",
+      "studentRevision": "r05",
+      "skillVersion": "7.3.3",
+      "waivers": [
+        "G70 is an annual whole-sheet gate. The reviewed, purpose-limited PDF retains its documented coverage exception. A working student-facing Ramzi export for this revision is not part of this delivery."
+      ],
+      "priorEditionIds": [],
+      "producerFreezeSha256": "f87981228f29d1986f1258c2f0e70d43a57a380b8f6f928498bb7ebdb6099c12",
+      "reviewReceipts": [
+        {
+          "path": "submissions/Codex/MS-PROD-CODEX-117-r05/reports/final-review.json",
+          "sha256": "e96c0f0d41c98e2a53db23f4e37b302ce604f23c7483b42518d8e92233fe9674",
+          "verdict": "Reviewed for print within the documented scope"
+        }
+      ],
+      "studentFiles": [
+        {
+          "key": "a",
+          "pages": 12,
+          "items": 60,
+          "bytes": 94289,
+          "source": "submissions/Codex/MS-PROD-CODEX-117-r05/pdf/a.pdf",
+          "sha256": "c46d4540d446dbbb435f8d673ce1613aa4d4def25673de4ea44e69fa6c6bbe13",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_b0a9541df5394b109da6b0129ad1a1f5.pdf",
+              "status": 200,
+              "sha256": "c46d4540d446dbbb435f8d673ce1613aa4d4def25673de4ea44e69fa6c6bbe13",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_b0a9541df5394b109da6b0129ad1a1f5.pdf",
+              "status": 200,
+              "sha256": "c46d4540d446dbbb435f8d673ce1613aa4d4def25673de4ea44e69fa6c6bbe13",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "b",
+          "pages": 13,
+          "items": 60,
+          "bytes": 98321,
+          "source": "submissions/Codex/MS-PROD-CODEX-117-r05/pdf/b.pdf",
+          "sha256": "74759e51b742c65f1fb4ec7f121c9ea1558e8d73fa64f096991147dfe669235d",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_6fe06930101344128038cc0f36b08e57.pdf",
+              "status": 200,
+              "sha256": "74759e51b742c65f1fb4ec7f121c9ea1558e8d73fa64f096991147dfe669235d",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_6fe06930101344128038cc0f36b08e57.pdf",
+              "status": 200,
+              "sha256": "74759e51b742c65f1fb4ec7f121c9ea1558e8d73fa64f096991147dfe669235d",
+              "match": true
+            }
+          ]
+        },
+        {
+          "key": "c",
+          "pages": 14,
+          "items": 60,
+          "bytes": 103415,
+          "source": "submissions/Codex/MS-PROD-CODEX-117-r05/pdf/c.pdf",
+          "sha256": "83966b128380ac330d1f88d8d8dba382e8775bbb9d8ce6c1dd35c6cab2430304",
+          "downloads": [
+            {
+              "url": "https://static.wixstatic.com/ugd/d8e7ad_ee23f0a89e154b71af0e2666693a1b8d.pdf",
+              "status": 200,
+              "sha256": "83966b128380ac330d1f88d8d8dba382e8775bbb9d8ce6c1dd35c6cab2430304",
+              "match": true
+            },
+            {
+              "url": "https://www.noamdoronmath.co.il/_files/ugd/d8e7ad_ee23f0a89e154b71af0e2666693a1b8d.pdf",
+              "status": 200,
+              "sha256": "83966b128380ac330d1f88d8d8dba382e8775bbb9d8ce6c1dd35c6cab2430304",
+              "match": true
+            }
+          ]
+        }
+      ],
+      "section": {
+        "heading": "חזרה שנתית בכיתה ז׳ — דפי עבודה להדפסה",
+        "blocks": [
+          {
+            "type": "paragraph",
+            "text": "חזרה לחודש יוני, אחרי לימוד המנסרה במאי. התרגול משלב מספרים, גאומטריה, אלגברה וקריאת נתונים, לרבות הסתברות על פי תוצאות ניסוי.",
+            "links": []
+          },
+          {
+            "type": "paragraph",
+            "text": "בחרו רמה א׳, רמה ב׳ או מצוינות להדפסה. התשובות מופיעות בסוף כל דף.",
+            "links": []
+          }
+        ]
+      },
+      "priorCopyEdits": [
+        {
+          "path": [
+            "intro"
+          ],
+          "before": "דפי חזרה על נושאי כיתה ז׳: מספרים מכוונים וישר המספרים, סדר פעולות, חזקות ושורשים, ביטויים אלגבריים, משוואות ובעיות מילוליות, מערכת צירים וגאומטריה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+          "after": "חזרה לחודש יוני, אחרי לימוד המנסרה במאי. התרגול משלב מספרים, גאומטריה, אלגברה וקריאת נתונים, לרבות הסתברות על פי תוצאות ניסוי."
+        },
+        {
+          "path": [
+            "bodyFlow",
+            0,
+            "text"
+          ],
+          "before": "דפי חזרה על נושאי כיתה ז׳: מספרים מכוונים וישר המספרים, סדר פעולות, חזקות ושורשים, ביטויים אלגבריים, משוואות ובעיות מילוליות, מערכת צירים וגאומטריה. דפי התרגול זמינים ברמות א׳, ב׳ ומצוינות, עם תשובות בסוף כל דף, בחינם וללא הרשמה.",
+          "after": "חזרה לחודש יוני, אחרי לימוד המנסרה במאי. התרגול משלב מספרים, גאומטריה, אלגברה וקריאת נתונים, לרבות הסתברות על פי תוצאות ניסוי."
+        }
+      ],
+      "priorUpdatedLine": "נועם דורון מתמטיקה · עודכן 10.11.2026",
+      "priorPageSha256": "cfda6a0b9ed6559eccb906e4665ec18bbfade6f53b9fb609c9ee91ce270b61b4",
+      "priorTopicSha256": "345ee532b36b498c6af2c25f91256188cf15a875d1e4a3423565d6a35d3f734e",
+      "edition": {
+        "grade": 7,
+        "topicId": 49,
+        "editionId": "ms-20261123-g7-ann-01-r1",
+        "label": "חזרה שנתית בכיתה ז׳ · PDF",
+        "nativePrefix": "G7-T140",
+        "publicationMode": "pdf-only",
+        "studentPrintEvidence": {
+          "kind": "reviewed-student-print",
+          "freezeSha256": "f87981228f29d1986f1258c2f0e70d43a57a380b8f6f928498bb7ebdb6099c12",
+          "independentReviewSha256": "e96c0f0d41c98e2a53db23f4e37b302ce604f23c7483b42518d8e92233fe9674"
+        },
+        "isDefault": false,
+        "status": "published",
+        "levels": [
+          {
+            "key": "a",
+            "viewerLevel": "A",
+            "pdfId": "b0a9541df5394b109da6b0129ad1a1f5",
+            "pdfSha256": "c46d4540d446dbbb435f8d673ce1613aa4d4def25673de4ea44e69fa6c6bbe13",
+            "sourceSha256": "7b70be7ba80536b69723d7c08740978937297dddc7bff3ebbefefaf87ecc00fa",
+            "worksheetId": "ms-g7-ann-01-a-r1",
+            "revision": 1
+          },
+          {
+            "key": "b",
+            "viewerLevel": "B",
+            "pdfId": "6fe06930101344128038cc0f36b08e57",
+            "pdfSha256": "74759e51b742c65f1fb4ec7f121c9ea1558e8d73fa64f096991147dfe669235d",
+            "sourceSha256": "e3ed01c6bef25cca4998a26a5002428e8e1638614007ab2278707989f2f67e49",
+            "worksheetId": "ms-g7-ann-01-b-r1",
+            "revision": 1
+          },
+          {
+            "key": "c",
+            "viewerLevel": "E",
+            "pdfId": "ee23f0a89e154b71af0e2666693a1b8d",
+            "pdfSha256": "83966b128380ac330d1f88d8d8dba382e8775bbb9d8ce6c1dd35c6cab2430304",
+            "sourceSha256": "951e572550db94089907372cc888510bd60c55d27ce3f0e9472f0bc1aeb24bfd",
+            "worksheetId": "ms-g7-ann-01-c-r1",
+            "revision": 1
+          }
+        ]
+      },
+      "generatedEditionSha256": "b6cd75a8b6b7ae22f41c12c090076fc8594aa558e28e2f119332ce753be50536"
+    }
+  ]
+}

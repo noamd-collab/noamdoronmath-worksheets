@@ -24,9 +24,11 @@ import seventhRenew from '../../../../docs/middle-renewal-wave7-20261122.json';
 
 import eighthRenew from '../../../../docs/middle-renewal-wave8-20261122.json';
 
-export { reviewed, seven, three, renew, nextRenew, thirdRenew, fourthRenew, fifthRenew, sixthRenew, seventhRenew, eighthRenew };
-const releases = [eighthRenew, seventhRenew, sixthRenew, fifthRenew, fourthRenew, thirdRenew, nextRenew, renew, three, seven, reviewed];
-const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages, ...nextRenew.packages, ...thirdRenew.packages, ...fourthRenew.packages, ...fifthRenew.packages, ...sixthRenew.packages, ...seventhRenew.packages, ...eighthRenew.packages];
+import finalRenew from '../../../../docs/middle-renewal-final-20261123.json';
+
+export { finalRenew, reviewed, seven, three, renew, nextRenew, thirdRenew, fourthRenew, fifthRenew, sixthRenew, seventhRenew, eighthRenew };
+const releases = [finalRenew, eighthRenew, seventhRenew, sixthRenew, fifthRenew, fourthRenew, thirdRenew, nextRenew, renew, three, seven, reviewed];
+const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages, ...nextRenew.packages, ...thirdRenew.packages, ...fourthRenew.packages, ...fifthRenew.packages, ...sixthRenew.packages, ...seventhRenew.packages, ...eighthRenew.packages, ...finalRenew.packages];
 export const renewalIds = allPackages.map(item => item.edition.editionId);
 // The SSR loader normalizes property insertion order without changing data.
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, (_key, item) => {
@@ -35,7 +37,7 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 })).digest('hex');
 const strip = (text: string) => text.replace(/[⁦-⁩]/g, '');
 
-/** Recover the catalog before the November 21–22 PDF editions, while checking each exact overlay. */
+/** Recover the catalog before the November 21–23 PDF editions, while checking each exact overlay. */
 export function beforeNovember21Catalog<T>(catalog: T): T {
   return catalogBeforePackages(beforeGrade9SpecialTrianglesReview(catalog), allPackages);
 }
@@ -66,6 +68,62 @@ export function registryBeforeRelease<T>(registry: T, expected: RegistryEdition[
   assert.ok(index >= 0, expected[0].editionId);
   assert.deepEqual(result.editions.splice(index, expected.length), expected);
   return result;
+}
+
+/**
+ * A later correction may replace a published revision in place and record the
+ * revision it replaced under `replaces`. Put that earlier revision back, after
+ * checking the current rows exactly, so that a baseline recorded between the
+ * release and its correction still hashes to its recorded value.
+ */
+export function catalogBeforeReplacedRevisions<T>(catalog: T): T {
+  const result: any = structuredClone(catalog);
+  for (const item of allPackages as any[]) {
+    if (!item.replaces) continue;
+    const topic = result.grades.find((g: any) => g.grade === item.grade)?.topics.find((t: any) => t.id === item.topicId);
+    const index = topic?.editions?.findIndex((e: any) => e.editionId === item.edition.editionId) ?? -1;
+    assert.ok(index >= 0, item.slug);
+    const current = topic.editions[index];
+    assert.equal(digest(current), item.generatedEditionSha256, item.slug);
+    const earlier = item.replaces.edition;
+    assert.deepEqual(earlier.levels.map((l: any) => l.key), current.levels.map((l: any) => l.key), item.slug);
+    const restored = {
+      ...current,
+      levels: current.levels.map((level: any, i: number) => ({ ...level, ...earlier.levels[i] })),
+      routing: { ...current.routing, siblingPdfQuery: Object.fromEntries(earlier.levels.map((l: any) => ['p' + l.key, l.pdfId])) },
+    };
+    assert.equal(digest(restored), item.replaces.generatedEditionSha256, item.slug);
+    topic.editions[index] = restored;
+  }
+  return result;
+}
+
+export function registryBeforeReplacedRevisions<T>(registry: T): T {
+  const result: any = structuredClone(registry);
+  for (const item of allPackages as any[]) {
+    if (!item.replaces) continue;
+    const index = result.editions.findIndex((edition: RegistryEdition) => edition.editionId === item.edition.editionId);
+    assert.ok(index >= 0, item.slug);
+    assert.deepEqual(result.editions[index], item.edition, item.slug);
+    assert.equal(item.replaces.edition.editionId, item.edition.editionId, item.slug);
+    result.editions[index] = structuredClone(item.replaces.edition);
+  }
+  return result;
+}
+
+/** Restore a historical release after checking every later published overlay. */
+function laterReleases(release: typeof releases[number]) {
+  const index = releases.indexOf(release);
+  assert.ok(index >= 0, 'unknown historical release');
+  return releases.slice(0, index);
+}
+
+export function catalogAtRelease<T>(catalog: T, release: typeof releases[number]): T {
+  return laterReleases(release).reduce((current, newer) => catalogBeforePackages(current, newer.packages), catalog);
+}
+
+export function registryAtRelease<T>(registry: T, release: typeof releases[number]): T {
+  return laterReleases(release).reduce((current, newer) => registryBeforeRelease(current, newer.packages.map(p => p.edition)), registry);
 }
 
 export function beforeNovember21Registry<T>(registry: T): T {
