@@ -111,58 +111,33 @@ describe('eliyahu pythagoras game page', () => {
     }
   });
 
-  it('stacks a beta promo under the kefel card on the home page', () => {
-    const card = readFileSync(fromTest('../src/components/GamePromoCard.astro'), 'utf8');
+  it('does not show the kefel or Pythagoras promo cards on the home page', () => {
     const home = readFileSync(fromTest('../src/pages/index.astro'), 'utf8');
-    const kefelAt = card.indexOf('data-home-game-promo');
-    const betaAt = card.indexOf('id="pythagoras-promo"');
-    assert.ok(home.includes('<GamePromoCard />'));
-    assert.ok(kefelAt > 0 && betaAt > kefelAt);
-    assert.ok(card.includes('חדש!'));
-    assert.ok(card.includes('נסו את המשחק החדש!'));
-    assert.ok(card.includes('PUBLIC_LESSON_PATH'));
-    assert.match(card, /data-home-pythagoras-promo[\s\S]*בטא/);
-    assert.ok(card.includes('משחק פיתגורס כבר כאן!'));
-    assert.ok(card.includes('גרסת בטא'));
-    assert.ok(card.includes('href={PYTHAGORAS_GAME_PATH}'));
-    assert.ok(card.includes('data-pop="160"'));
-    assert.equal(card.includes('dialog'), false);
-    const beta = card.slice(betaAt);
-    assert.equal(/\d+\s*\/\s*\d+/.test(beta), false);
+    const gamesPage = readFileSync(fromTest('../src/pages/games/index.astro'), 'utf8');
+    const corner = readFileSync(fromTest('../src/lib/eliyahuGames.ts'), 'utf8');
+    assert.equal(existsSync(fromTest('../src/components/GamePromoCard.astro')), false);
+    assert.equal(home.includes('GamePromoCard'), false);
+    assert.equal(home.includes('data-home-game-promo'), false);
+    assert.equal(home.includes('data-home-pythagoras-promo'), false);
+    assert.equal(home.includes('pythagoras-promo'), false);
+    assert.equal(home.includes('נסו את המשחק החדש!'), false);
+    assert.equal(home.includes('משחק פיתגורס כבר כאן!'), false);
+    assert.equal(home.includes('exact-game-promo'), false);
+    assert.ok(gamesPage.includes('ALL_GAMES'));
+    assert.ok(gamesPage.includes('gamePath(game)'));
+    assert.ok(corner.includes("slug: 'eliyahu-pythagoras'"));
+    assert.ok(existsSync(fromTest('../src/pages/games/eliyahu-pythagoras/index.astro')));
   });
 
-  it('does not show the grade-9 formulas block on the home promo', () => {
-    const card = readFileSync(fromTest('../src/components/GamePromoCard.astro'), 'utf8');
+  it('does not show the grade-9 formulas block on the home page', () => {
     const home = readFileSync(fromTest('../src/pages/index.astro'), 'utf8');
-    const kefelAt = card.indexOf('data-home-game-promo');
-    const betaAt = card.indexOf('id="pythagoras-promo"');
-    assert.ok(kefelAt > 0 && betaAt > kefelAt);
-    assert.equal(card.includes('id="new-algebra-formulas"'), false);
-    assert.equal(card.includes('נוסחאות לכיתה ט׳'), false);
-    assert.equal(card.includes('href="/binomial-square-grade-9"'), false);
-    assert.equal(card.includes('href="/difference-of-squares-grade-9"'), false);
-    assert.equal(card.includes('exact-new-pulse'), false);
+    assert.equal(home.includes('id="new-algebra-formulas"'), false);
     assert.equal(home.includes('נוסחאות לכיתה ט׳'), false);
-    assert.equal(home.includes('new-algebra-formulas'), false);
+    assert.equal(home.includes('href="/binomial-square-grade-9"'), false);
+    assert.equal(home.includes('href="/difference-of-squares-grade-9"'), false);
+    assert.equal(home.includes('exact-new-pulse'), false);
     assert.equal(existsSync(fromTest('../src/pages/binomial-square-grade-9.astro')), true);
     assert.equal(existsSync(fromTest('../src/pages/difference-of-squares-grade-9.astro')), true);
-    const kefel = card.slice(kefelAt, betaAt);
-    assert.ok(kefel.includes('נסו את המשחק החדש!'));
-    assert.equal(kefel.includes('/binomial-square-grade-9'), false);
-    const beta = card.slice(betaAt, card.indexOf('<style>'));
-    assert.ok(beta.includes('משחק פיתגורס כבר כאן!'));
-    assert.equal(beta.includes('/difference-of-squares-grade-9'), false);
-    assert.ok(card.includes('prefers-reduced-motion:reduce'));
-    assert.ok(card.includes('exact-ring'));
-    assert.ok(card.includes('c²'));
-    assert.ok(beta.includes('168,96 264,168 336,72 240,0'));
-    assert.ok(beta.includes('exact-pyth-a'));
-    assert.ok(beta.includes('exact-pyth-b'));
-    assert.ok(beta.includes('exact-pyth-c'));
-    const motion = card.slice(card.indexOf('prefers-reduced-motion:reduce'));
-    assert.equal(motion.includes('animation:none'), false);
-    assert.match(motion, /animation-duration:3\.1s/);
-    assert.equal(/\d+\s*\/\s*\d+/.test(beta), false);
   });
 
   it('is findable in search under the grade-8 Pythagoras catalog card', () => {
