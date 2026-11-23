@@ -39,7 +39,27 @@ An infrastructure failure or an unlocalized report does not trigger a correction
 and expression bounds. `math_tasks.py` verifies typed arithmetic, symbolic
 operations, bounded equations/systems, inequalities and descriptive statistics.
 No model string is passed to eval, exec or a symbolic expression parser.
-Computed answers are derived from the same typed task printed in the question.
+Computed answers are derived from the typed task. The task is printed after
+a prompt only when the prompt carries no numbers of its own, and never when the
+print would be the answer; `printed_parts.py` and the other `printed_*` binders
+tie the key to an exercise that the prompt already shows. A prompt with several
+blanks gets one answer for each blank, or the question is refused.
+
+A yes/no or true/false question carries a typed claim (task kind `decide`: an
+order or equality of two expressions, divisibility, membership in a short
+list). The kernel decides it; no field holds an authored yes or no.
+`answer_kinds.py` ties the claim to the printed question, by the one printed
+statement whose correctness is asked about or by the relation word, its order
+and the printed quantities, and refuses a true claim that is not that
+question. The key prints the verdict with its exact calculation. Grades 1–6
+also have a `label` answer (a short Hebrew name, only for a prompt that asks
+for a name; printed as authored) and an `open` answer (a drawing, a
+construction, an explanation; the key says that the teacher checks it). A
+number is never the key of a drawing. Labels, open items and verdicts whose
+claim was typed from a story are listed as `unverifiedAnswers`
+(`question`, `item`, `kind`) in the adapter result and in
+`general-evidence.json`, for a teacher note. Authored prose answers (`review`)
+remain middle-school only.
 Prose, reasoning and pedagogical correspondence still require human review.
 
 `general_adapters.py` compiles only trusted templates. Typed figures are

@@ -49,8 +49,13 @@ def printed_number(node, spellings):
     return spelling
 
 
-def decimal_result(node, notation):
-    """Use an exact terminating decimal when the task was entered in decimals."""
+def decimal_result(node, notation, *, money=False):
+    """Use an exact terminating decimal when the task was entered in decimals.
+
+    Prices keep two decimals: 12.50 + 7.90 is 20.40, not 20.4. That holds for a
+    money question, and for a task that combines several decimals of two places
+    with a written closing zero. Only the spelling changes, never the value.
+    """
     if (node.get("type") != "number" or not isinstance(notation, str) or
             not re.search(r"[0-9]\.[0-9]", notation) or "frac" in notation or "%" in notation):
         return None
@@ -70,6 +75,10 @@ def decimal_result(node, notation):
     while rem:
         digit, rem = divmod(rem * 10, d)
         digits.append(str(digit))
+    places = re.findall(r"[0-9]\.([0-9]+)", notation)
+    if len(digits) == 1 and all(len(p) == 2 for p in places) and (
+            money or (len(places) >= 2 and any(p.endswith("0") for p in places))):
+        digits.append("0")
     return ("−" if n < 0 else "") + str(integer) + "." + "".join(digits)
 
 

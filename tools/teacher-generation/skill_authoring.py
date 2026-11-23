@@ -8,6 +8,7 @@ import re
 from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich, validate_question
 from math_tasks import MathTaskError
 from skill_feedback import MAX_QUESTIONS
+from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 import compact_authoring
 
 
@@ -337,7 +338,8 @@ def correction_body(original, findings, lesson, scope, plan, context, model):
         "math. Every table task requires the actual table. Use text only outside geometry. Grades 1–2 "
         "require fully vocalized Hebrew. Use unvocalized Hebrew for grades 3–9. "
         "For quantitative answers, use a computed task with the operands and the unit asked for. "
-        "Use only the task fields in the supplied schema. Never claim approval or output code."
+        "Use only the task fields in the supplied schema. Never claim approval or output code. "
+        + DECISION_GUIDE + (" " + ELEMENTARY_KINDS_GUIDE if lesson["gradeNumber"] <= 6 else "")
     )
     return {"model": model, "messages": [{"role": "system", "content": guidance},
             {"role": "user", "content": json.dumps(user, ensure_ascii=False)}],
@@ -372,8 +374,8 @@ def source_findings(original, lesson, scope, error):
         "DRAWING_POLICY": "Rewrite the complete question and its items in words using only printed givens. Remove all diagrams, sketches, drawing instructions and references to figures; keep the selected mathematical skill.",
         "SOURCE_FIGURE": "Use the construction and all of its labelled points as specified by the question plan. For a coordinate plane include every point and segment and integer limits that contain the origin.",
         "SOURCE_FIGURE_TASK": "Ask for a figure quantity supported by its actual construction; keep all named vertices and their stated measurements consistent.",
-        "PRINTED_ANSWER_KIND": "A yes/no question needs an explicit yes/no and a requested equation needs a complete equation. If the goal is quantitative, rewrite the question and its intro to ask only for the exact scalar you can verify. Otherwise use a supported answer for the whole task.",
-        "PRINTED_TASK_MISMATCH": "Solve the exercise again using the exact givens in the printed prompt, including the displayed operand order, units and missing value. Correct the printed task and typed answer together.",
+        "PRINTED_ANSWER_KIND": "The answer kind does not fit what the item asks. " + DECISION_GUIDE + " A requested equation needs a complete equation. If the goal is quantitative, rewrite the question and its intro to ask only for the exact scalar you can verify.",
+        "PRINTED_TASK_MISMATCH": "Solve the exercise again using the exact givens in the printed prompt, including the displayed operand order, units and missing value. Correct the printed task and typed answer together. In a decide task the relation and the order of left and right are those of the printed sentence, every number and calculation printed in the item appears in the claim, and the claim uses no number that is not printed.",
         "SOURCE_NIQQUD": "Apply the required grade-specific Hebrew pointing to every word of this question and its answers.",
         "SOURCE_RICH_TEXT": "Use plain Hebrew strings with [[...]] for mathematics in every rich field.",
     }
@@ -384,6 +386,7 @@ def source_findings(original, lesson, scope, error):
             "a missing number is three underscores, e.g. [[24 / ___ = 6]], with the answer expression 24/6. "
             "Never use x or other letters for an unknown, and never mix Hebrew words with the formula. "
             "Use ordinary Hebrew outside the formula. In task.expression use known numeric operands only.")
+        instructions["PRINTED_ANSWER_KIND"] += " " + ELEMENTARY_KINDS_GUIDE
     if not geometry_topic(scope):
         instructions["SOURCE_TABLE"] += " Example of a real table: table.head and table.rows contain separate plain cells; a missing value uses ___ in its own cell. Use only meaningful columns and givens for the selected concept."
     if error.code not in instructions:

@@ -14,6 +14,7 @@ import re
 from authoring_context import build_authoring_context, AuthoringContextError
 from general_source import validate_source, GeneralSourceError, geometry_topic
 from skill_authoring import bind_content, question_plan, worksheet_schema
+from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 from runtime_catalog import catalog, scope_for_lesson
 from validation import reject
 import no_carry_addition
@@ -182,6 +183,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'units and punctuation outside the brackets. Never use ellipses, question marks, lists, '
         'a standalone operator, colon ratios or exercise letters inside brackets. '
         'Keep pupil units outside a formula. Table cells each contain one clear value.')
+    # The answer kinds beyond one computed value, in the words of their validator.
+    system += ' ' + DECISION_GUIDE
     if elementary:
         system += (
             ' Elementary arithmetic uses numbers only. Put a missing number in one complete formula: '
@@ -189,6 +192,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'Use only taught operations. A construction or explanation cannot have a scalar answer key. '
             'Ask for the actual numerical result or a comparison. For a request to write and evaluate '
             'a two-operation expression, give its complete ordered description in words.')
+        system += ' ' + ELEMENTARY_KINDS_GUIDE
     else:
         system += (
             ' Use solve for a printed equation, with ONE expression on each side. For example, '

@@ -163,6 +163,10 @@ def geometric_display(source):
     return re.sub(r"\s+°", "°", source)
 
 
+# A blank between two complete operands stands for a sign, never a number.
+SIGN_BLANK = re.compile(r"(?<=[0-9)%])\s*___\s*(?=[-−]?(?:[0-9(]|frac|sqrt))")
+
+
 def display_parts(value, grade):
     """Only display formulas can contain a relation, a blank or a diagram label."""
     if not isinstance(value, str) or not 1 <= len(value) <= 220:
@@ -170,6 +174,17 @@ def display_parts(value, grade):
     source = value.strip()
     if grade >= 7 and (geometry := geometric_display(source)) is not None:
         return [geometry]
+    sides = SIGN_BLANK.split(source)
+    if len(sides) > 1:
+        # "345 ___ 354" asks for a comparison sign. The blank must never be
+        # read as the letter of a multiplication, and a missing operation in
+        # an equation has no exact key.
+        if len(sides) != 2 or RELATION.search(source) or "___" in "".join(sides):
+            invalid()
+        left, right = (display_parts(side, grade) for side in sides)
+        if len(left) != 1 or len(right) != 1:
+            invalid()
+        return [left[0], "___", right[0]]
     if grade < 7:
         source = elementary_operations(source)
     point = COORDINATE.fullmatch(source)
@@ -252,7 +267,7 @@ def schoolbook_tokens(value, grade):
         return None
     if not re.fullmatch(r"[0-9\s,.()+*/%_!=<>≤≥≠−-]+", value):
         return None
-    if not re.search(r"[()+*/=<>≤≥≠]|[0-9)]\s*[-−]", value):
+    if not re.search(r"[()+*/=<>≤≥≠]|[0-9)]\s*[-−]", value) or SIGN_BLANK.search(value):
         return None
     pieces = RELATION.split(value.translate(MATH_TRANSLATION))
     if len(pieces) > 19 or any(not part.strip() for part in pieces):
@@ -281,6 +296,9 @@ JOINED_ISLANDS = re.compile(
     ISLAND + r"\s*([+*/^−÷×<>!=≤≥≠-](?:___|[+*/^−÷×<>!=≤≥≠ -])*)\s*" + ISLAND
 )
 MATH_TRANSLATION = str.maketrans({"−": "-", "×": "*", "·": "*", "÷": "/"})
+_HEBREW_AHEAD = r"(?=\s*[\u0591-\u05c7]*[א-ת])"
+_LABELLED_BLANK = re.compile(r"\[\[([^\[\]=_]*[^\[\]=_\s])\s*=\s*___\]\]" + _HEBREW_AHEAD)
+_TRAILING_BLANK = re.compile(ISLAND + r"\s*([+*/−÷×=<>-])\s*___(?![\w\]])(?!\s*[\u0591-\u05c7]*[א-ת+*/−÷×=<>-])")
 
 
 def fraction_literals(value):
@@ -296,8 +314,13 @@ def join_islands(value):
     while True:
         joined = JOINED_ISLANDS.sub(r"[[\1 \2 \3]]", value)
         if joined == value:
-            return joined
+            break
         value = joined
+    # A blank that is completed by a Hebrew label ("= ___ מאות") belongs to the
+    # sentence. Inside the LTR island it would print away from its own label.
+    value = _LABELLED_BLANK.sub(r"[[\1]] = ___", value)
+    # The mirror of the first rule: "[[47 : 5]] = ___" is one printed exercise.
+    return _TRAILING_BLANK.sub(r"[[\1 \2 ___]]", value)
 
 
 # Comparison signs listed as separate options can be isolated without guessing.
@@ -462,6 +485,27 @@ def _safe_math_boundary(span):
     return span["kind"] == "text" and re.search(r"[א-ת]", span["text"]) is not None
 
 
+def _fold_prose_equals(result):
+    """A spaced "=" between Hebrew prose and one island is part of the sentence."""
+    def blank(span):
+        return span["kind"] == "text" and not span["text"].strip()
+
+    def prose(span):
+        return span["kind"] == "text" and bool(span["text"].strip())
+
+    def equals(span):
+        return span.get("kind") == "formula" and span.get("notation") == "="
+
+    index = 0
+    while index + 2 < len(result):
+        a, b, c = result[index:index + 3]
+        if equals(b) and ((prose(a) and blank(c)) or (blank(a) and prose(c))):
+            result[index:index + 3] = [{"kind": "text", "text": a["text"] + "=" + c["text"]}]
+        else:
+            index += 1
+    return result
+
+
 def spans(value, grade, *, fraction_notation=False):
     if not isinstance(value, str):
         return provider_span_array(value, grade, fraction_notation=fraction_notation)
@@ -511,6 +555,7 @@ def spans(value, grade, *, fraction_notation=False):
         result.pop(0)
     if result and result[-1].get("kind") == "text" and not result[-1]["text"].strip():
         result.pop()
+    result = _fold_prose_equals(result)
     if any(span["kind"] == "text" and not span["text"].strip() for span in result):
         invalid()
     if grade >= 7:
@@ -729,12 +774,18 @@ def expand_source(source, grade, *, fraction_notation=False):
                             if isinstance(bound, dict):
                                 task = answer["task"] = bound
                         raw = task.get("expression") if task.get("kind") == "evaluate" else None
+                        if (task.get("kind") == "compare" and isinstance(task.get("left"), str)
+                                and isinstance(task.get("right"), str)
+                                and (has_written_number(task["left"]) or has_written_number(task["right"]))):
+                            # A decimal comparison is keyed in decimals, as it was asked.
+                            raw = task["left"] + " ___ " + task["right"]
                         expand_task(task, grade, fraction_notation)
-                        if isinstance(raw, str) and has_written_number(raw):
+                        if isinstance(raw, str) and ("___" in raw or has_written_number(raw)):
                             notation = raw.translate(MATH_TRANSLATION)
                             if fraction_notation:
                                 notation = fraction_literals(notation)
                             answer.setdefault("notation", notation)
-                    if "text" in answer:
+                    if "text" in answer and answer.get("kind") != "label":
+                        # A label stays one plain Hebrew string; it is never mathematics.
                         answer["text"] = rich(answer["text"])
     return data

@@ -2,6 +2,7 @@
   "version": 1,
   "files": [
     "tools/teacher-generation/adapters.py",
+    "tools/teacher-generation/answer_kinds.py",
     "tools/teacher-generation/author_quality.py",
     "tools/teacher-generation/authoring_context.py",
     "tools/teacher-generation/benchmark.py",
@@ -88,6 +89,7 @@
     "tools/teacher-generation/output_gates.py",
     "tools/teacher-generation/preflight.py",
     "tools/teacher-generation/printed_elementary.py",
+    "tools/teacher-generation/printed_parts.py",
     "tools/teacher-generation/printed_percentages.py",
     "tools/teacher-generation/printed_tasks.py",
     "tools/teacher-generation/provider.py",
