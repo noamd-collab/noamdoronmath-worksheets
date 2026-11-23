@@ -18,10 +18,11 @@ import sys
 from general_source import GeneralSourceError, validate_source
 from math_tasks import to_house_math, validate_and_solve_task
 from general_geometry import solve_figure_task, measure_elementary_svg
-from no_carry_addition import states_entire_task
+from no_carry_addition import needs_printed_task, states_entire_task
 from printed_percentages import percentage_evidence
 from printed_tasks import match_printed_task, matching_solution_choices, printed_solve, printed_table_row
 from printed_elementary import guard_counting_input, place_answer, place_intro, printed_intent, validate_counting_values
+from printed_parts import answer_form, bind_parts, comparison_blank, printed_calculation, shows_task
 
 LETTERS = "אבגדהוזחטי"
 LEVELS = {"a": "רמה א׳", "b": "רמה ב׳", "e": "מצוינות"}
@@ -87,12 +88,36 @@ def _elementary_math(ast, grade, H, *, blank=False, number_spellings=None):
         return "(" + _elementary_math(args[0], grade, H, blank=blank, number_spellings=number_spellings) + ")<sup>" + _elementary_math(args[1], grade, H, blank=blank, number_spellings=number_spellings) + "</sup>"
     operator = {"add": "+", "subtract": "-", "multiply": "*", "divide": ":"}[op]
     values = []
-    for arg in args:
+    for index, arg in enumerate(args):
         value = _elementary_math(arg, grade, H, blank=blank, number_spellings=number_spellings)
-        if arg["type"] == "operation":
+        if _needs_brackets(op, index, arg, grade):
             value = "(" + value + ")"
         values.append(value)
     return (" " + H.op(operator, grade) + " ").join(values)
+
+
+_PRECEDENCE = {"add": 1, "subtract": 1, "multiply": 2, "divide": 2}
+
+
+def _needs_brackets(parent, index, child, grade):
+    """Brackets that change the reading stay; "(124 − 38) + 15" loses its pair.
+
+    A first operand is read first in any case. Before the order of operations
+    is taught (grade four), a later product inside a sum keeps its brackets,
+    because a pupil who reads from left to right would get another value.
+    """
+    if child["type"] != "operation":
+        return False
+    if child["op"] not in _PRECEDENCE:
+        return child["op"] != "power"  # a power prints its own bracketed base
+    outer, inner = _PRECEDENCE[parent], _PRECEDENCE[child["op"]]
+    if inner < outer:
+        return True
+    if index == 0:
+        return False
+    if inner > outer:
+        return grade in ("א", "ב", "ג")
+    return parent in ("subtract", "divide")
 
 
 def _notation(span):
@@ -114,6 +139,12 @@ def _middle_math(text):
 
 
 def _formula(notation, grade, H):
+    text = _formula_text(notation, grade, H)
+    return H.ltr(text) if H else _middle_math(text)
+
+
+def _formula_text(notation, grade, H):
+    """The printed contents of one formula, before its direction wrapper."""
     from compact_authoring import display_parts, schoolbook_tokens
     number_grade = LETTERS.index(grade) + 1 if H else grade
     tokens = schoolbook_tokens(notation, number_grade) if H else None
@@ -136,7 +167,7 @@ def _formula(notation, grade, H):
             else:
                 rendered.append(html.escape(token))
             previous = token
-        return H.ltr("".join(rendered))
+        return "".join(rendered)
     rendered = []
     for part in display_parts(notation, number_grade):
         if isinstance(part,str):
@@ -146,11 +177,17 @@ def _formula(notation, grade, H):
         if H:
             rendered.append(_elementary_math(tree,grade,H,blank=bool(aliases),number_spellings=spellings))
         else:
-            text = to_house_math(tree,number_spellings=spellings)
+            text = to_house_math(tree,number_spellings=spellings,schoolbook=True)
             rendered.append(re.sub(r"(?<![A-Za-z\\])[xyab](?![A-Za-z])",
                                    lambda match: aliases.get(match[0],match[0]),text))
-    text = " ".join(rendered)
-    return H.ltr(text) if H else _middle_math(text)
+    return " ".join(rendered)
+
+
+def _span_text(span, grade, H):
+    """One printed operand, unwrapped, so that a key can join two of them."""
+    if span["kind"] == "formula":
+        return _formula_text(span["notation"], grade, H)
+    return _elementary_math(span["expression"], grade, H) if H else to_house_math(span["expression"], schoolbook=True)
 
 
 def rich_text(spans, grade, H=None):
@@ -159,7 +196,7 @@ def rich_text(spans, grade, H=None):
         if span["kind"] == "text":
             result.append(html.escape(span["text"]) if H else span["text"])
         elif span["kind"] == "math":
-            result.append(H.ltr(_elementary_math(span["expression"], grade, H)) if H else _middle_math(to_house_math(span["expression"])))
+            result.append(H.ltr(_elementary_math(span["expression"], grade, H)) if H else _middle_math(to_house_math(span["expression"], schoolbook=True)))
         elif span["kind"] == "formula":
             result.append(_formula(span["notation"],grade,H))
         elif span["kind"] == "geometry":
@@ -192,7 +229,7 @@ def _task_text(solved, grade, H=None, *, notation=None):
     task = solved["question"]
     if notation is not None:
         return _formula(notation, grade, H)
-    render = (lambda ast: _elementary_math(ast, grade, H)) if H else to_house_math
+    render = (lambda ast: _elementary_math(ast, grade, H)) if H else (lambda ast: to_house_math(ast, schoolbook=True))
     wrap = H.ltr if H else _middle_math
     kind = task["kind"]
     if kind == "figure_measure":
@@ -236,17 +273,42 @@ def _task_text(solved, grade, H=None, *, notation=None):
     return expression
 
 
-def _answer_text(solved, unit, grade, H=None, *, original_variable=None, notation=None):
-    render = (lambda ast: _elementary_math(ast, grade, H)) if H else to_house_math
+def _mixed_number(value, grade, H):
+    """A mixed number for an improper fraction, in the notation of each band."""
+    if value.get("type") != "number" or value["denominator"] <= 1 or abs(value["numerator"]) <= value["denominator"]:
+        return None
+    n, d = value["numerator"], value["denominator"]
+    whole, rest = divmod(abs(n), d)
+    sign = "−" if n < 0 else ""
+    if H:
+        return sign + H.fmt(whole, grade) + H.frac(rest, d, grade)
+    return sign + str(whole) + r"\f{" + str(rest) + "}{" + str(d) + "}"
+
+
+def _answer_text(solved, unit, grade, H=None, *, original_variable=None, notation=None, forms=frozenset(), sides=None):
+    """Print the exact key in the written form of its question.
+
+    ``forms`` and ``sides`` only choose a spelling (two money decimals, a mixed
+    number, the compared sides as printed). They never change a value.
+    """
+    render = (lambda ast: _elementary_math(ast, grade, H)) if H else (lambda ast: to_house_math(ast, schoolbook=True))
     wrap = H.ltr if H else _middle_math
     result = solved["result"]
     if result["type"] == "expression":
         from numeric_literals import decimal_result
-        decimal = decimal_result(result["value"], notation)
-        answer = wrap(decimal if decimal is not None else render(result["value"]))
+        decimal = decimal_result(result["value"], notation, money="money" in forms)
+        mixed = _mixed_number(result["value"], grade, H) if "mixed" in forms and decimal is None else None
+        answer = wrap(decimal if decimal is not None else mixed if mixed is not None else render(result["value"]))
     elif result["type"] == "comparison":
-        relation={"less": "&lt;" if H else "<", "equal": "=", "greater": "&gt;" if H else ">"}[result["relation"]]
-        answer=wrap(render(solved["question"]["left"])+" "+relation+" "+render(solved["question"]["right"]))
+        sign = {"less": "<", "equal": "=", "greater": ">"}[result["relation"]]
+        relation = html.escape(sign) if H else sign
+        if sides:
+            # The pupil sees these two sides; the key repeats them with the sign.
+            answer = wrap(_span_text(sides[0], grade, H) + " " + relation + " " + _span_text(sides[1], grade, H))
+        elif notation and notation.count("___") == 1:
+            answer = _formula(notation.replace("___", sign), grade, H)
+        else:
+            answer = wrap(render(solved["question"]["left"])+" "+relation+" "+render(solved["question"]["right"]))
     elif result["type"] == "list":
         answer = ", ".join(wrap(render(value)) for value in result["values"]) or "אין שכיח"
     elif result["type"] == "system":
@@ -337,7 +399,9 @@ def compile_source(lesson, validated, scope, skill_path, work, *, printed_answer
     dump(work / "general-evidence.json", evidence)
     elementary = scope["topic"]["skillId"] == "elementary"
     if evidence["unverifiedAnswers"] and elementary:
-        raise GeneralSourceError("UNVERIFIED_ANSWERS", "This draft contains prose or proof answers without an implemented exact verifier; no deliverable was compiled")
+        where = re.fullmatch(r"q([1-9][0-9]?)-i([1-9])", evidence["unverifiedAnswers"][0]["itemId"])
+        raise GeneralSourceError("UNVERIFIED_ANSWERS", "This draft contains prose or proof answers without an implemented exact verifier; no deliverable was compiled",
+                                 question=int(where[1]) if where else None, item=int(where[2]) if where else None)
     if printed_fractions:
         from fraction_lesson import eligible
         if not elementary or not eligible(lesson):
@@ -351,6 +415,86 @@ def compile_source(lesson, validated, scope, skill_path, work, *, printed_answer
     else:
         _compile_middle(lesson, source, evidence, scope, skill, work)
     return {"skill": scope["topic"]["skillId"], "work": str(work), "sourcePath": str(work / "worksheet-source.json"), "evidencePath": str(work / "general-evidence.json"), "unverifiedAnswerCount": len(evidence["unverifiedAnswers"]), "reviewRequired": True}
+
+
+_PARTS_NUMBER = re.compile(r"(?<![.\d])\d{4,}(?![\d])")
+
+
+def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *, intro_spans, printed_answers, printed_fractions):
+    """Render one item: the pupil line and its key, each bound to what is printed.
+
+    Every binder either proves that the prompt already shows the exercise or
+    raises. The typed task is printed after the prompt only by shows_task.
+    """
+    item_id = f"q{n}-i{j}"
+    number_grade = lesson["gradeNumber"]
+    notation = item["answer"].get("notation")
+    figure_task = item["answer"]["kind"] == "figure"
+    prompt = rich_text(item["prompt"], grade, H)
+    seen = dict(question, intro=intro_spans)
+    forms = frozenset() if figure_task else answer_form(seen, item, computed)
+    answer = _answer_text(computed, item["answer"]["unit"], grade, H, notation=notation, forms=forms)
+    # True once a binder has tied the key to the exercise that the prompt shows.
+    bound = states_entire_task(lesson, n-1, j-1, item) or _prints_calculation(item, computed, number_grade)
+    intent = (printed_intent(question, item, computed, number_grade, location=f"q{n}.item.{j}")
+              or printed_table_row(question, item, computed))
+    if intent:
+        bound = True
+        if intent["rule"] in ("write_expression", "write_division"):
+            entered = _elementary_math(intent["expression"], grade, H)
+            result = _elementary_math(intent.get("value", computed["result"]["value"]), grade, H)
+            answer = H.ltr(entered + " = " + result)
+        ledger.claim(f"{n}.{j}.intent", "הפעולות והנתונים אומתו מול השאלה המודפסת",
+                     intent, method="closed_form")
+    visible = match_printed_task(item, computed, number_grade)
+    if visible:
+        bound = True
+        if visible.label:
+            answer = html.escape(visible.label) + " (" + answer + ")"
+        ledger.claim(f"{n}.{j}.visible", "התשובה אומתה מול הביטוי המודפס",
+                     visible.proof, method="closed_form")
+    if printed_fractions:
+        from fraction_lesson import printed_evidence
+        proof = printed_evidence(question, j - 1, computed)
+        ledger.claim(f"{n}.{j}.printed", "תשובה שנבדקה מול השברים המודפסים", proof, method="closed_form")
+        bound = True
+    guard_counting_input(lesson, question, item, computed)
+    # Multi-part keys and the fail-closed guard for several blanks.
+    binding = bind_parts(question, item, computed, number_grade)
+    if printed_answers is not None:
+        from counting_lesson import answer_from_prompt
+        counted = answer_from_prompt(intro_spans, item["prompt"])
+        if type(counted) is not int or counted != printed_answers[item_id]:
+            raise GeneralSourceError("PRINTED_TASK_MISMATCH", "The printed words and exact counting key disagree")
+        bound = True
+        ledger.claim(f"{n}.{j}.printed", "תשובה שנבדקה מול המילים המודפסות",
+                     {"countFromWords": counted, "evaluated": computed["result"]["value"]}, method="closed_form")
+    if binding:
+        # The key answers every blank. The prompt shows the givens unless the
+        # binder read them from the typed task of a prompt without numbers.
+        bound = bound or binding.proof.get("givens") != "task"
+        # Tuples are formulas computed here; strings are prose and are escaped.
+        answer = "".join(H.ltr(_PARTS_NUMBER.sub(lambda m: H.fmt(int(m[0]), grade), p[0])) if isinstance(p, tuple)
+                         else html.escape(p) for p in binding.parts)
+        ledger.claim(f"{n}.{j}.printed", "התשובה לכל מקום ריק חושבה מנתוני השאלה המודפסים",
+                     binding.proof, method="closed_form")
+    if not figure_task:
+        sign = comparison_blank(item, computed, number_grade)
+        if sign:
+            bound = True
+            answer = _answer_text(computed, item["answer"]["unit"], grade, H, sides=sign["sides"])
+            ledger.claim(f"{n}.{j}.sign", "סימן ההשוואה אומת מול שני האגפים המודפסים",
+                         {"rule": sign["rule"], "left": sign["left"], "right": sign["right"]}, method="closed_form")
+        calculation = printed_calculation(question, item, computed, number_grade)
+        if calculation:
+            bound = True
+            ledger.claim(f"{n}.{j}.calculation", "התשובה היא ערך התרגיל המודפס", calculation, method="closed_form")
+    show = not bound and (shows_task(seen, item, computed) or needs_printed_task(lesson, n-1, j-1, item))
+    task_text = _task_text(computed, grade, H, notation=notation) if show else ""
+    # A fresh calculation, not a model-provided answer or boolean.
+    repeated = solve_figure_task(question["figure"],item["answer"]["operation"],item["answer"].get("point")) if figure_task else validate_and_solve_task(item["answer"]["task"])
+    ledger.claim(f"{n}.{j}", "תוצאת המשימה המתמטית המודפסת בלבד", (repeated == computed, computed), method="closed_form" if figure_task else "sympy")
+    return prompt + " " + task_text + '<div class="ansline"></div>', answer
 
 
 def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed_answers=None, printed_fractions=False):
@@ -379,57 +523,18 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                 svg, figpath = _figure(question["figure"], True, n, work)
                 measurement=measure_elementary_svg(question["figure"],svg)
                 if not measurement[0]:
-                    raise GeneralSourceError("UNVERIFIED_FIGURE","The rendered elementary figure has no passing measured-SVG assertion")
+                    raise GeneralSourceError("UNVERIFIED_FIGURE","The rendered elementary figure has no passing measured-SVG assertion", question=n)
                 ledger.claim(str(n),"בדיקת הנתונים בשרטוט המודפס",measurement,method="figure_assert")
                 pieces.append(H.fig(svg))
             for j, item in enumerate(question["items"], 1):
                 item_id = f"q{n}-i{j}"; computed = solved[item_id]
-                prompt = rich_text(item["prompt"], grade, H)
-                complete = states_entire_task(lesson, n-1, j-1, item) or _prints_calculation(item,computed,lesson["gradeNumber"])
-                task_text = "" if complete else _task_text(computed, grade, H, notation=item["answer"].get("notation"))
-                answer = _answer_text(computed, item["answer"]["unit"], grade, H, notation=item["answer"].get("notation"))
-                intent = (printed_intent(question, item, computed, lesson["gradeNumber"], location=f"q{n}.item.{j}")
-                          or printed_table_row(question, item, computed))
-                if intent:
-                    task_text = ""
-                    if intent["rule"] in ("write_expression", "write_division"):
-                        entered = _elementary_math(intent["expression"], grade, H)
-                        result = _elementary_math(intent.get("value", computed["result"]["value"]), grade, H)
-                        answer = H.ltr(entered + " = " + result)
-                    ledger.claim(f"{n}.{j}.intent", "הפעולות והנתונים אומתו מול השאלה המודפסת",
-                                 intent, method="closed_form")
-                bound = match_printed_task(item, computed, lesson["gradeNumber"])
-                if bound:
-                    task_text = ""
-                    if bound.label:
-                        answer = html.escape(bound.label) + " (" + answer + ")"
-                    ledger.claim(f"{n}.{j}.visible", "התשובה אומתה מול הביטוי המודפס",
-                                 bound.proof, method="closed_form")
-                if printed_fractions:
-                    from fraction_lesson import printed_evidence
-                    proof = printed_evidence(question, j - 1, computed)
-                    ledger.claim(f"{n}.{j}.printed", "תשובה שנבדקה מול השברים המודפסים", proof, method="closed_form")
-                    task_text = ""
-                guard_counting_input(lesson, question, item, computed)
-                binding = place_answer(lesson, question, item, computed)
-                if printed_answers is not None:
-                    from counting_lesson import answer_from_prompt
-                    counted = answer_from_prompt(intro_spans, item["prompt"])
-                    if type(counted) is not int or counted != printed_answers[item_id]:
-                        raise GeneralSourceError("PRINTED_TASK_MISMATCH", "The printed words and exact counting key disagree")
-                    task_text = ""
-                    ledger.claim(f"{n}.{j}.printed", "תשובה שנבדקה מול המילים המודפסות",
-                                 {"countFromWords": counted, "evaluated": computed["result"]["value"]}, method="closed_form")
-                if binding:
-                    task_text = ""
-                    answer = "".join(H.ltr(p[0]) if isinstance(p, tuple) else html.escape(p) for p in binding.parts)
-                    ledger.claim(f"{n}.{j}.printed", "תשובת ערך המקום שהתקבלה מנתוני השאלה המודפסים",
-                                 binding.proof, method="closed_form")
-                # A fresh calculation, not a model-provided answer or boolean.
-                figure_task=item["answer"]["kind"]=="figure"
-                repeated = solve_figure_task(question["figure"],item["answer"]["operation"],item["answer"].get("point")) if figure_task else validate_and_solve_task(item["answer"]["task"])
-                ledger.claim(f"{n}.{j}", "תוצאת המשימה המתמטית המודפסת בלבד", (repeated == computed, computed), method="closed_form" if figure_task else "sympy")
-                body = prompt + " " + task_text + '<div class="ansline"></div>'
+                try:
+                    body, answer = _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger,
+                                                    intro_spans=intro_spans, printed_answers=printed_answers,
+                                                    printed_fractions=printed_fractions)
+                except GeneralSourceError as error:
+                    # A later stage replaces exactly this question.
+                    raise error.at(n, j)
                 pieces.append('<div class="sub">'+LETTERS[j-1]+'. '+body+'</div>')
                 items.append(H.plain(body)); answers.append(answer)
                 source_items.append({"id": item_id, "label": LETTERS[j-1], "text": H.plain(body), "answer": H.plain(answer), "task": computed["question"], "verificationId": f"{n}.{j}"})
@@ -490,10 +595,16 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
             for j, item in enumerate(question["items"], 1):
                 item_id = f"q{n}-i{j}"; computed = solved.get(item_id)
                 prompt = rich_text(item["prompt"], lesson["gradeNumber"])
-                printed = (percentage_evidence(lesson, question["intro"], item, computed)
-                           or printed_table_row(question, item, computed))
-                bound = match_printed_task(item, computed, lesson["gradeNumber"])
-                label = printed_solve(item["prompt"], computed["question"], lesson["gradeNumber"]) if computed else None
+                try:
+                    printed = (percentage_evidence(lesson, question["intro"], item, computed)
+                               or printed_table_row(question, item, computed))
+                    bound = match_printed_task(item, computed, lesson["gradeNumber"])
+                    label = printed_solve(item["prompt"], computed["question"], lesson["gradeNumber"]) if computed else None
+                    sign = comparison_blank(item, computed, lesson["gradeNumber"]) if computed else None
+                    calculation = printed_calculation(question, item, computed, lesson["gradeNumber"]) if computed else None
+                except GeneralSourceError as error:
+                    # A later stage replaces exactly this question.
+                    raise error.at(n, j)
                 if isinstance(label, str) and label != computed["question"]["variable"]:
                     # Use the original, verified variable in the answer, its conditions and the skill targets.
                     computed = deepcopy(computed)
@@ -503,11 +614,17 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
                     printed = {"rule": "printed_equation", "variable": label}
                 if bound:
                     printed = bound.proof
+                if sign:
+                    printed = {"rule": sign["rule"], "left": sign["left"], "right": sign["right"]}
+                if calculation and not printed:
+                    printed = calculation
                 if printed:
                     printed_checks[item_id] = printed
-                show_task = computed and not printed and not _prints_calculation(item, computed, lesson["gradeNumber"])
+                show_task = (computed and not printed and not _prints_calculation(item, computed, lesson["gradeNumber"])
+                             and shows_task(question, item, computed))
                 body = prompt+(" "+_task_text(computed, lesson["gradeNumber"], notation=item["answer"].get("notation")) if show_task else "")
-                answer = _answer_text(computed, item["answer"]["unit"], lesson["gradeNumber"], original_variable=label, notation=item["answer"].get("notation")) if computed else rich_text(item["answer"]["text"], lesson["gradeNumber"])
+                answer = _answer_text(computed, item["answer"]["unit"], lesson["gradeNumber"], original_variable=label, notation=item["answer"].get("notation"),
+                                      forms=answer_form(question, item, computed), sides=sign["sides"] if sign else None) if computed else rich_text(item["answer"]["text"], lesson["gradeNumber"])
                 if bound and bound.label:
                     answer = bound.label + " (" + answer + ")"
                 space=280 if question.get("drawingFromWords") and j==len(question["items"]) else 46 if question["star"] else 32
@@ -546,9 +663,10 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
     (work / "content.py").write_text(MIDDLE_BRIDGE+'PACKAGE = "G'+str(lesson["gradeNumber"])+'-T90"\n', encoding="utf-8")
 
 
-if __name__ == "__main__":
-    ap = argparse.ArgumentParser(); ap.add_argument("--skill", required=True); ap.add_argument("--work", required=True)
-    args = ap.parse_args(); wd = Path(args.work)
+FAILURE_RECORD = "adapter-failure.json"
+
+
+def _main(args, wd):
     load = lambda name: json.loads((wd / name).read_text(encoding="utf-8"))
     lesson, payload, scope = load("lesson.json"), load("model-output.json"), load("curriculum-scope.json")
     import division_facts
@@ -572,3 +690,16 @@ if __name__ == "__main__":
     else:
         result = compile_source(lesson, validate_source(lesson, payload, scope), scope, args.skill, wd)
     print(json.dumps(result, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(); ap.add_argument("--skill", required=True); ap.add_argument("--work", required=True)
+    args = ap.parse_args(); wd = Path(args.work)
+    try:
+        _main(args, wd)
+    except GeneralSourceError as error:
+        # The parent process reads this record instead of parsing a traceback.
+        # It holds a code and a position only, never model text.
+        dump(wd / FAILURE_RECORD, {"version": 1, "step": "trusted-adapter", "code": error.code,
+                                   "question": error.question, "item": error.item})
+        raise

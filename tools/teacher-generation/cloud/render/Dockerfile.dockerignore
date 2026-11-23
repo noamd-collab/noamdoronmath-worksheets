@@ -87,6 +87,7 @@
 !tools/teacher-generation/output_gates.py
 !tools/teacher-generation/preflight.py
 !tools/teacher-generation/printed_elementary.py
+!tools/teacher-generation/printed_parts.py
 !tools/teacher-generation/printed_percentages.py
 !tools/teacher-generation/printed_tasks.py
 !tools/teacher-generation/provider.py

@@ -158,6 +158,25 @@ def build_source(lesson, payload, plan):
             "sections": [{"title": "מְתַרְגְּלִים חִבּוּר", "conceptIds": [CONCEPT], "questions": questions}]}
 
 
+def needs_printed_task(lesson, question_index, sub_index, item):
+    """The "check" item shows a proposed answer only; its sum is the printed task.
+
+    Only this module's own reconstructed prompt qualifies. An authored prompt
+    with numbers never has a calculation printed after it.
+    """
+    if not compatible(lesson) or question_kinds(lesson["questionCount"])[question_index] != "check":
+        return False
+    answer = item["answer"]
+    args = answer.get("task", {}).get("expression", {}).get("args", ())
+    if (answer.get("unit") not in UNITS or answer.get("task", {}).get("kind") != "evaluate" or len(args) != 2
+            or any(v.get("type") != "number" or v["denominator"] != 1 for v in args)):
+        return False
+    unit = answer["unit"]
+    other = UNITS[(UNITS.index(unit)+1) % len(UNITS)]
+    expected, _ = prompt("check", sub_index, question_index, unit, other, args[0]["numerator"], args[1]["numerator"])
+    return item["prompt"] == expected
+
+
 def states_entire_task(lesson, question_index, sub_index, item):
     """Only an exact, independently reconstructed word problem replaces a+b.
 

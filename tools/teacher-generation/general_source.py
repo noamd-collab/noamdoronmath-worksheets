@@ -30,9 +30,25 @@ SHAPES = {
 
 
 class GeneralSourceError(ValueError):
-    def __init__(self, code, message):
+    # One-based position of the refused question and of its item, when the
+    # raiser knows them. A later stage replaces that question; it must not
+    # have to parse a message.
+    question = None
+    item = None
+
+    def __init__(self, code, message, *, question=None, item=None):
         self.code = code
+        if question is not None:
+            self.question = question
+        if item is not None:
+            self.item = item
         super().__init__(message)
+
+    def at(self, question, item=None):
+        """Record where the refusal happened, keeping an earlier, more exact position."""
+        if self.question is None:
+            self.question, self.item = question, item
+        return self
 
 
 def bad(code, message):
@@ -238,9 +254,21 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
             if "notation" in answer:
                 from compact_authoring import expression
                 notation = answer["notation"]
-                if (type(notation) is not str or solved["question"]["kind"] != "evaluate" or
-                        expression(notation, grade) != solved["question"]["expression"]):
+                typed = solved["question"]
+                sides = notation.split("___") if type(notation) is str else []
+                if typed["kind"] == "compare" and len(sides) == 2:
+                    # The written spelling of both compared sides, around the sign blank.
+                    matches = [expression(side, grade) for side in sides] == [typed["left"], typed["right"]]
+                else:
+                    matches = (type(notation) is str and typed["kind"] == "evaluate"
+                               and expression(notation, grade) == typed["expression"])
+                if not matches:
                     bad("SOURCE_NOTATION", "The printed calculation must equal its exact typed task")
+            from printed_parts import check_item
+            try:
+                check_item(question, item, solved, grade)
+            except GeneralSourceError as error:
+                raise error.at(qcount, j)
             evidence.append({"itemId": item_id, "computed": solved})
         elif answer.get("kind") == "figure":
             exact(answer,("kind","operation","unit"),("point",));text(answer["unit"],50,empty=True)
@@ -248,6 +276,11 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
                 bad("SOURCE_FIGURE_TASK","Figure answers must bind to the question's actual figure")
             try:solved=solve_figure_task(question["figure"],answer["operation"],answer.get("point"))
             except ValueError:bad("SOURCE_FIGURE_TASK","This figure quantity has no implemented exact verifier")
+            from printed_parts import check_item
+            try:
+                check_item(question, item, solved, grade)
+            except GeneralSourceError as error:
+                raise error.at(qcount, j)
             evidence.append({"itemId":item_id,"computed":solved})
         elif answer.get("kind") == "review":
             exact(answer, ("kind", "text"))

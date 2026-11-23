@@ -305,12 +305,16 @@ def _result_ast(expression):
     return ast
 
 
-def to_house_math(ast, *, number_spellings=None) -> str:
+def to_house_math(ast, *, number_spellings=None, schoolbook=False) -> str:
     r"""Compile a bounded AST to the skill's math-island *contents*, without $.
 
     Uses stacked \f{}, \sqrt{}, stretched \g{} parentheses, and middle-school
     multiplication ·. Elementary callers must use their grade's sign renderer.
     Never pass model-authored markup in place of an AST.
+
+    ``schoolbook`` writes a coefficient next to what it multiplies, as a key
+    is written by hand: 5x, 2\g{x + 1}, xy. A product of two numbers and a
+    number that follows a letter keep the dot, so no two digits ever fuse.
     """
     inspect_ast(ast, Budget(result=True))
 
@@ -339,6 +343,38 @@ def to_house_math(ast, *, number_spellings=None) -> str:
             return (child['type']=='number' and child['numerator']<0) or (
                 child['type']=='operation' and child['op']=='multiply'
                 and child['args'][0]['type']=='number' and child['args'][0]['numerator']<0)
+        def letter_led(child):
+            # What a reader sees first: a letter, a bracket or a root sign.
+            if child['type']=='symbol':
+                return True
+            if child['type']!='operation':
+                return False
+            if child['op'] in ('add','subtract','sqrt'):
+                return True
+            return child['op'] in ('power','multiply') and letter_led(child['args'][0])
+        def base(child):
+            # The letter of x or of x^n; a product ends with its last factor.
+            if child['type']=='symbol':
+                return child['name']
+            if child['type']=='operation' and child['op']=='power':
+                return base(child['args'][0])
+            if child['type']=='operation' and child['op']=='multiply':
+                return base(child['args'][-1])
+            return None
+        def juxtaposed(first, second):
+            if not letter_led(second) or (second['type']=='operation' and second['op']=='power'
+                                          and second['args'][0]['type']!='symbol' and not additive(second['args'][0])):
+                return False
+            if base(first) is not None and base(first)==base(second):
+                return False  # x · x^3 keeps its sign; xx^3 would hide the law being used
+            if first['type']=='number':
+                return first['denominator']==1
+            if first['type']=='symbol':
+                return True
+            return first['type']=='operation' and (
+                first['op']=='power' and first['args'][0]['type']=='symbol'
+                or first['op']=='multiply' and juxtaposed(*first['args'][:2])
+                or additive(first) and additive(second))
         if op == "sqrt":
             return r"\sqrt{" + parts[0] + "}"
         if op == "divide":
@@ -351,7 +387,8 @@ def to_house_math(ast, *, number_spellings=None) -> str:
         if op in ("add", "subtract"):
             right=parts[1]
             operator=" + " if op=='add' else " − "
-            if negative(args[1]) and right.startswith('−'):
+            if (negative(args[1]) or (schoolbook and op=='add')) and right.startswith('−'):
+                # a + (−b + c) is written a − b + c; the sign belongs to the first term.
                 operator=" − " if op=='add' else " + "
                 right=right[1:]
             elif op=='subtract' and additive(args[1]):
@@ -362,6 +399,8 @@ def to_house_math(ast, *, number_spellings=None) -> str:
         # Unary negation is printed as a sign rather than (-1)·(expression).
         if args[0]=={'type':'number','numerator':-1,'denominator':1} and not (number_spellings and id(args[0]) in number_spellings):
             return '−'+right
+        if schoolbook and juxtaposed(args[0], args[1]) and not right.startswith('−'):
+            return left+right
         return left+" · "+right
 
     return emit(ast)
