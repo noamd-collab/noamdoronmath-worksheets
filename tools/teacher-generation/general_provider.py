@@ -1,4 +1,4 @@
-"""Original, curriculum-bounded Hebrew authoring through the configured Qwen.
+"""Original, curriculum-bounded Hebrew authoring through the configured provider.
 
 The provider supplies declarative data, never executable source or approvals.
 The initial draft uses one provider call. The live worker can request one
@@ -78,15 +78,9 @@ def author_guidance(context, scope):
 
 def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                           timeout=90, metadata=None, skill_paths=None, authoring_context=None, revision=None):
-    from provider import qwen_chat_url, request_author_json
-    key = api_key or os.environ.get('QWEN_API_KEY') or os.environ.get('DASHSCOPE_API_KEY')
-    base = base_url or os.environ.get('QWEN_BASE_URL')
-    chosen = model or os.environ.get('QWEN_MODEL')
-    if not key or not base or not chosen:
-        reject('PROVIDER_NOT_CONFIGURED', 'Configure the private authoring provider')
-    target = qwen_chat_url(base)
-    if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,63}', chosen):
-        reject('PROVIDER_CONFIG_INVALID', 'Invalid configured Qwen model')
+    from provider import author_body, author_config, request_author_json
+    from reply_examples import reply_example
+    key, target, chosen = author_config(api_key, base_url, model)
     paths = skill_paths or {k: os.environ.get(v) for k, v in (
         ('elementary', 'ELEMENTARY_SKILL_PATH'), ('middle', 'MIDDLE_SKILL_PATH'))}
     try:
@@ -109,6 +103,10 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'response_format': {'type':'json_schema','json_schema':{
                 'name':schema_name,'strict':True,'schema':schema}}, 'enable_thinking': False,
             'max_tokens': max_tokens, 'temperature': 0.25}
+        # Qwen keeps this exact body. A provider without the strict schema gets
+        # json_object, with the schema above and one valid example in the prompt.
+        body = author_body(target, body, example=reply_example(lesson['gradeNumber'])
+                           if schema_name == 'skill_worksheet_content' else None)
         measured.update({'purpose': 'authoring', 'requestedModel': chosen,
                          'validated': False, 'responseReceived': False,
                          'authorContract': contract,

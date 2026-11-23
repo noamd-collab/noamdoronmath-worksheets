@@ -93,6 +93,7 @@
 !tools/teacher-generation/pythagoras_lesson.py
 !tools/teacher-generation/pythagoras_shape.py
 !tools/teacher-generation/remote_worker.py
+!tools/teacher-generation/reply_examples.py
 !tools/teacher-generation/requirements.txt
 !tools/teacher-generation/runner.py
 !tools/teacher-generation/runtime_catalog.py
@@ -130,6 +131,7 @@
 !tools/teacher-generation/tests/test_printed_tasks.py
 !tools/teacher-generation/tests/test_provider.py
 !tools/teacher-generation/tests/test_provider_middle_math.py
+!tools/teacher-generation/tests/test_provider_selection.py
 !tools/teacher-generation/tests/test_pythagoras_lesson.py
 !tools/teacher-generation/tests/test_remote_worker.py
 !tools/teacher-generation/tests/test_runner_word_web.py
