@@ -367,7 +367,13 @@ class AdapterTests(unittest.TestCase):
             ("חשבו.", [("חשבו.", evaluate("124 - 38 + 15")),
                        ("חשבו.", evaluate("4 + 3 * 2")),
                        ("חשבו.", evaluate("(10 + 2) * (5 - 3)"))]),
+            ("השלימו את הסימן.", [("[[4507 ___ 4570]]", compare("4507", "4570")),
+                                  ("[[4507]] ___ [[4570]]", compare("4507", "4570")),
+                                  ("[[3 + 4 ___ 9 - 1]]", compare("3 + 4", "9 - 1"))]),
         ])
+        self.assertEqual(rows[5, 1], ("4,507 ___ 4,570", "4,507 < 4,570"))          # the grade's thousands comma
+        self.assertEqual(rows[5, 2], ("4,507 ___ 4,570", "4,507 < 4,570"))
+        self.assertEqual(rows[5, 3], ("3 + 4 ___ 9 − 1", "3 + 4 < 9 − 1"))
         self.assertEqual(rows[1, 1], ("0.5 ___ 0.45", "0.5 > 0.45"))                # not 1/2 > 9/20
         self.assertEqual(rows[1, 2], ("השלימו את הסימן. 0.5 ___ 0.45", "0.5 > 0.45"))
         self.assertEqual(rows[1, 3][1], "3 שלמים, 4 עשיריות, 7 מאיות")

@@ -171,7 +171,11 @@ def _formula_text(notation, grade, H):
     rendered = []
     for part in display_parts(notation, number_grade):
         if isinstance(part,str):
-            rendered.append(html.escape(part.replace("-", "−")) if H else part.replace("-", "−"))
+            if H and part.isascii() and part.isdigit() and str(int(part)) == part:
+                # One side of a sign blank: a plain number in the grade's spelling.
+                rendered.append(H.fmt(int(part), grade))
+            else:
+                rendered.append(html.escape(part.replace("-", "−")) if H else part.replace("-", "−"))
             continue
         tree, aliases, spellings = part
         if H:
