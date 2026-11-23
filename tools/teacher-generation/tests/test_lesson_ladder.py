@@ -426,6 +426,12 @@ class DraftTests(unittest.TestCase):
         self.assertEqual(len(payload['sections'][0]['questions']), 12)
         # Reserves that are not a list at all cost nothing either.
         self.assertIsNone(self.author({**copy.deepcopy(self.base), 'reserves': 'none'})[1])
+        # A reserve that repeats a planned question word for word is never offered: it would print that question twice.
+        repeated = copy.deepcopy(self.base)
+        repeated['reserves'] = [{'group': 'practice', 'conceptId': 'ד07#0', 'question': copy.deepcopy(repeated['practice'][0])}]
+        repeated['practice'][3]['intro'] = BAD_NOTATION
+        payload, error, session, measured = self.author(repeated)
+        self.assertEqual((error.code, session['draft'].missing(), measured['reserves']), ('SOURCE_NOTATION', [4], {'offered': 1, 'dropped': 1}))
 
     def test_a_practice_reserve_stands_in_for_one_challenge_and_the_sheet_prints_two_stars(self):
         reply = {**copy.deepcopy(self.base), 'reserves': [self.reserve('practice')]}

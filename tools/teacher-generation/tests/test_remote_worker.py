@@ -621,6 +621,13 @@ class WorkerTests(unittest.TestCase):
                                              'dropped': {'count': 0, 'codes': {}}, 'gate': 'deliver'})
         record = json.loads((self.root / 'author-diagnostics' / (JOB_ID + '.json')).read_text())
         self.assertEqual((record['authorCalls'], record['correctionCalls']), (1, 1))
+        # The operator's record also says whether the reserves arrived: counts only, checked again.
+        for reserves, kept in (({'offered': 4, 'dropped': 1}, {'offered': 4, 'dropped': 1}),
+                               ({'offered': 'PRIVATE', 'dropped': 0}, None), ({'offered': 4}, None)):
+            target = self.root / ('diag-%s' % len(str(reserves)))
+            target.mkdir()
+            self.assertTrue(worker.save_author_diagnostics(target, JOB_ID, {'reserves': reserves}))
+            self.assertEqual(json.loads((target / 'author-diagnostics' / (JOB_ID + '.json')).read_text()).get('reserves'), kept)
 
     def test_a_job_spends_at_most_two_corrections_and_two_author_calls(self):
         self.use_general_lesson()

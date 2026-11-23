@@ -171,6 +171,10 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         # The repair ladder's model calls for this job.
         for key, top in (('authorCalls', AUTHOR_CALLS), ('correctionCalls', CORRECTION_CALLS)):
             if type(metadata.get(key)) is int and 0 <= metadata[key] <= top: record[key] = metadata[key]
+        # Whether the author wrote the reserve questions it was asked for: two small counts.
+        reserves = metadata.get('reserves')
+        if isinstance(reserves, dict) and all(type(reserves.get(key)) is int and 0 <= reserves[key] <= 99 for key in ('offered', 'dropped')):
+            record['reserves'] = {'offered': reserves['offered'], 'dropped': reserves['dropped']}
         record['usage'] = safe_usage(metadata.get('usage'))
         if 'revisionUsage' in metadata:
             record['revisionUsage'] = safe_usage(metadata.get('revisionUsage'))

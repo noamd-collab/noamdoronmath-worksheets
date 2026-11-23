@@ -111,8 +111,24 @@ class Draft:
         # A question beyond the plan has no planned position; it stands by as a reserve.
         extra = [{'group': group, 'question': question, 'concepts': ()}
                  for group in (PRACTICE, CHALLENGES) for question in authored[group][taken[group]:]]
-        self.selection = Selection(planned, list(reserves) + extra, self._judge)
+        # A reserve that repeats a planned question word for word would print that question twice.
+        written = {self._text(row['question']) for row in planned if row['question'] is not None}
+        spare = []
+        for row in list(reserves) + extra:
+            text = self._text(row['question'])
+            if text not in written:
+                written.add(text)
+                spare.append(row)
+        self.repeated_reserves = len(reserves) + len(extra) - len(spare)
+        self.selection = Selection(planned, spare, self._judge)
         self.selection.screen()
+
+    @staticmethod
+    def _text(question):
+        try:
+            return json.dumps(question, ensure_ascii=False, sort_keys=True)
+        except (TypeError, ValueError, RecursionError):
+            return repr(id(question))
 
     def _judge(self, question, challenge, number):
         return question_codes(question, self.requested, self.scope, challenge=challenge, index=number,
@@ -645,7 +661,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         draft = Draft(flat, reserve_rows, lesson, scope, plan, compile_sheet=compile_content,
                       ask=lambda body, observed: request_author_json(target, key, body, observed, timeout),
                       context=context, model=chosen, measured=measured)
-        measured['reserves'] = {'offered': len(reserve_rows), 'dropped': dropped}
+        measured['reserves'] = {'offered': len(reserve_rows), 'dropped': dropped + draft.repeated_reserves}
         if session is not None:
             session['draft'] = draft
             # The earlier single-correction interface, kept for callers that
