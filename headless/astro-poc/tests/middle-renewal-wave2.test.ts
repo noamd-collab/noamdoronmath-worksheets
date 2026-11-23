@@ -6,7 +6,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { topicPageCatalogTopicIds, topicPagePdfParts } from '../src/lib/topicStructuredData';
 import { loadTopicPage } from '../src/lib/topicPages';
-import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, eighthRenew, seventhRenew, sixthRenew, fifthRenew, fourthRenew, thirdRenew, nextRenew } from './fixtures/middle-090-091-094';
+import { catalogAtRelease, registryAtRelease, catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, nextRenew } from './fixtures/middle-090-091-094';
 
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
@@ -15,8 +15,8 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 test('reviewed worksheet additions preserve prior editions, hints, and landing copy', () => {
   const releases = nextRenew.packages;
   assert.deepEqual(releases.map(p => p.number), [29,55,56,62,69,70,73,80,82]);
-  const catalog = catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(catalogBeforePackages(read('headless/catalog/catalog.v1.json'), eighthRenew.packages), seventhRenew.packages), sixthRenew.packages), fifthRenew.packages), fourthRenew.packages), thirdRenew.packages);
-  const registry = registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), eighthRenew.packages.map(p => p.edition)), seventhRenew.packages.map(p => p.edition)), sixthRenew.packages.map(p => p.edition)), fifthRenew.packages.map(p => p.edition)), fourthRenew.packages.map(p => p.edition)), thirdRenew.packages.map(p => p.edition));
+  const catalog = catalogAtRelease(read('headless/catalog/catalog.v1.json'), nextRenew);
+  const registry = registryAtRelease(read('headless/catalog/worksheet-editions.v1.json'), nextRenew);
   assert.equal(digest(catalogBeforePackages(catalog, releases)), nextRenew.baselineCatalogSha256);
   assert.equal(digest(registryBeforeRelease(registry, releases.map(p => p.edition))), nextRenew.baselineRegistrySha256);
   const pdfs = new Set<string>();

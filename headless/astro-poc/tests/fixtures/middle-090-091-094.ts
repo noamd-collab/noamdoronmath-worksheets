@@ -24,9 +24,11 @@ import seventhRenew from '../../../../docs/middle-renewal-wave7-20261122.json';
 
 import eighthRenew from '../../../../docs/middle-renewal-wave8-20261122.json';
 
-export { reviewed, seven, three, renew, nextRenew, thirdRenew, fourthRenew, fifthRenew, sixthRenew, seventhRenew, eighthRenew };
-const releases = [eighthRenew, seventhRenew, sixthRenew, fifthRenew, fourthRenew, thirdRenew, nextRenew, renew, three, seven, reviewed];
-const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages, ...nextRenew.packages, ...thirdRenew.packages, ...fourthRenew.packages, ...fifthRenew.packages, ...sixthRenew.packages, ...seventhRenew.packages, ...eighthRenew.packages];
+import finalRenew from '../../../../docs/middle-renewal-final-20261123.json';
+
+export { finalRenew, reviewed, seven, three, renew, nextRenew, thirdRenew, fourthRenew, fifthRenew, sixthRenew, seventhRenew, eighthRenew };
+const releases = [finalRenew, eighthRenew, seventhRenew, sixthRenew, fifthRenew, fourthRenew, thirdRenew, nextRenew, renew, three, seven, reviewed];
+const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages, ...nextRenew.packages, ...thirdRenew.packages, ...fourthRenew.packages, ...fifthRenew.packages, ...sixthRenew.packages, ...seventhRenew.packages, ...eighthRenew.packages, ...finalRenew.packages];
 export const renewalIds = allPackages.map(item => item.edition.editionId);
 // The SSR loader normalizes property insertion order without changing data.
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, (_key, item) => {
@@ -35,7 +37,7 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 })).digest('hex');
 const strip = (text: string) => text.replace(/[⁦-⁩]/g, '');
 
-/** Recover the catalog before the November 21–22 PDF editions, while checking each exact overlay. */
+/** Recover the catalog before the November 21–23 PDF editions, while checking each exact overlay. */
 export function beforeNovember21Catalog<T>(catalog: T): T {
   return catalogBeforePackages(beforeGrade9SpecialTrianglesReview(catalog), allPackages);
 }
@@ -107,6 +109,21 @@ export function registryBeforeReplacedRevisions<T>(registry: T): T {
     result.editions[index] = structuredClone(item.replaces.edition);
   }
   return result;
+}
+
+/** Restore a historical release after checking every later published overlay. */
+function laterReleases(release: typeof releases[number]) {
+  const index = releases.indexOf(release);
+  assert.ok(index >= 0, 'unknown historical release');
+  return releases.slice(0, index);
+}
+
+export function catalogAtRelease<T>(catalog: T, release: typeof releases[number]): T {
+  return laterReleases(release).reduce((current, newer) => catalogBeforePackages(current, newer.packages), catalog);
+}
+
+export function registryAtRelease<T>(registry: T, release: typeof releases[number]): T {
+  return laterReleases(release).reduce((current, newer) => registryBeforeRelease(current, newer.packages.map(p => p.edition)), registry);
 }
 
 export function beforeNovember21Registry<T>(registry: T): T {
