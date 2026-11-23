@@ -234,6 +234,7 @@ test('the real static-sync CLI preserves historical public manifests absent from
   const put=(p:string,text:string)=>{const dest=join(dir,p);mkdirSync(dirname(dest),{recursive:true});writeFileSync(dest,text);};
   put('scripts/lib/worksheet-editions.cjs',read('../../../scripts/lib/worksheet-editions.cjs'));
   put('scripts/lib/worksheet-editions.mjs',read('../../../scripts/lib/worksheet-editions.mjs'));
+  put('scripts/lib/middle-student-print-provenance.mjs',read('../../../scripts/lib/middle-student-print-provenance.mjs'));
   put('scripts/lib/worksheet-hint-correction.mjs',read('../../../scripts/lib/worksheet-hint-correction.mjs'));
   put('headless/catalog/worksheet-ramzi-ready.v1.json',read('../../catalog/worksheet-ramzi-ready.v1.json'));
   put('headless/astro-poc/scripts/sync-github-static.mjs',read('../scripts/sync-github-static.mjs'));
