@@ -1019,3 +1019,7 @@ Package 081 adds three printable levels for two-step equations, with eight quest
 ### Grade 9 transition to high school on 22 November 2026
 
 Package 119 adds three printable review worksheets for students preparing for four- and five-unit mathematics. The 180 subitems span the regular Grade 9 program. The [publication record](middle-renewal-wave8-20261122.json) binds each PDF to the frozen student source, its print checks and the independent mathematical review.
+
+### Final twelve middle-school renewal packages, 23 November 2026
+
+Packages 103, 104, 107, 108, 109 and 111–117 contribute 36 printable worksheets in three levels, with 1,647 subitems and final answers. The new Grade 9 prism and transformations pages identify prerequisite knowledge. Grade 8 assessment task 1 is labelled as practice. The renewal spans allocations 040–119. The [per-edition record](middle-renewal-final-20261123.json) binds each level to its reviewed PDF and both media readbacks. New-edition hints require a separate source-bound review.

@@ -1,3 +1,4 @@
+import { reviewedStudentPrint } from './middle-student-print-provenance.mjs';
 'use strict';
 import { validateHintCorrection } from './worksheet-hint-correction.mjs';
 // Self-contained pure overlay for Node builds and Vite SSR; one readiness implementation.
@@ -150,7 +151,7 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
   const records = new Set(); const canonicalRevisions = new Set(); const defaults = new Set();
   const published = new Map();
   for (const row of registry.editions) {
-    keys(row, ['grade', 'topicId', 'editionId', 'label', 'status', 'isDefault', 'levels', 'nativePrefix', 'publicationMode', 'assessmentPdfEvidence', 'bridgePrintEvidence'], 'edition');
+    keys(row, ['grade', 'topicId', 'editionId', 'label', 'status', 'isDefault', 'levels', 'nativePrefix', 'publicationMode', 'assessmentPdfEvidence', 'bridgePrintEvidence', 'studentPrintEvidence'], 'edition');
     const key = `${row.grade}:${row.topicId}`;
     const topic = topics.get(key);
     requireValue(Number.isInteger(row.grade) && row.grade >= 1 && row.grade <= 9 &&
@@ -159,12 +160,17 @@ function mergeWorksheetEditions(catalog, registry, readiness, hintCorrection) {
     const pdfOnly = row.publicationMode === 'pdf-only';
     requireValue(!Object.hasOwn(row, 'publicationMode') || (pdfOnly && middle),
       'publicationMode must be pdf-only for middle school only');
-    const assessmentPdf = Object.hasOwn(row, 'assessmentPdfEvidence');
-    const bridgePdf = Object.hasOwn(row, 'bridgePrintEvidence');
-    requireValue(!(assessmentPdf && bridgePdf), 'conflicting print evidence');
-    const printSource = assessmentPdf ? ASSESSMENT_ONE : bridgePdf ? GRADE9_BRIDGE : undefined;
-    const proofField = assessmentPdf ? 'assessmentPdfEvidence' : 'bridgePrintEvidence';
-    if (printSource) validatePrintSource(row, proofField, printSource);
+    const proofFields = ['assessmentPdfEvidence', 'bridgePrintEvidence', 'studentPrintEvidence']
+      .filter(field => Object.hasOwn(row, field));
+    requireValue(proofFields.length <= 1, 'conflicting print evidence');
+    const [proofField] = proofFields;
+    const printSource = proofField === 'assessmentPdfEvidence' ? ASSESSMENT_ONE
+      : proofField === 'bridgePrintEvidence' ? GRADE9_BRIDGE
+      : reviewedStudentPrint.find(approved => approved.editionId === row.editionId);
+    if (proofField || printSource) {
+      requireValue(proofField && printSource, 'missing or unknown print provenance');
+      validatePrintSource(row, proofField, printSource);
+    }
     const hashFields = pdfOnly ? PDF_ONLY_HASH_FIELDS : HASH_FIELDS;
     // Native package numbers are independent of catalog topic IDs. Never
     // silently send a new edition to the legacy topic's question/hint bank.
