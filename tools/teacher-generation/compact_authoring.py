@@ -5,7 +5,7 @@ from itertools import groupby
 import re
 
 from general_source import GeneralSourceError, MAX_BYTES
-from math_tasks import MathTaskError, inspect_ast, number, operation
+from math_tasks import MAX_POWER, MathTaskError, inspect_ast, number, operation
 from numeric_literals import COEFFICIENT, NUMBER_TOKEN, arithmetic_tokens, display_literal, elementary_operations, literal_value
 
 GEOMETRY = re.compile(r"(point|segment|triangle|angle|polygon):([A-Z]{1,8})")
@@ -17,6 +17,13 @@ OP = {
     "^": ("power", 3),
 }
 END = ""
+VARIABLES = frozenset("xyab")
+PI = frozenset(("pi", "π"))
+# Juxtaposition that schoolbooks read as a product: 3(x+2), (x+2)(x-3), 2ab.
+IMPLICIT_PRODUCT = re.compile(r"[0-9xyab)π]\s*\(|\)\s*[xyabπ]|[xyabπ]\s*[xyabπ]|[0-9]\s*(?:π|pi|sqrt)")
+# A letter must touch its factor. With a space between, "x y" can also be a list of two names.
+SPACED_LETTERS = re.compile(r"[0-9xyabπ)]\s+(?:[xyabπ]|pi)|(?:[xyabπ]|pi)\s+[0-9xyabπ]")
+_EXPONENTS = "|".join(str(n) for n in range(MAX_POWER, -1, -1))
 
 
 def invalid():
@@ -25,7 +32,47 @@ def invalid():
     )
 
 
-def expression(value, grade, *, blank_symbol=False, printed=False, spellings=None):
+def implicit_products(tokens):
+    """Insert the product sign that middle-school juxtaposition stands for.
+
+    Only between a closed left factor and the start of a right one, and never
+    where a second reading exists: after a divisor (1/2(x+1)), after a
+    bracketed exponent, between a number and frac (a mixed number), between two
+    numbers, for a repeated letter, or for letters with a space between them
+    (the caller checks that). An exponent is always a literal here, so
+    x^2(x+1) can only be the square times the bracket.
+    """
+    out = []
+    for token in tokens:
+        previous = out[-1] if out else END
+        closes = previous == ")" or previous in VARIABLES or previous in PI or previous[:1].isdigit()
+        opens = token == "(" or token in VARIABLES or token in PI or token == "sqrt"
+        if closes and opens:
+            if previous == token and token in VARIABLES:
+                invalid()
+            start = len(out) - 1
+            if previous == ")":
+                depth = 0
+                while start >= 0:
+                    depth += (out[start] == ")") - (out[start] == "(")
+                    if depth == 0:
+                        break
+                    start -= 1
+                if start < 0:
+                    invalid()
+                if start and out[start - 1] in ("sqrt", "frac"):
+                    start -= 1
+            if start and out[start - 1] == "-" and (start == 1 or out[start - 2] in OP or out[start - 2] in ("(", ",")):
+                start -= 1
+            if start and (out[start - 1] == "/" or out[start - 1] == "^" and not (
+                    start == len(out) - 1 and previous.isdigit())):
+                invalid()
+            out.append("*")
+        out.append(token)
+    return out
+
+
+def expression(value, grade, *, blank_symbol=False, printed=False, spellings=None, implicit=True):
     if not isinstance(value, str):
         # Typed source (e.g. an older retained response) is checked as usual.
         return value
@@ -38,6 +85,10 @@ def expression(value, grade, *, blank_symbol=False, printed=False, spellings=Non
         tokens = list(arithmetic_tokens(normalized))
     except ValueError:
         invalid()
+    if grade >= 7 and implicit:
+        if SPACED_LETTERS.search(normalized):
+            invalid()
+        tokens = implicit_products(tokens)
     if not tokens or len(tokens) > 96:
         invalid()
     index = 0
@@ -104,6 +155,8 @@ def expression(value, grade, *, blank_symbol=False, printed=False, spellings=Non
             blank_symbol and token == "x"
         ):
             left = {"type": "symbol", "name": token}
+        elif token in PI and grade >= 7:
+            left = {"type": "constant", "name": "pi"}
         else:
             invalid()
         while peek() in OP and OP[peek()][1] >= precedence:
@@ -172,6 +225,9 @@ def display_parts(value, grade):
         return [geometry]
     if grade < 7:
         source = elementary_operations(source)
+        # The pinned elementary signs admit a measured angle from grade five.
+        if grade >= 5 and re.fullmatch(DEGREES, source):
+            return [re.sub(r"\s+°", "°", source)]
     point = COORDINATE.fullmatch(source)
     if point and grade >= 7:
         return [f"{point[1]}({int(point[2])}, {int(point[3])})"]
@@ -190,10 +246,7 @@ def display_parts(value, grade):
             continue
         aliases = {}
 
-        def rename(match):
-            name = match[0]
-            if name in ("frac", "sqrt"):
-                return name
+        def alias(name):
             if name != "___" and (
                 grade < 7 or not re.fullmatch(r"[a-z]|[A-Z]{1,8}", name)
             ):
@@ -204,16 +257,27 @@ def display_parts(value, grade):
                 aliases[name] = "xyab"[len(aliases)]
             return aliases[name]
 
+        def rename(match):
+            name = match[0]
+            if name in ("frac", "sqrt", "pi"):
+                return name
+            if grade >= 7 and re.fullmatch(r"[xyab]{2,4}", name) and len(set(name)) == len(name):
+                # A product of distinct variables, 2ab: every letter is its own name.
+                return "".join(alias(letter) for letter in name)
+            return alias(name)
+
         rewritten = DISPLAY_NAME.sub(rename, piece)
         spellings = {}
+        # Two diagram labels side by side are not a product.
         tree = expression(rewritten, grade, blank_symbol=grade < 7 and "___" in aliases,
-                          printed=True, spellings=spellings)
+                          printed=True, spellings=spellings,
+                          implicit=not any(name == "___" or name.isupper() for name in aliases))
         # In an already parsed schoolbook polynomial keep ordinary numerical
-        # coefficients adjacent to their variable. No model markup is copied.
-        if (grade >= 7 and COEFFICIENT.search(piece) and
+        # coefficients and juxtaposed factors as written. No model markup is copied.
+        if (grade >= 7 and (COEFFICIENT.search(piece) or IMPLICIT_PRODUCT.search(piece)) and
                 re.fullmatch(r"[0-9xyab,.+()\s^\-]+", piece) and
-                not re.search(r"\^(?![0-4](?![0-9]))", piece)):
-            result.append(re.sub(r"\^([0-4])", r"^{\1}", piece.strip().replace("-", "−")))
+                not re.search(rf"\^(?!(?:{_EXPONENTS})(?![0-9]))", piece)):
+            result.append(re.sub(rf"\^({_EXPONENTS})(?![0-9])", r"^{\1}", piece.strip().replace("-", "−")))
         else:
             result.append((tree, {alias: name for name, alias in aliases.items()}, spellings))
     return result
@@ -236,11 +300,12 @@ def needs_display_formula(value):
         has_written_number(value)
         or GEO_SYMBOLS.fullmatch(value)
         or COEFFICIENT.search(value)
+        or IMPLICIT_PRODUCT.search(value)
         or RELATION.search(value)
         or COORDINATE.fullmatch(value)
         or "___" in value
         or any(
-            m[0] not in ("x", "y", "a", "b", "frac", "sqrt")
+            m[0] not in ("x", "y", "a", "b", "frac", "sqrt", "pi")
             for m in DISPLAY_NAME.finditer(value)
         )
     )

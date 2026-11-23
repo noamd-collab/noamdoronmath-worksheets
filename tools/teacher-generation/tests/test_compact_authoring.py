@@ -43,7 +43,7 @@ class CompactAuthoringTests(unittest.TestCase):
             ("x", 1),
             ("2*3", 1),
             ("2^3", 3),
-            ("3xy", 8),
+            ("3xx", 8),
             ("1 2", 8),
             ("1//2", 8),
             ("2+?", 8),
