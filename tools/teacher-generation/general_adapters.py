@@ -610,8 +610,10 @@ def _shape_call(fig, declared=frozenset()):
 
 # Other windows and numbering of one coordinate figure, in the order tried:
 # (more below x, more above x, more below y, more above y, numbering step).
-# Measured on 400 rhombus and kite point sets with a vertex on an axis: these
-# eight draw every one of the 99 that the author's window could not.
+# Measured with _middle_call on 379 rhombus and kite point sets with vertices on
+# the axes: the author's window refused 99, and each of them was drawn by the
+# wider window (33), one unit more below both axes (30) or numbering on every
+# unit (36). The later shifts are kept for other point sets.
 _PLANE_SHIFTS = ((-1, 0, -1, 0, None), (0, 0, 0, 0, 1), (-2, 2, -2, 2, None), (0, 1, 0, 1, None),
                  (0, 0, -1, 0, None), (-1, 0, 0, 0, None))
 
