@@ -125,9 +125,32 @@ def reveals_answer(solved):
     return False
 
 
-NUMBER_WORD = re.compile(
-    r"(?<![א-ת])[ובלמכשה]{0,2}(?:אחת|שתיים|שניים|שלוש(?:ה|ים)?|ארבע(?:ה|ים)?|חמש|חמיש(?:ה|ים)|שש|שיש(?:ה|ים)|"
-    r"שבע(?:ה|ים)?|שמונ(?:ה|ים)|תשע(?:ה|ים)?|עשר(?:ה|ים)?|מאה|מאתיים|אלף|אלפיים|חצי|שליש|רבע)(?![א-ת])")
+# Numbers that a story can state in words. A compound such as "עשרים וחמש"
+# is not assembled; it only costs a harmless printed task.
+_NUMBER_WORDS = {
+    # "אחד" is left out: "כל אחד" and "אף אחד" are not numbers of a story.
+    "שניים": 2, "שתיים": 2, "שלוש": 3, "שלושה": 3, "ארבע": 4, "ארבעה": 4,
+    "חמש": 5, "חמישה": 5, "שש": 6, "שישה": 6, "שבע": 7, "שבעה": 7, "שמונה": 8, "תשע": 9, "תשעה": 9,
+    "עשר": 10, "עשרה": 10, "עשרים": 20, "שלושים": 30, "ארבעים": 40, "חמישים": 50, "שישים": 60,
+    "שבעים": 70, "שמונים": 80, "תשעים": 90, "מאה": 100, "מאתיים": 200, "אלף": 1000, "אלפיים": 2000,
+}
+_PART_WORDS = {"חצי": 2, "מחצית": 2, "שליש": 3, "רבע": 4}
+
+
+def word_numbers(words):
+    """The values of the number words in unpointed prose, with a Hebrew prefix removed."""
+    found = set()
+    for word in re.findall(r"[א-ת]+", words):
+        for stem in (word, word[1:], word[2:]):
+            if stem != word and not re.fullmatch(r"[ובלמכשה]+", word[:len(word) - len(stem)]):
+                continue
+            if stem in _NUMBER_WORDS:
+                found.add(Fraction(_NUMBER_WORDS[stem]))
+                break
+            if stem in _PART_WORDS:
+                found.update({Fraction(_PART_WORDS[stem]), Fraction(1, _PART_WORDS[stem])})
+                break
+    return found
 
 
 # The pupil's own earlier work supplies the data: "the expression you wrote", "both results".
@@ -161,8 +184,9 @@ def shows_task(question, item, solved, *, intro=None):
         # The group's story states every number; the calculation is the pupil's part.
         return False
     if words.endswith("?"):
-        # A question about a story or a table that is printed once for all items.
-        if NUMBER_WORD.search(words) or leaves & (story | visible_numbers(_table_spans(question))):
+        # A question about a story or a table that is printed once for all items,
+        # or about numbers that the question itself says in words.
+        if leaves & (story | visible_numbers(_table_spans(question)) | word_numbers(words)):
             return False
     return True
 

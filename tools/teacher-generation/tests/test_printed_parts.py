@@ -212,6 +212,8 @@ class WirePathTests(unittest.TestCase):
         self.assertFalse(shown("ג08", "לדני היו [[124]] גולות והוא קיבל עוד [[38]].", "כמה גולות יש לו עכשיו?",
                                evaluate("124 + 38")))
         self.assertFalse(shown("ג08", "פתרו.", "כמה שעות יש בשלושה ימים?", evaluate("3 * 24")))
+        # A number word that is not one of the task's numbers hides nothing.
+        self.assertTrue(shown("ג08", "חברו.", "כמה כרטיסים יש יחד בשלוש קופסאות?", evaluate("20 + 30 + 10")))
         self.assertFalse(shown("ג08", "לדנה [[12]] בלונים ו־[[5]] מהם התפוצצו.", "חשבו כמה בלונים נשארו.", evaluate("12 - 5")))
         # An exercise that the prompt already shows is not printed twice.
         self.assertFalse(shown("ג06", "חשבו.", "[[348 + 276]]", evaluate("348 + 276")))
