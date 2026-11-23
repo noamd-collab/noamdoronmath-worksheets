@@ -7,8 +7,11 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 from validation import GenerationError, read_json, reject, validate_model
 from adapters import dump
+from gate_policy import RECONCILIATION_STEPS, decide
+from skill_feedback import gate_report
 
 HERE=Path(__file__).resolve().parent
 
@@ -29,12 +32,11 @@ def verify_skill(kind, path):
     return root,pin
 
 
-def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy=False):
-    """Validate first, build into a new directory, return manifest. No provider calls.
+def _open_job(lesson, model_payload, workdir, skill_paths, allow_legacy, *, elementary_general_only=False):
+    """Validate, verify the pinned skill and open the isolated work folder.
 
-    Ready-for-human-review is never publication approval. A failed gate returns
-    status failed with no downloadable artifacts. Caller owns authorization,
-    job leasing and storage. skill_paths is trusted operator configuration only.
+    Returns None, before anything is written, when ``elementary_general_only``
+    is set and the lesson is not a version 3 elementary lesson.
     """
     cap=validate_model(lesson,model_payload,allow_legacy=allow_legacy)
     from division_facts import VERSION as division_version
@@ -46,6 +48,8 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
         and lesson['level']=='b' and cap['family']=='linear_equation'
     ):
         reject('UNSUPPORTED_WORD_LAYOUT','The verified Word-web repair covers only the grade 7 basic linear-equation pilot')
+    if elementary_general_only and not (general and cap['skill']=='elementary'):
+        return None
     paths=skill_paths or {k:os.environ.get(v) for k,v in [('elementary','ELEMENTARY_SKILL_PATH'),('middle','MIDDLE_SKILL_PATH')]}
     if not paths.get(cap['skill']): reject('RUNTIME_NOT_CONFIGURED','Set the configured skill path on the runner')
     skill,pin=verify_skill(cap['skill'],paths[cap['skill']])
@@ -75,19 +79,104 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
             return ok
         except subprocess.TimeoutExpired:
             steps.append({'name':name,'status':'FAIL','reason':'RENDER_TIMEOUT'});return False
-    ok=run('trusted-adapter',[adapter,'--skill',skill,'--work',work]+(['--allow-legacy-intake'] if allow_legacy else []))
+    return SimpleNamespace(cap=cap,general=general,native_division=native_division,adapter=adapter,skill=skill,pin=pin,
+                           work=work,steps=steps,run=run,
+                           adapter_args=[adapter,'--skill',skill,'--work',work]+(['--allow-legacy-intake'] if allow_legacy else []))
+
+
+def _content_truth_args(job):
+    return [job.skill/'scripts/lib/content_truth.py','--work',job.work]
+
+
+def _house_gate_args(job, lesson, *, rendered):
+    """The pinned house gates. Before rendering, only the checks that read the
+    HTML, content.json and the figure sources run: no PDF and no Word file."""
+    work=job.work
+    return ([job.skill/'scripts/lib/house_gates.py','--html',work/'sheet.html']
+            +(['--pdf',work/'sheet.pdf'] if rendered else [])
+            +['--gen',job.adapter,'--content',work/'content.json','--figdir',work/'figures',
+              '--grade','אבגדהו'[lesson['gradeNumber']-1],'--level',{'a':'א','b':'ב','e':'מצוינות'}[lesson['level']]]
+            +(['--docx',work/'sheet.docx'] if rendered else []))
+
+
+def lesson_gate(job, lesson):
+    """Read every finding of a version 3 lesson and decide (gate_policy.decide).
+
+    Truth and policy findings block; when each names a question the caller can
+    replace those questions and render again. Editorial findings alone do not
+    block. An unknown finding, a timeout or a crashed step blocks.
+    """
+    count=lesson['questionCount']
+    report=gate_report(job.work,job.cap['skill'],job.steps,count)
+    if (job.cap['skill']=='elementary' and (job.work/'sheet.pdf').is_file()
+            and any(row['code']=='G51' for row in report['unnamed'])
+            and not any(step['name']=='bracket-order-reconciliation' for step in job.steps)):
+        # Fixed second measurement of the one documented G51 false positive.
+        job.run('bracket-order-reconciliation',[HERE/'paren_order.py','--pdf',job.work/'sheet.pdf',
+                                                 '--json',job.work/'logs/bracket-order.json'])
+        report=gate_report(job.work,job.cap['skill'],job.steps,count)
+    failed=[step['name'] for step in job.steps if step['status']=='FAIL' and step['name'] not in RECONCILIATION_STEPS]
+    return report,decide(report,failed)
+
+
+def precheck_job(lesson, model_payload, workdir, skill_paths=None):
+    """Elementary pre-pass: build content.json and run only the gates that read it.
+
+    No PDF, no Word file and no provider call, so a caller can replace the
+    questions that the truth and house gates name and then render once.
+    Returns {'status','steps','gate'}:
+      clean           the trusted adapter and both gates passed
+      review          only editorial findings (they would not block a render)
+      replace         blocking findings that each name a question: gate['questions']
+      failed          a blocking finding that names no question
+      not_applicable  not a version 3 elementary lesson; nothing was written
+    The gates that need the rendered PDF or Word file still run in render_job.
+    """
+    job=_open_job(lesson,model_payload,workdir,skill_paths,False,elementary_general_only=True)
+    if job is None:
+        return {'version':1,'status':'not_applicable','steps':[],'gate':None}
+    if job.run('trusted-adapter',job.adapter_args):
+        # Both run even when the first fails: the report names every question.
+        job.run('content-truth',_content_truth_args(job))
+        job.run('house-gates',_house_gate_args(job,lesson,rendered=False))
+    report,decision=lesson_gate(job,lesson)
+    clean=all(step['status']=='PASS' for step in job.steps)
+    status='clean' if clean else {'deliver':'review','replace':'replace'}.get(decision['action'],'failed')
+    result={'version':1,'status':status,'steps':job.steps,
+            'gate':{'version':1,'action':decision['action'],'complete':report['complete'],'blocking':decision['blocking'],
+                    'questions':decision['questions'],'review':decision['reviewFindings']}}
+    dump(job.work/'precheck.json',result)
+    return result
+
+
+def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy=False):
+    """Validate first, build into a new directory, return manifest. No provider calls.
+
+    Ready-for-human-review is never publication approval. A failed gate returns
+    status failed with no downloadable artifacts. Caller owns authorization,
+    job leasing and storage. skill_paths is trusted operator configuration only.
+
+    Version 3 lessons follow the delivery policy in gate_policy: a render
+    whose failed steps hold only editorial findings is delivered as
+    needs_review with those findings in reviewFindings; anything else that
+    fails stays failed, and manifest['gate'] says which questions are named.
+    """
+    job=_open_job(lesson,model_payload,workdir,skill_paths,allow_legacy)
+    cap,general,native_division,adapter,skill,pin=job.cap,job.general,job.native_division,job.adapter,job.skill,job.pin
+    work,steps,run=job.work,job.steps,job.run
+    ok=run('trusted-adapter',job.adapter_args)
     outputs=[]
     review_findings=[]
     word_postprocess=None
     if ok and cap['skill']=='elementary':
         for name,args in [
-            ('content-truth',[skill/'scripts/lib/content_truth.py','--work',work]),
+            ('content-truth',_content_truth_args(job)),
             ('pdf',[skill/'scripts/build_pdf.py',work/'sheet.html',work/'sheet.pdf']),
             ('word',[skill/'scripts/build_docx.py',work/'sheet.html',work/'sheet.docx']),
             ('word-layout',[HERE/'docx_layout.py','--docx',work/'sheet.docx','--content',work/'content.json']),
             ('worksheet',[skill/'scripts/check_worksheet.py',work/'sheet.pdf',work/'preview','--band','elementary-ab' if lesson['gradeNumber']<=2 else 'elementary']),
             ('output-gates',[HERE/'output_gates.py','--skill',skill,'--pdf',work/'sheet.pdf','--band','elementary-ab' if lesson['gradeNumber']<=2 else 'elementary']+(['--general'] if general and not native_division else [])),
-            ('house-gates',[skill/'scripts/lib/house_gates.py','--html',work/'sheet.html','--pdf',work/'sheet.pdf','--gen',adapter,'--content',work/'content.json','--figdir',work/'figures','--grade','אבגדהו'[lesson['gradeNumber']-1],'--level',{'a':'א','b':'ב','e':'מצוינות'}[lesson['level']],'--docx',work/'sheet.docx']),
+            ('house-gates',_house_gate_args(job,lesson,rendered=True)),
         ]:
             if general and not native_division and name=='word-layout':
                 # This postprocessor only understands the old fixed pilot
@@ -143,6 +232,23 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
                     'provenanceReport':'logs/word-web-layout.json',
                     'finalGateReport':'logs/word-web-rtl-parity.json'}
         outputs=[f'out/deliver/{key}/sheet.pdf',original if general else final]
+    gate=None
+    if general and any(step['status']!='PASS' for step in steps):
+        report,decision=lesson_gate(job,lesson)
+        if not ok and decision['action']=='deliver':
+            # Every failed step holds only editorial or reconciled findings.
+            for step in steps:
+                if step['status']=='FAIL' and step['name'] in decision['reviewSteps']:
+                    step['status']='REVIEW';step['reason']='EDITORIAL_FINDINGS_ONLY'
+            ok=all(step['status'] in ('PASS','REVIEW') for step in steps)
+        if ok:
+            for row in decision['reviewFindings']:
+                known=next((r for r in review_findings if r['code']==row['code']),None)
+                if known is None:review_findings.append(row)
+                elif known['count']==row['count']:known.update(row)
+        gate={'version':1,'action':decision['action'] if not ok else 'deliver','complete':report['complete'],
+              'blocking':decision['blocking'] if not ok else [],'questions':decision['questions'] if not ok else [],
+              'review':decision['reviewFindings']}
     artifacts=[]
     if ok:
         for name in outputs:
@@ -156,6 +262,8 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
         manifest['authoringProfile']='general-skill-source/v1'
         manifest['renderingChecksPassed']=bool(ok and len(artifacts)==2 and all(s['status'] in ('PASS','REVIEW') for s in steps))
         manifest['reviewFindings']=review_findings
+        if gate is not None:
+            manifest['gate']=gate
         manifest['review']={
             'mathematical':'typed computations independently evaluated; prose and proof review pending',
             'visual':'pending; every final PDF page and actual Word rendering must be inspected',
@@ -171,8 +279,13 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--lesson',required=True);p.add_argument('--model-output',required=True);p.add_argument('--out',required=True);p.add_argument('--allow-legacy-intake',action='store_true',help='Offline reproduction of v1 intake only; never permitted for queued jobs')
+    p.add_argument('--precheck',action='store_true',help='Elementary version 3 lessons: run only the trusted adapter and the gates that read content.json; no PDF or Word file')
     a=p.parse_args()
     try:
+        if a.precheck:
+            r=precheck_job(read_json(a.lesson),read_json(a.model_output),a.out)
+            print(json.dumps({'status':r['status'],'gate':r['gate']},ensure_ascii=False))
+            sys.exit(0 if r['status'] in ('clean','review') else 1)
         m=render_job(read_json(a.lesson),read_json(a.model_output),a.out,allow_legacy=a.allow_legacy_intake)
         print(json.dumps({'status':m['status'],'manifest':str(Path(a.out)/'manifest.json'),'artifacts':m['artifacts']},ensure_ascii=False))
         sys.exit(0 if m['status']=='needs_review' else 1)

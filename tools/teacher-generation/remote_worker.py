@@ -20,6 +20,7 @@ from pathlib import Path
 from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPSHandler
 from urllib.error import HTTPError
 from provider import author_lesson, safe_usage
+from gate_policy import public_review_findings
 from runner import render_job
 from skill_feedback import read_skill_feedback
 from validation import GenerationError, capabilities, validate_lesson
@@ -301,9 +302,10 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
         result={'version':1,'automatedChecksPassed':manifest.get('automatedChecksPassed') is True,'humanReviewRequired':True,'skill':manifest['skill'],
                 'artifacts':published,'checks':[{'name':s['name'],'status':s['status']} for s in manifest['steps']]}
         if general:
+            # Editorial findings only: fixed codes, counts, question numbers and
+            # this engine's own Hebrew notes. No gate or model text is forwarded.
             result.update(authoringProfile='general-skill-source/v1',renderingChecksPassed=True,
-                          reviewFindings=[{'code':r['code'],'count':r['count']} for r in manifest.get('reviewFindings',[])
-                                          if r.get('code')=='DIDACTIC_REVIEW' and type(r.get('count')) is int and 0<r['count']<=2000])
+                          reviewFindings=public_review_findings(manifest.get('reviewFindings',[])))
         if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
         stop.set();thread.join(timeout=3)
         update_job(remote,job,{'status':'needs_review','phase':'needs_review','result':result,'lease_token':None,'lease_until':None})

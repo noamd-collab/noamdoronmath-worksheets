@@ -460,10 +460,16 @@ def compile_source(lesson, validated, scope, skill_path, work, *, printed_answer
         raise GeneralSourceError("PRINTED_TASK_MISMATCH", "Counting evidence must belong to an elementary worksheet")
     _load_skill(skill, elementary)
     (work / "figures").mkdir(exist_ok=True)
-    if elementary:
-        _compile_elementary(lesson, source, evidence, scope, skill, work, printed_answers=printed_answers, printed_fractions=printed_fractions)
-    else:
-        _compile_middle(lesson, source, evidence, scope, skill, work)
+    # The question being compiled. A refusal raised there names that question;
+    # a position the raiser already recorded (question and item) is kept.
+    cursor = {"question": None}
+    try:
+        if elementary:
+            _compile_elementary(lesson, source, evidence, scope, skill, work, printed_answers=printed_answers, printed_fractions=printed_fractions, cursor=cursor)
+        else:
+            _compile_middle(lesson, source, evidence, scope, skill, work, cursor=cursor)
+    except GeneralSourceError as error:
+        raise (error.at(cursor["question"]) if cursor["question"] else error)
     return {"skill": scope["topic"]["skillId"], "work": str(work), "sourcePath": str(work / "worksheet-source.json"), "evidencePath": str(work / "general-evidence.json"), "unverifiedAnswerCount": len(evidence["unverifiedAnswers"]),
             # For a teacher note: which printed answers no kernel verified, and which items have no key.
             "unverifiedAnswers": [{"question": row.get("question"), "item": row.get("item"), "kind": row.get("kind", "review")}
@@ -565,7 +571,8 @@ def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *
     return prompt + " " + task_text + '<div class="ansline"></div>', answer
 
 
-def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed_answers=None, printed_fractions=False):
+def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed_answers=None, printed_fractions=False, cursor=None):
+    cursor = {} if cursor is None else cursor  # compile_source reads the question being compiled
     import ws_html as H
     from content_truth import Ledger
     grade = LETTERS[lesson["gradeNumber"] - 1]
@@ -578,6 +585,7 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
     for section in source["sections"]:
         for question in section["questions"]:
             n += 1; pieces, items, answers, source_items = [], [], [], []
+            cursor["question"] = n
             revised_intro = place_intro(lesson, question)
             intro_spans = [{"kind":"text","text":revised_intro}] if revised_intro else question["intro"]
             intro = rich_text(intro_spans, grade, H)
@@ -617,9 +625,16 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                 q["fig"] = figpath
             qs.append((q, intro, ''.join(pieces), H.keyed(answers)))
             canon.append({"id": f"q{n}", "n": n, "section": section["title"], "conceptIds": section["conceptIds"], "intro": intro_spans, "table": question.get("table"), "figure": question.get("figure"), "items": source_items})
+    cursor["question"] = None
+    # The pinned content schema is {n, intro, items, answer, fig}. The star stays
+    # in the HTML, where G50 counts it; in content.json the pinned difficulty
+    # proxy (G61) would add two points to exactly the three challenge questions.
+    gate_questions = [{k: v for k, v in q[0].items() if k != "star"} for q in qs]
+    from claim_words import register
+    register(ledger, gate_questions)
     ledger.save()
     meta = {"band": "elementary-ab" if ab else "elementary", "grade": grade, "level": {"a":"א", "b":"ב", "e":"מצוינות"}[lesson["level"]], "topic": source["title"], "topic_id": scope["topic"]["sourceTopicId"], "domain": scope["topic"]["domain"]}
-    dump(work / "content.json", {"meta": meta, "questions": [q[0] for q in qs]})
+    dump(work / "content.json", {"meta": meta, "questions": gate_questions})
     dump(work / "worksheet-source.json", {"version": 4, "meta": dict(meta, gradeNumber=lesson["gradeNumber"], levelCode={"a":"A", "b":"B", "e":"E"}[lesson["level"]], topicId=lesson["topicId"]), "questions": canon, "reviewRequired": True})
     template = (skill / "assets/worksheet_template_elementary.html").read_text(encoding="utf-8")
     head = template.split("<body", 1)[0]
@@ -637,7 +652,8 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
     (work / "sheet.html").write_text(head+'\n'.join(body), encoding="utf-8")
 
 
-def _compile_middle(lesson, source, evidence, scope, skill, work):
+def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None):
+    cursor = {} if cursor is None else cursor  # compile_source reads the question being compiled
     solved = {row["itemId"]: row["computed"] for row in evidence["computations"]}
     qs, answers, canon, n = [], [], [], 0
     words_share={}
@@ -646,6 +662,7 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
         first = n + 1
         for question in section["questions"]:
             n += 1; items, answer_items, source_items = [], [], []
+            cursor["question"] = n
             intro = rich_text(question["intro"], lesson["gradeNumber"])
             q = {"n": n, "intro": intro, "star": question["star"], "items": items, "to_prove": []}
             solutions = [solved.get(f"q{n}-i{j}") for j in range(1, len(question["items"]) + 1)]
@@ -726,6 +743,7 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
                 source_items.append({"id": item_id, "label": LETTERS[j-1], "text": body, "answer": answer, "task": computed["question"] if computed else None, "verification": "typed answer and verified printed givens" if printed else "typed task only" if computed else "unverified prose/proof; owner review required"})
             qs.append(q); answers.append([n, answer_items, question["star"]])
             canon.append({"id":f"q{n}", "n":n, "intro":intro, "section":section["title"], "conceptIds":section["conceptIds"], "items":source_items, "table":question.get("table"), "figure":question.get("figure")})
+    cursor["question"] = None
     from general_source import geometry_topic
     figure_topic = True if geometry_topic(scope) else [False, "הנושא אינו גיאומטריה; הוראת נועם אוסרת שרטוטים בנושא זה"]
     level = {"level": LEVELS[lesson["level"]], "key": {"a":"a", "b":"b", "e":"c"}[lesson["level"]], "grade": str(lesson["gradeNumber"]), "keep_questions": True, "figure_topic": figure_topic, "title": source["title"], "rule": rich_text(source["rule"], lesson["gradeNumber"]), "questions": qs, "answers": answers, "curriculum": {"topic":scope["topic"]["sourceTopicId"], "track":scope["topic"]["sourceTrack"]}}
@@ -778,8 +796,9 @@ if __name__ == "__main__":
     try:
         _main(args, wd)
     except GeneralSourceError as error:
-        # The parent process reads this record instead of parsing a traceback.
-        # It holds a code and a position only, never model text.
+        # The parent process reads this record instead of parsing a traceback
+        # (skill_feedback.adapter_refusal). It holds a code and a position
+        # only, never model text.
         dump(wd / FAILURE_RECORD, {"version": 1, "step": "trusted-adapter", "code": error.code,
                                    "question": error.question, "item": error.item})
         raise
