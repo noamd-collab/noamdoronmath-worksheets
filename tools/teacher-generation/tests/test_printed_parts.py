@@ -206,6 +206,7 @@ class WirePathTests(unittest.TestCase):
         self.assertFalse(shown("ג08", "לדני היו [[124]] גולות והוא קיבל עוד [[38]].", "כמה גולות יש לו עכשיו?",
                                evaluate("124 + 38")))
         self.assertFalse(shown("ג08", "פתרו.", "כמה שעות יש בשלושה ימים?", evaluate("3 * 24")))
+        self.assertFalse(shown("ג08", "לדנה [[12]] בלונים ו־[[5]] מהם התפוצצו.", "חשבו כמה בלונים נשארו.", evaluate("12 - 5")))
         # An exercise that the prompt already shows is not printed twice.
         self.assertFalse(shown("ג06", "חשבו.", "[[348 + 276]]", evaluate("348 + 276")))
         # The pupil's own earlier answers are never printed for them.
