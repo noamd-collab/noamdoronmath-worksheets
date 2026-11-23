@@ -192,7 +192,9 @@ def validate_figure(fig, scope):
 
 def validate_prose(value, grade, scope, *, require_hebrew=False):
     prose = " ".join(_prose_strings(value))
-    if not geometry_topic(scope) and DRAWING_REQUEST.search(NIQQUD.sub("", prose)):
+    # The pointed "צַיְּרוּ" of grades one and two is spelled צירו.
+    if not geometry_topic(scope) and (DRAWING_REQUEST.search(NIQQUD.sub("", prose)) or (
+            grade <= 2 and re.search(r"(?<![א-ת])ו?צירו(?![א-ת])", NIQQUD.sub("", prose)))):
         bad("DRAWING_POLICY", "Only geometry lessons can give drawing instructions")
     if require_hebrew and not HEBREW.search(prose):
         bad("SOURCE_LANGUAGE", "Expected original Hebrew worksheet prose")

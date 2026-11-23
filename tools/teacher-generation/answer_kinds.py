@@ -27,7 +27,8 @@ from general_source import GeneralSourceError
 from math_tasks import MathTaskError, number, validate_and_solve_task
 from numeric_literals import NUMBER_TOKEN, literal_value
 from printed_elementary import _unpointed, blank_count
-from printed_parts import _closed, _numbers, _table_spans, task_numbers, visible_numbers, word_numbers
+from printed_parts import (_NUMBER_WORDS, _PART_WORDS, _closed, _numbers, _table_spans, task_numbers,
+                           visible_numbers, word_numbers)
 
 # The fixed key line of an item without a key. Teacher notes stay unpointed in
 # every grade (pinned elementary skill, references/answer-quality.md).
@@ -302,7 +303,9 @@ def _word(pattern):
     return re.compile(r"(?<![א-ת])[ושה]{0,2}(?:" + pattern + r")(?![א-ת])")
 
 
-_GREATER = r"גדול(?:ה|ים|ות)?|ארו(?:ך|כה|כים|כות)|גבוה(?:ה|ים|ות)?|כבד(?:ה|ים|ות)?|יקר(?:ה|ים|ות)?"
+# Pointed text (grades one and two) drops the vowel letters of the plain spelling:
+# "אָרֹךְ" is ארך, "שָׁוִים" is שוים, "צַיְּרוּ" is צירו. Both spellings are listed.
+_GREATER = r"גדול(?:ה|ים|ות)?|ארו?(?:ך|כה|כים|כות)|גבוה(?:ה|ים|ות)?|כבד(?:ה|ים|ות)?|יקר(?:ה|ים|ות)?"
 _SMALLER = r"קטן|קטנה|קטנים|קטנות|קצר(?:ה|ים|ות)?|נמו(?:ך|כה|כים|כות)|זול(?:ה|ים|ות)?"
 _CUES = (
     ("le", None, _word(r"לכל היותר")),
@@ -313,7 +316,7 @@ _CUES = (
     ("gt", None, _word(_GREATER + r"|יותר|עולה על|מעל")),
     ("lt", None, _word(_SMALLER + r"|פחות|מתחת")),
     ("ne", None, _word(r"שונה|שונים|שונות")),
-    ("eq", None, _word(r"שווה|שוה|שווים|שוות|זהה|זהים|זהות|אות(?:ו|ה|ם|ן)")),
+    ("eq", None, _word(r"שוו?ה|שוו?ים|שוו?ת|זהה|זהים|זהות|אות(?:ו|ה|ם|ן)")),
     ("in", None, _word(r"נמצא(?:ת|ים|ות)?|מופיע(?:ה|ים|ות)?|שייך|שייכת|ברשימה")),
 )
 _MORE = re.compile(r"(?<![א-ת])(?:(" + _GREATER + "|" + _SMALLER + r")\s+יותר|יותר\s+(?=" + _GREATER + "|" + _SMALLER + r"))(?![א-ת])")
@@ -527,11 +530,11 @@ def _ordered(before, after, first, second, shared, visible, grade, listed):
 
 # -------------------------------------------------------------- label and open
 _PRODUCTION = re.compile(
-    r"(?<![א-ת])ו?(?:ציירו|שרטטו|סרטטו|צבעו|גזרו|קפלו|בנו|הרכיבו|מדדו|המציאו|הציעו|הסבירו|נמקו|תארו|"
-    r"(?:תנו|הביאו|כתבו|רשמו) דוגמ(?:ה|א|אות)|"
+    r"(?<![א-ת])ו?(?:צי?ירו|שרטטו|סרטטו|צבעו|גזרו|קפלו|בנו|הרכיבו|מדדו|המציאו|הציעו|הסבירו|נמקו|תארו|"
+    r"(?:תנו|הביאו|כתבו|רשמו) דו?גמ(?:ה|א|אות)|"
     r"(?:כתבו|רשמו|חברו) (?:שאלה|בעיה|בעיית|סיפור|תרגיל|משפט)(?: [א-ת]+){0,3} משלכם)(?![א-ת])")
 # Final letters change before a possessive ending ("היקף", "היקפו"), so both forms are listed.
-_QUANTITY = (r"סכו[םמ]|הפרש|מכפל[הת]|מנ[הת]|תוצא[הת]|ער[ךכ]|היק[ףפ]|שט[חח]|נפ[חח]|אור[ךכ]|רוח[בב]|גוב[הה]|מספר|"
+_QUANTITY = (r"סכו[םמ]|הפרש|מכפל[הת]|מנ[הת]|תוצא[הת]|ער[ךכ]|הי?ק[ףפ]|שטח|נפח|או?ר[ךכ]|רו?חב|גו?בה|מספר|"
              r"שארית|ממוצע|חציו[ןנ]|שכיח|טווח|מחיר|עוד[ףפ]|משקל|מרח[קק]|זמ[ןנ]")
 _ASKS_NUMBER = re.compile(
     r"(?<![א-ת])ו?(?:כמה|בכמה|לכמה|חשבו|פתרו|השלימו|עגלו|פשטו|צמצמו|"
@@ -582,7 +585,7 @@ def check_open(question, item, grade):
 # "אילו" is left out: it also opens a condition ("אילו הייתה הזמנה ...").
 _COMPUTED_NOUN = (r"מספר(?:ים)?|תרגיל(?:ים)?|ביטוי(?:ים)?|תוצא(?:ה|ות)|סכום|הפרש|מכפלה|מנה|פעול(?:ה|ות)|חיבור|חיסור|כפל|"
                   r"חילוק|שלב(?:ים)?|שגיא(?:ה|ות)|טעו(?:ת|יות)|סוגריים|ערך|שבר(?:ים)?|ספר(?:ה|ות)|משווא(?:ה|ות)|סימן|חלק|"
-                  r"כמות|מחיר|אורך|רוחב|גובה|היקף|שטח|נפח|משקל|שעה|גודל|מיד(?:ה|ות)|מרחק|גיל|ציון|אחוז(?:ים)?|שיט(?:ה|ות)|"
+                  r"כמות|מחיר|או?רך|רו?חב|גו?בה|הי?קף|שטח|נפח|משקל|שעה|גו?דל|מיד(?:ה|ות)|מרחק|גיל|ציון|אחוז(?:ים)?|שיט(?:ה|ות)|"
                   r"דרך|אפשרות|אפשרויות")
 _NAMING = re.compile(
     r"(?<![א-ת])(?:[בלמ]?(?:איזה|איזו)\s+(?!(?:" + _COMPUTED_NOUN + r")(?![א-ת]))[א-ת]"
@@ -597,8 +600,12 @@ def check_label(question, item, grade):
         _refuse_kind("A label answer exists only in the elementary skill; use review in middle school")
     label = item["answer"]["text"]
     plain = " ".join(_unpointed(label).split())
+    # Whole words only: the pointed "מְרֻבָּע" and "מְחֻמָּשׁ" are spelled מרבע and מחמש,
+    # and stripping a prefix would read them as "from a quarter" and "from five".
+    counts = any(word.lstrip("ו") in _NUMBER_WORDS or word.lstrip("ו") in _PART_WORDS or word in ("אחד", "אחת")
+                 for word in re.findall(r"[א-ת]+", plain))
     if (not _LABEL.fullmatch(label) or label != label.strip() or len(plain.split()) > 4
-            or plain in _NOT_A_LABEL or word_numbers(plain)):
+            or plain in _NOT_A_LABEL or counts):
         _refuse_kind("A label is one to four Hebrew words that name something; a number, a comparison or a "
                      "yes/no needs a computed answer")
     prompt = item["prompt"]

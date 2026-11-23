@@ -323,7 +323,8 @@ class LabelAndOpenWireTests(unittest.TestCase):
         self.pending("ג16", "ענו.", "איזה מצולע הוא בעל שלוש צלעות?", label("משולש"))
         table = {"head": ["יום", "ספרים"], "rows": [["ראשון", "[[4]]"], ["שני", "[[9]]"], ["שלישי", "[[6]]"]]}
         self.pending("ג20", "התבוננו בטבלה וענו.", "באיזה יום נקראו הכי הרבה ספרים?", label("יום שני"), table=table)
-        self.pending("ב28", "עֲנוּ.", "אֵיזוֹ צוּרָה הִיא בַּעֲלַת שָׁלוֹשׁ צְלָעוֹת?", label("מְשֻׁלָּשׁ"))
+        for name in ("מְשֻׁלָּשׁ", "מְרֻבָּע", "מְחֻמָּשׁ"):  # pointed names are not "from a quarter" or "from five"
+            self.pending("ב28", "עֲנוּ.", "אֵיזוֹ צוּרָה הִיא בַּעֲלַת שָׁלוֹשׁ צְלָעוֹת?", label(name))
         # The label stays one plain string; it is never read as mathematics.
         _, item, _, _, _ = wire("ג16", "ענו.", "איזה מצולע הוא בעל שלוש צלעות?", label("משולש"))
         self.assertEqual(item["answer"], {"kind": "label", "text": "משולש"})
@@ -332,6 +333,8 @@ class LabelAndOpenWireTests(unittest.TestCase):
         naming = "איזה מצולע הוא בעל שלוש צלעות?"
         self.refused("ג16", "ענו.", naming, label("3"))                       # a number
         self.refused("ג16", "ענו.", "כמה צלעות יש למשולש?", label("שלוש"))     # a number in words
+        self.refused("ג16", "ענו.", naming, label("עשרים וחמש"))
+        self.refused("ג16", "ענו.", naming, label("רבע"))
         self.refused("ג16", "ענו.", "כמה צלעות יש למשולש?", label("משולש"))    # a quantity is asked for
         self.refused("ג16", "ענו.", "האם לכל משולש יש שלוש צלעות?", label("כן"))  # the author never supplies a verdict
         self.refused("ג16", "ענו.", "איזה מספר גדול יותר?", label("גדול"))
@@ -366,9 +369,12 @@ class LabelAndOpenWireTests(unittest.TestCase):
         self.refused("ד18", "נמקו.", "האם כל ריבוע הוא מלבן? נמקו.", OPEN)
         self.refused("ד28", "בנו משולש.", "שרטטו משולש.", {"kind": "open", "text": "משולש"}, code="SOURCE_SHAPE")
         self.refused("g7:coordinate_system", "ענו.", "שרטטו מערכת צירים.", OPEN)
-        # Drawings stay in geometry lessons.
+        # Drawings stay in geometry lessons, in the pointed spelling of the young grades too.
         self.refused("ג02", "ציירו ישר מספרים.", "ציירו ישר מספרים מ־[[300]] עד [[400]] וסמנו את [[350]].", OPEN,
                      code="DRAWING_POLICY")
+        self.pending("ב28", "צַיְּרוּ בְּעִפָּרוֹן.", "צַיְּרוּ מְשֻׁלָּשׁ.", OPEN)
+        self.refused("ב10", "צַיְּרוּ בְּעִפָּרוֹן.", "צַיְּרוּ [[5]] עִגּוּלִים.", OPEN, code="DRAWING_POLICY")
+        self.refused("ב10", "צַיְּרוּ בְּעִפָּרוֹן.", "צַיְּרוּ [[5]] עִגּוּלִים.", evaluate("5"), code="DRAWING_POLICY")
 
     def test_a_drawing_is_never_keyed_by_a_number(self):
         drawing = "שרטטו משולש שצלעותיו [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ."
