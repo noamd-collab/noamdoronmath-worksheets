@@ -561,6 +561,117 @@
     "replayedAs": "introduce"
    },
    "provider": "gemini"
+  },
+  {
+   "id": "L2-p1",
+   "lesson": "lessons/L1-g9r-rhombus-a.json",
+   "firstReply": "replies/L2-p1.json",
+   "firstReplySha256": "267ef6aeafef42c0274139f9b6d123a003bcc320aaa914a9c416da2f09a2416a",
+   "corrections": [
+    {
+     "reply": "replies/L2-p1-c1.txt",
+     "format": "text",
+     "required": [
+      "q19",
+      "q2",
+      "q20",
+      "q3",
+      "q4",
+      "q6",
+      "q7",
+      "q8"
+     ]
+    }
+   ],
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 21:07Z",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p1-g9r-rhombus-a, call 1, corrections: calls [2]; not delivered",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "provider": "gemini"
+  },
+  {
+   "id": "L2-p1-a2",
+   "lesson": "lessons/L1-g9r-rhombus-a.json",
+   "firstReply": "replies/L2-p1-a2.json",
+   "firstReplySha256": "243ba449f82187d39af46b32289f53df23a469978114c39f7893b947af76dba1",
+   "corrections": [
+    "replies/L2-p1-a2-c1.json"
+   ],
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 21:07Z",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p1-g9r-rhombus-a, call 3, corrections: calls [4]; not delivered",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "provider": "gemini"
+  },
+  {
+   "id": "L2-p2",
+   "lesson": "lessons/L1-g9r-quad-eq-applications-a.json",
+   "firstReply": "replies/L2-p2.json",
+   "firstReplySha256": "66bde24cedb04ae105c3921f7384b8005a46cd66421b8a07b3b246b15e3243e9",
+   "corrections": [
+    "replies/L2-p2-c1.json"
+   ],
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 21:06Z",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p2-g9r-quad-eq-applications-a, call 1, corrections: calls [2]; not delivered",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "provider": "gemini"
+  },
+  {
+   "id": "L2-p2-a2",
+   "lesson": "lessons/L1-g9r-quad-eq-applications-a.json",
+   "firstReply": "replies/L2-p2-a2.json",
+   "firstReplySha256": "a0a7c8eb88a3f97eb2db39f7e5824b7d0426b67838200f080558c91e6e7e8eec",
+   "corrections": [],
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 21:06Z",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p2-g9r-quad-eq-applications-a, call 3; not delivered",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "provider": "gemini"
+  },
+  {
+   "id": "L2-p3",
+   "lesson": "lessons/L1-g9r-parallels-trapezoid-e.json",
+   "firstReply": "replies/L2-p3.json",
+   "firstReplySha256": "54448225789f2c259f0d2f9c0e3a52598524cd70e21ed8977ece7503bfb230b6",
+   "corrections": [
+    "replies/L2-p3-c1.json"
+   ],
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 21:06Z",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p3-g9r-parallels-trapezoid-e, call 1, corrections: calls [2]; not delivered",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "provider": "gemini"
+  },
+  {
+   "id": "L2-p3-a2",
+   "lesson": "lessons/L1-g9r-parallels-trapezoid-e.json",
+   "firstReply": "replies/L2-p3-a2.json",
+   "firstReplySha256": "07dc2af0e77edb7138ec6381610f1d9a807c00db94c2d7f5d3fe41857e57251e",
+   "corrections": [],
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 21:06Z",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p3-g9r-parallels-trapezoid-e, call 3; not delivered",
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "provider": "gemini"
   }
  ]
 }

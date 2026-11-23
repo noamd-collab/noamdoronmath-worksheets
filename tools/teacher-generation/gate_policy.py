@@ -130,7 +130,7 @@ GATES = {
     "G46": (TRUTH, False),   # check_render_integrity.py:126 a figure off the page
     # --- middle build_v72.py and its checkers -------------------------------
     "LOAD_PACKAGE": (TRUTH, False),   # build_v72.py:191
-    "BUILD_PLUS": (TRUTH, False),     # build_v72.py:208 any build gate the reader cannot name
+    "BUILD_PLUS": (TRUTH, True),      # build_v72.py:208 any build gate the reader cannot name; a stray PDF number names its question
     "G84": (POLICY, True),            # build_plus.py:228 a term taught later than the lesson
     "G76": (POLICY, True),            # gate_variety.py:361 DOMINANCE names the questions over the cap; SCALE/PART name none
     "PLAIN_MATH": (TRUTH, False),     # check_plain_math.py

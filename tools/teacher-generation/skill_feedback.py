@@ -629,6 +629,77 @@ def parse_build_plus_log(text, step="middle-build"):
     return rows or [_finding("G84", step)]
 
 
+_STRAYS = re.compile(r"^deliver\.DeliverError: deliver: the PDF prints ([1-9][0-9]{0,3}) number\(s\) no datum of "
+                     r"this level states \((-?[0-9]{1,12}(?:\.[0-9]{1,12})?(?:, -?[0-9]{1,12}(?:\.[0-9]{1,12})?){0,7})\)",
+                     re.M)
+_RAISED = re.compile(r"[\^_]\{([^{}]{0,40})\}|[\^_]")  # an exponent or an index, printed beside its base
+_MARKUP = re.compile(r"\\[A-Za-z]{1,12}|[{}$]")         # a group, a fraction or a formula: printed apart
+_NUMBER = re.compile("−?-?[0-9]+(?:[.,][0-9]+)?")  # deliver._NUM_RE of the middle skill
+_NOT_PRINTED = frozenset(("fig", "figs", "svg", "space"))
+
+
+def _norm_number(text):
+    try:
+        return "%g" % float(text.replace("−", "-").replace(",", "."))
+    except ValueError:
+        return None
+
+
+def stray_number_rows(text, levels, step="middle-build"):
+    """The questions that print the numbers the middle skill's PDF check found unstated.
+
+    deliver.py refuses a number on the page that no datum of the level states
+    and names the numbers, never the question. Such a number is read where the
+    source writes two numbers in one formula (an exponent beside its base:
+    ``7^{2}`` read as 72), so it belongs to a question whose printed text, read
+    with every exponent and index glued to what precedes it, contains it. Every listed number must belong to a
+    question and the message must list all of them; otherwise [] and the
+    finding stays unnamed. A wrong attribution only replaces a question: the
+    next render runs the same check.
+    """
+    found = _STRAYS.search(text)
+    if not found or not isinstance(levels, list):
+        return []
+    listed = found[2].split(", ")
+    strays = {_norm_number(value) for value in listed}
+    if int(found[1]) != len(listed) or None in strays:
+        return []
+    owners = {}
+
+    def walk(value, seen, key=None):
+        if key in _NOT_PRINTED:
+            return
+        if isinstance(value, str):
+            seen.update(_norm_number(t) for t in _NUMBER.findall(_MARKUP.sub(" ", _RAISED.sub(r"\1", value))))
+        elif isinstance(value, dict):
+            for name, inner in value.items():
+                walk(inner, seen, name)
+        elif isinstance(value, (list, tuple)):
+            for inner in value:
+                walk(inner, seen, key)
+
+    try:
+        for question in levels[0]["questions"]:
+            if type(question["n"]) is not int:
+                return []
+            seen = set()
+            walk(question, seen)
+            for stray in strays & seen:
+                owners.setdefault(stray, set()).add(question["n"])
+    except (KeyError, IndexError, TypeError, AttributeError, RecursionError):
+        return []
+    if set(owners) != strays:
+        return []
+    return [_finding("BUILD_PLUS", step, number) for number in sorted(set().union(*owners.values()))]
+
+
+def _levels(read):
+    try:
+        return json.loads(read("levels.json", MAX_CONTENT_FILE))
+    except (OSError, UnicodeError, ValueError, Unsupported):
+        return None
+
+
 def _middle_rows(read, step):
     """Blocking findings of one failed build_v72 run, from its own report and logs."""
     try:
@@ -644,7 +715,11 @@ def _middle_rows(read, step):
         if name in logs:
             path, parser, fallback = logs[name]
             try:
-                found = parser(read(path, MAX_REVIEW_FILE), step)
+                text = read(path, MAX_REVIEW_FILE)
+                found = parser(text, step)
+                if parser is parse_build_plus_log:
+                    # A number the PDF prints and no datum states: name the question that prints it.
+                    found = stray_number_rows(text, _levels(read), step) or found
             except (OSError, UnicodeError, Unsupported):
                 found = []
             rows += found or [_finding(fallback, step)]

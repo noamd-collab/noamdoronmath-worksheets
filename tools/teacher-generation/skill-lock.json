@@ -78,7 +78,7 @@
     "middle": {
       "name": "hebrew-math-worksheet",
       "version": "7.2.0-noam",
-      "sha256": "89697b363762936aa2bd7352427e99f39b740ca6c24d28a08c3bd6cb480bb944",
+      "sha256": "c930d010dcd69c574e7d4e265f50b36af6d4b9dac7c9e091ff2171f69de15ea5",
       "files": {
         "ENGINE-v618-MANUAL.md": "3db1b26e1bc9b02a95270fdef6ed94be99d6365fcfcd1c91d3fb625373e09dfc",
         "INSTALL-PROFILE.md": "b907709db6c7d9a864c872f426ad9bdb9cba4df30fe6d4c69ee26e212d80b9d1",
@@ -110,7 +110,7 @@
         "coverage_gate.py": "efb7e98bd5a1eaa61538583c6965b3f7e9ef20ae56bd73780f7014353d699069",
         "curriculum_tashpaz.json": "d47b11b10caac8639c1f91192dd53ee0a1b936b7652496814d7d9752cfe2afea",
         "curriculum_tools.json": "1c4d029aec2eeb197073eb5a686be988c72b8ac9578583308d8629f8fb6951af",
-        "deliver.py": "df5fb2184bd9ef8089132ba37bb77bbdf01f7e4c5459d122eccdabe34d0821d7",
+        "deliver.py": "30e955e2f1d03586b373e40bb62bc011ebbc6987d567dac7c13cb55f41585cee",
         "describe.py": "4837839a7551b8044c50e96a414c60f23b45d8e606b5d5989915bdb5567f37e7",
         "didactic.py": "f8a71c200f0d4902447132e5efe26780a4c0b82d28ae0cdb9fb8934554ffde54",
         "didactic_principles.json": "7ed152cd2b8375de86d2fd021589732f8aa2d70a1745fc2549d40bdf25ab30e4",

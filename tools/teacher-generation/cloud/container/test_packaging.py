@@ -61,6 +61,31 @@ class PackagingTests(unittest.TestCase):
             self.assertGreater(closing, 0)
             self.assertIsNotNone(body[closing - 1].find("w:pPr/w:keepNext", ns))
 
+    def test_private_middle_pdf_number_check_reads_a_raised_exponent_apart(self):
+        # middle-pdf-raised-numbers.patch: 7² is the numbers 7 and 2, never 72;
+        # a number printed on the line that no datum states still fails.
+        script = r'''
+import json, sys
+sys.path.insert(0, sys.argv[1])
+import deliver, pymupdf
+doc = pymupdf.open(); page = doc.new_page()
+page.insert_htmlbox(pymupdf.Rect(50, 50, 500, 200),
+                    "<p>בדקו האם 7<sup>2</sup> &lt; 50 וחשבו את 2<sup>2</sup>. 72</p>")
+doc.save(sys.argv[2])
+got, pages = deliver.pdf_numbers(sys.argv[2])
+level = {"questions": [{"n": 1, "intro": "בדקו האם $7^{2} < 50$ וחשבו את $2^{2}$.", "items": []}]}
+print(json.dumps([sorted(got), deliver.stray_numbers(level, [], got, pages)]))
+'''
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "skills"
+            bundle.install(HERE / "skills", root, APP / "skill-lock.json")
+            run = subprocess.run([sys.executable, "-P", "-c", script, str(root / "middle"), str(Path(tmp) / "n.pdf")],
+                                 cwd=tmp, capture_output=True, text=True, timeout=120)
+            self.assertEqual(run.returncode, 0, run.stderr[-1500:])
+            got, strays = json.loads(run.stdout.strip().splitlines()[-1])
+            self.assertEqual(got, ["2", "2", "2", "50", "7", "72"])
+            self.assertEqual(strays, ["72"])
+
     def test_archive_is_reproducible_and_installs_without_existing_paths(self):
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp) / 'skills'
