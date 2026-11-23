@@ -137,6 +137,383 @@ def _key_values(solved):
             if isinstance(row, dict) and row.get("type") == "number" and "numerator" in row}
 
 
+# ------------------------------------------------------- which solution is asked
+# Words that choose among the solutions of a typed equation. Unpointed, with
+# the Hebrew prefixes a sentence puts before them.
+_POSITIVE_WORD = re.compile(r"(?<![א-ת])[ובלשה]{0,2}(?:חיובי(?:ת|ים|ות)?|טבעי(?:ת|ים|ות)?)(?![א-ת])")
+_NEGATIVE_WORD = re.compile(r"(?<![א-ת])[ובלשה]{0,2}שלילי(?:ת|ים|ות)?(?![א-ת])")
+_NOT_NEGATIVE = re.compile(r"(?<![א-ת])(?:ש?(?:אינו|אינה|אינם|אינן)\s+|אי[־-]?)שלילי(?:ת|ים|ות)?(?![א-ת])")
+_NOT_ZERO = re.compile(r"(?<![א-ת])(?:ש?(?:אינו|אינה|אינם|אינן)\s+|ה?שונ(?:ה|ים|ות)\s+מ[־-]?)אפס(?![א-ת])")
+# "הפתרון הקטן", "השורש הגדול יותר": an order among the solutions themselves.
+_SOLUTION_EXTREME = re.compile(
+    r"(?<![א-ת])[ובלשה]{0,2}(?:פתרון|שורש)(?:ות)?\s+ה(גדול|קטן)(?:ה|ים|ות)?(?![א-ת])")
+# "המספר הקטן", "הגדול מביניהם": an order among the numbers of a story.
+_NUMBER_EXTREME = re.compile(r"(?<![א-ת])[וש]?ה(גדול|קטן|ארוך|קצר)(?:ה|ים|ות)?(?![א-ת])")
+# A key in one of these units measures a size, a price, a time or a count: never negative.
+_MAGNITUDE_UNIT = re.compile(
+    r"(?:ס[\"״]מ|סמ[\"״][רק]|מ[\"״][מרקל]|ק[\"״][מג]|קמ[\"״]ר|דצ[\"״]מ|דצמ[\"״][רק]|ש[\"״]ח|₪|מ['׳]"
+    r"|(?:סנטי|מילי|קילו|דצי)?מטר(?:ים)?(?:\s+(?:רבוע|מרובע|מעוקב)(?:ים)?)?|(?:מילי)?ליטר(?:ים)?|(?:קילו)?גרם(?:ים)?"
+    r"|טון(?:ות)?|שקל(?:ים)?|אגורו?ת|אגורה|שנים|שנה|חודש(?:ים)?|שבוע(?:ות)?|ימים|יום|שעות|שעה|דקות|דקה"
+    r"|שניות|שני(?:י)?ה|יחיד(?:ה|ות)(?:\s+(?:אורך|שטח|נפח))?|תלמיד(?:ים|ות)?|ילד(?:ים|ות)?|אנשים|פריטים)")
+
+
+def _sign_cue(words):
+    """"positive", "negative" or "not negative" from the words, None when they say none or both."""
+    found = set()
+    if _NOT_NEGATIVE.search(words):
+        found.add("not_negative")
+        words = _NOT_NEGATIVE.sub(" ", words)
+    if _POSITIVE_WORD.search(words):
+        found.add("positive")
+    if _NEGATIVE_WORD.search(words):
+        found.add("negative")
+    return found.pop() if len(found) == 1 else None
+
+
+def chosen_solutions(question, item, solved):
+    """The solutions of a typed equation that the item asks for, or None when the key prints them all.
+
+    An equation such as x(x+5) = 24 has two solutions, and the item often asks
+    for one: "the positive solution", "the smaller solution", "the width in
+    metres". Printing both would print a wrong answer beside the right one (a
+    negative width). The words that choose are read from the item, and a sign
+    word also from the group's intro; a unit of size, price, time or count keeps
+    the solutions that are not negative. An order among the numbers of a story
+    ("המספר הקטן") picks the least or greatest solution only when every kept
+    solution has one sign; otherwise the words do not fix one answer and the
+    item is refused, as it is when they choose no solution at all.
+
+    Returns the chosen solution rows, a non-empty list; None leaves the key as
+    the kernel solved it (no choosing word, or at most one solution).
+    """
+    result = solved.get("result", {}) if isinstance(solved, dict) else {}
+    if result.get("type") != "solutions" or result.get("classification") != "finite":
+        return None
+    rows = list(result.get("values") or [])
+    if len(rows) < 2:
+        return None
+    words = _words(item["prompt"])
+    sign = _sign_cue(words) or _sign_cue(_words(question["intro"]))
+    unit = _unpointed(item["answer"].get("unit") or "").strip()
+    if sign is None and unit and _MAGNITUDE_UNIT.fullmatch(unit):
+        sign = "not_negative"
+    if not (sign or _NOT_ZERO.search(words) or _SOLUTION_EXTREME.search(words) or _NUMBER_EXTREME.search(words)):
+        return None
+    exact = {id(row): _real_value(row) for row in rows}
+    if any(v is None for v in exact.values()):
+        # A solution that is not one real constant (a parameter, an undecidable sign) cannot be chosen.
+        raise GeneralSourceError("PRINTED_ANSWER_KIND",
+                                 "The item asks for one of the solutions and the kernel cannot order them")
+    value = lambda row: exact[id(row)]
+    kept = rows
+    if sign == "positive":
+        kept = [row for row in kept if value(row) > 0]
+    elif sign == "negative":
+        kept = [row for row in kept if value(row) < 0]
+    elif sign == "not_negative":
+        kept = [row for row in kept if value(row) >= 0]
+    used = sign is not None
+    if _NOT_ZERO.search(words):
+        kept = [row for row in kept if value(row) != 0]
+        used = True
+    greatest = {"גדול": True, "ארוך": True, "קטן": False, "קצר": False}
+    orders = {greatest[m[1]] for m in _SOLUTION_EXTREME.finditer(words)}
+    numbers = {greatest[m[1]] for m in _NUMBER_EXTREME.finditer(words)}
+    if len(orders) > 1 or (not orders and len(numbers) > 1 and len(kept) > 1):
+        raise GeneralSourceError("PRINTED_ANSWER_KIND",
+                                 "The item names both the greater and the smaller solution; ask for one")
+    if orders:
+        used = True
+        if kept:
+            kept = [(max if orders.pop() else min)(kept, key=value)]
+    elif numbers and len(kept) > 1:
+        used = True
+        if not (all(value(row) > 0 for row in kept) or all(value(row) < 0 for row in kept)):
+            raise GeneralSourceError(
+                "PRINTED_ANSWER_KIND",
+                "The equation has solutions of both signs and the item asks for one number; say which one "
+                "in its words (positive, negative) or type an equation with one solution")
+        kept = [(max if numbers.pop() else min)(kept, key=value)]
+    if not used:
+        return None
+    if not kept:
+        raise GeneralSourceError("PRINTED_ANSWER_KIND",
+                                 "No solution of the typed equation is the one the item asks for")
+    return kept
+
+
+def _real_value(row):
+    """The exact real value of one solution, ordered like a number, or None."""
+    from math_tasks import Compiler, MathTaskError, S
+    if isinstance(row, dict) and row.get("type") == "number" and "numerator" in row:
+        return _RealKey(S.Rational(row["numerator"], row["denominator"]))
+    try:
+        expr = Compiler().compile(row).expr
+    except (MathTaskError, KeyError, TypeError, ValueError):
+        return None
+    if expr.free_symbols or expr.is_real is not True or expr.is_zero is None:
+        return None
+    return _RealKey(expr)
+
+
+class _RealKey:
+    """A real algebraic number compared exactly (sympy decides the sign of a difference)."""
+
+    def __init__(self, expr):
+        self.expr = expr
+
+    def _sign(self, other):
+        other = other.expr if isinstance(other, _RealKey) else other
+        difference = (self.expr - other)
+        if difference.is_zero:
+            return 0
+        if difference.is_positive:
+            return 1
+        if difference.is_negative:
+            return -1
+        raise GeneralSourceError("PRINTED_ANSWER_KIND", "The kernel cannot order these solutions")
+
+    def __gt__(self, other):
+        return self._sign(other) > 0
+
+    def __lt__(self, other):
+        return self._sign(other) < 0
+
+    def __ge__(self, other):
+        return self._sign(other) >= 0
+
+    def __le__(self, other):
+        return self._sign(other) <= 0
+
+    def __eq__(self, other):
+        return self._sign(other) == 0
+
+    def __ne__(self, other):
+        return self._sign(other) != 0
+
+    __hash__ = None
+
+
+def narrowed(solved, chosen):
+    """The solved task with only the chosen solutions, for the key; the task itself is unchanged."""
+    if chosen is None:
+        return solved
+    from copy import deepcopy
+    copy = deepcopy(solved)
+    copy["result"]["values"] = deepcopy(chosen)
+    return copy
+
+
+# ----------------------------------------------------- the answer beside itself
+def _printed_integers(spans, *, skip_blanks=False):
+    """The integers a pupil reads in these spans: digits as written, not the exponent of a power.
+
+    ``skip_blanks`` leaves out a formula with a blank, the exercise the pupil completes.
+    """
+    found = set()
+    for span in spans:
+        if span["kind"] == "math":
+            found |= {v for v in _written_terms(span["expression"], set(), exponents=False) if v.denominator == 1}
+            continue
+        text = (span.get("text") if span["kind"] == "text" else span.get("notation")) or ""
+        if span["kind"] == "formula" and "___" in text and skip_blanks:
+            continue
+        text = _POWER_EXPONENT.sub(" ", text)
+        found |= {literal_value(m[0]) for m in NUMBER_TOKEN.finditer(text) if "." not in m[0]}
+    return found
+
+
+# A sentence with one of these words speaks of a result: "הפתרון קרוב ל־8", "התוצאה היא 12".
+_RESULT_WORD = re.compile(
+    r"(?<![א-ת])[ובלשהכ]{0,2}(?:פתרו(?:ן|נות|נה)|תוצא(?:ה|ת|ות)|תשוב(?:ה|ת)|מנה|מנת|מכפל(?:ה|ת)|סכום|הפרש"
+    r"|קרוב(?:ה|ים|ות)?|בערך|נמצא(?:ת|ים|ות)?\s+בין)(?![א-ת])")
+
+
+# A sentence that reports what someone proposed, claimed or wrote: the pupil checks it, it is not given as the answer.
+_CLAIM_WORD = re.compile(
+    r"(?<![א-ת])[ו]?(?:הוצעה|הצעה|הציע(?:ה|ו)?|טען|טענה|טוען|טוענת|טענו|כתב(?:ה|ו)?|קיבל(?:ה|ו)?|אמר(?:ה|ו)?"
+    r"|חישב(?:ה|ו)?)(?![א-ת])")
+
+
+def _sentences(spans):
+    """The spans split into sentences at a full stop, question mark, exclamation mark or semicolon."""
+    sentences, current = [], []
+    for span in spans:
+        if span["kind"] != "text":
+            current.append(span)
+            continue
+        parts = re.split(r"(?<=[.?!;])", span["text"])
+        for index, part in enumerate(parts):
+            if part:
+                current.append(dict(span, text=part))
+            if index < len(parts) - 1:
+                sentences.append(current)
+                current = []
+    if current:
+        sentences.append(current)
+    return sentences
+
+
+def _closed_equation(span):
+    """A printed numeric fact such as "35 : 7 = 5": a formula with an equals sign, no letter and no blank."""
+    notation = (span.get("notation") or "") if span["kind"] == "formula" else ""
+    return "=" in notation and "___" not in notation and not re.search(r"[A-Za-z]", notation)
+
+
+def own_answer_printed(question, item, solved):
+    """Whether the item prints the very integer that its key prints.
+
+    "בדיקת התרגיל 35 : 7 = 5 נעשית בעזרת הכפל 5 x 7. מהי תוצאת המכפלה?" keyed
+    35, and "הפתרון קרוב ל־8" beside an equation whose solution is 8: the pupil
+    reads the answer instead of finding it. Two places print an answer: a
+    closed numeric fact in the prompt or the intro that shares a number with
+    the typed task (the same calculation, stated complete), and a sentence of
+    the prompt that speaks of a result (פתרון, תוצאה, קרוב ל, בערך) and does
+    not report a proposed or claimed answer for the pupil to check. A number
+    of a story that matches the key by chance ("כל כדור עולה 10 שקלים") is
+    neither. Not counted are the numbers of the typed task itself (an identity
+    such as (24 : 3) x 3 prints its operands by design), the numbers of a
+    formula with a blank (the exercise being completed, as in 3 + 4 = 4 + ___),
+    0 and 1, exponents, and keys that are not integers (a change of form, as
+    from 50% to 1/2, is the task). ``solved`` carries the chosen solutions.
+    """
+    values = _key_values(solved)
+    if not values or any(v.denominator != 1 for v in values):
+        return False
+    keyed = {v for v in values if abs(v) > 1}
+    if not keyed:
+        return False
+    task = {k: v for k, v in solved["question"].items() if k != "figure"}
+    leaves = _written_terms(task, set())
+    excluded = leaves | {
+        v for span in item["prompt"] if span["kind"] == "formula" and "___" in (span.get("notation") or "")
+        for v in _printed_integers([dict(span, notation=span["notation"].replace("___", " "))])}
+    printed = set()
+    for span in item["prompt"] + question["intro"]:
+        if _closed_equation(span):
+            numbers = _printed_integers([span])
+            if numbers & leaves:
+                printed |= numbers
+    for sentence in _sentences(item["prompt"]):
+        words = _words(sentence)
+        if _RESULT_WORD.search(words) and not _CLAIM_WORD.search(words):
+            printed |= _printed_integers(sentence, skip_blanks=True)
+    return keyed <= printed - excluded
+
+
+def _standalone_fractions(spans):
+    """Fractions printed as one value in prose: [[5/24]], frac(5,24). Not a fraction inside a formula."""
+    found = set()
+    for span in spans:
+        if span["kind"] == "math":
+            tree = span["expression"]
+            if tree.get("type") == "number" and tree.get("denominator", 1) != 1:
+                found.add(Fraction(tree["numerator"], tree["denominator"]))
+        elif span["kind"] == "formula":
+            whole = re.fullmatch(r"\s*(?:frac\(\s*([0-9]+)\s*,\s*([1-9][0-9]*)\s*\)|([0-9]+)\s*/\s*([1-9][0-9]*))\s*",
+                                 span.get("notation") or "")
+            if whole:
+                numerator, denominator = (whole[1], whole[2]) if whole[1] else (whole[3], whole[4])
+                value = Fraction(int(numerator), int(denominator))
+                if value.denominator != 1:
+                    found.add(value)
+    return found
+
+
+def _divisors(tree, found):
+    """The values that a typed expression divides by, and the denominators of its fractions."""
+    if isinstance(tree, dict):
+        if tree.get("type") == "number" and "numerator" in tree and tree["denominator"] != 1:
+            found.add(Fraction(tree["denominator"]))
+        elif tree.get("type") == "operation" and tree.get("op") == "divide":
+            try:
+                divisor = _value(tree["args"][1])
+            except Exception:
+                divisor = None
+            if divisor is not None:
+                found.add(abs(divisor))
+        for child in tree.values():
+            _divisors(child, found)
+    elif isinstance(tree, list):
+        for child in tree:
+            _divisors(child, found)
+    return found
+
+
+def fraction_parts_as_data(item, solved):
+    """Refuse an equation that reads a printed fraction as two separate numbers.
+
+    "סכום ההופכיים שלהם הוא 5/24" typed as x(x+5) = 24 keys the wrong number:
+    the task uses the numerator and the denominator of the printed fraction, but
+    never the fraction (it neither contains its value nor divides by its
+    denominator). Only a solve task and a fraction printed alone as one value
+    are read; a fraction inside a printed formula is bound elsewhere.
+    """
+    task = solved["question"]
+    if task.get("kind") != "solve":
+        return
+    integers = {v for v in _numbers({"lhs": task["lhs"], "rhs": task["rhs"]}, set()) if v.denominator == 1}
+    values = task_numbers(task)
+    divisors = _divisors({"lhs": task["lhs"], "rhs": task["rhs"]}, set())
+    for fraction in _standalone_fractions(item["prompt"]):
+        if fraction in values or Fraction(fraction.denominator) in divisors:
+            continue
+        if Fraction(abs(fraction.numerator)) in integers and Fraction(fraction.denominator) in integers:
+            _reject("The typed equation uses the numerator and the denominator of the printed fraction "
+                    "as two separate numbers, not the fraction")
+
+
+# A question sentence that asks for an equation or an expression, not for a number:
+# "מה הייתה המשוואה המקורית לפני הפירוק לגורמים?".
+_ASKS_EQUATION = re.compile(
+    r"(?<![א-ת])(?:מה|מהי|מהו|איזו|איזה)\s+(?:(?:הייתה|היה|היא|הוא)\s+)?ה?(?:משווא(?:ה|ות)|ביטוי|תרגיל)(?![א-ת])[^?.!]*\?")
+
+
+def check_key_print(question, item, solved, grade):
+    """The checks of what the key prints beside its own item, at source validation where a refusal is recoverable.
+
+    Returns the solved task narrowed to the solutions the item asks for.
+    """
+    words = _words(item["prompt"])
+    asked = _ASKS_EQUATION.search(words)
+    if grade >= 7 and asked and words[asked.end():].strip(" .") and solved.get("result", {}).get("type") != "decision":
+        # One item, two requests: the equation and a number. A computed key prints only the number.
+        raise GeneralSourceError("PRINTED_ANSWER_KIND",
+                                 "The item asks for an equation and for a number; its key prints only the number")
+    chosen = chosen_solutions(question, item, solved)
+    keyed = narrowed(solved, chosen)
+    if own_answer_printed(question, item, keyed):
+        raise GeneralSourceError("PRINTED_ANSWER_LEAK", "An item prints its own answer beside its question")
+    fraction_parts_as_data(item, solved)
+    if "decimal" in answer_form(question, item, solved):
+        result = solved.get("result", {})
+        if result.get("type") == "expression" and terminating_decimal(result.get("value")) is None:
+            raise GeneralSourceError("PRINTED_ANSWER_KIND",
+                                     "The item asks for a decimal and its exact answer has no finite decimal")
+    return keyed
+
+
+def terminating_decimal(node):
+    """The exact decimal spelling of a number whose expansion ends, or None."""
+    if not isinstance(node, dict) or node.get("type") != "number" or "numerator" not in node:
+        return None
+    n, d = node["numerator"], node["denominator"]
+    if d <= 0:
+        return None
+    rest = d
+    for factor in (2, 5):
+        while rest % factor == 0:
+            rest //= factor
+    if rest != 1:
+        return None
+    integer, remainder = divmod(abs(n), d)
+    digits = []
+    while remainder:
+        digit, remainder = divmod(remainder * 10, d)
+        digits.append(str(digit))
+    return ("−" if n < 0 else "") + str(integer) + ("." + "".join(digits) if digits else "")
+
+
 def answer_leak(question, keys):
     """The first item that prints the key of an earlier item of the same question, or None.
 
@@ -733,4 +1110,22 @@ def answer_form(question, item, solved):
         forms.add("mixed")
     if _MONEY.search(words) or _MONEY.search(_unpointed(item["answer"].get("unit") or "")):
         forms.add("money")
+    # "כתבו את 35% כמספר עשרוני" is keyed 0.35, not 7/20. The item's own target
+    # outranks the group's; an item that names another target keeps its form.
+    for text in (prompt_words, words):
+        decimal, other = bool(_TO_DECIMAL.search(text)), bool(_TO_OTHER_FORM.search(text))
+        if decimal or other:
+            if decimal and not other:
+                forms.add("decimal")
+            break
     return forms
+
+
+# The decimal as the requested form: "כמספר עשרוני", "למספר עשרוני", "מהו הערך העשרוני".
+# "שווה למספר העשרוני 0.45" names a given (with its article) and is not a target.
+_TO_DECIMAL = re.compile(
+    r"(?<![א-ת])(?:ו?[כלב](?:מספר|שבר)\s+עשרוני|ה?ערך\s+ה?עשרוני|ב?(?:צורה|כתיב|הצגה)\s+עשרוני(?:ת)?"
+    r"|ב?(?:צורה|כתיב|הצגה)\s+ה?עשרוני(?:ת)?|ה?צורה\s+העשרונית)(?![א-ת])")
+_TO_OTHER_FORM = re.compile(
+    r"(?<![א-ת])(?:ו?[כלב]שבר(?:ים)?\s+(?:פשוט|מצומצם|רגיל|מדומה)|ב?צורת\s+שבר|ו?[כל]אחוז(?:ים)?|באחוזים"
+    r"|איזה\s+אחוז|כמה\s+אחוז(?:ים)?|ו?[כלב]מספר\s+מעורב)(?![א-ת])")

@@ -3,7 +3,8 @@
 Nineteen first replies of the author model to real lesson requests, with the
 requests, for `bench/replay.py`: fourteen from Qwen and five from Gemini.
 `index.json` names the provider, the model, the round and the time of each case.
-Thirteen more cases (`L1-*`, Gemini) come from live round 1; see below.
+Thirteen more cases (`L1-*`, Gemini) come from live round 1 and three
+(`L2-*`, Gemini) from live round 2; see below.
 
 ## Live round 1 (`L1-*`)
 
@@ -18,6 +19,15 @@ its introduction contract bypassed, so it is replayed as `practice`; the other
 opening sheets are replayed as recorded. The engine now asks for other
 questions than the recorded corrections answer, so with the default
 `--corrections exact` most of them are not replayed.
+
+## Live round 2 (`L2-*`)
+
+The three sheets that live round 2 delivered (2026-11-23, `gemini-3.8-flash`,
+engine a50bcb91): `L2-g3` (ג10), `L2-g7` (g7:equations) and `L2-g8`
+(g8:percentages), each one author reply with no correction, byte for byte. The
+independent checkers of milestone 2 read exactly these sheets, and the tests
+in `tests/test_live2_checkers.py` hold the engine to their findings. The
+lessons are the round-1 lesson files, which round 2 sent unchanged.
 
 ## Origin
 

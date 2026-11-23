@@ -516,6 +516,51 @@
     "replayedAs": "practice"
    },
    "provider": "gemini"
+  },
+  {
+   "id": "L2-g3",
+   "lesson": "lessons/L1-g3-division.json",
+   "firstReply": "replies/L2-g3.json",
+   "firstReplySha256": "9aa5e8b7e4f6ac5b1b4eb25277f8327e9fa288ccdf93b4455782a4377eb1fc6e",
+   "corrections": [],
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 21:07Z",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), b-g3-division, call 1; the delivered sheet",
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "introduce"
+   },
+   "provider": "gemini"
+  },
+  {
+   "id": "L2-g7",
+   "lesson": "lessons/L1-g7-equations.json",
+   "firstReply": "replies/L2-g7.json",
+   "firstReplySha256": "0f0bb333250b32a1f483c36f10881c3747a6dbb0995e3362fe95c6f064788f28",
+   "corrections": [],
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 21:07Z",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), b-g7-equations, call 1; the delivered sheet",
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "introduce"
+   },
+   "provider": "gemini"
+  },
+  {
+   "id": "L2-g8",
+   "lesson": "lessons/L1-g8-percentages.json",
+   "firstReply": "replies/L2-g8.json",
+   "firstReplySha256": "be59afd02d6a72fa8fb5b66e126d0c37da07e46177ad908e861de21f784e442e",
+   "corrections": [],
+   "model": "gemini-3.8-flash",
+   "recorded": "2026-11-23 21:04Z",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), b-g8-percentages, call 1; the delivered sheet",
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "introduce"
+   },
+   "provider": "gemini"
   }
  ]
 }

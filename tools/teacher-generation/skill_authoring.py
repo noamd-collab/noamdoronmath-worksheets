@@ -506,7 +506,7 @@ def correction_instructions(lesson, scope):
         "PRINTED_TASK_MISMATCH": "Solve the exercise again using the exact givens in the printed prompt, including the displayed operand order, units and missing value. Correct the printed task and typed answer together. In a decide task the relation and the order of left and right are those of the printed sentence, every number and calculation printed in the item appears in the claim, and the claim uses no number that is not printed.",
         "SOURCE_NIQQUD": "Apply the required grade-specific Hebrew pointing to every word of this question and its answers.",
         "SOURCE_RICH_TEXT": "Use plain Hebrew strings with [[...]] for mathematics in every rich field.",
-        "PRINTED_ANSWER_LEAK": "A later item of this question prints the answer of an earlier item, so the pupil reads that answer on the sheet. Never write an earlier result into a later prompt; refer to it in words, such as 'המספר שמצאתם בסעיף א', or give the later item its own new givens.",
+        "PRINTED_ANSWER_LEAK": "An item of this question prints an answer that the pupil should find: its own answer (in a fact stated before it, a check exercise, or an estimate that names the result) or the answer of an earlier item. The pupil reads that answer on the sheet. Never write an item's result into its own prompt or into a later prompt; refer to an earlier result in words, such as 'המספר שמצאתם בסעיף א', or give the item its own new givens.",
     }
     grade = lesson["gradeNumber"]
     if grade <= 6:

@@ -285,9 +285,11 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
                                and expression(notation, grade) == typed["expression"])
                 if not matches:
                     bad("SOURCE_NOTATION", "The printed calculation must equal its exact typed task")
-            from printed_parts import check_item
+            from printed_parts import check_item, check_key_print
             try:
                 decision = check_item(question, item, solved, grade, authored=provider)
+                # The key as printed: only the solutions the item asks for, never beside its own prompt.
+                keyed = check_key_print(question, item, solved, grade)
             except GeneralSourceError as error:
                 if error.code == "PRINTED_ANSWER_KIND":
                     # A drawing outside geometry is refused as a drawing, whatever its answer.
@@ -297,7 +299,7 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
                         raise policy.at(qcount, j)
                 raise error.at(qcount, j)
             evidence.append({"itemId": item_id, "computed": solved})
-            keys[j] = solved
+            keys[j] = keyed
             if decision is not None and decision.proof["bound"] == "story":
                 # The verdict is exact for the typed claim. That the claim reads a
                 # story correctly is as unverified as in any word problem; a yes or

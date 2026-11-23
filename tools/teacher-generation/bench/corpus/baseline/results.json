@@ -8,109 +8,67 @@
      "answered": false,
      "questions": [
       5,
+      7,
       8,
+      10,
       11,
       14,
+      15,
       19
      ],
      "requested": true,
      "requiredKeys": [
+      "q10",
       "q11",
       "q14",
+      "q15",
       "q19",
       "q5",
+      "q7",
       "q8"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q5.item.3",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
      "ok": false
     },
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": true,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "content-truth",
-      "status": "PASS"
-     },
-     {
-      "name": "pdf",
-      "status": "PASS"
-     },
-     {
-      "name": "word",
-      "status": "PASS"
-     },
-     {
-      "name": "worksheet",
-      "status": "PASS"
-     },
-     {
-      "name": "output-gates",
-      "status": "PASS"
-     },
-     {
-      "name": "house-gates",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "SHORTER_SHEET",
-      "count": 5,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 5
-      },
-      "count": 5
-     },
-     "gate": "deliver",
-     "printedQuestions": 15,
-     "replaced": {
-      "codes": {},
-      "count": 0
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {}
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
+   "finalCode": "PRINTED_ANSWER_LEAK",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "A-division",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 5,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_KIND"
+         "PRINTED_ANSWER_LEAK"
         ],
         "group": "practice",
         "question": 5,
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 7,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -119,7 +77,16 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -128,7 +95,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -137,7 +104,16 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -146,23 +122,17 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 8,
       "planned": 20,
-      "printed": 15,
+      "printed": 12,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 5,
-    "gate": "deliver",
-    "printed": 15,
-    "replaced": 0,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "operations",
@@ -181,24 +151,28 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen2 (round A)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "clean"
-    }
-   ],
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"12/3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.3",
-     "field": "item.3",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"20/4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
      "group": "practice",
      "index": 5,
      "question": 5,
-     "substring": "האם התוצאות של [[12 : 3]] ושל [[12 : 4]] זהות?"
+     "substring": "איזה תרגיל נותן תוצאה גדולה יותר: [[20 : 4]] או [[20 : 5]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"42/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "התאימו לתרגיל [[6 x 7 = 42]] את תרגיל החילוק שמראה את אחד הגורמים."
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"8*4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -209,6 +183,16 @@
      "index": 8,
      "question": 8,
      "substring": "האם [[32 : 4 = 8]] נכון? בדקו באמצעות כפל."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5*9\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "כדי לבדוק את [[45 : 9 = 5]], איזה כפל צריך לעשות?"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6*2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -231,6 +215,16 @@
      "substring": "האם המנה של [[56 : 8]] גדולה מ-5? חשבו את המנה המדויקת."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"42/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "ידוע ש-[[6 x 7 = 42]]. מהו [[42 : 6]]?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
@@ -242,52 +236,11 @@
     }
    ],
    "questions": {
-    "failingAlone": 5,
+    "failingAlone": 8,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [],
-     "skippedChecks": [
-      "worksheet: PASS — pdffonts missing — skipped (warn)",
-      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
-     ],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "content-truth",
-       "status": "PASS"
-      },
-      {
-       "name": "pdf",
-       "status": "PASS"
-      },
-      {
-       "name": "word",
-       "status": "PASS"
-      },
-      {
-       "name": "worksheet",
-       "status": "PASS"
-      },
-      {
-       "name": "output-gates",
-       "status": "PASS"
-      },
-      {
-       "name": "house-gates",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -313,7 +266,8 @@
       10,
       12,
       13,
-      16
+      16,
+      17
      ],
      "requested": true,
      "requiredKeys": [
@@ -322,6 +276,7 @@
       "q12",
       "q13",
       "q16",
+      "q17",
       "q5",
       "q8"
      ]
@@ -409,11 +364,20 @@
         "group": "practice",
         "question": 16,
         "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
        }
       ],
-      "missing": 7,
+      "missing": 8,
       "planned": 20,
-      "printed": 13,
+      "printed": 12,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -511,10 +475,20 @@
      "index": 16,
      "question": 16,
      "substring": "האם התוצאות שוות? (כן/לא)"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(10+2)*3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.3",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "איזה סוגריים היו יכולים לתת את התוצאה 36?"
     }
    ],
    "questions": {
-    "failingAlone": 7,
+    "failingAlone": 8,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -1267,116 +1241,65 @@
      "answered": false,
      "questions": [
       5,
+      7,
       8,
+      11,
       14,
-      18
+      18,
+      19
      ],
      "requested": true,
      "requiredKeys": [
+      "q11",
       "q14",
       "q18",
+      "q19",
       "q5",
+      "q7",
       "q8"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q5.item.3",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
      "ok": false
     },
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": false,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "content-truth",
-      "status": "PASS"
-     },
-     {
-      "name": "pdf",
-      "status": "PASS"
-     },
-     {
-      "name": "word",
-      "status": "PASS"
-     },
-     {
-      "name": "worksheet",
-      "status": "PASS"
-     },
-     {
-      "name": "output-gates",
-      "status": "PASS"
-     },
-     {
-      "name": "house-gates",
-      "status": "REVIEW"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "G62",
-      "count": 4,
-      "note": "כמה סעיפים בדף חוזרים על אותו מבנה תרגיל. אפשר לגוון אותם או להשאיר כתרגול חוזר.",
-      "questions": [
-       1,
-       3
-      ]
-     },
-     {
-      "code": "SHORTER_SHEET",
-      "count": 4,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 4
-      },
-      "count": 4
-     },
-     "gate": "deliver",
-     "printedQuestions": 16,
-     "replaced": {
-      "codes": {},
-      "count": 0
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {}
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
+   "finalCode": "PRINTED_ANSWER_LEAK",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "B-division",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 4,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_KIND"
+         "PRINTED_ANSWER_LEAK"
         ],
         "group": "practice",
         "question": 5,
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 7,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -1385,7 +1308,16 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -1394,32 +1326,35 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "challenges",
         "question": 18,
         "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 7,
       "planned": 20,
-      "printed": 16,
+      "printed": 13,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 4,
-    "gate": "deliver",
-    "printed": 16,
-    "replaced": 0,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "operations",
@@ -1438,24 +1373,28 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen-fresh-01 (round B)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "review"
-    }
-   ],
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.3",
-     "field": "item.3",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.2",
      "group": "practice",
      "index": 5,
      "question": 5,
-     "substring": "האם התוצאה של [[30 : 5]] גדולה מהתוצאה של [[30 : 6]]?"
+     "substring": "איזה תרגיל נותן תוצאה קטנה יותר: [[24 : 4]] או [[24 : 6]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "ידוע ש-[[5 x 6 = 30]]. מהו הערך של [[30 : 6]]?"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"16/4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -1466,6 +1405,16 @@
      "index": 8,
      "question": 8,
      "substring": "האם [[16 : 4]] הוא חילוק שמביא לתוצאה זוגית?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"4*5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "מי מהשיטות הבאות בודקת נכון את התרגיל [[20 : 4 = 5]]? א. [[4 x 5 = 20]]. ב. [[20 + 4 = 24]]."
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"50/10\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -1486,70 +1435,24 @@
      "index": 1,
      "question": 18,
      "substring": "מספר חולק ב-6 והתקבל 7. האם המספר המקורי גדול מ-40?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6*9\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.3",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "יוסי כתב ש-[[54 : 6 = 9]]. בדקו באמצעות כפל האם התשובה נכונה."
     }
    ],
    "questions": {
-    "failingAlone": 4,
+    "failingAlone": 7,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [
-      {
-       "class": "editorial",
-       "code": "G62",
-       "count": 4,
-       "note": "כמה סעיפים בדף חוזרים על אותו מבנה תרגיל. אפשר לגוון אותם או להשאיר כתרגול חוזר.",
-       "questions": [
-        1,
-        3
-       ],
-       "steps": [
-        "house-gates"
-       ]
-      }
-     ],
-     "skippedChecks": [
-      "worksheet: PASS — pdffonts missing — skipped (warn)",
-      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
-     ],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "content-truth",
-       "status": "PASS"
-      },
-      {
-       "name": "pdf",
-       "status": "PASS"
-      },
-      {
-       "name": "word",
-       "status": "PASS"
-      },
-      {
-       "name": "worksheet",
-       "status": "PASS"
-      },
-      {
-       "name": "output-gates",
-       "status": "PASS"
-      },
-      {
-       "name": "house-gates",
-       "reason": "EDITORIAL_FINDINGS_ONLY",
-       "status": "REVIEW"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -3600,12 +3503,22 @@
      "answered": false,
      "questions": [
       6,
+      7,
+      8,
+      11,
+      12,
+      15,
       17
      ],
      "requested": true,
      "requiredKeys": [
+      "q11",
+      "q12",
+      "q15",
       "q17",
-      "q6"
+      "q6",
+      "q7",
+      "q8"
      ]
     },
     "firstPass": {
@@ -3616,88 +3529,21 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": false,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "content-truth",
-      "status": "PASS"
-     },
-     {
-      "name": "pdf",
-      "status": "PASS"
-     },
-     {
-      "name": "word",
-      "status": "PASS"
-     },
-     {
-      "name": "worksheet",
-      "status": "PASS"
-     },
-     {
-      "name": "output-gates",
-      "status": "PASS"
-     },
-     {
-      "name": "house-gates",
-      "status": "REVIEW"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "G62",
-      "count": 6,
-      "note": "כמה סעיפים בדף חוזרים על אותו מבנה תרגיל. אפשר לגוון אותם או להשאיר כתרגול חוזר.",
-      "questions": [
-       2,
-       12
-      ]
-     },
-     {
-      "code": "SHORTER_SHEET",
-      "count": 2,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "G32": 1,
-       "PRINTED_ANSWER_LEAK": 1
-      },
-      "count": 2
-     },
-     "gate": "deliver",
-     "printedQuestions": 18,
-     "replaced": {
-      "codes": {},
-      "count": 0
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {}
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:QUALITY_GATE_FAILED",
+   "finalCode": "QUALITY_GATE_FAILED",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "G-division",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 2,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "G32"
         ],
@@ -3706,7 +3552,52 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 7,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -3715,23 +3606,17 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 7,
       "planned": 20,
-      "printed": 18,
+      "printed": 13,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 2,
-    "gate": "deliver",
-    "printed": 18,
-    "replaced": 0,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "operations",
@@ -3750,13 +3635,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "review"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -3769,6 +3648,56 @@
      "substring": "מצאו את המספר ההתחלתי שחולק בכל מקרה."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"28 / 4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "נתון כי [[4 * 7 = 28]]. חשבו בעזרת עובדה זו את התוצאה של [[28 / 4]]."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"27 / 9\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "מתוך העובדה [[9 * 3 = 27]], מהי תוצאת התרגיל [[27 / 9]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6 * 4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "תלמיד טען כי [[24 / 4 = 6]]. בדקו את טענתו: מהי המכפלה של המנה במחלק, כלומר [[6 * 4]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"21 / 7\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "נתון תרגיל החילוק [[21 / 3 = 7]]. השלימו את הגורם החסר בתרגיל הבדיקה: [[7 * ___ = 21]]"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5 * 3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "בבדיקת תרגיל חילוק ב-[[3]] חושב [[5 * 3 = 15]]. מה היה המחולק בתוך [[___ / 3 = 5]]?"
+    },
+    {
      "code": "PRINTED_ANSWER_LEAK",
      "detail": "An item prints the answer of an earlier item of the same question",
      "field": "question",
@@ -3779,67 +3708,11 @@
     }
    ],
    "questions": {
-    "failingAlone": 2,
+    "failingAlone": 7,
     "total": 20
    },
    "recorded": "2026-11-23 14:07Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [
-      {
-       "class": "editorial",
-       "code": "G62",
-       "count": 6,
-       "note": "כמה סעיפים בדף חוזרים על אותו מבנה תרגיל. אפשר לגוון אותם או להשאיר כתרגול חוזר.",
-       "questions": [
-        2,
-        12
-       ],
-       "steps": [
-        "house-gates"
-       ]
-      }
-     ],
-     "skippedChecks": [
-      "worksheet: PASS — pdffonts missing — skipped (warn)",
-      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
-     ],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "content-truth",
-       "status": "PASS"
-      },
-      {
-       "name": "pdf",
-       "status": "PASS"
-      },
-      {
-       "name": "word",
-       "status": "PASS"
-      },
-      {
-       "name": "worksheet",
-       "status": "PASS"
-      },
-      {
-       "name": "output-gates",
-       "status": "PASS"
-      },
-      {
-       "name": "house-gates",
-       "reason": "EDITORIAL_FINDINGS_ONLY",
-       "status": "REVIEW"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -5873,15 +5746,23 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": null,
-     "questions": [],
-     "requested": false,
-     "requiredKeys": null
+     "answered": false,
+     "questions": [
+      14,
+      15
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q14",
+      "q15"
+     ]
     },
     "firstPass": {
-     "ok": true
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "ok": false
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
    "delivered": true,
@@ -5897,21 +5778,31 @@
       "status": "PASS"
      }
     ],
-    "reviewFindings": [],
+    "reviewFindings": [
+     {
+      "code": "SHORTER_SHEET",
+      "count": 2,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
     "salvage": {
      "attempts": 1,
-     "corrections": 0,
+     "corrections": 1,
      "dropped": {
-      "codes": {},
-      "count": 0
-     },
-     "gate": "deliver",
-     "printedQuestions": 20,
-     "replaced": {
       "codes": {
-       "PRINTED_ANSWER_KIND": 2
+       "PRINTED_ANSWER_KIND": 1,
+       "PRINTED_ANSWER_LEAK": 1
       },
       "count": 2
+     },
+     "gate": "deliver",
+     "printedQuestions": 18,
+     "replaced": {
+      "codes": {
+       "PRINTED_ANSWER_KIND": 2,
+       "PRINTED_TASK_MISMATCH": 1
+      },
+      "count": 3
      },
      "requestedQuestions": 20
     },
@@ -5926,7 +5817,7 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 0,
+      "dropped": 2,
       "events": [
        {
         "action": "reserve",
@@ -5945,24 +5836,51 @@
         "group": "practice",
         "question": 8,
         "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
        }
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 20,
+      "printed": 18,
       "reservesOffered": 4,
       "reservesRefused": 1
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 2,
-    "correctionFailed": false,
-    "corrections": 0,
-    "dropped": 0,
+    "byReserve": 3,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 2,
     "gate": "deliver",
-    "printed": 20,
-    "replaced": 2,
+    "printed": 18,
+    "replaced": 3,
     "stage": "render"
    },
    "lesson": {
@@ -6010,6 +5928,36 @@
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0 - 4\", \"relation\": \"ge\", \"right\": \"0\"}, \"unit\": \"\"}"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"x*(x + 1)\", \"rhs\": \"42\", \"variable\": \"x\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "נתונה המשוואה [[x*(x + 1) = 42]] עבור [[x]] חיובי. היות ש־[[6*6 = 36]] ו־[[7*7 = 49]], הפתרון נמצא בין [[6]] ל־[[7]]. מצ…"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"-5 * 1\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The item asks for an equation and for a number; its key prints only the number",
+     "field": "item.1",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "תלמיד הביא משוואה לצורה [[(x - 5)*(x + 1) = 0]]. מה הייתה המשוואה המקורית בצורה סטנדרטית לפני הפירוק לגורמים? מצאו את הא…"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"x*(x + 5)\", \"rhs\": \"24\", \"variable\": \"x\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed equation uses the numerator and the denominator of the printed fraction as two separate numbers, not the fraction",
+     "field": "item.3",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "מספר חיובי גדול ממספר חיובי אחר ב־[[5]]. סכום ההופכיים שלהם הוא [[frac(5,24)]]. מצאו את המספר הקטן מביניהם."
+    },
+    {
      "code": "PRINTED_ANSWER_KIND",
      "detail": "A printed relation with a blank or a letter cannot be decided",
      "field": "item.1.answer",
@@ -6020,7 +5968,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 3,
+    "failingAlone": 6,
     "total": 24
    },
    "recorded": "2026-11-23 19:40Z",
@@ -6711,19 +6659,29 @@
   },
   {
    "author": {
-    "answeredFromRecording": 2,
+    "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": true,
+     "answered": false,
      "questions": [
+      5,
+      12,
+      13,
+      14,
       17
      ],
      "requested": true,
-     "requiredKeys": null
+     "requiredKeys": [
+      "q12",
+      "q13",
+      "q14",
+      "q17",
+      "q5"
+     ]
     },
     "firstPass": {
-     "code": "QUALITY_GATE_FAILED",
-     "detail": "A planned question was refused and nothing replaced it",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
      "ok": false
     },
     "requests": 2,
@@ -6762,24 +6720,33 @@
       "status": "PASS"
      }
     ],
-    "reviewFindings": [],
+    "reviewFindings": [
+     {
+      "code": "SHORTER_SHEET",
+      "count": 5,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
     "salvage": {
      "attempts": 1,
      "corrections": 1,
      "dropped": {
-      "codes": {},
-      "count": 0
-     },
-     "gate": "deliver",
-     "printedQuestions": 20,
-     "replaced": {
       "codes": {
        "G33": 1,
        "PRINTED_ANSWER_KIND": 1,
-       "PRINTED_TASK_MISMATCH": 1,
+       "PRINTED_ANSWER_LEAK": 2,
        "SOURCE_SHAPE": 1
       },
-      "count": 4
+      "count": 5
+     },
+     "gate": "deliver",
+     "printedQuestions": 15,
+     "replaced": {
+      "codes": {
+       "PRINTED_ANSWER_LEAK": 1,
+       "PRINTED_TASK_MISMATCH": 1
+      },
+      "count": 2
      },
      "requestedQuestions": 20
     },
@@ -6794,7 +6761,7 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 0,
+      "dropped": 5,
       "events": [
        {
         "action": "reserve",
@@ -6808,6 +6775,33 @@
        {
         "action": "reserve",
         "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
@@ -6815,7 +6809,7 @@
         "stage": "source"
        },
        {
-        "action": "reserve",
+        "action": "dropped",
         "codes": [
          "SOURCE_SHAPE"
         ],
@@ -6824,7 +6818,7 @@
         "stage": "source"
        },
        {
-        "action": "correction",
+        "action": "dropped",
         "codes": [
          "G33"
         ],
@@ -6835,20 +6829,20 @@
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 20,
+      "printed": 15,
       "reservesOffered": 4,
-      "reservesRefused": 0
+      "reservesRefused": 1
      }
     ],
     "attempts": 1,
-    "byCorrection": 1,
-    "byReserve": 3,
-    "correctionFailed": false,
+    "byCorrection": 0,
+    "byReserve": 2,
+    "correctionFailed": true,
     "corrections": 1,
-    "dropped": 0,
+    "dropped": 5,
     "gate": "deliver",
-    "printed": 20,
-    "replaced": 4,
+    "printed": 15,
+    "replaced": 2,
     "stage": "render"
    },
    "lesson": {
@@ -6888,6 +6882,36 @@
      "substring": "השלימו את המספר החסר כדי לפתור את התרגיל: [[___ * 2 = 12]], ולכן [[12 / 2 = ___]]"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"14 / 2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.2",
+     "group": "practice",
+     "index": 2,
+     "question": 2,
+     "substring": "ידוע כי [[2 * 7 = 14]]. מהי תוצאת התרגיל [[14 / 2]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24 / 8\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "אם [[3 * 8 = 24]], מהי תוצאת התרגיל [[24 / 8]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"9 * 8\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "אם ידוע כי [[72 / 8 = 9]], איזה תרגיל כפל בודק זאת? חשבו את המכפלה: [[9 * 8]]"
+    },
+    {
      "code": "PRINTED_ANSWER_KIND",
      "detail": "Ask whether the one printed statement is right, with nothing else to decide in the item",
      "field": "item.1.answer",
@@ -6913,10 +6937,20 @@
      "index": 17,
      "question": 17,
      "substring": "שחזרו את המספר החסר המקיים את האילוץ הנתון."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6 * 7\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "reserves",
+     "index": 3,
+     "question": null,
+     "substring": "אם הבדיקה הראתה כי [[6 * 7 = 42]], מה היה המחולק בתרגיל [[___ / 7 = 6]]?"
     }
    ],
    "questions": {
-    "failingAlone": 4,
+    "failingAlone": 8,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -8541,6 +8575,673 @@
     "title": "str"
    },
    "route": "general"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      13,
+      17
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q13",
+      "q17"
+     ]
+    },
+    "firstPass": {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": true,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "content-truth",
+      "status": "PASS"
+     },
+     {
+      "name": "pdf",
+      "status": "PASS"
+     },
+     {
+      "name": "word",
+      "status": "PASS"
+     },
+     {
+      "name": "worksheet",
+      "status": "PASS"
+     },
+     {
+      "name": "output-gates",
+      "status": "PASS"
+     },
+     {
+      "name": "house-gates",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [
+     {
+      "code": "SHORTER_SHEET",
+      "count": 2,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 1,
+     "dropped": {
+      "codes": {
+       "PRINTED_ANSWER_LEAK": 2
+      },
+      "count": 2
+     },
+     "gate": "deliver",
+     "printedQuestions": 18,
+     "replaced": {
+      "codes": {
+       "PRINTED_ANSWER_LEAK": 2
+      },
+      "count": 2
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {}
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
+   "frameFailure": null,
+   "id": "L2-g3",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 2,
+      "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 18,
+      "reservesOffered": 4,
+      "reservesRefused": 1
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 2,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 2,
+    "gate": "deliver",
+    "printed": 18,
+    "replaced": 2,
+    "stage": "render"
+   },
+   "lesson": {
+    "domain": "operations",
+    "gradeNumber": 3,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "elementary",
+    "title": "חילוק והקשר ההפוך לכפל",
+    "topicId": "ג10"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "introduce"
+   },
+   "localAuthor": null,
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), b-g3-division, call 1; the delivered sheet",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "clean"
+    }
+   ],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24 / 6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "נתון כי [[4 * 6 = 24]]. השלימו את המנה: [[24 : 6 = ___]]"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5 * 7\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "בדיקת התרגיל [[35 : 7 = 5]] נעשית בעזרת הכפל [[5 * 7]]. מהי תוצאת המכפלה הזו?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"7 * 4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "רוצים לבדוק את התרגיל [[28 : 4 = 7]]. חשבו את תוצאת הכפל המתאים: [[7 * 4]]"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"18 / 2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "אם [[18 : 2 = 9]], אז לפי בדיקת החילוק: [[___ * 2 = 18]]. מהו המספר החסר?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"32 / 8\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "reserves",
+     "index": 3,
+     "question": null,
+     "substring": "נבדק ונמצא כי [[4 * 8 = 32]]. מהו תרגיל החילוק המתאים: [[32 : 8 = ___]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"7 * 3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.1",
+     "group": "reserves",
+     "index": 4,
+     "question": null,
+     "substring": "כדי לבדוק אם [[21 : 3 = 7]], כופלים [[7 * 3]]. מהי התוצאה?"
+    }
+   ],
+   "questions": {
+    "failingAlone": 6,
+    "total": 24
+   },
+   "recorded": "2026-11-23 21:07Z",
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [],
+     "skippedChecks": [
+      "worksheet: PASS — pdffonts missing — skipped (warn)",
+      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
+     ],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "content-truth",
+       "status": "PASS"
+      },
+      {
+       "name": "pdf",
+       "status": "PASS"
+      },
+      {
+       "name": "word",
+       "status": "PASS"
+      },
+      {
+       "name": "worksheet",
+       "status": "PASS"
+      },
+      {
+       "name": "output-gates",
+       "status": "PASS"
+      },
+      {
+       "name": "house-gates",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
+    },
+    "firstPass": {
+     "ok": true
+    },
+    "requests": 1,
+    "timeoutSeconds": 300
+   },
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": true,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "middle-build",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 0,
+     "dropped": {
+      "codes": {},
+      "count": 0
+     },
+     "gate": "deliver",
+     "printedQuestions": 20,
+     "replaced": {
+      "codes": {
+       "PRINTED_ANSWER_KIND": 1,
+       "SOURCE_NOTATION": 1
+      },
+      "count": 2
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {}
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
+   "frameFailure": null,
+   "id": "L2-g7",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 20,
+      "reservesOffered": 4,
+      "reservesRefused": 1
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 2,
+    "correctionFailed": false,
+    "corrections": 0,
+    "dropped": 0,
+    "gate": "deliver",
+    "printed": 20,
+    "replaced": 2,
+    "stage": "render"
+   },
+   "lesson": {
+    "domain": "אלגברי",
+    "gradeNumber": 7,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "משוואות ממעלה ראשונה ופתרונן",
+    "topicId": "g7:equations"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "introduce"
+   },
+   "localAuthor": null,
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), b-g7-equations, call 1; the delivered sheet",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "A printed relation with a blank or a letter cannot be decided",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"5 + 3\", \"relation\": \"eq\", \"right\": \"8\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "[[2, 4, 6]]"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "A printed relation with a blank or a letter cannot be decided",
+     "field": "item.1.answer",
+     "group": "reserves",
+     "index": 1,
+     "question": null,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"4*3 - 5\", \"relation\": \"eq\", \"right\": \"7\"}, \"unit\": \"\"}"
+    }
+   ],
+   "questions": {
+    "failingAlone": 3,
+    "total": 24
+   },
+   "recorded": "2026-11-23 21:07Z",
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [],
+     "skippedChecks": [],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
+    },
+    "firstPass": {
+     "ok": true
+    },
+    "requests": 1,
+    "timeoutSeconds": 300
+   },
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": true,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "middle-build",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 0,
+     "dropped": {
+      "codes": {},
+      "count": 0
+     },
+     "gate": "deliver",
+     "printedQuestions": 20,
+     "replaced": {
+      "codes": {
+       "PRINTED_ANSWER_LEAK": 1,
+       "SOURCE_PLAIN_MATH": 1
+      },
+      "count": 2
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {}
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
+   "frameFailure": null,
+   "id": "L2-g8",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "SOURCE_PLAIN_MATH"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 20,
+      "reservesOffered": 4,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 2,
+    "correctionFailed": false,
+    "corrections": 0,
+    "dropped": 0,
+    "gate": "deliver",
+    "printed": 20,
+    "replaced": 2,
+    "stage": "render"
+   },
+   "lesson": {
+    "domain": "מספרי",
+    "gradeNumber": 8,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "אחוזים",
+    "topicId": "g8:percentages"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "introduce"
+   },
+   "localAuthor": null,
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), b-g8-percentages, call 1; the delivered sheet",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "השלימו את החלק החסר להשלמת השלם ([[100%]])."
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.item.1.prompt",
+     "field": "item.1.prompt",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "בכיתה ח1 יש [[30]] תלמידים ו־[[20%]] מהם לומדים נגינה. בכיתה ח2 יש [[40]] תלמידים ו־[[15%]] מהם לומדים נגינה. כמה תלמידי…"
+    }
+   ],
+   "questions": {
+    "failingAlone": 2,
+    "total": 24
+   },
+   "recorded": "2026-11-23 21:04Z",
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [],
+     "skippedChecks": [],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
   }
  ],
  "corrections": "exact",
@@ -8548,35 +9249,36 @@
  "summary": {
   "byProvider": {
    "gemini": {
-    "cases": 18,
-    "delivered": 10,
-    "failingAlone": 130,
-    "questions": 412
+    "cases": 21,
+    "delivered": 12,
+    "failingAlone": 153,
+    "questions": 484
    },
    "qwen": {
     "cases": 14,
-    "delivered": 8,
-    "failingAlone": 74,
+    "delivered": 6,
+    "failingAlone": 81,
     "questions": 272
    }
   },
-  "cases": 32,
-  "correctionsNotRecorded": 23,
+  "cases": 35,
+  "correctionsNotRecorded": 26,
   "delivered": 18,
-  "deliveredRate": 0.5625,
+  "deliveredRate": 0.5143,
   "deliveredShorter": 11,
   "failureClasses": {
    "DELIVERED": 18,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 1,
    "SOURCE:PRINTED_ANSWER_KIND": 5,
-   "SOURCE:PRINTED_ANSWER_LEAK": 3,
+   "SOURCE:PRINTED_ANSWER_LEAK": 5,
    "SOURCE:PRINTED_TASK_MISMATCH": 1,
+   "SOURCE:QUALITY_GATE_FAILED": 1,
    "SOURCE:SOURCE_FIGURE": 3,
    "SOURCE:SOURCE_RICH_TEXT": 1
   },
   "finalStatus": {
    "delivered": 18,
-   "failed": 12,
+   "failed": 15,
    "needs_unrecorded_reply": 2
   },
   "firstRenderGateFindings": {
@@ -8592,23 +9294,23 @@
   "questions": {
    "byCode": {
     "NOT_AN_OBJECT": 8,
-    "PRINTED_ANSWER_KIND": 65,
-    "PRINTED_ANSWER_LEAK": 35,
+    "PRINTED_ANSWER_KIND": 66,
+    "PRINTED_ANSWER_LEAK": 61,
     "PRINTED_EXPRESSION_SCOPE": 4,
-    "PRINTED_TASK_MISMATCH": 29,
+    "PRINTED_TASK_MISMATCH": 30,
     "QUALITY_GATE_FAILED": 3,
     "SOURCE_FIGURE": 26,
     "SOURCE_FIGURE_TASK": 3,
-    "SOURCE_NOTATION": 13,
-    "SOURCE_PLAIN_MATH": 9,
+    "SOURCE_NOTATION": 14,
+    "SOURCE_PLAIN_MATH": 10,
     "SOURCE_RICH_TEXT": 1,
     "SOURCE_SHAPE": 2,
     "SOURCE_TABLE": 4,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 204,
-   "failingShare": 0.2982,
-   "total": 684
+   "failingAlone": 234,
+   "failingShare": 0.3095,
+   "total": 756
   },
   "secondAttemptsNotRecorded": 2
  },

@@ -22,7 +22,7 @@ from no_carry_addition import needs_printed_task, states_entire_task
 from printed_percentages import percentage_evidence
 from printed_tasks import match_printed_task, matching_solution_choices, printed_solve, printed_table_row
 from printed_elementary import guard_counting_input, place_intro, printed_intent, validate_counting_values
-from printed_parts import answer_form, bind_parts, carries_data, comparison_blank, printed_calculation, shows_task
+from printed_parts import answer_form, bind_parts, carries_data, chosen_solutions, comparison_blank, narrowed, printed_calculation, shows_task
 from answer_kinds import TEACHER_CHECK, bind_decision
 
 LETTERS = "אבגדהוזחטי"
@@ -306,12 +306,24 @@ def _answer_text(solved, unit, grade, H=None, *, original_variable=None, notatio
     """
     render = (lambda ast: _elementary_math(ast, grade, H)) if H else (lambda ast: to_house_math(ast, schoolbook=True))
     wrap = H.ltr if H else _middle_math
+    # A percent sign belongs to its number, inside the formula: "30%", "x = 20%".
+    # Printed after the formula as prose, the right-to-left line puts it on the wrong side.
+    percent = (unit or "").strip() == "%" and solved["result"]["type"] in ("expression", "list", "solutions")
+    value_wrap = (lambda text: wrap(text + "%")) if percent else wrap
+    if percent:
+        unit = ""
     result = solved["result"]
     if result["type"] == "expression":
         from numeric_literals import decimal_result
         decimal = decimal_result(result["value"], notation, money="money" in forms)
+        if decimal is None and "decimal" in forms:
+            from printed_parts import terminating_decimal
+            # The item asks for a decimal; a value without one is refused at source validation.
+            decimal = terminating_decimal(result["value"])
+            if decimal is None:
+                raise GeneralSourceError("PRINTED_ANSWER_KIND", "The item asks for a decimal and its exact answer has no finite decimal")
         mixed = _mixed_number(result["value"], grade, H) if "mixed" in forms and decimal is None else None
-        answer = wrap(decimal if decimal is not None else mixed if mixed is not None else render(result["value"]))
+        answer = value_wrap(decimal if decimal is not None else mixed if mixed is not None else render(result["value"]))
     elif result["type"] == "comparison":
         sign = {"less": "<", "equal": "=", "greater": ">"}[result["relation"]]
         relation = html.escape(sign) if H else sign
@@ -326,7 +338,7 @@ def _answer_text(solved, unit, grade, H=None, *, original_variable=None, notatio
         # A verdict is printed only by _decision_text, from a claim bound to the printed question.
         raise GeneralSourceError("PRINTED_ANSWER_KIND", "A decided claim has no key without its printed question")
     elif result["type"] == "list":
-        answer = ", ".join(wrap(render(value)) for value in result["values"]) or "אין שכיח"
+        answer = ", ".join(value_wrap(render(value)) for value in result["values"]) or "אין שכיח"
     elif result["type"] == "system":
         answer = "אין פתרון בתחום ההצבה" if result["classification"] == "none" else "; ".join(", ".join(wrap(name+" = "+render(solution[name])) for name in result["variables"]) for solution in result["solutions"])
     elif result["type"] == "intervals":
@@ -344,7 +356,7 @@ def _answer_text(solved, unit, grade, H=None, *, original_variable=None, notatio
         answer = " או ".join(interval(row) for row in result["intervals"]) or "אין פתרון בתחום ההצבה"
     else:
         if result["classification"] == "finite":
-            answer = ", ".join(wrap(result["variable"] + " = " + render(value)) for value in result["values"])
+            answer = ", ".join(value_wrap(result["variable"] + " = " + render(value)) for value in result["values"])
         elif result["classification"] == "none":
             answer = "אין פתרון בתחום ההצבה"
         else:
@@ -556,7 +568,8 @@ def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *
                      (repeated["result"]["holds"] is decision.holds, decision.proof), method="closed_form")
         return prompt + ' <div class="ansline"></div>', _decision_text(decision, grade, H)
     forms = frozenset() if figure_task else answer_form(seen, item, computed)
-    answer = _answer_text(computed, item["answer"]["unit"], grade, H, notation=notation, forms=forms)
+    keyed = computed if figure_task else narrowed(computed, chosen_solutions(seen, item, computed))
+    answer = _answer_text(keyed, item["answer"]["unit"], grade, H, notation=notation, forms=forms)
     # True once a binder has tied the key to the exercise that the prompt shows.
     bound = states_entire_task(lesson, n-1, j-1, item) or _prints_calculation(item, computed, number_grade)
     intent = (printed_intent(question, item, computed, number_grade, location=f"q{n}.item.{j}")
@@ -778,7 +791,9 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
                 show_task = (computed and not printed and not _prints_calculation(item, computed, lesson["gradeNumber"])
                              and shows_task(question, item, computed))
                 body = prompt+(" "+_task_text(computed, lesson["gradeNumber"], notation=item["answer"].get("notation")) if show_task else "")
-                answer = _answer_text(computed, item["answer"]["unit"], lesson["gradeNumber"], original_variable=label, notation=item["answer"].get("notation"),
+                # The key prints only the solutions that the item's words ask for.
+                keyed = narrowed(computed, chosen_solutions(question, item, computed)) if computed and not decision else computed
+                answer = _answer_text(keyed, item["answer"]["unit"], lesson["gradeNumber"], original_variable=label, notation=item["answer"].get("notation"),
                                       forms=answer_form(question, item, computed), sides=sign["sides"] if sign else None) if computed and not decision else rich_text(item["answer"]["text"], lesson["gradeNumber"]) if not computed else _decision_text(decision, lesson["gradeNumber"])
                 if bound and bound.label:
                     answer = bound.label + " (" + answer + ")"
