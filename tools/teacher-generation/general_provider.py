@@ -9,11 +9,11 @@ from __future__ import annotations
 import json
 import hashlib
 import os
-import re
 
 from authoring_context import build_authoring_context, AuthoringContextError
 from general_source import validate_source, GeneralSourceError, geometry_topic
 from skill_authoring import bind_content, question_plan, worksheet_schema
+from source_normalize import normalize_source
 from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 from runtime_catalog import catalog, scope_for_lesson
 from validation import reject
@@ -154,8 +154,10 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'enclose each number or compound formula in double square brackets. Keep all punctuation in Hebrew prose. '
         'Use compact infix strings for mathematical task fields drawn from the selected concepts. Syntax: '
         'integers, decimal numbers, frac(1,4) for one rational number, + - * / ^ and parentheses. For middle '
-        'school only: x y a b, sqrt(9), and typed geometric names such as [[point:A]], [[angle:ABC]], '
-        '[[segment:AB]] and [[polygon:ABCD]]. No implicit multiplication. No HTML, SVG, LaTeX, code or links. '
+        'school only: x y a b, sqrt(9), the constant pi, and typed geometric names such as [[point:A]], '
+        '[[angle:ABC]], [[segment:AB]] and [[polygon:ABCD]]. Middle school may also write a product without '
+        'its sign where a schoolbook does: 3(x+2), (x+2)(x-3), 2ab, 2pi. Elementary school writes every product '
+        'with its sign. An exponent is a whole number up to 12. No HTML, SVG, LaTeX, code or links. '
         'Use full Hebrew niqqud on EVERY Hebrew field in grades one and two, including BOTH titles and all units. '
         'For a common denominator, in grade four or later an evaluate task may be lcm(6,8) or gcd(6,8); '
         'use two literal positive integers. A computed task must calculate the requested result. '
@@ -166,14 +168,21 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'instructions are exclusively for geometry and analytic geometry. Refer to a figure or table only '
         'if that question actually supplies it. For counting give concrete countable data. Never describe '
         'an imagined picture or refer to a highlighted digit unless its position is explicit. '
-        'Each computed task must reproduce the mathematics asked for from its actual givens. The schoolbook '
-        'prints its task along with the pupil prompt and prints the computed solution in the key. Do not supply '
+        'Each computed task must reproduce the mathematics asked for from its actual givens. The key prints '
+        'the computed solution. The typed task is printed after the prompt only when the prompt shows no '
+        'number at all, as in a bare instruction. A prompt that shows numbers is printed exactly as written '
+        'and nothing is added to it, so a word problem, a completion or a comparison must state every datum '
+        'the pupil needs in its own intro or prompt. Do not supply '
         'the already-computed answer as an evaluate task or hide unsupported reasoning in an answer unit. '
         'For simple calculations put the instruction into the prompt and the calculation in the task once. '
         'Keep givens, unknown and units distinct. Build the calculation for the unknown actually asked for. If the question '
         'requires a particular equivalent form, evaluate cannot verify that form. In middle school use review '
         'for proofs or explanations when the exact math kernel cannot solve the task. Never claim approval. '
-        'Match the level throughout and keep the numbers and language suitable for the grade even in challenges.'
+        'Match the level throughout and keep the numbers and language suitable for the grade even in challenges. '
+        # The capture of a provider that receives replyExample showed its opening word and its equation reused.
+        'If the user message holds a replyExample, it shows the notation only. Nothing of it may appear on '
+        'the sheet: not its numbers, equations, names or objects, and its instruction words must not become '
+        'the standard opening of your prompts. Choose for each item the instruction that fits its own task.'
     )
     # The live line has no compact skill digest. The smooth-UX branch sends
     # this notation guidance only with its digest; here it goes with the full
@@ -203,7 +212,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'questionPlan': plan,
             'teacherStoppingPoint': lesson['lastLesson'],
             'selectedConcepts': scope['selectedConcepts'],
-            'finalContractReminder': 'Put all ordinary questions in practice and exactly three progressively harder ones in challenges. Each question has intro and items. Use complete Hebrew words, typed math and no markup.'}
+            'finalContractReminder': 'Put all ordinary questions in practice and exactly three challenge questions in challenges; a challenge changes the reasoning, not the number of operations, digits or bracket depth. Each question has intro and items. Use complete Hebrew words, typed math and no markup.'}
     activities = (
         'recognize and read the given quantities or properties',
         'work one direct case using the selected concept',
@@ -247,7 +256,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                'activity. If a proposed activity requires an untaught operation, adapt it within scope.')
     if lesson["minutes"] / lesson["questionCount"] <= 1.8:
         system += (' For this time budget give exactly minimumItems short subitems in every question. '
-                   'Each subitem must ask for one checkable result. A computed task is printed automatically: '
+                   'Each subitem must ask for one checkable result. The key of a computed task is its one computed value: '
                    'avoid asking for a name, a choice, an explanation or multiple results while giving a numeric answer. '
                    'Use a new example for each subitem and make every required datum visible.')
     if not geometry_topic(scope):
@@ -263,7 +272,12 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'State prices and other per-unit data as the cost or measure of one named object. '
             'Do not assert an unproved universal rule when the exercise asks about a finite example. '
             'When asking which operation comes first, show its full original expression and give the '
-            'operation itself as the evaluate task. Check that word problems use plausible items and units.')
+            'operation itself as the evaluate task. Check that word problems use plausible items and units. '
+            'Across the whole sheet at most three subitems may share one bare form such as [[a : b = ___]] '
+            '(two at excellence level). '
+            'Use לכל only for an amount per named person or container, or right after התאימו, כתבו or חשבו. '
+            'Never write תמיד, לעולם, אי אפשר, לכל מספר or כל משולש. '
+            'For a hypothetical write אם. Do not ask אילו מה..., מי מהם, האם ייתכן or כל האפשרויות.')
     if 'representation' in plan[0]:
         system += (
             ' Follow each question representation in questionPlan. For drawingFromWords set that flag to true, '
@@ -297,6 +311,12 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'The following source-v4 instructions govern only that alternative. ' + system)
     schema_name = 'worksheet_authoring_choice' if addition_plan is not None else 'skill_worksheet_content'
     response = request_content(system, user, schema, schema_name, 'worksheet-source/4', 40000)
+    # Single-reading spellings become contract notation once, on arrival, so the
+    # compile, the notation correction and the per-question replay read one text.
+    # Only the number of rewrites is measured: the notes quote worksheet text.
+    rewrites = []
+    response = normalize_source(response, lesson['gradeNumber'], topic=scope['topic'], notes=rewrites)
+    measured['sourceRewrites'] = len(rewrites)
 
     def compile_content(payload):
         if addition_plan is not None and isinstance(payload, dict) and payload.get('version') == 1:

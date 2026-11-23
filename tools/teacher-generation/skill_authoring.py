@@ -363,6 +363,43 @@ def apply_replacements(original, fields, replacements):
     return result
 
 
+# Codes of the exact kernel (math_tasks.fail). The wider grammar lets a wire
+# expression reach them: a power or a value beyond the printable budget, a root
+# of a negative number, a result form with no printed spelling.
+KERNEL_CODES = frozenset((
+    "EMPTY_DOMAIN", "INVALID_AST", "INVALID_TASK", "OUTSIDE_DOMAIN", "RESOURCE_LIMIT", "UNDEFINED_TASK",
+    "UNSUPPORTED_COMPARISON", "UNSUPPORTED_DOMAIN", "UNSUPPORTED_EQUATION", "UNSUPPORTED_POWER",
+    "UNSUPPORTED_RESULT", "UNSUPPORTED_ROOT", "UNSUPPORTED_SYMBOLIC_ROOT", "UNSUPPORTED_SYSTEM",
+    "UNSUPPORTED_TASK", "UNVERIFIED_SOLUTION",
+))
+KERNEL_INSTRUCTION = (
+    "The exact checker cannot compute this typed task as written: the result is too large, undefined, "
+    "not real, or has no supported exact form. Keep the selected concept and rewrite the question with "
+    "smaller numbers and exponents, and a task whose exact result is one number, one expression or one solution set.")
+# Any other refusal of one question alone: the question is replaced, never the sheet.
+QUESTION_INSTRUCTION = (
+    "This question does not follow the worksheet contract. Write it again in full: an intro, the required "
+    "number of items, each with a prompt and one typed answer of a supported kind, using only the fields of the schema.")
+
+
+def question_refusal(wire, index, lesson, scope, *, challenge):
+    """The per-question predicate: the refusal of one wire question validated alone, or None.
+
+    The question is expanded and validated exactly as on the whole sheet, but
+    by itself, so every code it raises belongs to this question. Any code
+    counts: a caller replaces the question, it does not fail the sheet.
+    """
+    try:
+        question = {**wire, "star": challenge}
+        expanded = compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]},
+            lesson["gradeNumber"], topic=scope["topic"], fraction_notation=scope["topic"]["domain"] == "fractions")
+        validate_question(expanded["sections"][0]["questions"][0], lesson["gradeNumber"], scope,
+                          provider=True, qcount=index, evidence=[], pending=[])
+    except (GeneralSourceError, MathTaskError) as exc:
+        return exc
+    return None
+
+
 def source_findings(original, lesson, scope, error):
     """Localize recoverable wire errors without disclosing text or relaxing validation."""
     instructions = {
@@ -389,8 +426,6 @@ def source_findings(original, lesson, scope, error):
         instructions["PRINTED_ANSWER_KIND"] += " " + ELEMENTARY_KINDS_GUIDE
     if not geometry_topic(scope):
         instructions["SOURCE_TABLE"] += " Example of a real table: table.head and table.rows contain separate plain cells; a missing value uses ___ in its own cell. Use only meaningful columns and givens for the selected concept."
-    if error.code not in instructions:
-        return []
     if error.code == "SOURCE_PLAIN_MATH":
         return ([{"kind": "mark_math", "codes": [error.code]}]
                 if notation_correction(original, lesson, scope) is not None else [])
@@ -402,21 +437,18 @@ def source_findings(original, lesson, scope, error):
     for index, wire in enumerate(groups[0] + groups[1], 1):
         if not isinstance(wire, dict) or "star" in wire:
             return []
-        try:
-            question ={**wire, "star": index > len(groups[0])}
-            expanded = compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]},
-                lesson["gradeNumber"], topic=scope["topic"], fraction_notation=scope["topic"]["domain"] == "fractions")
-            validate_question(expanded["sections"][0]["questions"][0], lesson["gradeNumber"], scope,
-                              provider=True, qcount=index, evidence=[], pending=[])
-        except (GeneralSourceError, MathTaskError) as exc:
-            feedback = instructions.get(exc.code)
-            if not feedback:
-                return []
-            location = re.search(r" at q[1-9][0-9]?\.(intro|item\.[1-9](?:\.(?:prompt|answer))?|table(?:\.[a-z0-9.]+)?)\b", str(exc))
-            if location:
-                feedback = f"Check {location[1]}. " + feedback
-            findings.append({"question": index, "codes": [exc.code], "feedback": [feedback]})
-            if len(findings) > MAX_QUESTIONS:
-                return []
+        exc = question_refusal(wire, index, lesson, scope, challenge=index > len(groups[0]))
+        if exc is None:
+            continue
+        # A code without its own instruction is still a bad question, not a failed sheet.
+        feedback = instructions.get(exc.code) or (KERNEL_INSTRUCTION if exc.code in KERNEL_CODES else QUESTION_INSTRUCTION)
+        location = re.search(r" at q[1-9][0-9]?\.(intro|item\.[1-9](?:\.(?:prompt|answer))?|table(?:\.[a-z0-9.]+)?)\b", str(exc))
+        if location:
+            feedback = f"Check {location[1]}. " + feedback
+        elif getattr(exc, "item", None) is not None:
+            feedback = f"Check item.{exc.item}. " + feedback
+        findings.append({"question": index, "codes": [exc.code], "feedback": [feedback]})
+        if len(findings) > MAX_QUESTIONS:
+            return []
     # A rule/title or worksheet-wide failure cannot be fixed by replacing individual rows.
     return findings if any(error.code in f["codes"] for f in findings) else []

@@ -34,8 +34,15 @@ The production worker can request one targeted revision for up to six questions 
 locations and the job still owns its lease. The second provider call has a separate usage
 record. Both outputs are rebuilt in a fresh directory and rechecked before any upload.
 An infrastructure failure or an unlocalized report does not trigger a correction.
+A question is localized by one predicate, `skill_authoring.question_refusal`: the
+question is expanded and validated alone, and any code it raises (a notation
+fault, a printed-key refusal, a kernel limit such as a power beyond the bound)
+makes it a bad question to replace, never a failed sheet.
 
-`source_normalize.py` runs first, inside `expand_source`. It rewrites spellings that
+`source_normalize.py` runs once on the reply when it arrives
+(`general_provider.author_general_lesson`), so the compile, the notation correction
+and the per-question predicate read the same text, and again inside `expand_source`,
+where it is a no-op on text that is already normal. It rewrites spellings that
 have exactly one reading into the contract's notation (an unspaced school operator,
 `$...$` math, a letter for the single missing number of an elementary formula, a label
 after the Hebrew noun that names it). It never computes and never chooses between two
@@ -64,8 +71,12 @@ construction, an explanation; the key says that the teacher checks it). A
 number is never the key of a drawing. Labels, open items and verdicts whose
 claim was typed from a story are listed as `unverifiedAnswers`
 (`question`, `item`, `kind`) in the adapter result and in
-`general-evidence.json`, for a teacher note. Authored prose answers (`review`)
-remain middle-school only.
+`general-evidence.json`. `runner.render_job` copies the positions and kinds to
+`manifest.unverifiedAnswers`, and the worker result carries them as
+`teacherNotes`: one entry per kind with a fixed Hebrew sentence
+(`gate_policy.UNVERIFIED_NOTES`) and the question and item numbers. Evidence
+that is present but unreadable fails the render before anything is built.
+Authored prose answers (`review`) remain middle-school only.
 Prose, reasoning and pedagogical correspondence still require human review.
 
 `general_adapters.py` compiles only trusted templates. Typed figures are
@@ -101,7 +112,9 @@ A result is always `needs_review` or `failed`, never publication approval:
   page fill) do not block: the step is recorded as REVIEW and
   `reviewFindings` carries the code, the questions and a fixed Hebrew teacher
   note. An unknown line, a timeout or a crashed step blocks.
-  `skill_feedback.gate_report` reads every finding of a work folder.
+  `skill_feedback.gate_report` reads every finding of a work folder. When the
+  trusted adapter refuses a question it leaves `adapter-failure.json`
+  (`code`, `question`, `item`), and the report names that question from it.
 - `paren_order.py` measures again the one documented false positive of the
   pinned bracket gate G51 (a correctly printed product of two bracketed
   groups). A reversed pair still fails.

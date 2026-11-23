@@ -10,7 +10,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from validation import GenerationError, read_json, reject, validate_model
 from adapters import dump
-from gate_policy import RECONCILIATION_STEPS, decide
+from gate_policy import RECONCILIATION_STEPS, decide, unverified_rows
 from skill_feedback import gate_report
 
 HERE=Path(__file__).resolve().parent
@@ -149,6 +149,27 @@ def precheck_job(lesson, model_payload, workdir, skill_paths=None):
     return result
 
 
+def unverified_answers(work):
+    """Printed answers that no exact kernel verified, from the adapter's evidence.
+
+    The general adapter records them in general-evidence.json: a label printed
+    as authored, an open item without a key, a yes/no decided from a claim
+    typed out of a story, an authored review answer. Returns [{'question',
+    'item','kind'}], [] when the adapter kept no such list, or None when the
+    file is there but cannot be trusted.
+    """
+    path=work/'general-evidence.json'
+    if not path.is_symlink() and not path.exists():
+        return []
+    try:
+        if path.is_symlink() or path.stat().st_size>4_000_000:
+            return None
+        evidence=json.loads(path.read_text(encoding='utf-8'))
+        return unverified_rows(evidence.get('unverifiedAnswers',[]))
+    except (OSError,ValueError,AttributeError):
+        return None
+
+
 def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy=False):
     """Validate first, build into a new directory, return manifest. No provider calls.
 
@@ -168,6 +189,14 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
     outputs=[]
     review_findings=[]
     word_postprocess=None
+    unverified=[]
+    if ok and general:
+        unverified=unverified_answers(work)
+        if unverified is None:
+            # Without the list the teacher could not be told which printed
+            # answers are unverified, so nothing is rendered or delivered.
+            steps.append({'name':'unverified-answers','status':'FAIL','reason':'EVIDENCE_UNREADABLE'})
+            ok=False;unverified=[]
     if ok and cap['skill']=='elementary':
         for name,args in [
             ('content-truth',_content_truth_args(job)),
@@ -262,6 +291,8 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
         manifest['authoringProfile']='general-skill-source/v1'
         manifest['renderingChecksPassed']=bool(ok and len(artifacts)==2 and all(s['status'] in ('PASS','REVIEW') for s in steps))
         manifest['reviewFindings']=review_findings
+        # Positions and kinds of the printed answers no exact kernel verified.
+        manifest['unverifiedAnswers']=unverified
         if gate is not None:
             manifest['gate']=gate
         manifest['review']={

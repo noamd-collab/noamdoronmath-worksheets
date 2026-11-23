@@ -19,8 +19,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPSHandler
 from urllib.error import HTTPError
-from provider import author_lesson, safe_usage
-from gate_policy import public_review_findings
+from provider import author_lesson, safe_transport_measurements, safe_usage
+from gate_policy import public_review_findings, public_teacher_notes
 from runner import render_job
 from skill_feedback import read_skill_feedback
 from validation import GenerationError, capabilities, validate_lesson
@@ -142,6 +142,12 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
             if isinstance(value, str) and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,127}', value): record[key] = value
         elapsed = metadata.get('elapsedSeconds')
         if type(elapsed) in (int, float) and 0 <= elapsed <= 86400: record['elapsedSeconds'] = round(elapsed, 3)
+        # Which provider answered, how the call ended and how many attempts it
+        # took: fixed labels and small numbers only (provider.py vocabularies).
+        record.update(safe_transport_measurements(metadata))
+        if metadata.get('correctionRequested') is True: record['correctionRequested'] = True
+        rewrites = metadata.get('sourceRewrites')
+        if type(rewrites) is int and 0 <= rewrites <= 100_000: record['sourceRewrites'] = rewrites
         record['usage'] = safe_usage(metadata.get('usage'))
         if 'revisionUsage' in metadata:
             record['revisionUsage'] = safe_usage(metadata.get('revisionUsage'))
@@ -305,14 +311,19 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
             # Editorial findings only: fixed codes, counts, question numbers and
             # this engine's own Hebrew notes. No gate or model text is forwarded.
             result.update(authoringProfile='general-skill-source/v1',renderingChecksPassed=True,
-                          reviewFindings=public_review_findings(manifest.get('reviewFindings',[])))
+                          reviewFindings=public_review_findings(manifest.get('reviewFindings',[])),
+                          # Which printed answers no exact kernel verified: labels, open items,
+                          # story-typed decisions and review answers, by question and item.
+                          teacherNotes=public_teacher_notes(manifest.get('unverifiedAnswers',[])))
         if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
         stop.set();thread.join(timeout=3)
         update_job(remote,job,{'status':'needs_review','phase':'needs_review','result':result,'lease_token':None,'lease_until':None})
     finally: stop.set();thread.join(timeout=3)
 
 def load_env(path):
-    allowed={'QWEN_API_KEY','DASHSCOPE_API_KEY','QWEN_BASE_URL','QWEN_MODEL','TEACHER_GENERATION_SERVICE_KEY','ELEMENTARY_SKILL_PATH','MIDDLE_SKILL_PATH'}
+    allowed={'QWEN_API_KEY','DASHSCOPE_API_KEY','QWEN_BASE_URL','QWEN_MODEL','TEACHER_GENERATION_SERVICE_KEY','ELEMENTARY_SKILL_PATH','MIDDLE_SKILL_PATH',
+             # The author switch and the selected provider's own credential and model (provider.author_config).
+             'TEACHER_AUTHOR_PROVIDER','GEMINI_API_KEY','GEMINI_MODEL'}
     for line in Path(path).read_text().splitlines():
         if not line.strip() or line.lstrip().startswith('#') or '=' not in line:continue
         key,value=line.split('=',1);key=key.strip()

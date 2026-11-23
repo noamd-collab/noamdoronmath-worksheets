@@ -38,7 +38,10 @@ SKILL_ENV = {'elementary': 'ELEMENTARY_SKILL_PATH', 'middle': 'MIDDLE_SKILL_PATH
 PROVIDER_ENV = ('QWEN_API_KEY', 'QWEN_BASE_URL', 'QWEN_MODEL')
 # Variables that could reach a paid model or the production queue.
 CREDENTIAL_ENV = ('QWEN_API_KEY', 'DASHSCOPE_API_KEY', 'QWEN_BASE_URL', 'QWEN_MODEL',
-                  'TEACHER_GENERATION_SERVICE_KEY')
+                  'TEACHER_GENERATION_SERVICE_KEY',
+                  # The author switch and the second provider's credential: an offline
+                  # run always takes the placeholder Qwen settings below.
+                  'TEACHER_AUTHOR_PROVIDER', 'GEMINI_API_KEY', 'GEMINI_MODEL')
 # Placeholders for offline runs. The host is on the engine's allowlist so its
 # configuration check passes; the transport is replaced and sockets are
 # refused, so nothing is ever sent there.

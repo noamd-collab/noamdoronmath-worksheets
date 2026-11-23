@@ -183,7 +183,9 @@ class GeneralRuntimeTests(unittest.TestCase):
             if body["response_format"]["json_schema"]["name"] != "mark_skill_math":
                 return content
             fragments = json.loads(body["messages"][1]["content"])["fragments"]
-            self.assertCountEqual(fragments.values(), [rule,question_text])
+            # The reply is normalised on arrival: the rule and every string field were
+            # marked locally. Only the historical typed span list still needs the model.
+            self.assertCountEqual(fragments.values(), [question_text])
             self.assertNotIn("lastLesson", body["messages"][1]["content"])
             self.assertNotIn("items", body["messages"][1]["content"])
             measured["usage"] = {"total_tokens":48}
@@ -193,6 +195,8 @@ class GeneralRuntimeTests(unittest.TestCase):
                 provider.author_lesson(self.lesson,metadata=metadata,revision=revision,**self.config)
             self.assertEqual(first.exception.code,"SOURCE_PLAIN_MATH")
             self.assertNotIn(question_text, str(revision["sourceFindings"]))
+            # A count only: the rewrite notes quote worksheet text.
+            self.assertEqual(metadata["sourceRewrites"], 1 + len(rows) + 2 + 1)
             fixed = revision["revise"](revision["sourceFindings"])
             self.assertEqual(network.call_count,2)
             with self.assertRaises(GenerationError) as limit:

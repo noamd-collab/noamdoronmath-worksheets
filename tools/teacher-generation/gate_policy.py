@@ -37,6 +37,17 @@ NOTES = {
     "DIDACTIC_REVIEW": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
 }
 
+# Hebrew teacher notes for printed answers that no exact kernel verified, by
+# the kind recorded in the adapter's evidence (general_source: label, open,
+# decision, review). The sheet is still delivered; the teacher is told where.
+UNVERIFIED_NOTES = {
+    "open": "בדף יש סעיפים פתוחים שאין להם תשובה במפתח. הם מסומנים לבדיקת המורה.",
+    "label": "בחלק מהסעיפים התשובה היא שם או מונח. היא הודפסה כפי שנכתבה ולא אומתה בחישוב.",
+    "decision": "בחלק משאלות כן/לא ההכרעה חושבה מטענה שנוסחה מתוך סיפור. כדאי לוודא שהטענה מתאימה לנוסח השאלה.",
+    "review": "תשובות של הסבר או הוכחה לא אומתו בחישוב. נדרשת בהן בדיקת מורה.",
+}
+MAX_UNVERIFIED_ITEMS = 180  # general_source.MAX_ITEMS
+
 # code -> (class, the output can name a question)
 GATES = {
     # --- this engine's steps (runner.py) ------------------------------------
@@ -291,4 +302,41 @@ def public_review_findings(rows):
             if numbers:
                 entry["questions"] = numbers
         result.append(entry)
+    return result
+
+
+def unverified_rows(rows):
+    """Check a list of unverified printed answers: [{question, item, kind}] or None.
+
+    Positions and a closed kind only. Anything else makes the whole list
+    untrusted (None), so a caller fails closed instead of dropping a note.
+    """
+    if not isinstance(rows, list) or len(rows) > MAX_UNVERIFIED_ITEMS:
+        return None
+    result = []
+    for row in rows:
+        if not isinstance(row, dict):
+            return None
+        question, item, kind = row.get("question"), row.get("item"), row.get("kind", "review")
+        if (type(question) is not int or type(item) is not int or not 1 <= question <= 99
+                or not 1 <= item <= 9 or kind not in UNVERIFIED_NOTES):
+            return None
+        result.append({"question": question, "item": item, "kind": kind})
+    return result
+
+
+def public_teacher_notes(rows):
+    """Teacher notes for the job result: one entry per kind of unverified answer.
+
+    [{"code": "UNVERIFIED_ANSWER", "kind", "count", "note", "items": [{"question", "item"}]}]
+    in the fixed order of UNVERIFIED_NOTES. The note is this module's own
+    sentence; no worksheet text is read. An untrusted list gives no entry.
+    """
+    checked = unverified_rows(rows)
+    result = []
+    for kind, note in UNVERIFIED_NOTES.items():
+        items = sorted({(row["question"], row["item"]) for row in checked or () if row["kind"] == kind})
+        if items:
+            result.append({"code": "UNVERIFIED_ANSWER", "kind": kind, "count": len(items), "note": note,
+                           "items": [{"question": question, "item": item} for question, item in items]})
     return result

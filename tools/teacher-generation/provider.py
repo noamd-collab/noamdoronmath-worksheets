@@ -242,6 +242,13 @@ def safe_http_diagnostic(error):
     return {'body':'parsed','statuses':sorted(statuses),'fields':sorted(fields),'categories':sorted(reasons)}
 
 
+HTTP_BODY_LABELS=('unreadable','empty','truncated','invalid_json','unrecognized_envelope','parsed')
+PROVIDER_ERRORS=('schema_rejected','unsupported_parameter','bad_request','credential_rejected','model_not_found',
+                 'rate_limited','unavailable','server_error','http_error')
+TIMEOUT_PHASES=('connect','reply')
+REPLY_DEFECTS=('envelope','content_not_json')
+
+
 def provider_error_class(status, diagnostic):
     """One fixed label per failed HTTP reply; the engine code stays PROVIDER_HTTP_ERROR."""
     categories=set(diagnostic.get('categories',()))
@@ -466,6 +473,33 @@ def fetch_author_reply(target, key, body, measured, timeout):
 
 
 FINISH_REASONS=('stop','length','content_filter','tool_calls','function_call')
+
+
+def safe_transport_measurements(measured):
+    """The transport's own measurements, checked again against their fixed vocabularies.
+
+    For records that leave the authoring call (the operator's diagnostics
+    file). Every value is a bounded number or one of this module's labels; a
+    value outside its vocabulary is dropped, so no provider text can pass.
+    """
+    result={}
+    if not isinstance(measured,dict): return result
+    for key,labels in (('provider',AUTHOR_PROVIDERS),('providerError',PROVIDER_ERRORS),('timeoutPhase',TIMEOUT_PHASES),
+                       ('replyDefect',REPLY_DEFECTS),('finishReason',FINISH_REASONS+('other',))):
+        value=measured.get(key)
+        if isinstance(value,str) and value in labels: result[key]=value
+    attempts,status=measured.get('attempts'),measured.get('httpStatus')
+    if type(attempts) is int and 1<=attempts<=MAX_ATTEMPTS: result['attempts']=attempts
+    if type(status) is int and 100<=status<=599: result['httpStatus']=status
+    diagnostic=measured.get('httpDiagnostic')
+    if isinstance(diagnostic,dict) and diagnostic.get('body') in HTTP_BODY_LABELS:
+        checked={'body':diagnostic['body']}
+        for key,known in (('statuses',_ERROR_STATUSES),('fields',set(_ERROR_FIELDS.values())),('categories',set(_ERROR_REASONS))):
+            values=diagnostic.get(key)
+            if isinstance(values,list):
+                checked[key]=sorted({v for v in values if isinstance(v,str) and v in known})
+        result['httpDiagnostic']=checked
+    return result
 
 
 def author_reply_text(raw, measured):
