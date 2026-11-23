@@ -200,15 +200,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch"
-    ],
-    "notes": [
-     "key numbers ['1'] != expected ['1', '2']"
-    ],
-    "printed": "בין אילו שני מספרים שלמים נמצא השבר 7 4 ?",
-    "key": "1"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "QUALITY_GATE_FAILED"
    }
   }
  ]

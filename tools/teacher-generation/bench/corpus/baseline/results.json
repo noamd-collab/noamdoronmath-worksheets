@@ -30,13 +30,140 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": false,
-   "delivery": null,
-   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": true,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "content-truth",
+      "status": "PASS"
+     },
+     {
+      "name": "pdf",
+      "status": "PASS"
+     },
+     {
+      "name": "word",
+      "status": "PASS"
+     },
+     {
+      "name": "worksheet",
+      "status": "PASS"
+     },
+     {
+      "name": "output-gates",
+      "status": "PASS"
+     },
+     {
+      "name": "house-gates",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [
+     {
+      "code": "SHORTER_SHEET",
+      "count": 5,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 1,
+     "dropped": {
+      "codes": {
+       "PRINTED_ANSWER_KIND": 5
+      },
+      "count": 5
+     },
+     "gate": "deliver",
+     "printedQuestions": 15,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {}
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
    "frameFailure": null,
    "id": "A-division",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 5,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 15,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 5,
+    "gate": "deliver",
+    "printed": 15,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "operations",
     "gradeNumber": 3,
@@ -54,6 +181,13 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen2 (round A)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "clean"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -112,7 +246,48 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [],
+     "skippedChecks": [
+      "worksheet: PASS — pdffonts missing — skipped (warn)",
+      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
+     ],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "content-truth",
+       "status": "PASS"
+      },
+      {
+       "name": "pdf",
+       "status": "PASS"
+      },
+      {
+       "name": "word",
+       "status": "PASS"
+      },
+      {
+       "name": "worksheet",
+       "status": "PASS"
+      },
+      {
+       "name": "output-gates",
+       "status": "PASS"
+      },
+      {
+       "name": "house-gates",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -150,8 +325,8 @@
      ]
     },
     "firstPass": {
-     "code": "SOURCE_NOTATION",
-     "detail": "Invalid or unsupported compact mathematical notation",
+     "code": "PRINTED_EXPRESSION_SCOPE",
+     "detail": "Unverified pupil exercise or mismatched expression at q5.item.1",
      "ok": false
     },
     "requests": 2,
@@ -159,11 +334,84 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:SOURCE_NOTATION",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "failureClass": "SOURCE:PRINTED_EXPRESSION_SCOPE",
+   "finalCode": "PRINTED_EXPRESSION_SCOPE",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "A-order",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_EXPRESSION_SCOPE"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_EXPRESSION_SCOPE"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_EXPRESSION_SCOPE"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       }
+      ],
+      "missing": 6,
+      "planned": 20,
+      "printed": 14,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
+   },
    "lesson": {
     "domain": "operations",
     "gradeNumber": 4,
@@ -181,6 +429,7 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen2 (round A)",
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -292,13 +541,142 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": false,
-   "delivery": null,
-   "failureClass": "SOURCE:SOURCE_TABLE",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": false,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "middle-build",
+      "status": "REVIEW"
+     },
+     {
+      "name": "didactic-review-reconciliation",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [
+     {
+      "code": "DIDACTIC_REVIEW",
+      "count": 41,
+      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
+      "questions": [
+       1,
+       2,
+       4,
+       5,
+       9,
+       10,
+       14,
+       15
+      ]
+     },
+     {
+      "code": "SHORTER_SHEET",
+      "count": 5,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 1,
+     "dropped": {
+      "codes": {
+       "PRINTED_ANSWER_KIND": 3,
+       "SOURCE_TABLE": 2
+      },
+      "count": 5
+     },
+     "gate": "deliver",
+     "printedQuestions": 15,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {
+     "review": 20
+    }
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
    "frameFailure": null,
    "id": "A-equations",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 5,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_TABLE"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_TABLE"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 15,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 5,
+    "gate": "deliver",
+    "printed": 15,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "אלגברי",
     "gradeNumber": 7,
@@ -316,6 +694,13 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen2 (round A)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -372,7 +757,54 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [
+      {
+       "class": "editorial",
+       "code": "DIDACTIC_REVIEW",
+       "count": 41,
+       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
+       "questions": [
+        1,
+        2,
+        4,
+        5,
+        9,
+        10,
+        14,
+        15
+       ],
+       "rules": {
+        "D12": 20,
+        "D5": 20
+       },
+       "steps": [
+        "middle-build"
+       ]
+      }
+     ],
+     "skippedChecks": [],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
+       "status": "REVIEW"
+      },
+      {
+       "name": "didactic-review-reconciliation",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -407,13 +839,102 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": false,
-   "delivery": null,
-   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": false,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "middle-build",
+      "status": "REVIEW"
+     },
+     {
+      "name": "didactic-review-reconciliation",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [
+     {
+      "code": "DIDACTIC_REVIEW",
+      "count": 30,
+      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
+      "questions": [
+       5,
+       8,
+       11,
+       13,
+       18
+      ]
+     },
+     {
+      "code": "SHORTER_SHEET",
+      "count": 1,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 1,
+     "dropped": {
+      "codes": {
+       "PRINTED_ANSWER_KIND": 1
+      },
+      "count": 1
+     },
+     "gate": "deliver",
+     "printedQuestions": 19,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {
+     "review": 15
+    }
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
    "frameFailure": null,
    "id": "A-percent",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 1,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 19,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 1,
+    "gate": "deliver",
+    "printed": 19,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "מספרי",
     "gradeNumber": 8,
@@ -431,6 +952,13 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen2 (round A)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -449,7 +977,51 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [
+      {
+       "class": "editorial",
+       "code": "DIDACTIC_REVIEW",
+       "count": 30,
+       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
+       "questions": [
+        5,
+        8,
+        11,
+        13,
+        18
+       ],
+       "rules": {
+        "D12": 15,
+        "D5": 15
+       },
+       "steps": [
+        "middle-build"
+       ]
+      }
+     ],
+     "skippedChecks": [],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
+       "status": "REVIEW"
+      },
+      {
+       "name": "didactic-review-reconciliation",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -485,8 +1057,8 @@
      ]
     },
     "firstPass": {
-     "code": "SOURCE_NOTATION",
-     "detail": "Invalid or unsupported compact mathematical notation",
+     "code": "SOURCE_RICH_TEXT",
+     "detail": "A text block needs one to thirty typed spans at q9.table.row.1.2",
      "ok": false
     },
     "requests": 2,
@@ -494,11 +1066,78 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:SOURCE_NOTATION",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "failureClass": "SOURCE:SOURCE_RICH_TEXT",
+   "finalCode": "QUALITY_GATE_FAILED",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "A-square",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 5,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_RICH_TEXT"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "UNSUPPORTED_TASK"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "UNSUPPORTED_TASK"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 15,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "gate": "fail",
+    "gateCode": "G75",
+    "question": null,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "גיאומטרי",
     "gradeNumber": 9,
@@ -516,6 +1155,13 @@
    "localAuthor": "square-parameters/1",
    "model": "qwen3.8-flash",
    "origin": "bench/qwen2 (round A)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -569,7 +1215,42 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [
+      {
+       "gate": "G75",
+       "questions": [],
+       "step": "middle-build/build_plus (PDF + gates)",
+       "text": "AssertionError: G75 (figure variety, level b): a figure sheet with drawings on 6 of 15 questions (40%, floor 60%)"
+      },
+      {
+       "gate": "BLOCKING_BUILD_FAILURE",
+       "questions": [],
+       "step": "didactic-review-reconciliation",
+       "text": "ValueError: BLOCKING_BUILD_FAILURE"
+      }
+     ],
+     "reviewFindings": [],
+     "skippedChecks": [],
+     "status": "failed",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "status": "FAIL"
+      },
+      {
+       "name": "didactic-review-reconciliation",
+       "status": "FAIL"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -610,13 +1291,140 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": false,
-   "delivery": null,
-   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": false,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "content-truth",
+      "status": "PASS"
+     },
+     {
+      "name": "pdf",
+      "status": "PASS"
+     },
+     {
+      "name": "word",
+      "status": "PASS"
+     },
+     {
+      "name": "worksheet",
+      "status": "PASS"
+     },
+     {
+      "name": "output-gates",
+      "status": "PASS"
+     },
+     {
+      "name": "house-gates",
+      "status": "REVIEW"
+     }
+    ],
+    "reviewFindings": [
+     {
+      "code": "G62",
+      "count": 4,
+      "note": "כמה סעיפים בדף חוזרים על אותו מבנה תרגיל. אפשר לגוון אותם או להשאיר כתרגול חוזר.",
+      "questions": [
+       1,
+       3
+      ]
+     },
+     {
+      "code": "SHORTER_SHEET",
+      "count": 4,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 1,
+     "dropped": {
+      "codes": {
+       "PRINTED_ANSWER_KIND": 4
+      },
+      "count": 4
+     },
+     "gate": "deliver",
+     "printedQuestions": 16,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {}
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
    "frameFailure": null,
    "id": "B-division",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 4,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "challenges",
+        "question": 18,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 16,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 4,
+    "gate": "deliver",
+    "printed": 16,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "operations",
     "gradeNumber": 3,
@@ -634,6 +1442,13 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen-fresh-01 (round B)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "review"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -682,7 +1497,63 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [
+      {
+       "class": "editorial",
+       "code": "G62",
+       "count": 4,
+       "note": "כמה סעיפים בדף חוזרים על אותו מבנה תרגיל. אפשר לגוון אותם או להשאיר כתרגול חוזר.",
+       "questions": [
+        1,
+        3
+       ],
+       "steps": [
+        "house-gates"
+       ]
+      }
+     ],
+     "skippedChecks": [
+      "worksheet: PASS — pdffonts missing — skipped (warn)",
+      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
+     ],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "content-truth",
+       "status": "PASS"
+      },
+      {
+       "name": "pdf",
+       "status": "PASS"
+      },
+      {
+       "name": "word",
+       "status": "PASS"
+      },
+      {
+       "name": "worksheet",
+       "status": "PASS"
+      },
+      {
+       "name": "output-gates",
+       "status": "PASS"
+      },
+      {
+       "name": "house-gates",
+       "reason": "EDITORIAL_FINDINGS_ONLY",
+       "status": "REVIEW"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -718,8 +1589,8 @@
      ]
     },
     "firstPass": {
-     "code": "SOURCE_NOTATION",
-     "detail": "Invalid or unsupported compact mathematical notation",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q5.item.1",
      "ok": false
     },
     "requests": 2,
@@ -727,11 +1598,87 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:SOURCE_NOTATION",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
+   "finalCode": "QUALITY_GATE_FAILED",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "B-order",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 5,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_EXPRESSION_SCOPE"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "ANSWER_ORDER"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "render"
+       }
+      ],
+      "missing": 1,
+      "planned": 20,
+      "printed": 14,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "gate": "replace",
+    "gateCode": "ANSWER_ORDER",
+    "question": 9,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "operations",
     "gradeNumber": 4,
@@ -749,6 +1696,13 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen-fresh-01 (round B)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "review"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -806,7 +1760,74 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [
+      {
+       "gate": null,
+       "questions": [],
+       "step": "output-gates",
+       "text": "PDF-answer-LTR FAIL GENERAL_ANSWER_VISUAL_ORDER: 9."
+      },
+      {
+       "gate": "G51",
+       "questions": [],
+       "step": "house-gates",
+       "text": "FAIL — G51-bidi: סוגריים הפוכים סביב תוכן מספרי: p7:') x 4 − (', p8:') x (' — החליפו למספור באותיות עבריות (טיפוס חזק)"
+      },
+      {
+       "gate": "G61",
+       "questions": [
+        1,
+        9
+       ],
+       "step": "house-gates",
+       "text": "FAIL — G61-level: פער קושי 5 > 4 — הדף מערבב רמות (Q12=2 מול Q92=7)"
+      }
+     ],
+     "reviewFindings": [],
+     "skippedChecks": [
+      "worksheet: PASS — pdffonts missing — skipped (warn)",
+      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
+     ],
+     "status": "failed",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "content-truth",
+       "status": "PASS"
+      },
+      {
+       "name": "pdf",
+       "status": "PASS"
+      },
+      {
+       "name": "word",
+       "status": "PASS"
+      },
+      {
+       "name": "worksheet",
+       "status": "PASS"
+      },
+      {
+       "name": "output-gates",
+       "status": "FAIL"
+      },
+      {
+       "name": "house-gates",
+       "status": "FAIL"
+      },
+      {
+       "name": "bracket-order-reconciliation",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -843,13 +1864,117 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": false,
-   "delivery": null,
-   "failureClass": "SOURCE:SOURCE_TABLE",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": false,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "middle-build",
+      "status": "REVIEW"
+     },
+     {
+      "name": "didactic-review-reconciliation",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [
+     {
+      "code": "DIDACTIC_REVIEW",
+      "count": 42,
+      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
+      "questions": [
+       1,
+       2,
+       5,
+       7,
+       8,
+       10,
+       13,
+       14,
+       17,
+       18
+      ]
+     },
+     {
+      "code": "SHORTER_SHEET",
+      "count": 2,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 1,
+     "dropped": {
+      "codes": {
+       "PRINTED_ANSWER_KIND": 1,
+       "SOURCE_TABLE": 1
+      },
+      "count": 2
+     },
+     "gate": "deliver",
+     "printedQuestions": 18,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {
+     "review": 21
+    }
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
    "frameFailure": null,
    "id": "B-equations",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 2,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_TABLE"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "challenges",
+        "question": 18,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 18,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 2,
+    "gate": "deliver",
+    "printed": 18,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "אלגברי",
     "gradeNumber": 7,
@@ -867,6 +1992,13 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen-fresh-01 (round B)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -894,7 +2026,56 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [
+      {
+       "class": "editorial",
+       "code": "DIDACTIC_REVIEW",
+       "count": 42,
+       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
+       "questions": [
+        1,
+        2,
+        5,
+        7,
+        8,
+        10,
+        13,
+        14,
+        17,
+        18
+       ],
+       "rules": {
+        "D12": 21,
+        "D5": 21
+       },
+       "steps": [
+        "middle-build"
+       ]
+      }
+     ],
+     "skippedChecks": [],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
+       "status": "REVIEW"
+      },
+      {
+       "name": "didactic-review-reconciliation",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -931,13 +2112,114 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": false,
-   "delivery": null,
-   "failureClass": "SOURCE:SOURCE_TABLE",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": false,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "middle-build",
+      "status": "REVIEW"
+     },
+     {
+      "name": "didactic-review-reconciliation",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [
+     {
+      "code": "DIDACTIC_REVIEW",
+      "count": 42,
+      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
+      "questions": [
+       5,
+       8,
+       10,
+       11,
+       12,
+       17,
+       18
+      ]
+     },
+     {
+      "code": "SHORTER_SHEET",
+      "count": 2,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 1,
+     "dropped": {
+      "codes": {
+       "PRINTED_ANSWER_KIND": 1,
+       "SOURCE_TABLE": 1
+      },
+      "count": 2
+     },
+     "gate": "deliver",
+     "printedQuestions": 18,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {
+     "review": 21
+    }
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
    "frameFailure": null,
    "id": "B-percent",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 2,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_TABLE"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 18,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 2,
+    "gate": "deliver",
+    "printed": 18,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "מספרי",
     "gradeNumber": 8,
@@ -955,6 +2237,13 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen-fresh-01 (round B)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -982,7 +2271,53 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [
+      {
+       "class": "editorial",
+       "code": "DIDACTIC_REVIEW",
+       "count": 42,
+       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
+       "questions": [
+        5,
+        8,
+        10,
+        11,
+        12,
+        17,
+        18
+       ],
+       "rules": {
+        "D12": 21,
+        "D5": 21
+       },
+       "steps": [
+        "middle-build"
+       ]
+      }
+     ],
+     "skippedChecks": [],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
+       "status": "REVIEW"
+      },
+      {
+       "name": "didactic-review-reconciliation",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -1010,16 +2345,33 @@
      "detail": "Wrong number of questions in the authored group",
      "ok": false
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
    "delivered": false,
    "delivery": null,
    "failureClass": "SOURCE:AUTHOR_PLAN_MISMATCH",
-   "finalCode": "AUTHOR_PLAN_MISMATCH",
-   "finalStatus": "failed",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
    "frameFailure": null,
    "id": "B-square",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": false,
+      "replyReceived": true
+     },
+     {
+      "draft": false,
+      "replyReceived": false
+     }
+    ],
+    "attempts": 2,
+    "correctionFailed": false,
+    "corrections": 0,
+    "firstCode": "AUTHOR_PLAN_MISMATCH",
+    "stage": "author"
+   },
    "lesson": {
     "domain": "גיאומטרי",
     "gradeNumber": 9,
@@ -1037,6 +2389,7 @@
    "localAuthor": "square-parameters/1",
    "model": "qwen3.8-flash",
    "origin": "bench/qwen-fresh-01 (round B)",
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -1126,17 +2479,37 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": null,
-     "questions": [],
-     "requested": false,
-     "requiredKeys": null
+     "answered": false,
+     "questions": [
+      1,
+      7,
+      8,
+      9,
+      13,
+      15,
+      17,
+      18,
+      19,
+      20
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q1",
+      "q13",
+      "q18",
+      "q19",
+      "q20",
+      "q7",
+      "q8",
+      "q9"
+     ]
     },
     "firstPass": {
      "code": "SOURCE_FIGURE",
      "detail": "Figure constructor is not supported by this pinned skill",
      "ok": false
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
    "delivered": false,
@@ -1146,6 +2519,115 @@
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "T1-triangle",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_PLAIN_MATH"
+        ],
+        "group": "practice",
+        "question": 7,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_PLAIN_MATH"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_PLAIN_MATH"
+        ],
+        "group": "challenges",
+        "question": 18,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_PLAIN_MATH"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
+       }
+      ],
+      "missing": 10,
+      "planned": 20,
+      "printed": 10,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
+   },
    "lesson": {
     "domain": "גיאומטרי",
     "gradeNumber": 8,
@@ -1163,6 +2645,7 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "middle-renew/generator-live-author",
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -1279,26 +2762,205 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": null,
-     "questions": [],
-     "requested": false,
-     "requiredKeys": null
+     "answered": false,
+     "questions": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      10,
+      11,
+      13,
+      15,
+      17,
+      18,
+      19,
+      20
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q1",
+      "q18",
+      "q19",
+      "q2",
+      "q20",
+      "q3",
+      "q4",
+      "q5"
+     ]
     },
     "firstPass": {
-     "code": "SOURCE_NOTATION",
-     "detail": "Invalid or unsupported compact mathematical notation",
+     "code": "SOURCE_FIGURE",
+     "detail": "Figure constructor is not supported by this pinned skill",
      "ok": false
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:SOURCE_NOTATION",
-   "finalCode": "SOURCE_NOTATION",
+   "failureClass": "SOURCE:SOURCE_FIGURE",
+   "finalCode": "SOURCE_FIGURE",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "T2-triangle",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE_TASK"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE_TASK"
+        ],
+        "group": "practice",
+        "question": 7,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE_TASK"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "challenges",
+        "question": 18,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
+       }
+      ],
+      "missing": 15,
+      "planned": 20,
+      "printed": 5,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
+   },
    "lesson": {
     "domain": "גיאומטרי",
     "gradeNumber": 8,
@@ -1316,6 +2978,7 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "middle-renew/generator-real-qualification-v2",
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -1521,13 +3184,53 @@
       "status": "PASS"
      }
     ],
-    "reviewFindings": []
+    "reviewFindings": [],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 0,
+     "dropped": {
+      "codes": {},
+      "count": 0
+     },
+     "gate": "deliver",
+     "printedQuestions": 12,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 12
+    },
+    "unverifiedAnswers": {}
    },
    "failureClass": "DELIVERED",
    "finalCode": null,
    "finalStatus": "delivered",
    "frameFailure": null,
    "id": "S-g4calc",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [],
+      "missing": 0,
+      "planned": 12,
+      "printed": 12,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": false,
+    "corrections": 0,
+    "dropped": 0,
+    "gate": "deliver",
+    "printed": 12,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "operations",
     "gradeNumber": 4,
@@ -1545,6 +3248,13 @@
    "localAuthor": null,
    "model": "qwen (model id not recorded)",
    "origin": "shared-engine-qa",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "clean"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [],
    "questions": {
@@ -1658,13 +3368,55 @@
        20
       ]
      }
-    ]
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 0,
+     "dropped": {
+      "codes": {},
+      "count": 0
+     },
+     "gate": "deliver",
+     "printedQuestions": 20,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {
+     "review": 31
+    }
    },
    "failureClass": "DELIVERED",
    "finalCode": null,
    "finalStatus": "delivered",
    "frameFailure": null,
    "id": "S-g7eq",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [],
+      "missing": 0,
+      "planned": 20,
+      "printed": 20,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": false,
+    "corrections": 0,
+    "dropped": 0,
+    "gate": "deliver",
+    "printed": 20,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "אלגברי",
     "gradeNumber": 7,
@@ -1682,6 +3434,13 @@
    "localAuthor": null,
    "model": "qwen (model id not recorded)",
    "origin": "shared-engine-qa",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [],
    "questions": {
@@ -1767,18 +3526,120 @@
      ]
     },
     "firstPass": {
-     "ok": true
+     "code": "QUALITY_GATE_FAILED",
+     "detail": "A planned question was refused and nothing replaced it",
+     "ok": false
     },
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": false,
-   "delivery": null,
-   "failureClass": "GATES:G32+G62",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": false,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "content-truth",
+      "status": "PASS"
+     },
+     {
+      "name": "pdf",
+      "status": "PASS"
+     },
+     {
+      "name": "word",
+      "status": "PASS"
+     },
+     {
+      "name": "worksheet",
+      "status": "PASS"
+     },
+     {
+      "name": "output-gates",
+      "status": "PASS"
+     },
+     {
+      "name": "house-gates",
+      "status": "REVIEW"
+     }
+    ],
+    "reviewFindings": [
+     {
+      "code": "G62",
+      "count": 6,
+      "note": "כמה סעיפים בדף חוזרים על אותו מבנה תרגיל. אפשר לגוון אותם או להשאיר כתרגול חוזר.",
+      "questions": [
+       2,
+       12
+      ]
+     },
+     {
+      "code": "SHORTER_SHEET",
+      "count": 1,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 1,
+     "dropped": {
+      "codes": {
+       "G32": 1
+      },
+      "count": 1
+     },
+     "gate": "deliver",
+     "printedQuestions": 19,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {}
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
    "frameFailure": null,
    "id": "G-division",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 1,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "G32"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 19,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 1,
+    "gate": "deliver",
+    "printed": 19,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "operations",
     "gradeNumber": 3,
@@ -1796,49 +3657,54 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "review"
+    }
+   ],
    "provider": "gemini",
-   "questionFailures": [],
+   "questionFailures": [
+    {
+     "code": "QUALITY_GATE_FAILED",
+     "detail": "A planned question was refused and nothing replaced it",
+     "field": "intro",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "מצאו את המספר ההתחלתי שחולק בכל מקרה."
+    }
+   ],
    "questions": {
-    "failingAlone": 0,
+    "failingAlone": 1,
     "total": 20
    },
    "recorded": "2026-11-23 14:07Z",
    "renders": [
     {
      "attempt": 1,
-     "engineFeedback": [
+     "gateFindings": [],
+     "reviewFindings": [
       {
-       "codes": [
-        "G32"
-       ],
-       "question": 6
-      }
-     ],
-     "gateFindings": [
-      {
-       "gate": "G32",
-       "questions": [
-        6
-       ],
-       "step": "content-truth",
-       "text": "✗ G32 [content.json.questions#6] טענה כוללת/שלילת קיום ('בכל מקרה') בלי רישום ב-verified.json — הריצו no_counterexample על תחום חסום ורשמו ב-Ledger"
-      },
-      {
-       "gate": "G62",
+       "class": "editorial",
+       "code": "G62",
+       "count": 6,
+       "note": "כמה סעיפים בדף חוזרים על אותו מבנה תרגיל. אפשר לגוון אותם או להשאיר כתרגול חוזר.",
        "questions": [
         2,
-        13
+        12
        ],
-       "step": "house-gates",
-       "text": "FAIL — G62-clones: 6 פריטים זהים מבנית (Q21, Q22, Q23, Q131, Q132): «חשבו:#:#»"
+       "steps": [
+        "house-gates"
+       ]
       }
      ],
-     "reviewFindings": [],
      "skippedChecks": [
       "worksheet: PASS — pdffonts missing — skipped (warn)",
       "worksheet: PASS — pdftoppm missing — skipped render (warn)"
      ],
-     "status": "failed",
+     "status": "needs_review",
      "steps": [
       {
        "name": "trusted-adapter",
@@ -1846,7 +3712,7 @@
       },
       {
        "name": "content-truth",
-       "status": "FAIL"
+       "status": "PASS"
       },
       {
        "name": "pdf",
@@ -1866,7 +3732,8 @@
       },
       {
        "name": "house-gates",
-       "status": "FAIL"
+       "reason": "EDITORIAL_FINDINGS_ONLY",
+       "status": "REVIEW"
       }
      ]
     }
@@ -1946,13 +3813,53 @@
        17
       ]
      }
-    ]
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 0,
+     "dropped": {
+      "codes": {},
+      "count": 0
+     },
+     "gate": "deliver",
+     "printedQuestions": 20,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {}
    },
    "failureClass": "DELIVERED",
    "finalCode": null,
    "finalStatus": "delivered",
    "frameFailure": null,
    "id": "G-order",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [],
+      "missing": 0,
+      "planned": 20,
+      "printed": 20,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": false,
+    "corrections": 0,
+    "dropped": 0,
+    "gate": "deliver",
+    "printed": 20,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "operations",
     "gradeNumber": 4,
@@ -1970,6 +3877,13 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "review"
+    }
+   ],
    "provider": "gemini",
    "questionFailures": [],
    "questions": {
@@ -2074,16 +3988,33 @@
      "detail": "Provider response did not match the expected JSON envelope",
      "ok": false
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
    "delivered": false,
    "delivery": null,
    "failureClass": "PROVIDER:PROVIDER_INVALID_RESPONSE",
-   "finalCode": "PROVIDER_INVALID_RESPONSE",
-   "finalStatus": "failed",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
    "frameFailure": null,
    "id": "G-equations",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": false,
+      "replyReceived": false
+     },
+     {
+      "draft": false,
+      "replyReceived": false
+     }
+    ],
+    "attempts": 2,
+    "correctionFailed": false,
+    "corrections": 0,
+    "firstCode": "PROVIDER_INVALID_RESPONSE",
+    "stage": "author"
+   },
    "lesson": {
     "domain": "אלגברי",
     "gradeNumber": 7,
@@ -2101,6 +4032,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [],
    "questions": {
@@ -2138,20 +4070,116 @@
      ]
     },
     "firstPass": {
-     "code": "SOURCE_NOTATION",
-     "detail": "Invalid or unsupported compact mathematical notation",
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q9.table.row.1.1",
      "ok": false
     },
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": false,
-   "delivery": null,
-   "failureClass": "SOURCE:SOURCE_NOTATION",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": false,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "middle-build",
+      "status": "REVIEW"
+     },
+     {
+      "name": "didactic-review-reconciliation",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [
+     {
+      "code": "DIDACTIC_REVIEW",
+      "count": 4,
+      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
+      "questions": [
+       10,
+       18
+      ]
+     },
+     {
+      "code": "SHORTER_SHEET",
+      "count": 2,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 1,
+     "dropped": {
+      "codes": {
+       "SOURCE_NOTATION": 1,
+       "SOURCE_PLAIN_MATH": 1
+      },
+      "count": 2
+     },
+     "gate": "deliver",
+     "printedQuestions": 18,
+     "replaced": {
+      "codes": {},
+      "count": 0
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {
+     "review": 2
+    }
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
    "frameFailure": null,
    "id": "G-percent",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 2,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_PLAIN_MATH"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 18,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 0,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 2,
+    "gate": "deliver",
+    "printed": 18,
+    "replaced": 0,
+    "stage": "render"
+   },
    "lesson": {
     "domain": "מספרי",
     "gradeNumber": 8,
@@ -2169,6 +4197,13 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -2195,7 +4230,48 @@
     "total": 20
    },
    "recorded": "2026-11-23 14:10Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [
+      {
+       "class": "editorial",
+       "code": "DIDACTIC_REVIEW",
+       "count": 4,
+       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
+       "questions": [
+        10,
+        18
+       ],
+       "rules": {
+        "D12": 2,
+        "D5": 2
+       },
+       "steps": [
+        "middle-build"
+       ]
+      }
+     ],
+     "skippedChecks": [],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
+       "status": "REVIEW"
+      },
+      {
+       "name": "didactic-review-reconciliation",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -2221,16 +4297,39 @@
     "firstPass": {
      "ok": true
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
    "delivered": false,
    "delivery": null,
    "failureClass": "GATES:BLOCKING_BUILD_FAILURE+G75",
-   "finalCode": "QUALITY_GATE_FAILED",
-   "finalStatus": "failed",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
    "frameFailure": null,
    "id": "G-square",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [],
+      "missing": 0,
+      "planned": 20,
+      "printed": 20,
+      "reservesOffered": 0,
+      "reservesRefused": 0
+     },
+     {
+      "draft": false,
+      "replyReceived": false
+     }
+    ],
+    "attempts": 2,
+    "correctionFailed": false,
+    "corrections": 0,
+    "firstCode": "QUALITY_GATE_FAILED",
+    "stage": "author"
+   },
    "lesson": {
     "domain": "גיאומטרי",
     "gradeNumber": 9,
@@ -2248,6 +4347,13 @@
    "localAuthor": "square-parameters/1",
    "model": "gemini-3.8-flash",
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
    "provider": "gemini",
    "questionFailures": [],
    "questions": {
@@ -2258,7 +4364,6 @@
    "renders": [
     {
      "attempt": 1,
-     "engineFeedback": [],
      "gateFindings": [
       {
        "gate": "G75",
@@ -2310,41 +4415,43 @@
   "byProvider": {
    "gemini": {
     "cases": 5,
-    "delivered": 1,
-    "failingAlone": 2,
+    "delivered": 3,
+    "failingAlone": 3,
     "questions": 100
    },
    "qwen": {
     "cases": 14,
-    "delivered": 2,
+    "delivered": 8,
     "failingAlone": 67,
     "questions": 272
    }
   },
   "cases": 19,
-  "delivered": 3,
-  "deliveredRate": 0.1579,
+  "correctionsNotRecorded": 13,
+  "delivered": 11,
+  "deliveredRate": 0.5789,
+  "deliveredShorter": 8,
   "failureClasses": {
-   "DELIVERED": 3,
+   "DELIVERED": 11,
    "GATES:BLOCKING_BUILD_FAILURE+G75": 1,
-   "GATES:G32+G62": 1,
    "PROVIDER:PROVIDER_INVALID_RESPONSE": 1,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 1,
-   "SOURCE:PRINTED_ANSWER_KIND": 3,
-   "SOURCE:SOURCE_FIGURE": 1,
-   "SOURCE:SOURCE_NOTATION": 5,
-   "SOURCE:SOURCE_TABLE": 3
+   "SOURCE:PRINTED_ANSWER_KIND": 1,
+   "SOURCE:PRINTED_EXPRESSION_SCOPE": 1,
+   "SOURCE:SOURCE_FIGURE": 2,
+   "SOURCE:SOURCE_RICH_TEXT": 1
   },
   "finalStatus": {
-   "delivered": 3,
+   "delivered": 11,
    "failed": 5,
-   "needs_unrecorded_reply": 11
+   "needs_unrecorded_reply": 3
   },
   "firstRenderGateFindings": {
-   "BLOCKING_BUILD_FAILURE": 1,
-   "G32": 1,
-   "G62": 1,
-   "G75": 1
+   "BLOCKING_BUILD_FAILURE": 2,
+   "G51": 1,
+   "G61": 1,
+   "G75": 2,
+   "output-gates": 1
   },
   "modelCalls": 0,
   "outboundConnectionsRefused": 0,
@@ -2352,6 +4459,7 @@
    "byCode": {
     "PRINTED_ANSWER_KIND": 20,
     "PRINTED_EXPRESSION_SCOPE": 4,
+    "QUALITY_GATE_FAILED": 1,
     "SOURCE_FIGURE": 16,
     "SOURCE_FIGURE_TASK": 3,
     "SOURCE_NOTATION": 10,
@@ -2360,10 +4468,11 @@
     "SOURCE_TABLE": 4,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 69,
-   "failingShare": 0.1855,
+   "failingAlone": 70,
+   "failingShare": 0.1882,
    "total": 372
-  }
+  },
+  "secondAttemptsNotRecorded": 3
  },
  "version": 1
 }
