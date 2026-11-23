@@ -247,15 +247,17 @@ class Draft:
         """Whether one correction call could help the current sheet."""
         return bool(self.selection.missing()) or self._notation_fix() is not None
 
-    def _feedback(self, slot):
+    def _feedback(self, slot, *, locate=True):
+        """The fixed instruction of each code; with ``locate`` also the field and substring of a source fault."""
         refusal = self._refusals.get(id(slot.removed)) if slot.removed is not None else None
+        built = (slot.event or {}).get('stage') not in ('source', 'correction')  # refused by a check of the built sheet
         rows = []
         for code in slot.codes or (NO_QUESTION,):
-            if refusal is not None and refusal.code == code:
+            if locate and not built and refusal is not None and refusal.code == code:
                 text = refusal_feedback(slot.removed, refusal, self.requested, self.scope, self._instructions,
                                         challenge=slot.group == CHALLENGES)
             else:
-                text = instruction_for(code, self._instructions, gate=True)
+                text = instruction_for(code, self._instructions, gate=built)
             if text not in rows:
                 rows.append(text)
         return rows
@@ -692,9 +694,10 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                 if draft._notation_fix() is not None:
                     session["sourceFindings"] = [{"kind": "mark_math", "codes": ["SOURCE_PLAIN_MATH"]}]
                 elif draft.missing():
+                    # Positions, codes and fixed instructions only: no worksheet text.
                     session["sourceFindings"] = [
                         {"question": number, "codes": list(draft.selection.slot(number).codes),
-                         "feedback": draft._feedback(draft.selection.slot(number))}
+                         "feedback": draft._feedback(draft.selection.slot(number), locate=False)}
                         for number in draft.missing()]
             failed(exc)
         measured['validated'] = True

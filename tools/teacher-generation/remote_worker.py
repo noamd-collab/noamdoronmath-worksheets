@@ -409,14 +409,15 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
             while True:
                 # The pre-pass builds content.json and runs the gates that read it: no PDF, no Word file.
                 while prepass and checks < PRECHECK_PASSES:
-                    checks += 1
                     state['stage'] = 'precheck'
                     current, salvage = sheet()
-                    folder = fresh(f'check-{number}-{checks}')
+                    folder = fresh(f'check-{number}-{checks + 1}')
                     result = precheck_job(current, payload, folder, **salvage)
                     if result.get('status') == 'not_applicable':
+                        # Nothing was written and no round was spent; the render's own adapter step decides.
                         prepass = False
                         break
+                    checks += 1
                     named = blocking_questions(folder, 'elementary', result.get('steps') or [], result.get('gate'),
                                                current['questionCount'])
                     if not named:

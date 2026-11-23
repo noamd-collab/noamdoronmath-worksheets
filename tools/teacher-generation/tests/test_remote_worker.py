@@ -766,6 +766,53 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(renderer.call_args.args[1], 'sheet-2')
         self.assertEqual(draft.corrections, 0)
 
+    def test_an_adapter_refusal_before_any_build_is_a_pre_pass_round_and_names_its_code(self):
+        self.use_general_lesson()
+        draft = FakeDraft(self.job['lesson'], reserves=3)
+        renders = []
+        def refused(target, question):
+            # As the runner leaves a render that stopped at the trusted adapter (skill_feedback.adapter_refusal).
+            target.mkdir(parents=True)
+            (target / 'logs').mkdir()
+            (target / 'logs/trusted-adapter.txt').write_text('general_source.GeneralSourceError: PRIVATE_TEXT\n')
+            (target / 'adapter-failure.json').write_text(json.dumps(
+                {'version': 1, 'step': 'trusted-adapter', 'code': 'PRINTED_TASK_MISMATCH', 'question': question, 'item': 2}))
+            return {'status': 'failed', 'skill': {'name': 'middle'}, 'artifacts': [],
+                    'steps': [{'name': 'trusted-adapter', 'status': 'FAIL', 'exitCode': 1, 'log': 'logs/trusted-adapter.txt'}],
+                    'gate': {'version': 1, 'action': 'replace', 'complete': True, 'questions': [question], 'review': [],
+                             'blocking': [{'code': 'TRUSTED_ADAPTER', 'class': 'truth', 'step': 'trusted-adapter',
+                                           'question': question, 'item': 2}]}}
+        def render(lesson, payload, target, **kwargs):
+            renders.append(target)
+            if len(renders) <= 2:
+                return refused(target, 4 if len(renders) == 1 else 7)
+            if len(renders) == 3:
+                return self.failed_gate(lesson, payload, target)        # a full render: the build ran
+            return self.rendered_general(lesson, payload, target)
+        not_applicable = lambda lesson, payload, target, **kwargs: {'version': 1, 'status': 'not_applicable', 'steps': [], 'gate': None}
+        initial, renderer, checker = self.run_general(self.general_author([draft]), render, precheck=not_applicable)
+        # Two adapter rounds, then the one re-render after a full render named a question.
+        self.assertEqual(renderer.call_count, 4)
+        self.assertEqual(draft.replaced, [{4: ['TRUSTED_ADAPTER', 'PRINTED_TASK_MISMATCH']},
+                                          {7: ['TRUSTED_ADAPTER', 'PRINTED_TASK_MISMATCH']}, {2: ['G32']}])
+        checker.assert_called_once()                                      # the pre-pass does not apply; it is not asked again
+        self.assertEqual(len(set(renders)), 4)
+        self.assertEqual(len(self.remote.uploads()), 2)
+        # A third adapter refusal has no round left: the attempt ends, and with the window closed so does the job.
+        root = self.root / 'third'
+        root.mkdir()
+        self.remote = FakeRemote()
+        draft = FakeDraft(self.job['lesson'], reserves=5)
+        count = []
+        def always(lesson, payload, target, **kwargs):
+            count.append(target)
+            return refused(target, len(count))
+        with patch.object(worker, 'MODEL_CALL_WINDOW', 0), self.assertRaises(GenerationError) as caught:
+            self.run_general(self.general_author([draft]), always, root=root, precheck=not_applicable)
+        self.assertEqual((caught.exception.code, len(count), len(draft.replaced)), ('QUALITY_GATE_FAILED', 3, 2))
+        self.assertEqual(caught.exception.job_failure, {'stage': 'render', 'question': 3, 'gate': 'TRUSTED_ADAPTER',
+                                                        'attempts': 1, 'corrections': 0})
+
     def test_a_job_folder_that_already_holds_the_next_folder_is_refused(self):
         self.use_general_lesson()
         for symlink in (True, False):
