@@ -94,7 +94,12 @@ test('twelve reviewed topics retain their previous catalog and offer all 36 stud
         assert.ok(new URL(download.url).pathname.endsWith('_' + level.pdfId + '.pdf'));
       }
       assert.equal(added.levels[i].href, file.downloads[0].url);
-      assert.equal(added.levels[i].partialHints, undefined);
+      if (pack.number === 111) {
+        assert.equal(added.levels[i].partialHints?.href, '/ramzi-partial?pdf=' + level.pdfId);
+        assert.equal(added.levels[i].partialHints?.label, 'רמזי ל־60 סעיפים');
+      } else {
+        assert.equal(added.levels[i].partialHints, undefined);
+      }
       assert.ok(parts.some(part => part.contentUrl === file.downloads[0].url));
       media.add(level.pdfId);
     }
