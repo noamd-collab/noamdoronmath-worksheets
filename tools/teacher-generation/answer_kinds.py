@@ -48,7 +48,8 @@ DECISION_GUIDE = (
     "calculations printed in that item. Never write the yes or the no: the compiler decides the claim and "
     "prints the verdict with its calculation. Ask one decidable claim per item, e.g. "
     "'האם המנה של [[56 : 8]] גדולה מ־[[5]]?' with relation gt, left 56/8, right 5, or "
-    "'האם [[32 : 4 = 7]] נכון?' with relation eq, left 32/4, right 7.")
+    "'האם [[32 : 4 = 7]] נכון?' with relation eq, left 32/4, right 7. A question that offers two outcomes "
+    "('קטן או גדול מ...') is not a yes/no question: give it a compare task with the two printed sides.")
 ELEMENTARY_KINDS_GUIDE = (
     "Two more answer kinds exist for grades 1-6 only. {\"kind\":\"open\"} is for an item with no single answer "
     "that the pupil draws, builds, measures, explains or invents ('ציירו', 'שרטטו', 'בנו', 'מדדו', 'הסבירו', "
