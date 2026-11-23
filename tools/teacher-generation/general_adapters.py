@@ -552,7 +552,38 @@ def _compile_middle(lesson, source, evidence, scope, skill, work):
     (work / "content.py").write_text(MIDDLE_BRIDGE+'PACKAGE = "G'+str(lesson["gradeNumber"])+'-T90"\n', encoding="utf-8")
 
 
+def refusal_location(error, trace):
+    """Which question (and item) a compile refusal belongs to.
+
+    The compilers stop at their first refusal and the exception carries no
+    position, so the position is read from the compiling frame: ``n`` is the
+    question being compiled and ``item_id`` the item, when one is open.
+    Returns {"code", "question"?, "item"?} with no text of the draft.
+    """
+    code = getattr(error, "code", None)
+    where = {"code": code if isinstance(code, str) and re.fullmatch(r"[A-Z_]{1,60}", code) else None}
+    while trace is not None:
+        frame = trace.tb_frame
+        if (frame.f_code.co_name in ("_compile_elementary", "_compile_middle")
+                and Path(frame.f_code.co_filename).name == "general_adapters.py"):
+            n, j = frame.f_locals.get("n"), frame.f_locals.get("j")
+            if type(n) is int and n > 0:
+                where["question"] = n
+                if type(j) is int and frame.f_locals.get("item_id") == f"q{n}-i{j}":
+                    where["item"] = j
+        trace = trace.tb_next
+    return where
+
+
+def _report_refusal(kind, error, trace):
+    sys.__excepthook__(kind, error, trace)
+    if isinstance(error, (GeneralSourceError, AssertionError)):
+        # One fixed line after the traceback, read by skill_feedback.parse_adapter.
+        print("ADAPTER-REFUSED " + json.dumps(refusal_location(error, trace)), file=sys.stderr)
+
+
 if __name__ == "__main__":
+    sys.excepthook = _report_refusal
     ap = argparse.ArgumentParser(); ap.add_argument("--skill", required=True); ap.add_argument("--work", required=True)
     args = ap.parse_args(); wd = Path(args.work)
     load = lambda name: json.loads((wd / name).read_text(encoding="utf-8"))

@@ -50,6 +50,17 @@ GATES = {
     "WORD_LAYOUT": (TRUTH, False),       # docx_layout.py, docx_web_layout.py and their provenance steps
     "ARTIFACT_MISSING": (TRUTH, False),  # runner.py artifact-presence, word-upstream-presence
     "ANSWER_ORDER": (TRUTH, True),       # output_gates.py PDF-answer-LTR: the printed key reads in another order
+    # The engine's own error codes for a printed key or figure it could not
+    # bind (GeneralSourceError.code). In the trusted-adapter step they arrive
+    # as TRUSTED_ADAPTER; a caller that holds the exception can classify the code.
+    "PRINTED_TASK_MISMATCH": (TRUTH, True),         # printed_tasks.py:27, general_adapters.py:419
+    "PRINTED_ANSWER_KIND": (TRUTH, True),           # printed_tasks.py:53
+    "PRINTED_EXPRESSION_SCOPE": (TRUTH, True),      # printed_elementary.py:61
+    "PRINTED_EXPRESSION_MISMATCH": (TRUTH, True),   # printed_elementary.py:61
+    "UNVERIFIED_ANSWERS": (TRUTH, False),           # general_adapters.py:340
+    "UNVERIFIED_FIGURE": (TRUTH, True),             # general_adapters.py:382
+    "DRAWING_POLICY": (POLICY, True),               # general_source.py:118 drawings outside geometry
+    "SOURCE_NIQQUD": (POLICY, True),                # general_source.py:184 vocalization by grade
     # --- elementary scripts/lib/content_truth.py ----------------------------
     "G31": (TRUTH, True),    # :431 a side triple that is no triangle, or a real one called impossible
     "G32": (TRUTH, True),    # :473 a universal claim or an existence denial without a recorded check
@@ -203,6 +214,10 @@ def review_findings(rows):
         question = row.get("question")
         if question is not None and question not in entry["questions"]:
             entry["questions"].append(question)
+        rule = (row.get("evidence") or {}).get("rule")
+        if isinstance(rule, str):  # the middle checker's own rule id, for example D12
+            rules = entry.setdefault("rules", {})
+            rules[rule] = rules.get(rule, 0) + 1
     result = []
     for entry in grouped.values():
         entry["questions"] = sorted(entry["questions"])[:MAX_REVIEW_QUESTIONS]

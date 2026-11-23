@@ -164,6 +164,43 @@ class PinnedSkillTests(unittest.TestCase):
                 recorded = [c["id"] for c in json.loads((work / "verified.json").read_text())["claims"] if c["id"] == "4"]
                 self.assertEqual(recorded, ["4"] if status == "clean" else [])
 
+    def test_adapter_refusal_inside_the_compiler_names_the_question_and_item(self):
+        # A binder that only the trusted adapter runs refuses the second item of question 3.
+        script = (
+            "import json, sys\n"
+            "from pathlib import Path\n"
+            "from unittest.mock import patch\n"
+            "sys.path.insert(0, sys.argv[1])\n"
+            "import general_adapters as adapters\n"
+            "from general_source import GeneralSourceError, validate_source\n"
+            "from runtime_catalog import scope_for_lesson\n"
+            "lesson = json.loads(Path(sys.argv[2]).read_text()); model = json.loads(Path(sys.argv[3]).read_text())\n"
+            "scope = scope_for_lesson(lesson); seen = []\n"
+            "def refuse(lesson, question, item, computed):\n"
+            "    seen.append(item)\n"
+            "    if len(seen) == int(sys.argv[6]):\n"
+            "        raise GeneralSourceError('PRINTED_TASK_MISMATCH', 'The exact answer disagrees with the printed task')\n"
+            "with patch.object(adapters, 'place_answer', side_effect=refuse):\n"
+            "    try:\n"
+            "        adapters.compile_source(lesson, validate_source(lesson, model, scope), scope, sys.argv[4], sys.argv[5])\n"
+            "    except GeneralSourceError as error:\n"
+            "        adapters._report_refusal(type(error), error, error.__traceback__)\n"
+            "        print(json.dumps(adapters.refusal_location(error, error.__traceback__)))\n"
+        )
+        import subprocess
+        fixture = HERE / "cloud/container/fixtures/general/grade4-skill-calculation"
+        sizes = [len(q["items"]) for q in self.model["sections"][0]["questions"]]
+        call = sizes[0] + sizes[1] + 2
+        done = subprocess.run([sys.executable, "-B", "-c", script, str(HERE), str(fixture / "lesson.json"),
+                               str(fixture / "model-output.json"), str(self.skill), str(self.root / "runs/refusal"), str(call)],
+                              capture_output=True, text=True, timeout=120)
+        self.assertEqual(json.loads(done.stdout), {"code": "PRINTED_TASK_MISMATCH", "question": 3, "item": 2}, done.stderr)
+        from skill_feedback import parse_adapter
+        rows, complete = parse_adapter(done.stderr)
+        self.assertEqual(rows, [{"code": "TRUSTED_ADAPTER", "class": "truth", "step": "trusted-adapter", "question": 3, "item": 2,
+                                 "evidence": {"error": "GeneralSourceError", "refusal": "PRINTED_TASK_MISMATCH"}}])
+        self.assertTrue(complete)
+
     def test_gate_content_follows_the_pinned_schema_and_the_page_keeps_its_stars(self):
         result, work = self.precheck("", "schema")
         self.assertEqual(result["status"], "clean")

@@ -271,6 +271,16 @@ class GateReportTests(unittest.TestCase):
         self.assertEqual((rows[0]["question"], rows[0]["item"]), (3, 2))
         rows, _ = parse_adapter("general_source.GeneralSourceError: The printed words and exact counting key disagree")
         self.assertNotIn("question", rows[0])
+        # The adapter's own position line names the question when the message does not.
+        refused = "general_source.GeneralSourceError: The printed words and exact counting key disagree\nADAPTER-REFUSED "
+        rows, _ = parse_adapter(refused + '{"code": "PRINTED_TASK_MISMATCH", "question": 7, "item": 3}\n')
+        self.assertEqual((rows[0]["question"], rows[0]["item"], rows[0]["evidence"]),
+                         (7, 3, {"error": "GeneralSourceError", "refusal": "PRINTED_TASK_MISMATCH"}))
+        rows, _ = parse_adapter(ADAPTER_REFUSAL + 'ADAPTER-REFUSED {"code": "PRINTED_ANSWER_KIND"}\n')
+        self.assertEqual((rows[0]["question"], rows[0]["item"], rows[0]["evidence"]["refusal"]), (5, 1, "PRINTED_ANSWER_KIND"))
+        for forged in ('{"code": "x y", "question": 700}', '{"question": "7"}', 'not json', '[1]'):
+            rows, _ = parse_adapter(refused + forged + "\n")
+            self.assertEqual((rows[0]["code"], rows[0].get("question"), rows[0]["evidence"]), ("TRUSTED_ADAPTER", None, {"error": "GeneralSourceError"}))
         self.assertNotIn("private", json.dumps(rows))
 
     def test_every_house_line_is_classified_and_unknown_lines_block(self):
@@ -468,7 +478,8 @@ class GateReportTests(unittest.TestCase):
         self.assertEqual([row["evidence"] for row in report["findings"]], [{"rule": "D12"}, {"rule": "D5"}, {"rule": "D10"}])
         decision = decide(report, [])
         self.assertEqual(decision["action"], "deliver")
-        self.assertEqual([(r["code"], r["count"], r["questions"]) for r in decision["reviewFindings"]], [("DIDACTIC_REVIEW", 3, [1, 19])])
+        self.assertEqual([(r["code"], r["count"], r["questions"], r["rules"]) for r in decision["reviewFindings"]],
+                         [("DIDACTIC_REVIEW", 3, [1, 19], {"D12": 1, "D5": 1, "D10": 1})])
         self.assertNotIn("private", json.dumps(report))
 
 

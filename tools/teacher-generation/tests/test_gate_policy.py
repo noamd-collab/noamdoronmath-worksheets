@@ -35,9 +35,12 @@ class TableTests(unittest.TestCase):
 
     def test_unknown_codes_adapter_and_printed_key_failures_are_truth(self):
         for code in ("G99", "", None, "NEW_GATE", "TRUSTED_ADAPTER", "ANSWER_ORDER", "G32", "G60", "G65",
-                     "RENDER_TIMEOUT", "STEP_FAILED", "UNREADABLE", "D12", "K6", "G51"):
+                     "RENDER_TIMEOUT", "STEP_FAILED", "UNREADABLE", "D12", "K6", "G51", "PRINTED_TASK_MISMATCH",
+                     "PRINTED_ANSWER_KIND", "PRINTED_EXPRESSION_SCOPE", "PRINTED_EXPRESSION_MISMATCH",
+                     "UNVERIFIED_ANSWERS", "UNVERIFIED_FIGURE", "SOURCE_NOTATION", "INVALID_TASK"):
             self.assertEqual(policy.gate_class(code), TRUTH, code)
-        self.assertEqual([policy.gate_class(code) for code in ("G66", "G84", "G69", "G54", "D6")], [POLICY] * 5)
+        self.assertEqual([policy.gate_class(code) for code in ("G66", "G84", "G69", "G54", "D6", "DRAWING_POLICY", "SOURCE_NIQQUD")],
+                         [POLICY] * 7)
         self.assertTrue(policy.names_questions("G32"))
         self.assertFalse(policy.names_questions("PAGE_FILL"))
         self.assertFalse(policy.names_questions("G99"))

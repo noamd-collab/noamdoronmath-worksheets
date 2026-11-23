@@ -279,8 +279,13 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--lesson',required=True);p.add_argument('--model-output',required=True);p.add_argument('--out',required=True);p.add_argument('--allow-legacy-intake',action='store_true',help='Offline reproduction of v1 intake only; never permitted for queued jobs')
+    p.add_argument('--precheck',action='store_true',help='Elementary version 3 lessons: run only the trusted adapter and the gates that read content.json; no PDF or Word file')
     a=p.parse_args()
     try:
+        if a.precheck:
+            r=precheck_job(read_json(a.lesson),read_json(a.model_output),a.out)
+            print(json.dumps({'status':r['status'],'gate':r['gate']},ensure_ascii=False))
+            sys.exit(0 if r['status'] in ('clean','review') else 1)
         m=render_job(read_json(a.lesson),read_json(a.model_output),a.out,allow_legacy=a.allow_legacy_intake)
         print(json.dumps({'status':m['status'],'manifest':str(Path(a.out)/'manifest.json'),'artifacts':m['artifacts']},ensure_ascii=False))
         sys.exit(0 if m['status']=='needs_review' else 1)

@@ -511,10 +511,28 @@ def parse_output_gates(text, step="output-gates"):
 
 
 def parse_adapter(text, step="trusted-adapter"):
-    """The trusted adapter stops at its first refusal; the last line is the exception."""
-    last = next((line.strip() for line in reversed(text.splitlines()) if line.strip()), "")
+    """The trusted adapter stops at its first refusal.
+
+    Its last lines are the exception and, from general_adapters, one
+    'ADAPTER-REFUSED {"code", "question", "item"}' line with the position of
+    the question it was compiling. Some messages also end with the position.
+    """
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    marker = next((line for line in reversed(lines) if line.startswith("ADAPTER-REFUSED ")), None)
+    last = next((line for line in reversed(lines) if line is not marker), "")
     kind = re.match(r"(?:[A-Za-z_][A-Za-z0-9_]*\.)*([A-Z][A-Za-z]{1,38}(?:Error|Exception)): ", last)
     evidence = {"error": kind[1]} if kind else {}
+    if marker:
+        try:
+            told = json.loads(marker[len("ADAPTER-REFUSED "):])
+            code, question, item = told.get("code"), told.get("question"), told.get("item")
+            if isinstance(code, str) and re.fullmatch(r"[A-Z_]{1,60}", code):
+                evidence["refusal"] = code
+            if type(question) is int and 1 <= question <= 99:
+                return [_finding("TRUSTED_ADAPTER", step, question,
+                                 item if type(item) is int and 1 <= item <= 9 else None, **evidence)], True
+        except (ValueError, AttributeError):
+            pass
     where = re.search(r"\bat q([1-9][0-9]?)\.item\.([1-9])\s*$", last)
     claim = re.match(r"AssertionError: \[([1-9][0-9]?)(?:\.([1-9]))?(?:\.[a-z]{1,12})?\] claim is FALSE ", last)
     if where:
