@@ -1,0 +1,143 @@
+{
+ "family": "money",
+ "probes": [
+  {
+   "id": "money-01",
+   "topic": "ג25",
+   "intro": "חשבו.",
+   "prompt": "דנה קנתה מחברת ב־[[12.50]] שקלים ועט ב־[[7.90]] שקלים. כמה שילמה?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12.50 + 7.90"
+    },
+    "unit": "שקלים"
+   },
+   "expect": {
+    "key": [
+     "20.4"
+    ],
+    "keyContains": [
+     "20.40"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch",
+     "print_adds_numbers"
+    ],
+    "notes": [
+     "key lacks '20.40'"
+    ],
+    "printed": "דנה קנתה מחברת ב־ 12.50 שקלים ועט ב־ 7.90 שקלים. כמה שילמה? 12.50 + 7.90",
+    "key": "20.4 שקלים"
+   }
+  },
+  {
+   "id": "money-02",
+   "topic": "ג25",
+   "intro": "חשבו.",
+   "prompt": "דנה שילמה [[50]] ₪ על קנייה של [[37]] ₪. כמה עודף קיבלה?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "50 - 37"
+    },
+    "unit": "₪"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "דנה שילמה 50 ₪ על קנייה של 37 ₪. כמה עודף קיבלה? 50 − 37",
+    "key": "13 ₪"
+   }
+  },
+  {
+   "id": "money-03",
+   "topic": "ג25",
+   "intro": "חשבו.",
+   "prompt": "מחיר: [[12.50 ₪]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12.50"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "money-04",
+   "topic": "ג25",
+   "intro": "חשבו.",
+   "prompt": "[[3]] שקלים ו־[[50]] אגורות = ___ אגורות",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3 * 100 + 50"
+    },
+    "unit": "אגורות"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "3 שקלים ו־ 50 אגורות = ___ אגורות (3 x 100) + 50",
+    "key": "350 אגורות"
+   }
+  },
+  {
+   "id": "money-05",
+   "topic": "ב11",
+   "intro": "פִּתְרוּ.",
+   "prompt": "לְדָנִי יֵשׁ [[20]] שְׁקָלִים. הוּא קָנָה כַּדּוּר בְּ־[[8]] שְׁקָלִים. כַּמָּה כֶּסֶף נִשְׁאַר לוֹ?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "20 - 8"
+    },
+    "unit": "שְׁקָלִים"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "לְדָנִי יֵשׁ 20 שְׁקָלִים. הוּא קָנָה כַּדּוּר בְּ־ 8 שְׁקָלִים. כַּמָּה כֶּסֶף נִשְׁאַר לוֹ? 20 − 8",
+    "key": "12 שְׁקָלִים"
+   }
+  },
+  {
+   "id": "money-06",
+   "topic": "ד05",
+   "intro": "חשבו.",
+   "prompt": "מחיר חולצה $25. כמה עולות [[3]] חולצות?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "25 * 3"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_TEXT"
+   }
+  }
+ ]
+}

@@ -1,0 +1,483 @@
+{
+ "family": "data_tables_charts",
+ "probes": [
+  {
+   "id": "data_tables_charts-01",
+   "topic": "ג20",
+   "intro": "התבוננו בטבלה וענו.",
+   "prompt": "כמה ספרים נקראו ביום שני?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "15"
+    },
+    "unit": "ספרים"
+   },
+   "table": {
+    "head": [
+     "יום",
+     "מספר ספרים"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "[[12]]"
+     ],
+     [
+      "שני",
+      "[[15]]"
+     ],
+     [
+      "שלישי",
+      "[[9]]"
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "answer_beside_question"
+    ],
+    "printed": "כמה ספרים נקראו ביום שני? 15",
+    "key": "15 ספרים"
+   }
+  },
+  {
+   "id": "data_tables_charts-02",
+   "topic": "ג20",
+   "intro": "התבוננו בטבלה וענו.",
+   "prompt": "כמה ספרים נקראו בסך הכול?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12 + 15 + 9"
+    },
+    "unit": "ספרים"
+   },
+   "table": {
+    "head": [
+     "יום",
+     "מספר ספרים"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "[[12]]"
+     ],
+     [
+      "שני",
+      "[[15]]"
+     ],
+     [
+      "שלישי",
+      "[[9]]"
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "כמה ספרים נקראו בסך הכול? (12 + 15) + 9",
+    "key": "36 ספרים"
+   }
+  },
+  {
+   "id": "data_tables_charts-03",
+   "topic": "ג20",
+   "intro": "התבוננו בטבלה וענו.",
+   "prompt": "באיזה יום נקראו הכי הרבה ספרים?",
+   "answer": {
+    "kind": "review",
+    "text": "ביום שני"
+   },
+   "table": {
+    "head": [
+     "יום",
+     "מספר ספרים"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "[[12]]"
+     ],
+     [
+      "שני",
+      "[[15]]"
+     ],
+     [
+      "שלישי",
+      "[[9]]"
+     ]
+    ]
+   },
+   "expect": {
+    "keyContains": [
+     "שני"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "adapter",
+    "code": "UNVERIFIED_ANSWERS"
+   }
+  },
+  {
+   "id": "data_tables_charts-04",
+   "topic": "ג20",
+   "intro": "התבוננו בדיאגרמה וענו.",
+   "prompt": "כמה ספרים נקראו ביום שני?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "15"
+    },
+    "unit": "ספרים"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "answer_beside_question"
+    ],
+    "printed": "כמה ספרים נקראו ביום שני? 15",
+    "key": "15 ספרים"
+   }
+  },
+  {
+   "id": "data_tables_charts-05",
+   "topic": "ג20",
+   "intro": "לפי הטבלה הבאה, ענו.",
+   "prompt": "כמה ספרים נקראו ביום שני?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "15"
+    },
+    "unit": "ספרים"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_TABLE"
+   }
+  },
+  {
+   "id": "data_tables_charts-06",
+   "topic": "ג20",
+   "intro": "קראו את הנתונים.",
+   "prompt": "| יום | ספרים |\n| ראשון | 12 |",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_repeats_question"
+    ],
+    "printed": "| יום | ספרים | | ראשון | 12 |",
+    "key": "12"
+   }
+  },
+  {
+   "id": "data_tables_charts-07",
+   "topic": "ד25",
+   "intro": "התבוננו בטבלה וענו.",
+   "prompt": "בכמה ספרים נקראו ביום שני יותר מביום שלישי?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "15 - 9"
+    },
+    "unit": "ספרים"
+   },
+   "table": {
+    "head": [
+     "יום",
+     "מספר ספרים"
+    ],
+    "rows": [
+     [
+      "ראשון",
+      "12"
+     ],
+     [
+      "שני",
+      "15"
+     ],
+     [
+      "שלישי",
+      "9"
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "בכמה ספרים נקראו ביום שני יותר מביום שלישי? 15 − 9",
+    "key": "6 ספרים"
+   }
+  },
+  {
+   "id": "data_tables_charts-08",
+   "topic": "ד25",
+   "intro": "השלימו את הטבלה.",
+   "prompt": "שורה [[1]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12 + 15"
+    },
+    "unit": ""
+   },
+   "table": {
+    "head": [
+     "יום א",
+     "יום ב",
+     "סך הכול"
+    ],
+    "rows": [
+     [
+      "[[12]]",
+      "[[15]]",
+      "___"
+     ],
+     [
+      "[[9]]",
+      "[[11]]",
+      "___"
+     ],
+     [
+      "[[7]]",
+      "[[8]]",
+      "___"
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "שורה 1 12 + 15",
+    "key": "27"
+   }
+  },
+  {
+   "id": "data_tables_charts-09",
+   "topic": "g7:data_frequency",
+   "intro": "התבוננו בטבלת השכיחויות.",
+   "prompt": "מהי השכיחות היחסית של הציון [[80]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "5/20"
+    },
+    "unit": ""
+   },
+   "table": {
+    "head": [
+     "ציון",
+     "שכיחות"
+    ],
+    "rows": [
+     [
+      "[[70]]",
+      "[[7]]"
+     ],
+     [
+      "[[80]]",
+      "[[5]]"
+     ],
+     [
+      "[[90]]",
+      "[[8]]"
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "מהי השכיחות היחסית של הציון $80$? $\\f{5}{20}$",
+    "key": "$\\f{1}{4}$"
+   }
+  },
+  {
+   "id": "data_tables_charts-10",
+   "topic": "ב12",
+   "intro": "הִתְבּוֹנְנוּ בַּטַּבְלָה וַעֲנוּ.",
+   "prompt": "כַּמָּה יְלָדִים בָּחֲרוּ בְּתַפּוּחַ?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "6"
+    },
+    "unit": "יְלָדִים"
+   },
+   "table": {
+    "head": [
+     "פְּרִי",
+     "מִסְפַּר יְלָדִים"
+    ],
+    "rows": [
+     [
+      "תַּפּוּחַ",
+      "[[6]]"
+     ],
+     [
+      "בָּנָנָה",
+      "[[4]]"
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "answer_beside_question"
+    ],
+    "printed": "כַּמָּה יְלָדִים בָּחֲרוּ בְּתַפּוּחַ? 6",
+    "key": "6 יְלָדִים"
+   }
+  },
+  {
+   "id": "data_tables_charts-11",
+   "topic": "ד07",
+   "intro": "השלימו את הטבלה.",
+   "prompt": "שורה [[1]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "4 + 3 * 2"
+    },
+    "unit": ""
+   },
+   "table": {
+    "head": [
+     "ביטוי",
+     "תוצאה"
+    ],
+    "rows": [
+     [
+      "[[4 + 3 * 2]]",
+      "___"
+     ],
+     [
+      "[[10 - 2 * 3]]",
+      "___"
+     ],
+     [
+      "[[12 / 4 + 5]]",
+      "___"
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "שורה 1 4 + (3 x 2)",
+    "key": "10"
+   }
+  },
+  {
+   "id": "data_tables_charts-12",
+   "topic": "ד07",
+   "intro": "השלימו את הטבלה.",
+   "prompt": "חשבו את הביטוי שבשורה הראשונה.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "4 + 3 * 2"
+    },
+    "unit": ""
+   },
+   "table": {
+    "head": [
+     "ביטוי",
+     "תוצאה"
+    ],
+    "rows": [
+     [
+      "[[4 + 3 * 2]]",
+      ""
+     ],
+     [
+      "[[10 - 2 * 3]]",
+      ""
+     ],
+     [
+      "[[12 / 4 + 5]]",
+      ""
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_RICH_TEXT"
+   }
+  },
+  {
+   "id": "data_tables_charts-13",
+   "topic": "ד07",
+   "intro": "השלימו את הטבלה.",
+   "prompt": "חשבו את הביטוי שבשורה הראשונה.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "10 + 2 * 3"
+    },
+    "unit": ""
+   },
+   "table": {
+    "head": [
+     "ביטוי",
+     "תוצאה"
+    ],
+    "rows": [
+     [
+      "[[10 + 2 * 3]]",
+      "[[16]]"
+     ],
+     [
+      "[[5 * 4 - 2]]",
+      "[[18]]"
+     ],
+     [
+      "[[8 + 12 / 4]]",
+      "[[11]]"
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "חשבו את הביטוי שבשורה הראשונה. 10 + (2 x 3)",
+    "key": "16"
+   }
+  }
+ ]
+}

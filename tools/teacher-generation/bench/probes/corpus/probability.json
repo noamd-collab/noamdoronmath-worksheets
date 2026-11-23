@@ -1,0 +1,134 @@
+{
+ "family": "probability",
+ "probes": [
+  {
+   "id": "probability-01",
+   "topic": "g8:probability",
+   "intro": "חשבו את ההסתברות.",
+   "prompt": "בשקית [[3]] כדורים אדומים ו־[[5]] כחולים. מה ההסתברות להוציא כדור אדום?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3/(3+5)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "בשקית $3$ כדורים אדומים ו־$5$ כחולים. מה ההסתברות להוציא כדור אדום? $\\f{3}{3 + 5}$",
+    "key": "$\\f{3}{8}$"
+   }
+  },
+  {
+   "id": "probability-02",
+   "topic": "g8:probability",
+   "intro": "חשבו את ההסתברות.",
+   "prompt": "בשקית [[3]] כדורים אדומים ו־[[5]] כחולים. מה ההסתברות להוציא כדור אדום?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(3,8)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "answer_beside_question"
+    ],
+    "printed": "בשקית $3$ כדורים אדומים ו־$5$ כחולים. מה ההסתברות להוציא כדור אדום? $\\f{3}{8}$",
+    "key": "$\\f{3}{8}$"
+   }
+  },
+  {
+   "id": "probability-03",
+   "topic": "g8:probability",
+   "intro": "חשבו את ההסתברות.",
+   "prompt": "[[P(A) = frac(1,6)]]. חשבו את [[P(B)]] אם B משלים ל־A.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "1 - frac(1,6)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "probability-04",
+   "topic": "g8:probability",
+   "intro": "חשבו את ההסתברות.",
+   "prompt": "מטילים קובייה הוגנת. מה ההסתברות לקבל מספר זוגי? כתבו כאחוז.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3/6*100"
+    },
+    "unit": "%"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "מטילים קובייה הוגנת. מה ההסתברות לקבל מספר זוגי? כתבו כאחוז. $\\f{3}{6} · 100$",
+    "key": "$50$ %"
+   }
+  },
+  {
+   "id": "probability-05",
+   "topic": "g9r:probability",
+   "intro": "חשבו.",
+   "prompt": "מטילים שתי קוביות. מה ההסתברות שהסכום הוא [[7]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "6/36"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "מטילים שתי קוביות. מה ההסתברות שהסכום הוא $7$? $\\f{6}{36}$",
+    "key": "$\\f{1}{6}$"
+   }
+  },
+  {
+   "id": "probability-06",
+   "topic": "ה17",
+   "intro": "חשבו.",
+   "prompt": "בשקית [[3]] כדורים אדומים ו־[[5]] כחולים. מה הסיכוי להוציא כדור אדום?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(3,8)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "answer_beside_question"
+    ],
+    "printed": "בשקית 3 כדורים אדומים ו־ 5 כחולים. מה הסיכוי להוציא כדור אדום? 3 8",
+    "key": "3 8"
+   }
+  }
+ ]
+}

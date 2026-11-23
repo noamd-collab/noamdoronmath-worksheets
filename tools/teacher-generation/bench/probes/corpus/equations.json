@@ -1,0 +1,449 @@
+{
+ "family": "equations",
+ "probes": [
+  {
+   "id": "equations-01",
+   "topic": "g7:equations",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[2*x+3=9]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "2*x+3",
+     "rhs": "9",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$2 · x + 3 = 9$",
+    "key": "$x = 3$"
+   }
+  },
+  {
+   "id": "equations-02",
+   "topic": "g7:equations",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "פתרו את המשוואה [[2x + 3 = 9]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "2x + 3",
+     "rhs": "9",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "פתרו את המשוואה $2x + 3 = 9$.",
+    "key": "$x = 3$"
+   }
+  },
+  {
+   "id": "equations-03",
+   "topic": "g7:equations",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[3(x + 2) = 12]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "3*(x + 2)",
+     "rhs": "12",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "equations-04",
+   "topic": "g7:equations",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[frac(x,2) + 3 = 5]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "x/2 + 3",
+     "rhs": "5",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "equations-05",
+   "topic": "g7:equations",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[x/2 + 3 = 5]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "x/2 + 3",
+     "rhs": "5",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$\\f{x}{2} + 3 = 5$",
+    "key": "$x = 4$"
+   }
+  },
+  {
+   "id": "equations-06",
+   "topic": "g7:equations",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[2x + 3 = 9]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(9 - 3)/2"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "$2x + 3 = 9$ $\\f{9 − 3}{2}$",
+    "key": "$3$"
+   }
+  },
+  {
+   "id": "equations-07",
+   "topic": "g7:equations",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[5t - 4 = 11]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "5*x - 4",
+     "rhs": "11",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$5 · t − 4 = 11$",
+    "key": "$t = 3$"
+   }
+  },
+  {
+   "id": "equations-08",
+   "topic": "g9r:quad_func_and_eq",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[x^2 - 5x + 6 = 0]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "x^2 - 5x + 6",
+     "rhs": "0",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$x^{2} − 5x + 6 = 0$",
+    "key": "$x = 2$, $x = 3$"
+   }
+  },
+  {
+   "id": "equations-09",
+   "topic": "g9r:quad_func_and_eq",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[x² = 16]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "x^2",
+     "rhs": "16",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "equations-10",
+   "topic": "g9r:rational_equations",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[frac(6, x - 1) = 2]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "6/(x - 1)",
+     "rhs": "2",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "equations-11",
+   "topic": "g9r:rational_equations",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[6/(x - 1) = 2]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "6/(x - 1)",
+     "rhs": "2",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$\\f{6}{x − 1} = 2$",
+    "key": "$x = 4$. תחום ההצבה: $x − 1 \\neq 0$"
+   }
+  },
+  {
+   "id": "equations-12",
+   "topic": "g8:systems_basic",
+   "intro": "פתרו את מערכת המשוואות.",
+   "prompt": "[[x + y = 5]] וגם [[x - y = 1]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve_system",
+     "variables": [
+      "x",
+      "y"
+     ],
+     "equations": [
+      {
+       "lhs": "x + y",
+       "rhs": "5"
+      },
+      {
+       "lhs": "x - y",
+       "rhs": "1"
+      }
+     ]
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "$x + y = 5$ וגם $x − y = 1$ $x + y = 5$; $x − y = 1$",
+    "key": "$x = 3$, $y = 2$"
+   }
+  },
+  {
+   "id": "equations-13",
+   "topic": "g8:systems_basic",
+   "intro": "פתרו את מערכת המשוואות.",
+   "prompt": "[[x + y = 5, x - y = 1]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve_system",
+     "variables": [
+      "x",
+      "y"
+     ],
+     "equations": [
+      {
+       "lhs": "x + y",
+       "rhs": "5"
+      },
+      {
+       "lhs": "x - y",
+       "rhs": "1"
+      }
+     ]
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "equations-14",
+   "topic": "ב10",
+   "intro": "מִצְאוּ אֶת הַמִּסְפָּר הֶחָסֵר.",
+   "prompt": "[[___ + 5 = 9]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "9 - 5"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "___ + 5 = 9",
+    "key": "4"
+   }
+  },
+  {
+   "id": "equations-15",
+   "topic": "ב10",
+   "intro": "מִצְאוּ אֶת הַמִּסְפָּר הֶחָסֵר.",
+   "prompt": "[[☐ + 5 = 9]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "9 - 5"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "equations-16",
+   "topic": "ב10",
+   "intro": "מִצְאוּ אֶת הַמִּסְפָּר הֶחָסֵר.",
+   "prompt": "[[? + 5 = 9]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "9 - 5"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "equations-17",
+   "topic": "ב10",
+   "intro": "מִצְאוּ אֶת הַמִּסְפָּר הֶחָסֵר.",
+   "prompt": "[[8]] + ___ = [[15]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "15 - 8"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "8 + ___ = 15",
+    "key": "7"
+   }
+  },
+  {
+   "id": "equations-18",
+   "topic": "g7:equations",
+   "intro": "פתרו.",
+   "prompt": "פתרו את המשוואה.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "2*x+3",
+     "rhs": "9",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "פתרו את המשוואה. $2 · x + 3 = 9$",
+    "key": "$x = 3$"
+   }
+  },
+  {
+   "id": "equations-19",
+   "topic": "ד07",
+   "intro": "מצאו.",
+   "prompt": "מצאו את [[x]] במשוואה [[2 * x + 3 = 9]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(9-3)/2"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "3"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "equations-20",
+   "topic": "ד07",
+   "intro": "מצאו.",
+   "prompt": "מצאו את המספר החסר: [[2 * ___ + 3 = 9]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(9-3)/2"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "3"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "מצאו את המספר החסר: 2 x ___ + 3 = 9 .",
+    "key": "3"
+   }
+  }
+ ]
+}

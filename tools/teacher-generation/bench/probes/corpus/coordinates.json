@@ -1,0 +1,195 @@
+{
+ "family": "coordinates",
+ "probes": [
+  {
+   "id": "coordinates-01",
+   "topic": "g7:coordinate_system",
+   "intro": "קראו את שיעורי הנקודות.",
+   "prompt": "מהו שיעור ה־[[x]] של הנקודה [[A]]?",
+   "answer": {
+    "kind": "figure",
+    "operation": "x_coordinate",
+    "unit": "",
+    "point": "A"
+   },
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -5,
+     5
+    ],
+    "yr": [
+     -5,
+     5
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 2,
+      "y": 3
+     },
+     {
+      "name": "B",
+      "x": -1,
+      "y": 4
+     }
+    ],
+    "segments": [],
+    "placement": "wide"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "DRAWING_POLICY"
+   }
+  },
+  {
+   "id": "coordinates-02",
+   "topic": "g7:coordinate_system",
+   "intro": "ענו.",
+   "prompt": "באיזה רביע נמצאת הנקודה [[A(-2,3)]]?",
+   "answer": {
+    "kind": "review",
+    "text": "ברביע השני"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "באיזה רביע נמצאת הנקודה $A(−2, 3)$?",
+    "key": "ברביע השני"
+   }
+  },
+  {
+   "id": "coordinates-03",
+   "topic": "g7:coordinate_system",
+   "intro": "ענו.",
+   "prompt": "באיזה רביע נמצאת הנקודה [[point:A(-2,3)]]?",
+   "answer": {
+    "kind": "review",
+    "text": "ברביע השני"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "באיזה רביע נמצאת הנקודה $A(−2, 3)$?",
+    "key": "ברביע השני"
+   }
+  },
+  {
+   "id": "coordinates-04",
+   "topic": "g7:coordinate_system",
+   "intro": "ענו.",
+   "prompt": "מהו המרחק בין [[A(2,3)]] ל־[[B(2,-4)]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3 - (-4)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "מהו המרחק בין $A(2, 3)$ ל־$B(2, −4)$? $3 + 4$",
+    "key": "$7$"
+   }
+  },
+  {
+   "id": "coordinates-05",
+   "topic": "g7:coordinate_system",
+   "intro": "ענו.",
+   "prompt": "הנקודה [[(2.5, 3)]] נמצאת ברביע",
+   "answer": {
+    "kind": "review",
+    "text": "ברביע הראשון"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "coordinates-06",
+   "topic": "g7:coordinate_system",
+   "intro": "ענו.",
+   "prompt": "הנקודה [[(x, 0)]] נמצאת על ציר",
+   "answer": {
+    "kind": "review",
+    "text": "על ציר [[x]]"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "coordinates-07",
+   "topic": "g7:points_on_graph",
+   "intro": "ענו.",
+   "prompt": "הנקודה [[A(2,3)]] נמצאת על הגרף. מהו שיעור ה־[[y]] שלה?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "answer_beside_question"
+    ],
+    "printed": "הנקודה $A(2, 3)$ נמצאת על הגרף. מהו שיעור ה־$y$ שלה? $3$",
+    "key": "$3$"
+   }
+  },
+  {
+   "id": "coordinates-08",
+   "topic": "g7:transformations",
+   "intro": "קראו את שיעורי הנקודה.",
+   "prompt": "מהו שיעור ה־[[x]] של הנקודה [[A]]?",
+   "answer": {
+    "kind": "figure",
+    "operation": "x_coordinate",
+    "unit": "",
+    "point": "A"
+   },
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     -5,
+     5
+    ],
+    "yr": [
+     -5,
+     5
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 2,
+      "y": 3
+     },
+     {
+      "name": "B",
+      "x": -1,
+      "y": 4
+     }
+    ],
+    "segments": [],
+    "placement": "wide"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "מהו שיעור ה־$x$ של הנקודה $A$? קראו את שיעור ה־$x$ של הנקודה $A$.",
+    "key": "$2$"
+   }
+  }
+ ]
+}

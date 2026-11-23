@@ -1,0 +1,321 @@
+{
+ "family": "ratio",
+ "probes": [
+  {
+   "id": "ratio-01",
+   "topic": "ו21",
+   "intro": "כתבו את היחס.",
+   "prompt": "בכיתה [[12]] בנים ו־[[18]] בנות. מהו היחס בין הבנים לבנות?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12 / 18"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "2",
+     "3"
+    ],
+    "keyContains": [
+     ":"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch",
+     "print_adds_numbers"
+    ],
+    "notes": [
+     "key lacks ':'"
+    ],
+    "printed": "בכיתה 12 בנים ו־ 18 בנות. מהו היחס בין הבנים לבנות? 12 : 18",
+    "key": "2 3"
+   }
+  },
+  {
+   "id": "ratio-02",
+   "topic": "ו21",
+   "intro": "צמצמו את היחס.",
+   "prompt": "[[12:18]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12 / 18"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "2",
+     "3"
+    ],
+    "keyContains": [
+     ":"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "ratio-03",
+   "topic": "ו21",
+   "intro": "צמצמו את היחס.",
+   "prompt": "[[12 : 18]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12 / 18"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "2",
+     "3"
+    ],
+    "keyContains": [
+     ":"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch"
+    ],
+    "notes": [
+     "key lacks ':'"
+    ],
+    "printed": "12 : 18",
+    "key": "2 3"
+   }
+  },
+  {
+   "id": "ratio-04",
+   "topic": "ו21",
+   "intro": "השלימו יחס שקול.",
+   "prompt": "[[2 : 3 = ___ : 12]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2 * 12 / 3"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "8"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "2 : 3 = ___ : 12",
+    "key": "8"
+   }
+  },
+  {
+   "id": "ratio-05",
+   "topic": "ו22",
+   "intro": "חשבו.",
+   "prompt": "קנה המידה במפה הוא [[1:50,000]]. מרחק במפה [[4]] ס״מ. מהו המרחק במציאות בק״מ?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "4 * 50000 / 100000"
+    },
+    "unit": "ק״מ"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "ratio-06",
+   "topic": "ו22",
+   "intro": "חשבו.",
+   "prompt": "קנה המידה במפה הוא 1:50,000. מרחק במפה [[4]] ס״מ. מהו המרחק במציאות בק״מ?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "4 * 50000 / 100000"
+    },
+    "unit": "ק״מ"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "קנה המידה במפה הוא 1:50,000. מרחק במפה 4 ס״מ. מהו המרחק במציאות בק״מ? (4 x 50,000) : 100,000",
+    "key": "2 ק״מ"
+   }
+  },
+  {
+   "id": "ratio-07",
+   "topic": "g8:ratio_scale",
+   "intro": "חשבו.",
+   "prompt": "היחס בין בנים לבנות הוא [[2:3]]. בכיתה [[30]] תלמידים. כמה בנים בכיתה?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "30*2/5"
+    },
+    "unit": "בנים"
+   },
+   "expect": {
+    "key": [
+     "12"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "ratio-08",
+   "topic": "g8:ratio_scale",
+   "intro": "חשבו.",
+   "prompt": "היחס בין בנים לבנות הוא 2:3. בכיתה [[30]] תלמידים. כמה בנים בכיתה?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "30*2/5"
+    },
+    "unit": "בנים"
+   },
+   "expect": {
+    "key": [
+     "12"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_PLAIN_MATH"
+   }
+  },
+  {
+   "id": "ratio-09",
+   "topic": "g8:ratio_scale",
+   "intro": "חשבו.",
+   "prompt": "היחס בין בנים לבנות הוא [[2]]:[[3]]. בכיתה [[30]] תלמידים. כמה בנים בכיתה?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "30*2/5"
+    },
+    "unit": "בנים"
+   },
+   "expect": {
+    "key": [
+     "12"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "ratio-10",
+   "topic": "g8:ratio_scale",
+   "intro": "פתרו את הפרופורציה.",
+   "prompt": "[[frac(x,12) = frac(2,3)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "x/12",
+     "rhs": "2/3",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "ratio-11",
+   "topic": "g8:ratio_scale",
+   "intro": "פתרו את הפרופורציה.",
+   "prompt": "[[x/12 = 2/3]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "x/12",
+     "rhs": "2/3",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$\\f{x}{12} = \\f{2}{3}$",
+    "key": "$x = 8$"
+   }
+  },
+  {
+   "id": "ratio-12",
+   "topic": "g8:ratio_scale",
+   "intro": "כתבו את היחס בצורה מצומצמת.",
+   "prompt": "היחס בין [[12]] ל־[[18]]",
+   "answer": {
+    "kind": "review",
+    "text": "[[2:3]]"
+   },
+   "expect": {
+    "key": [
+     "2",
+     "3"
+    ],
+    "keyContains": [
+     ":"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "ratio-13",
+   "topic": "g8:ratio_scale",
+   "intro": "כתבו את היחס בצורה מצומצמת.",
+   "prompt": "היחס בין [[12]] ל־[[18]]",
+   "answer": {
+    "kind": "review",
+    "text": "היחס הוא [[2]] ל־[[3]]."
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "היחס בין $12$ ל־$18$",
+    "key": "היחס הוא $2$ ל־$3$."
+   }
+  }
+ ]
+}
