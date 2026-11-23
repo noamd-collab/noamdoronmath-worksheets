@@ -484,6 +484,16 @@ class AdapterTests(unittest.TestCase):
         html_text = (work / "sheet.html").read_text(encoding="utf-8")
         self.assertIn('<span class="answer-text" dir="rtl">לא. <span class="ltr">12 : 3 = 4</span>', html_text)
 
+    def test_a_verdict_stands_alone_where_its_calculation_has_no_typography(self):
+        uneven = ("האם התוצאות של [[8 : 2]] ושל [[18 : 4]] זהות?", decide("eq", "8/2", "18/4"))
+        rows, _, _ = self.sheet("ג10", [("השוו.", [uneven, ("האם [[2 : 4]] קטן מ־[[1]]?", decide("lt", "2/4", "1")),
+                                                  ("האם [[24]] מתחלק ב־[[6]]?", decide("divisible", "24", "6"))])] * 4)
+        # Before grade five a quotient is not written as a fraction: 18 : 4 is left out of the key.
+        self.assertEqual((rows[1, 1][1], rows[1, 2][1], rows[1, 3][1]), ("לא. 8 : 2 = 4", "כן", "כן. 24 : 6 = 4"))
+        parity = lambda k: (f"הַאִם [[{k}]] זוּגִי?", decide("divisible", str(k), "2"))
+        rows, _, _ = self.sheet("א05", [("עֲנוּ.", [parity(6), parity(7), parity(8), parity(9), parity(4)])] * 4)
+        self.assertEqual((rows[1, 1][1], rows[1, 2][1]), ("כֵּן", "לֹא"))  # no division sign in grade one
+
     def test_grade_two_verdicts_are_pointed(self):
         row = lambda a, b, c, relation: (f"הַאִם [[{a} + {b}]] גָּדוֹל מִ־[[{c}]]?", decide(relation, f"{a}+{b}", str(c)))
         truth = lambda a, b, c: (f"[[{a} + {b} = {c}]]", decide("eq", f"{a}+{b}", str(c)))

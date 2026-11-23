@@ -138,6 +138,12 @@ def _used(entry, leaves):
     return any(reading <= leaves for reading in entry)
 
 
+def _shown(leaves, visible):
+    """Every typed number is printed; a typed fraction may be printed as its two parts ("1 : 2")."""
+    return all(leaf in visible or (leaf.denominator != 1 and {Fraction(leaf.numerator), Fraction(leaf.denominator)} <= visible)
+               for leaf in leaves)
+
+
 def _subtrees(tree):
     yield tree
     if isinstance(tree, dict) and tree.get("type") == "operation":
@@ -419,7 +425,7 @@ def bind_decision(question, item, solved, grade):
             _refuse_kind("Ask whether the one printed statement is right, with nothing else to decide in the item")
         relation, left, right = statements[0]
         printed = validate_and_solve_task({"kind": "decide", "relation": relation, "left": left, "right": right})["result"]
-        if printed["holds"] != result["holds"] or not leaves <= visible:
+        if printed["holds"] != result["holds"] or not _shown(leaves, visible):
             _mismatch("The typed claim is not the printed statement")
         return Decision(printed["holds"], form, _steps([left, right], printed),
                         {"rule": "printed_statement", "relation": relation, "left": left, "right": right,
@@ -438,7 +444,7 @@ def bind_decision(question, item, solved, grade):
         if typed != relation or others != [number(divisor)]:
             _mismatch("An even or odd question is a divisibility by two")
         leaves = _numbers(left, set())
-    if not leaves <= visible:
+    if not _shown(leaves, visible):
         _mismatch("The typed claim uses a number that the question does not print")
     stated = prompt
     if not _printed_numbers(prompt):
@@ -513,7 +519,7 @@ def _ordered(before, after, first, second, shared, visible, grade, listed):
         _mismatch("The typed list is not the printed list")
     # The first side may also use the numbers of the group's story; the
     # second side is what the sentence names after its relation word.
-    if not lead <= (visible - later) | visible_numbers(before) | implied or not tail <= later | implied:
+    if not _shown(lead, (visible - later) | visible_numbers(before) | implied) or not _shown(tail, later | implied):
         _mismatch("The typed sides are not in the printed order")
     for entry in _printed_numbers(before):
         if not _used(entry, lead):

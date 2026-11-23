@@ -372,6 +372,10 @@ def _decision_text(decision, grade, H=None):
     try:
         for step in decision.steps:
             if step[0] == "value":
+                uneven = (step[1]["op"] == "divide" and step[2].get("denominator", 1) != 1
+                          and all(arg.get("type") == "number" and arg["denominator"] == 1 for arg in step[1]["args"]))
+                if H and grade in "אבגד" and uneven:
+                    continue  # before grade five a quotient is not written as a fraction
                 reasons.append(wrap(render(step[1]) + " = " + render(step[2])))
             elif H:
                 dividend, divisor, quotient, remainder = step[1:]
