@@ -99,6 +99,7 @@
 !tools/teacher-generation/skill-lock.json
 !tools/teacher-generation/skill_authoring.py
 !tools/teacher-generation/skill_feedback.py
+!tools/teacher-generation/source_normalize.py
 !tools/teacher-generation/square_lesson.py
 !tools/teacher-generation/square_shape.py
 !tools/teacher-generation/tests/fixtures/elementary-answer-order/README.md
@@ -122,6 +123,7 @@
 !tools/teacher-generation/tests/test_general_runtime.py
 !tools/teacher-generation/tests/test_general_solids.py
 !tools/teacher-generation/tests/test_general_source.py
+!tools/teacher-generation/tests/test_island_grammar.py
 !tools/teacher-generation/tests/test_lesson_boundary.py
 !tools/teacher-generation/tests/test_math_tasks.py
 !tools/teacher-generation/tests/test_numeric_literals.py
@@ -134,6 +136,7 @@
 !tools/teacher-generation/tests/test_remote_worker.py
 !tools/teacher-generation/tests/test_runner_word_web.py
 !tools/teacher-generation/tests/test_skill_feedback.py
+!tools/teacher-generation/tests/test_source_normalize.py
 !tools/teacher-generation/tests/test_square_lesson.py
 !tools/teacher-generation/tests/test_triangle_lesson.py
 !tools/teacher-generation/tests/test_validation.py

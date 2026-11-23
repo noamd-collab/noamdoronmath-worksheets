@@ -246,7 +246,8 @@ class GeneralRuntimeTests(unittest.TestCase):
             calls.assert_called_once()
 
     def test_retained_grade_seven_equation_recovery_recreates_the_same_verified_worksheet(self):
-        from compact_authoring import expand_source
+        from compact_authoring import expand_source, spans as tokenize
+        from general_source import rich
         from skill_authoring import notation_correction
         fixture = HERE / "cloud/container/fixtures/general/grade7-equation-skill"
         lesson = json.loads((fixture / "lesson.json").read_bytes())
@@ -259,9 +260,12 @@ class GeneralRuntimeTests(unittest.TestCase):
         plain = "".join(s["text"] if s["kind"]=="text" else s["notation"] for s in spans)
         marked = "".join(s["text"] if s["kind"]=="text" else "[["+s["notation"]+"]]" for s in spans)
         item["prompt"] = plain
+        # The tokenizer alone still rejects the unmarked equation ...
         with self.assertRaises(GeneralSourceError) as before:
-            validate_source(lesson, expand_source(reply,7), scope, provider=True)
+            rich(tokenize(plain,7),7,provider=True)
         self.assertEqual(before.exception.code,"SOURCE_PLAIN_MATH")
+        # ... and the local normaliser now recreates the worksheet without a model call.
+        self.assertEqual(validate_source(lesson, expand_source(reply,7), scope, provider=True), expected)
         correction = notation_correction(reply,lesson,scope)
         self.assertEqual(correction.fragments,{"f1":plain})
         repaired = correction.apply(reply,{"f1":marked})

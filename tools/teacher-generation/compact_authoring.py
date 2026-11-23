@@ -7,6 +7,7 @@ import re
 from general_source import GeneralSourceError, MAX_BYTES
 from math_tasks import MAX_POWER, MathTaskError, inspect_ast, number, operation
 from numeric_literals import COEFFICIENT, NUMBER_TOKEN, arithmetic_tokens, display_literal, elementary_operations, literal_value
+from source_normalize import normalize_source
 
 GEOMETRY = re.compile(r"(point|segment|triangle|angle|polygon):([A-Z]{1,8})")
 OP = {
@@ -725,7 +726,7 @@ def _bind_inline_table(question, grade):
     return True
 
 
-def expand_source(source, grade, *, fraction_notation=False):
+def expand_source(source, grade, *, fraction_notation=False, topic=None, notes=None):
     if not isinstance(source, dict) or source.get("version") != 4:
         return source
     from json import dumps
@@ -736,7 +737,8 @@ def expand_source(source, grade, *, fraction_notation=False):
     def rich(value):
         return spans(value, grade, fraction_notation=fraction_notation)
 
-    data = deepcopy(source)
+    # Single-reading spellings become contract notation before anything is parsed.
+    data = normalize_source(deepcopy(source), grade, topic=topic, notes=notes)
     if "rule" in data:
         data["rule"] = rich(data["rule"])
     for section in (

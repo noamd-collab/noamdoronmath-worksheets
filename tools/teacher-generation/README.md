@@ -35,6 +35,12 @@ locations and the job still owns its lease. The second provider call has a separ
 record. Both outputs are rebuilt in a fresh directory and rechecked before any upload.
 An infrastructure failure or an unlocalized report does not trigger a correction.
 
+`source_normalize.py` runs first, inside `expand_source`. It rewrites spellings that
+have exactly one reading into the contract's notation (an unspaced school operator,
+`$...$` math, a letter for the single missing number of an elementary formula, a label
+after the Hebrew noun that names it). It never computes and never chooses between two
+readings; such a spelling is left for validation to reject. Its module docstring lists every rule.
+
 `general_source.py` checks closed shapes, size, volume, niqqud, allowed concepts
 and expression bounds. `math_tasks.py` verifies typed arithmetic, symbolic
 operations, bounded equations/systems, inequalities and descriptive statistics.
