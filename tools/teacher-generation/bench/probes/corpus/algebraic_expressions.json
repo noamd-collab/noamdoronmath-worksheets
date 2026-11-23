@@ -1,0 +1,327 @@
+{
+ "family": "algebraic_expressions",
+ "probes": [
+  {
+   "id": "algebraic_expressions-01",
+   "topic": "g7:algebraic_expressions",
+   "intro": "כנסו איברים דומים.",
+   "prompt": "[[2*x + 3*x]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "simplify",
+     "expression": "2*x + 3*x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "$2 · x + 3 · x$ $2 · x + 3 · x$",
+    "key": "$5 · x$"
+   }
+  },
+  {
+   "id": "algebraic_expressions-02",
+   "topic": "g7:algebraic_expressions",
+   "intro": "כנסו איברים דומים.",
+   "prompt": "[[2x + 3x - 5]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "simplify",
+     "expression": "2x + 3x - 5"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "$2x + 3x − 5$ $2 · x + 3 · x − 5$",
+    "key": "$5 · x − 5$"
+   }
+  },
+  {
+   "id": "algebraic_expressions-03",
+   "topic": "g7:algebraic_expressions",
+   "intro": "פתחו סוגריים.",
+   "prompt": "[[3(x + 2)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "expand",
+     "expression": "3*(x + 2)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "algebraic_expressions-04",
+   "topic": "g7:algebraic_expressions",
+   "intro": "פתחו סוגריים.",
+   "prompt": "[[3*(x + 2)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "expand",
+     "expression": "3*(x + 2)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "$3 · \\g{x + 2}$ $3 · \\g{x + 2}$",
+    "key": "$3 · x + 6$"
+   }
+  },
+  {
+   "id": "algebraic_expressions-05",
+   "topic": "g7:algebraic_expressions",
+   "intro": "פתחו סוגריים.",
+   "prompt": "[[3·(x + 2)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "expand",
+     "expression": "3*(x + 2)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "$3 · \\g{x + 2}$ $3 · \\g{x + 2}$",
+    "key": "$3 · x + 6$"
+   }
+  },
+  {
+   "id": "algebraic_expressions-06",
+   "topic": "g9r:alg_technique",
+   "intro": "פתחו סוגריים וכנסו.",
+   "prompt": "[[(x + 2)(x - 3)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "expand",
+     "expression": "(x + 2)*(x - 3)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "algebraic_expressions-07",
+   "topic": "g9r:alg_technique",
+   "intro": "פרקו לגורמים.",
+   "prompt": "[[x^2 - 9]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "factor",
+     "expression": "x^2 - 9"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "$x^{2} − 9$ $x^{2} − 9$",
+    "key": "$\\g{x − 3} · \\g{x + 3}$"
+   }
+  },
+  {
+   "id": "algebraic_expressions-08",
+   "topic": "g9r:alg_technique",
+   "intro": "פרקו לגורמים.",
+   "prompt": "[[x² - 9]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "factor",
+     "expression": "x^2 - 9"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "algebraic_expressions-09",
+   "topic": "g9r:alg_technique",
+   "intro": "פשטו.",
+   "prompt": "[[2ab + 3ab]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "simplify",
+     "expression": "2*a*b + 3*a*b"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "algebraic_expressions-10",
+   "topic": "g9r:alg_technique",
+   "intro": "פשטו.",
+   "prompt": "[[2xy - xy]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "simplify",
+     "expression": "2*x*y - x*y"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "algebraic_expressions-11",
+   "topic": "g7:algebraic_expressions",
+   "intro": "הציבו וחשבו.",
+   "prompt": "הציבו [[x = 3]] בביטוי [[2x + 1]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "substitute",
+     "expression": "2*x + 1",
+     "values": {
+      "x": "3"
+     }
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "הציבו $x = 3$ בביטוי $2x + 1$. $2 · x + 1$ עבור $x = 3$",
+    "key": "$7$"
+   }
+  },
+  {
+   "id": "algebraic_expressions-12",
+   "topic": "g7:algebraic_expressions",
+   "intro": "כתבו ביטוי אלגברי.",
+   "prompt": "מספר הגדול ב־[[5]] ממספר [[n]]",
+   "answer": {
+    "kind": "review",
+    "text": "[[n + 5]]"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "מספר הגדול ב־$5$ ממספר $n$",
+    "key": "$n + 5$"
+   }
+  },
+  {
+   "id": "algebraic_expressions-13",
+   "topic": "g7:algebraic_expressions",
+   "intro": "כתבו ביטוי אלגברי.",
+   "prompt": "המחיר של [[m]] עטים שכל אחד עולה [[3]] שקלים",
+   "answer": {
+    "kind": "review",
+    "text": "[[3m]]"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "המחיר של $m$ עטים שכל אחד עולה $3$ שקלים",
+    "key": "$3 · m$"
+   }
+  },
+  {
+   "id": "algebraic_expressions-14",
+   "topic": "g9r:alg_technique",
+   "intro": "פשטו את השבר האלגברי.",
+   "prompt": "[[frac(x^2 - 9, x + 3)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "simplify",
+     "expression": "(x^2 - 9)/(x + 3)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "algebraic_expressions-15",
+   "topic": "g9r:alg_technique",
+   "intro": "פשטו את השבר האלגברי.",
+   "prompt": "[[(x^2 - 9)/(x + 3)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "simplify",
+     "expression": "(x^2 - 9)/(x + 3)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "$\\f{x^{2} − 9}{x + 3}$ $\\f{x^{2} − 9}{x + 3}$",
+    "key": "$x − 3$. תחום ההצבה: $x + 3 \\neq 0$"
+   }
+  },
+  {
+   "id": "algebraic_expressions-16",
+   "topic": "g7:algebraic_expressions",
+   "intro": "כנסו איברים דומים.",
+   "prompt": "כנסו איברים דומים.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "simplify",
+     "expression": "2*x + 3*x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "כנסו איברים דומים. $2 · x + 3 · x$",
+    "key": "$5 · x$"
+   }
+  }
+ ]
+}

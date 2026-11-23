@@ -1,0 +1,242 @@
+{
+ "family": "statistics",
+ "probes": [
+  {
+   "id": "statistics-01",
+   "topic": "ה16",
+   "intro": "חשבו את הממוצע.",
+   "prompt": "הציונים: [[80]], [[90]], [[100]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "statistics",
+     "operation": "mean",
+     "values": [
+      "80",
+      "90",
+      "100"
+     ]
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "הציונים: 80 , 90 , 100 80 , 90 , 100",
+    "key": "90"
+   }
+  },
+  {
+   "id": "statistics-02",
+   "topic": "ה16",
+   "intro": "חשבו את הממוצע.",
+   "prompt": "הציונים: [[80, 90, 100]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "statistics",
+     "operation": "mean",
+     "values": [
+      "80",
+      "90",
+      "100"
+     ]
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "statistics-03",
+   "topic": "ה16",
+   "intro": "חשבו את הממוצע.",
+   "prompt": "הציונים: 80, 90, 100",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "statistics",
+     "operation": "mean",
+     "values": [
+      "80",
+      "90",
+      "100"
+     ]
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "הציונים: 80, 90, 100 80 , 90 , 100",
+    "key": "90"
+   }
+  },
+  {
+   "id": "statistics-04",
+   "topic": "g8:data_center",
+   "intro": "מצאו את החציון.",
+   "prompt": "הנתונים: [[3]], [[7]], [[8]], [[12]], [[15]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "statistics",
+     "operation": "median",
+     "values": [
+      "3",
+      "7",
+      "8",
+      "12",
+      "15"
+     ]
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "הנתונים: $3$, $7$, $8$, $12$, $15$ $3$, $7$, $8$, $12$, $15$",
+    "key": "$8$"
+   }
+  },
+  {
+   "id": "statistics-05",
+   "topic": "g8:data_center",
+   "intro": "מצאו את החציון.",
+   "prompt": "הנתונים: [[3]],[[7]],[[8]],[[12]],[[15]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "statistics",
+     "operation": "median",
+     "values": [
+      "3",
+      "7",
+      "8",
+      "12",
+      "15"
+     ]
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "statistics-06",
+   "topic": "g8:data_center",
+   "intro": "מצאו את החציון.",
+   "prompt": "הנתונים: 3, 7, 8, 12, 15",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "statistics",
+     "operation": "median",
+     "values": [
+      "3",
+      "7",
+      "8",
+      "12",
+      "15"
+     ]
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_PLAIN_MATH"
+   }
+  },
+  {
+   "id": "statistics-07",
+   "topic": "g8:data_center",
+   "intro": "מצאו את השכיח.",
+   "prompt": "הנתונים: [[3]], [[7]], [[7]], [[12]], [[15]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "statistics",
+     "operation": "mode",
+     "values": [
+      "3",
+      "7",
+      "7",
+      "12",
+      "15"
+     ]
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "הנתונים: $3$, $7$, $7$, $12$, $15$ $3$, $7$, $7$, $12$, $15$",
+    "key": "$7$"
+   }
+  },
+  {
+   "id": "statistics-08",
+   "topic": "g9m:statistics",
+   "intro": "חשבו את הממוצע.",
+   "prompt": "הציונים: [[80]], [[90]], [[100]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(80+90+100)/3"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "הציונים: $80$, $90$, $100$ $\\f{80 + 90 + 100}{3}$",
+    "key": "$90$"
+   }
+  },
+  {
+   "id": "statistics-09",
+   "topic": "ג08",
+   "intro": "חשבו את הממוצע.",
+   "prompt": "הציונים: [[80]], [[90]], [[100]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "statistics",
+     "operation": "mean",
+     "values": [
+      "80",
+      "90",
+      "100"
+     ]
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "הציונים: 80 , 90 , 100 80 , 90 , 100",
+    "key": "90"
+   }
+  }
+ ]
+}

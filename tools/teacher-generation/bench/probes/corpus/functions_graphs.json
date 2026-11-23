@@ -1,0 +1,239 @@
+{
+ "family": "functions_graphs",
+ "probes": [
+  {
+   "id": "functions_graphs-01",
+   "topic": "g8:functions_intro",
+   "intro": "חשבו את ערך הפונקציה.",
+   "prompt": "נתונה הפונקציה [[y = 2x + 3]]. חשבו את [[y]] כאשר [[x = 4]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "substitute",
+     "expression": "2*x + 3",
+     "values": {
+      "x": "4"
+     }
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "נתונה הפונקציה $y = 2x + 3$. חשבו את $y$ כאשר $x = 4$. $2 · x + 3$ עבור $x = 4$",
+    "key": "$11$"
+   }
+  },
+  {
+   "id": "functions_graphs-02",
+   "topic": "g8:functions_intro",
+   "intro": "חשבו את ערך הפונקציה.",
+   "prompt": "נתונה הפונקציה [[f(x) = 2x + 3]]. חשבו את [[f(4)]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "substitute",
+     "expression": "2*x + 3",
+     "values": {
+      "x": "4"
+     }
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "functions_graphs-03",
+   "topic": "g8:slope_linear",
+   "intro": "מצאו את השיפוע.",
+   "prompt": "הישר עובר דרך הנקודות [[A(1,2)]] ו־[[B(3,8)]]. חשבו את השיפוע.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(8-2)/(3-1)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "הישר עובר דרך הנקודות $A(1, 2)$ ו־$B(3, 8)$. חשבו את השיפוע. $\\f{8 − 2}{3 − 1}$",
+    "key": "$3$"
+   }
+  },
+  {
+   "id": "functions_graphs-04",
+   "topic": "g8:slope_linear",
+   "intro": "מצאו את השיפוע.",
+   "prompt": "הישר עובר דרך הנקודות [[(1,2)]] ו־[[(3,8)]]. חשבו את השיפוע.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(8-2)/(3-1)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "הישר עובר דרך הנקודות $(1, 2)$ ו־$(3, 8)$. חשבו את השיפוע. $\\f{8 − 2}{3 − 1}$",
+    "key": "$3$"
+   }
+  },
+  {
+   "id": "functions_graphs-05",
+   "topic": "g8:slope_linear",
+   "intro": "מצאו את השיפוע.",
+   "prompt": "מהו השיפוע של הישר [[y = -2x + 5]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "-2"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "answer_beside_question"
+    ],
+    "printed": "מהו השיפוע של הישר $y = −2x + 5$? $−2$",
+    "key": "$−2$"
+   }
+  },
+  {
+   "id": "functions_graphs-06",
+   "topic": "g8:slope_linear",
+   "intro": "כתבו את משוואת הישר.",
+   "prompt": "ישר ששיפועו [[3]] וחותך את ציר [[y]] בנקודה [[(0,-2)]].",
+   "answer": {
+    "kind": "review",
+    "text": "[[y = 3x - 2]]"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "ישר ששיפועו $3$ וחותך את ציר $y$ בנקודה $(0, −2)$.",
+    "key": "$y = 3x − 2$"
+   }
+  },
+  {
+   "id": "functions_graphs-07",
+   "topic": "g8:slope_linear",
+   "intro": "מצאו.",
+   "prompt": "[[m = frac(y2 - y1, x2 - x1)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(8-2)/(3-1)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "functions_graphs-08",
+   "topic": "g9m:graph_reading",
+   "intro": "התבוננו בגרף וענו.",
+   "prompt": "מהו ערך הפונקציה כאשר [[x = 2]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "5"
+    },
+    "unit": ""
+   },
+   "figure": {
+    "kind": "coordinate_plane",
+    "xr": [
+     0,
+     6
+    ],
+    "yr": [
+     0,
+     8
+    ],
+    "points": [
+     {
+      "name": "A",
+      "x": 2,
+      "y": 5
+     }
+    ],
+    "segments": []
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "DRAWING_POLICY"
+   }
+  },
+  {
+   "id": "functions_graphs-09",
+   "topic": "g9r:quad_func_and_eq",
+   "intro": "מצאו את קודקוד הפרבולה.",
+   "prompt": "[[y = x^2 - 4x + 3]]",
+   "answer": {
+    "kind": "review",
+    "text": "[[(2,-1)]]"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "$y = x^{2} − 4x + 3$",
+    "key": "$(2, −1)$"
+   }
+  },
+  {
+   "id": "functions_graphs-10",
+   "topic": "g9r:function_properties",
+   "intro": "ענו.",
+   "prompt": "באיזה תחום הפונקציה [[y = x^2 - 4]] חיובית?",
+   "answer": {
+    "kind": "review",
+    "text": "[[x < -2]] או [[x > 2]]"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "באיזה תחום הפונקציה $y = x^{2} − 4$ חיובית?",
+    "key": "$x < −2$ או $x > 2$"
+   }
+  },
+  {
+   "id": "functions_graphs-11",
+   "topic": "g9m:linear_function",
+   "intro": "ענו.",
+   "prompt": "נקודת החיתוך של הישר [[y = 2x - 4]] עם ציר [[x]] היא",
+   "answer": {
+    "kind": "review",
+    "text": "[[(2,0)]]"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "נקודת החיתוך של הישר $y = 2x − 4$ עם ציר $x$ היא",
+    "key": "$(2, 0)$"
+   }
+  }
+ ]
+}

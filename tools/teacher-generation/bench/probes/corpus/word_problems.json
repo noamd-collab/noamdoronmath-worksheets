@@ -1,0 +1,245 @@
+{
+ "family": "word_problems",
+ "probes": [
+  {
+   "id": "word_problems-01",
+   "topic": "ג08",
+   "intro": "פתרו את הבעיה.",
+   "prompt": "לדני היו [[124]] גולות. הוא קיבל עוד [[38]] גולות. כמה גולות יש לו עכשיו?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "124 + 38"
+    },
+    "unit": "גולות"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "לדני היו 124 גולות. הוא קיבל עוד 38 גולות. כמה גולות יש לו עכשיו? 124 + 38",
+    "key": "162 גולות"
+   }
+  },
+  {
+   "id": "word_problems-02",
+   "topic": "ג08",
+   "intro": "פתרו את הבעיה.",
+   "prompt": "לדני היו [[124]] גולות. הוא נתן [[38]] לחבר וקנה עוד [[15]]. כמה גולות יש לו עכשיו?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "124 - 38 + 15"
+    },
+    "unit": "גולות"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "לדני היו 124 גולות. הוא נתן 38 לחבר וקנה עוד 15 . כמה גולות יש לו עכשיו? (124 − 38) + 15",
+    "key": "101 גולות"
+   }
+  },
+  {
+   "id": "word_problems-03",
+   "topic": "ג08",
+   "intro": "פתרו את הבעיה.",
+   "prompt": "בכיתה [[32]] תלמידים. [[frac(1,4)]] מהם בנים?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "32 / 4"
+    },
+    "unit": "בנים"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "בכיתה 32 תלמידים. 1 4 מהם בנים? 32 : 4",
+    "key": "8 בנים"
+   }
+  },
+  {
+   "id": "word_problems-04",
+   "topic": "ג08",
+   "intro": "פתרו את הבעיה.",
+   "prompt": "לדני היו [[124]] גולות ולרון [[98]]. למי יש יותר גולות, ובכמה?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "124 - 98"
+    },
+    "unit": "גולות"
+   },
+   "expect": {
+    "key": [
+     "26"
+    ],
+    "keyContains": [
+     "דני"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch",
+     "print_adds_numbers"
+    ],
+    "notes": [
+     "key lacks 'דני'"
+    ],
+    "printed": "לדני היו 124 גולות ולרון 98 . למי יש יותר גולות, ובכמה? 124 − 98",
+    "key": "26 גולות"
+   }
+  },
+  {
+   "id": "word_problems-05",
+   "topic": "ג08",
+   "intro": "פתרו את הבעיה.",
+   "prompt": "האם [[124]] גולות מספיקות ל־[[4]] ילדים שכל אחד רוצה [[30]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "124 - 4 * 30"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "keyContains": [
+     "כן"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_ANSWER_KIND"
+   }
+  },
+  {
+   "id": "word_problems-06",
+   "topic": "א14",
+   "intro": "פִּתְרוּ אֶת הַבְּעָיָה.",
+   "prompt": "לְנֹעָה [[5]] בָּלוֹנִים. הִיא קִבְּלָה עוֹד [[3]] בָּלוֹנִים. כַּמָּה בָּלוֹנִים יֵשׁ לָהּ עַכְשָׁו?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "5 + 3"
+    },
+    "unit": "בָּלוֹנִים"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "לְנֹעָה 5 בָּלוֹנִים. הִיא קִבְּלָה עוֹד 3 בָּלוֹנִים. כַּמָּה בָּלוֹנִים יֵשׁ לָהּ עַכְשָׁו? 5 + 3",
+    "key": "8 בָּלוֹנִים"
+   }
+  },
+  {
+   "id": "word_problems-07",
+   "topic": "g7:word_problems",
+   "intro": "בנו משוואה ופתרו.",
+   "prompt": "סכום של מספר ושל המספר העוקב לו הוא [[41]]. מצאו את המספר.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "x + x + 1",
+     "rhs": "41",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "סכום של מספר ושל המספר העוקב לו הוא $41$. מצאו את המספר. $x + x + 1 = 41$",
+    "key": "$x = 20$"
+   }
+  },
+  {
+   "id": "word_problems-08",
+   "topic": "g7:word_problems",
+   "intro": "בנו משוואה ופתרו.",
+   "prompt": "כתבו משוואה מתאימה: סכום של מספר ושל המספר העוקב לו הוא [[41]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "x + x + 1",
+     "rhs": "41",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "כתבו משוואה מתאימה: סכום של מספר ושל המספר העוקב לו הוא $41$. $x + x + 1 = 41$",
+    "key": "$x = 20$"
+   }
+  },
+  {
+   "id": "word_problems-09",
+   "topic": "g8:word_problems_eq",
+   "intro": "פתרו.",
+   "prompt": "רכב נסע [[3]] שעות במהירות [[x]] קמ״ש ועוד [[2]] שעות במהירות [[x + 10]] קמ״ש. בסך הכול נסע [[420]] ק״מ. מצאו את [[x]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "3*x + 2*(x+10)",
+     "rhs": "420",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "רכב נסע $3$ שעות במהירות $x$ קמ״ש ועוד $2$ שעות במהירות $x + 10$ קמ״ש. בסך הכול נסע $420$ ק״מ. מצאו את $x$. $3 · x + 2 · \\g{x + 10} = 420$",
+    "key": "$x = 80$"
+   }
+  },
+  {
+   "id": "word_problems-10",
+   "topic": "ג10",
+   "intro": "פתרו.",
+   "prompt": "דנה קנתה 3 מחברות במחיר 5 שקלים כל אחת וקלמר אחד במחיר 10 שקלים. כמה שקלים שילמה דנה בסך הכל?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3*5+10"
+    },
+    "unit": "שקלים"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "דנה קנתה 3 מחברות במחיר 5 שקלים כל אחת וקלמר אחד במחיר 10 שקלים. כמה שקלים שילמה דנה בסך הכל? (3 x 5) + 10",
+    "key": "25 שקלים"
+   }
+  }
+ ]
+}

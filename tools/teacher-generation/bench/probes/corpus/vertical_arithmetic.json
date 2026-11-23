@@ -1,0 +1,283 @@
+{
+ "family": "vertical_arithmetic",
+ "probes": [
+  {
+   "id": "vertical_arithmetic-01",
+   "topic": "ג06",
+   "intro": "חשבו בטור.",
+   "prompt": "[[348 + 276]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "348 + 276"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "348 + 276",
+    "key": "624"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-02",
+   "topic": "ג06",
+   "intro": "חשבו בטור.",
+   "prompt": "[[348]] + [[276]] = ___",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "348 + 276"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "348 + 276 = ___",
+    "key": "624"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-03",
+   "topic": "ג06",
+   "intro": "מצאו את הספרה החסרה.",
+   "prompt": "[[3_8 + 276 = 624]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "4"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "4"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-04",
+   "topic": "ד10",
+   "intro": "חשבו בחילוק ארוך וכתבו את המנה ואת השארית.",
+   "prompt": "[[845 : 7]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "845 / 7"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "120",
+     "5"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch",
+     "key_repeats_question"
+    ],
+    "notes": [
+     "key numbers ['845', '7'] != expected ['120', '5']"
+    ],
+    "printed": "845 : 7",
+    "key": "845 7"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-05",
+   "topic": "ג21",
+   "intro": "חשבו וכתבו את השארית.",
+   "prompt": "[[47 : 5 = ___]] שארית ___",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "47 / 5"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "9",
+     "2"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch",
+     "answer_beside_question"
+    ],
+    "notes": [
+     "key numbers ['47', '5'] != expected ['9', '2']"
+    ],
+    "printed": "47 : 5 = ___ שארית ___ 47 : 5",
+    "key": "47 5"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-06",
+   "topic": "ג21",
+   "intro": "חשבו וכתבו את השארית.",
+   "prompt": "[[47 : 5]] = ___ (שארית ___)",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "47 / 5"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "9",
+     "2"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-07",
+   "topic": "ד09",
+   "intro": "חשבו.",
+   "prompt": "[[324 x 15]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "324 * 15"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "324 x 15",
+    "key": "4,860"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-08",
+   "topic": "ד09",
+   "intro": "חשבו.",
+   "prompt": "[[324x15]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "324 * 15"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-09",
+   "topic": "ד09",
+   "intro": "חשבו.",
+   "prompt": "[[324 × 15]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "324 * 15"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "324 x 15",
+    "key": "4,860"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-10",
+   "topic": "ה04",
+   "intro": "חשבו.",
+   "prompt": "[[1,845:15]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "1845 / 15"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-11",
+   "topic": "ג06",
+   "intro": "חשבו בטור.",
+   "prompt": "חשבו.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "348 + 276"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "חשבו. 348 + 276",
+    "key": "624"
+   }
+  },
+  {
+   "id": "vertical_arithmetic-12",
+   "topic": "ד10",
+   "intro": "חשבו את המנה ואת השארית.",
+   "prompt": "חשבו.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "845 / 7"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "120",
+     "5"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch",
+     "answer_beside_question"
+    ],
+    "notes": [
+     "key numbers ['845', '7'] != expected ['120', '5']"
+    ],
+    "printed": "חשבו. 845 : 7",
+    "key": "845 7"
+   }
+  }
+ ]
+}

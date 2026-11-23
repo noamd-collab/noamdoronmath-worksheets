@@ -1,0 +1,328 @@
+{
+ "family": "perimeter_area_volume",
+ "probes": [
+  {
+   "id": "perimeter_area_volume-01",
+   "topic": "ג15",
+   "intro": "חשבו את ההיקף.",
+   "prompt": "מלבן שאורכו [[6]] ס״מ ורוחבו [[4]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2 * (6 + 4)"
+    },
+    "unit": "ס״מ"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "מלבן שאורכו 6 ס״מ ורוחבו 4 ס״מ. 2 x (6 + 4)",
+    "key": "20 ס״מ"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-02",
+   "topic": "ג15",
+   "intro": "חשבו את ההיקף.",
+   "prompt": "מלבן שאורכו [[6]] ס״מ ורוחבו [[4]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2 * (6 + 4)"
+    },
+    "unit": "ס״מ"
+   },
+   "figure": {
+    "kind": "grid_shape",
+    "cells": [
+     [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "DRAWING_POLICY"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-03",
+   "topic": "ד22",
+   "intro": "חשבו את השטח.",
+   "prompt": "ריבוע שאורך צלעו [[5]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "5 * 5"
+    },
+    "unit": "סמ״ר"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "ריבוע שאורך צלעו 5 ס״מ. 5 x 5",
+    "key": "25 סמ״ר"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-04",
+   "topic": "ד22",
+   "intro": "חשבו את השטח.",
+   "prompt": "ריבוע שאורך צלעו [[5]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "5 * 5"
+    },
+    "unit": "cm²"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "ריבוע שאורך צלעו 5 ס״מ. 5 x 5",
+    "key": "25 cm²"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-05",
+   "topic": "ד22",
+   "intro": "חשבו את השטח.",
+   "prompt": "ריבוע שאורך צלעו [[5]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "5^2"
+    },
+    "unit": "ס״מ²"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "ריבוע שאורך צלעו 5 ס״מ. (5) 2",
+    "key": "25 ס״מ²"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-06",
+   "topic": "ו14",
+   "intro": "חשבו את הנפח.",
+   "prompt": "תיבה שמידותיה [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3 * 4 * 5"
+    },
+    "unit": "סמ״ק"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "תיבה שמידותיה 3 ס״מ, 4 ס״מ ו־ 5 ס״מ. (3 x 4) x 5",
+    "key": "60 סמ״ק"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-07",
+   "topic": "ו14",
+   "intro": "חשבו את הנפח.",
+   "prompt": "תיבה שמידותיה [[3 x 4 x 5]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3 * 4 * 5"
+    },
+    "unit": "סמ״ק"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "תיבה שמידותיה 3 x 4 x 5 ס״מ.",
+    "key": "60 סמ״ק"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-08",
+   "topic": "ה31",
+   "intro": "חשבו את שטח המשולש.",
+   "prompt": "בסיס [[8]] ס״מ וגובה [[5]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "8 * 5 / 2"
+    },
+    "unit": "סמ״ר"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "בסיס 8 ס״מ וגובה 5 ס״מ. (8 x 5) : 2",
+    "key": "20 סמ״ר"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-09",
+   "topic": "g8:cylinder_cone",
+   "intro": "חשבו את נפח הגליל.",
+   "prompt": "רדיוס הבסיס [[3]] ס״מ והגובה [[10]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "π*3^2*10"
+    },
+    "unit": "סמ״ק"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-10",
+   "topic": "g8:cylinder_cone",
+   "intro": "חשבו את נפח הגליל.",
+   "prompt": "רדיוס הבסיס [[3]] ס״מ והגובה [[10]] ס״מ. הציבו [[π = 3.14]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3.14*3^2*10"
+    },
+    "unit": "סמ״ק"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-11",
+   "topic": "g8:cylinder_cone",
+   "intro": "חשבו את נפח הגליל.",
+   "prompt": "רדיוס הבסיס [[3]] ס״מ והגובה [[10]] ס״מ. בטאו בעזרת [[pi]].",
+   "answer": {
+    "kind": "review",
+    "text": "[[90*pi]] סמ״ק"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-12",
+   "topic": "g7:areas",
+   "intro": "חשבו את השטח.",
+   "prompt": "מלבן שאורכו [[6]] ס״מ ורוחבו [[4]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "6*4"
+    },
+    "unit": "סמ״ר"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "מלבן שאורכו $6$ ס״מ ורוחבו $4$ ס״מ. $6 · 4$",
+    "key": "$24$ סמ״ר"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-13",
+   "topic": "g7:areas",
+   "intro": "חשבו את השטח.",
+   "prompt": "מלבן שאורכו [[6]] cm ורוחבו [[4]] cm.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "6*4"
+    },
+    "unit": "cm²"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_PLAIN_MATH"
+   }
+  },
+  {
+   "id": "perimeter_area_volume-14",
+   "topic": "g7:areas",
+   "intro": "חשבו את השטח.",
+   "prompt": "מלבן שאורכו [[6]] ס״מ ורוחבו [[4]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "6*4"
+    },
+    "unit": "ס״מ²"
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "מלבן שאורכו $6$ ס״מ ורוחבו $4$ ס״מ. $6 · 4$",
+    "key": "$24$ ס״מ²"
+   }
+  }
+ ]
+}

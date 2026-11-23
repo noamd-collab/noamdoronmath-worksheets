@@ -1,0 +1,242 @@
+{
+ "family": "number_line_sequences",
+ "probes": [
+  {
+   "id": "number_line_sequences-01",
+   "topic": "ג02",
+   "intro": "ענו על השאלות.",
+   "prompt": "איזה מספר נמצא באמצע בין [[340]] ל־[[360]] על ישר המספרים?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(340 + 360) / 2"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "איזה מספר נמצא באמצע בין 340 ל־ 360 על ישר המספרים? (340 + 360) : 2",
+    "key": "350"
+   }
+  },
+  {
+   "id": "number_line_sequences-02",
+   "topic": "ג02",
+   "intro": "ענו על השאלות.",
+   "prompt": "מהו המספר העוקב של [[399]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "399 + 1"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "מהו המספר העוקב של 399 ? 399 + 1",
+    "key": "400"
+   }
+  },
+  {
+   "id": "number_line_sequences-03",
+   "topic": "ג03",
+   "intro": "השלימו את הסדרה.",
+   "prompt": "[[10]], [[20]], ___, [[40]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "20 + 10"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "30"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "10 , 20 , ___, 40 20 + 10",
+    "key": "30"
+   }
+  },
+  {
+   "id": "number_line_sequences-04",
+   "topic": "ג03",
+   "intro": "השלימו את הסדרה.",
+   "prompt": "[[5]], [[10]], ___, ___, [[25]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "15"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "15",
+     "20"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch",
+     "answer_beside_question"
+    ],
+    "notes": [
+     "key numbers ['15'] != expected ['15', '20']"
+    ],
+    "printed": "5 , 10 , ___, ___, 25 15",
+    "key": "15"
+   }
+  },
+  {
+   "id": "number_line_sequences-05",
+   "topic": "ג03",
+   "intro": "השלימו את הסדרה.",
+   "prompt": "[[5, 10, 15, ___, 25]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "20"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "20"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "number_line_sequences-06",
+   "topic": "ג03",
+   "intro": "השלימו את הסדרה.",
+   "prompt": "[[5]], [[10]], [[15]], ...",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "20"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "20"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "answer_beside_question"
+    ],
+    "printed": "5 , 10 , 15 , ... 20",
+    "key": "20"
+   }
+  },
+  {
+   "id": "number_line_sequences-07",
+   "topic": "ג02",
+   "intro": "סמנו על ישר המספרים.",
+   "prompt": "סמנו על ישר המספרים את המספר [[350]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "350"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": []
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch",
+     "key_repeats_question"
+    ],
+    "notes": [
+     "key numbers ['350'] != expected []"
+    ],
+    "printed": "סמנו על ישר המספרים את המספר 350 .",
+    "key": "350"
+   }
+  },
+  {
+   "id": "number_line_sequences-08",
+   "topic": "ג02",
+   "intro": "ציירו ישר מספרים.",
+   "prompt": "ציירו ישר מספרים מ־[[300]] עד [[400]] וסמנו את [[350]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "350"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": []
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "DRAWING_POLICY"
+   }
+  },
+  {
+   "id": "number_line_sequences-09",
+   "topic": "ד12",
+   "intro": "מקמו על ישר המספרים.",
+   "prompt": "בין אילו שני מספרים שלמים נמצא השבר [[frac(7,4)]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "1"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "1",
+     "2"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch",
+     "answer_beside_question"
+    ],
+    "notes": [
+     "key numbers ['1'] != expected ['1', '2']"
+    ],
+    "printed": "בין אילו שני מספרים שלמים נמצא השבר 7 4 ? 1",
+    "key": "1"
+   }
+  }
+ ]
+}

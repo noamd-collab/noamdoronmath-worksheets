@@ -1,0 +1,1062 @@
+{
+  "title": "ריבוע",
+  "rule": "ריבוע הוא מרובע שכל צלעותיו שוות וכל זוויותיו ישרות. לריבוע יש תכונות של מלבן (זוויות ישרות, אלכסונים שווים) ותכונות של מעוין (צלעות שוות, אלכסונים מאונכים ומחלקים את הזוויות). האלכסונים בריבוע נחתכים באמצעם, הם שווים זה לזה, והם מחלקים את הריבוע לארבעה משולשים ישרי-זווית ושווי-שוקיים.",
+  "practice": {
+    "q1": {
+      "intro": "נתון ריבוע [[ABCD]] עם צלע שאורכה [[6]].",
+      "items": [
+        {
+          "prompt": "מהו אורך הצלע [[BC]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "6"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מהי גודל הזווית [[angle:ABC]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "90"
+            },
+            "unit": "°"
+          }
+        },
+        {
+          "prompt": "מהו היקף הריבוע?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4*6"
+            },
+            "unit": "ס\"מ"
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 6
+        },
+        "names": "ABCD",
+        "rotate": 0
+      }
+    },
+    "q2": {
+      "intro": "במערכת צירים נתונים הקודקודים [[A(0,0)]], [[B(4,0)]] ו-[[D(0,4)]] של ריבוע [[ABCD]].",
+      "items": [
+        {
+          "prompt": "מהו אורך הצלע [[AB]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4"
+            },
+            "unit": "יחידות"
+          }
+        },
+        {
+          "prompt": "מהו אורך הצלע [[AD]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4"
+            },
+            "unit": "יחידות"
+          }
+        },
+        {
+          "prompt": "מהן הקואורדינטות של הקודקוד הרביעי [[C]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(4,4)"
+            },
+            "unit": ""
+          }
+        }
+      ],
+      "figure": {
+        "kind": "coordinate_plane",
+        "xr": [
+          -1,
+          5
+        ],
+        "yr": [
+          -1,
+          5
+        ],
+        "points": [
+          {
+            "name": "A",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "name": "B",
+            "x": 4,
+            "y": 0
+          },
+          {
+            "name": "C",
+            "x": 4,
+            "y": 4
+          },
+          {
+            "name": "D",
+            "x": 0,
+            "y": 4
+          }
+        ],
+        "segments": [
+          [
+            "A",
+            "B"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "C",
+            "D"
+          ],
+          [
+            "D",
+            "A"
+          ]
+        ]
+      }
+    },
+    "q3": {
+      "intro": "ציירו ריבוע לפי התיאור הבא:",
+      "items": [
+        {
+          "prompt": "ציירו קטע [[AB]] באורך [[5]] ס\"מ.",
+          "answer": {
+            "kind": "review",
+            "text": "יש לצייר קטע ישר באורך 5 ס\"מ."
+          }
+        },
+        {
+          "prompt": "בנקודה [[A]] העלו אנך לקטע [[AB]] ובחרו נקודה [[D]] כך ש-[[AD]] = [[5]].",
+          "answer": {
+            "kind": "review",
+            "text": "יש לבנות זווית ישרה ב-A ולסמן נקודה D במרחק 5 מ-A."
+          }
+        },
+        {
+          "prompt": "השלימו את הקודקוד [[C]] כדי לקבל ריבוע [[ABCD]].",
+          "answer": {
+            "kind": "review",
+            "text": "יש לסמן נקודה C כך ש-BC מקביל ל-AD ו-DC מקביל ל-AB, ואורכם 5."
+          }
+        }
+      ],
+      "drawingFromWords": true
+    },
+    "q4": {
+      "intro": "גן ציבורי בצורת ריבוע [[ABCD]] בעל צלע באורך [[10]] מטרים.",
+      "items": [
+        {
+          "prompt": "מהו שטח הגן?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "10*10"
+            },
+            "unit": "מ\"ר"
+          }
+        },
+        {
+          "prompt": "מהו היקף הגן?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4*10"
+            },
+            "unit": "מ'"
+          }
+        },
+        {
+          "prompt": "אם נמתח שביל ישר מהפינה [[A]] לפינה [[C]], איזה משולש נוצר?",
+          "answer": {
+            "kind": "review",
+            "text": "נוצר משולש ישר-זווית ושווה-שוקיים (ABC)."
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 10
+        },
+        "names": "ABCD",
+        "rotate": 0
+      }
+    },
+    "q5": {
+      "intro": "השוו בין שני מרובעים: ריבוע [[ABCD]] עם צלע [[8]], ומלבן [[EFGH]] עם צלעות [[8]] ו-[[5]].",
+      "items": [
+        {
+          "prompt": "מהו שטח הריבוע?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "8*8"
+            },
+            "unit": "יח\"ש"
+          }
+        },
+        {
+          "prompt": "מהו שטח המלבן?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "8*5"
+            },
+            "unit": "יח\"ש"
+          }
+        },
+        {
+          "prompt": "איזה מהמרובעים הוא גם מעוין?",
+          "answer": {
+            "kind": "review",
+            "text": "הריבוע ABCD הוא גם מעוין כי כל צלעותיו שוות."
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 8
+        },
+        "names": "ABCD",
+        "rotate": 0
+      }
+    },
+    "q6": {
+      "intro": "במערכת צירים נתון ריבוע עם קודקודים [[A(1,1)]], [[B(5,1)]], [[C(5,5)]] ו-[[D(1,5)]].",
+      "items": [
+        {
+          "prompt": "מהו אורך הצלע [[AB]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "5-1"
+            },
+            "unit": "יחידות"
+          }
+        },
+        {
+          "prompt": "מהו אורך האלכסון [[AC]]? (השתמשו במשפט פיתגורס)",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "sqrt((5-1)^2 + (5-1)^2)"
+            },
+            "unit": "יחידות"
+          }
+        },
+        {
+          "prompt": "מהן הקואורדינטות של מפגש האלכסונים?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(3,3)"
+            },
+            "unit": ""
+          }
+        }
+      ],
+      "figure": {
+        "kind": "coordinate_plane",
+        "xr": [
+          0,
+          6
+        ],
+        "yr": [
+          0,
+          6
+        ],
+        "points": [
+          {
+            "name": "A",
+            "x": 1,
+            "y": 1
+          },
+          {
+            "name": "B",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "name": "C",
+            "x": 5,
+            "y": 5
+          },
+          {
+            "name": "D",
+            "x": 1,
+            "y": 5
+          }
+        ],
+        "segments": [
+          [
+            "A",
+            "B"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "C",
+            "D"
+          ],
+          [
+            "D",
+            "A"
+          ],
+          [
+            "A",
+            "C"
+          ],
+          [
+            "B",
+            "D"
+          ]
+        ]
+      }
+    },
+    "q7": {
+      "intro": "נתון ריבוע [[ABCD]] עם אלכסון באורך [[10]].",
+      "items": [
+        {
+          "prompt": "מהו אורך האלכסון השני [[BD]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "10"
+            },
+            "unit": "ס\"מ"
+          }
+        },
+        {
+          "prompt": "מהי הזווית בין האלכסונים?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "90"
+            },
+            "unit": "°"
+          }
+        },
+        {
+          "prompt": "האלכסון מחלק את הזווית [[angle:DAB]] לשתי זוויות שוות. מה גודל כל זווית?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "90/2"
+            },
+            "unit": "°"
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 7
+        },
+        "names": "ABCD",
+        "rotate": 0
+      }
+    },
+    "q8": {
+      "intro": "ציירו ריבוע [[KLMN]] עם צלע באורך [[4]] ס\"מ.",
+      "items": [
+        {
+          "prompt": "ציירו את האלכסון [[KM]]. מהו אורכו בקירוב?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "sqrt(4^2+4^2)"
+            },
+            "unit": "ס\"מ"
+          }
+        },
+        {
+          "prompt": "ציירו את האלכסון [[LN]]. האם הוא חותך את [[KM]] בזווית ישרה?",
+          "answer": {
+            "kind": "review",
+            "text": "כן, בריבוע האלכסונים מאונכים זה לזה."
+          }
+        },
+        {
+          "prompt": "סמנו את נקודת החיתוך [[O]]. מהו אורך הקטע [[KO]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "sqrt(4^2+4^2)/2"
+            },
+            "unit": "ס\"מ"
+          }
+        }
+      ],
+      "drawingFromWords": true
+    },
+    "q9": {
+      "intro": "השוו בין התכונות של ריבוע [[ABCD]] ומעוין כללי [[EFGH]] (שאינו ריבוע).",
+      "items": [
+        {
+          "prompt": "האם כל הזוויות בריבוע הן ישרות?",
+          "answer": {
+            "kind": "review",
+            "text": "כן, כל הזוויות בריבוע הן 90 מעלות."
+          }
+        },
+        {
+          "prompt": "האם כל הזוויות במעוין הכללי הן ישרות?",
+          "answer": {
+            "kind": "review",
+            "text": "לא, רק אם המעוין הוא ריבוע."
+          }
+        },
+        {
+          "prompt": "מהו ההבדל העיקרי בין ריבוע למעוין כללי?",
+          "answer": {
+            "kind": "review",
+            "text": "בריבוע כל הזוויות ישרות, במעוין כללי לא בהכרח."
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 5
+        },
+        "names": "ABCD",
+        "rotate": 0
+      }
+    },
+    "q10": {
+      "intro": "בחצר בית בצורת ריבוע [[ABCD]] עם צלע [[12]] מ', יש ערוגה מלבנית בגודל [[3]] על [[4]] מ' פינותיה במקביל לצלעות הריבוע. מהו שטח הדשא שנותר?",
+      "items": [
+        {
+          "prompt": "מהו שטח החצר כולה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12*12"
+            },
+            "unit": "מ\"ר"
+          }
+        },
+        {
+          "prompt": "מהו שטח הערוגה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "3*4"
+            },
+            "unit": "מ\"ר"
+          }
+        },
+        {
+          "prompt": "מהו שטח הדשא?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12*12 - 3*4"
+            },
+            "unit": "מ\"ר"
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 12
+        },
+        "names": "ABCD",
+        "rotate": 0
+      }
+    },
+    "q11": {
+      "intro": "נתון ריבוע בקודקודים [[A(0,0)]], [[B(6,0)]], [[C(6,6)]] ו-[[D(0,6)]].",
+      "items": [
+        {
+          "prompt": "שיטה א': חשבו את שטח הריבוע כצלע כפול צלע. מה התוצאה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "6*6"
+            },
+            "unit": "יח\"ש"
+          }
+        },
+        {
+          "prompt": "שיטה ב': חשבו את שטח המשולש [[ABC]] והכפילו ב-2. מה התוצאה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "2*(0.5*6*6)"
+            },
+            "unit": "יח\"ש"
+          }
+        },
+        {
+          "prompt": "האם התוצאות זהות?",
+          "answer": {
+            "kind": "review",
+            "text": "כן, שתי השיטות נותנות את אותו השטח."
+          }
+        }
+      ],
+      "figure": {
+        "kind": "coordinate_plane",
+        "xr": [
+          -1,
+          7
+        ],
+        "yr": [
+          -1,
+          7
+        ],
+        "points": [
+          {
+            "name": "A",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "name": "B",
+            "x": 6,
+            "y": 0
+          },
+          {
+            "name": "C",
+            "x": 6,
+            "y": 6
+          },
+          {
+            "name": "D",
+            "x": 0,
+            "y": 6
+          }
+        ],
+        "segments": [
+          [
+            "A",
+            "B"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "C",
+            "D"
+          ],
+          [
+            "D",
+            "A"
+          ],
+          [
+            "A",
+            "C"
+          ]
+        ]
+      }
+    },
+    "q12": {
+      "intro": "בנו דוגמה לריבוע ששטחו [[25]] יח\"ש.",
+      "items": [
+        {
+          "prompt": "מהו אורך הצלע הנדרש?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "sqrt(25)"
+            },
+            "unit": "יחידות"
+          }
+        },
+        {
+          "prompt": "מהו היקף הריבוע הזה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4*sqrt(25)"
+            },
+            "unit": "יחידות"
+          }
+        },
+        {
+          "prompt": "מהו אורך האלכסון שלו?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "sqrt(25)*sqrt(2)"
+            },
+            "unit": "יחידות"
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 5
+        },
+        "names": "PQRS",
+        "rotate": 0
+      }
+    },
+    "q13": {
+      "intro": "סדרו את השלמים לבניית ריבוע מצלע נתונה [[AB]] באורך [[3]] ס\"מ.",
+      "items": [
+        {
+          "prompt": "שלם ראשון: ציירו אנך ל-[[AB]] בנקודה [[A]].",
+          "answer": {
+            "kind": "review",
+            "text": "יש לצייר קו ישר היוצא מ-A בזווית 90 מעלות ל-AB."
+          }
+        },
+        {
+          "prompt": "שלם שני: סמנו נקודה [[D]] על האנך כך ש-[[AD]]=[[3]].",
+          "answer": {
+            "kind": "review",
+            "text": "יש להשתמש בסרגל או במחוג כדי לסמן מרחק 3 מ-A."
+          }
+        },
+        {
+          "prompt": "שלם שלישי: השלימו את הקודקוד [[C]] כך ש-[[BC]] מקביל ל-[[AD]].",
+          "answer": {
+            "kind": "review",
+            "text": "יש לצייר קו מקביל ל-AD היוצא מ-B, ולחתוך עם קו מקביל ל-AB היוצא מ-D."
+          }
+        }
+      ],
+      "drawingFromWords": true
+    },
+    "q14": {
+      "intro": "ריבוע [[ABCD]] בעל צלע [[x]].",
+      "items": [
+        {
+          "prompt": "אם [[x=7]], מהו שטח הריבוע?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "7*7"
+            },
+            "unit": "יח\"ש"
+          }
+        },
+        {
+          "prompt": "אם [[x=7]], מהו היקף הריבוע?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4*7"
+            },
+            "unit": "יחידות"
+          }
+        },
+        {
+          "prompt": "אם [[x=7]], מהו אורך האלכסון?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "7*sqrt(2)"
+            },
+            "unit": "יחידות"
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 7
+        },
+        "names": "ABCD",
+        "rotate": 0
+      }
+    },
+    "q15": {
+      "intro": "נתון ריבוע במערכת צירים עם קודקודים [[A(2,2)]], [[B(6,2)]], [[C(6,6)]] ו-[[D(2,6)]].",
+      "items": [
+        {
+          "prompt": "מהו אורך הצלע [[AB]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "6-2"
+            },
+            "unit": "יחידות"
+          }
+        },
+        {
+          "prompt": "מהו שטח הריבוע?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(6-2)*(6-2)"
+            },
+            "unit": "יח\"ש"
+          }
+        },
+        {
+          "prompt": "מהו מרכז הריבוע?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(4,4)"
+            },
+            "unit": ""
+          }
+        }
+      ],
+      "figure": {
+        "kind": "coordinate_plane",
+        "xr": [
+          0,
+          8
+        ],
+        "yr": [
+          0,
+          8
+        ],
+        "points": [
+          {
+            "name": "A",
+            "x": 2,
+            "y": 2
+          },
+          {
+            "name": "B",
+            "x": 6,
+            "y": 2
+          },
+          {
+            "name": "C",
+            "x": 6,
+            "y": 6
+          },
+          {
+            "name": "D",
+            "x": 2,
+            "y": 6
+          }
+        ],
+        "segments": [
+          [
+            "A",
+            "B"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "C",
+            "D"
+          ],
+          [
+            "D",
+            "A"
+          ]
+        ]
+      }
+    },
+    "q16": {
+      "intro": "בריצוף רצפה בצורת ריבוע [[ABCD]] עם צלע [[20]] ס\"מ.",
+      "items": [
+        {
+          "prompt": "כמה אריחים של [[10]] על [[10]] ס\"מ נדרשים לכסות את הריבוע?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(20*20)/(10*10)"
+            },
+            "unit": "אריחים"
+          }
+        },
+        {
+          "prompt": "מהו היקף הריבוע בס\"מ?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4*20"
+            },
+            "unit": "ס\"מ"
+          }
+        },
+        {
+          "prompt": "אם נחתך הריבוע באלכסון, מהו שטח כל חלק?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(20*20)/2"
+            },
+            "unit": "ס\"מ\"ר"
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 20
+        },
+        "names": "ABCD",
+        "rotate": 0
+      }
+    },
+    "q17": {
+      "intro": "נתון ריבוע [[ABCD]] עם צלע [[a]].",
+      "items": [
+        {
+          "prompt": "אם [[a=3]], מהו היחס בין ההיקף לשטח?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(4*3)/(3*3)"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "אם [[a=6]], מהו היחס בין ההיקף לשטח?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(4*6)/(6*6)"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "האם היחס קבוע לכל ריבוע?",
+          "answer": {
+            "kind": "review",
+            "text": "לא, היחס משתנה עם אורך הצלע."
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 5
+        },
+        "names": "ABCD",
+        "rotate": 0
+      }
+    }
+  },
+  "challenges": {
+    "q18": {
+      "intro": "נתון ריבוע [[ABCD]]. ידוע שהאלכסון [[AC]] מחלק את הזווית [[angle:BAD]] לשתי זוויות של [[45]] מעלות.",
+      "items": [
+        {
+          "prompt": "הסיקו מכך את גודל הזווית [[angle:BAD]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "45*2"
+            },
+            "unit": "°"
+          }
+        },
+        {
+          "prompt": "האם זה מספיק כדי להוכיח שמדובר בריבוע ולא רק במעוין?",
+          "answer": {
+            "kind": "review",
+            "text": "לא, זה מאפיין מעוין. כדי להוכיח שזה ריבוע צריך לדעת שהזווית היא 90 מעלות."
+          }
+        },
+        {
+          "prompt": "אם ידוע גם ש-[[AB]] = [[BC]], מה ניתן להסיק לגבי הצורה?",
+          "answer": {
+            "kind": "review",
+            "text": "אם כל הצלעות שוות וזווית אחת היא 90 מעלות, זוהי ריבוע."
+          }
+        }
+      ],
+      "drawingFromWords": true
+    },
+    "q19": {
+      "intro": "תלמיד טען כי עבור ריבוע עם קודקודים [[A(0,0)]], [[B(3,0)]], [[C(3,3)]] ו-[[D(0,3)]], אורך האלכסון הוא [[6]].",
+      "items": [
+        {
+          "prompt": "חשבו את האורך האמיתי של האלכסון [[AC]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "sqrt(3^2+3^2)"
+            },
+            "unit": "יחידות"
+          }
+        },
+        {
+          "prompt": "הסבירו מדוע הטענה של התלמיד שגויה.",
+          "answer": {
+            "kind": "review",
+            "text": "התלמיד חיבר את אורכי הצלעות במקום להשתמש במשפט פיתגורס. האלכסון הוא היתר במשולש ישר זווית."
+          }
+        },
+        {
+          "prompt": "מהו ההפרש בין התשובה הנכונה לתשובה השגויה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "6 - sqrt(3^2+3^2)"
+            },
+            "unit": "יחידות"
+          }
+        }
+      ],
+      "figure": {
+        "kind": "coordinate_plane",
+        "xr": [
+          -1,
+          4
+        ],
+        "yr": [
+          -1,
+          4
+        ],
+        "points": [
+          {
+            "name": "A",
+            "x": 0,
+            "y": 0
+          },
+          {
+            "name": "B",
+            "x": 3,
+            "y": 0
+          },
+          {
+            "name": "C",
+            "x": 3,
+            "y": 3
+          },
+          {
+            "name": "D",
+            "x": 0,
+            "y": 3
+          }
+        ],
+        "segments": [
+          [
+            "A",
+            "B"
+          ],
+          [
+            "B",
+            "C"
+          ],
+          [
+            "C",
+            "D"
+          ],
+          [
+            "D",
+            "A"
+          ],
+          [
+            "A",
+            "C"
+          ]
+        ]
+      }
+    },
+    "q20": {
+      "intro": "נתון ריבוע [[ABCD]] עם צלע [[a]] ומלבן [[EFGH]] עם צלעות [[a]] ו-[[b]] כאשר [[b < a]].",
+      "items": [
+        {
+          "prompt": "השוו בין שטח הריבוע לשטח המלבן.",
+          "answer": {
+            "kind": "review",
+            "text": "שטח הריבוע הוא a^2 ושטח המלבן הוא ab. מכיוון ש-b<a, שטח הריבוע גדול יותר."
+          }
+        },
+        {
+          "prompt": "השוו בין היקף הריבוע להיקף המלבן.",
+          "answer": {
+            "kind": "review",
+            "text": "היקף הריבוע הוא 4a והיקף המלבן הוא 2(a+b). היקף הריבוע גדול יותר כי 4a > 2a+2b."
+          }
+        },
+        {
+          "prompt": "האם המלבן יכול להיות גם מעוין?",
+          "answer": {
+            "kind": "review",
+            "text": "רק אם a=b, ואז הוא הופך לריבוע. אם b<a, הוא אינו מעוין כי הצלעות אינן שוות."
+          }
+        }
+      ],
+      "figure": {
+        "kind": "shape",
+        "shape": "square",
+        "parameters": {
+          "a": 5
+        },
+        "names": "ABCD",
+        "rotate": 0
+      }
+    }
+  }
+}

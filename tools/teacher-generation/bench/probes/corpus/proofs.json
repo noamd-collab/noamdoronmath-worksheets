@@ -1,0 +1,144 @@
+{
+ "family": "proofs",
+ "probes": [
+  {
+   "id": "proofs-01",
+   "topic": "g8:congruence",
+   "intro": "הוכיחו.",
+   "prompt": "נתון: [[AB = DE]], [[∠ABC = ∠DEF]], [[BC = EF]]. הוכיחו: [[△ABC ≅ △DEF]].",
+   "answer": {
+    "kind": "review",
+    "text": "המשולשים חופפים לפי צלע, זווית, צלע."
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "proofs-02",
+   "topic": "g8:congruence",
+   "intro": "הוכיחו.",
+   "prompt": "נתון: [[AB = DE]], [[∠ABC = ∠DEF]], [[BC = EF]]. הוכיחו כי המשולשים [[triangle:ABC]] ו־[[triangle:DEF]] חופפים.",
+   "answer": {
+    "kind": "review",
+    "text": "המשולשים חופפים לפי צלע, זווית, צלע (צ.ז.צ)."
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "נתון: $AB = DE$, $\\angle{ABC} = \\angle{DEF}$, $BC = EF$. הוכיחו כי המשולשים $\\tri ABC$ ו־$\\tri DEF$ חופפים.",
+    "key": "המשולשים חופפים לפי צלע, זווית, צלע (צ.ז.צ)."
+   }
+  },
+  {
+   "id": "proofs-03",
+   "topic": "g8:congruence",
+   "intro": "הוכיחו.",
+   "prompt": "נתון: [[segment:AB]] = [[segment:DE]]. הוכיחו כי המשולשים חופפים.",
+   "answer": {
+    "kind": "review",
+    "text": "לפי צ.ז.צ"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "proofs-04",
+   "topic": "g8:similarity",
+   "intro": "הוכיחו.",
+   "prompt": "הוכיחו: [[△ABC ∼ △DEF]].",
+   "answer": {
+    "kind": "review",
+    "text": "לפי ז.ז"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "proofs-05",
+   "topic": "g9r:parallelogram",
+   "intro": "הוכיחו.",
+   "prompt": "במרובע [[polygon:ABCD]] נתון [[AB ∥ CD]] ו־[[AB = CD]]. הוכיחו כי המרובע מקבילית.",
+   "answer": {
+    "kind": "review",
+    "text": "מרובע שבו זוג צלעות נגדיות שוות ומקבילות הוא מקבילית."
+   },
+   "figure": {
+    "kind": "shape",
+    "shape": "parallelogram",
+    "parameters": {
+     "a": 8,
+     "b": 5,
+     "angle": 60
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "במרובע $ABCD$ נתון $AB \\para CD$ ו־$AB = CD$. הוכיחו כי המרובע מקבילית.",
+    "key": "מרובע שבו זוג צלעות נגדיות שוות ומקבילות הוא מקבילית."
+   }
+  },
+  {
+   "id": "proofs-06",
+   "topic": "g9r:parallelogram",
+   "intro": "הוכיחו.",
+   "prompt": "נתון [[AB || CD]]. הוכיחו.",
+   "answer": {
+    "kind": "review",
+    "text": "לפי ההגדרה"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "proofs-07",
+   "topic": "g8:triangle_parts",
+   "intro": "הוכיחו.",
+   "prompt": "במשולש [[triangle:ABC]] נתון [[AB = AC]]. הוכיחו: [[∠B = ∠C]].",
+   "answer": {
+    "kind": "review",
+    "text": "במשולש שווה שוקיים זוויות הבסיס שוות."
+   },
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "במשולש $\\tri ABC$ נתון $AB = AC$. הוכיחו: $\\angle{B} = \\angle{C}$.",
+    "key": "במשולש שווה שוקיים זוויות הבסיס שוות."
+   }
+  },
+  {
+   "id": "proofs-08",
+   "topic": "ד18",
+   "intro": "נמקו.",
+   "prompt": "האם כל ריבוע הוא מלבן? נמקו.",
+   "answer": {
+    "kind": "review",
+    "text": "כן, כי לריבוע ארבע זוויות ישרות."
+   },
+   "expect": {
+    "keyContains": [
+     "כן"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "adapter",
+    "code": "UNVERIFIED_ANSWERS"
+   }
+  }
+ ]
+}
