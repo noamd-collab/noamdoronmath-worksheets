@@ -179,14 +179,14 @@ def shows_task(question, item, solved, *, intro=None):
     leaves = task_numbers(task)
     if BACK_REFERENCE.search(words):
         return False
-    story = visible_numbers(question["intro"] if intro is None else intro)
+    shared = question["intro"] if intro is None else intro
+    story = visible_numbers(shared) | word_numbers(_words(shared)) | word_numbers(words)
     if leaves and leaves <= story:
-        # The group's story states every number; the calculation is the pupil's part.
+        # The story states every number, in digits or in words; the calculation is the pupil's part.
         return False
     if words.endswith("?"):
-        # A question about a story or a table that is printed once for all items,
-        # or about numbers that the question itself says in words.
-        if leaves & (story | visible_numbers(_table_spans(question)) | word_numbers(words)):
+        # A question about a story or a table that is printed once for all items.
+        if leaves & (story | visible_numbers(_table_spans(question))):
             return False
     return True
 
