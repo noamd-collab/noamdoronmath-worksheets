@@ -6,7 +6,7 @@ import { loadCatalog } from '../src/lib/catalog/loadCatalog';
 import { topicWorksheetEditionLinks } from '../src/lib/topicWorksheetEditions';
 import { topicPageCatalogTopicIds, topicPagePdfParts } from '../src/lib/topicStructuredData';
 import { loadTopicPage } from '../src/lib/topicPages';
-import { catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, eighthRenew, seventhRenew } from './fixtures/middle-090-091-094';
+import { catalogAtRelease, registryAtRelease, catalogBeforePackages, copyBeforeRelease, registryBeforeRelease, seventhRenew } from './fixtures/middle-090-091-094';
 
 const root = new URL('../../../', import.meta.url);
 const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
@@ -15,8 +15,8 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 test('the Grade 7 two-step equations topic links exactly the three reviewed worksheet levels', () => {
   const releases = seventhRenew.packages;
   assert.deepEqual(releases.map(p => p.number), [81]);
-  const catalog = catalogBeforePackages(read('headless/catalog/catalog.v1.json'), eighthRenew.packages);
-  const registry = registryBeforeRelease(read('headless/catalog/worksheet-editions.v1.json'), eighthRenew.packages.map(p => p.edition));
+  const catalog = catalogAtRelease(read('headless/catalog/catalog.v1.json'), seventhRenew);
+  const registry = registryAtRelease(read('headless/catalog/worksheet-editions.v1.json'), seventhRenew);
   assert.equal(digest(catalogBeforePackages(catalog, releases)), seventhRenew.baselineCatalogSha256);
   assert.equal(digest(registryBeforeRelease(registry, releases.map(p => p.edition))), seventhRenew.baselineRegistrySha256);
   assert.equal(releases.flatMap(p => p.studentFiles).reduce((total, file) => total + file.items, 0), 96);

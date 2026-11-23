@@ -1,4 +1,4 @@
-import { seven, sixthRenew } from './fixtures/middle-090-091-094';
+import { finalRenew, seven, sixthRenew } from './fixtures/middle-090-091-094';
 import { reviewedNext12 } from './fixtures/next12-pdf';
 import { reviewedNext21 } from './fixtures/next21-pdf';
 import { reviewedBatch01 } from './fixtures/batch01-pdf';
@@ -287,6 +287,26 @@ describe('seo proposals – generator and coverage', () => {
       editedTopics.push(item.number);
     }
     assert.deepEqual(editedTopics, [100, 101, 102, 105]);
+    const finalSeoRows = [];
+    for (const pack of finalRenew.packages) {
+      const row = expected.find(item => item.path === '/' + pack.slug);
+      if (!row) continue;
+      finalSeoRows.push(pack.number);
+      const edit = pack.priorCopyEdits.find(e => e.path.length === 1 && e.path[0] === 'description')!;
+      assert.ok(edit, pack.slug);
+      assert.equal(row.currentDescription, edit.before);
+      if (pack.number === 107) {
+        assert.equal(row.source, 'title:review-fix|description:page-intro');
+        assert.equal(row.description, 'מתרגלים הזזה, שיקוף וסיבוב, ומזהים צורות חופפות ששומרות על אורכים וזוויות, בשלוש רמות: א׳, ב׳ ומצוינות, בחינם וללא הרשמה.');
+        row.source = 'title:review-fix|description:current';
+      } else {
+        assert.equal(row.source, 'title:current|description:current');
+        assert.equal(row.description, edit.before);
+      }
+      row.currentDescription = edit.after;
+      row.description = edit.after;
+    }
+    assert.deepEqual(finalSeoRows, [103, 104, 107]);
     assert.deepEqual(proposals, expected);
   });
 
