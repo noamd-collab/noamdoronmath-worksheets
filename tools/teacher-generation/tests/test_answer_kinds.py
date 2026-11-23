@@ -241,11 +241,33 @@ class DecisionWireTests(unittest.TestCase):
         self.assertEqual(decision("ג02", "קבעו.", "נכון או לא נכון: [[345 > 354]]", decide("gt", "345", "354")).verdict(), "לא נכון")
         self.assertEqual(decision("ג02", "האם הטענה נכונה?", "[[345 < 354]]", decide("lt", "345", "354")).verdict(), "כן")
         self.assertEqual(decision("ד07", "בדקו.", "בדקו: האם [[(3 + 2) * 3 = 15]]?", decide("eq", "(3+2)*3", "15")).verdict(), "כן")
+        self.assertEqual(decision("ד07", "בדקו.", "קבעו אם [[(3 + 2) * 3 = 16]].", decide("eq", "(3+2)*3", "16")).verdict(), "לא")
         shared = "נתונים שני תרגילים: [[2 + 3]] ו־[[1 + 4]]."
         self.assertEqual(decision("ד07", shared, "האם התוצאות שוות? (כן/לא)", decide("eq", "2+3", "1+4")).verdict(), "כן")
         self.refused("ד07", shared, "האם התוצאות שוות? (כן/לא)", decide("eq", "2+3", "2+3"))
         pointed = decision("ב10", "הַשְׁווּ.", "הַאִם [[5 + 3]] גָּדוֹל מִ־[[7]]?", decide("gt", "5+3", "7"))
         self.assertEqual((pointed.verdict(), pointed.verdict(pointed=True)), ("כן", "כֵּן"))
+
+    def test_the_no_regrouping_topic_accepts_a_claim_inside_its_bounds(self):
+        fixture = HERE / "cloud/container/fixtures/general/grade2-vocalized"
+        lesson = json.loads((fixture / "lesson.json").read_text(encoding="utf-8"))
+        payload = json.loads((fixture / "model-output.json").read_text(encoding="utf-8"))
+        scope = scope_for_lesson(lesson)
+        item = payload["sections"][0]["questions"][0]["items"][0]
+        add = lambda a, b: op("add", n(a), n(b))
+
+        def ask(left):
+            item["prompt"] = [{"kind": "text", "text": "הַאִם "}, {"kind": "math", "expression": left},
+                              {"kind": "text", "text": " גָּדוֹל מִ־"}, {"kind": "math", "expression": n(35)},
+                              {"kind": "text", "text": "?"}]
+            item["answer"] = {"kind": "computed", "unit": "",
+                              "task": {"kind": "decide", "relation": "gt", "left": left, "right": n(35)}}
+            return validate_source(lesson, payload, scope, provider=True)
+
+        self.assertIs(ask(add(23, 14))["evidence"]["computations"][0]["computed"]["result"]["holds"], True)
+        with self.assertRaises(GeneralSourceError) as caught:
+            ask(add(19, 19))  # regrouping is outside the selected concept, in a yes/no question too
+        self.assertEqual(caught.exception.code, "SOURCE_ADDITION_SCOPE")
 
     def test_divisibility_negation_sufficiency_and_membership(self):
         self.assertEqual(decision("ג03", "ענו.", "האם [[24]] מתחלק ב־[[6]]?", decide("divisible", "24", "6")).verdict(), "כן")
@@ -511,7 +533,8 @@ class AdapterTests(unittest.TestCase):
         self.assertIsNone(draft["questions"][1]["items"][0]["task"])
         html_text = (work / "sheet.html").read_text(encoding="utf-8")
         self.assertEqual(html_text.count('<div class="open-work"></div>'), 4)
-        self.assertIn('<span class="answer-text" dir="rtl">משולש שווה צלעות</span>', html_text)
+        self.assertIn('א. <span class="answer-text" dir="rtl">משולש שווה צלעות</span>', html_text)
+        self.assertIn('<span class="answer-text" dir="rtl">סעיף פתוח: לבדיקת המורה.</span>', html_text)
 
     def test_an_authored_prose_answer_is_still_refused_in_elementary(self):
         lesson, scope, expanded = self.source("ג16", [

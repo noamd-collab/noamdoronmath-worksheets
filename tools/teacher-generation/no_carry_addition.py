@@ -252,7 +252,8 @@ def validate_topic_math(source):
                 task = answer["task"]
                 if task["kind"] == "evaluate":
                     expressions = [task["expression"]]
-                elif task["kind"] == "compare":
+                elif task["kind"] == "compare" or (task["kind"] == "decide" and "right" in task):
+                    # A yes/no question about two quantities stays inside the same boundary.
                     expressions = [task["left"], task["right"]]
                 else:
                     reject()

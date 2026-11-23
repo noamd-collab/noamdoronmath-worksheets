@@ -414,7 +414,7 @@ def bind_decision(question, item, solved, grade):
         # The question is whether the one printed statement is right. Its
         # truth comes from the print; the typed claim has to agree with it.
         cue = _relation_word(sentence.replace("@", " "))
-        bare = not re.sub(r"האם|זה|זו|כי|[@\s.,:?!־-]", "", sentence)
+        bare = not re.sub(r"האם|אם|בדקו|קבעו|החליטו|בררו|זה|זו|כי|[@\s.,:?!־-]", "", sentence)
         if len(statements) != 1 or operations or not (bare or (cue and cue[3])):
             _refuse_kind("Ask whether the one printed statement is right, with nothing else to decide in the item")
         relation, left, right = statements[0]

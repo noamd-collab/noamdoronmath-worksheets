@@ -484,8 +484,8 @@ def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *
         # A label is the author's own plain Hebrew, escaped. An open item has
         # no key: a fixed line sends it to the teacher. Neither enters the ledger.
         if item["answer"]["kind"] == "label":
-            return prompt + ' <div class="ansline"></div>', H.text_answer(item["answer"]["text"])
-        return prompt + ' <div class="open-work"></div>', H.text_answer(TEACHER_CHECK)
+            return prompt + ' <div class="ansline"></div>', html.escape(item["answer"]["text"])
+        return prompt + ' <div class="open-work"></div>', html.escape(TEACHER_CHECK)
     if not figure_task and computed["question"].get("kind") == "decide":
         decision = bind_decision(seen, item, computed, number_grade)
         # A fresh calculation, not a model-provided answer or boolean.
