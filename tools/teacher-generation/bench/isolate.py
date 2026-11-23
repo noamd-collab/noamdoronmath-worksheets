@@ -222,7 +222,13 @@ class Isolator:
     def failures(self, reply):
         """Every question of the reply that the engine rejects when it stands alone."""
         found = []
-        for number, group, index, question in reply_questions(reply):
+        rows = reply_questions(reply)
+        sizes = [len(q['items']) for _, _, _, q in rows
+                 if isinstance(q, dict) and isinstance(q.get('items'), list) and q['items']]
+        if sizes and not self.baseline(sizes[0]):
+            # Without a neutral sheet that compiles, a rejection could not be pinned on a question.
+            raise engine.BenchError('The neutral four-question sheet is rejected; isolation cannot attribute failures')
+        for number, group, index, question in rows:
             if not isinstance(question, dict):
                 found.append({'question': number, 'group': group, 'index': index + 1,
                               'code': 'NOT_AN_OBJECT', 'field': 'question', 'substring': clip(question)})

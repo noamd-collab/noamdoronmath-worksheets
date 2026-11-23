@@ -1,0 +1,1864 @@
+{
+ "cases": [
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      5,
+      8,
+      11,
+      14,
+      19
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q11",
+      "q14",
+      "q19",
+      "q5",
+      "q8"
+     ]
+    },
+    "firstPass": {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q5.item.3",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
+   "frameFailure": null,
+   "id": "A-division",
+   "lesson": {
+    "domain": "operations",
+    "gradeNumber": 3,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "elementary",
+    "title": "חילוק והקשר ההפוך לכפל",
+    "topicId": "ג10"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen3.8-flash",
+   "origin": "bench/qwen2 (round A)",
+   "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"12/3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.3",
+     "field": "item.3",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "האם התוצאות של [[12 : 3]] ושל [[12 : 4]] זהות?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"8*4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "האם [[32 : 4 = 8]] נכון? בדקו באמצעות כפל."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6*2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "עבור [[12 : 2 = 6]], דרך א' היא [[6 x 2]]. דרך ב' היא [[2 x 6]]. האם שתיהן נכונות?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"56/8\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "האם המנה של [[56 : 8]] גדולה מ-5? חשבו את המנה המדויקת."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "תלמיד כתב: [[30 : 5 = 7]]. האם זה נכון? אם לא, מה התשובה הנכונה?"
+    }
+   ],
+   "questions": {
+    "failingAlone": 5,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~16:00Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      5,
+      8,
+      10,
+      12,
+      13,
+      16
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q10",
+      "q12",
+      "q13",
+      "q16",
+      "q5",
+      "q8"
+     ]
+    },
+    "firstPass": {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
+   "frameFailure": null,
+   "id": "A-order",
+   "lesson": {
+    "domain": "operations",
+    "gradeNumber": 4,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "elementary",
+    "title": "סדר פעולות חשבון",
+    "topicId": "ד07"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen3.8-flash",
+   "origin": "bench/qwen2 (round A)",
+   "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"3*4-2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_EXPRESSION_SCOPE",
+     "detail": "Unverified pupil exercise or mismatched expression at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "כתבו ביטוי מתמטי עבור המשפט: 'כפולת של 3 ו-4, פחות 2'."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"2*5-3\", \"kind\": \"evaluate\"}, \"unit\": \"עוגיות\"}",
+     "code": "PRINTED_EXPRESSION_SCOPE",
+     "detail": "Unverified pupil exercise or mismatched expression at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "אבי קנה 2 חבילות עוגיות. בכל חבילה היו 5 עוגיות. הוא אכל 3 עוגיות. כמה עוגיות נשארו? כתבו ביטוי עם סוגריים."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(2+4)*2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_EXPRESSION_SCOPE",
+     "detail": "Unverified pupil exercise or mismatched expression at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "כתבו ביטוי עם סוגריים שתוצאתו היא 12."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"50\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "האם התוצאה של [[(5+5)*5]] גדולה מ-50?"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "[[(x + 2) * 3 = 15]]"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"15\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.3",
+     "field": "item.3",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "האם התוצאות שוות? (כן/לא)"
+    }
+   ],
+   "questions": {
+    "failingAlone": 6,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~16:00Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      6,
+      8,
+      9,
+      14,
+      16
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q14",
+      "q16",
+      "q6",
+      "q8",
+      "q9"
+     ]
+    },
+    "firstPass": {
+     "code": "SOURCE_TABLE",
+     "detail": "The question refers to a table that was not supplied",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_TABLE",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
+   "frameFailure": null,
+   "id": "A-equations",
+   "lesson": {
+    "domain": "אלגברי",
+    "gradeNumber": 7,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "משוואות ממעלה ראשונה ופתרונן",
+    "topicId": "g7:equations"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen3.8-flash",
+   "origin": "bench/qwen2 (round A)",
+   "questionFailures": [
+    {
+     "code": "SOURCE_TABLE",
+     "detail": "The question refers to a table that was not supplied",
+     "field": "intro",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "מצאו את הערך החסר בטבלה המקשרת בין משוואה לפתרונה."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(9 - 1) / 2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "האם [[2*x + 1 = 9]] היא ממעלה ראשונה? אם כן, פתרו."
+    },
+    {
+     "code": "SOURCE_TABLE",
+     "detail": "The question refers to a table that was not supplied",
+     "field": "intro",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "השלימו את הטבלה עבור משוואות פשוטות."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"25 - 10\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "האם הפתרון של [[x + 10 = 25]] קטן או גדול מ-10? חשבו את [[x]]."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"8 - 3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "ציירו משוואה שמייצגת 'מספר ועוד 3 שווה 8'. כתבו את המשוואה ופתרו."
+    }
+   ],
+   "questions": {
+    "failingAlone": 5,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~16:00Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      14
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q14"
+     ]
+    },
+    "firstPass": {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q14.item.1",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
+   "frameFailure": null,
+   "id": "A-percent",
+   "lesson": {
+    "domain": "מספרי",
+    "gradeNumber": 8,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "אחוזים",
+    "topicId": "g8:percentages"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen3.8-flash",
+   "origin": "bench/qwen2 (round A)",
+   "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(10/100)*100\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "האם [[10]]% מ-[[100]] גדול מ-[[5]]? חשבו את הערך המדויק."
+    }
+   ],
+   "questions": {
+    "failingAlone": 1,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~16:00Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
+    },
+    "firstPass": {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "ok": false
+    },
+    "requests": 1,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "A-square",
+   "lesson": {
+    "domain": "גיאומטרי",
+    "gradeNumber": 9,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "ריבוע",
+    "topicId": "g9m:square"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": "square-parameters/1",
+   "model": "qwen3.8-flash",
+   "origin": "bench/qwen2 (round A)",
+   "questionFailures": [
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Wrong number of distinct points",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "[[angle:A]]"
+    },
+    {
+     "code": "SOURCE_RICH_TEXT",
+     "detail": "A text block needs one to thirty typed spans at q1.table.row.1.2",
+     "field": "table.row.1.2",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": ""
+    },
+    {
+     "code": "UNSUPPORTED_TASK",
+     "detail": "A typed mathematical task is invalid or outside the supported exact verifier",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"4*x\", \"kind\": \"evaluate\"}, \"unit\": \"ס\\\"מ\"}"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(-3,3)\", \"kind\": \"evaluate\"}, \"unit\": \"נקודה\"}"
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "Shape requires one distinct uppercase name per vertex",
+     "field": "figure",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "{\"kind\": \"shape\", \"names\": \"GARDEN\", \"parameters\": {\"a\": 12}, \"rotate\": 0, \"shape\": \"square\"}"
+    },
+    {
+     "code": "UNSUPPORTED_TASK",
+     "detail": "A typed mathematical task is invalid or outside the supported exact verifier",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"a^2\", \"kind\": \"evaluate\"}, \"unit\": \"יחידות שטח\"}"
+    }
+   ],
+   "questions": {
+    "failingAlone": 6,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~16:00Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "general"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      5,
+      8,
+      14,
+      18
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q14",
+      "q18",
+      "q5",
+      "q8"
+     ]
+    },
+    "firstPass": {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q5.item.3",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
+   "frameFailure": null,
+   "id": "B-division",
+   "lesson": {
+    "domain": "operations",
+    "gradeNumber": 3,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "elementary",
+    "title": "חילוק והקשר ההפוך לכפל",
+    "topicId": "ג10"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen3.8-flash",
+   "origin": "bench/qwen-fresh-01 (round B)",
+   "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.3",
+     "field": "item.3",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "האם התוצאה של [[30 : 5]] גדולה מהתוצאה של [[30 : 6]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"16/4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "האם [[16 : 4]] הוא חילוק שמביא לתוצאה זוגית?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"50/10\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "האם התוצאה של [[50 : 10]] היא קטנה מ-6? חשבו את התוצאה המדויקת."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6*7\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "מספר חולק ב-6 והתקבל 7. האם המספר המקורי גדול מ-40?"
+    }
+   ],
+   "questions": {
+    "failingAlone": 4,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~21:30Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
+    },
+    "firstPass": {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "ok": false
+    },
+    "requests": 1,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "B-order",
+   "lesson": {
+    "domain": "operations",
+    "gradeNumber": 4,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "elementary",
+    "title": "סדר פעולות חשבון",
+    "topicId": "ד07"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen3.8-flash",
+   "origin": "bench/qwen-fresh-01 (round B)",
+   "questionFailures": [
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "[[x]]"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(2+3)*4-(2+3*4)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "האם התוצאה של [[(2 + 3) * 4]] גדולה, קטנה או שווה לתוצאה של [[2 + 3 * 4]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"21/3-4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.3",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "בחישוב [[(___) + 4] * 3 = 21]], מהו המספר החסר?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"7+2*3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "האם הביטוי [[7 + 2 * 3]] מכיל סוגריים? חשבו אותו."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(2+3)*2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_EXPRESSION_SCOPE",
+     "detail": "Unverified pupil exercise or mismatched expression at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "כתבו ביטוי עם סוגריים שתוצאתו היא [[10]]. השתמשו במספרים [[2]] ו[[3]]."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(5+5)*2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "האם התוצאה של [[(5 + 5) * 2]] גדולה מ[[10]]? חשבו את התוצאה."
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "[[(x + 2) * 3 = 15]]"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "[[x]]"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(4+2)*3-(4+(2*3))\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "מצב א': [[(4 + 2) * 3]]. מצב ב': [[4 + (2 * 3)]. מה ההפרש בין התוצאות?"
+    }
+   ],
+   "questions": {
+    "failingAlone": 9,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~21:30Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      6,
+      18
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q18",
+      "q6"
+     ]
+    },
+    "firstPass": {
+     "code": "SOURCE_TABLE",
+     "detail": "The question refers to a table that was not supplied",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_TABLE",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
+   "frameFailure": null,
+   "id": "B-equations",
+   "lesson": {
+    "domain": "אלגברי",
+    "gradeNumber": 7,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "משוואות ממעלה ראשונה ופתרונן",
+    "topicId": "g7:equations"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen3.8-flash",
+   "origin": "bench/qwen-fresh-01 (round B)",
+   "questionFailures": [
+    {
+     "code": "SOURCE_TABLE",
+     "detail": "The question refers to a table that was not supplied",
+     "field": "intro",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "מצאו את הערך החסר בטבלה המתארת משוואות פשוטות."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"10 + 5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.2",
+     "field": "item.2",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "אם [[x = 10]] הוא הפתרון, כתבו משוואה מהצורה [[x + a = b]] כאשר [[a=5]]."
+    }
+   ],
+   "questions": {
+    "failingAlone": 2,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~21:30Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      9,
+      14
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q14",
+      "q9"
+     ]
+    },
+    "firstPass": {
+     "code": "SOURCE_TABLE",
+     "detail": "The question refers to a table that was not supplied",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_TABLE",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
+   "frameFailure": null,
+   "id": "B-percent",
+   "lesson": {
+    "domain": "מספרי",
+    "gradeNumber": 8,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "אחוזים",
+    "topicId": "g8:percentages"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen3.8-flash",
+   "origin": "bench/qwen-fresh-01 (round B)",
+   "questionFailures": [
+    {
+     "code": "SOURCE_TABLE",
+     "detail": "The question refers to a table that was not supplied",
+     "field": "intro",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "השוו בין הנתונים בטבלה."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(15/100)*100\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "האם [[15%]] מתוך [[100]] קטן או גדול מ[[20]]? חשבו את הערך המדויק."
+    }
+   ],
+   "questions": {
+    "failingAlone": 2,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~21:30Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
+    },
+    "firstPass": {
+     "code": "AUTHOR_PLAN_MISMATCH",
+     "detail": "Wrong number of questions in the authored group",
+     "ok": false
+    },
+    "requests": 1,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:AUTHOR_PLAN_MISMATCH",
+   "finalCode": "AUTHOR_PLAN_MISMATCH",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "B-square",
+   "lesson": {
+    "domain": "גיאומטרי",
+    "gradeNumber": 9,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "ריבוע",
+    "topicId": "g9m:square"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": "square-parameters/1",
+   "model": "qwen3.8-flash",
+   "origin": "bench/qwen-fresh-01 (round B)",
+   "questionFailures": [
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 2,
+     "question": 2,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(4,4)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.item.3.answer",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "{\"kind\": \"review\", \"text\": \"יש לסמן נקודה C כך ש-BC מקביל ל-AD ו-DC מקביל ל-AB, ואורכם 5.\"}"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.item.3.answer",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "{\"kind\": \"review\", \"text\": \"נוצר משולש ישר-זווית ושווה-שוקיים (ABC).\"}"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(3,3)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.item.1.answer",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "{\"kind\": \"review\", \"text\": \"יש לצייר קו ישר היוצא מ-A בזווית 90 מעלות ל-AB.\"}"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(4,4)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.answer",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "{\"kind\": \"review\", \"text\": \"שטח הריבוע הוא a^2 ושטח המלבן הוא ab. מכיוון ש-b<a, שטח הריבוע גדול יותר.\"}"
+    }
+   ],
+   "questions": {
+    "failingAlone": 7,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~21:30Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "dict[3]",
+    "practice": "dict[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "general"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
+    },
+    "firstPass": {
+     "code": "SOURCE_FIGURE",
+     "detail": "Figure constructor is not supported by this pinned skill",
+     "ok": false
+    },
+    "requests": 1,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_FIGURE",
+   "finalCode": "SOURCE_FIGURE",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "T1-triangle",
+   "lesson": {
+    "domain": "גיאומטרי",
+    "gradeNumber": 8,
+    "level": "e",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "צלעות במשולש, תיכון, זווית חיצונית, שווה שוקיים, משפטים הפוכים",
+    "topicId": "g8:triangle_parts"
+   },
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen3.8-flash",
+   "origin": "middle-renew/generator-live-author",
+   "questionFailures": [
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "Figure constructor is not supported by this pinned skill",
+     "field": "figure",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "{\"base\": 10, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 8, \"names\": \"ABCD\", \"right\": 7, \"rotate\": 0}"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "prose: ABC (AB=AC). (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "prose: ABC (AB=AC). (+1 more)"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.2.answer",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "{\"kind\": \"review\", \"text\": \"לא ייתכן, כי 4+6 < 9.\"}"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "prose: ABC (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.item.2.answer",
+     "field": "item.2.answer",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "{\"kind\": \"review\", \"text\": \"כן, כי לפי פיתגורס AC=sqrt(2^2+3^2) ו-BC=sqrt(2^2+3^2), ולכן AC=BC.\"}"
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "Figure constructor is not supported by this pinned skill",
+     "field": "figure",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "{\"base\": 8, \"construction\": \"side_extension\", \"kind\": \"triangle_part\", \"left\": 6, \"names\": \"ABCD\", \"right\": 7, \"rotate\":…"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.table.head.1",
+     "field": "table.head.1",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "∡A"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "intro",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "prose: ABC = 60 (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "prose: ABC (AB=AC) (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "prose: ABC (AB=AC). AD (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "prose: ABC (AB=AC) (+2 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "prose: ABC (AB=AC). AE (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.item.2.prompt",
+     "field": "item.2.prompt",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "prose: ABD (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "prose: ABC (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "prose: ABC, AD (+3 more)"
+    }
+   ],
+   "questions": {
+    "failingAlone": 16,
+    "total": 20
+   },
+   "recorded": "2026-11-22 15:45Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
+    },
+    "firstPass": {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "ok": false
+    },
+    "requests": 1,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
+   "finalStatus": "failed",
+   "frameFailure": {
+    "code": "SOURCE_TEXT",
+    "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+    "field": "title or rule",
+    "substring": "במשולש שווה־שוקיים ($AB=AC$) מתלכדים התיכון לבסיס $BC$, הגובה לבסיס וחוצה זווית הראש. זוויות הבסיס שוות. הזווית החיצונית…"
+   },
+   "id": "T2-triangle",
+   "lesson": {
+    "domain": "גיאומטרי",
+    "gradeNumber": 8,
+    "level": "e",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "צלעות במשולש, תיכון, זווית חיצונית, שווה שוקיים, משפטים הפוכים",
+    "topicId": "g8:triangle_parts"
+   },
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen3.8-flash",
+   "origin": "middle-renew/generator-real-qualification-v2",
+   "questionFailures": [
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "prose: $ABC$. (+4 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 2,
+     "question": 2,
+     "substring": "prose: $M$"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "prose: $ABC$ ($AB=AC$). (+5 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "prose: $ABC$ (+7 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.2.prompt",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "prose: $60 (+1 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "prose: $M$"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "prose: $ABC$. (+5 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "prose: $40 (+3 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "prose: $M$"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.2.prompt",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "prose: $\\angle (+1 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "prose: $AM$"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.3.prompt",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "prose: $\\angle (+2 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "prose: $ABC$. (+4 more)"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.2.answer",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"180 - (180 - 2*atan(3/4)*180/pi)\", \"kind\": \"evaluate\"}, \"unit\": \"°\"}"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
+    }
+   ],
+   "questions": {
+    "failingAlone": 20,
+    "total": 20
+   },
+   "recorded": "2026-11-22 15:59Z",
+   "renders": [],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      2,
+      4,
+      8,
+      10,
+      12
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q10",
+      "q12",
+      "q2",
+      "q4",
+      "q8"
+     ]
+    },
+    "firstPass": {
+     "ok": true
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "GATES:G32+G61",
+   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
+   "finalStatus": "needs_unrecorded_reply",
+   "frameFailure": null,
+   "id": "S-g4calc",
+   "lesson": {
+    "domain": "operations",
+    "gradeNumber": 4,
+    "level": "b",
+    "minutes": 45,
+    "questionCount": 12,
+    "skill": "elementary",
+    "title": "סדר פעולות חשבון",
+    "topicId": "ד07"
+   },
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen (model id not recorded)",
+   "origin": "shared-engine-qa",
+   "questionFailures": [],
+   "questions": {
+    "failingAlone": 0,
+    "total": 12
+   },
+   "recorded": "2026-11-22 ~09:02Z",
+   "renders": [
+    {
+     "attempt": 1,
+     "engineFeedback": [
+      {
+       "codes": [
+        "G61"
+       ],
+       "question": 2
+      },
+      {
+       "codes": [
+        "G32"
+       ],
+       "question": 4
+      },
+      {
+       "codes": [
+        "G32"
+       ],
+       "question": 8
+      },
+      {
+       "codes": [
+        "G61"
+       ],
+       "question": 10
+      },
+      {
+       "codes": [
+        "G32"
+       ],
+       "question": 12
+      }
+     ],
+     "gateFindings": [
+      {
+       "gate": "G32",
+       "questions": [
+        4
+       ],
+       "step": "content-truth",
+       "text": "✗ G32 [content.json.questions#4] טענה כוללת/שלילת קיום ('לכל ') בלי רישום ב-verified.json — הריצו no_counterexample על תחום חסום ורשמו ב-Ledger"
+      },
+      {
+       "gate": "G32",
+       "questions": [
+        8
+       ],
+       "step": "content-truth",
+       "text": "✗ G32 [content.json.questions#8] טענה כוללת/שלילת קיום ('לכל ') בלי רישום ב-verified.json — הריצו no_counterexample על תחום חסום ורשמו ב-Ledger"
+      },
+      {
+       "gate": "G32",
+       "questions": [
+        12
+       ],
+       "step": "content-truth",
+       "text": "✗ G32 [content.json.questions#12] טענה כוללת/שלילת קיום ('לכל ') בלי רישום ב-verified.json — הריצו no_counterexample על תחום חסום ורשמו ב-Ledger"
+      },
+      {
+       "gate": "G61",
+       "questions": [
+        2,
+        10
+       ],
+       "step": "house-gates",
+       "text": "FAIL — G61-level: פער קושי 5 > 4 — הדף מערבב רמות (Q23=3 מול Q101=8)"
+      }
+     ],
+     "reviewFindings": [],
+     "skippedChecks": [
+      "worksheet: PASS — pdffonts missing — skipped (warn)",
+      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
+     ],
+     "status": "failed",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "content-truth",
+       "status": "FAIL"
+      },
+      {
+       "name": "pdf",
+       "status": "PASS"
+      },
+      {
+       "name": "word",
+       "status": "PASS"
+      },
+      {
+       "name": "worksheet",
+       "status": "PASS"
+      },
+      {
+       "name": "output-gates",
+       "status": "PASS"
+      },
+      {
+       "name": "house-gates",
+       "status": "FAIL"
+      }
+     ]
+    }
+   ],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[9]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
+    },
+    "firstPass": {
+     "ok": true
+    },
+    "requests": 1,
+    "timeoutSeconds": 300
+   },
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": false,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "middle-build",
+      "status": "REVIEW"
+     },
+     {
+      "name": "didactic-review-reconciliation",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [
+     {
+      "code": "DIDACTIC_REVIEW",
+      "count": 62
+     }
+    ]
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
+   "frameFailure": null,
+   "id": "S-g7eq",
+   "lesson": {
+    "domain": "אלגברי",
+    "gradeNumber": 7,
+    "level": "b",
+    "minutes": 45,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "משוואות ממעלה ראשונה ופתרונן",
+    "topicId": "g7:equations"
+   },
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "qwen (model id not recorded)",
+   "origin": "shared-engine-qa",
+   "questionFailures": [],
+   "questions": {
+    "failingAlone": 0,
+    "total": 20
+   },
+   "recorded": "2026-11-22 ~09:02Z",
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [
+      {
+       "code": "DIDACTIC_REVIEW",
+       "count": 62
+      }
+     ],
+     "skippedChecks": [],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
+       "status": "REVIEW"
+      },
+      {
+       "name": "didactic-review-reconciliation",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  }
+ ],
+ "rendered": true,
+ "summary": {
+  "cases": 14,
+  "delivered": 1,
+  "deliveredRate": 0.0714,
+  "failureClasses": {
+   "DELIVERED": 1,
+   "GATES:G32+G61": 1,
+   "SOURCE:AUTHOR_PLAN_MISMATCH": 1,
+   "SOURCE:PRINTED_ANSWER_KIND": 3,
+   "SOURCE:SOURCE_FIGURE": 1,
+   "SOURCE:SOURCE_NOTATION": 4,
+   "SOURCE:SOURCE_TABLE": 3
+  },
+  "finalStatus": {
+   "delivered": 1,
+   "failed": 5,
+   "needs_unrecorded_reply": 8
+  },
+  "firstRenderGateFindings": {
+   "G32": 3,
+   "G61": 1
+  },
+  "modelCalls": 0,
+  "outboundConnectionsRefused": 0,
+  "questions": {
+   "byCode": {
+    "PRINTED_ANSWER_KIND": 20,
+    "PRINTED_EXPRESSION_SCOPE": 4,
+    "SOURCE_FIGURE": 3,
+    "SOURCE_NOTATION": 14,
+    "SOURCE_PLAIN_MATH": 15,
+    "SOURCE_RICH_TEXT": 1,
+    "SOURCE_TABLE": 4,
+    "SOURCE_TEXT": 20,
+    "UNSUPPORTED_TASK": 2
+   },
+   "failingAlone": 83,
+   "failingShare": 0.3051,
+   "total": 272
+  }
+ },
+ "version": 1
+}

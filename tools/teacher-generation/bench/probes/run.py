@@ -96,11 +96,11 @@ def worker():
     json.dump({'results': results, 'refused': refused}, sys.stdout, ensure_ascii=False)
 
 
-def run_probes(probes, work=None):
+def run_probes(probes, work=None, skills=None):
     """{probe id: current outcome} for the given probes."""
     work = Path(work) if work else Path(tempfile.mkdtemp(prefix='teacher-probes-'))
     work.mkdir(parents=True, exist_ok=True)
-    skills = engine.skill_roots(work)
+    skills = skills or engine.skill_roots(work)
     kinds = {topic['topicId']: topic['skill'] for topic in lessons.topics()}
     unknown = sorted({probe['topic'] for probe in probes if probe['topic'] not in kinds})
     if unknown:

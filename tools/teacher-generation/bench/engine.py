@@ -342,8 +342,8 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
     remote = _FakeRemote()
     seen = {'phases': [], 'final': None, 'first': None, 'metadata': {}, 'revision': None,
             'renders': [], 'feedback': [], 'authorSeconds': 0.0}
-    real_author, real_render, real_feedback = (
-        remote_worker.author_lesson, remote_worker.render_job, remote_worker.read_skill_feedback)
+    real_author, real_render = remote_worker.author_lesson, remote_worker.render_job
+    real_feedback = getattr(remote_worker, 'read_skill_feedback', None)
 
     def on_update(_remote, _job_row, values):
         if 'phase' in values and 'status' not in values:
@@ -394,15 +394,20 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
     outcome = {'status': 'failed', 'delivered': False, 'code': None}
     started = time.monotonic()
     with ExitStack() as stack:
+        # The remote operations and the transport must be replaced, or the run
+        # would reach the queue or a model. A missing name stops the bench.
         for owner, name, replacement in (
                 (remote_worker, 'update_job', on_update),
                 (remote_worker, 'check_transport', lambda _remote: None),
                 (remote_worker, 'heartbeat', lambda _remote: None),
-                (remote_worker, 'author_lesson', author),
-                (remote_worker, 'render_job', rendering),
-                (remote_worker, 'read_skill_feedback', feedback),
                 (provider, 'request_author_json', transport)):
+            if not hasattr(owner, name):
+                raise BenchError(f'{owner.__name__}.{name} is gone; update bench/engine.py before running')
             stack.enter_context(patch.object(owner, name, replacement))
+        stack.enter_context(patch.object(remote_worker, 'author_lesson', author))
+        stack.enter_context(patch.object(remote_worker, 'render_job', rendering))
+        if hasattr(remote_worker, 'read_skill_feedback'):  # observation only
+            stack.enter_context(patch.object(remote_worker, 'read_skill_feedback', feedback))
         try:
             remote_worker.process_job(remote, job, root)
             final = seen['final'] or {}

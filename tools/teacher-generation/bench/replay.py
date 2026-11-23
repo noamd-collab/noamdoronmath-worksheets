@@ -226,15 +226,19 @@ def compare(before, after):
     return head, lines
 
 
-def run(corpus=CORPUS, only=(), out=None, work=None, render=True):
-    """Replay the selected cases. Returns the results document; writes files when `out` is given."""
+def run(corpus=CORPUS, only=(), out=None, work=None, render=True, skills=None):
+    """Replay the selected cases. Returns the results document; writes files when `out` is given.
+
+    `skills` may name already installed skill folders; otherwise the bundled
+    archives are unpacked under the work folder.
+    """
     cases = load_cases(corpus, only)
     out = Path(out) if out else None
     work = Path(work) if work else (out / 'work' if out else Path(tempfile.mkdtemp(prefix='teacher-replay-')))
     if work.exists() and any(p.name != 'skills' for p in work.iterdir()):
         raise SystemExit(f'The work folder must be new or empty apart from skills/: {work}')
     work.mkdir(parents=True, exist_ok=True)
-    skills = engine.skill_roots(work)
+    skills = skills or engine.skill_roots(work)
     records, runs = [], []
     with engine.engine_environment(skills), engine.network_guard() as refused:
         for case in cases:
