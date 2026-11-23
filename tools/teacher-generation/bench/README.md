@@ -76,9 +76,16 @@ instead of attributing failures.
 
 `sweep.py` refuses to start without `--live`, `--max-calls` and
 `--max-output-tokens`. The provider settings are read from the environment
-only (`QWEN_API_KEY` or `DASHSCOPE_API_KEY`, `QWEN_BASE_URL`, `QWEN_MODEL`);
-the key is never written, printed or put on a command line, and logs are
-scrubbed of credential values before they are saved.
+only, through the engine's own `provider.author_config`: `QWEN_API_KEY` or
+`DASHSCOPE_API_KEY`, `QWEN_BASE_URL` and `QWEN_MODEL`, or
+`TEACHER_AUTHOR_PROVIDER=gemini` with `GEMINI_API_KEY`. The key is never
+written, printed or put on a command line, and logs are scrubbed of credential
+values before they are saved. The cost estimate exists for the one Qwen model
+with a verified price; another model reports `MODEL_PRICE_NOT_VERIFIED`. The
+Gemini path of the sweep has run with a stand-in transport only.
+
+The offline tools (`replay.py`, `probes/run.py`) remove every provider
+variable, the author switch included, and use placeholder Qwen settings.
 
 - Each case is the request of a teacher who changes nothing (see
   `lessons.py`) and runs in its own process, as production runs one job per

@@ -11,9 +11,11 @@ plan without any call.
 Each case is the request of a teacher who changes nothing on the teachers'
 page (see lessons.py) and runs in its own process through the queue worker's
 own job function, exactly as in production but with no queue and no storage.
-The provider settings are read from the process environment only
-(QWEN_API_KEY or DASHSCOPE_API_KEY, QWEN_BASE_URL, QWEN_MODEL). The key is
-never written to disk, printed, or passed on a command line.
+The provider settings are read from the process environment only, through the
+engine's own provider.author_config: QWEN_API_KEY or DASHSCOPE_API_KEY,
+QWEN_BASE_URL and QWEN_MODEL, or TEACHER_AUTHOR_PROVIDER=gemini with
+GEMINI_API_KEY (and optionally GEMINI_MODEL). The key is never written to
+disk, printed, or passed on a command line.
 
 Everything is saved under --out, outside the repository:
 
@@ -53,8 +55,24 @@ sys.path.insert(0, str(ENGINE))
 
 from bench import engine, lessons, report  # noqa: E402
 
-KEY_NAMES = ('QWEN_API_KEY', 'DASHSCOPE_API_KEY')
+KEY_NAMES = ('QWEN_API_KEY', 'DASHSCOPE_API_KEY', 'GEMINI_API_KEY')
 SECRET_NAMES = KEY_NAMES + ('TEACHER_GENERATION_SERVICE_KEY',)
+
+
+def author_settings():
+    """(provider name, host, model id) of the configured author, or the engine's refusal code.
+
+    Read through the engine's own configuration check, so the sweep calls
+    exactly the provider a worker with this environment would call. The key
+    is checked there and never returned here.
+    """
+    import provider
+    from validation import GenerationError
+    try:
+        _key, target, model = provider.author_config()
+        return provider.author_provider(), urlparse(target).hostname, model
+    except GenerationError as exc:
+        return exc.code
 CALLS_PER_CASE = 2          # the engine asks for one draft and at most one correction
 TOKENS_PER_CASE = 50_000    # reserve per running case; the engine's own request ceilings fit inside
 CASE_SECONDS = 1200         # the bounded worker's wall limit for one job
@@ -155,7 +173,11 @@ def case_worker(folder):
     job = json.loads((folder / 'case.json').read_text(encoding='utf-8'))
     case, lesson = job['case'], job['case']['lesson']
     skills = {kind: Path(path) for kind, path in job['skills'].items()}
-    hosts = [h for h in [urlparse(os.environ.get('QWEN_BASE_URL', '')).hostname, *job.get('allowHosts', [])] if h]
+    settings = author_settings()
+    if isinstance(settings, str):
+        raise SystemExit('The author provider is not configured: ' + settings)
+    _provider_name, provider_host, model = settings
+    hosts = [h for h in [provider_host, *job.get('allowHosts', [])] if h]
     transport = engine.LiveCalls(provider.request_author_json, folder / 'replies',
                                  max_calls=job['callAllowance'], max_output_tokens=job['tokenAllowance'])
     started = time.monotonic()
@@ -169,8 +191,9 @@ def case_worker(folder):
              'promptTokens': sum(c.get('usage', {}).get('prompt_tokens', c.get('usage', {}).get('input_tokens', 0)) for c in made),
              'completionTokens': sum(c.get('usage', {}).get('completion_tokens', c.get('usage', {}).get('output_tokens', 0)) for c in made)}
     charged = job['tokenAllowance'] - transport.tokens_left
-    costs = [api_cost({'usage': call.get('usage'), 'requestedModel': os.environ.get('QWEN_MODEL'),
-                       'responseModel': call.get('responseModel', os.environ.get('QWEN_MODEL'))}) for call in made]
+    # Prices are verified for one Qwen model only; any other model reports no estimate.
+    costs = [api_cost({'usage': call.get('usage'), 'requestedModel': model,
+                       'responseModel': call.get('responseModel', model)}) for call in made]
     scenarios = {}
     for cost in costs:
         for name, value in cost['scenarios'].items():
@@ -361,11 +384,11 @@ def markdown(summary, not_run):
 
 
 def live(args, cases, launch=launch_process):
-    missing = [name for name in ('QWEN_BASE_URL', 'QWEN_MODEL') if not os.environ.get(name)]
-    if not any(os.environ.get(name) for name in KEY_NAMES):
-        missing.insert(0, 'QWEN_API_KEY')
-    if missing:
-        raise SystemExit('The provider is not configured in the environment: ' + ', '.join(missing))
+    settings = author_settings()
+    if isinstance(settings, str):
+        raise SystemExit('The provider is not configured in the environment (' + settings + '). Set QWEN_API_KEY, '
+                         'QWEN_BASE_URL and QWEN_MODEL, or TEACHER_AUTHOR_PROVIDER with GEMINI_API_KEY')
+    provider_name, _host, model = settings
     if args.max_calls is None or args.max_output_tokens is None:
         raise SystemExit('--live needs an explicit budget: --max-calls and --max-output-tokens')
     out = (Path(args.out).expanduser() if args.out else
@@ -390,7 +413,7 @@ def live(args, cases, launch=launch_process):
     commit = subprocess.run(['git', '-C', str(ENGINE), 'rev-parse', 'HEAD'], capture_output=True, text=True,
                             env={**os.environ, 'GIT_NO_LAZY_FETCH': '1'}).stdout.strip() or None
     report.write_json(out / f'run-{run_name}.json', {
-        'started': run_name, 'engineCommit': commit, 'model': os.environ['QWEN_MODEL'],
+        'started': run_name, 'engineCommit': commit, 'provider': provider_name, 'model': model,
         'budget': {'maxCalls': args.max_calls, 'maxOutputTokens': args.max_output_tokens,
                    'callsPerCase': args.calls_per_case, 'tokensPerCase': TOKENS_PER_CASE},
         'selection': {key: getattr(args, key) for key in ('grades', 'topics', 'levels', 'limit', 'one_level_per_topic',
@@ -399,7 +422,7 @@ def live(args, cases, launch=launch_process):
         'concurrency': args.concurrency, 'environment': report.environment()})
     print(f'Sweep folder: {out}')
     print(f'{len(cases)} cases selected, {len(cases) - len(pending)} already done, {len(pending)} to run; '
-          f'model {os.environ["QWEN_MODEL"]}; budget {args.max_calls} calls, {args.max_output_tokens:,} output tokens.',
+          f'{provider_name} model {model}; budget {args.max_calls} calls, {args.max_output_tokens:,} output tokens.',
           flush=True)
     budget = Budget(args.max_calls, args.max_output_tokens, args.calls_per_case, TOKENS_PER_CASE)
     tally, done, not_run, stopped, broken = {'ran': 0, 'delivered': 0}, 0, [], False, 0

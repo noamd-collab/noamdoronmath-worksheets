@@ -25,7 +25,8 @@ from validation import GenerationError, validate_lesson  # noqa: E402
 FAKE_KEY = 'fake-key-for-tests-0123456789abcdef'
 FAKE_ENV = {'QWEN_API_KEY': FAKE_KEY, 'QWEN_MODEL': 'qwen3.8-flash',
             'QWEN_BASE_URL': 'https://dashscope-intl.aliyuncs.com/compatible-mode/v1'}
-NO_PROVIDER = {name: '' for name in ('QWEN_API_KEY', 'DASHSCOPE_API_KEY', 'QWEN_BASE_URL', 'QWEN_MODEL')}
+NO_PROVIDER = {name: '' for name in ('QWEN_API_KEY', 'DASHSCOPE_API_KEY', 'QWEN_BASE_URL', 'QWEN_MODEL',
+                                     'TEACHER_AUTHOR_PROVIDER', 'GEMINI_API_KEY', 'GEMINI_MODEL')}
 
 
 def run_main(argv):
@@ -53,6 +54,20 @@ class PlanTests(unittest.TestCase):
             self.assertEqual(code, 2)
             # Asking for both is a mistake, never a silent live run.
             self.assertEqual(run_main(['--live', '--dry-run'])[0], 2)
+
+    def test_the_sweep_calls_the_provider_the_engine_is_configured_for(self):
+        with patch.dict(os.environ, {**NO_PROVIDER, **FAKE_ENV}):
+            self.assertEqual(sweep.author_settings(), ('qwen', 'dashscope-intl.aliyuncs.com', 'qwen3.8-flash'))
+        gemini = {**NO_PROVIDER, 'TEACHER_AUTHOR_PROVIDER': 'gemini', 'GEMINI_API_KEY': FAKE_KEY}
+        with patch.dict(os.environ, gemini):
+            self.assertEqual(sweep.author_settings(), ('gemini', 'generativelanguage.googleapis.com', provider.GEMINI_MODELS[0]))
+            # The second provider's key is scrubbed from stored logs like the first.
+            self.assertNotIn(FAKE_KEY, sweep.scrub('Authorization: Bearer ' + FAKE_KEY))
+        # A switch without its own credential, or an unknown switch, is a refusal code, never a value.
+        with patch.dict(os.environ, {**NO_PROVIDER, **FAKE_ENV, 'TEACHER_AUTHOR_PROVIDER': 'gemini'}):
+            self.assertEqual(sweep.author_settings(), 'PROVIDER_NOT_CONFIGURED')
+        with patch.dict(os.environ, {**NO_PROVIDER, **FAKE_ENV, 'TEACHER_AUTHOR_PROVIDER': FAKE_KEY}):
+            self.assertEqual(sweep.author_settings(), 'PROVIDER_CONFIG_INVALID')
 
     def test_live_needs_provider_settings_and_an_explicit_budget(self):
         with patch.object(sweep, 'run_case', side_effect=AssertionError('must not start')):
