@@ -296,7 +296,16 @@ def remainder_answer(question, item, solved, grade):
     blanks = blank_count(prompt)
     if blanks > 2:
         return None
-    from compact_authoring import expression
+    from compact_authoring import SIGN_BLANK, expression
+    if any(span["kind"] == "formula" and SIGN_BLANK.search(span["notation"]) for span in prompt):
+        return None  # a sign blank is another kind of answer
+    if blanks == 2:
+        # The second blank must be the remainder's own: "(שארית ___)", "ונשארות ___".
+        tokens = read_tokens(prompt)
+        last = max(i for i, t in enumerate(tokens) if t.kind == "blank")
+        near = tokens[max(0, last - 3):last + 3]
+        if not any(t.kind == "word" and (_REMAINDER.search(t.value) or _LEFTOVER.search(t.value)) for t in near):
+            return None
     shown = []
     for span in prompt:
         if span["kind"] == "math":
@@ -411,8 +420,22 @@ _UNIT_PAIRS = (
 )
 
 
-def compound_answer(item, solved, grade):
-    """Key "___ שעות ו־___ דקות" when the printed or typed size fixes both parts."""
+def _stated_sizes(tokens, pair, skip=()):
+    """Every printed size of this quantity, expressed in the smaller unit."""
+    sizes = set()
+    for index, token in enumerate(tokens[:-1]):
+        unit = tokens[index + 1]
+        if token.kind != "num" or unit.kind != "word" or index + 1 in skip:
+            continue
+        if unit.value in pair[1]:
+            sizes.add(token.value)
+        elif unit.value in pair[0]:
+            sizes.add(token.value * pair[2])
+    return sizes
+
+
+def compound_answer(question, item, solved, grade):
+    """Key "___ שעות ו־___ דקות" when a printed size or the typed unit fixes both parts."""
     typed = _scalar(solved)
     if typed is None or typed < 0:
         return None
@@ -432,24 +455,18 @@ def compound_answer(item, solved, grade):
     if pair is None:
         return None
     factor = pair[2]
-    # A printed size of the same quantity fixes both blanks.
-    shown = set()
-    for index, token in enumerate(tokens[:-1]):
-        unit = tokens[index + 1]
-        if token.kind != "num" or unit.kind != "word" or index + 1 in (first + 1, second + 1):
-            continue
-        if unit.value in pair[1]:
-            shown.add(token.value)
-        elif unit.value in pair[0]:
-            shown.add(token.value * factor)
+    # A printed size of the same quantity fixes both blanks: in the item, or
+    # once in the group's story. Otherwise the typed unit must say what the
+    # typed number measures; a bare number is never guessed to be minutes.
+    shown = _stated_sizes(tokens, pair, skip=(first + 1, second + 1)) or _stated_sizes(read_tokens(question["intro"]), pair)
     unit = _unpointed(item["answer"].get("unit") or "")
     if len(shown) == 1:
         total = next(iter(shown))
     elif shown:
         return None
-    elif unit in pair[1] or (not unit and typed.denominator == 1 and typed >= factor):
+    elif unit in pair[1]:
         total = typed
-    elif unit in pair[0] or (not unit and typed.denominator != 1):
+    elif unit in pair[0]:
         total = typed * factor
     else:
         return None
@@ -501,7 +518,7 @@ def bind_parts(question, item, solved, grade):
         binding = (place_answer({"gradeNumber": grade}, question, item, solved)
                    or remainder_answer(question, item, solved, grade)
                    or sequence_answer(item, solved, grade)
-                   or compound_answer(item, solved, grade))
+                   or compound_answer(question, item, solved, grade))
     if binding is None and kind in ("computed", "figure"):
         blanks = max(blank_count(item["prompt"]), _row_blanks(question, item["prompt"]))
         if blanks >= 2 and _answers(solved) != blanks:

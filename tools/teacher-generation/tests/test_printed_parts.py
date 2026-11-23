@@ -174,6 +174,12 @@ class WirePathTests(unittest.TestCase):
         self.assertEqual(key(bound("ג22", "המירו.", "[[345]] ס״מ הם ___ מטרים ו־___ ס״מ", evaluate("345 / 100"))),
                          "3 מטרים ו־45 ס״מ")
         self.refused("ג19", "המירו.", "[[150]] דקות = ___ שעות ו־___ דקות", evaluate("140"))
+        # Without a printed size, only a typed unit says what the typed number measures.
+        self.assertEqual(key(bound("ג19", "חשבו.", "הסרט נמשך ___ שעות ו־___ דקות", evaluate("150", "דקות"))), "2 שעות ו־30 דקות")
+        self.assertEqual(key(bound("ג19", "הסרט נמשך [[150]] דקות.", "כתבו: ___ שעות ו־___ דקות", evaluate("150"))), "2 שעות ו־30 דקות")
+        self.refused("ג19", "חשבו.", "הסרט נמשך ___ שעות ו־___ דקות", evaluate("150"))
+        # Two blanks are a quotient and a remainder only when the second one is the remainder's.
+        self.refused("ג21", "חשבו את השארית.", "___ ועוד ___ [[47 : 5]]", evaluate("47 / 5"))
 
     def test_a_blank_between_two_quantities_is_a_comparison_sign(self):
         for prompt in ("[[345]] ___ [[354]]", "[[345 ___ 354]]", "[[345]] ☐ [[354]]"):
