@@ -151,11 +151,17 @@ class FigureRoutes(unittest.TestCase):
         # Equal legs by measure, but the intro never says so: corresponding angles on a figure that
         # happens to be a trapezoid, a midsegment, and base angles of 70 and 125 that deny it.
         lesson = lesson_live2('p3')
-        for name, where in (('p3-reply-1.json', 'practice9'), ('p3-reply-1.json', 'challenges3'),
-                            ('p3-reply-3.json', 'practice1')):
+        for name, where in (('p3-reply-1.json', 'practice9'), ('p3-reply-3.json', 'practice1')):
             with self.subTest(reply=name, question=where):
                 self.assertEqual(self.codes(lesson, pick(live2(name), where), where.startswith('challenges')),
                                  ['SOURCE_FIGURE'])
+
+        # In the recorded challenge a later item also prints the result 11
+        # from the preceding item. Both the text and the drawing are faulty.
+        from figure_probe import figure_refusal
+        challenge = pick(live2('p3-reply-1.json'), 'challenges3')
+        self.assertEqual(self.codes(lesson, challenge, True), ['PRINTED_ANSWER_LEAK'])
+        self.assertEqual(figure_refusal(challenge['figure']).code, 'SOURCE_FIGURE')
 
     def test_a_definition_mark_never_states_what_an_item_asks(self):
         # Each figure is the special shape by measure; the routed constructor would mark it, and an
