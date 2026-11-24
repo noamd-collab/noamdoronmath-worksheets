@@ -469,7 +469,7 @@ class CurriculumSkillEntryTests(unittest.TestCase):
             with self.subTest(case=case), patch.dict(os.environ, self.skills), \
                     patch('provider.build_authoring_context', side_effect=measured) as build, \
                     patch('general_provider.author_general_lesson') as general:
-                provider.author_lesson(lesson)
+                provider.author_lesson(lesson, offline_native_fixture=True)
                 build.assert_called_once()
                 self.assertEqual(set(build.call_args.args[2]), {kind})
                 self.assertEqual(loaded[0]['skill']['skillId'], kind)

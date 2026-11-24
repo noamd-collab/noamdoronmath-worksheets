@@ -47,6 +47,26 @@ class PrintedProseTests(unittest.TestCase):
         self.assertEqual(self.render("המחיר ירד מ־240 ל־180 שקלים. מהו אחוז ההנחה?"),
                          "המחיר ירד מ־$240$ ל־$180$ שקלים. מהו אחוז ההנחה?")
 
+    def test_percentage_suffix_with_horizontal_spacing_remains_one_checked_quantity(self):
+        expected = self.render("כמה הם 12.50% מ־1,200 השקלים?")
+        for space in (" ", "\u00a0", "\u202f"):
+            percentage = "12.50" + space + "%"
+            for notation in (percentage, "[[" + percentage + "]]", "[[12.50]]" + space + "%"):
+                with self.subTest(notation=notation):
+                    prompt = "כמה הם " + notation + " מ־1,200 השקלים?"
+                    self.assertEqual(self.render(prompt), expected)
+                    item = {"prompt": spans(prompt, 8), "answer": {"kind": "computed", "unit": "שקלים"}}
+                    lesson = {"gradeNumber": 8, "topicId": "g8:percentages"}
+                    task = {"kind": "evaluate", "expression": expression(percentage + " * 1200", 8)}
+                    proof = percentage_evidence(lesson, [], item, validate_and_solve_task(task))
+                    self.assertEqual((proof["percent"], proof["value"]), ("25/2", "150"))
+                    wrong = {"kind": "evaluate", "expression": expression("12.50 * 1200", 8)}
+                    with self.assertRaises(GeneralSourceError):
+                        percentage_evidence(lesson, [], item, validate_and_solve_task(wrong))
+        for broken in ("12 %%", "12 % 3", "1 2 %", "12\n%"):
+            with self.subTest(broken=broken), self.assertRaises(GeneralSourceError):
+                expression(broken, 8)
+
     def test_standalone_identifiers_and_signed_quantities_are_display_only(self):
         self.assertEqual(self.render("מצאו את הנקודות A ו־B ואת הקטע AB."),
                          "מצאו את הנקודות $A$ ו־$B$ ואת הקטע $AB$.")

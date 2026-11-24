@@ -13,6 +13,7 @@ import re
 
 from math_tasks import inspect_ast, validate_and_solve_task, MathTaskError
 from general_geometry import solve_figure_task, FIGURE_OPERATIONS
+import triangle_parts_shape
 
 CONTROL = re.compile(r"[\x00-\x08\x0b-\x1f\x7f\u202a-\u202e\u2066-\u2069]")
 MARKUP = re.compile(r"[<>$\\]|(?:https?|file|data):", re.I)
@@ -113,6 +114,12 @@ def geometry_topic(scope):
     return scope["topic"]["domain"] in ("geometry", "analytic_geometry", "גיאומטרי", "גאומטרי")
 
 
+def figure_operations(scope):
+    if scope["topic"].get("topicId") == triangle_parts_shape.TOPIC:
+        return (*FIGURE_OPERATIONS, "half_base", "coordinate_pair")
+    return FIGURE_OPERATIONS
+
+
 def validate_figure(fig, scope):
     if type(fig) is not dict or not geometry_topic(scope):
         bad("DRAWING_POLICY", "This topic does not permit this figure")
@@ -136,6 +143,36 @@ def validate_figure(fig, scope):
         if type(fig["segments"]) is not list or len(fig["segments"])>10:bad("SOURCE_FIGURE","Too many coordinate segments")
         for pair in fig["segments"]:
             if type(pair) is not list or len(pair)!=2 or pair[0]==pair[1] or any(type(n) is not str or n not in names for n in pair):bad("SOURCE_FIGURE","Segments must reference existing distinct points")
+    elif kind == "triangle_angle_part" and middle and scope["topic"].get("topicId") == triangle_parts_shape.TOPIC:
+        exact(fig, ("kind", "names", "angles", "construction", "rotate"))
+        names = fig["names"]
+        angles = fig["angles"]
+        if (type(names) is not str or not re.fullmatch(r"[A-Z]{4}", names) or len(set(names)) != 4 or
+                type(angles) is not list or len(angles) != 2 or
+                any(type(a) is not int or not 20 <= a <= 82 for a in angles) or sum(angles) > 155 or
+                fig["construction"] not in triangle_parts_shape.PARTS):
+            bad("SOURCE_FIGURE", "Invalid named angle construction")
+        bounded_int(fig["rotate"], -180, 180)
+    elif kind == "triangle_part" and middle and scope["topic"].get("topicId") == triangle_parts_shape.TOPIC:
+        exact(fig, ("kind", "names", "base", "left", "right", "rotate", "construction"), ("printedSides",))
+        if "printedSides" in fig:
+            sides_to_print = fig["printedSides"]
+            if (type(sides_to_print) is not list or not 1<=len(sides_to_print)<=3 or
+                    any(s not in ("base","left","right") for s in sides_to_print) or len(set(sides_to_print))!=len(sides_to_print)):
+                bad("SOURCE_FIGURE", "Choose distinct printed sides of this triangle")
+        names = fig["names"]
+        if type(names) is not str or not re.fullmatch(r"[A-Z]{4}", names) or len(set(names)) != 4:
+            bad("SOURCE_FIGURE", "Use four different point names: apex, base endpoints, construction point")
+        if type(fig["construction"]) is not str or fig["construction"] not in triangle_parts_shape.PARTS:
+            bad("SOURCE_FIGURE", "Unknown triangle construction")
+        sides = [fig[key] for key in ("base", "left", "right")]
+        for side in sides:
+            bounded_int(side, 1, 100)
+        bounded_int(fig["rotate"], -180, 180)
+        if 2 * max(sides) >= sum(sides):
+            bad("SOURCE_GEOMETRY", "The named sides do not form a nondegenerate triangle")
+        if fig["construction"] == "altitude" and not 3 < 100 * triangle_parts_shape.foot_fraction(fig) < 97:
+            bad("SOURCE_GEOMETRY", "Use an altitude with a distinct foot inside the base")
     elif kind == "shape" and middle:
         exact(fig, ("kind", "shape", "parameters", "names", "rotate"))
         shape = fig["shape"]
@@ -260,7 +297,7 @@ def _validate_source(lesson, payload, scope, *, provider):
                     evidence.append({"itemId": item_id, "computed": solved})
                 elif answer.get("kind") == "figure":
                     exact(answer,("kind","operation","unit"),("point",));text(answer["unit"],50,empty=True)
-                    if "figure" not in question or answer["operation"] not in FIGURE_OPERATIONS:
+                    if "figure" not in question or answer["operation"] not in figure_operations(scope):
                         bad("SOURCE_FIGURE_TASK","Figure answers must bind to the question's actual figure")
                     try:solved=solve_figure_task(question["figure"],answer["operation"],answer.get("point"))
                     except ValueError:bad("SOURCE_FIGURE_TASK","This figure quantity has no implemented exact verifier")
@@ -373,6 +410,11 @@ def authoring_schema(lesson, scope):
     answer = {"oneOf": answers}
     figures = []
     if scope["topic"]["skillId"] == "middle" and geometry_topic(scope):
+        if scope["topic"].get("topicId") == triangle_parts_shape.TOPIC:
+            side = {"type": "integer", "minimum": 1, "maximum": 100}
+            figures.append(obj({"kind": {"const": "triangle_part"}, "names": {"type":"string","pattern":"^[A-Z]{4}$"},
+                                "base": side, "left": side, "right": side, "construction":{"enum":list(triangle_parts_shape.PARTS)},
+                                "rotate": {"type":"integer","minimum":-180,"maximum":180}}))
         for shape, keys in SHAPES.items():
             figures.append(obj({"kind": {"const": "shape"}, "shape": {"const": shape}, "parameters": obj({k: {"type": "integer", "minimum": 0 if k == "dx" else 1, "maximum": 179 if k == "angle" else 100} for k in sorted(keys)}), "names": {"type": "string", "pattern": "^[A-Z]{1,8}$"}, "rotate": {"type": "integer", "minimum": -180, "maximum": 180}}))
         figures.append(obj({"kind":{"const":"coordinate_plane"},"xr":arr({"type":"integer","minimum":-10,"maximum":10},2,2),"yr":arr({"type":"integer","minimum":-10,"maximum":10},2,2),"points":arr(obj({"name":{"type":"string","pattern":"^[A-Z]$"},"x":{"type":"integer","minimum":-10,"maximum":10},"y":{"type":"integer","minimum":-10,"maximum":10}}),1,8),"segments":arr(arr({"type":"string","pattern":"^[A-Z]$"},2,2),0,10),"placement":{"enum":["side","wide"]}},["kind","xr","yr","points","segments"]))
@@ -382,7 +424,7 @@ def authoring_schema(lesson, scope):
     if figures:
         props["figure"] = {"oneOf": figures}
         props["drawingFromWords"]={"type":"boolean"}
-        answers.append(obj({"kind":{"const":"figure"},"operation":{"enum":list(FIGURE_OPERATIONS)},"unit":unit_schema,"point":{"type":"string","pattern":"^[A-Z]$"}},["kind","operation","unit"]))
+        answers.append(obj({"kind":{"const":"figure"},"operation":{"enum":list(figure_operations(scope))},"unit":unit_schema,"point":{"type":"string","pattern":"^[A-Z]$"}},["kind","operation","unit"]))
     question = obj(props, ["intro", "star", "items"])
     result = obj({"version": {"const": 4}, "title": {**st,"maxLength":160}, "rule": rt, "sections": arr(obj({"title": {**st,"maxLength":160}, "conceptIds": arr({"enum": [c["id"] for c in scope["selectedConcepts"]]}, 1, len(scope["selectedConcepts"])), "questions": arr(question, 1, lesson["questionCount"])}), 1, 8)})
     result["$defs"] = {"expression": expression, "task": {"oneOf": tasks}, "rich": rich_schema}

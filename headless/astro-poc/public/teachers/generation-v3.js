@@ -11,6 +11,10 @@
  let capabilities = [], online = false, planned = null, requestKey = null, polling = null, clock = null, startedAt = null, busy = false, submitting = false;
  let submittedJobId = null, terminal = false, pollFailures = 0, refreshing = null, initialized = false, dispatchPending = false;
  let wakingUntil = null, wakingChecks = 0, verificationAttempt=null, pendingLink=null, navigationTimer=null;
+ // A worker between Cron cycles may have no wake acknowledgement. Allow the
+ // maximum 15-minute backoff and one more minute for the next scheduled cycle.
+ const readinessInterval = 60000;
+ let planWaitDeadline = null;
  const field = name => form.elements.namedItem(name);
  const steps=Array.from(form.querySelectorAll('[data-generation-step]')), stepNames=['כיתה','נושא','רמה','השיעור'];
  let step=0, restorePending=true, attempted=false, receiptChecks=0;
@@ -151,7 +155,7 @@
   if(focus)steps[step].querySelector('h2').focus();
  }
  function showStep(index) {step=index;updateWizard(true);}
- function clearPlan() {attempted=false;receiptChecks=0;planned=null;requestKey=null;submittedJobId=null;terminal=false;dispatchPending=false;}
+ function clearPlan() {planWaitDeadline=null;attempted=false;receiptChecks=0;planned=null;requestKey=null;submittedJobId=null;terminal=false;dispatchPending=false;}
  function resetBoundary() {
   form.querySelectorAll('[name=learnedDivisor]').forEach(input=>{input.checked=false;});
   field('boundaryMaxDividend').value='';field('boundarySignedNumbers').value='';
@@ -181,6 +185,21 @@
  function stopClock() { clearInterval(clock); clock=null; startedAt=null; }
  function tick(phase,createdAt) { if(!startedAt) startedAt=Date.parse(createdAt) || Date.now(); clearInterval(clock); const show=()=>status((dispatchPending && phase==='queued'?'הבקשה נשמרה בתור, אך העבודה עדיין לא התחילה. רענון המצב ינסה להעיר את המנוע בלי ליצור בקשה נוספת.':(labels[phase]||labels.queued))+'… '+Math.floor((Date.now()-startedAt)/1000)+' שניות. אפשר לצאת ולחזור לעמוד למעקב.'); show(); clock=setInterval(show,1000); }
  function scheduleRefresh(delay) {clearTimeout(polling);polling=setTimeout(()=>requestRefresh(),delay);}
+ function pollPreparedPlan() {
+  if (!planned || online || accessDenied || terminal || busy || attempted || submittedJobId ||
+      Boolean(quotaBlock) || document.hidden || polling!==null) return;
+  if (planWaitDeadline===null) planWaitDeadline=Date.now()+16*readinessInterval;
+  const remaining=planWaitDeadline-Date.now();
+  if (remaining<=0) {
+   status('פרטי הדף נשמרו. כדי לבדוק שוב, בחרו „רענון מצב היצירה”.');
+   return;
+  }
+  status('ממתינים למנוע היצירה. נבדוק שוב אוטומטית כל דקה. פרטי הדף נשמרו.');
+  polling=setTimeout(()=>{
+   polling=null;
+   if (planned && !terminal && !online && !document.hidden) return requestRefresh();
+  },Math.min(readinessInterval,remaining));
+ }
  function denied(error) {return error.code==='TEACHER_ACCESS_DENIED' || error.code==='TEACHER_SIGN_IN_REQUIRED';}
  function refreshFailed(error) {
   online=false;$('create-button').disabled=true;
@@ -197,7 +216,7 @@
   return null;
  }
  function requestRefresh(resetRetries=false) {
-  if(resetRetries){pollFailures=0;wakingUntil=null;wakingChecks=0;}
+  if(resetRetries){planWaitDeadline=null;pollFailures=0;wakingUntil=null;wakingChecks=0;}
   if(refreshing)return refreshing;
   clearTimeout(polling);polling=null;refreshButton.disabled=true;
   // Planning needs the verified curriculum, even when the worker is waking or unavailable.
@@ -292,7 +311,8 @@
   if(pollFailures)status('');
   accessDenied=false;online=data.online===true;
   $('generation-quota').hidden=false;updateQuota(data.quota);
-  if(online){wakingUntil=null;wakingChecks=0;}
+  const recoveredPlan=online && planWaitDeadline!==null;
+  if(online){planWaitDeadline=null;wakingUntil=null;wakingChecks=0;}
   if(!online && data.waking===true && wakingUntil===null)wakingUntil=Date.now()+90000;
   const waking=!online && data.waking===true && Date.now()<wakingUntil && wakingChecks<18;
   generalReady=data.capabilities?.profile==='general-skill-source/v1' && data.capabilities.curriculumSha256===curriculumHash && Array.isArray(data.capabilities.acceptedIntakeVersions) && data.capabilities.acceptedIntakeVersions.includes(3);
@@ -339,11 +359,13 @@
    busy=false;stopClock();$('create-button').disabled=!canCreate(planned) || terminal;$('edit-plan').disabled=false;
    if(current?.status==='failed')status(jobFailureMessage(current.error_code));
    else if(current?.status==='needs_review')status(worksheets.has(current.id)?labels.needs_review:'היצירה הסתיימה. קובץ להורדה אינו מופיע בהיסטוריה כרגע.');
+   else if(recoveredPlan && !attempted && !submittedJobId && canCreate(planned))status('המנוע זמין. אפשר ליצור את הדף.');
    else if(attempted)status('טרם התקבל אישור שהבקשה נשמרה. אפשר לבדוק שוב את המצב או לשלוח שוב את אותה הבקשה.');
   }
   // A timed-out POST may commit after the first owner status read. Only poll; never replay it.
   if(attempted && !submitting && !active && !awaitingCurrent && receiptChecks<3){receiptChecks++;scheduleRefresh(4000);}
   if(waking && !active && !awaitingCurrent){wakingChecks++;scheduleRefresh(Math.min(5000,Math.max(1,wakingUntil-Date.now())));}
+  if(!waking)pollPreparedPlan();
   $('create-button').hidden=terminal;$('edit-plan').hidden=terminal;newDraftButton.hidden=!terminal;newDraftButton.disabled=busy || !online || !quotaAllowsCreation;
   if(!planned && !busy && selectedTopic())updateTopicSettings(true);
   updateWizard();
@@ -385,6 +407,7 @@
   const boundaryText=boundary.kind==='curriculum_scope'?conceptGroups(topic).filter(group=>group.ids.some(id=>boundary.conceptIds.includes(id))).map(group=>group.text).join(' · '):boundary.kind==='division_facts'?'מחלקים: '+boundary.allowedDivisors.join(', ')+' · מחולק עד '+boundary.maxDividend:boundary.allowSignedNumbers?'כולל מספרים שליליים':'ללא מספרים שליליים';
   for(const [title,value] of [['כיתה',field('gradeNumber').selectedOptions[0].textContent],['נושא',topic?.title],['רמה',field('level').selectedOptions[0].textContent],['גבולות התרגול',boundaryText],['נקודת העצירה',planned.lastLesson],['מושגים מוכרים',planned.alreadyLearned.join(' · ')||'לפי תיאור השיעור האחרון'],['היקף',planned.questionCount+' שאלות · '+planned.minutes+' דקות מבוקשות']]) details.append(node('dt',title),node('dd',value));
   form.hidden=true;$('generation-plan').hidden=false;$('create-button').disabled=!canCreate(planned);$('plan-title').tabIndex=-1;if(focus)$('plan-title').focus();status(quotaBlock || (canCreate(planned)?'':'פרטי הדף מוכנים. היצירה בנושא הזה ממתינה למנוע זמין; אפשר לרענן את המצב בלי לשנות את הבחירות.'));
+  pollPreparedPlan();
  }
  function prepareNewDraft() {
   if(busy || accessDenied)return;

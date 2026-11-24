@@ -327,14 +327,16 @@ class WorkerTests(unittest.TestCase):
         self.assertFalse(self.remote.uploads())
 
     def test_diagnostics_keep_only_known_author_contract_versions(self):
-        for index, contract in enumerate(('worksheet-parameters/2', 'worksheet-parameters/3',
-                                          'no-carry-addition/1', 'worksheet-parameters/4', 'PRIVATE_SECRET', None, {'raw': 'PRIVATE_SECRET'})):
+        known = ('worksheet-parameters/2', 'worksheet-parameters/3', 'no-carry-addition/1',
+                 'triangle-design/1', 'teacher-math-selection/1')
+        unknown = ('worksheet-parameters/4', 'PRIVATE_SECRET', None, {'raw': 'PRIVATE_SECRET'})
+        for index, contract in enumerate(known + unknown):
             with self.subTest(contract=contract):
                 job_id = '33333333-3333-4333-8333-%012d' % index
                 self.assertTrue(worker.save_author_diagnostics(self.root, job_id, {'authorContract': contract}))
                 path = self.root / 'author-diagnostics' / (job_id + '.json')
                 record = json.loads(path.read_text())
-                if index < 3:
+                if contract in known:
                     self.assertEqual(record['authorContract'], contract)
                 else:
                     self.assertNotIn('authorContract', record)

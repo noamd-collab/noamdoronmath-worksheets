@@ -246,11 +246,13 @@ def request_author_json(target, key, body, measured, timeout):
         measured['elapsedSeconds']=round(time.monotonic()-started,3)
     return payload
 
-def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None, allow_legacy=False, revision=None):
+def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None, allow_legacy=False, revision=None, offline_native_fixture=False):
     """Author the initial requested lesson. A v3 worker may retain one revision callback.
 
-    Supported native lesson authors return replayable parameters locally.
-    Other lessons use the configured authoring provider. render_job
+    Teacher requests always use the configured authoring provider. For exact
+    native topics the provider chooses verified mathematical options or authors
+    a complete source. Offline fixtures may explicitly request a local source.
+    render_job
     consumes the validated result and does not call an author.
     Caller must enforce owner auth, quota and
     job idempotency before calling. No credentials or provider response bodies
@@ -267,39 +269,19 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
             context = build_authoring_context(catalog(), lesson, paths)
         except AuthoringContextError as exc:
             reject('AUTHOR_CONTEXT_INVALID', str(exc))
-        import fraction_lesson
-        if fraction_lesson.eligible(lesson):
-            if metadata is not None:
-                metadata.update(authorContract=fraction_lesson.VERSION, providerCalled=False, responseReceived=False)
-            return fraction_lesson.parameters(lesson)
-        import counting_lesson
-        if counting_lesson.eligible(lesson):
-            if metadata is not None:
-                metadata.update(authorContract=counting_lesson.VERSION, providerCalled=False, responseReceived=False)
-            return counting_lesson.parameters(lesson)
-        import division_facts
-        if division_facts.eligible(lesson):
-            if metadata is not None:
-                metadata.update(authorContract=division_facts.VERSION, providerCalled=False, responseReceived=False)
-            return division_facts.author(lesson)
-        import pythagoras_lesson
-        if pythagoras_lesson.eligible(lesson):
-            if metadata is not None:
-                metadata.update(authorContract=pythagoras_lesson.VERSION, providerCalled=False, responseReceived=False)
-            return pythagoras_lesson.parameters(lesson)
-        import square_lesson
-        if square_lesson.eligible(lesson):
-            if metadata is not None:
-                metadata.update(authorContract=square_lesson.VERSION, providerCalled=False, responseReceived=False)
-            return square_lesson.parameters(lesson)
-        from triangle_lesson import VERSION, eligible, parameters
-        if eligible(lesson):
-            if metadata is not None:
-                metadata.update(authorContract=VERSION, providerCalled=False, responseReceived=False)
-            return parameters(lesson)
+        if offline_native_fixture:
+            # Direct offline fixture callers retain their native, replayable contracts.
+            from native_math_selection import AUTHORS
+            for author in AUTHORS:
+                if author.eligible(lesson):
+                    if metadata is not None:
+                        metadata.update(authorContract=author.VERSION, providerCalled=False, responseReceived=False)
+                    import division_facts
+                    return author.author(lesson) if author is division_facts else author.parameters(lesson)
         from general_provider import author_general_lesson
         return author_general_lesson(lesson, api_key=api_key, base_url=base_url, model=model,
                                      timeout=timeout, metadata=metadata, authoring_context=context,
+                                     select_exercises=not offline_native_fixture,
                                      **({"revision": revision} if revision is not None else {}))
     key=api_key or os.environ.get('QWEN_API_KEY') or os.environ.get('DASHSCOPE_API_KEY')
     base=base_url or os.environ.get('QWEN_BASE_URL')
