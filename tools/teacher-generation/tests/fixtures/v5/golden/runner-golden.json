@@ -1,0 +1,783 @@
+{
+ "cases": {
+  "v2-grade7-pilot": {
+   "calls": [
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/adapters.py",
+     "--skill",
+     "<SKILL>",
+     "--work",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/build_v72.py",
+     "--pkg",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/docx_web_layout.py",
+     "--input",
+     "<WORK>/out/docx/b/sheet.docx",
+     "--output",
+     "<WORK>/out/docx/b/sheet-web.docx",
+     "--manifest",
+     "<WORK>/logs/word-web-layout.json"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/check_docx_rtl.py",
+     "<WORK>/out/docx/b/sheet-web.docx",
+     "--source",
+     "<WORK>/out/deliver/b/sheet.json",
+     "--json",
+     "<WORK>/logs/word-web-rtl-parity.json"
+    ]
+   ],
+   "manifest": {
+    "artifacts": [
+     {
+      "bytes": 28,
+      "kind": "pdf",
+      "path": "out/deliver/b/sheet.pdf"
+     },
+     {
+      "bytes": 10,
+      "kind": "docx",
+      "path": "out/docx/b/sheet-web.docx"
+     }
+    ],
+    "automatedChecksPassed": true,
+    "gradeNumber": 7,
+    "legacyIntakeOffline": false,
+    "lessonBoundary": {
+     "allowSignedNumbers": false,
+     "kind": "linear_equations",
+     "version": 1
+    },
+    "review": {
+     "curriculum": "bounded topic allowlist; free-text progress is not independently verified",
+     "mathematical": "exact typed arithmetic verified; prose/template review pending",
+     "publication": "not approved; private owner preview only",
+     "visual": "pending; every final PDF page and actual Word rendering must be inspected"
+    },
+    "skill": {
+     "name": "middle",
+     "version": "pinned"
+    },
+    "status": "needs_review",
+    "steps": [
+     {
+      "exitCode": 0,
+      "log": "logs/trusted-adapter.txt",
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/middle-build.txt",
+      "name": "middle-build",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/word-web-layout.txt",
+      "name": "word-web-layout",
+      "status": "PASS"
+     },
+     {
+      "name": "word-source-provenance",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/word-web-rtl-parity.txt",
+      "name": "word-web-rtl-parity",
+      "status": "PASS"
+     }
+    ],
+    "topicId": "g7:equations",
+    "version": 1,
+    "wordPostprocess": {
+     "finalDocx": {
+      "path": "out/docx/b/sheet-web.docx"
+     },
+     "finalGateReport": "logs/word-web-rtl-parity.json",
+     "format": "editable-ltr-math-text",
+     "provenanceReport": "logs/word-web-layout.json",
+     "scope": "grade7/basic/linear_equation",
+     "sourceDocx": {
+      "path": "out/docx/b/sheet.docx"
+     },
+     "upstreamBuildReport": {
+      "path": "out/v72-report.json"
+     }
+    }
+   }
+  },
+  "v2-grade7-pilot-fail": {
+   "calls": [
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/adapters.py",
+     "--skill",
+     "<SKILL>",
+     "--work",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/build_v72.py",
+     "--pkg",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/docx_web_layout.py",
+     "--input",
+     "<WORK>/out/docx/b/sheet.docx",
+     "--output",
+     "<WORK>/out/docx/b/sheet-web.docx",
+     "--manifest",
+     "<WORK>/logs/word-web-layout.json"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/check_docx_rtl.py",
+     "<WORK>/out/docx/b/sheet-web.docx",
+     "--source",
+     "<WORK>/out/deliver/b/sheet.json",
+     "--json",
+     "<WORK>/logs/word-web-rtl-parity.json"
+    ]
+   ],
+   "manifest": {
+    "artifacts": [],
+    "automatedChecksPassed": false,
+    "gradeNumber": 7,
+    "legacyIntakeOffline": false,
+    "lessonBoundary": {
+     "allowSignedNumbers": false,
+     "kind": "linear_equations",
+     "version": 1
+    },
+    "review": {
+     "curriculum": "bounded topic allowlist; free-text progress is not independently verified",
+     "mathematical": "exact typed arithmetic verified; prose/template review pending",
+     "publication": "not approved; private owner preview only",
+     "visual": "pending; every final PDF page and actual Word rendering must be inspected"
+    },
+    "skill": {
+     "name": "middle",
+     "version": "pinned"
+    },
+    "status": "failed",
+    "steps": [
+     {
+      "exitCode": 0,
+      "log": "logs/trusted-adapter.txt",
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/middle-build.txt",
+      "name": "middle-build",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/word-web-layout.txt",
+      "name": "word-web-layout",
+      "status": "PASS"
+     },
+     {
+      "name": "word-source-provenance",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 1,
+      "log": "logs/word-web-rtl-parity.txt",
+      "name": "word-web-rtl-parity",
+      "status": "FAIL"
+     }
+    ],
+    "topicId": "g7:equations",
+    "version": 1
+   }
+  },
+  "v3-elementary-general": {
+   "calls": [
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/general_adapters.py",
+     "--skill",
+     "<SKILL>",
+     "--work",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/scripts/lib/content_truth.py",
+     "--work",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/scripts/build_pdf.py",
+     "<WORK>/sheet.html",
+     "<WORK>/sheet.pdf"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/scripts/build_docx.py",
+     "<WORK>/sheet.html",
+     "<WORK>/sheet.docx"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/scripts/check_worksheet.py",
+     "<WORK>/sheet.pdf",
+     "<WORK>/preview",
+     "--band",
+     "elementary"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/output_gates.py",
+     "--skill",
+     "<SKILL>",
+     "--pdf",
+     "<WORK>/sheet.pdf",
+     "--band",
+     "elementary",
+     "--general"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/scripts/lib/house_gates.py",
+     "--html",
+     "<WORK>/sheet.html",
+     "--pdf",
+     "<WORK>/sheet.pdf",
+     "--gen",
+     "<HERE>/general_adapters.py",
+     "--content",
+     "<WORK>/content.json",
+     "--figdir",
+     "<WORK>/figures",
+     "--grade",
+     "ד",
+     "--level",
+     "ב",
+     "--docx",
+     "<WORK>/sheet.docx"
+    ]
+   ],
+   "manifest": {
+    "artifacts": [
+     {
+      "bytes": 14,
+      "kind": "pdf",
+      "path": "sheet.pdf"
+     },
+     {
+      "bytes": 15,
+      "kind": "docx",
+      "path": "sheet.docx"
+     }
+    ],
+    "authoringProfile": "general-skill-source/v1",
+    "automatedChecksPassed": true,
+    "gradeNumber": 4,
+    "legacyIntakeOffline": false,
+    "lessonBoundary": {
+     "conceptIds": [
+      "ד12#1"
+     ],
+     "kind": "curriculum_scope",
+     "version": 1
+    },
+    "renderingChecksPassed": true,
+    "review": {
+     "curriculum": "selected pinned concepts supplied to author; teacher must verify actual pedagogical fit",
+     "mathematical": "typed computations independently evaluated; prose and proof review pending",
+     "publication": "not approved; private owner draft only",
+     "visual": "pending; every final PDF page and actual Word rendering must be inspected"
+    },
+    "reviewFindings": [],
+    "skill": {
+     "name": "elementary",
+     "version": "pinned"
+    },
+    "status": "needs_review",
+    "steps": [
+     {
+      "exitCode": 0,
+      "log": "logs/trusted-adapter.txt",
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/content-truth.txt",
+      "name": "content-truth",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/pdf.txt",
+      "name": "pdf",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/word.txt",
+      "name": "word",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/worksheet.txt",
+      "name": "worksheet",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/output-gates.txt",
+      "name": "output-gates",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/house-gates.txt",
+      "name": "house-gates",
+      "status": "PASS"
+     }
+    ],
+    "topicId": "ד12",
+    "version": 1
+   }
+  },
+  "v3-elementary-general-fail": {
+   "calls": [
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/general_adapters.py",
+     "--skill",
+     "<SKILL>",
+     "--work",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/scripts/lib/content_truth.py",
+     "--work",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/scripts/build_pdf.py",
+     "<WORK>/sheet.html",
+     "<WORK>/sheet.pdf"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/scripts/build_docx.py",
+     "<WORK>/sheet.html",
+     "<WORK>/sheet.docx"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/scripts/check_worksheet.py",
+     "<WORK>/sheet.pdf",
+     "<WORK>/preview",
+     "--band",
+     "elementary"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/output_gates.py",
+     "--skill",
+     "<SKILL>",
+     "--pdf",
+     "<WORK>/sheet.pdf",
+     "--band",
+     "elementary",
+     "--general"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/scripts/lib/house_gates.py",
+     "--html",
+     "<WORK>/sheet.html",
+     "--pdf",
+     "<WORK>/sheet.pdf",
+     "--gen",
+     "<HERE>/general_adapters.py",
+     "--content",
+     "<WORK>/content.json",
+     "--figdir",
+     "<WORK>/figures",
+     "--grade",
+     "ד",
+     "--level",
+     "ב",
+     "--docx",
+     "<WORK>/sheet.docx"
+    ]
+   ],
+   "manifest": {
+    "artifacts": [],
+    "authoringProfile": "general-skill-source/v1",
+    "automatedChecksPassed": false,
+    "gradeNumber": 4,
+    "legacyIntakeOffline": false,
+    "lessonBoundary": {
+     "conceptIds": [
+      "ד12#1"
+     ],
+     "kind": "curriculum_scope",
+     "version": 1
+    },
+    "renderingChecksPassed": false,
+    "review": {
+     "curriculum": "selected pinned concepts supplied to author; teacher must verify actual pedagogical fit",
+     "mathematical": "typed computations independently evaluated; prose and proof review pending",
+     "publication": "not approved; private owner draft only",
+     "visual": "pending; every final PDF page and actual Word rendering must be inspected"
+    },
+    "reviewFindings": [],
+    "skill": {
+     "name": "elementary",
+     "version": "pinned"
+    },
+    "status": "failed",
+    "steps": [
+     {
+      "exitCode": 0,
+      "log": "logs/trusted-adapter.txt",
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/content-truth.txt",
+      "name": "content-truth",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/pdf.txt",
+      "name": "pdf",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/word.txt",
+      "name": "word",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/worksheet.txt",
+      "name": "worksheet",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/output-gates.txt",
+      "name": "output-gates",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 1,
+      "log": "logs/house-gates.txt",
+      "name": "house-gates",
+      "status": "FAIL"
+     }
+    ],
+    "topicId": "ד12",
+    "version": 1
+   }
+  },
+  "v3-middle-general": {
+   "calls": [
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/general_adapters.py",
+     "--skill",
+     "<SKILL>",
+     "--work",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/build_v72.py",
+     "--pkg",
+     "<WORK>"
+    ]
+   ],
+   "manifest": {
+    "artifacts": [
+     {
+      "bytes": 28,
+      "kind": "pdf",
+      "path": "out/deliver/a/sheet.pdf"
+     },
+     {
+      "bytes": 26,
+      "kind": "docx",
+      "path": "out/docx/a/sheet.docx"
+     }
+    ],
+    "authoringProfile": "general-skill-source/v1",
+    "automatedChecksPassed": true,
+    "gradeNumber": 9,
+    "legacyIntakeOffline": false,
+    "lessonBoundary": {
+     "conceptIds": [
+      "g9r:quad_func_and_eq#7",
+      "g9r:quad_func_and_eq#9"
+     ],
+     "kind": "curriculum_scope",
+     "version": 1
+    },
+    "renderingChecksPassed": true,
+    "review": {
+     "curriculum": "selected pinned concepts supplied to author; teacher must verify actual pedagogical fit",
+     "mathematical": "typed computations independently evaluated; prose and proof review pending",
+     "publication": "not approved; private owner draft only",
+     "visual": "pending; every final PDF page and actual Word rendering must be inspected"
+    },
+    "reviewFindings": [],
+    "skill": {
+     "name": "middle",
+     "version": "pinned"
+    },
+    "status": "needs_review",
+    "steps": [
+     {
+      "exitCode": 0,
+      "log": "logs/trusted-adapter.txt",
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/middle-build.txt",
+      "name": "middle-build",
+      "status": "PASS"
+     }
+    ],
+    "topicId": "g9r:quad_func_and_eq",
+    "version": 1
+   }
+  },
+  "v3-middle-general-fail": {
+   "calls": [
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/general_adapters.py",
+     "--skill",
+     "<SKILL>",
+     "--work",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/build_v72.py",
+     "--pkg",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/didactic_review.py",
+     "--skill",
+     "<SKILL>",
+     "--work",
+     "<WORK>",
+     "--level",
+     "a"
+    ]
+   ],
+   "manifest": {
+    "artifacts": [],
+    "authoringProfile": "general-skill-source/v1",
+    "automatedChecksPassed": false,
+    "gradeNumber": 9,
+    "legacyIntakeOffline": false,
+    "lessonBoundary": {
+     "conceptIds": [
+      "g9r:quad_func_and_eq#7",
+      "g9r:quad_func_and_eq#9"
+     ],
+     "kind": "curriculum_scope",
+     "version": 1
+    },
+    "renderingChecksPassed": false,
+    "review": {
+     "curriculum": "selected pinned concepts supplied to author; teacher must verify actual pedagogical fit",
+     "mathematical": "typed computations independently evaluated; prose and proof review pending",
+     "publication": "not approved; private owner draft only",
+     "visual": "pending; every final PDF page and actual Word rendering must be inspected"
+    },
+    "reviewFindings": [],
+    "skill": {
+     "name": "middle",
+     "version": "pinned"
+    },
+    "status": "failed",
+    "steps": [
+     {
+      "exitCode": 0,
+      "log": "logs/trusted-adapter.txt",
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 1,
+      "log": "logs/middle-build.txt",
+      "name": "middle-build",
+      "status": "FAIL"
+     },
+     {
+      "exitCode": 1,
+      "log": "logs/didactic-review-reconciliation.txt",
+      "name": "didactic-review-reconciliation",
+      "status": "FAIL"
+     }
+    ],
+    "topicId": "g9r:quad_func_and_eq",
+    "version": 1
+   }
+  },
+  "v3-middle-general-review": {
+   "calls": [
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/general_adapters.py",
+     "--skill",
+     "<SKILL>",
+     "--work",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<SKILL>/build_v72.py",
+     "--pkg",
+     "<WORK>"
+    ],
+    [
+     "<PY>",
+     "-B",
+     "<HERE>/didactic_review.py",
+     "--skill",
+     "<SKILL>",
+     "--work",
+     "<WORK>",
+     "--level",
+     "a"
+    ]
+   ],
+   "manifest": {
+    "artifacts": [
+     {
+      "bytes": 28,
+      "kind": "pdf",
+      "path": "out/deliver/a/sheet.pdf"
+     },
+     {
+      "bytes": 26,
+      "kind": "docx",
+      "path": "out/docx/a/sheet.docx"
+     }
+    ],
+    "authoringProfile": "general-skill-source/v1",
+    "automatedChecksPassed": false,
+    "gradeNumber": 9,
+    "legacyIntakeOffline": false,
+    "lessonBoundary": {
+     "conceptIds": [
+      "g9r:quad_func_and_eq#7",
+      "g9r:quad_func_and_eq#9"
+     ],
+     "kind": "curriculum_scope",
+     "version": 1
+    },
+    "renderingChecksPassed": true,
+    "review": {
+     "curriculum": "selected pinned concepts supplied to author; teacher must verify actual pedagogical fit",
+     "mathematical": "typed computations independently evaluated; prose and proof review pending",
+     "publication": "not approved; private owner draft only",
+     "visual": "pending; every final PDF page and actual Word rendering must be inspected"
+    },
+    "reviewFindings": [
+     {
+      "code": "DIDACTIC_REVIEW",
+      "count": 2
+     }
+    ],
+    "skill": {
+     "name": "middle",
+     "version": "pinned"
+    },
+    "status": "needs_review",
+    "steps": [
+     {
+      "exitCode": 0,
+      "log": "logs/trusted-adapter.txt",
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "exitCode": 1,
+      "log": "logs/middle-build.txt",
+      "name": "middle-build",
+      "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
+      "status": "REVIEW"
+     },
+     {
+      "exitCode": 0,
+      "log": "logs/didactic-review-reconciliation.txt",
+      "name": "didactic-review-reconciliation",
+      "status": "PASS"
+     }
+    ],
+    "topicId": "g9r:quad_func_and_eq",
+    "version": 1
+   }
+  }
+ }
+}
