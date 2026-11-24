@@ -53,6 +53,8 @@ print(json.dumps({"strays": D.stray_numbers(L, [], got, pages),
 class Sheet:
     """Answer an author request with given questions in its slots, in order (practice, then challenges)."""
 
+    repeats_questions = True  # engine.compile_reply: the sheets here repeat one question by design (no G75 cap)
+
     def __init__(self, questions, title, rule):
         self.questions, self.title, self.rule = list(questions), title, rule
 

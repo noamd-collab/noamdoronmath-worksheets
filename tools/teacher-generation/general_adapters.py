@@ -10,6 +10,7 @@ import argparse
 from copy import deepcopy
 import hashlib
 import html
+import math
 import re
 import json
 from pathlib import Path
@@ -31,17 +32,16 @@ MIDDLE_BRIDGE = '''import json
 from pathlib import Path
 LEVELS = json.loads((Path(__file__).parent / "levels.json").read_text(encoding="utf-8"))
 def _recorded_figure(spec):
+    # spec is the exact constructor call the compiler drew (general_adapters._middle_call).
     if spec["kind"] == "coordinate_plane":
         from figkit_plus import plane, wide
         points = {p["name"]: (p["x"], p["y"]) for p in spec["points"]}
         builder = wide if spec.get("placement") == "wide" else plane
-        return builder(tuple(spec["xr"]), tuple(spec["yr"]), points=[(xy, name) for name, xy in points.items()], solid=[(points[a], points[b]) for a, b in spec["segments"]])
+        step = {"step": spec["step"]} if "step" in spec else {}
+        return builder(tuple(spec["xr"]), tuple(spec["yr"]), points=[(xy, name) for name, xy in points.items()], solid=[(points[a], points[b]) for a, b in spec["segments"]], **step)
     import shapekit as SK
-    params = dict(spec["parameters"])
-    if spec["shape"] == "triangle": params["variant"] = "sss"
-    elif spec["shape"] == "trapezoid": params["variant"] = "scalene"
-    family = "general." + spec["shape"]
-    g, data = SK.shape(spec["shape"], rotate=spec["rotate"], names=spec["names"], marks=True, fam=family, **params)
+    family = spec["family"]
+    g, data = SK.shape(spec["shape"], rotate=spec["rotate"], names=spec["names"], marks=True, fam=family, **spec["parameters"])
     return SK.finish(g, family)
 for level in LEVELS:
     if "words_share" in level:
@@ -432,30 +432,259 @@ def _wider(span, limit=10):
     return [low, high]
 
 
-def _shape_call(fig):
-    """The pinned constructor and its arguments for a validated shape.
+# What the givens of a question declare about its figure. A definition
+# constructor draws the marks of its definition (equal ticks, right-angle
+# marks), and a mark is a given the pupil reads: it may show what the
+# question states, never what an item asks. Only declarative sentences of
+# the intro count: a question, a condition, a negation or a request to
+# prove or check states nothing.
+_NOT_STATED = re.compile(r"\?|(?<![א-ת])(?:[וש]?ה?אם|הוכיחו|הראו|נמקו|בדקו|קבעו|הסבירו|ייתכן|ו?לא|אינ(?:ו|ה|ם|ן)|אין)(?![א-ת])")
+_PREFIX = r"(?<![א-ת])(?:[וש]?[הבלכ]?)"
+_STATED_WORDS = {
+    "isosceles": re.compile(r"(?<![א-ת])ו?שוו(?:ה|ת|י|ות)[\s־-]*(?:ה)?שוקיים(?![א-ת])"),
+    "equilateral": re.compile(r"(?<![א-ת])ו?שוו(?:ה|ת|י|ות)[\s־-]*(?:ה)?צלעות(?![א-ת])"),
+    "right": re.compile(r"(?<![א-ת])(?:ו?ישר(?:ת|י|ות)?[\s־-]*(?:ה)?זווית|זווי(?:ת|ות)[\s־-]*ישר(?:ה|ות))(?![א-ת])"),
+    "rhombus": re.compile(_PREFIX + r"מעוין(?![א-ת])"),
+    "rectangle": re.compile(_PREFIX + r"מלבן(?![א-ת])"),
+    # Not after ב: "בריבוע" is also "squared".
+    "square": re.compile(r"(?<![א-ת])(?:[וש]?[הל]?)ריבוע(?![א-ת])"),
+}
+_SEGMENT = re.compile(r"[A-Z]{2}")
+_RIGHT_ANGLE = re.compile(r"^∠\s?[A-Z]{1,3}(?:\s?=\s?∠\s?[A-Z]{1,3})*\s?=\s?90\s?°?$")
+_ANGLE_NAME = re.compile(r"∠\s?([A-Z]{1,3})")
 
-    A shape whose given measures have only one reading is drawn as that
-    shape: a parallelogram with equal adjacent sides is the rhombus with that
-    side and angle, and a trapezoid whose leg leaves the base at offset 0 is
-    the right trapezoid. Everything else is passed on unchanged.
+
+def _sentences(spans):
+    """The intro as sentences: [(Hebrew words, [formula or segment notations])]."""
+    rows, words, formulas = [], [], []
+    for span in spans if isinstance(spans, list) else ():
+        if not isinstance(span, dict):
+            continue
+        if span.get("kind") == "text" and isinstance(span.get("text"), str):
+            parts = re.split(r"(?<=[.!?])", span["text"])
+            for k, part in enumerate(parts):
+                words.append(part)
+                if k < len(parts) - 1:
+                    rows.append(("".join(words), formulas))
+                    words, formulas = [], []
+        elif span.get("kind") == "formula" and isinstance(span.get("notation"), str):
+            formulas.append(span["notation"])
+        elif span.get("kind") == "geometry" and isinstance(span.get("names"), str):
+            formulas.append(span["names"])
+    if words or formulas:
+        rows.append(("".join(words), formulas))
+    return rows
+
+
+def declared_properties(question):
+    """What the intro of a validated question states about its figure, as a frozenset of strings.
+
+    Words: "isosceles", "equilateral", "right", "rhombus", "rectangle",
+    "square". A right angle at a named vertex ([[∠A = ∠D = 90°]],
+    [[AD ⊥ CD]]) adds "right" and "right@A", "right@D". Equal segments:
+    "=AD,BC" for every pair the intro states equal, by a chain of names
+    ([[AD = BC]]) or by one length given to both ([[AD = 13]] ...
+    [[BC = 13]]); each name is spelled in sorted letters.
     """
-    shape, params = fig["shape"], dict(fig["parameters"])
-    if shape == "parallelogram" and params.get("a") == params.get("b"):
-        return "rhombus", {"a": params["a"], "angle": params["angle"]}
-    if shape == "triangle":
-        params["variant"] = "sss"
+    found, lengths = set(), {}
+    for words, formulas in _sentences((question or {}).get("intro")):
+        if _NOT_STATED.search(words):
+            continue
+        found.update(name for name, pattern in _STATED_WORDS.items() if pattern.search(words))
+        for notation in formulas:
+            text = notation.strip()
+            if _RIGHT_ANGLE.search(text):
+                found.add("right")
+                found.update("right@" + (name[1] if len(name) == 3 else name[0]) for name in _ANGLE_NAME.findall(text))
+            sides = [part.strip() for part in text.split("⊥")]
+            if len(sides) == 2 and all(_SEGMENT.fullmatch(part) for part in sides):
+                found.add("right")
+                found.update("right@" + vertex for vertex in set(sides[0]) & set(sides[1]))
+            parts = [part.strip() for part in text.split("=")]
+            names = ["".join(sorted(part)) for part in parts if _SEGMENT.fullmatch(part)]
+            if len(parts) >= 2 and re.fullmatch(r"[0-9]+(?:\.[0-9]+)?", parts[-1]) and len(names) == len(parts) - 1:
+                for name in names:
+                    lengths.setdefault(parts[-1], set()).add(name)
+            elif len(parts) >= 2 and len(names) == len(parts):
+                lengths.setdefault(("chain", len(lengths)), set()).update(names)
+    for group in lengths.values():
+        found.update("=" + ",".join(pair) for pair in
+                     ([a, b] for a in sorted(group) for b in sorted(group) if a < b))
+    return frozenset(found)
+
+
+def _equal(declared, one, other):
+    """Whether the intro states segments ``one`` and ``other`` equal."""
+    return "=" + ",".join(sorted(("".join(sorted(one)), "".join(sorted(other))))) in declared
+
+
+def _right(declared, vertices):
+    """Whether the intro states a right angle that may stand at one of ``vertices``."""
+    named = {entry[6:] for entry in declared if entry.startswith("right@")}
+    return "right" in declared and (not named or bool(named & set(vertices)))
+
+
+def _equal_pair(declared, word, names, one, other):
+    """Whether the intro states that sides ``one`` and ``other`` are the equal pair of the figure.
+
+    By naming the pair, or by the shape's name (``word``) when it names no
+    other pair of the figure's sides as equal: "שווה שוקיים (AB = AC)" over
+    a figure whose equal sides are CA and CB states the wrong pair.
+    """
+    if _equal(declared, one, other):
+        return True
+    sides = [names[k] + names[(k + 1) % len(names)] for k in range(len(names))]
+    stated = [(s, t) for i, s in enumerate(sides) for t in sides[i + 1:] if _equal(declared, s, t)]
+    return word in declared and not stated
+
+
+def _shape_call(fig, declared=frozenset()):
+    """(constructor, arguments, names, family) of the pinned call that draws a validated shape.
+
+    A constructor of a general shape refuses a figure whose measures make it a
+    special one (legs that come out equal, a corner of 90 degrees), and points
+    to the constructor whose definition says so. That constructor draws the
+    same figure exactly, with the marks of its definition. Such a figure is
+    routed there only when its own measures make it that shape exactly AND
+    the question's intro states the property (declared_properties), so a mark
+    never shows what an item asks. A triangle is renamed in cyclic order (its
+    orientation kept) so that the vertex of the definition comes where the
+    constructor puts it. Everything else is passed on unchanged and refused,
+    or drawn, by the constructor the author chose.
+
+    The family names the configuration drawn (G76 counts objects by it): a
+    special shape is its own configuration.
+    """
+    shape, params, names = fig["shape"], dict(fig["parameters"]), fig["names"]
+    special = None
+    if shape == "parallelogram":
+        a, b, angle = params["a"], params["b"], params["angle"]
+        if angle == 90 and a == b and "square" in declared:
+            shape, params = "square", {"a": a}
+        elif angle == 90 and ("rectangle" in declared or _right(declared, names)):
+            shape, params = "rectangle", {"w": a, "h": b}
+        elif a == b and ("rhombus" in declared or _equal(declared, names[0:2], names[1:3])
+                         or _equal(declared, names[0:2], names[3] + names[0])):
+            shape, params = "rhombus", {"a": a, "angle": angle}
+    elif shape == "rhombus" and params["d1"] == params["d2"] and "square" in declared:
+        shape, params = "square", {"a": params["d1"] / math.sqrt(2)}
+    elif shape == "rectangle" and params["w"] == params["h"] and "square" in declared:
+        shape, params = "square", {"a": params["w"]}
+    elif shape == "kite" and params["a"] == params["b"] and "rhombus" in declared and 2 * params["a"] > params["q"]:
+        # Four equal sides: the rhombus whose diagonal BD is q.
+        shape, params = "rhombus", {"d1": 2 * math.sqrt(params["a"] ** 2 - params["q"] ** 2 / 4), "d2": params["q"]}
     elif shape == "trapezoid":
-        if params.get("dx") == 0:
-            params.pop("dx")
-            params["variant"] = "right"
+        a, b, h, dx = params["a"], params["b"], params["h"], params["dx"]
+        legs = (names[3] + names[0], names[1] + names[2])
+        if dx == 0 and _right(declared, names[0] + names[3]):
+            special, params = "right", {"a": a, "b": b, "h": h}
+        elif 2 * dx == a - b and _equal_pair(declared, "isosceles", names, *legs):
+            special, params = "iso", {"a": a, "b": b, "h": h}
+        params["variant"] = special or "scalene"
+    elif shape == "triangle":
+        # Side k runs from vertex k to vertex k+1: AB = c, BC = a, CA = b.
+        side = {0: params["c"], 1: params["a"], 2: params["b"]}
+        params = {"a": params["a"], "b": params["b"], "c": params["c"], "variant": "sss"}
+        if side[0] == side[1] == side[2] and ("equilateral" in declared or
+                                              all(_equal(declared, names[k] + names[(k + 1) % 3],
+                                                         names[(k + 1) % 3] + names[(k + 2) % 3]) for k in range(2))):
+            special, params = "equilateral", {"a": side[0], "variant": "equilateral"}
         else:
-            params["variant"] = "scalene"
-    return shape, params
+            for k in range(3):
+                near, far, opposite = side[k], side[(k + 2) % 3], side[(k + 1) % 3]
+                turned = names[k:] + names[:k]
+                # The right angle at vertex k: pinned 'right' puts it at its first vertex.
+                if near ** 2 + far ** 2 == opposite ** 2 and _right(declared, names[k]):
+                    special, params, names = "right", {"c": near, "b": far, "variant": "right"}, turned
+                    break
+                # The apex at vertex k: pinned 'iso' puts it last, over its base.
+                if near == far and _equal_pair(declared, "isosceles", names, names[k] + names[(k + 1) % 3],
+                                               names[k] + names[(k + 2) % 3]):
+                    special = "iso"
+                    params = {"base": opposite, "leg": near, "variant": "iso"}
+                    names = names[(k + 1) % 3:] + names[:(k + 1) % 3]
+                    break
+    family = "general." + shape + ("." + special if special else "")
+    return shape, params, names, family
 
 
-def _figure(fig, elementary, index, work):
-    """Invoke only explicit trusted skill constructors with validated fields."""
+# Other windows and numbering of one coordinate figure, in the order tried:
+# (more below x, more above x, more below y, more above y, numbering step).
+# Measured with _middle_call on 379 rhombus and kite point sets with vertices on
+# the axes: the author's window refused 99, and each of them was drawn by the
+# wider window (33), one unit more below both axes (30) or numbering on every
+# unit (36). The later shifts are kept for other point sets.
+_PLANE_SHIFTS = ((-1, 0, -1, 0, None), (0, 0, 0, 0, 1), (-2, 2, -2, 2, None), (0, 1, 0, 1, None),
+                 (0, 0, -1, 0, None), (-1, 0, 0, 0, None))
+
+
+def _plane_layouts(fig, limit=10, span=16):
+    """The windows and numbering steps a coordinate figure may be drawn in, in order.
+
+    Each one draws the same points and segments exactly: the author's window
+    first, then the window two units wider, then the shifts above. A letter
+    that the skill finds in the slot of an axis number moves with the window
+    or the step; an axis number is never dropped (the skill refuses that). A
+    window keeps the origin, stays inside +-limit and spans at most ``span``
+    units, as general_source requires of the author's own window.
+    """
+    xr, yr = list(fig["xr"]), list(fig["yr"])
+    candidates = [(xr, yr, None), (_wider(xr), _wider(yr), None)]
+    candidates += [([xr[0] + a, xr[1] + b], [yr[0] + c, yr[1] + d], step) for a, b, c, d, step in _PLANE_SHIFTS]
+    seen, layouts = set(), []
+    for x, y, step in candidates:
+        key = (tuple(x), tuple(y), step)
+        if key in seen or not all(-limit <= lo <= 0 <= hi <= limit and hi - lo <= span for lo, hi in (x, y)):
+            continue
+        seen.add(key)
+        layouts.append({"xr": list(x), "yr": list(y), **({"step": step} if step else {})})
+    return layouts
+
+
+def _middle_call(fig, declared=frozenset()):
+    """(svg, call) for a validated middle-school figure; ``call`` replays the drawing exactly.
+
+    The render bridge (MIDDLE_BRIDGE) draws the figure again from ``call``
+    and refuses the build when the two differ, so the routed constructor and
+    the chosen window must be the recorded ones.
+    """
+    if fig["kind"] == "coordinate_plane":
+        from figkit_plus import plane, wide
+        points = {p["name"]: (p["x"], p["y"]) for p in fig["points"]}
+        # Coordinate object identity is measured from actual point sets by
+        # figkit.figure_family. A Euclidean fam tag would incorrectly collapse
+        # distinct coordinate graphs into one declared shape (G76 contract).
+        builder = wide if fig.get("placement") == "wide" else plane
+        refusal = None
+        for layout in _plane_layouts(fig):
+            try:
+                svg = builder(tuple(layout["xr"]), tuple(layout["yr"]), points=[(xy, name) for name, xy in points.items()],
+                              solid=[(points[a], points[b]) for a, b in fig["segments"]],
+                              **({"step": layout["step"]} if "step" in layout else {}))
+            except Exception as exc:  # noqa: BLE001 - only the skill's layout refusal is retried
+                if refusal is None and type(exc).__name__ != "LayoutError":
+                    raise  # the author's own window: anything but a layout refusal is the skill's verdict
+                if refusal is not None and not isinstance(exc, AssertionError) and not figure_refused(exc):
+                    raise
+                # Another window or step is only a way out: any refusal of it leaves the first one standing.
+                refusal = refusal or exc
+                continue
+            return svg, {**deepcopy(fig), **layout}
+        raise refusal
+    import shapekit as SK
+    shape, params, names, family = _shape_call(fig, declared)
+    g, data = SK.shape(shape, rotate=fig["rotate"], names=names, marks=True, fam=family, **params)
+    return SK.finish(g, family), {"kind": "shape", "shape": shape, "parameters": params, "names": names,
+                                  "rotate": fig["rotate"], "family": family}
+
+
+def _figure(fig, elementary, index, work, *, declared=frozenset(), call=None):
+    """Invoke only explicit trusted skill constructors with validated fields.
+
+    ``declared`` is declared_properties of the question (middle school).
+    When ``call`` is a dict, the exact middle-school constructor call is
+    stored in it under "call" for the render bridge.
+    """
     kind = fig["kind"]
     if elementary:
         import svg_elementary_ext as SX
@@ -465,28 +694,10 @@ def _figure(fig, elementary, index, work):
             svg = SX.polyhedron_3d(kind="triangular_prism" if fig["shape"] == "prism" else fig["shape"], dims=tuple(fig["dimensions"]))
         else:
             raise ValueError("Unsupported elementary geometry figure")
-    elif kind=="coordinate_plane":
-        from figkit_plus import plane, wide
-        points={p["name"]:(p["x"],p["y"]) for p in fig["points"]}
-        # Coordinate object identity is measured from actual point sets by
-        # figkit.figure_family. A Euclidean fam tag would incorrectly collapse
-        # distinct coordinate graphs into one declared shape (G76 contract).
-        builder=wide if fig.get("placement")=="wide" else plane
-        draw=lambda xr, yr: builder(tuple(xr),tuple(yr),points=[(xy,name) for name,xy in points.items()],solid=[(points[a],points[b]) for a,b in fig["segments"]])
-        try:
-            svg=draw(fig["xr"], fig["yr"])
-        except Exception as exc:  # noqa: BLE001 - only the skill's layout refusal is retried
-            if type(exc).__name__ != "LayoutError":
-                raise
-            # A letter that falls on an axis number: the same points in a window
-            # two units wider move the ticks. A second refusal stands.
-            svg=draw(_wider(fig["xr"]), _wider(fig["yr"]))
     else:
-        import shapekit as SK
-        shape, params = _shape_call(fig)
-        fam = "general." + shape
-        g, data = SK.shape(shape, rotate=fig["rotate"], names=fig["names"], marks=True, fam=fam, **params)
-        svg = SK.finish(g, fam)
+        svg, made = _middle_call(fig, declared)
+        if isinstance(call, dict):
+            call["call"] = made
     path = work / "figures" / f"q{index}.svg"
     path.write_text(svg, encoding="utf-8")
     dump(path.with_suffix(".json"), {"version": 1, "constructorInput": fig, "sha256": hashlib.sha256(svg.encode("utf-8")).hexdigest()})
@@ -831,14 +1042,17 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
             if n == first:
                 q["part"] = [section["title"], str(first)+"–"+str(first+len(section["questions"])-1)]
             if "figure" in question:
+                drawn = {}
                 try:
-                    q["fig"], path = _figure(question["figure"], False, n, work)
+                    q["fig"], path = _figure(question["figure"], False, n, work,
+                                             declared=declared_properties(question), call=drawn)
                 except Exception as exc:  # noqa: BLE001 - only the pinned constructors' refusals are named
                     if not figure_refused(exc):
                         raise
                     # A figure the pinned constructors refuse names its question, which a later stage replaces.
                     raise GeneralSourceError("SOURCE_FIGURE", "The pinned skill cannot draw this figure").at(n) from None
-                q["_generalFigure"] = question["figure"]
+                # The bridge replays this exact call: the routed constructor, the chosen window.
+                q["_generalFigure"] = drawn["call"]
             if "table" in question:
                 table = question["table"]
                 q["table"] = {"head": [rich_text(c, lesson["gradeNumber"]) for c in table["head"]], "rows": [[rich_text(c, lesson["gradeNumber"]) for c in row] for row in table["rows"]], "hcol": True}

@@ -133,6 +133,7 @@ GATES = {
     "BUILD_PLUS": (TRUTH, True),      # build_v72.py:208 any build gate the reader cannot name; a stray PDF number names its question
     "G84": (POLICY, True),            # build_plus.py:228 a term taught later than the lesson
     "G76": (POLICY, True),            # gate_variety.py:361 DOMINANCE names the questions over the cap; SCALE/PART name none
+    "G75": (POLICY, True),            # emit_html.py:972 REUSE names the questions of one SVG over the cap; COVER/OBJECTS name none
     "PLAIN_MATH": (TRUTH, False),     # check_plain_math.py
     "VERIFY_EXPORT": (TRUTH, False),  # verify_export.py
     "SELFCHECK": (TRUTH, False),      # selfcheck_noam_package.py, any rule but K6

@@ -257,6 +257,8 @@ class ReplyFromSchema:
     example reserve questions) is filled without a change here.
     """
 
+    repeats_questions = True  # compile_reply: one question in every slot, by construction
+
     def __init__(self, question, title, rule):
         self.question, self.title, self.rule = question, title, rule
         self.calls = []
@@ -580,7 +582,12 @@ def compile_reply(lesson, transport, skills, *, context=None):
     import provider
     from validation import GenerationError
     try:
-        with patch.object(provider, 'request_author_json', transport):
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(provider, 'request_author_json', transport))
+            if getattr(transport, 'repeats_questions', False):
+                # Every slot holds the same question by construction, so the sheet's
+                # limit on questions that print one drawing (G75) is not the question's.
+                stack.enter_context(patch.object(general_provider, 'FIGURE_REUSE_MAX', 99))
             payload = general_provider.author_general_lesson(
                 lesson, timeout=1, metadata={}, skill_paths={k: str(v) for k, v in skills.items()},
                 authoring_context=context)

@@ -14,7 +14,8 @@ import os
 
 from authoring_context import build_authoring_context, AuthoringContextError
 from general_source import validate_source, GeneralSourceError, geometry_topic
-from lesson_select import CHALLENGES, NO_QUESTION, PRACTICE, Selection
+from lesson_select import CHALLENGES, NO_QUESTION, PRACTICE, Selection, Shared
+from figure_probe import FIGURE_REUSE_CODE, FIGURE_REUSE_MAX
 from skill_authoring import (MAX_CORRECTED, bind_content, correction_instructions, examine_frame, instruction_for,
                              notation_correction, question_codes, question_plan, refers_to_another_question,
                              refusal_feedback, reserve_plan, revision_request, split_reserves, trim_rule,
@@ -135,7 +136,12 @@ class Draft:
                 written.add(text)
                 spare.append(row)
         self.repeated_reserves = len(reserves) + len(extra) - len(spare)
-        self.selection = Selection(planned, spare, self._judge, soft=SOFT)
+        # The middle skill's G75: one drawing serves at most FIGURE_REUSE_MAX questions.
+        # The drawing of each usable question is known when it is judged.
+        self._drawings = {}
+        shared = (Shared(lambda question: self._drawings.get(id(question)), FIGURE_REUSE_MAX, FIGURE_REUSE_CODE)
+                  if scope['topic']['skillId'] == 'middle' else None)
+        self.selection = Selection(planned, spare, self._judge, shared, soft=SOFT)
         self.selection.screen()
         self._keep_soft()
 
@@ -147,8 +153,9 @@ class Draft:
             return repr(id(question))
 
     def _judge(self, question, challenge, number):
+        self._drawings.pop(id(question), None)
         return question_codes(question, self.requested, self.scope, challenge=challenge, index=number,
-                              refusals=self._refusals)
+                              refusals=self._refusals, drawings=self._drawings)
 
     def _normalise_rule(self, rule):
         try:

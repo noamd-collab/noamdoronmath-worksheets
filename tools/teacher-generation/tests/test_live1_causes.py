@@ -145,29 +145,28 @@ class LiveCauses(unittest.TestCase):
     # F11: a figure the pinned constructors refuse is refused with its question, before the render.
 
     def test_a_figure_the_skill_cannot_draw_is_refused_at_selection(self):
-        # A label on an axis number, even in the window two units wider; two sides that print as equal.
-        for case_id, group, number in (('L1-square', 'practice', 6), ('L1-p3', 'practice', 13),
-                                       ('L1-p3-a2', 'practice', 17)):
+        # Two sides that print as equal (the label on an axis number of L1-square q6 now moves to
+        # another window, and a parallelogram with equal sides is refused unless its intro says
+        # rhombus: tests/test_figure_routes.py).
+        for case_id, group, number in (('L1-p3', 'practice', 13), ('L1-p3-a2', 'practice', 17)):
             with self.subTest(case=case_id, group=group, number=number):
                 failure = self.check(case_id, question(case_id, group, number))
                 self.assertEqual(failure['code'], 'SOURCE_FIGURE')
                 self.assertIn('figure', failure['detail'])
 
     def test_a_figure_with_one_reading_is_drawn_as_that_shape(self):
-        # A parallelogram with equal sides is a rhombus; a trapezoid with offset 0 is a right trapezoid;
-        # a label on an axis number moves off it in a window two units wider.
-        for case_id, group, number in (('L1-p1-a2', 'practice', 5), ('L1-p3-a2', 'challenges', 3),
-                                       ('L1-p3', 'practice', 3), ('L1-p1', 'challenges', 2)):
+        # A trapezoid with offset 0 whose intro says ישר־זווית is a right trapezoid; a label on an
+        # axis number moves off it in another window (L1-square q6 since tests/test_figure_routes.py).
+        for case_id, group, number in (('L1-p3-a2', 'challenges', 3), ('L1-p3', 'practice', 3),
+                                       ('L1-p1', 'challenges', 2), ('L1-square', 'practice', 6)):
             with self.subTest(case=case_id, group=group, number=number):
-                wire = (salvaged(case_id)['practice'][number - 1] if case_id == 'L1-p1-a2'
-                        else question(case_id, group, number))
-                self.assertNotEqual(self.code(case_id, wire), 'SOURCE_FIGURE')
+                self.assertNotEqual(self.code(case_id, question(case_id, group, number)), 'SOURCE_FIGURE')
 
     def test_the_render_names_the_question_whose_figure_it_cannot_draw(self):
         import general_adapters
         from general_source import GeneralSourceError
-        lesson = lesson_of('L1-square')
-        wire = question('L1-square', 'practice', 6)
+        lesson = lesson_of('L1-p3')
+        wire = question('L1-p3', 'practice', 13)
         with self.assertRaises(GeneralSourceError) as raised, patch.object(general_adapters, 'validate_source',
                                                                          lambda *a, **k: a[1]):
             source = {'title': 'תרגול', 'rule': [{'kind': 'text', 'text': 'פתרו.'}], 'sections': [{
