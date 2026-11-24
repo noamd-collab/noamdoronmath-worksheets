@@ -163,6 +163,18 @@ class WirePathTests(unittest.TestCase):
         # Only the remainder is asked for: the ordinary key already states it.
         self.assertIsNone(bound("ג21", "ענו.", "מהי השארית בחילוק [[47]] ב־[[5]]?", evaluate("2")))
 
+    def test_unequal_whole_unit_division_does_not_round_a_measured_share(self):
+        def share(amount, divisor, unit):
+            return f"חילקו [[{amount}]] {unit} שווה בשווה בין [[{divisor}]] ילדים. כמה {unit} קיבל כל ילד?"
+        self.refused("ד10", "פתרו באמצעות חילוק ארוך.", share(456, 9, "שקלים"), evaluate("456 / 9", "שקלים"))
+        self.refused("ד10", "פתרו.", share(11, 2, "אגורות"), evaluate("11 / 2", "אגורות"))
+        self.assertIsNone(bound("ד10", "פתרו.", share(25, 2, "שקלים"), evaluate("25 / 2", "שקלים")))
+        self.assertIsNone(bound("ד10", "פתרו.", share(7, 2, "מטרים"), evaluate("7 / 2", "מטרים")))
+        result = bound("ד10", "כתבו את המנה ואת השארית.", share(456, 9, "שקלים"), evaluate("456 / 9", "שקלים"))
+        self.assertEqual(key(result), "50 שקלים (שארית 6)")
+        whole = share(25, 2, "שקלים").replace("כמה שקלים קיבל", "כמה שקלים שלמים קיבל")
+        self.assertEqual(key(bound("ד10", "פתרו.", whole, evaluate("25 / 2", "שקלים"))), "12 שקלים (שארית 1)")
+
     def test_sequences_and_two_unit_answers(self):
         self.assertEqual(key(bound("ג03", "השלימו את הסדרה.", "[[5]], [[10]], ___, ___, [[25]]", evaluate("15"))), "15, 20")
         self.assertEqual(key(bound("ג03", "השלימו את הסדרה.", "[[2]], [[4]], [[8]], ___, ___", evaluate("16"))), "16, 32")

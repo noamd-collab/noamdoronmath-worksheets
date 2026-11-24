@@ -940,8 +940,23 @@ def remainder_answer(question, item, solved, grade):
     # division that does not come out even has a remainder, said or not.
     uneven = (typed_division is not None and typed_division[0] >= typed_division[1]
               and typed is not None and typed.denominator != 1)
-    if typed is None or not (_REMAINDER.search(words) or (uneven and (grade <= 4 or _LEFTOVER.search(words)))):
+    remainder = _REMAINDER.search(words)
+    leftover = _LEFTOVER.search(words)
+    if typed is None or not (remainder or (uneven and (grade <= 4 or leftover))):
         return None
+    # A share of money or a length can include part of a unit. Do not turn
+    # an exact measured share into whole units and a leftover just because
+    # of the pupil's grade. Explicit quotient/remainder exercises keep it.
+    unit = _unpointed(item["answer"].get("unit") or "").strip()
+    whole_units = unit and re.search(rf"(?<![א-ת]){re.escape(unit)}\s+של(?:מים|מות|ם|מה)(?![א-ת])", words)
+    if uneven and not (remainder or leftover or whole_units):
+        if _MONEY.fullmatch(unit) or unit == "אגורה":
+            minor_units = 1 if unit in ("אגורה", "אגורות") else 100
+            if (typed * minor_units).denominator != 1:
+                _reject("An equal monetary share must be payable in whole minor units or explicitly ask for a remainder")
+            return None
+        if unit and any(unit in big or unit in small for big, small, _ in _UNIT_PAIRS):
+            return None
     blanks = blank_count(prompt)
     if blanks > 2:
         return None
