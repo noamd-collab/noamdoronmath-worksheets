@@ -410,8 +410,11 @@ def live(args, cases, launch=launch_process):
             {k: ready[k] for k in ('skills', 'provider', 'authoring') if k in ready})))
     pending = [case for case in cases if not (out / 'cases' / case['id'] / 'result.json').is_file()]
     run_name = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
-    commit = subprocess.run(['git', '-C', str(ENGINE), 'rev-parse', 'HEAD'], capture_output=True, text=True,
-                            env={**os.environ, 'GIT_NO_LAZY_FETCH': '1'}).stdout.strip() or None
+    commit = None
+    git = shutil.which('git')
+    if git:
+        commit = subprocess.run([git, '-C', str(ENGINE), 'rev-parse', 'HEAD'], capture_output=True, text=True,
+                                env={**os.environ, 'GIT_NO_LAZY_FETCH': '1'}).stdout.strip() or None
     report.write_json(out / f'run-{run_name}.json', {
         'started': run_name, 'engineCommit': commit, 'provider': provider_name, 'model': model,
         'budget': {'maxCalls': args.max_calls, 'maxOutputTokens': args.max_output_tokens,

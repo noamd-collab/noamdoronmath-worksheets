@@ -291,8 +291,11 @@ class RunTests(unittest.TestCase):
 
     def test_a_case_saves_the_lesson_every_reply_usage_and_no_secret(self):
         self.answers = 1
-        code, text = self.live('--max-calls', '4', '--max-output-tokens', '200000', '--topics', 'ד07', '--levels', 'b')
+        with patch.dict(os.environ, {'PATH': str(self.scratch)}):
+            code, text = self.live('--max-calls', '4', '--max-output-tokens', '200000', '--topics', 'ד07', '--levels', 'b')
         root = self.scratch / 'sweep'
+        run_record = json.loads(next(root.glob('run-*.json')).read_text(encoding='utf-8'))
+        self.assertIsNone(run_record['engineCommit'])
         result = json.loads((root / 'cases/g4-07-b-q12-m30/result.json').read_text(encoding='utf-8'))
         attempt = root / 'cases/g4-07-b-q12-m30' / result['attempt']
         self.assertFalse(result['delivered'])

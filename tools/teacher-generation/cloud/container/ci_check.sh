@@ -17,10 +17,11 @@ docker buildx build --load --platform linux/amd64 --provenance=false --sbom=fals
   --metadata-file "$task_output/image-build-metadata.json" \
   --file "$task_container/Dockerfile" --tag "$task_image" "$task_root"
 test "$(docker image inspect --format '{{ index .Config.Labels "org.opencontainers.image.revision" }}' "$task_image")" = "$task_source"
-# Replay tools and their cases are needed only during qualification.
+# Replay tools, cases, and the legacy algebra module are used by the offline tests.
 docker run --rm --platform linux/amd64 --network none \
   --mount "type=bind,src=$task_root/tools/teacher-generation/bench,dst=/opt/noam/app/bench,readonly" \
   --mount "type=bind,src=$task_root/tools/teacher-generation/tests,dst=/opt/noam/app/tests,readonly" \
+  --mount "type=bind,src=$task_root/tools/teacher-generation/intro_algebra.py,dst=/opt/noam/app/intro_algebra.py,readonly" \
   --entrypoint /usr/local/bin/python \
   "$task_image" -B -m unittest discover -s /opt/noam/app/tests -v 2>&1 | tee "$task_output/offline-worker-tests.txt"
 docker create --platform linux/amd64 --network none --shm-size 256m --name "$task_name" \
