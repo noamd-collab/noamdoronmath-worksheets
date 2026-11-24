@@ -475,20 +475,37 @@ _LENGTH_UNIT = re.compile(r"(?:ס|מ|דצ|ק)[\"״]מ|מ['׳]|(?:סנטי|דצי
 _ASKS_LENGTH = re.compile(r"(?<![א-ת])[ובלהמש]{0,3}(?:אורכ|אורך|רוחב|גובה|צלע|היקף|היקפ|אלכסונ|רדיוס|קוטר|מרחק)")
 _ASKS_AREA = re.compile(r"(?<![א-ת])[ובלהמש]{0,3}שטח")
 _ASKING = re.compile(r"(?<![א-ת])(?:מה|מהו|מהי|מצאו|חשבו|כמה|בכמה|כתבו)(?![א-ת])")
+_LITRES = (("ליטרים", "ליטר"), ("מיליליטרים", "מיליליטר", "מ״ל", 'מ"ל'), 1000)
+_LIQUID_NOUNS = {"מים", "חלב", "מיץ", "שמן"}
+_VOLUME_SCALE = re.compile(
+    r"(?<![א-ת])[ובלה]{0,2}(?:(?:מילי)?ליטר(?:ים)?|מ[\"״]ל|ל['׳]|סמ[\"״]ק|מ[\"״]ק|"
+    r"(?:סנטי)?מטר(?:ים)?\s+מעוקב(?:ים)?)(?![א-ת])")
 
 
-def check_unit_size(item):
+def check_unit_size(item, question=None):
     """Refuse a key whose unit measures another size than the one the item asks for.
 
     The asked sentence is the last one with a question or an instruction word.
     "מהו רוחב השולחן" keyed in דצמ"ר (live round 1, g9r quadratics) prints a width
     in square decimetres; "מהו שטח ..." keyed in ס"מ prints an area as a length.
     A sentence that names both sizes ("בכמה סמ"ר גדל השטח כשמאריכים את הצלע")
-    decides nothing here.
+    decides nothing here. A liquid named directly after a number cannot give
+    a volume in litres or millilitres unless a printed scale supplies the unit.
     """
     unit = item["answer"].get("unit") or ""
     if not unit.strip():
         return
+    if _unpointed(unit.strip()) in _LITRES[0] + _LITRES[1]:
+        tokens = read_tokens(item["prompt"])
+        bare_liquid = any(amount.kind == "num" and noun.kind == "word" and noun.value in _LIQUID_NOUNS
+                          for amount, noun in zip(tokens, tokens[1:]))
+        if bare_liquid:
+            shared = question or {}
+            # A shared instruction or table may give the scale once for all items.
+            spans = [*item["prompt"], *shared.get("intro", []), *_table_spans(shared)]
+            if not any(_VOLUME_SCALE.search(_unpointed(span["text"])) for span in spans if span["kind"] == "text"):
+                raise GeneralSourceError("PRINTED_ANSWER_KIND",
+                                         "Print the volume unit with the liquid amounts or in their shared instructions")
     sentences = [part for part in re.split(r"[.?!]", _words(item["prompt"])) if _ASKING.search(part)]
     if not sentences:
         return
@@ -506,7 +523,7 @@ def check_key_print(question, item, solved, grade):
 
     Returns the solved task narrowed to the solutions the item asks for.
     """
-    check_unit_size(item)
+    check_unit_size(item, question)
     words = _words(item["prompt"])
     asked = _ASKS_EQUATION.search(words)
     if grade >= 7 and asked and words[asked.end():].strip(" .") and solved.get("result", {}).get("type") != "decision":
@@ -1079,7 +1096,7 @@ _UNIT_PAIRS = (
     (("קילומטרים", "קילומטר", "ק״מ", 'ק"מ'), ("מטרים", "מטר"), 1000),
     (("קילוגרמים", "קילוגרם", "ק״ג", 'ק"ג'), ("גרמים", "גרם"), 1000),
     (("טונות", "טון"), ("קילוגרמים", "קילוגרם", "ק״ג", 'ק"ג'), 1000),
-    (("ליטרים", "ליטר"), ("מיליליטרים", "מיליליטר", "מ״ל", 'מ"ל'), 1000),
+    _LITRES,
     (("שקלים", "שקל", "ש״ח", 'ש"ח'), ("אגורות", "אגורה"), 100),
 )
 

@@ -175,6 +175,20 @@ class WirePathTests(unittest.TestCase):
         whole = share(25, 2, "שקלים").replace("כמה שקלים קיבל", "כמה שקלים שלמים קיבל")
         self.assertEqual(key(bound("ד10", "פתרו.", whole, evaluate("25 / 2", "שקלים"))), "12 שקלים (שארית 1)")
 
+    def test_liquid_amounts_need_a_printed_scale_for_a_volume_key(self):
+        topic = "g7:algebraic_expressions"
+        intro = "קראו את הנתונים וחשבו את הערך המבוקש בכל סעיף."
+        prompt = "בכוס היו [[12]] מים. נמזגו [[4]] מים. כמה מים נשארו בכוס?"
+        answer = evaluate("12 - 4", "מ״ל")
+        error = self.refused(topic, intro, prompt, answer, code="PRINTED_ANSWER_KIND")
+        self.assertEqual((error.question, error.item), (1, 1))
+        wire(topic, "כל כמויות המים נמדדות במיליליטרים.", prompt, answer)
+        wire(topic, intro, prompt.replace("]] מים", "]] מ״ל מים"), answer)
+        wire(topic, intro, prompt, answer,
+             table={"head": ["כלי", "כמות במ״ל"], "rows": [["כוס", "[[12]]"]]})
+        wire(topic, intro, "היו [[12]] בקבוקי מים. הוציאו [[4]] מהם. כמה בקבוקים נותרו?",
+             evaluate("12 - 4", "בקבוקים"))
+
     def test_sequences_and_two_unit_answers(self):
         self.assertEqual(key(bound("ג03", "השלימו את הסדרה.", "[[5]], [[10]], ___, ___, [[25]]", evaluate("15"))), "15, 20")
         self.assertEqual(key(bound("ג03", "השלימו את הסדרה.", "[[2]], [[4]], [[8]], ___, ___", evaluate("16"))), "16, 32")
