@@ -287,6 +287,11 @@ def failure_detail(error, summary, stage=None):
     first = summary.get('firstCode')
     if isinstance(first, str) and re.fullmatch(r'[A-Z_]{1,60}', first):
         detail['firstCode'] = first
+    if isinstance(error, GenerationError) and error.code == 'PROVIDER_HTTP_ERROR':
+        transport = safe_transport_measurements(getattr(error, 'http_transport', None))
+        if transport.get('httpStatus', 0) >= 300:
+            detail['providerHttp'] = {key: transport[key] for key in
+                                      ('provider', 'httpStatus', 'providerError', 'attempts') if key in transport}
     return detail
 
 

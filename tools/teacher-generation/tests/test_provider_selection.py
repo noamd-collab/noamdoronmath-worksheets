@@ -389,6 +389,26 @@ class ErrorMappingTests(TransportCase):
             self.assertEqual((len(transport.requests), sleep.call_count, measured['attempts']), (1, 0, 1))
             self.assertFalse(measured.get('responseReceived', False))
 
+    def test_failed_slice_keeps_its_own_http_status_and_retry_count(self):
+        from author_request import send_parts
+        from remote_worker import failure_detail
+        # One usable part, one malformed optional part, and a different part
+        # whose retry received a new HTTP error. The last one closes the job.
+        failures = [None,
+                    self.call(completion('not-json'))[1],
+                    self.call(http_error(503), http_error(401, 'PRIVATE'))[1]]
+        def ask(number, observed):
+            if failures[number] is not None:
+                raise failures[number]
+            observed.update(httpStatus=200, attempts=1)
+            return {}
+        with self.assertRaises(GenerationError) as caught:
+            send_parts([0, 1, 2], ask)
+        self.assertEqual(failure_detail(caught.exception, {})['providerHttp'],
+                         {'provider': 'gemini', 'httpStatus': 401, 'providerError': 'credential_rejected', 'attempts': 2})
+        _, timeout, _, _, _ = self.call(http_error(429), TimeoutError('PRIVATE'))
+        self.assertNotIn('providerHttp', failure_detail(timeout, {}))
+
     def test_other_http_failures_keep_the_code_and_get_a_fixed_label(self):
         cases = [(400, 'Invalid JSON schema: unsupported keyword pattern', 'schema_rejected'),
                  (400, 'Unknown name "reasoning_effort": Cannot find field.', 'unsupported_parameter'),

@@ -334,6 +334,31 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(len(failures), 1)
         self.assertEqual(self.remote.uploads(), [])
 
+    def test_terminal_http_failure_survives_the_container_in_the_worker_log_only(self):
+        import provider
+        self.remote.claims = [self.job]
+        def author(lesson, *, metadata, **options):
+            return provider.request_author_json('https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions',
+                                                'PRIVATE_KEY', {}, metadata, 5)
+        def unavailable():
+            return HTTPError('https://example.test', 503, 'PRIVATE_HEADER', {},
+                             io.BytesIO(b'{"error":{"message":"PRIVATE_PROVIDER_TEXT"}}'))
+        transport = Mock()
+        transport.open.side_effect = [unavailable(), unavailable()]
+        with patch.object(sys, 'argv', ['worker', '--once', '--work-dir', str(self.root)]), \
+             patch.object(worker, 'check_readiness', return_value={'ready': True}), \
+             patch.object(worker, 'Remote', return_value=self.remote), patch.object(worker, 'author_lesson', side_effect=author), \
+             patch.object(provider, 'build_opener', return_value=transport), patch.object(provider.time, 'sleep'), \
+             redirect_stdout(io.StringIO()) as output:
+            worker.main()
+        event = json.loads(output.getvalue())
+        self.assertEqual(event['code'], 'PROVIDER_HTTP_ERROR')
+        self.assertEqual(event['providerHttp'], {'provider': 'qwen', 'httpStatus': 503, 'providerError': 'unavailable', 'attempts': 2})
+        self.assertNotIn('PRIVATE_', output.getvalue())
+        failed = [row[2] for row in self.remote.calls if row[1] == 'PATCH' and row[2].get('status') == 'failed']
+        self.assertEqual(len(failed), 1)
+        self.assertNotIn('providerHttp', failed[0])
+
     def test_lease_loss_after_model_call_does_not_retry_or_render(self):
         def author(_, **kwargs):
             self.remote.fail_updates = True; return {'synthetic': True}
@@ -910,6 +935,19 @@ class WorkerTests(unittest.TestCase):
                          {'stage': 'precheck', 'question': 7, 'gate': 'G66', 'attempts': 2, 'corrections': 0,
                           'firstCode': 'SOURCE_SHAPE'})
         self.assertEqual(worker.failure_detail(None, {'stage': 'render'}, 'upload')['stage'], 'upload')
+
+    def test_provider_http_detail_requires_the_final_failure_and_drops_unknown_metadata(self):
+        stale = {'provider': 'qwen', 'httpStatus': 429, 'providerError': 'rate_limited', 'attempts': 2}
+        other = GenerationError('SOURCE_NOTATION', 'PRIVATE')
+        other.http_transport = stale
+        self.assertNotIn('providerHttp', worker.failure_detail(other, stale))
+        error = GenerationError('PROVIDER_HTTP_ERROR', 'PRIVATE')
+        for invalid in (None, 'PRIVATE', {}, {**stale, 'httpStatus': 200}, {**stale, 'httpStatus': True}):
+            error.http_transport = invalid
+            self.assertNotIn('providerHttp', worker.failure_detail(error, stale))
+        error.http_transport = {'httpStatus': 400, 'providerError': 'PRIVATE', 'attempts': 1000,
+                                'provider': ['PRIVATE'], 'headers': 'PRIVATE'}
+        self.assertEqual(worker.failure_detail(error, stale)['providerHttp'], {'httpStatus': 400})
 
     def test_upload_failure_never_sets_review_status_or_repeats_paid_call(self):
         self.remote.fail_upload = True

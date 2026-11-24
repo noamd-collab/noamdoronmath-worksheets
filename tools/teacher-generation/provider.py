@@ -468,7 +468,13 @@ def fetch_author_reply(target, key, body, measured, timeout):
         except (http.client.HTTPException,OSError):
             failure=('PROVIDER_UNAVAILABLE','Provider network request failed; retry requires the job policy')
         if failure:
-            reject(*failure)
+            error = GenerationError(*failure)
+            if error.code == 'PROVIDER_HTTP_ERROR':
+                # Attach only the final failed request. A sibling part, an earlier
+                # author call or a successful retry must not supply this evidence.
+                error.http_transport = {key: measured[key] for key in
+                                        ('provider', 'attempts', 'httpStatus', 'providerError') if key in measured}
+            raise error
         time.sleep(wait)
 
 
