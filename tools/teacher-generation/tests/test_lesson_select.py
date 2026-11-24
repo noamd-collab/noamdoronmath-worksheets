@@ -134,6 +134,20 @@ class SelectionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             selection.fill(3, "p3 is not missing")
 
+    def test_refused_correction_is_private_input_and_the_soft_original_can_still_be_restored(self):
+        selection = select(sheet(), [], refuse({'p2': 'SOFT', 'private correction': 'HARD'}))
+        selection.fill(2, 'private correction')
+        slot = selection.slot(2)
+        self.assertEqual(slot.correction_input, ('private correction', ('HARD',), 'correction'))
+        selection.fill(2, None)   # an omitted row supplies no new candidate
+        self.assertEqual(slot.correction_input, ('private correction', ('HARD',), 'correction'))
+        self.assertNotIn('private correction', str(selection.record))
+        self.assertEqual(selection.restore({'SOFT'}), 1)
+        self.assertEqual(slot.question, 'p2')
+        self.assertIsNone(slot.refused_correction)
+        selection.reject({2: ['G66']}, stage='precheck')
+        self.assertEqual(slot.correction_input, ('p2', ('G66',), 'precheck'))
+
     def test_a_restored_challenge_lets_a_practice_reserve_stand_in_for_the_other(self):
         selection = select(sheet(), rows(PRACTICE, ["r1"]), refuse({"c1": "X", "c2": "X"}))
         self.assertEqual(selection.missing(), [10, 11])

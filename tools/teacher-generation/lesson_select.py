@@ -57,6 +57,15 @@ class Slot:
     removed: object = None      # the last question taken out of this slot
     codes: tuple = ()           # why it was taken out
     event: dict = field(default=None, repr=False)
+    refused_correction: tuple | None = field(default=None, repr=False)
+
+    @property
+    def correction_input(self):
+        """The last refused candidate, its codes and the stage that judged it."""
+        if self.refused_correction is not None:
+            question, codes = self.refused_correction
+            return question, codes, 'correction'
+        return self.removed, self.codes, (self.event or {}).get('stage', 'source')
 
     @property
     def missing(self):
@@ -193,6 +202,7 @@ class Selection:
 
     def _place(self, slot, question, origin, challenge, action, **extra):
         slot.question, slot.origin, slot.challenge, slot.judged = question, origin, challenge, True
+        slot.refused_correction = None
         if slot.event is not None:
             slot.event.update(action=action, **extra)
 
@@ -264,6 +274,10 @@ class Selection:
         codes = ((self._judge(question, challenge, number) or self._full(question, slot))
                  if question is not None else (NO_QUESTION,))
         if codes:
+            if question is not None:
+                # Keep the last candidate for the next correction. The removed
+                # original can still be restored if its only defects were soft.
+                slot.refused_correction = (question, codes)
             if slot.event is not None:
                 slot.event.setdefault("refused", []).append(list(codes))
             return codes

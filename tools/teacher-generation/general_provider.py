@@ -189,15 +189,15 @@ class Draft:
         """Why the first missing position is missing, as the error a failed job reports."""
         for number in self.selection.missing():
             slot = self.selection.slot(number)
-            stage = (slot.event or {}).get('stage', 'source')
-            refusal = self._refusals.get(id(slot.removed)) if slot.removed is not None else None
-            if stage in ('source', 'correction') and refusal is not None and slot.codes[:1] == (refusal.code,):
+            question, codes, stage = slot.correction_input
+            refusal = self._refusals.get(id(question)) if question is not None else None
+            if stage in ('source', 'correction') and refusal is not None and codes[:1] == (refusal.code,):
                 if isinstance(refusal, GeneralSourceError):
                     return refusal
                 # The kernel's own error, as the whole-sheet validation reports it.
                 return GeneralSourceError(refusal.code, 'A typed mathematical task is invalid or outside the '
                                           'supported exact verifier', question=number)
-            return GeneralSourceError(failure_code(slot.codes, stage),
+            return GeneralSourceError(failure_code(codes, stage),
                                       'A planned question was refused and nothing replaced it', question=number)
         return self.sheet_error
 
@@ -282,7 +282,7 @@ class Draft:
         """Every planned position in its planned group, holding the refused question where one is missing."""
         rows = {PRACTICE: [], CHALLENGES: []}
         for slot in self.selection.slots:
-            question = slot.question if slot.question is not None else slot.removed
+            question = slot.question if slot.question is not None else slot.correction_input[0]
             if slot.dropped or not isinstance(question, dict):
                 return None
             rows[slot.group].append(question)
@@ -292,7 +292,7 @@ class Draft:
         """A notation correction that keeps every word, when unmarked mathematics is all that is wrong."""
         missing = [self.selection.slot(number) for number in self.selection.missing()]
         if missing:
-            if any(slot.codes != ('SOURCE_PLAIN_MATH',) for slot in missing):
+            if any(slot.correction_input[1] != ('SOURCE_PLAIN_MATH',) for slot in missing):
                 return None
         elif self.sheet_error is None or self.sheet_error.code != 'SOURCE_PLAIN_MATH':
             return None
@@ -306,12 +306,16 @@ class Draft:
 
     def _feedback(self, slot, *, locate=True):
         """The fixed instruction of each code; with ``locate`` also the field and substring of a source fault."""
-        refusal = self._refusals.get(id(slot.removed)) if slot.removed is not None else None
-        built = (slot.event or {}).get('stage') not in ('source', 'correction')  # refused by a check of the built sheet
+        question, codes, stage = slot.correction_input
+        refusal = self._refusals.get(id(question)) if question is not None else None
+        built = stage not in ('source', 'correction')
         rows = []
-        for code in slot.codes or (NO_QUESTION,):
+        if slot.refused_correction is not None:
+            rows.append('Your previous replacement was refused. If that task cannot be made independently '
+                        'answerable, write a fresh item within the same teaching boundary and challenge level.')
+        for code in codes or (NO_QUESTION,):
             if locate and not built and refusal is not None and refusal.code == code:
-                text = refusal_feedback(slot.removed, refusal, self.requested, self.scope, self._instructions,
+                text = refusal_feedback(question, refusal, self.requested, self.scope, self._instructions,
                                         challenge=slot.group == CHALLENGES)
             else:
                 text = instruction_for(code, self._instructions, gate=built)
@@ -349,9 +353,12 @@ class Draft:
                             if self.rule_refusal is not None else None)
                 if not slots and fix_rule is None:
                     return
-                rows = [{'key': f'q{slot.number}', 'question': slot.number, 'plan': self.plan[slot.number - 1],
-                         'original': slot.removed if isinstance(slot.removed, dict) else None,
-                         'findings': self._feedback(slot)} for slot in slots]
+                rows = []
+                for slot in slots:
+                    previous, _, _ = slot.correction_input
+                    rows.append({'key': f'q{slot.number}', 'question': slot.number, 'plan': self.plan[slot.number - 1],
+                                 'original': previous if isinstance(previous, dict) else None,
+                                 'findings': self._feedback(slot)})
                 request, keys = revision_request(rows, self.requested, self.scope, self._context, self._model,
                                                  self.title, self.rule, fix_rule=fix_rule)
                 reply = self._ask(request, observed)
@@ -834,7 +841,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                 elif draft.missing():
                     # Positions, codes and fixed instructions only: no worksheet text.
                     session["sourceFindings"] = [
-                        {"question": number, "codes": list(draft.selection.slot(number).codes),
+                        {"question": number, "codes": list(draft.selection.slot(number).correction_input[1]),
                          "feedback": draft._feedback(draft.selection.slot(number), locate=False)}
                         for number in draft.missing()]
             failed(exc)

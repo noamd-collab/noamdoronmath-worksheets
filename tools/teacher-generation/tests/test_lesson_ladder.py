@@ -212,6 +212,29 @@ class LadderTests(unittest.TestCase):
                          (1, 1, 2, 0))
         self.assertEqual([e['action'] for e in outcome['ladder']['attemptRecords'][0]['events']], ['reserve', 'correction'])
 
+    def test_next_targeted_request_cites_the_replacement_that_failed_its_new_item_check(self):
+        reply = copy.deepcopy(self.base)
+        for index in (1, 3):
+            reply['practice'][index]['intro'] = BAD_NOTATION
+        changed = copy.deepcopy(self.base['practice'][3])
+        changed['items'][1]['answer'] = computed('2^13')
+        transport = Scripted(reply, {'q2': self.base['practice'][1], 'q4': changed},
+                             {'q4': self.base['practice'][3]})
+        outcome, sheets = self.run_job(transport)
+        self.assertTrue(outcome['delivered'], outcome.get('code'))
+        self.assertEqual(sheets[0]['count'], self.lesson['questionCount'])
+        self.assertEqual(transport.calls[2]['required'], ['q4'])
+        first = transport.sent(1)['questionsToCorrect'][1]
+        second, = transport.sent(2)['questionsToCorrect']
+        self.assertEqual(first['original']['intro'], BAD_NOTATION)
+        self.assertEqual(second['original']['intro'], changed['intro'])
+        self.assertEqual(second['original']['items'][1]['answer'], computed('2^13'))
+        findings = ' '.join(second['findings'])
+        self.assertIn('item.2', findings)
+        self.assertIn('The exact checker cannot compute this typed task', findings)
+        self.assertIn('fresh item', findings)
+        self.assertNotIn('4 @ 2', findings)
+
     def test_a_correction_also_serves_a_kernel_code_and_a_refused_correction_leaves_a_shorter_sheet(self):
         reply = copy.deepcopy(self.base)
         reply['practice'][3]['items'][0]['answer'] = computed('2^13')                   # a kernel code: UNSUPPORTED_POWER
