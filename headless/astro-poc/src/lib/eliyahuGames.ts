@@ -771,8 +771,8 @@ export const ENGINE_GAMES: EliyahuGame[] = [
     gradeOrder: 5,
     emoji: '◆',
     subject: 'היסטוריה',
-    links: [],
-    topics: [],
+    links: [{ href: '/coordinate-plane-scale-grade-7', label: 'מערכת צירים וקנה מידה לכיתה ז׳' }],
+    topics: [{ grade: 7, topic: 8, coverage: 'partial' }],
     theme: AMBER,
     kind: 'engine',
     playPath: '/games/tzir-hazman/play'
