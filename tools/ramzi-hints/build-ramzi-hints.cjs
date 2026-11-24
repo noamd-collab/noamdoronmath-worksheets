@@ -24,6 +24,7 @@
 const fs=require("fs");
 const path=require("path");
 const {createHash}=require("node:crypto");
+const {reviewedPriorSource}=require("../../noam-curated-hints.js");
 
 const REPO=path.resolve(__dirname,"..","..");
 const SOURCE="zero-spoiler-v2.1";
@@ -220,6 +221,20 @@ function loadSite(repo){
           pdfAliases:(Array.isArray(manifest.questionPagesIdenticalTo)?manifest.questionPagesIdenticalTo:[]).filter(id=>PDF_HASH_RE.test(id)),
           source_native_sha256:manifest.nativeExportSha256==null?null:manifest.nativeExportSha256,
           exerciseTexts:new Map((manifest.exercises||[]).map(item=>[item.id,item.text]))};
+        const prior=reviewedPriorSource(prefix+"-"+code,code,manifest.pdfHash,manifest.nativeExportSha256);
+        if(prior){
+          const old=readJson(path.join(manifestDir,prior.pdf+".json"));
+          const oldTexts=new Map(old.exercises.map(item=>[item.id,item.text]));
+          const changedId="G8-T25-E-Q01ד";
+          const oldTaskHash=sourceTaskHash(oldTexts.get(changedId));
+          if(old.pdfHash!==prior.pdf||old.nativeExportSha256!==prior.native||old.prefix!==prefix||old.levelCode!==code||
+              oldTaskHash!=="07737a9af2b3f3ba93e7f42e79a626bd3f2fbf69badbdf8b7106429145f584ee"||
+              sourceTaskHash(binding.exerciseTexts.get(changedId))!=="02779aa38f36dbd8d807e0948927fc26342d7e221799ef341fe404a6af54572e"||
+              oldTexts.size!==binding.exerciseTexts.size||[...binding.exerciseTexts].some(([id,text])=>id!==changedId&&oldTexts.get(id)!==text)){
+            throw new Error("Reviewed worksheet revision no longer matches the audited tasks for "+level.pdfId);
+          }
+          binding.priorSource={...prior,changedId,oldTaskHash};
+        }
         levels[code]=binding;
         const firstEx=(manifest.exercises||[])[0]&&manifest.exercises[0].id||"";
         const exLevel=(firstEx.match(/^G[1-9]-T\d{2}-([ABE]|E2)-Q/)||[])[1];
@@ -319,16 +334,14 @@ function firstPartCoverage(site,rows){
         if(!/^G[789]-T\d{2}-(?:[ABE]|E2)-Q01[אב]$/.test(id)||!id.startsWith(topic.prefix+"-")){continue;}
         const key=id.split("-").slice(0,3).join("-");
         const group=groups.get(key)||{worksheet:key,candidates:[]};
-        group.candidates.push({id,pdf:level.source_pdf_hash,aliases:level.pdfAliases||[],native:level.source_native_sha256});
+        group.candidates.push({id,level});
         groups.set(key,group);
       }
     }
   }
   const verified=new Map(rows.filter(r=>r.status==="verified").map(r=>[r.exercise_id,r]));
-  const missing=[...groups.values()].filter(group=>!group.candidates.some(candidate=>{
-    const row=verified.get(candidate.id);
-    return row&&(row.source_pdf_hash===candidate.pdf||candidate.aliases.includes(row.source_pdf_hash))&&row.source_native_sha256===candidate.native;
-  })).map(group=>group.worksheet).sort();
+  const missing=[...groups.values()].filter(group=>!group.candidates.some(({id,level})=>sourceBindingMatches(level,verified.get(id))))
+    .map(group=>group.worksheet).sort();
   return {eligible:groups.size,verified:groups.size-missing.length,missing};
 }
 
@@ -341,6 +354,21 @@ function sourceTaskHash(value){
   const text=clean(value).normalize("NFC");
   if(!text){throw new Error("Missing current source task text");}
   return createHash("sha256").update(text).digest("hex");
+}
+
+function matchesReviewedPriorSource(level,row){
+  const prior=level.priorSource;
+  return !!prior&&row.status==="verified"&&row.source_pdf_hash===prior.pdf&&row.source_native_sha256===prior.native;
+}
+
+function sourceBindingMatches(level,row){
+  return !!row&&((row.source_native_sha256===level.source_native_sha256&&
+    (row.source_pdf_hash===level.source_pdf_hash||(level.pdfAliases||[]).includes(row.source_pdf_hash)))||matchesReviewedPriorSource(level,row));
+}
+
+function boundSourceTaskHash(level,row){
+  return matchesReviewedPriorSource(level,row)&&row.exercise_id===level.priorSource.changedId
+    ?level.priorSource.oldTaskHash:sourceTaskHash(level.exerciseTexts.get(row.exercise_id));
 }
 
 // Bind to the CURRENT catalog, never whichever historical manifest happens to
@@ -378,19 +406,19 @@ function bindRows(site,rows){
     }
     if(choices.length!==1){throw new Error("Unresolved current source binding for "+row.exercise_id+" ("+choices.length+" candidates)");}
     const selected=choices[0].level;
-    const taskHash=sourceTaskHash(selected.exerciseTexts.get(row.exercise_id));
-    const aliasBound=own(row,"source_pdf_hash")&&(selected.pdfAliases||[]).includes(row.source_pdf_hash);
-    if((own(row,"source_pdf_hash")&&row.source_pdf_hash!==selected.source_pdf_hash&&!aliasBound)||
-        (own(row,"source_native_sha256")&&row.source_native_sha256!==selected.source_native_sha256)){
+    const existing=own(row,"source_pdf_hash");
+    if(existing&&!sourceBindingMatches(selected,row)){
       throw new Error("Stale or conflicting source binding for "+row.exercise_id);
     }
+    const taskHash=boundSourceTaskHash(selected,row);
     if(own(row,"source_exercise_sha256")&&row.source_exercise_sha256!==taskHash){
       throw new Error("Stale or conflicting source task fingerprint for "+row.exercise_id);
     }
-    const pdf=aliasBound?row.source_pdf_hash:selected.source_pdf_hash;
+    const pdf=existing?row.source_pdf_hash:selected.source_pdf_hash;
+    const native=existing?row.source_native_sha256:selected.source_native_sha256;
     resolutions.push({exercise_id:row.exercise_id,reason,source_pdf_hash:pdf,
-      source_native_sha256:selected.source_native_sha256});
-    return Object.assign({},row,{source_pdf_hash:pdf,source_native_sha256:selected.source_native_sha256,
+      source_native_sha256:native});
+    return Object.assign({},row,{source_pdf_hash:pdf,source_native_sha256:native,
       source_exercise_sha256:taskHash});
   });
   return {rows:bound,resolutions};
@@ -595,4 +623,4 @@ function main(argv){
 
 if(require.main===module){main(process.argv);}
 
-module.exports={parseBank,normalizeTitle,loadSite,normalize,applyReviews,liveExercises,firstPartCoverage,loadRows,mergeRows,bindRows,sourceTaskHash,publicRows,barFractions,hintIssue,assertSafeHints,privatePacketDirectory,toSql,nativeExercise,SITE_ID_RE,MAX_HINT};
+module.exports={parseBank,normalizeTitle,loadSite,normalize,applyReviews,liveExercises,firstPartCoverage,loadRows,mergeRows,bindRows,sourceTaskHash,sourceBindingMatches,boundSourceTaskHash,publicRows,barFractions,hintIssue,assertSafeHints,privatePacketDirectory,toSql,nativeExercise,SITE_ID_RE,MAX_HINT};

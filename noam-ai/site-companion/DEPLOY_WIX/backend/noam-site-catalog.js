@@ -8393,7 +8393,7 @@ export const catalog = {
             {
               "key": "c",
               "label": "רמת מצוינות",
-              "pdfId": "e7b11e96954b4935951214f8a9035814",
+              "pdfId": "6009d89d81484f1aac92da7febec2905",
               "labelSource": "default"
             }
           ],
@@ -8405,7 +8405,7 @@ export const catalog = {
             "siblingPdfQuery": {
               "pa": "79243d687e8c42a28d156ef6ecedfea8",
               "pb": "e1e7cbc0db784a6bace0b86b742659a7",
-              "pc": "e7b11e96954b4935951214f8a9035814"
+              "pc": "6009d89d81484f1aac92da7febec2905"
             }
           }
         },

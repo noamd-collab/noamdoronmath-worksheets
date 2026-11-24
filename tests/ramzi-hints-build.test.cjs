@@ -299,6 +299,26 @@ test("source binding never silently refreshes a stale review or guesses an ambig
   assert.throws(()=>build.toSql([row]),/requires validated source bindings/);
 });
 
+test("the audited scale wording revision leaves the existing verified hint binding intact",()=>{
+  const rows=JSON.parse(fs.readFileSync(path.join(__dirname,"..","learning/ramzi-hints.json")));
+  const id="G8-T25-E-Q01ד",row=rows.find(row=>row.exercise_id===id);
+  const topic=site.find(topic=>topic.prefix==="G8-T25"),level=topic.levels.E;
+  assert.equal(level.source_pdf_hash,"6009d89d81484f1aac92da7febec2905");
+  assert.equal(row.source_pdf_hash,"e7b11e96954b4935951214f8a9035814");
+  const currentHash=build.sourceTaskHash(level.exerciseTexts.get(id));
+  assert.notEqual(row.source_exercise_sha256,currentHash);
+  assert.deepEqual(build.bindRows([topic],[row]).rows,[row]);
+  for(const change of [{status:"review"},{source_pdf_hash:level.source_pdf_hash},
+    {source_native_sha256:level.source_native_sha256},{source_exercise_sha256:currentHash}]){
+    assert.throws(()=>build.bindRows([topic],[{...row,...change}]),/Stale or conflicting/);
+  }
+  const {source_pdf_hash,source_native_sha256,source_exercise_sha256,...unbound}=row;
+  const fresh=build.bindRows([topic],[unbound]).rows[0];
+  assert.equal(fresh.source_pdf_hash,level.source_pdf_hash);
+  assert.equal(fresh.source_native_sha256,level.source_native_sha256);
+  assert.equal(fresh.source_exercise_sha256,currentHash);
+});
+
 test("malformed published-row containers cannot silently rebuild an empty catalog",()=>{
   for(const value of [null,{},"[]",{rows:[]},42]){
     assert.throws(()=>build.loadRows(value,build.liveExercises(site)),/must be an array/);
@@ -444,9 +464,8 @@ test("all current Q01 parts have a source-bound ladder, including E2 and canonic
   for(const {id,level}of expected.values()){
     const row=byId.get(id);assert.ok(row,id+" is missing");
     assert.equal(row.status,"verified");
-    assert.ok(row.source_pdf_hash===level.source_pdf_hash||level.pdfAliases.includes(row.source_pdf_hash),id);
-    assert.equal(row.source_native_sha256,level.source_native_sha256,id);
-    assert.equal(row.source_exercise_sha256,build.sourceTaskHash(level.exerciseTexts.get(id)),id);
+    assert.ok(build.sourceBindingMatches(level,row),id+" PDF and native revision");
+    assert.equal(row.source_exercise_sha256,build.boundSourceTaskHash(level,row),id);
     assert.equal(build.hintIssue(row.hints),null,id);
   }
   const generated=rows.filter(row=>row.source==="ramzi-flash-authored-20261031");
@@ -487,10 +506,8 @@ for(const [grade,coverage,sharedCoverage] of [[7,11942,0],[8,13688,0],[9,6055,26
   for(const {id,level}of expected.values()){
     const row=byId.get(id);assert.ok(row,id+" is missing");
     assert.equal(row.status,"verified",id);
-    // A republished sheet keeps the hints of the PDF whose question pages it repeats.
-    assert.ok(row.source_pdf_hash===level.source_pdf_hash||level.pdfAliases.includes(row.source_pdf_hash),id+" PDF revision");
-    assert.equal(row.source_native_sha256,level.source_native_sha256,id+" native revision");
-    assert.equal(row.source_exercise_sha256,build.sourceTaskHash(level.exerciseTexts.get(id)),id+" selected task text");
+    assert.ok(build.sourceBindingMatches(level,row),id+" PDF and native revision");
+    assert.equal(row.source_exercise_sha256,build.boundSourceTaskHash(level,row),id+" selected task text");
     assert.equal(build.hintIssue(row.hints),null,id);
   }
 });

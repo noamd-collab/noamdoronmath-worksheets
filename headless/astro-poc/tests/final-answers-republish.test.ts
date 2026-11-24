@@ -44,9 +44,15 @@ describe('sheets republished with final answers', () => {
   it('the catalog shows only the new PDFs, and each original id resolves to its replacement', () => {
     for (const m of republished) {
       const [old] = m.questionPagesIdenticalTo;
-      assert.ok(catalogText.includes(m.pdfHash), m.pdfHash);
+      const current = migrations[m.pdfHash]?.pdfId ?? m.pdfHash;
+      assert.ok(catalogText.includes(current), current);
       assert.equal(catalogText.includes(old), false, old);
-      assert.equal(migrations[old]?.pdfId, m.pdfHash, old);
+      assert.equal(migrations[old]?.pdfId, current, old);
+      if (current !== m.pdfHash) {
+        assert.equal(catalogText.includes(m.pdfHash), false, m.pdfHash);
+        assert.ok(existsSync(new URL('noam-ai/manifests/' + current + '.json', pub)), current);
+        assert.ok(existsSync(new URL('teachers/sheets/' + current + '.json', pub)), current);
+      }
       assert.ok(existsSync(new URL('teachers/sheets/' + m.pdfHash + '.json', pub)), 'teacher sheet ' + m.pdfHash);
       // The teacher page prints the new answer pages for these sheets.
       const sheet = json('teachers/sheets/' + m.pdfHash + '.json');

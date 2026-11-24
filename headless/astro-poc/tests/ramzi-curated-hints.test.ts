@@ -36,6 +36,32 @@ it('a sheet republished with final answers keeps hints bound to the PDF whose qu
  }
  const {bank:native}=setup();assert.equal(await native.prefetch(sheet,{fetch:fetchRows([row({source_native_sha256:'d'.repeat(64)})])}),0);
 });
+it('only the reviewed scale revision keeps the existing verified scale hints',async()=>{
+ const oldPdf='e7b11e96954b4935951214f8a9035814';
+ const old=JSON.parse(read('noam-ai/manifests/'+oldPdf+'.json'));
+ const sheet=JSON.parse(read('noam-ai/manifests/6009d89d81484f1aac92da7febec2905.json'));
+ const target='G8-T25-E-Q01ד';
+ const rows=JSON.parse(readFileSync(new URL('../../../learning/ramzi-hints.json',import.meta.url),'utf8'));
+ const scoped=rows.filter((r:any)=>r.status==='verified'&&r.exercise_id.startsWith('G8-T25-E-'));
+ assert.equal(scoped.length,80);
+ assert.ok(scoped.every((r:any)=>r.source_pdf_hash===oldPdf&&r.source_native_sha256===old.nativeExportSha256));
+ const response=scoped.map((r:any)=>row({exercise_id:r.exercise_id,hint_1:r.hints[0],hint_2:r.hints[1],
+   hint_3:r.hints[2],source_pdf_hash:r.source_pdf_hash,source_native_sha256:r.source_native_sha256}));
+ const {bank}=setup();
+ assert.equal(await bank.prefetch(sheet,{fetch:fetchRows(response)}),80);
+ assert.deepEqual(Array.from(bank.get(sheet,target).hints),scoped.find((r:any)=>r.exercise_id===target).hints);
+ for(const change of [{levelCode:'B'},{pdfHash:pdf},{nativeExportSha256:native}]){
+  const changed={...sheet,...change};
+  assert.equal(bank.get(changed,target),null);
+  assert.equal(await bank.prefetch(changed,{fetch:fetchRows(response)}),0);
+ }
+ for(const change of [{source_pdf_hash:old.questionPagesIdenticalTo[0]},{source_native_sha256:sheet.nativeExportSha256},
+   {source_pdf_hash:sheet.pdfHash}]){
+  const {bank:other}=setup();
+  const source=response.find((r:any)=>r.exercise_id===target);
+  assert.equal(await other.prefetch(sheet,{fetch:fetchRows([{...source,...change}])}),0);
+ }
+});
 it('rejects duplicate, incomplete, oversized and foreign exercise rows without reusing a matching-looking part',async()=>{
  for(const rows of [[row(),row()],[row({hint_2:''})],[row({hint_1:'x'.repeat(601)})],[row({exercise_id:'G9-T39-A-Q03ב'})],[row({exercise_id:'__proto__'})],{}]){
   const {bank}=setup(),sheet=manifest();assert.equal(await bank.prefetch(sheet,{fetch:fetchRows(rows)}),0);assert.equal(bank.get(sheet,id),null);
@@ -112,7 +138,7 @@ it('deferred public config is awaited and bounded without loading security or a 
 it('both viewer copies prefetch after manifest load and put prepared standard hints before any guide or AI action',()=>{
  for(const path of ['../public/worksheet-viewer-noam.html','../../../worksheet-viewer-noam.html']){
   const viewer=readFileSync(new URL(path,import.meta.url),'utf8'),ask=viewer.slice(viewer.indexOf('function askNoam('),viewer.indexOf('function noamRetryActionLabel('));
-  assert.match(viewer,/noam-curated-hints\.js\?v=20261120-three-digit-editions/);assert.match(viewer,/manifest = data;[\s\S]{0,600}NoamCuratedHints\.prefetch\(data\)/);assert.doesNotMatch(ask,/noamDidacticResponse\(|noamDidacticGuide\(|noamDidacticPrompt\(/);assert.ok(ask.indexOf('noamPreparedHint(')<ask.indexOf('noamPrepareOperationClient('));assert.doesNotMatch(viewer,/function noamFirstSourceHint\(/);
+  assert.match(viewer,/noam-curated-hints\.js\?v=20261124-scale-feedback/);assert.match(viewer,/manifest = data;[\s\S]{0,600}NoamCuratedHints\.prefetch\(data\)/);assert.doesNotMatch(ask,/noamDidacticResponse\(|noamDidacticGuide\(|noamDidacticPrompt\(/);assert.ok(ask.indexOf('noamPreparedHint(')<ask.indexOf('noamPrepareOperationClient('));assert.doesNotMatch(viewer,/function noamFirstSourceHint\(/);
  }
  assert.equal(readFileSync(new URL('../../../noam-curated-hints.js',import.meta.url),'utf8'),code);
 });
