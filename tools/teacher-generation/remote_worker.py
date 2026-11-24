@@ -384,6 +384,9 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
                 author_failure = None
         try:
             if draft.missing() and not draft.shorten():
+                # Shortening restores usable questions first. The first position
+                # still missing is the same one first_refusal() reports.
+                state['question'] = next(iter(draft.missing()), None)
                 raise draft.first_refusal()
             payload = draft.source()
         except GenerationError:

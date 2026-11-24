@@ -671,7 +671,7 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(caught.exception.code, 'SOURCE_ANSWER')
         self.assertEqual([draft.corrections for draft in drafts], [2, 0, 0])
         self.assertEqual([draft.sourced for draft in drafts], [2, 0, 0])
-        self.assertEqual(caught.exception.job_failure, {'stage': 'source', 'question': None, 'gate': None, 'attempts': 2,
+        self.assertEqual(caught.exception.job_failure, {'stage': 'source', 'question': 3, 'gate': None, 'attempts': 2,
                                                         'corrections': 2, 'firstCode': 'QUALITY_GATE_FAILED'})
         self.assertFalse(self.remote.uploads())
 
