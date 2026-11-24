@@ -57,7 +57,12 @@ const sections = [
             <li class="games-corner__item" style={`--card-main:${game.theme.main};--card-soft:${game.theme.mainSoft};--card-line:${game.theme.mainLine}`}>
               <a class="games-corner__card" href={gamePath(game)}>
                 <span class="games-corner__emoji" aria-hidden="true">{game.emoji}</span>
-                <span class="games-corner__grade">{game.grade}</span>
+                <span class="games-corner__grade">
+                  {game.grade}
+                  {game.subject && game.subject !== 'מתמטיקה' ? (
+                    <span class="games-corner__subject">{game.subject}</span>
+                  ) : null}
+                </span>
                 <h3 class="games-corner__title">
                   {game.h1}
                   {game.badge ? <span class="games-corner__badge" dir="ltr">{game.badge}</span> : null}
@@ -219,6 +224,17 @@ const sections = [
     font-size: 12.5px;
     font-weight: 800;
     color: var(--card-main, #1e605e);
+  }
+  .games-corner__subject {
+    display: inline-block;
+    margin-inline-start: 6px;
+    padding: 0 7px;
+    border-radius: 999px;
+    border: 1px solid var(--card-line, #cfd6e6);
+    background: var(--card-soft, #eef2f8);
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.7;
   }
   .games-corner__title {
     margin: 0;

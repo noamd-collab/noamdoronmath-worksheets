@@ -460,20 +460,21 @@
     var s = '';
     rows.forEach(function (r, ri) {
       var cy = 36 + ri * 48;
-      s += heT(392, cy + 5, 15, r.c, 'end', r.n);
+      // Hebrew runs right to left, so 'start' keeps the label inside the frame.
+      s += heT(386, cy + 5, 15, r.c, 'start', r.n);
       for (var i = 0; i < Math.ceil(r.k); i++) {
-        var cx = 318 - i * 46;
+        var cx = 300 - i * 46;
         var half = r.k - i < 1;
         s += '<circle cx="' + cx + '" cy="' + cy + '" r="17" fill="' + (half ? '#fff' : r.c) + '" stroke="' + r.c + '" stroke-width="3"/>';
         if (half) s += '<path d="M' + cx + ' ' + (cy - 17) + ' A17 17 0 0 1 ' + cx + ' ' + (cy + 17) + ' Z" fill="' + r.c + '"/>';
       }
     });
     s += '<line x1="20" y1="170" x2="392" y2="170" stroke="' + GRID + '" stroke-width="1.5"/>'
-      + heT(392, 196, 14, INK, 'end', 'מפתח:')
-      + '<circle cx="335" cy="191" r="12" fill="' + MUTED + '"/>'
-      + numT(312, 197, 16, INK, 'middle', '=')
-      + numT(290, 197, 16, INK, 'middle', '4')
-      + heT(262, 196, 14, INK, 'end', 'תלמידים');
+      + heT(386, 196, 14, INK, 'start', 'מפתח:')
+      + '<circle cx="320" cy="191" r="12" fill="' + MUTED + '"/>'
+      + numT(292, 197, 16, INK, 'middle', '=')
+      + numT(270, 197, 16, INK, 'middle', '4')
+      + heT(240, 196, 14, INK, 'start', 'תלמידים');
     ctx.draw(s);
   }
   function axisPicture(ctx) {
