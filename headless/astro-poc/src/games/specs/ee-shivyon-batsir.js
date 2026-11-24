@@ -223,7 +223,10 @@
     var t = 0, seen = {}, done = false;
     var h = lineBase(Y3, true);
     for (var v = LO; v <= HI; v++) h += '<g id="mk' + v + '" visibility="hidden"></g>';
-    h += rayHtml(3, 'L', Y3).replace('opacity=".5"', 'opacity="0" id="finalRay"').replace('opacity=".5"', 'opacity="0" id="finalTip"');
+    // rayHtml already sets id="ray"/"rayTip"; a second id attribute would be ignored by the parser,
+    // so rename the ids instead of appending new ones.
+    h += rayHtml(3, 'L', Y3).replace('id="ray"', 'id="finalRay"').replace('id="rayTip"', 'id="finalTip"')
+      .replace('opacity=".5"', 'opacity="0"').replace('opacity=".5"', 'opacity="0"');
     h += '<circle id="finalDot" cx="' + px(3) + '" cy="' + Y3 + '" r="11" fill="' + PAL.main + '" stroke="' + PAL.dark + '" stroke-width="3" opacity="0"/>';
     h += handleMarkup('tHandle', 'נקודת הבדיקה; הזז בעזרת מקשי החצים', Y3, 0);
     ctx.draw(h);
