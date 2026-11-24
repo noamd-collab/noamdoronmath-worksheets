@@ -93,7 +93,9 @@ describe('games corner registry', () => {
 
   it('links only to worksheet pages that exist', () => {
     for (const game of ALL_GAMES) {
-      assert.ok(game.links.length >= 1, `${game.slug} has no topic link`);
+      // A maths game must link a worksheet page; a cross-curricular game may
+      // link none, but any link it does carry must still point at a real page.
+      if (!game.subject || game.subject === 'מתמטיקה') assert.ok(game.links.length >= 1, `${game.slug} has no topic link`);
       for (const link of game.links) {
         assert.ok(TOPIC_PATHS.has(link.href), `${game.slug} -> ${link.href}`);
         assert.ok(link.label.length > 4, `${game.slug} -> ${link.href}`);
