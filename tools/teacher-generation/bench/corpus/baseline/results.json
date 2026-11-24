@@ -14,15 +14,18 @@
       11,
       14,
       15,
-      19
+      16,
+      17,
+      19,
+      20
      ],
      "requested": true,
      "requiredKeys": [
       "q10",
       "q11",
       "q14",
-      "q15",
       "q19",
+      "q20",
       "q5",
       "q7",
       "q8"
@@ -113,12 +116,39 @@
         "stage": "source"
        },
        {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
+       },
+       {
         "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "challenges",
         "question": 19,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "challenges",
+        "question": 20,
         "stage": "source"
        }
       ],
@@ -267,7 +297,8 @@
       12,
       13,
       16,
-      17
+      17,
+      19
      ],
      "requested": true,
      "requiredKeys": [
@@ -276,7 +307,7 @@
       "q12",
       "q13",
       "q16",
-      "q17",
+      "q19",
       "q5",
       "q8"
      ]
@@ -372,6 +403,15 @@
         ],
         "group": "practice",
         "question": 17,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "challenges",
+        "question": 19,
         "stage": "source"
        }
       ],
@@ -515,11 +555,13 @@
       6,
       8,
       9,
+      11,
       14,
       16
      ],
      "requested": true,
      "requiredKeys": [
+      "q11",
       "q14",
       "q16",
       "q6",
@@ -632,6 +674,15 @@
         ],
         "group": "practice",
         "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 11,
         "stage": "source"
        },
        {
@@ -818,16 +869,26 @@
     "correction": {
      "answered": false,
      "questions": [
-      14
+      9,
+      10,
+      12,
+      14,
+      17,
+      20
      ],
      "requested": true,
      "requiredKeys": [
-      "q14"
+      "q10",
+      "q12",
+      "q14",
+      "q17",
+      "q20",
+      "q9"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q14.item.1",
+     "code": "QUALITY_GATE_FAILED",
+     "detail": "A planned question was refused and nothing replaced it",
      "ok": false
     },
     "requests": 2,
@@ -902,12 +963,57 @@
       "dropped": 1,
       "events": [
        {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
         "action": "dropped",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "challenges",
+        "question": 20,
         "stage": "source"
        }
       ],
@@ -1035,26 +1141,28 @@
     "correction": {
      "answered": false,
      "questions": [
+      1,
+      2,
       9,
       14,
       15,
       16,
-      17,
-      18
+      17
      ],
      "requested": true,
      "requiredKeys": [
+      "q1",
       "q14",
       "q15",
       "q16",
       "q17",
-      "q18",
+      "q2",
       "q9"
      ]
     },
     "firstPass": {
-     "code": "SOURCE_RICH_TEXT",
-     "detail": "A text block needs one to thirty typed spans at q9.table.row.1.2",
+     "code": "QUALITY_GATE_FAILED",
+     "detail": "A planned question was refused and nothing replaced it",
      "ok": false
     },
     "requests": 2,
@@ -1062,8 +1170,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:SOURCE_RICH_TEXT",
-   "finalCode": "SOURCE_RICH_TEXT",
+   "failureClass": "SOURCE:QUALITY_GATE_FAILED",
+   "finalCode": "QUALITY_GATE_FAILED",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "A-square",
@@ -1071,10 +1179,28 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 0,
+      "dropped": 5,
       "events": [
        {
-        "action": "missing",
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
         "codes": [
          "SOURCE_RICH_TEXT"
         ],
@@ -1083,7 +1209,7 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "dropped",
         "codes": [
          "UNSUPPORTED_TASK"
         ],
@@ -1092,7 +1218,7 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "dropped",
         "codes": [
          "SOURCE_NOTATION"
         ],
@@ -1101,7 +1227,7 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "dropped",
         "codes": [
          "SOURCE_FIGURE"
         ],
@@ -1110,27 +1236,18 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "dropped",
         "codes": [
          "UNSUPPORTED_TASK"
         ],
         "group": "practice",
         "question": 17,
         "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "challenges",
-        "question": 18,
-        "stage": "source"
        }
       ],
-      "missing": 6,
+      "missing": 0,
       "planned": 20,
-      "printed": 14,
+      "printed": 15,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -1138,7 +1255,10 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "stage": "source"
+    "gate": "fail",
+    "gateCode": "G75",
+    "question": null,
+    "stage": "render"
    },
    "lesson": {
     "domain": "גיאומטרי",
@@ -1157,7 +1277,13 @@
    "localAuthor": "square-parameters/1",
    "model": "qwen3.8-flash",
    "origin": "bench/qwen2 (round A)",
-   "prechecks": [],
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -1204,23 +1330,49 @@
      "index": 17,
      "question": 17,
      "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"a^2\", \"kind\": \"evaluate\"}, \"unit\": \"יחידות שטח\"}"
-    },
-    {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "challenges",
-     "index": 1,
-     "question": 18,
-     "substring": "ציירו ריבוע ששטחו [[64]] סמ\"ר. חשבו לאחור כדי למצוא את אורך הצלע ואת ההיקף."
     }
    ],
    "questions": {
-    "failingAlone": 6,
+    "failingAlone": 5,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [
+      {
+       "gate": "G75",
+       "questions": [],
+       "step": "middle-build/build_plus (PDF + gates)",
+       "text": "AssertionError: G75 (figure variety, level b): a figure sheet with drawings on 6 of 15 questions (40%, floor 60%)"
+      },
+      {
+       "gate": "BLOCKING_BUILD_FAILURE",
+       "questions": [],
+       "step": "didactic-review-reconciliation",
+       "text": "ValueError: BLOCKING_BUILD_FAILURE"
+      }
+     ],
+     "reviewFindings": [],
+     "skippedChecks": [],
+     "status": "failed",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "status": "FAIL"
+      },
+      {
+       "name": "didactic-review-reconciliation",
+       "status": "FAIL"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -1246,7 +1398,8 @@
       11,
       14,
       18,
-      19
+      19,
+      20
      ],
      "requested": true,
      "requiredKeys": [
@@ -1254,6 +1407,7 @@
       "q14",
       "q18",
       "q19",
+      "q20",
       "q5",
       "q7",
       "q8"
@@ -1341,6 +1495,15 @@
         ],
         "group": "challenges",
         "question": 19,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "challenges",
+        "question": 20,
         "stage": "source"
        }
       ],
@@ -1673,7 +1836,7 @@
        "gate": "G51",
        "questions": [],
        "step": "house-gates",
-       "text": "FAIL — G51-bidi: סוגריים הפוכים סביב תוכן מספרי: p7:') x 4 − (', p8:') x (' — החליפו למספור באותיות עבריות (טיפוס חזק)"
+       "text": "FAIL — G51-bidi: סוגריים הפוכים סביב תוכן מספרי: p10:') x 4 − (', p12:') x (' — החליפו למספור באותיות עבריות (טיפוס חזק)"
       },
       {
        "gate": "G61",
@@ -1747,10 +1910,12 @@
      "answered": false,
      "questions": [
       6,
+      10,
       18
      ],
      "requested": true,
      "requiredKeys": [
+      "q10",
       "q18",
       "q6"
      ]
@@ -1844,6 +2009,15 @@
         ],
         "group": "practice",
         "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 10,
         "stage": "source"
        },
        {
@@ -1995,10 +2169,12 @@
      "answered": false,
      "questions": [
       9,
+      12,
       14
      ],
      "requested": true,
      "requiredKeys": [
+      "q12",
       "q14",
       "q9"
      ]
@@ -2089,6 +2265,15 @@
         ],
         "group": "practice",
         "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 12,
         "stage": "source"
        },
        {
@@ -2328,15 +2513,6 @@
      "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(3,3)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}"
     },
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 7,
-     "question": 7,
-     "substring": "נתון ריבוע [[ABCD]] עם אלכסון באורך [[10]]."
-    },
-    {
      "code": "SOURCE_PLAIN_MATH",
      "detail": "Middle-school numbers and Latin names require typed spans at q1.item.1.answer",
      "field": "item.1.answer",
@@ -2365,7 +2541,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 8,
+    "failingAlone": 7,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
@@ -3816,7 +3992,17 @@
      {
       "draft": true,
       "dropped": 0,
-      "events": [],
+      "events": [
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
+       }
+      ],
       "missing": 0,
       "planned": 20,
       "printed": 20,
@@ -3957,11 +4143,15 @@
      "questions": [
       1,
       5,
-      8
+      8,
+      13,
+      14
      ],
      "requested": true,
      "requiredKeys": [
       "q1",
+      "q13",
+      "q14",
       "q5",
       "q8"
      ]
@@ -4061,6 +4251,24 @@
         ],
         "group": "practice",
         "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 14,
         "stage": "source"
        }
       ],
@@ -4173,13 +4381,11 @@
      "answered": false,
      "questions": [
       9,
-      12,
-      13
+      12
      ],
      "requested": true,
      "requiredKeys": [
       "q12",
-      "q13",
       "q9"
      ]
     },
@@ -4215,12 +4421,12 @@
       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
       "questions": [
        10,
-       17
+       18
       ]
      },
      {
       "code": "SHORTER_SHEET",
-      "count": 3,
+      "count": 2,
       "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
      }
     ],
@@ -4229,14 +4435,13 @@
      "corrections": 1,
      "dropped": {
       "codes": {
-       "PRINTED_ANSWER_LEAK": 1,
        "SOURCE_NOTATION": 1,
        "SOURCE_PLAIN_MATH": 1
       },
-      "count": 3
+      "count": 2
      },
      "gate": "deliver",
-     "printedQuestions": 17,
+     "printedQuestions": 18,
      "replaced": {
       "codes": {},
       "count": 0
@@ -4256,7 +4461,7 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 3,
+      "dropped": 2,
       "events": [
        {
         "action": "dropped",
@@ -4275,20 +4480,11 @@
         "group": "practice",
         "question": 12,
         "stage": "source"
-       },
-       {
-        "action": "dropped",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 13,
-        "stage": "source"
        }
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 17,
+      "printed": 18,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -4298,9 +4494,9 @@
     "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 3,
+    "dropped": 2,
     "gate": "deliver",
-    "printed": 17,
+    "printed": 18,
     "replaced": 0,
     "stage": "render"
    },
@@ -4347,19 +4543,10 @@
      "index": 12,
      "question": 12,
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"250 * frac(x,100)\", \"rhs\": \"50\", \"variable\": \"x\"}, \"unit\": \"\"}"
-    },
-    {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 13,
-     "question": 13,
-     "substring": "התבוננו בסדרת השינויים שחלה במחיר מוצר שעלותו ההתחלתית הייתה [[200]] שקלים."
     }
    ],
    "questions": {
-    "failingAlone": 3,
+    "failingAlone": 2,
     "total": 20
    },
    "recorded": "2026-11-23 14:10Z",
@@ -4375,7 +4562,7 @@
        "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
        "questions": [
         10,
-        17
+        18
        ],
        "rules": {
         "D12": 2,
@@ -4424,24 +4611,32 @@
     "correction": {
      "answered": false,
      "questions": [
-      2,
+      5,
+      7,
+      9,
+      10,
       12,
       13,
       14,
-      17
+      16,
+      17,
+      20
      ],
      "requested": true,
      "requiredKeys": [
+      "q10",
       "q12",
       "q13",
       "q14",
-      "q17",
-      "q2"
+      "q20",
+      "q5",
+      "q7",
+      "q9"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
+     "code": "QUALITY_GATE_FAILED",
+     "detail": "A planned question was refused and nothing replaced it",
      "ok": false
     },
     "requests": 2,
@@ -4449,7 +4644,7 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
+   "failureClass": "SOURCE:QUALITY_GATE_FAILED",
    "finalCode": "QUALITY_GATE_FAILED",
    "finalStatus": "failed",
    "frameFailure": null,
@@ -4458,19 +4653,10 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 5,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 2,
-        "stage": "source"
-       },
-       {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -4479,7 +4665,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -4488,27 +4674,81 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "G75"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 7,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
         ],
         "group": "practice",
         "question": 14,
-        "stage": "source"
+        "stage": "sheet"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "G75"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
         ],
         "group": "practice",
         "question": 17,
-        "stage": "source"
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "sheet"
        }
       ],
-      "missing": 0,
+      "missing": 10,
       "planned": 20,
-      "printed": 15,
+      "printed": 10,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -4516,10 +4756,7 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gate": "fail",
-    "gateCode": "G75",
-    "question": null,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "גיאומטרי",
@@ -4538,24 +4775,9 @@
    "localAuthor": "square-parameters/1",
    "model": "gemini-3.8-flash",
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
-    {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 2,
-     "question": 2,
-     "substring": "במערכת הצירים שלפניכם נתונים קודקודי הריבוע [[A(1,1)]], [[B(1,5)]], [[C(5,5)]] ו־[[D(5,1)]]. כל משבצת היא יחידת אורך אחת…"
-    },
     {
      "code": "PRINTED_ANSWER_LEAK",
      "detail": "An item prints the answer of an earlier item of the same question",
@@ -4573,67 +4795,14 @@
      "index": 13,
      "question": 13,
      "substring": "סרטטו סדרת ריבועים שבהם אורך הצלע הולך וגדל: ריבוע ראשון עם צלע של [[2]] ס\"מ, ריבוע שני עם צלע של [[4]] ס\"מ, וריבוע שליש…"
-    },
-    {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 14,
-     "question": 14,
-     "substring": "בסרטוט נתון ריבוע [[polygon:ABCD]] שהיקפו [[40]] ס\"מ."
-    },
-    {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 17,
-     "question": 17,
-     "substring": "בסרטוט נתון ריבוע [[polygon:ABCD]] שצלעו [[8]] ס\"מ. מחברים את אמצעי הצלעות ומתקבל מרובע פנימי."
     }
    ],
    "questions": {
-    "failingAlone": 5,
+    "failingAlone": 2,
     "total": 20
    },
    "recorded": "2026-11-23 14:10Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [
-      {
-       "gate": "G75",
-       "questions": [],
-       "step": "middle-build/build_plus (PDF + gates)",
-       "text": "AssertionError: G75 (figure variety, level b): the same drawing serves questions 1, 3, 4, 6, 8, 9, 12, 15 (cap is 2): draw what each of those questions adds — a diagonal, an altitude, a midpoint, a new point"
-      },
-      {
-       "gate": "BLOCKING_BUILD_FAILURE",
-       "questions": [],
-       "step": "didactic-review-reconciliation",
-       "text": "ValueError: BLOCKING_BUILD_FAILURE"
-      }
-     ],
-     "reviewFindings": [],
-     "skippedChecks": [],
-     "status": "failed",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "status": "FAIL"
-      },
-      {
-       "name": "didactic-review-reconciliation",
-       "status": "FAIL"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -4662,8 +4831,7 @@
       12,
       14,
       15,
-      16,
-      17
+      16
      ],
      "requested": true,
      "requiredKeys": [
@@ -4787,20 +4955,11 @@
         "group": "practice",
         "question": 16,
         "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 17,
-        "stage": "source"
        }
       ],
-      "missing": 11,
+      "missing": 10,
       "planned": 20,
-      "printed": 9,
+      "printed": 10,
       "reservesOffered": 4,
       "reservesRefused": 3
      }
@@ -4922,15 +5081,6 @@
      "substring": "בסרטוט נתון מעוין [[ABCD]] שבו אורך הצלע הוא [[a = 10]] ס״מ, והגובה לצלע זו הוא [[h = 6]] ס״מ. בנוסף נתון כי אורך אחד הא…"
     },
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 17,
-     "question": 17,
-     "substring": "סרטטו מעוין לפי התיאור: במעוין נתון שאלכסוניו הם [[d1 = 14]] ס״מ ו־[[d2 = 8]] ס״מ."
-    },
-    {
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The question does not ask about one relation that can be decided",
      "field": "item.3.answer",
@@ -4968,7 +5118,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 15,
+    "failingAlone": 14,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -4993,11 +5143,8 @@
     "correction": {
      "answered": false,
      "questions": [
-      2,
       5,
-      6,
       7,
-      8,
       9,
       10,
       12,
@@ -5005,25 +5152,24 @@
       14,
       15,
       16,
-      18,
       19,
       20
      ],
      "requested": true,
      "requiredKeys": [
-      "q18",
+      "q10",
+      "q12",
+      "q13",
       "q19",
-      "q2",
       "q20",
       "q5",
-      "q6",
       "q7",
-      "q8"
+      "q9"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
      "ok": false
     },
     "requests": 2,
@@ -5031,8 +5177,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
-   "finalCode": "PRINTED_ANSWER_LEAK",
+   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
+   "finalCode": "PRINTED_ANSWER_KIND",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-p1-a2",
@@ -5054,15 +5200,6 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 2,
-        "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
@@ -5072,28 +5209,10 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 6,
-        "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 7,
-        "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 8,
         "stage": "source"
        },
        {
@@ -5162,15 +5281,6 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "challenges",
-        "question": 18,
-        "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
          "QUESTION_MISSING"
         ],
         "group": "challenges",
@@ -5187,9 +5297,9 @@
         "stage": "source"
        }
       ],
-      "missing": 15,
+      "missing": 11,
       "planned": 20,
-      "printed": 5,
+      "printed": 9,
       "reservesOffered": 2,
       "reservesRefused": 1
      }
@@ -5230,15 +5340,6 @@
      "substring": "האם כל צלעות המעוין שוות זו לזו?"
     },
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 2,
-     "question": 2,
-     "substring": "במערכת הצירים שלפניכם (כל משבצת היא יחידת אורך אחת) נתונים קודקודי המעוין [[ABCD]]: הקודקודים הם [[A(0,3)]], [[B(4,0)]],…"
-    },
-    {
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The question does not ask about one relation that can be decided",
      "field": "item.1.answer",
@@ -5248,15 +5349,6 @@
      "substring": "{\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}"
     },
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 6,
-     "question": 6,
-     "substring": "נתונה מקבילית [[ABCD]] שבה שתי צלעות סמוכות הן [[AB = 2*x + 1]] ו־[[BC = x + 7]]. ידוע כי המקבילית היא מעוין."
-    },
-    {
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The question does not ask about one relation that can be decided",
      "field": "item.1.answer",
@@ -5264,15 +5356,6 @@
      "index": 7,
      "question": 7,
      "substring": "{\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}"
-    },
-    {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 8,
-     "question": 8,
-     "substring": "לפניכם מעוין [[ABCD]] שבו זווית [[angle:ABC]] שווה ל־[[110]] מעלות. אלכסוניו נפגשים בנקודה [[O]]."
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"80\", \"kind\": \"evaluate\"}, \"unit\": \"מעלות\"}",
@@ -5335,15 +5418,6 @@
      "substring": "null"
     },
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "challenges",
-     "index": 1,
-     "question": 18,
-     "substring": "בסרטוט נתון מעוין [[ABCD]] שאלכסוניו נחתכים בנקודה [[O]]. נתון כי היקף המעוין הוא [[40]] ס\"מ, ואורך האלכסון [[BD]] הוא […"
-    },
-    {
      "code": "NOT_AN_OBJECT",
      "field": "question",
      "group": "challenges",
@@ -5387,7 +5461,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 19,
+    "failingAlone": 15,
     "total": 24
    },
    "recorded": "2026-11-23 19:40Z",
@@ -5412,14 +5486,10 @@
     "correction": {
      "answered": false,
      "questions": [
-      14,
-      16,
       17
      ],
      "requested": true,
      "requiredKeys": [
-      "q14",
-      "q16",
       "q17"
      ]
     },
@@ -5447,7 +5517,7 @@
     "reviewFindings": [
      {
       "code": "SHORTER_SHEET",
-      "count": 4,
+      "count": 2,
       "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
      }
     ],
@@ -5457,24 +5527,22 @@
      "dropped": {
       "codes": {
        "K6": 1,
-       "PRINTED_ANSWER_LEAK": 3
+       "PRINTED_ANSWER_LEAK": 1
       },
-      "count": 4
+      "count": 2
      },
      "gate": "deliver",
-     "printedQuestions": 16,
+     "printedQuestions": 18,
      "replaced": {
       "codes": {
        "PRINTED_ANSWER_KIND": 2,
-       "PRINTED_ANSWER_LEAK": 2
+       "PRINTED_ANSWER_LEAK": 1
       },
-      "count": 4
+      "count": 3
      },
      "requestedQuestions": 20
     },
-    "unverifiedAnswers": {
-     "decision": 1
-    }
+    "unverifiedAnswers": {}
    },
    "failureClass": "DELIVERED",
    "finalCode": null,
@@ -5485,17 +5553,8 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 4,
+      "dropped": 2,
       "events": [
-       {
-        "action": "reserve",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 4,
-        "stage": "source"
-       },
        {
         "action": "reserve",
         "codes": [
@@ -5511,25 +5570,7 @@
          "PRINTED_ANSWER_LEAK"
         ],
         "group": "practice",
-        "question": 10,
-        "stage": "source"
-       },
-       {
-        "action": "dropped",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
         "question": 14,
-        "stage": "source"
-       },
-       {
-        "action": "dropped",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 16,
         "stage": "source"
        },
        {
@@ -5562,22 +5603,22 @@
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 16,
+      "printed": 18,
       "reservesOffered": 4,
-      "reservesRefused": 0
+      "reservesRefused": 1
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 4,
+    "byReserve": 3,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 4,
+    "dropped": 2,
     "gate": "deliver",
     "gateCode": "K6",
-    "printed": 16,
-    "question": 16,
-    "replaced": 4,
+    "printed": 18,
+    "question": 18,
+    "replaced": 3,
     "stage": "render"
    },
    "lesson": {
@@ -5607,15 +5648,6 @@
    "provider": "gemini",
    "questionFailures": [
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 4,
-     "question": 4,
-     "substring": "במלבן נתון כי אורך צלע אחת גדול ב־[[3]] מטרים מאורך הצלע הסמוכה. שטח המלבן הוא [[40]] מטרים רבועים. נסמן ב־[[x]] את אורך…"
-    },
-    {
      "code": "PRINTED_ANSWER_KIND",
      "detail": "A printed relation with a blank or a letter cannot be decided",
      "field": "item.1.answer",
@@ -5629,27 +5661,9 @@
      "detail": "An item prints the answer of an earlier item of the same question",
      "field": "intro",
      "group": "practice",
-     "index": 10,
-     "question": 10,
-     "substring": "בגינה מלבנית שבה האורך גדול מהרוחב ב־[[4]] מטרים, השטח הוא [[96]] מטרים רבועים. נתון גם שהגינה גודרה ברשת שעלותה [[50]] …"
-    },
-    {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
      "index": 14,
      "question": 14,
      "substring": "במשולש ישר־זווית אורך ניצב אחד הוא [[x]] ס״מ ואורך הניצב השני הוא [[x + 2]] ס״מ. שטח המשולש הוא [[24]] סמ״ר."
-    },
-    {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 16,
-     "question": 16,
-     "substring": "סכום שני מספרים הוא [[14]] ומכפלתם היא [[45]]. נסמן את אחד המספרים ב־[[x]], ולכן המספר השני הוא [[14 - x]]."
     },
     {
      "code": "PRINTED_ANSWER_LEAK",
@@ -5668,10 +5682,19 @@
      "index": 2,
      "question": 19,
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0\", \"relation\": \"ne\", \"right\": \"0\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "Both sides of the claim are the same: the question decides nothing",
+     "field": "item.2.answer",
+     "group": "reserves",
+     "index": 2,
+     "question": null,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0\", \"relation\": \"eq\", \"right\": \"0\"}, \"unit\": \"\"}"
     }
    ],
    "questions": {
-    "failingAlone": 7,
+    "failingAlone": 5,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -5748,18 +5771,26 @@
     "correction": {
      "answered": false,
      "questions": [
+      5,
+      8,
+      9,
+      11,
       14,
       15
      ],
      "requested": true,
      "requiredKeys": [
+      "q11",
       "q14",
-      "q15"
+      "q15",
+      "q5",
+      "q8",
+      "q9"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "A printed relation with a blank or a letter cannot be decided",
      "ok": false
     },
     "requests": 2,
@@ -5781,7 +5812,7 @@
     "reviewFindings": [
      {
       "code": "SHORTER_SHEET",
-      "count": 2,
+      "count": 3,
       "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
      }
     ],
@@ -5790,19 +5821,19 @@
      "corrections": 1,
      "dropped": {
       "codes": {
-       "PRINTED_ANSWER_KIND": 1,
+       "PRINTED_ANSWER_KIND": 2,
        "PRINTED_ANSWER_LEAK": 1
       },
-      "count": 2
+      "count": 3
      },
      "gate": "deliver",
-     "printedQuestions": 18,
+     "printedQuestions": 17,
      "replaced": {
       "codes": {
-       "PRINTED_ANSWER_KIND": 2,
+       "PRINTED_ANSWER_KIND": 1,
        "PRINTED_TASK_MISMATCH": 1
       },
-      "count": 3
+      "count": 2
      },
      "requestedQuestions": 20
     },
@@ -5817,10 +5848,10 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 2,
+      "dropped": 3,
       "events": [
        {
-        "action": "reserve",
+        "action": "reserve_kept",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -5829,12 +5860,30 @@
         "stage": "source"
        },
        {
-        "action": "reserve",
+        "action": "dropped",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 11,
         "stage": "source"
        },
        {
@@ -5867,20 +5916,20 @@
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 18,
+      "printed": 17,
       "reservesOffered": 4,
-      "reservesRefused": 1
+      "reservesRefused": 3
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 3,
+    "byReserve": 2,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 2,
+    "dropped": 3,
     "gate": "deliver",
-    "printed": 18,
-    "replaced": 3,
+    "printed": 17,
+    "replaced": 2,
     "stage": "render"
    },
    "lesson": {
@@ -5965,10 +6014,20 @@
      "index": 2,
      "question": null,
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0^2 - 7*0\", \"relation\": \"eq\", \"right\": \"0\"}, \"unit\": \"\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"x*(x + 4)\", \"rhs\": \"96\", \"variable\": \"x\"}, \"unit\": \"דצמ\\\"ר\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The key's unit measures another size than the item asks for",
+     "field": "item.1",
+     "group": "reserves",
+     "index": 3,
+     "question": null,
+     "substring": "נגר מתכנן שולחן מלבני ששטחו [[96]] דצמ\"ר. אורכו גדול ב־[[4]] דצמ\"ר מרוחבו. מהו רוחב השולחן בדצמ\"ר?"
     }
    ],
    "questions": {
-    "failingAlone": 6,
+    "failingAlone": 7,
     "total": 24
    },
    "recorded": "2026-11-23 19:40Z",
@@ -6015,9 +6074,7 @@
       12,
       13,
       14,
-      16,
-      17,
-      20
+      16
      ],
      "requested": true,
      "requiredKeys": [
@@ -6025,8 +6082,6 @@
       "q13",
       "q14",
       "q16",
-      "q17",
-      "q20",
       "q9"
      ]
     },
@@ -6041,7 +6096,7 @@
    "delivered": false,
    "delivery": null,
    "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
-   "finalCode": "PRINTED_ANSWER_KIND",
+   "finalCode": "QUALITY_GATE_FAILED",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-p3",
@@ -6049,7 +6104,7 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 0,
+      "dropped": 5,
       "events": [
        {
         "action": "reserve",
@@ -6070,7 +6125,7 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "dropped",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -6079,7 +6134,7 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "dropped",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -6088,7 +6143,7 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "dropped",
         "codes": [
          "SOURCE_FIGURE"
         ],
@@ -6097,7 +6152,7 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "dropped",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -6106,21 +6161,12 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "dropped",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 16,
-        "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 17,
         "stage": "source"
        },
        {
@@ -6135,16 +6181,34 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "G76"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "render"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G76"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "render"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G76"
         ],
         "group": "challenges",
         "question": 20,
-        "stage": "source"
+        "stage": "render"
        }
       ],
-      "missing": 7,
+      "missing": 3,
       "planned": 20,
-      "printed": 13,
+      "printed": 12,
       "reservesOffered": 4,
       "reservesRefused": 1
      }
@@ -6152,7 +6216,10 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "stage": "source"
+    "gate": "replace",
+    "gateCode": "G76",
+    "question": 11,
+    "stage": "render"
    },
    "lesson": {
     "domain": "גיאומטרי",
@@ -6171,12 +6238,18 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "live round 1 (milestone 2), p3-g9r-parallels-trapezoid-e, call 1, corrections: calls [2]",
-   "prechecks": [],
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
    "provider": "gemini",
    "questionFailures": [
     {
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "A printed relation with a blank or a letter cannot be decided",
+     "detail": "The question does not ask about one relation that can be decided",
      "field": "item.1.answer",
      "group": "practice",
      "index": 5,
@@ -6242,28 +6315,10 @@
      "code": "PRINTED_ANSWER_LEAK",
      "detail": "An item prints the answer of an earlier item of the same question",
      "field": "intro",
-     "group": "practice",
-     "index": 17,
-     "question": 17,
-     "substring": "בטרפז שווה־שוקיים [[ABCD]] שבו [[AB = 6]] ו־[[CD = 12]], נתון שגובה הטרפז הוא [[4]]."
-    },
-    {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
      "group": "challenges",
      "index": 1,
      "question": 18,
      "substring": "בטרפז שווה־שוקיים ששטחו [[96]] סמ״ר, גובה הטרפז הוא [[8]] ס״מ והבסיס הגדול ארוך ב־[[4]] ס״מ מהבסיס הקטן."
-    },
-    {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "challenges",
-     "index": 3,
-     "question": 20,
-     "substring": "נתונים שני טרפזים בעלי אותו גובה [[h = 6]]. בטרפז הראשון הבסיסים הם [[6]] ו־[[10]], ובטרפז השני הבסיסים הם [[4]] ו־[[12]…"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"52 + 128\", \"relation\": \"eq\", \"right\": \"180\"}, \"unit\": \"\"}",
@@ -6277,11 +6332,46 @@
     }
    ],
    "questions": {
-    "failingAlone": 11,
+    "failingAlone": 9,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
-   "renders": [],
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [
+      {
+       "gate": "G76",
+       "questions": [],
+       "step": "middle-build/build_plus (PDF + gates)",
+       "text": "AssertionError: G76 (variety scales, level c): DOMINANCE: one shape carries 6 of the 11 drawn questions (1, 4, 9, 11, 12, 15) — the cap at this size is 3. Those questions may each add their own diagonal or altitude and still be the same obj"
+      },
+      {
+       "gate": "BLOCKING_BUILD_FAILURE",
+       "questions": [],
+       "step": "didactic-review-reconciliation",
+       "text": "ValueError: BLOCKING_BUILD_FAILURE"
+      }
+     ],
+     "reviewFindings": [],
+     "skippedChecks": [],
+     "status": "failed",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "status": "FAIL"
+      },
+      {
+       "name": "didactic-review-reconciliation",
+       "status": "FAIL"
+      }
+     ]
+    }
+   ],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -6308,7 +6398,6 @@
       7,
       9,
       12,
-      13,
       15,
       16,
       17,
@@ -6405,16 +6494,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 13,
-        "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "PRINTED_ANSWER_KIND"
+         "PRINTED_TASK_MISMATCH"
         ],
         "group": "practice",
         "question": 15,
@@ -6457,9 +6537,9 @@
         "stage": "source"
        }
       ],
-      "missing": 12,
+      "missing": 11,
       "planned": 20,
-      "printed": 8,
+      "printed": 9,
       "reservesOffered": 4,
       "reservesRefused": 4
      }
@@ -6545,22 +6625,14 @@
      "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 7, \"b\": 13, \"dx\": 4, \"h\": 6}, \"rotate\": 0, \"shape\": \"trapezoid\"}"
     },
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 13,
-     "question": 13,
-     "substring": "בסרטוט שלפניכם נתון טרפז שבו הגובה הוא [[6]] ס\"מ. נתבונן במקרים שונים של אורכי הבסיסים."
-    },
-    {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "A printed relation with a blank or a letter cannot be decided",
-     "field": "item.3.answer",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"12 * 6 / 2\", \"relation\": \"eq\", \"right\": \"36\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
      "group": "practice",
      "index": 15,
      "question": 15,
-     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"12 * 6 / 2\", \"relation\": \"eq\", \"right\": \"36\"}, \"unit\": \"\"}"
+     "substring": "האם שטח המשולש הנוצר על ידי חיבור קודקוד [[A]] לקודקוד [[C]] עם הבסיס [[CD = 12]] והגובה [[6]] שווה ל־[[36]] סמ\"ר?"
     },
     {
      "code": "PRINTED_ANSWER_KIND",
@@ -6639,7 +6711,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 16,
+    "failingAlone": 15,
     "total": 24
    },
    "recorded": "2026-11-23 19:40Z",
@@ -6662,29 +6734,15 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": false,
-     "questions": [
-      5,
-      12,
-      13,
-      14,
-      17
-     ],
-     "requested": true,
-     "requiredKeys": [
-      "q12",
-      "q13",
-      "q14",
-      "q17",
-      "q5"
-     ]
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
-     "ok": false
+     "ok": true
     },
-    "requests": 2,
+    "requests": 1,
     "timeoutSeconds": 300
    },
    "delivered": true,
@@ -6722,31 +6780,26 @@
     ],
     "reviewFindings": [
      {
-      "code": "SHORTER_SHEET",
+      "code": "LESSON_SIZED",
       "count": 5,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+      "note": "זה דף פתיחה, ולכן מספר השאלות בו הותאם למשך השיעור: בדף פחות שאלות מהמספר שנבחר."
      }
     ],
     "salvage": {
      "attempts": 1,
-     "corrections": 1,
+     "corrections": 0,
      "dropped": {
-      "codes": {
-       "G33": 1,
-       "PRINTED_ANSWER_KIND": 1,
-       "PRINTED_ANSWER_LEAK": 2,
-       "SOURCE_SHAPE": 1
-      },
-      "count": 5
+      "codes": {},
+      "count": 0
      },
      "gate": "deliver",
      "printedQuestions": 15,
      "replaced": {
       "codes": {
-       "PRINTED_ANSWER_LEAK": 1,
+       "PRINTED_ANSWER_LEAK": 3,
        "PRINTED_TASK_MISMATCH": 1
       },
-      "count": 2
+      "count": 4
      },
      "requestedQuestions": 20
     },
@@ -6761,7 +6814,7 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 5,
+      "dropped": 0,
       "events": [
        {
         "action": "reserve",
@@ -6782,7 +6835,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "reserve",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -6791,58 +6844,31 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "reserve",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
         "group": "practice",
         "question": 12,
         "stage": "source"
-       },
-       {
-        "action": "dropped",
-        "codes": [
-         "PRINTED_ANSWER_KIND"
-        ],
-        "group": "practice",
-        "question": 13,
-        "stage": "source"
-       },
-       {
-        "action": "dropped",
-        "codes": [
-         "SOURCE_SHAPE"
-        ],
-        "group": "practice",
-        "question": 14,
-        "stage": "source"
-       },
-       {
-        "action": "dropped",
-        "codes": [
-         "G33"
-        ],
-        "group": "practice",
-        "question": 17,
-        "stage": "source"
        }
       ],
       "missing": 0,
-      "planned": 20,
+      "planned": 15,
       "printed": 15,
-      "reservesOffered": 4,
-      "reservesRefused": 1
+      "reservesOffered": 9,
+      "reservesRefused": 3
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 2,
-    "correctionFailed": true,
-    "corrections": 1,
-    "dropped": 5,
+    "byReserve": 4,
+    "correctionFailed": false,
+    "corrections": 0,
+    "dropped": 0,
     "gate": "deliver",
     "printed": 15,
-    "replaced": 2,
+    "replaced": 4,
     "stage": "render"
    },
    "lesson": {
@@ -7058,7 +7084,13 @@
       "status": "PASS"
      }
     ],
-    "reviewFindings": [],
+    "reviewFindings": [
+     {
+      "code": "LESSON_SIZED",
+      "count": 5,
+      "note": "זה דף פתיחה, ולכן מספר השאלות בו הותאם למשך השיעור: בדף פחות שאלות מהמספר שנבחר."
+     }
+    ],
     "salvage": {
      "attempts": 1,
      "corrections": 0,
@@ -7067,12 +7099,13 @@
       "count": 0
      },
      "gate": "deliver",
-     "printedQuestions": 20,
+     "printedQuestions": 15,
      "replaced": {
       "codes": {
-       "G32": 1
+       "G32": 1,
+       "QUESTION_STEM_MISMATCH": 2
       },
-      "count": 1
+      "count": 3
      },
      "requestedQuestions": 20
     },
@@ -7090,31 +7123,49 @@
       "dropped": 0,
       "events": [
        {
+        "action": "reserve",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       },
+       {
         "action": "reserve_as_practice",
         "codes": [
          "G32"
         ],
         "group": "challenges",
-        "question": 19,
+        "question": 14,
         "stage": "source"
        }
       ],
       "missing": 0,
-      "planned": 20,
-      "printed": 20,
-      "reservesOffered": 4,
+      "planned": 15,
+      "printed": 15,
+      "reservesOffered": 9,
       "reservesRefused": 1
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 1,
+    "byReserve": 3,
     "correctionFailed": false,
     "corrections": 0,
     "dropped": 0,
     "gate": "deliver",
-    "printed": 20,
-    "replaced": 1,
+    "printed": 15,
+    "replaced": 3,
     "stage": "render"
    },
    "lesson": {
@@ -7144,6 +7195,15 @@
    "provider": "gemini",
    "questionFailures": [
     {
+     "code": "OUTSIDE_LESSON_BOUNDARY",
+     "detail": "A planned question was refused and nothing replaced it",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"compare\", \"left\": \"3 * 4 + 3 * 6\", \"right\": \"3 * (4 + 6)\"}, \"unit\": \"\"}"
+    },
+    {
      "code": "QUALITY_GATE_FAILED",
      "detail": "A planned question was refused and nothing replaced it",
      "field": "intro",
@@ -7164,7 +7224,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 2,
+    "failingAlone": 3,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -7228,21 +7288,15 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": false,
-     "questions": [
-      18
-     ],
-     "requested": true,
-     "requiredKeys": [
-      "q18"
-     ]
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q18.item.1",
-     "ok": false
+     "ok": true
     },
-    "requests": 2,
+    "requests": 1,
     "timeoutSeconds": 300
    },
    "delivered": true,
@@ -7265,43 +7319,40 @@
     "reviewFindings": [
      {
       "code": "DIDACTIC_REVIEW",
-      "count": 12,
+      "count": 10,
       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
       "questions": [
-       13,
-       15,
-       16,
-       18
+       2,
+       5,
+       14
       ]
      },
      {
-      "code": "SHORTER_SHEET",
-      "count": 1,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+      "code": "LESSON_SIZED",
+      "count": 5,
+      "note": "זה דף פתיחה, ולכן מספר השאלות בו הותאם למשך השיעור: בדף פחות שאלות מהמספר שנבחר."
      }
     ],
     "salvage": {
      "attempts": 1,
-     "corrections": 1,
+     "corrections": 0,
      "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 1
-      },
-      "count": 1
+      "codes": {},
+      "count": 0
      },
      "gate": "deliver",
-     "printedQuestions": 19,
+     "printedQuestions": 15,
      "replaced": {
       "codes": {
        "PRINTED_ANSWER_KIND": 2,
-       "PRINTED_TASK_MISMATCH": 1
+       "QUESTION_STEM_MISMATCH": 2
       },
-      "count": 3
+      "count": 4
      },
      "requestedQuestions": 20
     },
     "unverifiedAnswers": {
-     "review": 6
+     "review": 5
     }
    },
    "failureClass": "DELIVERED",
@@ -7313,8 +7364,17 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 1,
+      "dropped": 0,
       "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
        {
         "action": "reserve",
         "codes": [
@@ -7327,47 +7387,38 @@
        {
         "action": "reserve",
         "codes": [
-         "PRINTED_TASK_MISMATCH"
+         "QUESTION_STEM_MISMATCH"
         ],
         "group": "practice",
-        "question": 14,
+        "question": 5,
         "stage": "source"
        },
        {
-        "action": "reserve",
-        "codes": [
-         "PRINTED_ANSWER_KIND"
-        ],
-        "group": "practice",
-        "question": 16,
-        "stage": "source"
-       },
-       {
-        "action": "dropped",
+        "action": "reserve_as_practice",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "challenges",
-        "question": 18,
+        "question": 13,
         "stage": "source"
        }
       ],
       "missing": 0,
-      "planned": 20,
-      "printed": 19,
-      "reservesOffered": 4,
+      "planned": 15,
+      "printed": 15,
+      "reservesOffered": 9,
       "reservesRefused": 1
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 3,
-    "correctionFailed": true,
-    "corrections": 1,
-    "dropped": 1,
+    "byReserve": 4,
+    "correctionFailed": false,
+    "corrections": 0,
+    "dropped": 0,
     "gate": "deliver",
-    "printed": 19,
-    "replaced": 3,
+    "printed": 15,
+    "replaced": 4,
     "stage": "render"
    },
    "lesson": {
@@ -7457,17 +7508,16 @@
       {
        "class": "editorial",
        "code": "DIDACTIC_REVIEW",
-       "count": 12,
+       "count": 10,
        "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
        "questions": [
-        13,
-        15,
-        16,
-        18
+        2,
+        5,
+        14
        ],
        "rules": {
-        "D12": 6,
-        "D5": 6
+        "D12": 5,
+        "D5": 5
        },
        "steps": [
         "middle-build"
@@ -7513,24 +7563,18 @@
     "correction": {
      "answered": false,
      "questions": [
-      8,
-      13,
       14,
-      19,
-      20
+      15
      ],
      "requested": true,
      "requiredKeys": [
-      "q13",
       "q14",
-      "q19",
-      "q20",
-      "q8"
+      "q15"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The key repeats the only printed number; there is nothing to calculate",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
      "ok": false
     },
     "requests": 2,
@@ -7538,8 +7582,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:PRINTED_TASK_MISMATCH",
-   "finalCode": "PRINTED_TASK_MISMATCH",
+   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
+   "finalCode": "PRINTED_ANSWER_KIND",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-g8",
@@ -7568,7 +7612,7 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "reserve",
         "codes": [
          "PRINTED_TASK_MISMATCH"
         ],
@@ -7579,18 +7623,9 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_TASK_MISMATCH"
+         "PRINTED_ANSWER_KIND"
         ],
-        "group": "practice",
-        "question": 13,
-        "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "PRINTED_TASK_MISMATCH"
-        ],
-        "group": "practice",
+        "group": "challenges",
         "question": 14,
         "stage": "source"
        },
@@ -7600,24 +7635,15 @@
          "PRINTED_ANSWER_KIND"
         ],
         "group": "challenges",
-        "question": 19,
-        "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "PRINTED_ANSWER_KIND"
-        ],
-        "group": "challenges",
-        "question": 20,
+        "question": 15,
         "stage": "source"
        }
       ],
-      "missing": 5,
-      "planned": 20,
-      "printed": 15,
-      "reservesOffered": 4,
-      "reservesRefused": 2
+      "missing": 2,
+      "planned": 15,
+      "printed": 13,
+      "reservesOffered": 9,
+      "reservesRefused": 4
      }
     ],
     "attempts": 1,
@@ -7781,7 +7807,13 @@
       "status": "PASS"
      }
     ],
-    "reviewFindings": [],
+    "reviewFindings": [
+     {
+      "code": "LESSON_SIZED",
+      "count": 5,
+      "note": "זה דף פתיחה, ולכן מספר השאלות בו הותאם למשך השיעור: בדף פחות שאלות מהמספר שנבחר."
+     }
+    ],
     "salvage": {
      "attempts": 1,
      "corrections": 0,
@@ -7790,13 +7822,14 @@
       "count": 0
      },
      "gate": "deliver",
-     "printedQuestions": 20,
+     "printedQuestions": 15,
      "replaced": {
       "codes": {
        "PRINTED_ANSWER_KIND": 1,
+       "QUESTION_STEM_MISMATCH": 2,
        "SOURCE_NOTATION": 2
       },
-      "count": 3
+      "count": 5
      },
      "requestedQuestions": 20
     },
@@ -7813,6 +7846,24 @@
       "draft": true,
       "dropped": 0,
       "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
        {
         "action": "reserve",
         "codes": [
@@ -7842,21 +7893,21 @@
        }
       ],
       "missing": 0,
-      "planned": 20,
-      "printed": 20,
-      "reservesOffered": 4,
-      "reservesRefused": 0
+      "planned": 15,
+      "printed": 15,
+      "reservesOffered": 9,
+      "reservesRefused": 1
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 3,
+    "byReserve": 5,
     "correctionFailed": false,
     "corrections": 0,
     "dropped": 0,
     "gate": "deliver",
-    "printed": 20,
-    "replaced": 3,
+    "printed": 15,
+    "replaced": 5,
     "stage": "render"
    },
    "lesson": {
@@ -7967,9 +8018,12 @@
     "correction": {
      "answered": false,
      "questions": [
-      6,
+      1,
+      2,
+      5,
       10,
       11,
+      12,
       14,
       16,
       17,
@@ -7978,19 +8032,19 @@
      ],
      "requested": true,
      "requiredKeys": [
+      "q1",
       "q10",
       "q11",
-      "q14",
-      "q16",
-      "q17",
+      "q12",
       "q19",
+      "q2",
       "q20",
-      "q6"
+      "q5"
      ]
     },
     "firstPass": {
-     "code": "SOURCE_FIGURE",
-     "detail": "The pinned skill cannot draw this figure at q6.figure",
+     "code": "QUALITY_GATE_FAILED",
+     "detail": "A planned question was refused and nothing replaced it",
      "ok": false
     },
     "requests": 2,
@@ -7998,8 +8052,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:SOURCE_FIGURE",
-   "finalCode": "SOURCE_FIGURE",
+   "failureClass": "SOURCE:QUALITY_GATE_FAILED",
+   "finalCode": "QUALITY_GATE_FAILED",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-square",
@@ -8010,6 +8064,24 @@
       "dropped": 0,
       "events": [
        {
+        "action": "missing",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
         "action": "reserve",
         "codes": [
          "PRINTED_ANSWER_KIND"
@@ -8019,12 +8091,12 @@
         "stage": "source"
        },
        {
-        "action": "missing",
+        "action": "kept",
         "codes": [
-         "SOURCE_FIGURE"
+         "QUESTION_STEM_MISMATCH"
         ],
         "group": "practice",
-        "question": 6,
+        "question": 5,
         "stage": "source"
        },
        {
@@ -8089,11 +8161,20 @@
         "group": "challenges",
         "question": 20,
         "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "sheet"
        }
       ],
-      "missing": 8,
+      "missing": 9,
       "planned": 20,
-      "printed": 12,
+      "printed": 11,
       "reservesOffered": 4,
       "reservesRefused": 3
      }
@@ -8131,15 +8212,6 @@
      "index": 4,
      "question": 4,
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"4\", \"relation\": \"eq\", \"right\": \"6\"}, \"unit\": \"\"}"
-    },
-    {
-     "code": "SOURCE_FIGURE",
-     "detail": "The pinned skill cannot draw this figure at q1.figure",
-     "field": "figure",
-     "group": "practice",
-     "index": 6,
-     "question": 6,
-     "substring": "{\"kind\": \"coordinate_plane\", \"placement\": \"wide\", \"points\": [{\"name\": \"A\", \"x\": -4, \"y\": 0}, {\"name\": \"B\", \"x\": 0, \"y\": …"
     },
     {
      "code": "PRINTED_ANSWER_KIND",
@@ -8237,7 +8309,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 12,
+    "failingAlone": 11,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -8257,37 +8329,52 @@
   },
   {
    "author": {
-    "answeredFromRecording": 2,
+    "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": true,
+     "answered": false,
      "questions": [
+      3,
       4,
       6,
+      8,
+      9,
       10,
       11,
+      12,
       13,
-      15,
+      14,
+      16,
+      17,
       18,
       19,
       20
      ],
      "requested": true,
-     "requiredKeys": null
+     "requiredKeys": [
+      "q18",
+      "q19",
+      "q20",
+      "q3",
+      "q4",
+      "q6",
+      "q8",
+      "q9"
+     ]
     },
     "firstPass": {
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The question does not ask about one relation that can be decided",
      "ok": false
     },
-    "requests": 3,
+    "requests": 2,
     "timeoutSeconds": 300
    },
    "delivered": false,
    "delivery": null,
    "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
-   "finalCode": "REPLAY_REPLY_NOT_RECORDED",
-   "finalStatus": "needs_unrecorded_reply",
+   "finalCode": "PRINTED_ANSWER_KIND",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-square-a2",
    "ladder": {
@@ -8307,6 +8394,15 @@
        },
        {
         "action": "reserve",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -8335,6 +8431,15 @@
        {
         "action": "missing",
         "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_TASK_MISMATCH"
         ],
         "group": "practice",
@@ -8342,7 +8447,7 @@
         "stage": "source"
        },
        {
-        "action": "correction",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -8357,15 +8462,6 @@
         ],
         "group": "practice",
         "question": 13,
-        "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 15,
         "stage": "source"
        },
        {
@@ -8389,29 +8485,69 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_KIND"
+         "G75"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
         ],
         "group": "challenges",
         "question": 20,
-        "stage": "source"
+        "stage": "sheet"
        }
       ],
-      "missing": 8,
+      "missing": 15,
       "planned": 20,
-      "printed": 12,
+      "printed": 5,
       "reservesOffered": 4,
       "reservesRefused": 2
-     },
-     {
-      "draft": false,
-      "replyReceived": false
      }
     ],
-    "attempts": 2,
-    "correctionFailed": false,
+    "attempts": 1,
+    "correctionFailed": true,
     "corrections": 1,
-    "firstCode": "PRINTED_ANSWER_KIND",
-    "stage": "author"
+    "stage": "source"
    },
    "lesson": {
     "domain": "גיאומטרי",
@@ -8445,6 +8581,15 @@
     },
     {
      "code": "PRINTED_ANSWER_KIND",
+     "detail": "Both sides of the claim are the same: the question decides nothing",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 2,
+     "question": 2,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
      "detail": "The question does not ask about one relation that can be decided",
      "field": "item.3.answer",
      "group": "practice",
@@ -8469,6 +8614,15 @@
      "index": 6,
      "question": 6,
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "Both sides of the claim are the same: the question decides nothing",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"45\", \"relation\": \"eq\", \"right\": \"45\"}, \"unit\": \"\"}"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"14\", \"kind\": \"evaluate\"}, \"unit\": \"ס״מ\"}",
@@ -8500,22 +8654,14 @@
      "substring": "האם מעוין שאלכסוניו שווים באורכם הוא בהכרח ריבוע?"
     },
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "intro",
-     "group": "practice",
-     "index": 15,
-     "question": 15,
-     "substring": "במערכת הצירים נתון ריבוע [[ABCD]] שצלעו מקבילה לצירים. נתונים הקודקודים [[A(2,2)]], [[B(2,8)]], [[C(8,8)]], ונתון גם שאל…"
-    },
-    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"8\", \"kind\": \"evaluate\"}, \"unit\": \"סמ״ר\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The question does not ask about one relation that can be decided",
-     "field": "item.3.answer",
+     "detail": "The key's unit measures another size than the item asks for",
+     "field": "item.1",
      "group": "challenges",
      "index": 1,
      "question": 18,
-     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"4 * 4\", \"relation\": \"eq\", \"right\": \"4 * 4\"}, \"unit\": \"\"}"
+     "substring": "נתון ריבוע ששטחו שווה ל־[[64]] סמ״ר. מהו אורך צלעו?"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"4\", \"relation\": \"eq\", \"right\": \"5\"}, \"unit\": \"\"}",
@@ -8526,15 +8672,6 @@
      "index": 2,
      "question": 19,
      "substring": "האם התלמיד צדק בטענתו שהמרובע הוא ריבוע?"
-    },
-    {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "Ask whether the one printed statement is right, with nothing else to decide in the item",
-     "field": "item.3.answer",
-     "group": "challenges",
-     "index": 3,
-     "question": 20,
-     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"100 / 36\", \"relation\": \"eq\", \"right\": \"frac(25,9)\"}, \"unit\": \"\"…"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"144\", \"relation\": \"gt\", \"right\": \"100\"}, \"unit\": \"\"}",
@@ -8581,23 +8718,15 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": false,
-     "questions": [
-      13,
-      17
-     ],
-     "requested": true,
-     "requiredKeys": [
-      "q13",
-      "q17"
-     ]
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
-     "ok": false
+     "ok": true
     },
-    "requests": 2,
+    "requests": 1,
     "timeoutSeconds": 300
    },
    "delivered": true,
@@ -8635,27 +8764,26 @@
     ],
     "reviewFindings": [
      {
-      "code": "SHORTER_SHEET",
-      "count": 2,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+      "code": "LESSON_SIZED",
+      "count": 5,
+      "note": "זה דף פתיחה, ולכן מספר השאלות בו הותאם למשך השיעור: בדף פחות שאלות מהמספר שנבחר."
      }
     ],
     "salvage": {
      "attempts": 1,
-     "corrections": 1,
+     "corrections": 0,
      "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_LEAK": 2
-      },
-      "count": 2
+      "codes": {},
+      "count": 0
      },
      "gate": "deliver",
-     "printedQuestions": 18,
+     "printedQuestions": 15,
      "replaced": {
       "codes": {
-       "PRINTED_ANSWER_LEAK": 2
+       "PRINTED_ANSWER_LEAK": 2,
+       "QUESTION_SAME_ANSWERS": 1
       },
-      "count": 2
+      "count": 3
      },
      "requestedQuestions": 20
     },
@@ -8670,7 +8798,7 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 2,
+      "dropped": 0,
       "events": [
        {
         "action": "reserve",
@@ -8691,40 +8819,31 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "reserve_as_practice",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "QUESTION_SAME_ANSWERS"
         ],
-        "group": "practice",
-        "question": 13,
-        "stage": "source"
-       },
-       {
-        "action": "dropped",
-        "codes": [
-         "PRINTED_ANSWER_LEAK"
-        ],
-        "group": "practice",
-        "question": 17,
+        "group": "challenges",
+        "question": 15,
         "stage": "source"
        }
       ],
       "missing": 0,
-      "planned": 20,
-      "printed": 18,
-      "reservesOffered": 4,
-      "reservesRefused": 1
+      "planned": 15,
+      "printed": 15,
+      "reservesOffered": 9,
+      "reservesRefused": 3
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 2,
-    "correctionFailed": true,
-    "corrections": 1,
-    "dropped": 2,
+    "byReserve": 3,
+    "correctionFailed": false,
+    "corrections": 0,
+    "dropped": 0,
     "gate": "deliver",
-    "printed": 18,
-    "replaced": 2,
+    "printed": 15,
+    "replaced": 3,
     "stage": "render"
    },
    "lesson": {
@@ -8903,7 +9022,13 @@
       "status": "PASS"
      }
     ],
-    "reviewFindings": [],
+    "reviewFindings": [
+     {
+      "code": "LESSON_SIZED",
+      "count": 5,
+      "note": "זה דף פתיחה, ולכן מספר השאלות בו הותאם למשך השיעור: בדף פחות שאלות מהמספר שנבחר."
+     }
+    ],
     "salvage": {
      "attempts": 1,
      "corrections": 0,
@@ -8912,13 +9037,12 @@
       "count": 0
      },
      "gate": "deliver",
-     "printedQuestions": 20,
+     "printedQuestions": 15,
      "replaced": {
       "codes": {
-       "PRINTED_ANSWER_KIND": 1,
-       "SOURCE_NOTATION": 1
+       "QUESTION_SAME_ANSWERS": 1
       },
-      "count": 2
+      "count": 1
      },
      "requestedQuestions": 20
     },
@@ -8938,38 +9062,29 @@
        {
         "action": "reserve",
         "codes": [
-         "PRINTED_ANSWER_KIND"
+         "QUESTION_SAME_ANSWERS"
         ],
         "group": "practice",
-        "question": 1,
-        "stage": "source"
-       },
-       {
-        "action": "reserve",
-        "codes": [
-         "SOURCE_NOTATION"
-        ],
-        "group": "practice",
-        "question": 13,
+        "question": 6,
         "stage": "source"
        }
       ],
       "missing": 0,
-      "planned": 20,
-      "printed": 20,
-      "reservesOffered": 4,
-      "reservesRefused": 1
+      "planned": 15,
+      "printed": 15,
+      "reservesOffered": 9,
+      "reservesRefused": 0
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 2,
+    "byReserve": 1,
     "correctionFailed": false,
     "corrections": 0,
     "dropped": 0,
     "gate": "deliver",
-    "printed": 20,
-    "replaced": 2,
+    "printed": 15,
+    "replaced": 1,
     "stage": "render"
    },
    "lesson": {
@@ -8999,15 +9114,6 @@
    "provider": "gemini",
    "questionFailures": [
     {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "A printed relation with a blank or a letter cannot be decided",
-     "field": "item.1.answer",
-     "group": "practice",
-     "index": 1,
-     "question": 1,
-     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"5 + 3\", \"relation\": \"eq\", \"right\": \"8\"}, \"unit\": \"\"}"
-    },
-    {
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
      "field": "item.1.prompt",
@@ -9015,19 +9121,10 @@
      "index": 13,
      "question": 13,
      "substring": "[[2, 4, 6]]"
-    },
-    {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "A printed relation with a blank or a letter cannot be decided",
-     "field": "item.1.answer",
-     "group": "reserves",
-     "index": 1,
-     "question": null,
-     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"4*3 - 5\", \"relation\": \"eq\", \"right\": \"7\"}, \"unit\": \"\"}"
     }
    ],
    "questions": {
-    "failingAlone": 3,
+    "failingAlone": 1,
     "total": 24
    },
    "recorded": "2026-11-23 21:07Z",
@@ -9092,7 +9189,13 @@
       "status": "PASS"
      }
     ],
-    "reviewFindings": [],
+    "reviewFindings": [
+     {
+      "code": "LESSON_SIZED",
+      "count": 5,
+      "note": "זה דף פתיחה, ולכן מספר השאלות בו הותאם למשך השיעור: בדף פחות שאלות מהמספר שנבחר."
+     }
+    ],
     "salvage": {
      "attempts": 1,
      "corrections": 0,
@@ -9101,13 +9204,14 @@
       "count": 0
      },
      "gate": "deliver",
-     "printedQuestions": 20,
+     "printedQuestions": 15,
      "replaced": {
       "codes": {
        "PRINTED_ANSWER_LEAK": 1,
+       "QUESTION_STEM_MISMATCH": 2,
        "SOURCE_PLAIN_MATH": 1
       },
-      "count": 2
+      "count": 4
      },
      "requestedQuestions": 20
     },
@@ -9127,6 +9231,24 @@
        {
         "action": "reserve",
         "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
         "group": "practice",
@@ -9139,26 +9261,26 @@
          "SOURCE_PLAIN_MATH"
         ],
         "group": "challenges",
-        "question": 20,
+        "question": 15,
         "stage": "source"
        }
       ],
       "missing": 0,
-      "planned": 20,
-      "printed": 20,
-      "reservesOffered": 4,
-      "reservesRefused": 0
+      "planned": 15,
+      "printed": 15,
+      "reservesOffered": 9,
+      "reservesRefused": 1
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 2,
+    "byReserve": 4,
     "correctionFailed": false,
     "corrections": 0,
     "dropped": 0,
     "gate": "deliver",
-    "printed": 20,
-    "replaced": 2,
+    "printed": 15,
+    "replaced": 4,
     "stage": "render"
    },
    "lesson": {
@@ -9242,6 +9364,2477 @@
     "title": "str"
    },
    "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      12,
+      13,
+      14,
+      16,
+      17,
+      19
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q12",
+      "q13",
+      "q14",
+      "q16",
+      "q17",
+      "q19"
+     ]
+    },
+    "firstPass": {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
+   "finalCode": "PRINTED_ANSWER_LEAK",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "L2-p1",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       }
+      ],
+      "missing": 6,
+      "planned": 20,
+      "printed": 14,
+      "reservesOffered": 4,
+      "reservesRefused": 3
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
+   },
+   "lesson": {
+    "domain": "גיאומטרי",
+    "gradeNumber": 9,
+    "level": "a",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "מעוין",
+    "topicId": "g9r:rhombus"
+   },
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p1-g9r-rhombus-a, call 1, corrections: calls [2]; not delivered",
+   "prechecks": [],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"9 * 6\", \"relation\": \"eq\", \"right\": \"54\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "האם שטח מעוין זה שווה ל־[[54]] סמ\"ר?"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "בסרטוט שלפניכם מקבילית [[ABCD]]. נתון כי [[angle:BAC = 3*x - 5]] ו־[[angle:DAC = x + 25]]. האלכסון [[AC]] הוא אלכסון המק…"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "Both sides of the claim are the same: the question decides nothing",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"13\", \"relation\": \"eq\", \"right\": \"13\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "intro",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "[[A(0, a)]]"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "בסרטוט שלפניכם מעוין [[ABCD]]. נתון כי אורך הצלע הוא [[10]] ס\"מ, ואורך אחד האלכסונים הוא [[16]] ס\"מ. אלכסוני המעוין נחתכ…"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"(14 * 20) / 2\", \"relation\": \"eq\", \"right\": \"140\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "האם שטח המעוין שווה ל־[[140]] סמ\"ר?"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.3.answer",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"5\", \"relation\": \"eq\", \"right\": \"3\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "reserves",
+     "index": 2,
+     "question": null,
+     "substring": "בסרטוט שלפניכם מקבילית שבה אורכי שתי צלעות סמוכות מבוטאים באמצעות [[x]]: צלע אחת היא [[3*x - 4]] והצלע השנייה היא [[x + …"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "reserves",
+     "index": 3,
+     "question": null,
+     "substring": "במעוין [[ABCD]] האלכסונים נחתכים בנקודה [[O]]. נתון כי [[AC = 10]] ס\"מ ו־[[BD = 24]] ס\"מ."
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.3.answer",
+     "group": "reserves",
+     "index": 4,
+     "question": null,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"8 / 2\", \"relation\": \"eq\", \"right\": \"4\"}, \"unit\": \"\"}"
+    }
+   ],
+   "questions": {
+    "failingAlone": 10,
+    "total": 24
+   },
+   "recorded": "2026-11-23 21:07Z",
+   "renders": [],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      5,
+      6,
+      9,
+      10,
+      11,
+      14,
+      15,
+      18,
+      19
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q10",
+      "q11",
+      "q14",
+      "q18",
+      "q19",
+      "q5",
+      "q6",
+      "q9"
+     ]
+    },
+    "firstPass": {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
+   "finalCode": "PRINTED_ANSWER_KIND",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "L2-p1-a2",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "challenges",
+        "question": 18,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       }
+      ],
+      "missing": 9,
+      "planned": 20,
+      "printed": 11,
+      "reservesOffered": 4,
+      "reservesRefused": 3
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
+   },
+   "lesson": {
+    "domain": "גיאומטרי",
+    "gradeNumber": 9,
+    "level": "a",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "מעוין",
+    "topicId": "g9r:rhombus"
+   },
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p1-g9r-rhombus-a, call 3, corrections: calls [4]; not delivered",
+   "prechecks": [],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"28 / 4\", \"relation\": \"eq\", \"right\": \"7\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.2",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "האם אורך הצלע [[CD]] שווה ל־[[7]] ס\"מ?"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"5\", \"relation\": \"eq\", \"right\": \"5\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "The pinned skill cannot draw this figure at q1.figure",
+     "field": "figure",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 6, \"angle\": 70, \"b\": 6}, \"rotate\": 0, \"shape\": \"parallelogram\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"1\", \"relation\": \"eq\", \"right\": \"1\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "Coordinate window must contain the origin",
+     "field": "figure",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "{\"kind\": \"coordinate_plane\", \"placement\": \"wide\", \"points\": [{\"name\": \"A\", \"x\": 0, \"y\": 8}, {\"name\": \"B\", \"x\": 6, \"y\": 0…"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"4 * (35 / 2)\", \"relation\": \"eq\", \"right\": \"70\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "הכפילו ב־[[4]] את שטח המשולש שחישבתם. האם מתקבל אותו שטח מעוין?"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"40\", \"relation\": \"eq\", \"right\": \"80 / 2\"}, \"unit\": \"\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"12\", \"relation\": \"gt\", \"right\": \"10\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "האם אורך האלכסון השני גדול מ־[[10]] ס\"מ?"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "בסרטוט שלפניכם נתון מעוין [[ABCD]]. נתון: [[AC = 16]] ס\"מ, [[BD = 12]] ס\"מ. אלכסוני המעוין נחצים ומאונכים בנקודה [[O]]."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"5\", \"relation\": \"eq\", \"right\": \"3\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim leaves out a number that the item prints",
+     "field": "item.3",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "האם התלמיד צודק בטענתו שהמרובע הוא מעוין?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"36 / 4\", \"relation\": \"eq\", \"right\": \"9\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "reserves",
+     "index": 1,
+     "question": null,
+     "substring": "האם אורך הצלע [[AD]] שווה ל־[[9]] ס\"מ?"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "reserves",
+     "index": 2,
+     "question": null,
+     "substring": "בסרטוט שלפניכם נתונה מקבילית [[ABCD]]. נתון: [[AB = 2*x + 5]], [[AD = 3*x - 1]]."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"140 / 2\", \"relation\": \"eq\", \"right\": \"70\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "reserves",
+     "index": 4,
+     "question": null,
+     "substring": "האם שטח המשולש [[ABC]] שווה למחצית שטח המעוין?"
+    }
+   ],
+   "questions": {
+    "failingAlone": 13,
+    "total": 24
+   },
+   "recorded": "2026-11-23 21:07Z",
+   "renders": [],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      6,
+      7,
+      9,
+      10,
+      14,
+      20
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q10",
+      "q14",
+      "q20",
+      "q6",
+      "q7",
+      "q9"
+     ]
+    },
+    "firstPass": {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
+   "finalCode": "PRINTED_ANSWER_LEAK",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "L2-p2",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 7,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_PLAIN_MATH"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
+       }
+      ],
+      "missing": 6,
+      "planned": 20,
+      "printed": 14,
+      "reservesOffered": 4,
+      "reservesRefused": 2
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
+   },
+   "lesson": {
+    "domain": "אלגברי",
+    "gradeNumber": 9,
+    "level": "a",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "המשך פתרון משוואות ריבועיות ויישומים",
+    "topicId": "g9r:quad_eq_applications"
+   },
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p2-g9r-quad-eq-applications-a, call 1, corrections: calls [2]; not delivered",
+   "prechecks": [],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "נתונה המשוואה הריבועית: [[(x + 2)*(x + 3) = 12]]. נפתח סוגריים ונעביר אגפים."
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "אורך מגרש מלבני גדול ב־[[4]] מטרים מרוחבו. נסמן את רוחב המגרש ב־[[x]] מטרים."
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "נתונה המשוואה [[(x - 1)*(x + 5) = k]]. ידוע כי [[x = 3]] הוא אחד מפתרונות המשוואה."
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "נתונה התבנית האלגברית [[(x + a)^2 = b]] והצגתה הסטנדרטית."
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.table.head.4",
+     "field": "table.head.4",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "המקדם c"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "בגינה מלבנית שרוחבה [[x]] מטרים ואורכה [[x + 3]] מטרים, הוחלט להקיף אותה בגדר בעלות [[20]] ש\"ח למטר, ושטחה הכולל הוא [[4…"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"49\", \"relation\": \"lt\", \"right\": \"50\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim is not the printed statement",
+     "field": "item.1",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "שטח ריבוע שצלעו [[x]] ס\"מ שווה ל־[[50]] סמ\"ר. בין אילו שני מספרים שלמים עוקבים נמצאת הצלע [[x]]? בדקו האם [[7^2 < 50]]."
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "נתונים ריבוע שצלעו [[x]] ס\"מ ומלבן שצלעותיו הן [[x - 2]] ס\"מ ו־[[x + 5]] ס\"מ."
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "intro",
+     "group": "reserves",
+     "index": 2,
+     "question": null,
+     "substring": "[[{1, 2, 3}]]"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "reserves",
+     "index": 4,
+     "question": null,
+     "substring": "נתונה שיטת 'השלמה לריבוע': [[x^2 + 6*x = (x + 3)^2 - 9]]. נשתמש בה לפתרון המשוואה [[x^2 + 6*x - 16 = 0]]."
+    }
+   ],
+   "questions": {
+    "failingAlone": 10,
+    "total": 24
+   },
+   "recorded": "2026-11-23 21:06Z",
+   "renders": [],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": null,
+     "questions": [],
+     "requested": false,
+     "requiredKeys": null
+    },
+    "firstPass": {
+     "ok": true
+    },
+    "requests": 1,
+    "timeoutSeconds": 300
+   },
+   "delivered": true,
+   "delivery": {
+    "automatedChecksPassed": true,
+    "checks": [
+     {
+      "name": "trusted-adapter",
+      "status": "PASS"
+     },
+     {
+      "name": "middle-build",
+      "status": "PASS"
+     }
+    ],
+    "reviewFindings": [],
+    "salvage": {
+     "attempts": 1,
+     "corrections": 0,
+     "dropped": {
+      "codes": {},
+      "count": 0
+     },
+     "gate": "deliver",
+     "printedQuestions": 20,
+     "replaced": {
+      "codes": {
+       "PRINTED_TASK_MISMATCH": 2
+      },
+      "count": 2
+     },
+     "requestedQuestions": 20
+    },
+    "unverifiedAnswers": {}
+   },
+   "failureClass": "DELIVERED",
+   "finalCode": null,
+   "finalStatus": "delivered",
+   "frameFailure": null,
+   "id": "L2-p2-a2",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_SAME_ANSWERS"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 7,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
+       }
+      ],
+      "missing": 0,
+      "planned": 20,
+      "printed": 20,
+      "reservesOffered": 4,
+      "reservesRefused": 2
+     }
+    ],
+    "attempts": 1,
+    "byCorrection": 0,
+    "byReserve": 2,
+    "correctionFailed": false,
+    "corrections": 0,
+    "dropped": 0,
+    "gate": "deliver",
+    "printed": 20,
+    "replaced": 2,
+    "stage": "render"
+   },
+   "lesson": {
+    "domain": "אלגברי",
+    "gradeNumber": 9,
+    "level": "a",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "המשך פתרון משוואות ריבועיות ויישומים",
+    "topicId": "g9r:quad_eq_applications"
+   },
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p2-g9r-quad-eq-applications-a, call 3; not delivered",
+   "prechecks": [
+    {
+     "codes": [],
+     "questions": [],
+     "status": "not_applicable"
+    }
+   ],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"(8 - 2)*(8 - 6)\", \"relation\": \"eq\", \"right\": \"8^2 - 8*8 + 12\"},…",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "האם שני הערכים שחושבו בסעיפים הקודמים שווים זה לזה?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"5^2\", \"relation\": \"gt\", \"right\": \"3*8\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "האם שטח ריבוע שצלעו [[5]] ס\"מ גדול משטח מלבן שמידותיו [[3]] ס\"מ ו־[[8]] ס\"מ?"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "reserves",
+     "index": 2,
+     "question": null,
+     "substring": "[[2, 3, 4]]"
+    }
+   ],
+   "questions": {
+    "failingAlone": 3,
+    "total": 24
+   },
+   "recorded": "2026-11-23 21:06Z",
+   "renders": [
+    {
+     "attempt": 1,
+     "gateFindings": [],
+     "reviewFindings": [],
+     "skippedChecks": [],
+     "status": "needs_review",
+     "steps": [
+      {
+       "name": "trusted-adapter",
+       "status": "PASS"
+      },
+      {
+       "name": "middle-build",
+       "status": "PASS"
+      }
+     ]
+    }
+   ],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      3,
+      5,
+      9,
+      10,
+      12,
+      14,
+      15,
+      16,
+      18,
+      19,
+      20
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q10",
+      "q12",
+      "q18",
+      "q19",
+      "q20",
+      "q3",
+      "q5",
+      "q9"
+     ]
+    },
+    "firstPass": {
+     "code": "SOURCE_FIGURE",
+     "detail": "The pinned skill cannot draw this figure at q3.figure",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_FIGURE",
+   "finalCode": "SOURCE_FIGURE",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "L2-p3",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "challenges",
+        "question": 18,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
+       }
+      ],
+      "missing": 11,
+      "planned": 20,
+      "printed": 9,
+      "reservesOffered": 4,
+      "reservesRefused": 3
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
+   },
+   "lesson": {
+    "domain": "גיאומטרי",
+    "gradeNumber": 9,
+    "level": "e",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "ישרים מקבילים, טרפז",
+    "topicId": "g9r:parallels_trapezoid"
+   },
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p3-g9r-parallels-trapezoid-e, call 1, corrections: calls [2]; not delivered",
+   "prechecks": [],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 2,
+     "question": 2,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"(5 - 1) / (3 - 1)\", \"relation\": \"eq\", \"right\": \"2\"}, \"unit\": \"\"…"
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "The pinned skill cannot draw this figure at q1.figure",
+     "field": "figure",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 26, \"b\": 14, \"dx\": 5, \"h\": 12}, \"rotate\": 0, \"shape\": \"trapezoid\"…"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"110 + 70\", \"relation\": \"eq\", \"right\": \"180\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "The pinned skill cannot draw this figure at q1.figure",
+     "field": "figure",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 25, \"b\": 15, \"dx\": 5, \"h\": 10}, \"rotate\": 0, \"shape\": \"trapezoid\"…"
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "The pinned skill cannot draw this figure at q1.figure",
+     "field": "figure",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 24, \"b\": 14, \"dx\": 6, \"h\": 12}, \"rotate\": 0, \"shape\": \"trapezoid\"…"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"45 + 135\", \"relation\": \"eq\", \"right\": \"180\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "בדקו: האם סכום שתי הזוויות שמצאתם שווה ל־[[180°]]?"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"15 > 12\", \"relation\": \"eq\", \"right\": \"15 < 18\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "תלמיד פתר שאלה ומצא כי שטח טרפז הוא [[84]] סמ\"ר, ואורכי בסיסיו הם [[9]] ס\"מ ו־[[12]] ס\"מ. נשחזר את שלבי החישוב."
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"74\", \"relation\": \"eq\", \"right\": \"74\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "בטרפז שווה־שוקיים [[ABCD]] נתון כי השטח הוא [[96]] סמ\"ר, הגובה הוא [[8]] ס\"מ, והבסיס הגדול [[CD]] ארוך ב־[[4]] ס\"מ מהבסי…"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"frac(1,2)\", \"relation\": \"eq\", \"right\": \"frac(3,4)\"}, \"unit\": \"\"…",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "האם התלמיד צדק בטענתו שהישרים מקבילים?"
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "The pinned skill cannot draw this figure at q1.figure",
+     "field": "figure",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 28, \"b\": 16, \"dx\": 6, \"h\": 14}, \"rotate\": 0, \"shape\": \"trapezoid\"…"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.3.answer",
+     "group": "reserves",
+     "index": 2,
+     "question": null,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"1\", \"relation\": \"eq\", \"right\": \"0\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.1.answer",
+     "group": "reserves",
+     "index": 3,
+     "question": null,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"88\", \"relation\": \"eq\", \"right\": \"88\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "reserves",
+     "index": 4,
+     "question": null,
+     "substring": "נתון טרפז שבו השטח הוא [[100]] סמ\"ר. ידוע כי הבסיס הגדול ארוך פי [[3]] מהבסיס הקטן, וגובה הטרפז הוא [[10]] ס\"מ."
+    }
+   ],
+   "questions": {
+    "failingAlone": 15,
+    "total": 24
+   },
+   "recorded": "2026-11-23 21:06Z",
+   "renders": [],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      20
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q2",
+      "q20",
+      "q3",
+      "q4",
+      "q5",
+      "q6",
+      "q7",
+      "q8"
+     ]
+    },
+    "firstPass": {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_TASK_MISMATCH",
+   "finalCode": "PRINTED_TASK_MISMATCH",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "L2-p3-a2",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 7,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_LEAK"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
+       }
+      ],
+      "missing": 16,
+      "planned": 20,
+      "printed": 4,
+      "reservesOffered": 7,
+      "reservesRefused": 5
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
+   },
+   "lesson": {
+    "domain": "גיאומטרי",
+    "gradeNumber": 9,
+    "level": "e",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "ישרים מקבילים, טרפז",
+    "topicId": "g9r:parallels_trapezoid"
+   },
+   "lessonGoal": {
+    "recordedAs": "practice",
+    "replayedAs": "practice"
+   },
+   "localAuthor": null,
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), p3-g9r-parallels-trapezoid-e, call 3; not delivered",
+   "prechecks": [],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "The pinned skill cannot draw this figure at q1.figure",
+     "field": "figure",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 12, \"b\": 6, \"dx\": 3, \"h\": 5}, \"rotate\": 0, \"shape\": \"trapezoid\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0\", \"relation\": \"eq\", \"right\": \"0\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 2,
+     "question": 2,
+     "substring": "האם הישרים [[BC]] ו־[[AD]] מקבילים זה לזה מכיוון שלשניהם אותו שיפוע אפס?"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "figure",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 14, \"b\": 8, \"dx\": 2, \"h\": 6}, \"rotate\": 0, \"shape\": \"trapezoid\"}"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "figure",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 16, \"b\": 10, \"dx\": 3, \"h\": 4}, \"rotate\": 0, \"shape\": \"trapezoid\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "A printed relation with a blank or a letter cannot be decided",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"100 + 80\", \"relation\": \"eq\", \"right\": \"180\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "A printed variable must be a letter that the question prints",
+     "field": "question",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "סרטטו מתוך התיאור המילולי טרפז [[ABCD]] שבו [[AB || CD]]. נתונים אורכי הבסיסים ושטח הטרפז."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"1\", \"relation\": \"eq\", \"right\": \"1\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.1",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "האלכסון [[BD]] מחבר את הקודקודים [[B(2,4)]] ו־[[D(9,0)]]. הזווית [[angle:CBD]] והזווית [[angle:ADB]] הן זוויות מתחלפות ב…"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"48\", \"relation\": \"eq\", \"right\": \"48\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "האם הזווית המתחלפת שווה לזווית הנתונה?"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "table",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "{\"head\": [\"זוג ישרים\", \"זווית 1\", \"זווית מתאימה לה\"], \"rows\": [[\"זוג א\", \"[[74°]]\", \"[[74°]]\"], [\"זוג ב\", \"[[82°]]\", \"[[…"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "figure",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 13, \"b\": 7, \"dx\": 3, \"h\": 6}, \"rotate\": 0, \"shape\": \"trapezoid\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"4\", \"relation\": \"eq\", \"right\": \"4\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "האם שתי השיטות נותנות תוצאה שווה?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"70 + 110\", \"kind\": \"evaluate\"}, \"unit\": \"מעלות\"}",
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints its own answer beside its question",
+     "field": "item.3",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "בדקו האם סכום שתי הזוויות שנמצאו שווה ל־[[180°]]: [[70 + 110]]."
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "The pinned skill cannot draw this figure at q1.figure",
+     "field": "figure",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 12, \"b\": 6, \"dx\": 3, \"h\": 6}, \"rotate\": 0, \"shape\": \"trapezoid\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"24\", \"relation\": \"lt\", \"right\": \"32\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed sides are not in the printed order",
+     "field": "item.3",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "האם שטח הטרפז קטן מחסם השטח של המלבן החוסם? השוו בין [[24]] לבין [[32]]."
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "תלמיד חישב שטח טרפז וקיבל את המשוואה הבאה: [[(a + 12) * 5 / 2 = 45]]."
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"53\", \"relation\": \"eq\", \"right\": \"53\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "intro",
+     "group": "practice",
+     "index": 18,
+     "question": 18,
+     "substring": "אתגר 1: בטרפז שווה־שוקיים נתון כי השטח הוא [[72]] סמ\"ר, הגובה הוא [[6]] ס\"מ, וההפרש בין אורכי הבסיסים הוא [[4]] ס\"מ."
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "The pinned skill cannot draw this figure at q1.figure",
+     "field": "figure",
+     "group": "practice",
+     "index": 20,
+     "question": 20,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 18, \"b\": 10, \"dx\": 4, \"h\": 8}, \"rotate\": 0, \"shape\": \"trapezoid\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"2^2 + 3^2\", \"relation\": \"eq\", \"right\": \"2^2 + (-3)^2\"}, \"unit\":…",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "challenges",
+     "index": 2,
+     "question": 22,
+     "substring": "חשבו את ריבוע אורך השוק [[CD]]: [[(4 - 2)^2 + (0 - 3)^2]]. האם השוקיים שוות באורכן?"
+    },
+    {
+     "code": "PRINTED_ANSWER_LEAK",
+     "detail": "An item prints the answer of an earlier item of the same question",
+     "field": "figure",
+     "group": "challenges",
+     "index": 3,
+     "question": 23,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 16, \"b\": 8, \"dx\": 4, \"h\": 6}, \"rotate\": 0, \"shape\": \"trapezoid\"}"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "intro",
+     "group": "reserves",
+     "index": 1,
+     "question": null,
+     "substring": "[[l_1 || l_2]]"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.1.answer",
+     "group": "reserves",
+     "index": 2,
+     "question": null,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"120 + 60\", \"relation\": \"eq\", \"right\": \"180\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.3.answer",
+     "group": "reserves",
+     "index": 3,
+     "question": null,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"42\", \"relation\": \"eq\", \"right\": \"45\"}, \"unit\": \"\"}"
+    }
+   ],
+   "questions": {
+    "failingAlone": 23,
+    "total": 27
+   },
+   "recorded": "2026-11-23 21:06Z",
+   "renders": [],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[20]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "worker"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      1,
+      2,
+      3,
+      4,
+      8,
+      11,
+      12,
+      13,
+      14,
+      16,
+      17,
+      18,
+      19,
+      20
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q1",
+      "q18",
+      "q19",
+      "q2",
+      "q20",
+      "q3",
+      "q4",
+      "q8"
+     ]
+    },
+    "firstPass": {
+     "code": "QUALITY_GATE_FAILED",
+     "detail": "A planned question was refused and nothing replaced it",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:QUALITY_GATE_FAILED",
+   "finalCode": "QUALITY_GATE_FAILED",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "L2-square",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "missing",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_FIGURE"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "challenges",
+        "question": 18,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "sheet"
+       }
+      ],
+      "missing": 13,
+      "planned": 20,
+      "printed": 7,
+      "reservesOffered": 4,
+      "reservesRefused": 4
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
+   },
+   "lesson": {
+    "domain": "גיאומטרי",
+    "gradeNumber": 9,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "ריבוע",
+    "topicId": "g9m:square"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": "square-parameters/1",
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), b-g9m-square, call 1, corrections: calls [2]; not delivered",
+   "prechecks": [],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0\", \"relation\": \"eq\", \"right\": \"1\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"5\", \"relation\": \"eq\", \"right\": \"5\"}, \"unit\": \"\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"10\", \"relation\": \"eq\", \"right\": \"10\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "האם המשולש [[polygon:ABC]] הוא משולש ישר־זווית ושווה־שוקיים?"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.2.answer",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"k\", \"rhs\": \"5\", \"variable\": \"x\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_FIGURE",
+     "detail": "The pinned skill cannot draw this figure at q1.figure",
+     "field": "figure",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"d1\": 8, \"d2\": 8}, \"rotate\": 0, \"shape\": \"rhombus\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"7 * 7\", \"relation\": \"eq\", \"right\": \"49\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed sides are not the two printed quantities",
+     "field": "item.3",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "האם שטח ריבוע שצלעו [[7]] ס\"מ שווה ל־[[49]] סמ\"ר?"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.3.answer",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"(32 / 4) * (32 / 4)\", \"relation\": \"eq\", \"right\": \"64\"}, \"unit\":…"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The question does not ask about one relation that can be decided",
+     "field": "item.3.answer",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"4\", \"relation\": \"eq\", \"right\": \"5\"}, \"unit\": \"\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"4 * 4\", \"relation\": \"eq\", \"right\": \"4 * 4\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "No typed side is the printed quantity",
+     "field": "item.3",
+     "group": "reserves",
+     "index": 4,
+     "question": null,
+     "substring": "האם ייתכן ריבוע שבו ערכו המספרי של ההיקף שווה לערכו המספרי של השטח אם צלעו [[4]] ס\"מ?"
+    }
+   ],
+   "questions": {
+    "failingAlone": 9,
+    "total": 24
+   },
+   "recorded": "2026-11-23 21:04Z",
+   "renders": [],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "general"
+  },
+  {
+   "author": {
+    "answeredFromRecording": 1,
+    "contract": "worksheet-source/4",
+    "correction": {
+     "answered": false,
+     "questions": [
+      1,
+      2,
+      10,
+      12,
+      14,
+      16,
+      17,
+      19,
+      20
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q1",
+      "q10",
+      "q12",
+      "q14",
+      "q16",
+      "q19",
+      "q2",
+      "q20"
+     ]
+    },
+    "firstPass": {
+     "code": "QUALITY_GATE_FAILED",
+     "detail": "A planned question was refused and nothing replaced it",
+     "ok": false
+    },
+    "requests": 2,
+    "timeoutSeconds": 300
+   },
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:QUALITY_GATE_FAILED",
+   "finalCode": "QUALITY_GATE_FAILED",
+   "finalStatus": "failed",
+   "frameFailure": null,
+   "id": "L2-square-a2",
+   "ladder": {
+    "attemptRecords": [
+     {
+      "draft": true,
+      "dropped": 0,
+      "events": [
+       {
+        "action": "missing",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "kept",
+        "codes": [
+         "QUESTION_STEM_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "SOURCE_PLAIN_MATH"
+        ],
+        "group": "challenges",
+        "question": 18,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "sheet"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G75"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "sheet"
+       }
+      ],
+      "missing": 8,
+      "planned": 20,
+      "printed": 12,
+      "reservesOffered": 4,
+      "reservesRefused": 1
+     }
+    ],
+    "attempts": 1,
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
+   },
+   "lesson": {
+    "domain": "גיאומטרי",
+    "gradeNumber": 9,
+    "level": "b",
+    "minutes": 30,
+    "questionCount": 20,
+    "skill": "middle",
+    "title": "ריבוע",
+    "topicId": "g9m:square"
+   },
+   "lessonGoal": {
+    "recordedAs": "introduce",
+    "replayedAs": "practice"
+   },
+   "localAuthor": "square-parameters/1",
+   "model": "gemini-3.8-flash",
+   "origin": "live round 2 (milestone 2, engine a50bcb91), b-g9m-square, call 3, corrections: calls [4]; not delivered",
+   "prechecks": [],
+   "provider": "gemini",
+   "questionFailures": [
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "Both sides of the claim are the same: the question decides nothing",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}, \"unit\": \"\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim leaves out a number that the item prints",
+     "field": "item.2",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "בריבוע שצלעו [[5]] ס״מ, האם כל הזוויות ישרות ושוות ל־[[90°]]?"
+    },
+    {
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "Both sides of the claim are the same: the question decides nothing",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"5\", \"relation\": \"eq\", \"right\": \"5\"}, \"unit\": \"\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"36\", \"relation\": \"eq\", \"right\": \"36\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "האם שתי הדרכים הניבו את אותה התוצאה?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"120\", \"relation\": \"le\", \"right\": \"100\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "האם שטח של [[120]] סמ״ר ייתכן עבור ריבוע שהיקפו אינו עולה על [[40]] ס״מ?"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "prose: channel"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"5\", \"relation\": \"eq\", \"right\": \"6\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The typed claim uses a number that the question does not print",
+     "field": "item.3",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "האם טענת התלמיד שהקודקוד הנגדי הוא [[(5,7)]] נכונה?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6\", \"kind\": \"evaluate\"}, \"unit\": \"ס״מ\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The key repeats the only printed number; there is nothing to calculate",
+     "field": "item.1",
+     "group": "reserves",
+     "index": 2,
+     "question": null,
+     "substring": "נתון כי צלע הריבוע היא [[6]] ס״מ. מהו החסם התחתון לאלכסון (אורך הצלע)?"
+    }
+   ],
+   "questions": {
+    "failingAlone": 8,
+    "total": 24
+   },
+   "recorded": "2026-11-23 21:05Z",
+   "renders": [],
+   "reply": {
+    "format": "json",
+    "questionsFrom": "firstReply"
+   },
+   "replyShape": {
+    "challenges": "list[3]",
+    "practice": "list[17]",
+    "reserves": "list[4]",
+    "rule": "str",
+    "title": "str"
+   },
+   "route": "general"
   }
  ],
  "corrections": "exact",
@@ -9249,43 +11842,43 @@
  "summary": {
   "byProvider": {
    "gemini": {
-    "cases": 21,
-    "delivered": 12,
-    "failingAlone": 153,
-    "questions": 484
+    "cases": 29,
+    "delivered": 13,
+    "failingAlone": 229,
+    "questions": 679
    },
    "qwen": {
     "cases": 14,
     "delivered": 6,
-    "failingAlone": 81,
+    "failingAlone": 79,
     "questions": 272
    }
   },
-  "cases": 35,
-  "correctionsNotRecorded": 26,
-  "delivered": 18,
-  "deliveredRate": 0.5143,
-  "deliveredShorter": 11,
+  "cases": 43,
+  "correctionsNotRecorded": 31,
+  "delivered": 19,
+  "deliveredRate": 0.4419,
+  "deliveredShorter": 8,
   "failureClasses": {
-   "DELIVERED": 18,
+   "DELIVERED": 19,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 1,
-   "SOURCE:PRINTED_ANSWER_KIND": 5,
+   "SOURCE:PRINTED_ANSWER_KIND": 8,
    "SOURCE:PRINTED_ANSWER_LEAK": 5,
    "SOURCE:PRINTED_TASK_MISMATCH": 1,
-   "SOURCE:QUALITY_GATE_FAILED": 1,
-   "SOURCE:SOURCE_FIGURE": 3,
-   "SOURCE:SOURCE_RICH_TEXT": 1
+   "SOURCE:QUALITY_GATE_FAILED": 6,
+   "SOURCE:SOURCE_FIGURE": 3
   },
   "finalStatus": {
-   "delivered": 18,
-   "failed": 15,
-   "needs_unrecorded_reply": 2
+   "delivered": 19,
+   "failed": 23,
+   "needs_unrecorded_reply": 1
   },
   "firstRenderGateFindings": {
-   "BLOCKING_BUILD_FAILURE": 2,
+   "BLOCKING_BUILD_FAILURE": 3,
    "G51": 1,
    "G61": 1,
    "G75": 1,
+   "G76": 1,
    "middle-build/selfcheck_noam_package.py": 1,
    "output-gates": 1
   },
@@ -9294,25 +11887,26 @@
   "questions": {
    "byCode": {
     "NOT_AN_OBJECT": 8,
-    "PRINTED_ANSWER_KIND": 66,
-    "PRINTED_ANSWER_LEAK": 61,
+    "OUTSIDE_LESSON_BOUNDARY": 1,
+    "PRINTED_ANSWER_KIND": 88,
+    "PRINTED_ANSWER_LEAK": 64,
     "PRINTED_EXPRESSION_SCOPE": 4,
-    "PRINTED_TASK_MISMATCH": 30,
+    "PRINTED_TASK_MISMATCH": 60,
     "QUALITY_GATE_FAILED": 3,
-    "SOURCE_FIGURE": 26,
+    "SOURCE_FIGURE": 35,
     "SOURCE_FIGURE_TASK": 3,
-    "SOURCE_NOTATION": 14,
-    "SOURCE_PLAIN_MATH": 10,
+    "SOURCE_NOTATION": 21,
+    "SOURCE_PLAIN_MATH": 12,
     "SOURCE_RICH_TEXT": 1,
     "SOURCE_SHAPE": 2,
     "SOURCE_TABLE": 4,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 234,
-   "failingShare": 0.3095,
-   "total": 756
+   "failingAlone": 308,
+   "failingShare": 0.3239,
+   "total": 951
   },
-  "secondAttemptsNotRecorded": 2
+  "secondAttemptsNotRecorded": 1
  },
  "version": 1
 }

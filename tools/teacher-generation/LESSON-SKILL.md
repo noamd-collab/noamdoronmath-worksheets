@@ -435,13 +435,18 @@ Run from the repository root. Full guide: `bench/README.md`.
 | `bench/probes/run.py [--family F] [--show] [--update]` | 285 synthetic question forms: pass, rejected or wrong print; exit 1 on a regression | none |
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
-- **Recorded state:** replay delivers 18 of 35 cases with no further model
-  call, and 234 of 756 questions are refused alone
-  (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
-  count as failed, so this under-states the live ladder. The key-print checks
-  of section 2.4 cost three ג10 replays (A-, B- and G-division) whose
-  fact-family items print their own answer; live, those questions go to the
-  correction call. Probes: 209 pass, 62 rejected, 14 wrong print.
+- **Recorded state** (after merging the m3 tracks): the corpus holds every
+  author and correction reply of both live rounds (43 cases). Replay delivers
+  19 of 43 with no further model call, and 308 of 951 questions are refused
+  alone (`bench/corpus/baseline/summary.md`); with `--corrections subset`, 20.
+  At 63e2055e the same 43 cases gave 19 (20) and 350. Corrections that were
+  never recorded count as failed, so this under-states the live ladder: the
+  engine now refuses other questions than it did live, so most recorded
+  corrections no longer match the request exactly. The key-print checks of
+  section 2.4 cost three ג10 replays (A-, B- and G-division) whose fact-family
+  items print their own answer; live, those questions go to the correction
+  call. Opening sheets print 15 of 20 (`skill_authoring.planned_count`).
+  Probes: 209 pass, 62 rejected, 14 wrong print.
 - **Sweep flags:** `--dry-run`, `--topics`, `--grades`, `--levels`, `--limit`,
   `--one-level-per-topic`, `--only-failed`, `--question-count`, `--minutes`
   (default 30), `--calls-per-case` (4), `--concurrency` (4), `--case-timeout`
@@ -487,9 +492,12 @@ Known gaps, stated plainly:
 - An answer printed in another question of the sheet is not refused (in the
   round-2 percentages sheet, 50% → 1/2 in Q1 and 1/2 → 50% in Q5): numbers of
   independent questions match by chance too often for a sheet-wide rule.
-- Grade-9 geometry is the weakest area. In the replay of live round 1,
-  `g9r:rhombus` and `g9r:parallels_trapezoid` still fail;
-  `g9r:quad_eq_applications` delivers.
+- Grade-9 geometry is the weakest area. In the replay of both live rounds,
+  no recorded reply of `g9r:rhombus` or `g9r:parallels_trapezoid` delivers;
+  three of the four `g9r:quad_eq_applications` replies deliver (the fourth
+  with `--corrections subset`). Selecting at most two questions per drawing
+  (G75 REUSE) can push a figure sheet under G75's 60% drawing floor, which
+  names no question (A-square).
 
 **Red lines:**
 
