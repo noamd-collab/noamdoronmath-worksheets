@@ -1,0 +1,831 @@
+"""Contract table of the structured wire ``worksheet-wire/5`` (stage 2).
+
+One table drives three outputs that must never drift apart:
+
+(a) the strict-safe response schema of one lesson (``wire_schema``);
+(b) the per-topic authoring card text a model would read (``authoring_card``);
+(c) the plan rows of one sheet, planned and reserve (``plan_rows``).
+
+The module also holds the code registry, the shared limits, the g7 overlay and
+the final-authority check of the IR selection record (``validate_selection``).
+
+Nothing here parses mathematics, reads a file, calls a model or renders.
+Imports: the standard library, plus ``runtime_catalog`` lazily (grade floor).
+
+The overlay is NOT reviewed (D7). Every code-written Hebrew string in it -- the
+title, the rule box, the instruction verbs, the template and layout texts --
+waits for Noam's sign-off; ``reviewed`` stays False until then.
+
+Code names follow G9 (``^[A-Z_]{1,60}$``, no digits). Three names in the design
+table carried a digit and could never reach the job row (MIG/PILOT:13); they are
+registered under the digit-free names listed in ``DESIGN_RENAMES``.
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass
+import json
+import re
+from types import MappingProxyType
+
+CONTRACT = "worksheet-wire/5"
+CODE_RE = re.compile(r"^[A-Z_]{1,60}$")
+SLOT_RE = re.compile(r"^(?:Q|R)[1-9][0-9]?$")
+PLANNED_SLOT_RE = re.compile(r"^Q[1-9][0-9]?$")
+BY_RE = re.compile(r"^(?:R[1-9][0-9]?|REPAIR)$")
+
+QUESTION_FIELDS = ("slot", "kind", "intro", "givens", "table", "items")
+ITEM_FIELDS = ("text", "expr", "expr2", "values", "ask", "form", "variant")
+GIVEN_FIELDS = ("id", "type", "value", "unit")
+TABLE_FIELDS = ("head", "rows")
+GIVEN_IDS = ("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8")
+GIVEN_TYPES = ("number", "decimal", "fraction", "percent", "money", "measure", "count", "var", "expr",
+               "fact", "list")
+LIMITS = MappingProxyType({
+    "intro": 300, "text": 200, "expr": 120, "expr2": 120, "values": 40, "cell": 40, "given_value": 60,
+    "items_min": 3, "items_max": 6, "givens_max": 8, "table_cols": 6, "table_rows": 8, "reply_bytes": 200_000,
+})
+FORMS = ("expression", "integer")
+GRADE_LINE = MappingProxyType({7: "כיתה ז׳", 8: "כיתה ח׳", 9: "כיתה ט׳"})
+
+PRACTICE, CHALLENGES = "practice", "challenges"
+CHALLENGE_SLOTS = 3          # planned positions N-2..N are challenges (skill_authoring.question_plan)
+ORIGINS = ("planned", "reserve", "repair")
+SELECTION_FIELDS = ("requested", "floor", "delivered", "questions", "replaced", "dropped")
+SELECTION_QUESTION_FIELDS = ("n", "slot", "origin", "conceptIds", "star")
+SELECTION_REPLACED_FIELDS = ("slot", "by", "codes")
+SELECTION_DROPPED_FIELDS = ("slot", "codes")
+MAX_REPLACED = 32
+MAX_ENTRY_CODES = 16
+
+# Strict-mode schema keywords (plan §d4): nothing else may appear in a generated schema.
+SCHEMA_KEYWORDS = frozenset({"type", "properties", "required", "additionalProperties", "items", "enum",
+                             "minItems", "maxItems", "minLength", "maxLength"})
+SCHEMA_FORBIDDEN = frozenset({"anyOf", "oneOf", "allOf", "not", "pattern", "patternProperties", "const",
+                              "format", "minProperties", "maxProperties", "if", "then", "else", "$ref",
+                              "$defs", "definitions", "dependentRequired", "dependentSchemas",
+                              "unevaluatedProperties", "prefixItems", "contains"})
+SCHEMA_MAX_DEPTH = 6
+
+# Authoring card bounds: 3 KB (either reading) to 5,000 bytes; no notation glyphs (plan §d2).
+CARD_MIN_BYTES = 3072
+CARD_MAX_BYTES = 5000
+CARD_FORBIDDEN = ("$", "\\", "[[", "]]", "\u00b7", "\u00d7", "\u00f7", "\u2212", "\u221a")  # $ \ [[ ]] middle dot, times, divide, minus sign, root
+
+# ------------------------------------------------------------------ code registry (§4)
+
+DESIGN_RENAMES = MappingProxyType({
+    "V5_TOPIC_UNSUPPORTED": "WIRE_TOPIC_UNSUPPORTED",
+    "V5_SCOPE_UNSUPPORTED": "WIRE_SCOPE_UNSUPPORTED",
+    "SOURCE_V5_SCOPE": "SOURCE_WIRE_SCOPE",
+})
+
+# Codes general_source.py raises today (grep at 8ea258a8); the v5 hooks keep them.
+EXISTING_SOURCE_CODES = (
+    "SOURCE_ANSWER", "SOURCE_CONCEPT", "SOURCE_COVERAGE", "SOURCE_FIGURE", "SOURCE_FIGURE_TASK",
+    "SOURCE_GEOMETRY", "SOURCE_ITEMS", "SOURCE_JSON", "SOURCE_LANGUAGE", "SOURCE_NIQQUD", "SOURCE_NOTATION",
+    "SOURCE_NUMBER", "SOURCE_PLAIN_MATH", "SOURCE_QUESTIONS", "SOURCE_RICH_TEXT", "SOURCE_SCOPE",
+    "SOURCE_SECTIONS", "SOURCE_SHAPE", "SOURCE_SIZE", "SOURCE_STAR", "SOURCE_STARS", "SOURCE_TABLE",
+    "SOURCE_TEXT", "SOURCE_VERSION", "SOURCE_VOLUME", "DRAWING_POLICY",
+)
+
+CODE_GROUPS = MappingProxyType({
+    "sheet_input": ("WIRE_JSON", "WIRE_SHAPE", "WIRE_TOPIC_UNSUPPORTED"),
+    "question_shape": ("Q_SHAPE", "Q_SLOT_UNKNOWN", "Q_SLOT_DUPLICATE", "Q_KIND_NOT_ALLOWED", "FIELD_NOT_EMPTY",
+                       "ITEM_COUNT", "ITEM_SHAPE", "QUESTION_MISSING"),
+    "text": ("TEXT_LENGTH", "TEXT_MARKUP", "TEXT_CHAR", "TEXT_GLUED_REF", "TEXT_PAREN_ADJACENT",
+             "TEXT_NUMBER_WORD", "TEXT_ARGUMENT_REQUEST", "TEXT_FORBIDDEN_TERM", "TEXT_DRAWING_REQUEST",
+             "TEXT_NIQQUD", "TEXT_NOT_HEBREW", "ATOM_ADJACENT"),
+    "references": ("REF_UNDECLARED", "REF_UNUSED", "GIVEN_SHAPE", "GIVEN_VALUE"),
+    "math": ("MATH_PARSE", "MATH_LENGTH", "MATH_SYMBOL_UNDECLARED", "MATH_SCOPE_PRODUCT_OF_SUM",
+             "MATH_SCOPE_BRACKETS", "MATH_SCOPE_POWER", "MATH_SCOPE_DIVISION", "MATH_SCOPE_DECIMAL",
+             "MATH_SCOPE_PERCENT", "MATH_SCOPE_PRODUCT", "MATH_SCOPE_RANGE", "MATH_SCOPE_TERMS",
+             "MATH_SCOPE_LETTERS", "MATH_SCOPE_RELATION", "TASK_LITERAL"),
+    "key_display": ("FORM_UNKNOWN", "FORM_UNREPRESENTABLE", "KEY_ROUNDTRIP", "DISPLAY_ROUNDTRIP",
+                    "DISPLAY_INVALID", "BINDING_INTERNAL"),
+    "binding": ("TEMPLATE_UNKNOWN", "TEMPLATE_MISMATCH", "VALUES_SHAPE", "VALUES_MISMATCH", "MISTAKE_UNKNOWN",
+                "MISTAKE_NOT_APPLICABLE", "MISTAKE_UNMODELED", "MISTAKE_NOT_WRONG", "NOTHING_TO_DO",
+                "REVEALS_ANSWER"),
+    # EXAMPLE_COPY (plan §c2) is emitted by leak_checks.sheet_leaks although §4 does not list it.
+    "leaks": ("DUPLICATE_ITEM", "LEAK_OWN", "LEAK_LINKED", "LEAK_RULE_FACT", "LEAK_PINNED_VALUE",
+              "DUPLICATE_TASK", "LEAK_SHEET_INVERSE", "EXAMPLE_COPY"),
+    # Raised while loading a pinned module by path (leak_checks.pinned_module; runner.verify_skill).
+    "pinned": ("SKILL_HASH_MISMATCH", "SKILL_MODULE_NOT_STDLIB"),
+    "sheet": ("SHEET_BELOW_MINIMUM", "SHEET_STARS", "SHEET_COVERAGE", "REPAIR_BUDGET", "REPAIR_SLOT_NOT_MISSING",
+              "RUNTIME_NOT_CONFIGURED"),
+    "ir_validator": ("SOURCE_WIRE_SCOPE", "SOURCE_DISPLAY", "SOURCE_ATOM", "SOURCE_KEY", "SOURCE_BINDING",
+                     "SOURCE_SELECTION", "SOURCE_LEAK") + EXISTING_SOURCE_CODES,
+    "runner": ("WIRE_SCOPE_UNSUPPORTED", "PINNED_REPORT_MISSING", "PINNED_REPORT_INVALID", "ATOM_MISSING",
+               "ATOM_NOT_FLAT", "ATOM_ANCHOR_MISSING", "ATOM_PDF_UNREADABLE", "ATOM_LEVELS_INVALID",
+               "PDF_PRODUCER_NOT_WEASYPRINT"),
+    "contract": ("CARD_CHAR", "CARD_SIZE"),
+})
+CODES = frozenset(code for group in CODE_GROUPS.values() for code in group)
+KERNEL_PREFIX = "KERNEL_"
+
+
+class SelectionError(ValueError):
+    """code ∈ SOURCE_SELECTION, SOURCE_COVERAGE; reason is short English, never model text."""
+
+    def __init__(self, code: str, reason: str):
+        self.code = code
+        self.reason = reason
+        super().__init__(reason)
+
+
+class ContractError(ValueError):
+    """code ∈ WIRE_TOPIC_UNSUPPORTED, CARD_CHAR, CARD_SIZE; message is short English, never lesson text."""
+
+    def __init__(self, code: str, message: str):
+        self.code = code
+        super().__init__(message)
+
+
+def kernel_code(math_task_code: str) -> str:
+    """'KERNEL_' + code; ValueError unless the result matches CODE_RE (an empty kernel code is refused too)."""
+    if type(math_task_code) is not str or not math_task_code:
+        raise ValueError("Kernel code must be a non-empty string")
+    code = KERNEL_PREFIX + math_task_code
+    if not CODE_RE.match(code):
+        raise ValueError("Kernel code does not match the code alphabet")
+    return code
+
+
+def is_known_code(code) -> bool:
+    """True for a registered code or a well-formed KERNEL_* code."""
+    if type(code) is not str or not CODE_RE.match(code):
+        return False
+    return code in CODES or (code.startswith(KERNEL_PREFIX) and len(code) > len(KERNEL_PREFIX))
+
+
+# ------------------------------------------------------------------ the overlay (§2.7)
+
+def _freeze(value):
+    """dict → read-only mapping, list → tuple, recursively (the curriculum_scope convention)."""
+    if isinstance(value, (dict, MappingProxyType)):
+        return MappingProxyType({key: _freeze(item) for key, item in value.items()})
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze(item) for item in value)
+    return value
+
+
+def thaw(value):
+    """A fresh plain copy (dict/list) of frozen overlay data, ready for JSON or an IR."""
+    if isinstance(value, (dict, MappingProxyType)):
+        return {key: thaw(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [thaw(item) for item in value]
+    return value
+
+
+_W_TEMPLATES = ("W_TIMES", "W_SUM", "W_DIFF", "W_PRODUCT", "W_TIMES_PLUS", "W_TIMES_MINUS", "W_TWO_TIMES")
+
+_G7_ALGEBRAIC_EXPRESSIONS = {
+    "topicId": "g7:algebraic_expressions",
+    "reviewed": False,
+    "pendingReview": ("title", "rule", "verbs", "templates", "layouts", "forbiddenTerms"),
+    "levels": ("b",),
+    # The catalog title names חוק הפילוג and זהות, which the lesson excludes, so the title is curated.
+    "title": "ביטויים אלגבריים: הצבה וכינוס איברים דומים",
+    "letters": ("x", "y", "a", "b"),          # = kernel symbols; identity map in stage 2
+    "conceptKinds": {"g7:algebraic_expressions#0": ("write_from_words",),
+                     "g7:algebraic_expressions#1": ("substitute",),
+                     "g7:algebraic_expressions#2": ("collect_like_terms",)},
+    "challengeKinds": {"find_error_collect": ("g7:algebraic_expressions#2",)},
+    # The contract table per kind. Every item field a kind does not read must be "". For every stage-2
+    # kind intro is "", givens is [], table is {"head": [], "rows": []} and each item's text is "".
+    "kinds": {
+        "write_from_words": {
+            "group": PRACTICE, "reads": ("expr", "variant"), "form": "expression", "asks": ("",),
+            "variants": _W_TEMPLATES,
+            "card": "expr is what a student writes for a Hebrew phrase that code builds from variant, so expr "
+                    "has exactly the shape of its variant.",
+        },
+        "substitute": {
+            "group": PRACTICE, "reads": ("expr", "values"), "form": "integer", "asks": ("",), "variants": ("",),
+            "card": "expr is evaluated at values, which give each letter of expr one whole number, as a=3 or "
+                    "x=2, y=-1; expr is never a single letter.",
+        },
+        "collect_like_terms": {
+            "group": PRACTICE, "reads": ("expr",), "form": "expression", "asks": ("",), "variants": ("",),
+            "card": "expr has like terms for the student to collect; it is never already collected.",
+        },
+        "find_error_collect": {
+            "group": CHALLENGES, "reads": ("expr", "expr2", "variant"), "form": "expression", "asks": ("",),
+            "variants": ("M1", "M2", "M3"),
+            "card": "a student collects expr with the mistake named by variant; expr2 is exactly that wrong "
+                    "result, and expr is never already collected.",
+        },
+    },
+    "profile": {"literal_max": 20, "result_literal_max": 99, "value_min": -10, "value_max": 10,
+                "terms_max": 4, "letters_max": 2, "power": False, "division": False, "decimal": False,
+                "percent": False, "explicit_product": False, "brackets": "negative_number"},
+    "levelNotes": {"b": "Level b: a guided entry, one step per item, friendly numbers."},
+    # Tier A instructions, written by code above each question (reviewed: False).
+    "verbs": {"write_from_words": "כתבו ביטוי אלגברי מתאים לכל תיאור:",
+              "substitute": "חשבו את ערך הביטוי:",
+              "collect_like_terms": "כנסו איברים דומים:",
+              "find_error_collect": "בכל סעיף תלמיד כינס איברים דומים וטעה. רשמו את התוצאה הנכונה."},
+    # Tier A templates of write_from_words: k, m are numbers in templateNumbers, v != w are letters.
+    # A layout is a sequence of ("T", Hebrew text) and ("D", placeholder) parts; every number is a
+    # coefficient glued to a letter, so a key never holds a standalone integer (§2.7, D12).
+    "templateNumbers": (2, 20),
+    "templates": {
+        "W_TIMES": {"shape": "kv", "layout": (("T", "מספר הגדול פי "), ("D", "k"), ("T", " מ־"), ("D", "v"))},
+        "W_SUM": {"shape": "v+w", "layout": (("T", "הסכום של "), ("D", "v"), ("T", " ו־"), ("D", "w"))},
+        "W_DIFF": {"shape": "v-w", "layout": (("T", "ההפרש בין "), ("D", "v"), ("T", " לבין "), ("D", "w"))},
+        "W_PRODUCT": {"shape": "vw", "layout": (("T", "המכפלה של "), ("D", "v"), ("T", " ב־"), ("D", "w"))},
+        "W_TIMES_PLUS": {"shape": "kv+w", "layout": (("T", "פי "), ("D", "k"), ("T", " מ־"), ("D", "v"),
+                                                     ("T", " ועוד "), ("D", "w"))},
+        "W_TIMES_MINUS": {"shape": "kv-w", "layout": (("T", "פי "), ("D", "k"), ("T", " מ־"), ("D", "v"),
+                                                      ("T", " פחות "), ("D", "w"))},
+        "W_TWO_TIMES": {"shape": "kv+mw", "layout": (("T", "פי "), ("D", "k"), ("T", " מ־"), ("D", "v"),
+                                                     ("T", " ועוד פי "), ("D", "m"), ("T", " מ־"), ("D", "w"))},
+    },
+    # Fixed layouts of the other kinds; substitute joins a second value with valueSeparator.
+    "layouts": {
+        "collect_like_terms": (("D", "expr"),),
+        "substitute": (("D", "expr"), ("T", " עבור "), ("D", "value")),
+        "find_error_collect": (("T", "כינוס הביטוי "), ("D", "expr"), ("T", " נתן "), ("D", "wrong")),
+    },
+    "valueSeparator": " ו־",
+    "units": (),
+    "rule": [{"kind": "text", "text": "ביטוי אלגברי הוא ביטוי שיש בו מספרים, משתנים ופעולות חשבון. כדי למצוא את ערך "
+              "הביטוי מציבים מספר במקום המשתנה. איברים דומים הם איברים שיש להם אותו חלק של משתנים. כדי לכנס איברים "
+              "דומים מחברים או מחסרים את המספרים שלפני המשתנה, למשל: "},
+             {"kind": "display", "notation": "3x+5x=8x", "symbols": ["x"]}, {"kind": "text", "text": "."}],
+    "ruleFacts": (("3x+5x", "8x"),),
+    "forbiddenTerms": ("חוק הפילוג", "פילוג", "זהות", "משוואה", "חזקה", "שוויון"),
+    "mistakes": ("M1", "M2", "M3"),
+    # English card notes; the examples use numbers outside the profile so a copied example is refused.
+    "mistakeNotes": {
+        "M1": "adds every coefficient and number into one term with the first letter: 24a+33+a+35 gives 93a.",
+        "M2": "turns the first subtraction into an addition: 26x+37-21-22x gives 4x+58.",
+        "M3": "drops the first bare-letter term that has a like term: 25b+32a+b gives 25b+32a.",
+    },
+    "examples": {
+        "write_from_words": {"text": "", "expr": "25y", "expr2": "", "values": "", "ask": "", "form": "",
+                             "variant": "W_TIMES"},
+        "substitute": {"text": "", "expr": "30a-a", "expr2": "", "values": "a=15", "ask": "", "form": "",
+                       "variant": ""},
+        "collect_like_terms": {"text": "", "expr": "31x+47+26x-15", "expr2": "", "values": "", "ask": "",
+                               "form": "", "variant": ""},
+        "find_error_collect": {"text": "", "expr": "24a+33+a+35", "expr2": "93a", "values": "", "ask": "",
+                               "form": "", "variant": "M1"},
+    },
+    "exampleQuestion": ("collect_like_terms", ("31x+47+26x-15", "-22y+43+35y-27", "38b-23+b-29")),
+}
+
+OVERLAYS = MappingProxyType({
+    _G7_ALGEBRAIC_EXPRESSIONS["topicId"]: _freeze(_G7_ALGEBRAIC_EXPRESSIONS),
+})
+
+
+def overlay_for(topic_id: str, level: str):
+    """The frozen overlay when topic and level are v5-enabled, else None."""
+    if type(topic_id) is not str or type(level) is not str:
+        return None
+    overlay = OVERLAYS.get(topic_id)
+    if overlay is None or level not in overlay["levels"]:
+        return None
+    return overlay
+
+
+def rule_spans(overlay) -> list:
+    """The overlay's rule box as a fresh list of plain span dicts (IR-ready)."""
+    return thaw(overlay["rule"])
+
+
+def code_strings(overlay) -> list:
+    """[(path, text)] of every code-written Hebrew string of one overlay, in a fixed order."""
+    out = [("title", overlay["title"])]
+    out += [("verbs." + kind, text) for kind, text in overlay["verbs"].items()]
+    out += [("rule.%d" % i, span["text"]) for i, span in enumerate(overlay["rule"]) if span["kind"] == "text"]
+    for tid, template in overlay["templates"].items():
+        out += [("templates.%s.%d" % (tid, i), value) for i, (part, value) in enumerate(template["layout"])
+                if part == "T"]
+    for kind, layout in overlay["layouts"].items():
+        out += [("layouts.%s.%d" % (kind, i), value) for i, (part, value) in enumerate(layout) if part == "T"]
+    out.append(("valueSeparator", overlay["valueSeparator"]))
+    return out
+
+
+def check_overlay(overlay) -> None:
+    """Internal consistency of one overlay; raises ValueError naming the broken field (English only)."""
+    def need(condition, field):
+        if not condition:
+            raise ValueError("Overlay field is inconsistent: " + field)
+
+    kinds = overlay["kinds"]
+    need(overlay["reviewed"] is False or overlay["reviewed"] is True, "reviewed")
+    need(set(overlay["letters"]) <= {"x", "y", "a", "b"} and len(set(overlay["letters"])) == len(overlay["letters"]),
+         "letters")
+    for concept, names in overlay["conceptKinds"].items():
+        need(concept.startswith(overlay["topicId"] + "#") and names, "conceptKinds")
+        need(all(name in kinds and kinds[name]["group"] == PRACTICE for name in names), "conceptKinds")
+    for name, concepts in overlay["challengeKinds"].items():
+        need(name in kinds and kinds[name]["group"] == CHALLENGES, "challengeKinds")
+        need(concepts and all(c in overlay["conceptKinds"] for c in concepts), "challengeKinds")
+    used = {name for names in overlay["conceptKinds"].values() for name in names} | set(overlay["challengeKinds"])
+    need(used == set(kinds), "kinds")
+    for name, row in kinds.items():
+        need(row["form"] in FORMS, "kinds.form")
+        need(set(row["reads"]) <= {"text", "expr", "expr2", "values", "variant"}, "kinds.reads")
+        need(tuple(row["asks"]) == ("",), "kinds.asks")
+        need(("variant" in row["reads"]) == (tuple(row["variants"]) != ("",)), "kinds.variants")
+        need(name in overlay["verbs"] and name in overlay["examples"], "verbs")
+        example = overlay["examples"][name]
+        need(tuple(example) == ITEM_FIELDS, "examples")
+        need(all(example[field] == "" for field in ITEM_FIELDS if field not in row["reads"]), "examples")
+        need(example["variant"] in row["variants"], "examples")
+    variants = {variant for row in kinds.values() for variant in row["variants"] if variant}
+    need(variants == set(overlay["templates"]) | set(overlay["mistakes"]), "variants")
+    need(not set(overlay["templates"]) & set(overlay["mistakes"]), "variants")
+    need(set(overlay["mistakeNotes"]) == set(overlay["mistakes"]), "mistakeNotes")
+    low, high = overlay["templateNumbers"]
+    need(2 <= low <= high <= overlay["profile"]["literal_max"], "templateNumbers")
+    for template in overlay["templates"].values():
+        need(all(part in ("T", "D") for part, _ in template["layout"]), "templates.layout")
+        holes = [value for part, value in template["layout"] if part == "D"]
+        need(sorted(holes) == sorted(ch for ch in template["shape"] if ch in "kmvw"), "templates.layout")
+        need(template["layout"][0][0] == "T" and all(
+            a[0] != b[0] for a, b in zip(template["layout"], template["layout"][1:])), "templates.layout")
+    for kind, layout in overlay["layouts"].items():
+        need(kind in kinds and all(part in ("T", "D") for part, _ in layout), "layouts")
+    need(set(overlay["levelNotes"]) == set(overlay["levels"]), "levelNotes")
+    need(overlay["exampleQuestion"][0] in kinds and 3 <= len(overlay["exampleQuestion"][1]) <= 6, "exampleQuestion")
+
+
+# ------------------------------------------------------------------ plan rows and reserves (§2.3)
+
+@dataclass(frozen=True)
+class PlanRow:
+    slot: str                 # "Q1".."QN" | "R1".."RR"
+    number: int               # planned position 1..N (Q) | reserve index 1..R (R)
+    group: str                # "practice" | "challenges"
+    concepts: tuple           # concept ids, e.g. ("g7:algebraic_expressions#0",)
+    kinds: tuple              # kinds allowed for this row (overlay)
+
+
+def _plain_int(value) -> bool:
+    return type(value) is int
+
+
+def reserve_groups(planned: int) -> list:
+    """Practice ×max(3, ⌈(planned−3)/5⌉), then challenges ×(1 if planned < 20 else 2).
+
+    ⌈0.2·(N−3)⌉ is computed in exact integers: 0.2*15 is 3.0000000000000004 in floats."""
+    if not _plain_int(planned) or not 4 <= planned <= 99:
+        raise ValueError("Planned question count outside 4..99")
+    practice = max(3, -(-(planned - 3) // 5))
+    challenges = 1 if planned < 20 else 2
+    return [PRACTICE] * practice + [CHALLENGES] * challenges
+
+
+def slot_names(planned: int, reserves: int) -> tuple:
+    """('Q1'..'QN', 'R1'..'RR')."""
+    if not _plain_int(planned) or not 1 <= planned <= 99 or not _plain_int(reserves) or not 0 <= reserves <= 99:
+        raise ValueError("Slot counts outside the slot alphabet")
+    return tuple("Q%d" % i for i in range(1, planned + 1)) + tuple("R%d" % i for i in range(1, reserves + 1))
+
+
+def _selected(scope) -> list:
+    return [row["id"] for row in scope["selectedConcepts"]]
+
+
+def _unique(values) -> tuple:
+    out = []
+    for value in values:
+        if value not in out:
+            out.append(value)
+    return tuple(out)
+
+
+def _check_lesson(lesson, scope, overlay) -> int:
+    """The question count, after checking that lesson, scope and overlay name one enabled topic and level."""
+    if (overlay is None or lesson.get("topicId") != overlay["topicId"]
+            or type(lesson.get("level")) is not str or lesson["level"] not in overlay["levels"]):
+        raise ContractError("WIRE_TOPIC_UNSUPPORTED", "Topic and level are not enabled for the structured wire")
+    topic = scope["topic"]
+    if (topic["topicId"] != overlay["topicId"] or topic["gradeNumber"] != lesson.get("gradeNumber")
+            or topic["skillId"] != "middle"):
+        raise ContractError("WIRE_TOPIC_UNSUPPORTED", "Lesson, scope and overlay disagree")
+    count = lesson.get("questionCount")
+    if not _plain_int(count) or not CHALLENGE_SLOTS + 1 <= count <= 30:
+        raise ContractError("WIRE_TOPIC_UNSUPPORTED", "Question count outside the plan")
+    return count
+
+
+def _sheet_kinds(scope, overlay):
+    """(practice kinds per selected concept, challenge kinds, challenge concepts) for one lesson."""
+    selected = _selected(scope)
+    if not selected:
+        raise ContractError("WIRE_TOPIC_UNSUPPORTED", "No selected concept")
+    practice = {}
+    for concept in selected:
+        kinds = overlay["conceptKinds"].get(concept)
+        if not kinds:
+            raise ContractError("WIRE_TOPIC_UNSUPPORTED", "A selected concept has no structured kind")
+        practice[concept] = tuple(kinds)
+    challenge_kinds = tuple(name for name, concepts in overlay["challengeKinds"].items()
+                            if all(c in selected for c in concepts))
+    if not challenge_kinds:
+        raise ContractError("WIRE_TOPIC_UNSUPPORTED", "No challenge kind fits the selected concepts")
+    exercised = {c for name in challenge_kinds for c in overlay["challengeKinds"][name]}
+    challenge_concepts = tuple(c for c in selected if c in exercised)
+    return practice, challenge_kinds, challenge_concepts
+
+
+def plan_rows(lesson, scope, overlay) -> tuple:
+    """(planned rows Q1..QN, reserve rows R1..RR) as two lists of PlanRow (§2.3).
+
+    Practice rows rotate the selected concepts exactly as skill_authoring.question_plan rows 1..N−3;
+    challenge rows carry every challenge kind that fits the selection; practice reserves rotate the
+    selected concepts in catalog order, challenge reserves repeat the challenge row."""
+    count = _check_lesson(lesson, scope, overlay)
+    practice, challenge_kinds, challenge_concepts = _sheet_kinds(scope, overlay)
+    selected = _selected(scope)
+    ordinary = count - CHALLENGE_SLOTS
+
+    def row(slot, number, concepts):
+        kinds = _unique(kind for concept in concepts for kind in practice[concept])
+        return PlanRow(slot, number, PRACTICE, tuple(concepts), kinds)
+
+    planned = []
+    for index in range(ordinary):
+        first = index * len(selected) // ordinary
+        stop = max(first + 1, (index + 1) * len(selected) // ordinary)
+        planned.append(row("Q%d" % (index + 1), index + 1, selected[first:stop]))
+    for number in range(ordinary + 1, count + 1):
+        planned.append(PlanRow("Q%d" % number, number, CHALLENGES, challenge_concepts, challenge_kinds))
+    reserves, turn = [], 0
+    for number, group in enumerate(reserve_groups(count), 1):
+        if group == PRACTICE:
+            reserves.append(row("R%d" % number, number, (selected[turn % len(selected)],)))
+            turn += 1
+        else:
+            reserves.append(PlanRow("R%d" % number, number, CHALLENGES, challenge_concepts, challenge_kinds))
+    return planned, reserves
+
+
+# ------------------------------------------------------------------ (a) the response schema (§2.1)
+
+def _string(limit):
+    return {"type": "string", "maxLength": limit}
+
+
+def _choice(values):
+    return {"type": "string", "enum": list(values)}
+
+
+def _object(properties):
+    return {"type": "object", "properties": properties, "required": list(properties), "additionalProperties": False}
+
+
+def _array(items, maximum, minimum=None):
+    out = {"type": "array", "items": items}
+    if minimum is not None:
+        out["minItems"] = minimum
+    out["maxItems"] = maximum
+    return out
+
+
+def wire_schema(lesson, scope, overlay, reserves: int) -> dict:
+    """Strict-mode JSON Schema of §2.1: root object, all keys required, additionalProperties false, enums for
+    slot/kind/ask/form/variant; no anyOf/oneOf/allOf/pattern/const/format. Advisory; parse_wire decides."""
+    count = _check_lesson(lesson, scope, overlay)
+    practice, challenge_kinds, _ = _sheet_kinds(scope, overlay)
+    kinds = _unique([kind for names in practice.values() for kind in names] + list(challenge_kinds))
+    rows = [overlay["kinds"][kind] for kind in kinds]
+    slots = slot_names(count, reserves)
+    forms = ("",) + tuple(form for form in FORMS if any(row["form"] == form for row in rows))
+    asks = _unique(("",) + tuple(ask for row in rows for ask in row["asks"]))
+    variants = _unique(("",) + tuple(v for row in rows for v in row["variants"]))
+    given = _object({"id": _choice(GIVEN_IDS), "type": _choice(GIVEN_TYPES),
+                     "value": _string(LIMITS["given_value"]), "unit": _choice(("",) + tuple(overlay["units"]))})
+    cell = _string(LIMITS["cell"])
+    table = _object({"head": _array(cell, LIMITS["table_cols"]),
+                     "rows": _array(_array(cell, LIMITS["table_cols"]), LIMITS["table_rows"])})
+    item = _object({"text": _string(LIMITS["text"]), "expr": _string(LIMITS["expr"]),
+                    "expr2": _string(LIMITS["expr2"]), "values": _string(LIMITS["values"]),
+                    "ask": _choice(asks), "form": _choice(forms), "variant": _choice(variants)})
+    question = _object({"slot": _choice(slots), "kind": _choice(kinds), "intro": _string(LIMITS["intro"]),
+                        "givens": _array(given, LIMITS["givens_max"]), "table": table,
+                        "items": _array(item, LIMITS["items_max"], LIMITS["items_min"])})
+    return _object({"questions": _array(question, 2 * len(slots), 1)})
+
+
+def schema_problems(schema) -> list:
+    """Sorted strict-mode violations of a generated schema: SCHEMA_KEYWORD:<k>, SCHEMA_DEPTH,
+    SCHEMA_REQUIRED, SCHEMA_ADDITIONAL, SCHEMA_TYPE. [] when strict-safe."""
+    problems = set()
+
+    def walk(node, depth):
+        if not isinstance(node, dict):
+            problems.add("SCHEMA_TYPE")
+            return
+        for key in node:
+            if key not in SCHEMA_KEYWORDS:
+                problems.add("SCHEMA_KEYWORD:" + str(key))
+        kind = node.get("type")
+        if type(kind) is not str:
+            problems.add("SCHEMA_TYPE")
+            return
+        if kind in ("object", "array"):
+            depth += 1
+            if depth > SCHEMA_MAX_DEPTH:
+                problems.add("SCHEMA_DEPTH")
+        if kind == "object":
+            properties = node.get("properties")
+            if not isinstance(properties, dict) or node.get("required") != list(properties):
+                problems.add("SCHEMA_REQUIRED")
+            if node.get("additionalProperties") is not False:
+                problems.add("SCHEMA_ADDITIONAL")
+            for child in (properties or {}).values():
+                walk(child, depth)
+        elif kind == "array":
+            walk(node.get("items"), depth)
+        elif kind != "string":
+            problems.add("SCHEMA_TYPE")
+
+    walk(schema, 0)
+    return sorted(problems)
+
+
+# ------------------------------------------------------------------ (b) the authoring card
+
+def card_problems(text: str) -> list:
+    """Sorted codes for card text: CARD_CHAR (a notation glyph), CARD_SIZE (outside 3 KB..5,000 bytes)."""
+    codes = set()
+    if any(mark in text for mark in CARD_FORBIDDEN):
+        codes.add("CARD_CHAR")
+    if not CARD_MIN_BYTES <= len(text.encode("utf-8")) <= CARD_MAX_BYTES:
+        codes.add("CARD_SIZE")
+    return sorted(codes)
+
+
+def _json(value) -> str:
+    return json.dumps(thaw(value), ensure_ascii=False, separators=(",", ":"))
+
+
+def _plan_lines(rows, names) -> list:
+    lines, i = [], 0
+    while i < len(rows):
+        j = i
+        while (j + 1 < len(rows) and rows[j + 1].slot[0] == rows[i].slot[0]
+               and rows[j + 1].number == rows[j].number + 1
+               and (rows[j + 1].group, rows[j + 1].concepts, rows[j + 1].kinds)
+               == (rows[i].group, rows[i].concepts, rows[i].kinds)):
+            j += 1
+        label = rows[i].slot if i == j else rows[i].slot + "-" + rows[j].slot
+        group = "challenge" if rows[i].group == CHALLENGES else "practice"
+        lines.append("%s | %s | %s | %s" % (label, group, " + ".join(names[c] for c in rows[i].concepts),
+                                            " or ".join(rows[i].kinds)))
+        i = j + 1
+    return lines
+
+
+def _notation_lines(profile, letters) -> list:
+    """The MATH FIELDS lines of the card, derived from the overlay's number profile."""
+    signs = ["+", "-"] + (["*"] if profile["explicit_product"] else []) + ([":"] if profile["division"] else [])
+    brackets = {"none": ", and no brackets",
+                "negative_number": ", and brackets only around a negative number, as in x-(-2)",
+                "any": ", and brackets"}[profile["brackets"]]
+    never = ([] if profile["explicit_product"] else ["*"]) + ([] if profile["division"] else ["/", ":"])
+    never += ([] if profile["power"] else ["^"]) + ([] if profile["percent"] else ["%"])
+    never = " ".join(never) + (", =" if never else "=") + ("" if profile["decimal"] else ", a decimal point")
+    return [
+        "- ASCII school notation: %s, the letters %s, the signs %s%s."
+        % ("numbers" if profile["decimal"] else "whole numbers", letters, " and ".join(signs), brackets),
+        "- A product is a number written right before a letter (4x) or two different letters side by side (ab).",
+        "- Never write %s, a space inside a number or two signs in a row. A minus sign may open an expression."
+        % never,
+    ]
+
+
+def _scope_sentence(profile) -> str:
+    """' No powers, no division, no brackets around a sum.' for the stage-2 profile ('' when all are allowed)."""
+    parts = ([] if profile["power"] else ["no powers"]) + ([] if profile["division"] else ["no division"])
+    parts += [] if profile["brackets"] == "any" else ["no brackets around a sum"]
+    return (" " + ", ".join(parts) + ".").replace(" no", " No", 1) if parts else ""
+
+
+def authoring_card(lesson, scope, overlay) -> str:
+    """Per-topic authoring card text (English rules, Hebrew catalog labels) for one lesson.
+
+    Deterministic; 3 KB..5,000 bytes; never contains $ \\ [[ ]] · × ÷ − √. Teacher text is not part of the
+    card: a caller appends it verbatim as data, outside this budget (stage 3). Raises ContractError."""
+    _check_lesson(lesson, scope, overlay)
+    practice, challenge_kinds, _ = _sheet_kinds(scope, overlay)
+    planned, reserves = plan_rows(lesson, scope, overlay)
+    kinds = _unique([kind for names in practice.values() for kind in names] + list(challenge_kinds))
+    names = {row["id"]: row["text"] for row in scope["selectedConcepts"]}
+    profile = overlay["profile"]
+    low, high = overlay["templateNumbers"]
+    letters = ", ".join(overlay["letters"])
+    lines = [
+        "AUTHORING CARD | contract %s | overlay reviewed: %s" % (CONTRACT, "yes" if overlay["reviewed"] else "no"),
+        "",
+        "ROLE",
+        "Write the questions of one Hebrew mathematics worksheet as JSON that follows the response schema. "
+        "Code writes the instructions, title, rule box, numbering, stars, answer keys and layout: never "
+        "write them.",
+        "",
+        "OUTPUT",
+        "- One question object per PLAN slot, each slot once. Every key is required: write \"\" or [] for an "
+        "empty value.",
+        "- question keys: %s. item keys: %s." % (", ".join(QUESTION_FIELDS), ", ".join(ITEM_FIELDS)),
+        "- On this sheet intro is \"\", givens is [], table is {\"head\":[],\"rows\":[]}, and every item has "
+        "%sask \"\". Leave every field the kind does not read as \"\"."
+        % ("" if any("text" in overlay["kinds"][kind]["reads"] for kind in kinds) else "text \"\" and "),
+        "- Each question has %d to %d items, all of its kind and all different."
+        % (LIMITS["items_min"], LIMITS["items_max"]),
+        "- Text fields hold Hebrew words and punctuation only: never a digit, a Latin letter or a math sign.",
+        "",
+        "MATH FIELDS (expr, expr2, values)",
+    ] + _notation_lines(profile, letters) + [
+        "",
+        "TOPIC",
+        "- Grade %d (%s), level %s. Title: %s" % (lesson["gradeNumber"], GRADE_LINE[lesson["gradeNumber"]],
+                                                 lesson["level"], overlay["title"]),
+        "- " + overlay["levelNotes"][lesson["level"]],
+        "- Teach: " + "; ".join(names[c] for c in _selected(scope)),
+        "- Never use or hint at: " + "; ".join(overlay["forbiddenTerms"]),
+        "- Every number in expr is a whole number from 0 to %d; every value is a whole number from %d to %d."
+        % (profile["literal_max"], profile["value_min"], profile["value_max"]),
+        "- At most %d terms and at most %d different letters in one expression, never one letter twice in a "
+        "term.%s" % (profile["terms_max"], profile["letters_max"], _scope_sentence(profile)),
+    ]
+    for left, right in overlay["ruleFacts"]:
+        lines.append("- The rule box already shows %s=%s: never ask about those terms together." % (left, right))
+    lines += [
+        "- An item's answer must not appear elsewhere in its question, and its numbers must not all be printed "
+        "already in that question. Never repeat an expression on the sheet.",
+        "",
+        "KINDS (form is \"\" or the kind's own form)",
+    ]
+    for kind in kinds:
+        row = overlay["kinds"][kind]
+        group = "challenge" if row["group"] == CHALLENGES else "practice"
+        lines.append("%s (%s, form %s): %s" % (kind, group, row["form"], row["card"]))
+        if kind == "write_from_words":
+            lines.append("  k and m are whole numbers from %d to %d; v and w are different letters." % (low, high))
+            lines.append("  " + "; ".join("%s %s" % (tid, overlay["templates"][tid]["shape"])
+                                          for tid in row["variants"]))
+        if kind == "find_error_collect":
+            lines += ["  %s %s" % (mid, overlay["mistakeNotes"][mid]) for mid in row["variants"]]
+    lines += ["", "PLAN (slot | group | concept | kind)"]
+    lines += _plan_lines(planned, names)
+    lines += _plan_lines(reserves, names)
+    lines.append("R slots are reserves under the same rules, printed only in place of a refused question.")
+    lines += ["", "EXAMPLES (numbers deliberately outside this sheet's range: never copy them)"]
+    example_kind, exprs = overlay["exampleQuestion"]
+    if example_kind in kinds:
+        items = [dict(thaw(overlay["examples"][example_kind]), expr=expr) for expr in exprs]
+        lines.append(_json({"slot": "Q1", "kind": example_kind, "intro": "", "givens": [],
+                            "table": {"head": [], "rows": []}, "items": items}))
+    for kind in kinds:
+        if kind != example_kind:
+            lines.append("%s item: %s" % (kind, _json(overlay["examples"][kind])))
+    text = "\n".join(lines) + "\n"
+    problems = card_problems(text)
+    if problems:
+        raise ContractError(problems[0], "Authoring card breaks the card lint")
+    return text
+
+
+# ------------------------------------------------------------------ the IR selection record (§2.6)
+
+def _codes_ok(codes) -> bool:
+    return (type(codes) is list and 1 <= len(codes) <= MAX_ENTRY_CODES and len(set(codes)) == len(codes)
+            and all(is_known_code(code) for code in codes))
+
+
+def validate_selection(selection, *, lesson, scope, questions) -> None:
+    """Final-authority check of the IR selection record (§2.6); raises SelectionError.
+
+    Record shape (all keys required, nothing else):
+      requested  = lesson.questionCount; floor = runtime_catalog.question_floor(grade), recomputed;
+      delivered  = number of IR questions, floor ≤ delivered ≤ requested;
+      questions  = [{n, slot, origin, conceptIds, star}] in printed order, n = 1..delivered. slot is the wire
+                   slot that produced the question: planned → Qk, reserve → Rk, repair → Qk (the position it
+                   repairs). conceptIds: non-empty subset of the selected concepts, union = all of them
+                   (else SOURCE_COVERAGE). star = the IR question's star.
+      replaced   = [{slot: Qk, by: Rk | REPAIR, codes}] in chronological order, ≤32; each reserve once; a
+                   challenge reserve never fills a practice position.
+      dropped    = [{slot: Qk, codes}], len = requested − delivered.
+    Codes: 1..16 unique registered codes per entry. Every planned position is printed exactly once or
+    dropped; the question printed at a position is the last replacement there (or the planned one when
+    there is none); star = the group of the row the question was written for; printed order is ordinary
+    questions, then challenges, each by planned position (lesson_select layout)."""
+    def fail(reason, code="SOURCE_SELECTION"):
+        raise SelectionError(code, reason)
+
+    if type(selection) is not dict or set(selection) != set(SELECTION_FIELDS):
+        fail("selection fields")
+    requested, grade = lesson.get("questionCount"), lesson.get("gradeNumber")
+    if not _plain_int(requested) or not _plain_int(grade) or not CHALLENGE_SLOTS + 1 <= requested <= 99:
+        fail("lesson counts")
+    from runtime_catalog import question_floor
+    floor = question_floor(grade)
+    if not all(_plain_int(selection[key]) for key in ("requested", "floor", "delivered")):
+        fail("counts must be integers")
+    if selection["requested"] != requested:
+        fail("requested differs from the lesson")
+    if selection["floor"] != floor:
+        fail("floor differs from the grade floor")
+    delivered = selection["delivered"]
+    if not floor <= delivered <= requested:
+        fail("delivered outside floor..requested")
+    if type(questions) is not list or len(questions) != delivered:
+        fail("delivered differs from the printed questions")
+    rows, replaced, dropped = selection["questions"], selection["replaced"], selection["dropped"]
+    if type(rows) is not list or len(rows) != delivered:
+        fail("question record length")
+    if type(dropped) is not list or len(dropped) != requested - delivered:
+        fail("dropped count")
+    if type(replaced) is not list or len(replaced) > MAX_REPLACED:
+        fail("replaced entries")
+
+    groups = reserve_groups(requested)
+    last_practice = requested - CHALLENGE_SLOTS
+    selected = _selected(scope)
+    covered, slots = set(), set()
+    for index, row in enumerate(rows):
+        if type(row) is not dict or set(row) != set(SELECTION_QUESTION_FIELDS):
+            fail("question record fields")
+        if not _plain_int(row["n"]) or row["n"] != index + 1:
+            fail("question numbering")
+        slot = row["slot"]
+        if type(slot) is not str or not SLOT_RE.match(slot) or slot in slots:
+            fail("question slot")
+        slots.add(slot)
+        if int(slot[1:]) > (requested if slot[0] == "Q" else len(groups)):
+            fail("slot outside the plan")
+        if row["origin"] not in ORIGINS or (row["origin"] == "reserve") != (slot[0] == "R"):
+            fail("origin does not match the slot")
+        ids = row["conceptIds"]
+        if type(ids) is not list or any(type(c) is not str for c in ids) or len(set(ids)) != len(ids):
+            fail("concept id list")
+        if not ids or any(c not in selected for c in ids):
+            fail("concepts outside the selection", "SOURCE_COVERAGE")
+        covered.update(ids)
+        printed = questions[index]
+        if type(row["star"]) is not bool or type(printed) is not dict or printed.get("star") is not row["star"]:
+            fail("star differs from the printed question")
+    if covered != set(selected):
+        fail("a selected concept has no question", "SOURCE_COVERAGE")
+
+    history, used = {}, set()
+    for entry in replaced:
+        if type(entry) is not dict or set(entry) != set(SELECTION_REPLACED_FIELDS):
+            fail("replaced entry fields")
+        slot, by = entry["slot"], entry["by"]
+        if type(slot) is not str or not PLANNED_SLOT_RE.match(slot) or int(slot[1:]) > requested:
+            fail("replaced slot")
+        if type(by) is not str or not BY_RE.match(by):
+            fail("replaced by")
+        if by != "REPAIR":
+            number = int(by[1:])
+            if number > len(groups) or by in used:
+                fail("reserve outside the plan or used twice")
+            used.add(by)
+            if groups[number - 1] == CHALLENGES and int(slot[1:]) <= last_practice:
+                fail("challenge reserve in a practice position")
+        if not _codes_ok(entry["codes"]):
+            fail("replaced codes")
+        history.setdefault(int(slot[1:]), []).append(by)
+    gone = set()
+    for entry in dropped:
+        if type(entry) is not dict or set(entry) != set(SELECTION_DROPPED_FIELDS):
+            fail("dropped entry fields")
+        slot = entry["slot"]
+        if type(slot) is not str or not PLANNED_SLOT_RE.match(slot) or int(slot[1:]) > requested:
+            fail("dropped slot")
+        if int(slot[1:]) in gone or not _codes_ok(entry["codes"]):
+            fail("dropped entry")
+        gone.add(int(slot[1:]))
+
+    placed = {by: position for position, bys in history.items() for by in bys if by != "REPAIR"}
+    order = []
+    for row in rows:
+        slot, origin = row["slot"], row["origin"]
+        if origin == "reserve":
+            if slot not in placed:
+                fail("reserve without a replacement entry")
+            position, challenge = placed[slot], groups[int(slot[1:]) - 1] == CHALLENGES
+            expected = slot
+        else:
+            position, challenge = int(slot[1:]), int(slot[1:]) > last_practice
+            expected = "REPAIR" if origin == "repair" else None
+        if (history.get(position, [None])[-1]) != expected:
+            fail("printed question is not the last placement of its position")
+        if row["star"] is not challenge:
+            fail("star differs from the planned group")
+        order.append((row["star"], position))
+    positions = [position for _, position in order]
+    if len(set(positions)) != len(positions) or set(positions) & gone:
+        fail("a position is printed twice or printed and dropped")
+    if set(positions) | gone != set(range(1, requested + 1)):
+        fail("a planned position is neither printed nor dropped")
+    if order != sorted(order):
+        fail("printed order")
