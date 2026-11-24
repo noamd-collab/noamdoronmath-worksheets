@@ -151,9 +151,12 @@ Schema in `general_source.authoring_schema`; checks in
 | figure | `{"kind":"figure","operation","unit","point"?}` | computed from the figure | middle geometry |
 
 - **decide** is bound to the print by `answer_kinds.bind_decision`: to the one
-  printed statement asked about, or to the relation word, its order and the
-  printed quantities. A true claim that is not the printed question is refused.
-  A claim typed from a story is delivered but listed as `decision`.
+  printed statement asked about (also when the words restate its sign), to an
+  equation and a value ("is [[x = 5]] a solution of ...", "for [[x = 5]], is
+  A greater than B"), or to the relation word, its order and the printed
+  quantities ("∠BAD = 110°" counts as 110). A true claim that is not the
+  printed question is refused, and so is a bound claim whose two sides are the
+  same ("9 = 9"). A claim typed from a story is delivered but listed as `decision`.
 - **label** only where the prompt asks for a name (`answer_kinds.check_label`);
   **open** only for drawing, building, explaining or inventing
   (`answer_kinds.check_open`); a number is never the key of a drawing
@@ -167,7 +170,13 @@ Schema in `general_source.authoring_schema`; checks in
 - **Print rule.** The typed task is printed after the prompt only when the
   prompt shows no number (`printed_parts.shows_task`); a later item may not
   print an earlier item's answer (`printed_parts.answer_leak`,
-  `PRINTED_ANSWER_LEAK`).
+  `PRINTED_ANSWER_LEAK`). A task that would show an earlier answer ("2 · 62"
+  after the item keyed 62) is left off the page when the prompt names what to
+  find and the pupil can form the calculation from the page
+  (`printed_parts.stands_alone`); both printers and the validation read the
+  same `earlier_answers`. A prompt that needs its task, or prints the answer
+  itself, is refused. A key unit of another size than the item asks
+  (a width in דצמ"ר) is `PRINTED_ANSWER_KIND` (`printed_parts.check_unit_size`).
 - **The key beside its own item** (`printed_parts.check_key_print`, run in
   `validate_question`, so selection, the whole sheet and the adapter agree):
   - an item may not print its own answer, in a complete numeric fact that

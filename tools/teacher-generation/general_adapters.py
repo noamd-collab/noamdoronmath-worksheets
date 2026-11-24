@@ -22,7 +22,7 @@ from no_carry_addition import needs_printed_task, states_entire_task
 from printed_percentages import percentage_evidence
 from printed_tasks import match_printed_task, matching_solution_choices, printed_solve, printed_table_row
 from printed_elementary import guard_counting_input, place_intro, printed_intent, validate_counting_values
-from printed_parts import answer_form, bind_parts, carries_data, chosen_solutions, comparison_blank, narrowed, printed_calculation, shows_task
+from printed_parts import answer_form, bind_parts, carries_data, chosen_solutions, comparison_blank, earlier_answers, narrowed, printed_calculation, printed_keys, shows_task
 from answer_kinds import TEACHER_CHECK, bind_decision
 
 LETTERS = "אבגדהוזחטי"
@@ -541,7 +541,7 @@ def compile_source(lesson, validated, scope, skill_path, work, *, printed_answer
 _PARTS_NUMBER = re.compile(r"(?<![.\d])\d{4,}(?![\d])")
 
 
-def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *, intro_spans, printed_answers, printed_fractions):
+def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *, intro_spans, printed_answers, printed_fractions, withheld=None):
     """Render one item: the pupil line and its key, each bound to what is printed.
 
     Every binder either proves that the prompt already shows the exercise or
@@ -557,8 +557,8 @@ def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *
         # A label is the author's own plain Hebrew, escaped. An open item has
         # no key: a fixed line sends it to the teacher. Neither enters the ledger.
         if item["answer"]["kind"] == "label":
-            return prompt + ' <div class="ansline"></div>', html.escape(item["answer"]["text"])
-        return prompt + ' <div class="open-work"></div>', html.escape(TEACHER_CHECK)
+            return prompt, html.escape(item["answer"]["text"])
+        return prompt, html.escape(TEACHER_CHECK)
     if not figure_task and computed["question"].get("kind") == "decide":
         decision = bind_decision(seen, item, computed, number_grade)
         # A fresh calculation, not a model-provided answer or boolean.
@@ -566,7 +566,7 @@ def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *
         ledger.claim(f"{n}.{j}", "תוצאת המשימה המתמטית המודפסת בלבד", (repeated == computed, computed), method="sympy")
         ledger.claim(f"{n}.{j}.decision", "ההכרעה המודפסת היא הכרעת הטענה שבשאלה",
                      (repeated["result"]["holds"] is decision.holds, decision.proof), method="closed_form")
-        return prompt + ' <div class="ansline"></div>', _decision_text(decision, grade, H)
+        return prompt, _decision_text(decision, grade, H)
     forms = frozenset() if figure_task else answer_form(seen, item, computed)
     keyed = computed if figure_task else narrowed(computed, chosen_solutions(seen, item, computed))
     answer = _answer_text(keyed, item["answer"]["unit"], grade, H, notation=notation, forms=forms)
@@ -625,12 +625,91 @@ def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *
         if calculation:
             bound = True
             ledger.claim(f"{n}.{j}.calculation", "התשובה היא ערך התרגיל המודפס", calculation, method="closed_form")
-    show = not bound and (shows_task(seen, item, computed) or needs_printed_task(lesson, n-1, j-1, item))
+    forced = not bound and needs_printed_task(lesson, n-1, j-1, item)
+    if forced and not shows_task(seen, item, computed, withheld=withheld) and shows_task(seen, item, computed):
+        # The calculation this item must print shows an earlier item's answer.
+        raise GeneralSourceError("PRINTED_ANSWER_LEAK", "An item prints the answer of an earlier item of the same question")
+    # An earlier item's answer in the typed task keeps the task off the page (withheld, validated by answer_leak).
+    show = not bound and (shows_task(seen, item, computed, withheld=withheld) or forced)
     task_text = _task_text(computed, grade, H, notation=notation) if show else ""
     # A fresh calculation, not a model-provided answer or boolean.
     repeated = solve_figure_task(question["figure"],item["answer"]["operation"],item["answer"].get("point")) if figure_task else validate_and_solve_task(item["answer"]["task"])
     ledger.claim(f"{n}.{j}", "תוצאת המשימה המתמטית המודפסת בלבד", (repeated == computed, computed), method="closed_form" if figure_task else "sympy")
-    return prompt + " " + task_text + '<div class="ansline"></div>', answer
+    return (prompt + " " + task_text if task_text else prompt), answer
+
+
+# The writing room under an item, sized by what the item asks the pupil to write.
+_DRAWING = re.compile(r"(?<![א-ת])ו?(?:צי?ירו|שרטטו|סרטטו|צבעו|גזרו|קפלו|בנו|הרכיבו|מדדו|סמנו\s+על)(?![א-ת])")
+_POINTED = re.compile(r"[\u0591-\u05c7]")
+
+
+def _plain_words(spans):
+    return _POINTED.sub("", "".join(span.get("text", "") if span.get("kind") == "text" else "@" for span in spans or ()))
+
+
+def _operations(tree):
+    """How many operations a typed expression performs (an n-ary sum of four terms is three)."""
+    if isinstance(tree, dict):
+        own = max(0, len(tree.get("args") or ()) - 1) if tree.get("type") == "operation" else 0
+        if tree.get("type") == "operation" and tree.get("op") in ("sqrt", "negate"):
+            own = 1 if tree.get("op") == "sqrt" else 0
+        return own + sum(_operations(child) for key, child in tree.items() if key != "type")
+    if isinstance(tree, list):
+        return sum(_operations(child) for child in tree)
+    return 0
+
+
+def answer_room(question, item, computed):
+    """(kind, lines): the room an item needs, from what it asks the pupil to write.
+
+    drawing      an open item that asks to draw, build or measure: a framed box
+    explanation  an open item that asks to explain or invent, a middle-school review: three lines
+    computation  the pupil writes an exercise from words (a story), or a solution with several steps: three lines
+    steps        a printed calculation of several operations, a one-operation story, a verdict with its check: two lines
+    short        a blank inside the printed formula, a name, a one-operation printed calculation: one line
+    """
+    answer = item["answer"]
+    words = _plain_words(item.get("prompt")) + " " + _plain_words(question.get("intro"))
+    if answer["kind"] == "open":
+        return ("drawing", 4) if _DRAWING.search(words) else ("explanation", 3)
+    if answer["kind"] == "review":
+        return "explanation", 3
+    if answer["kind"] == "label" or computed is None:
+        return "short", 1
+    task = computed["question"]
+    if task.get("kind") == "decide":
+        return "steps", 2
+    if any(span.get("kind") == "formula" and "___" in span.get("notation", "") for span in item.get("prompt") or ()):
+        return "short", 1
+    operations = _operations({key: value for key, value in task.items() if key != "kind"})
+    if task.get("kind") in ("solve", "solve_system", "inequality"):
+        # Solving is written line by line, whether or not the equation is printed.
+        operations += 1
+        if operations > 2:
+            return "computation", 3
+    printed = any(span.get("kind") != "text" and _operations(span.get("expression")) + len(re.findall(r"[-+*/:^x×·]", span.get("notation", ""))) > 0
+                  for span in item.get("prompt") or ())
+    if printed:
+        return ("short", 1) if operations <= 1 else ("steps", 2)
+    return ("steps", 2) if operations <= 1 else ("computation", 3)
+
+
+# Points below a middle-school item; the pinned printer leaves them blank under the item.
+MIDDLE_SPACE = {"short": 32, "steps": 50, "computation": 68, "explanation": 68, "drawing": 120}
+
+
+def _elementary_room(kind, lines):
+    """The room as the pinned printer and the Word exporter both read it, beside (not inside) the item.
+
+    The Word exporter turns a direct ``ansline`` child of a question into an
+    answer line and ignores one nested in the item, so the room follows the
+    item. Ruled lines above it are one block of line breaks, a blank paragraph
+    of the same height in Word.
+    """
+    if kind == "drawing":
+        return '<div class="open-work">' + "<br>" * lines + '</div>'
+    ruled = "".join('<div class="wl"><br></div>' for _ in range(lines - 1))
+    return ('<div class="work-room">' + ruled + '</div>' if ruled else '') + '<div class="ansline"></div>'
 
 
 def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed_answers=None, printed_fractions=False, cursor=None):
@@ -651,8 +730,11 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
             revised_intro = place_intro(lesson, question)
             intro_spans = [{"kind":"text","text":revised_intro}] if revised_intro else question["intro"]
             intro = rich_text(intro_spans, grade, H)
-            if question is section["questions"][0] and not ((printed_answers is not None or printed_fractions) and len(source["sections"]) == 1):
-                pieces.append('<h3 class="section-title">' + html.escape(section["title"]) + '</h3>')
+            # A section heading stands before its first question, never inside it. A heading
+            # that repeats the sheet title (one selected-topic section) is not printed again.
+            heading = ('<h3 class="section-title">' + html.escape(section["title"]) + '</h3>'
+                       if question is section["questions"][0] and section["title"] != source["title"]
+                       and not ((printed_answers is not None or printed_fractions) and len(source["sections"]) == 1) else '')
             if "table" in question:
                 table = question["table"]
                 pieces.append('<table class="work-table" dir="rtl"><thead><tr>' + ''.join('<th>'+rich_text(c, grade, H)+'</th>' for c in table["head"]) + '</tr></thead><tbody>' + ''.join('<tr>'+''.join('<td>'+rich_text(c, grade, H)+'</td>' for c in row)+'</tr>' for row in table["rows"]) + '</tbody></table>')
@@ -664,6 +746,9 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                     raise GeneralSourceError("UNVERIFIED_FIGURE","The rendered elementary figure has no passing measured-SVG assertion", question=n)
                 ledger.claim(str(n),"בדיקת הנתונים בשרטוט המודפס",measurement,method="figure_assert")
                 pieces.append(H.fig(svg))
+            # The earlier answers each item's printed task may not show (validated by answer_leak).
+            seen = dict(question, intro=intro_spans)
+            withheld = earlier_answers(seen, printed_keys(seen, [solved.get(f"q{n}-i{k}") for k in range(1, len(question["items"]) + 1)]))
             for j, item in enumerate(question["items"], 1):
                 item_id = f"q{n}-i{j}"; computed = solved.get(item_id)
                 if computed is None and item["answer"]["kind"] not in ("label", "open"):
@@ -671,11 +756,11 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                 try:
                     body, answer = _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger,
                                                     intro_spans=intro_spans, printed_answers=printed_answers,
-                                                    printed_fractions=printed_fractions)
+                                                    printed_fractions=printed_fractions, withheld=withheld[j])
                 except GeneralSourceError as error:
                     # A later stage replaces exactly this question.
                     raise error.at(n, j)
-                pieces.append('<div class="sub">'+LETTERS[j-1]+'. '+body+'</div>')
+                pieces.append('<div class="sub">'+LETTERS[j-1]+'. '+body+'</div>' + _elementary_room(*answer_room(seen, item, computed)))
                 items.append(H.plain(body)); answers.append(answer)
                 source_items.append({"id": item_id, "label": LETTERS[j-1], "text": H.plain(body), "answer": H.plain(answer), "task": computed["question"], "verificationId": f"{n}.{j}"}
                                     if computed else
@@ -685,7 +770,7 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
             q = {"n": str(n), "intro": H.plain(intro), "items": items, "answer": H.plain(H.keyed(answers)), "star": question["star"]}
             if figpath:
                 q["fig"] = figpath
-            qs.append((q, intro, ''.join(pieces), H.keyed(answers)))
+            qs.append((q, intro, ''.join(pieces), H.keyed(answers), heading))
             canon.append({"id": f"q{n}", "n": n, "section": section["title"], "conceptIds": section["conceptIds"], "intro": intro_spans, "table": question.get("table"), "figure": question.get("figure"), "items": source_items})
     cursor["question"] = None
     # The pinned content schema is {n, intro, items, answer, fig}. The star stays
@@ -703,12 +788,16 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
     # Keep long answer keys readable even when they continue across a page break.
     answer_layout = ("table.ans td{padding:8px}"
                      "table.ans tr:nth-last-child(-n+6):not(:last-child){break-after:avoid}")
-    head = head.replace('</head>', '<style>'+answer_layout+'.answers span.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block;white-space:nowrap}.work-table{border-collapse:collapse;width:100%;margin:8px 0}.work-table td,.work-table th{border:1px solid #9cb5c8;padding:6px;text-align:center}.section-title{font-size:18px;color:#286ca1}.open-work{min-height:3.2cm;margin:4px 0 8px;border:1px dashed #9cb5c8;border-radius:6px}</style></head>', 1)
-    body = ['<body class="'+('band-ab' if ab else 'band-gd' if lesson["gradeNumber"]<=4 else 'band-hv')+'">', '<div class="unit">'+html.escape(source["title"])+'</div><hr class="unit-rule">', '<div class="subtitle">'+LEVELS[lesson["level"]]+' · כיתה '+grade+'׳</div>', '<div class="details"><span>שם: ____________________</span><span>כיתה: ________</span><span>תאריך: __________</span></div>', '<p>'+rich_text(source["rule"], grade, H)+'</p>', '<ol class="questions">']
-    for q, intro, rendered, answer in qs:
-        body.append('<li'+(' class="starred"' if q["star"] else '')+'>'+('<span class="star"></span> ' if q["star"] else '')+intro+rendered+'</li>')
+    head = head.replace('</head>', '<style>'+answer_layout+'.answers span.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block;white-space:nowrap}.work-table{border-collapse:collapse;width:100%;margin:8px 0}.work-table td,.work-table th{border:1px solid #9cb5c8;padding:6px;text-align:center}.section-title{font-size:18px;color:#286ca1}.open-work{min-height:3.2cm;margin:4px 0 8px;border:1px dashed #9cb5c8;border-radius:6px}'
+                        '.work-room .wl{border-bottom:1px solid #555;min-height:1.6em;margin:2px 0}'
+                        # The closing line goes with the last question, never alone on a page of its own.
+                        '.goodluck{break-before:avoid;page-break-before:avoid}'
+                        '.rule-box{border:1px solid #9cb5c8;border-radius:6px;background:#F4FAFF;padding:4px 12px;margin:8px 0}</style></head>', 1)
+    body = ['<body class="'+('band-ab' if ab else 'band-gd' if lesson["gradeNumber"]<=4 else 'band-hv')+'">', '<div class="unit">'+html.escape(source["title"])+'</div><hr class="unit-rule">', '<div class="subtitle">'+LEVELS[lesson["level"]]+' · כיתה '+grade+'׳</div>', '<div class="details"><span>שם: ____________________</span><span>כיתה: ________</span><span>תאריך: __________</span></div>', '<div class="rule-box">'+rich_text(source["rule"], grade, H)+'</div>', '<ol class="questions">']
+    for q, intro, rendered, answer, heading in qs:
+        body.append(heading+'<li'+(' class="starred"' if q["star"] else '')+'>'+('<span class="star"></span> ' if q["star"] else '')+intro+rendered+'</li>')
     body += ['</ol><div class="goodluck">'+('בְּהַצְלָחָה!' if ab else 'בהצלחה!')+'</div>', '<div class="answers"><h2>'+('תְּשׁוּבוֹת סוֹפִיּוֹת' if ab else 'תשובות סופיות')+'</h2><table class="ans">']
-    for q, intro, rendered, answer in qs:
+    for q, intro, rendered, answer, heading in qs:
         body.append('<tr><td class="qn">'+H.ltr(q["n"]+'.')+'</td><td>'+answer+'</td></tr>')
     body.append('</table></div></body></html>')
     (work / "sheet.html").write_text(head+'\n'.join(body), encoding="utf-8")
@@ -728,6 +817,8 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
             intro = rich_text(question["intro"], lesson["gradeNumber"])
             q = {"n": n, "intro": intro, "star": question["star"], "items": items, "to_prove": []}
             solutions = [solved.get(f"q{n}-i{j}") for j in range(1, len(question["items"]) + 1)]
+            # The earlier answers each item's printed task may not show (validated by answer_leak).
+            withheld = earlier_answers(question, printed_keys(question, solutions))
             bank = matching_solution_choices(question, solutions, lesson["gradeNumber"])
             if bank:
                 options, reused = bank
@@ -789,7 +880,7 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
                 if printed:
                     printed_checks[item_id] = printed
                 show_task = (computed and not printed and not _prints_calculation(item, computed, lesson["gradeNumber"])
-                             and shows_task(question, item, computed))
+                             and shows_task(question, item, computed, withheld=withheld[j]))
                 body = prompt+(" "+_task_text(computed, lesson["gradeNumber"], notation=item["answer"].get("notation")) if show_task else "")
                 # The key prints only the solutions that the item's words ask for.
                 keyed = narrowed(computed, chosen_solutions(question, item, computed)) if computed and not decision else computed
@@ -797,7 +888,9 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
                                       forms=answer_form(question, item, computed), sides=sign["sides"] if sign else None) if computed and not decision else rich_text(item["answer"]["text"], lesson["gradeNumber"]) if not computed else _decision_text(decision, lesson["gradeNumber"])
                 if bound and bound.label:
                     answer = bound.label + " (" + answer + ")"
-                space=280 if question.get("drawingFromWords") and j==len(question["items"]) else 46 if question["star"] else 32
+                # The writing room, in points, by what the item asks the pupil to write (answer_room).
+                space=(280 if question.get("drawingFromWords") and j==len(question["items"])
+                       else MIDDLE_SPACE[answer_room(question, item, computed)[0]] + (14 if question["star"] else 0))
                 # The item's stated givens. Without a printed task, the numbers of a
                 # shared story live in the intro, and the pinned checks must see them there.
                 given = [body] if show_task or not computed or not carries_data(question["intro"]) else [body, intro]

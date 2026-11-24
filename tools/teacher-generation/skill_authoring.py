@@ -11,6 +11,7 @@ from skill_feedback import FEEDBACK as GATE_FEEDBACK
 from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 from claim_words import claim_lint
 from figure_probe import figure_refusal
+from lesson_quality import OUTSIDE_BOUNDARY, SAME_ANSWERS, STEM_MISMATCH, question_quality
 from lesson_select import CHALLENGES, PRACTICE, reserve_groups
 import compact_authoring
 
@@ -507,6 +508,9 @@ def correction_instructions(lesson, scope):
         "SOURCE_NIQQUD": "Apply the required grade-specific Hebrew pointing to every word of this question and its answers.",
         "SOURCE_RICH_TEXT": "Use plain Hebrew strings with [[...]] for mathematics in every rich field.",
         "PRINTED_ANSWER_LEAK": "An item of this question prints an answer that the pupil should find: its own answer (in a fact stated before it, a check exercise, or an estimate that names the result) or the answer of an earlier item. The pupil reads that answer on the sheet. Never write an item's result into its own prompt or into a later prompt; refer to an earlier result in words, such as 'המספר שמצאתם בסעיף א', or give the item its own new givens.",
+        SAME_ANSWERS: "Every item of this question has the same final answer (the same number, or the same yes or no), so a pupil copies or guesses it. Choose new givens so that the items have different answers; a set of yes/no items needs both a yes and a no.",
+        STEM_MISMATCH: "The intro promises an activity that none of the items asks for (a choice among options that are not printed, a decision, an estimate, a comparison of methods, data to select, a step or a constraint). Write the intro as one plain instruction that says exactly what the items ask the pupil to do, or add the item that does it. Never copy the planned activity into the intro and never use the words צעד, אילוץ or קטגוריה for what the pupil does.",
+        OUTSIDE_BOUNDARY: "This question uses a term or a law that the class has not reached at this lesson, or it is built on the subject of a later lesson of the same grade (for example splitting a(b + c) into ab + ac before the distributive law). Keep to the selected concepts and to what the teacher stopping point says the class already knows.",
     }
     grade = lesson["gradeNumber"]
     if grade <= 6:
@@ -575,12 +579,13 @@ def trim_rule(title, rule, lesson, scope):
     return trimmed if examine_frame(title, trimmed, lesson, scope) is None else None
 
 
-def examine_question(wire, index, lesson, scope, *, challenge):
+def examine_question(wire, index, lesson, scope, *, challenge, evidence=None):
     """One wire question examined alone: (its refusal or None, the validated question or None).
 
     The question is expanded and validated exactly as on the whole sheet, but
     by itself, so every code it raises belongs to this question: the notation,
     the typed task, the printed-key binders and the answer-kind checks.
+    ``evidence``, when a list, receives the solved task of each computed item.
     """
     try:
         if not isinstance(wire, dict) or "star" in wire:
@@ -589,8 +594,8 @@ def examine_question(wire, index, lesson, scope, *, challenge):
         expanded = compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]},
             lesson["gradeNumber"], topic=scope["topic"], fraction_notation=scope["topic"]["domain"] == "fractions")
         validated = expanded["sections"][0]["questions"][0]
-        validate_question(validated, lesson["gradeNumber"], scope,
-                          provider=True, qcount=index, evidence=[], pending=[])
+        validate_question(validated, lesson["gradeNumber"], scope, provider=True, qcount=index,
+                          evidence=evidence if isinstance(evidence, list) else [], pending=[])
     except (GeneralSourceError, MathTaskError) as exc:
         return exc, None
     except _BROKEN:
@@ -614,9 +619,12 @@ def question_codes(wire, lesson, scope, *, challenge, index=1, refusals=None):
     for the claim words that the content-truth gates refuse (claim_words): the
     gate would fail the built sheet on them, so the question is replaced first.
     ``refusals``, when a dict, keeps the refusal under id(wire) for a caller
-    that builds a correction request.
+    that builds a correction request. A question that passes is then read for
+    its teaching quality (lesson_quality): all items with one answer, an intro
+    that promises what no item asks, and a question beyond the lesson boundary.
     """
-    refusal, validated = examine_question(wire, index, lesson, scope, challenge=challenge)
+    evidence = []
+    refusal, validated = examine_question(wire, index, lesson, scope, challenge=challenge, evidence=evidence)
     if refusal is None and scope["topic"]["skillId"] == "middle" and "figure" in validated:
         # The render draws the figure with the pinned constructors; one they refuse is refused here.
         refusal = figure_refusal(validated["figure"])
@@ -626,9 +634,10 @@ def question_codes(wire, lesson, scope, *, challenge, index=1, refusals=None):
         if isinstance(refusals, dict):
             refusals[id(wire)] = refusal
         return [refusal.code]
+    codes = set(question_quality(validated, evidence, lesson, scope))
     if scope["topic"]["skillId"] == "elementary":
-        return sorted({row["gate"] for row in claim_lint(validated)})
-    return []
+        codes |= {row["gate"] for row in claim_lint(validated)}
+    return sorted(codes)
 
 
 # A question that points at another question of the sheet by number or position.

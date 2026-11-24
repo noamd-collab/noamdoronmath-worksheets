@@ -84,6 +84,7 @@
     "tools/teacher-generation/general_source.py",
     "tools/teacher-generation/generation-curriculum.json",
     "tools/teacher-generation/lesson_boundary.py",
+    "tools/teacher-generation/lesson_quality.py",
     "tools/teacher-generation/lesson_select.py",
     "tools/teacher-generation/math_tasks.py",
     "tools/teacher-generation/model-output.schema.json",
