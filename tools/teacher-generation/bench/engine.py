@@ -15,6 +15,9 @@ Engine names this module depends on:
   `precheck_job`.
 * `general_provider.Draft` (through the worker's session): `selection.record`.
 * `provider.request_author_json(target, key, body, metadata, timeout)`.
+* `author_request`: a part request carries `slice` in its user data
+  (`slice_plan`), answered from the matching rows of a recorded reply.
+* `remote_worker.clock`, replaced by a VirtualClock to replay measured durations.
 * `general_provider.author_general_lesson`, `general_adapters.compile_source`.
 * `cloud/container/skill_bundle.install` and the bundled skill archives.
 """
@@ -44,7 +47,9 @@ CREDENTIAL_ENV = ('QWEN_API_KEY', 'DASHSCOPE_API_KEY', 'QWEN_BASE_URL', 'QWEN_MO
                   'TEACHER_GENERATION_SERVICE_KEY',
                   # The author switch and the second provider's credential: an offline
                   # run always takes the placeholder Qwen settings below.
-                  'TEACHER_AUTHOR_PROVIDER', 'GEMINI_API_KEY', 'GEMINI_MODEL')
+                  'TEACHER_AUTHOR_PROVIDER', 'GEMINI_API_KEY', 'GEMINI_MODEL',
+                  # The author part setting: an offline run states its own (engine_environment).
+                  'TEACHER_AUTHOR_SLICES')
 # Placeholders for offline runs. The host is on the engine's allowlist so its
 # configuration check passes; the transport is replaced and sockets are
 # refused, so nothing is ever sent there.
@@ -95,8 +100,12 @@ def skill_roots(cache):
 
 
 @contextmanager
-def engine_environment(skills, *, live=False):
-    """Point the engine at the skills. Offline runs see no real credential at all."""
+def engine_environment(skills, *, live=False, slices=None):
+    """Point the engine at the skills. Offline runs see no real credential at all.
+
+    ``slices`` sets TEACHER_AUTHOR_SLICES (1-4 or auto); offline it is
+    otherwise unset, so the offline provider writes a sheet in one call.
+    """
     values = {SKILL_ENV[kind]: str(path) for kind, path in skills.items()}
     values['PYTHONDONTWRITEBYTECODE'] = '1'
     with patch.dict(os.environ, values):
@@ -104,6 +113,8 @@ def engine_environment(skills, *, live=False):
             for name in CREDENTIAL_ENV:
                 os.environ.pop(name, None)
             os.environ.update(OFFLINE_PROVIDER)
+        if slices is not None:
+            os.environ['TEACHER_AUTHOR_SLICES'] = str(slices)
         yield
 
 
@@ -160,6 +171,54 @@ def describe_call(body):
             'maxTokens': body.get('max_tokens'), 'temperature': body.get('temperature')}
 
 
+def part_of(body):
+    """The `slice` of an author part request (author_request.part_user), or None."""
+    try:
+        data = json.loads(body['messages'][1]['content'])
+    except (KeyError, IndexError, TypeError, ValueError):
+        return None
+    part = data.get('slice') if isinstance(data, dict) else None
+    if not isinstance(part, dict):
+        return None
+    plan = data.get('questionPlan') if isinstance(data.get('questionPlan'), list) else []
+    reserves = data.get('reservePlan') if isinstance(data.get('reservePlan'), list) else []
+    return {**part, 'planPractice': sum(1 for row in plan if row.get('group') == 'practice'),
+            'planQuestions': len(plan), 'planReserves': len(reserves)}
+
+
+def cut_reply(full, part):
+    """The rows of a recorded whole reply that one part asks for, as that part's reply.
+
+    The last part also receives what the recorded reply holds beyond the plan
+    (questions and reserves), so that the joined reply carries everything the
+    recorded one did. A recorded reply that is not an object goes to the first part.
+    """
+    if not isinstance(full, dict):
+        return deepcopy(full) if part['writesTitleAndRule'] else {}
+    last = part['part'] == part['parts']
+    reply = {}
+    if part['writesTitleAndRule']:
+        reply.update({key: deepcopy(full[key]) for key in ('title', 'rule') if key in full})
+    practice = full.get('practice') if isinstance(full.get('practice'), list) else []
+    challenges = full.get('challenges') if isinstance(full.get('challenges'), list) else []
+    reserves = full.get('reserves') if isinstance(full.get('reserves'), list) else []
+    planned_challenges = part['planQuestions'] - part['planPractice']
+    for group, rows, offset, numbers, planned in (
+            ('practice', practice, 1, part['practiceQuestionNumbers'], part['planPractice']),
+            ('challenges', challenges, 1 + part['planPractice'], part['challengeQuestionNumbers'], planned_challenges)):
+        chosen = [deepcopy(rows[n - offset]) for n in numbers if n - offset < len(rows)]
+        if last:
+            chosen += deepcopy(rows[planned:])
+        if numbers or (last and rows[planned:]):
+            reply[group] = chosen
+    chosen = [deepcopy(reserves[n - 1]) for n in part['reserveNumbers'] if n - 1 < len(reserves)]
+    if last:
+        chosen += deepcopy(reserves[part['planReserves']:])
+    if part['reserveNumbers'] or chosen:
+        reply['reserves'] = chosen
+    return reply
+
+
 class TextReply:
     """A recorded correction kept as the model's content text, with the keys its request asked for."""
 
@@ -184,6 +243,9 @@ class RecordedReplies:
     def __init__(self, first, corrections=(), first_text=None, subsets=False):
         self.first = first
         self.first_text = first_text
+        # Author parts (author_request): each part number is answered once, from the first reply.
+        self._parts_answered, self._single_answered = set(), False
+        self._lock = threading.Lock()
         # What-if mode: a recorded correction also answers a request for some of its keys.
         self.subsets = subsets
         self.corrections = [c for c in corrections if isinstance(c, dict)]
@@ -198,14 +260,48 @@ class RecordedReplies:
         envelope = json.dumps({'choices': [{'finish_reason': 'stop', 'message': {'content': text}}]}).encode()
         return provider.parse_author_reply(envelope, metadata if isinstance(metadata, dict) else {})
 
+    def _part(self, part, entry, metadata):
+        """A part of the first author attempt: the matching rows of the first reply."""
+        from validation import GenerationError
+        if part['part'] in self._parts_answered or self._single_answered:
+            # A later attempt asks for the whole sheet again: never recorded.
+            entry['answered'] = False
+            raise GenerationError('REPLAY_REPLY_NOT_RECORDED', 'No recorded reply answers this author request')
+        self._parts_answered.add(part['part'])
+        whole = self.first
+        if self.first_text is not None:
+            from reply_salvage import salvage
+            read = salvage(self.first_text)
+            if read is None:
+                if part['writesTitleAndRule']:
+                    entry['answered'] = True
+                    return self._read_text(self.first_text, metadata)
+                whole = {}
+            else:
+                whole = read[0]
+        entry['answered'] = True
+        if isinstance(metadata, dict):
+            metadata.update(responseReceived=True, usage={}, elapsedSeconds=0.0)
+        return cut_reply(whole, part)
+
     def __call__(self, target, key, body, metadata, timeout):
+        with self._lock:
+            return self._answer(target, key, body, metadata, timeout)
+
+    def _answer(self, target, key, body, metadata, timeout):
         from validation import GenerationError
         entry = describe_call(body)
         self.calls.append(entry)
-        if len(self.calls) == 1 and self.first_text is not None:
+        part = part_of(body)
+        if part is not None:
+            entry['part'] = part['part']
+            return self._part(part, entry, metadata)
+        first_call = not self._single_answered and not self._parts_answered
+        self._single_answered = self._single_answered or first_call
+        if first_call and self.first_text is not None:
             entry['answered'] = True
             return self._read_text(self.first_text, metadata)
-        if len(self.calls) == 1:
+        if first_call:
             reply = self.first
         else:
             wanted = set(entry['required'])
@@ -295,6 +391,8 @@ class LiveCalls:
         self.real, self.folder = real, Path(folder)
         self.calls_left, self.tokens_left = max_calls, max_output_tokens
         self.calls = []
+        # Author parts call at the same time: the budget is reserved under a lock.
+        self._lock = threading.Lock()
 
     def __call__(self, target, key, body, metadata, timeout):
         from provider import safe_usage
@@ -302,13 +400,16 @@ class LiveCalls:
         entry = describe_call(body)
         entry['timeoutSeconds'] = timeout
         ceiling = entry['maxTokens'] if type(entry['maxTokens']) is int else None
-        if self.calls_left < 1 or ceiling is None or ceiling > self.tokens_left:
-            entry['refused'] = 'SWEEP_BUDGET_EXHAUSTED'
+        with self._lock:
+            if self.calls_left < 1 or ceiling is None or ceiling > self.tokens_left:
+                entry['refused'] = 'SWEEP_BUDGET_EXHAUSTED'
+                self.calls.append(entry)
+                raise GenerationError('SWEEP_BUDGET_EXHAUSTED', 'The sweep budget does not allow this model call')
             self.calls.append(entry)
-            raise GenerationError('SWEEP_BUDGET_EXHAUSTED', 'The sweep budget does not allow this model call')
-        self.calls.append(entry)
-        self.calls_left -= 1
-        number = sum(1 for call in self.calls if 'refused' not in call)
+            self.calls_left -= 1
+            # The part's own output ceiling is held until its count comes back.
+            self.tokens_left -= ceiling
+            number = sum(1 for call in self.calls if 'refused' not in call)
         started = time.monotonic()
         try:
             reply = self.real(target, key, body, metadata, timeout)
@@ -328,11 +429,100 @@ class LiveCalls:
             if produced is None:
                 # No count came back; charge the request's own ceiling so the cap stays hard.
                 produced, entry['outputTokensAssumed'] = ceiling, True
-            self.tokens_left -= produced
+            with self._lock:
+                self.tokens_left += ceiling - produced
         entry['reply'] = f'reply-{number}.json'
         self.folder.mkdir(parents=True, exist_ok=True)
         (self.folder / entry['reply']).write_text(
             json.dumps(reply, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+        return reply
+
+
+# --------------------------------------------------------------------------- measured durations
+
+# gemini-3.8-flash, live rounds of 23 Nov: a least-squares fit over 26 author and
+# 15 correction calls (residual sd 2.8 s, worst 11 s): seconds = 0.33 + 6.99 ms per
+# output token + 0.066 ms per input token; a cached input token was no faster.
+# Tokens per character of the compact JSON reply and of the request text, from the same calls.
+LATENCY = {'base': 0.33, 'output': 0.00699, 'input': 0.0000659,
+           'outputTokensPerChar': 0.427, 'inputTokensPerChar': 0.428}
+
+
+def modelled_seconds(body, reply, model=LATENCY):
+    """(seconds, output tokens, input tokens) the measured rate gives for one request and its reply."""
+    try:
+        sent = sum(len(message['content']) for message in body['messages'])
+    except (KeyError, TypeError):
+        sent = 0
+    produced = len(json.dumps(reply, ensure_ascii=False)) if reply is not None else 0
+    out_tokens, in_tokens = model['outputTokensPerChar'] * produced, model['inputTokensPerChar'] * sent
+    return model['base'] + model['output'] * out_tokens + model['input'] * in_tokens, out_tokens, in_tokens
+
+
+class VirtualClock:
+    """A clock that only the bench moves: the worker's `clock` during a replay of measured durations."""
+
+    def __init__(self):
+        self.now_seconds = 0.0
+        self._lock = threading.Lock()
+
+    def now(self):
+        with self._lock:
+            return self.now_seconds
+
+    def advance(self, seconds):
+        with self._lock:
+            self.now_seconds += seconds
+
+    def reach(self, moment):
+        with self._lock:
+            self.now_seconds = max(self.now_seconds, moment)
+
+
+class Timed:
+    """Wrap a transport so each call takes the measured rate's duration on a VirtualClock.
+
+    The parts of one author attempt start together and the clock moves on when
+    the last of them ends, at the start plus the longest part, as on the wire.
+    Each call is recorded with its modelled seconds and token estimates.
+    """
+
+    def __init__(self, transport, clock, model=LATENCY):
+        self.transport, self.clock, self.model = transport, clock, model
+        self.calls, self._lock, self._wave = [], threading.Lock(), None
+
+    def __call__(self, target, key, body, metadata, timeout):
+        part = part_of(body)
+        with self._lock:
+            if part is not None:
+                if self._wave is None or part['part'] in self._wave['seen']:
+                    self._wave = {'start': self.clock.now(), 'left': part['parts'], 'end': 0.0, 'seen': set()}
+                wave = self._wave
+                wave['seen'].add(part['part'])
+                start = wave['start']
+            else:
+                wave, start = None, self.clock.now()
+        reply, error = None, None
+        try:
+            reply = self.transport(target, key, body, metadata, timeout)
+        except BaseException as exc:  # noqa: BLE001 - re-raised after the duration is recorded
+            error = exc
+        seconds, out_tokens, in_tokens = modelled_seconds(body, reply, self.model)
+        with self._lock:
+            self.calls.append({'part': part['part'] if part else None, 'start': round(start, 3),
+                               'seconds': round(seconds, 3), 'outputTokens': round(out_tokens),
+                               'inputTokens': round(in_tokens), 'error': getattr(error, 'code', None)})
+            if wave is None:
+                self.clock.reach(start + seconds)
+            else:
+                wave['end'] = max(wave['end'], start + seconds)
+                wave['left'] -= 1
+                if wave['left'] == 0:
+                    self.clock.reach(wave['end'])
+        if isinstance(metadata, dict) and error is None:
+            metadata['elapsedSeconds'] = round(seconds, 3)
+        if error is not None:
+            raise error
         return reply
 
 
@@ -366,7 +556,7 @@ def _read_json(path):
         return None
 
 
-def run_job(lesson, transport, root, *, seed, route='worker', render=True):
+def run_job(lesson, transport, root, *, seed, route='worker', render=True, clock=None):
     """Run one job exactly as the queue worker would, with no queue and no storage.
 
     `remote_worker.process_job` is called unchanged; it runs `author_and_render`
@@ -377,7 +567,8 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
 
     route='general' sends the lesson to the general author even when a local
     author would write it, so that a recorded model reply can be replayed.
-    render=False stops after the author stage.
+    render=False stops after the author stage. ``clock``, a VirtualClock,
+    replaces the worker's clock (remote_worker.clock) for the job's deadline.
     """
     import general_provider
     import provider
@@ -473,6 +664,8 @@ def run_job(lesson, transport, root, *, seed, route='worker', render=True):
         # Observation only.
         stack.enter_context(patch.object(remote_worker, 'precheck_job', prechecking))
         stack.enter_context(patch.object(remote_worker, 'author_and_render', ladder))
+        if clock is not None:
+            stack.enter_context(patch.object(remote_worker, 'clock', clock.now))
         try:
             remote_worker.process_job(remote, job, root)
             final = seen['final'] or {}
@@ -617,6 +810,13 @@ def printed_questions(lesson, payload, skills, work):
     scope = scope_for_lesson(lesson)
     work = Path(work)
     saved = list(sys.path)
+    sections = payload.get('sections') if isinstance(payload, dict) else None
+    count = sum(len(section.get('questions') or []) for section in sections if isinstance(section, dict)) \
+        if isinstance(sections, list) else None
+    if count and count != lesson['questionCount']:
+        # A sheet planned shorter than its request (an opening sheet) is compiled for its own
+        # count, as the worker renders it (Draft.lesson, salvaged_from).
+        lesson = {**lesson, 'questionCount': count}
     try:
         general_adapters.compile_source(lesson, {'source': payload}, scope,
                                         str(skills[scope['topic']['skillId']]), work)

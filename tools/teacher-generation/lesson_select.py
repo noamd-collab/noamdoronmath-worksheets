@@ -107,11 +107,15 @@ class Selection:
     checks require.
     """
 
-    def __init__(self, planned, reserves, predicate, shared=None, soft=()):
+    def __init__(self, planned, reserves, predicate, shared=None, *, soft=(), minimum=None):
         self.predicate = predicate
         self.shared = shared
         # Codes that mark a question as worse than a replacement, not as unfit (restore()).
         self.soft = frozenset(soft)
+        # The fewest questions a shorter sheet may keep: minimum_count of the
+        # planned positions, or the caller's floor for a sheet planned shorter
+        # than its request.
+        self.minimum = minimum
         self.slots = []
         for number, row in enumerate(planned, 1):
             group, question, concepts = _entry(row)
@@ -301,7 +305,8 @@ class Selection:
     def can_shorten(self):
         """Whether the sheet may be printed without its missing questions."""
         present = sum(1 for slot in self.slots if slot.question is not None)
-        return (bool(self.missing()) and present >= minimum_count(self.planned)
+        floor = minimum_count(self.planned) if self.minimum is None else max(self.minimum, minimum_count(self.planned))
+        return (bool(self.missing()) and present >= floor
                 and self.real_challenges() >= MINIMUM_CHALLENGES)
 
     def shorten(self):

@@ -135,7 +135,10 @@ class TeachingQuality(unittest.TestCase):
             with self.subTest(case=case_id):
                 lesson = lesson_of(case_id)
                 session = {}
-                with patch('provider.request_author_json', return_value=deepcopy(reply_of(case_id))):
+                # Both are opening sheets recorded against the 20-question plan, so the plan keeps
+                # it here (skill_authoring.planned_count would plan 15).
+                with patch('provider.request_author_json', return_value=deepcopy(reply_of(case_id))), \
+                        patch('skill_authoring.INTRODUCE_MINUTES_PER_ITEM', None):
                     payload = general_provider.author_general_lesson(
                         lesson, metadata={}, revision=session, api_key='k', model='m',
                         base_url='https://dashscope-intl.aliyuncs.com/compatible-mode/v1',

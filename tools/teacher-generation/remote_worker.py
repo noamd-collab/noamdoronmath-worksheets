@@ -7,9 +7,11 @@ logged, or copied to job artifacts. A process exit does not install a daemon.
 A version 3 job is repaired in this order, each step only when the one before
 left a deficit: reserve questions (no model call), ONE targeted correction
 call for the missing questions, a shorter sheet, ONE second full author call.
-Per job: at most AUTHOR_CALLS author calls and CORRECTION_CALLS correction
-calls, and no model call starts later than MODEL_CALL_WINDOW seconds after
-the claim. A sheet may fail; it never prints a question that a check refused.
+Per job: at most AUTHOR_CALLS author attempts (each one call, or one call per
+parallel part: author_request) and CORRECTION_CALLS correction calls, and no
+model call starts unless its measured duration fits before MODEL_DEADLINE; a
+second author attempt starts only while one correction still fits after it.
+A sheet may fail; it never prints a question that a check refused.
 """
 from __future__ import annotations
 import argparse
@@ -40,7 +42,15 @@ ENABLE_SKILL_REVISION = True
 # The repair ladder's hard limits for one job.
 AUTHOR_CALLS = 2          # the first reply and at most one second full attempt
 CORRECTION_CALLS = 2      # targeted corrections, for missing questions only
-MODEL_CALL_WINDOW = 150   # seconds after the claim in which a model call may still start
+# The per-job time budget, from the live rounds of 23 Nov (gemini-3.8-flash, 26
+# author and 15 correction calls). A call starts only when its measured
+# duration still fits before the deadline, and a second author attempt only
+# when one correction still fits after it.
+AUTHOR_SECONDS = 80           # one single-call author attempt: median 61.8 s, max 74.4 s
+PARTS_AUTHOR_SECONDS = 45     # one attempt in parallel parts (author_request): about 27 s expected by bench/latency.py
+CORRECTION_SECONDS = 25       # one correction call: median 21.6 s, max 24.0 s
+# Two attempts and two corrections at their measured maximum: 210 s after the claim.
+MODEL_DEADLINE = 2 * (AUTHOR_SECONDS + CORRECTION_SECONDS)
 PRECHECK_PASSES = 2       # rounds of replacing what the pre-pass names, before any PDF or Word file
 FULL_RENDERS = 2          # the render, and one more after a gate named questions
 RESULT_LIMIT = 30000      # the jobs table refuses a result above 32,000 bytes
@@ -78,6 +88,9 @@ class Remote:
             raise RuntimeError('REMOTE_HTTP_'+str(e.code)) from None
 
 def utc(): return datetime.now(timezone.utc)
+def clock():
+    """Seconds on the worker's monotonic clock; the bench replaces it to replay measured durations."""
+    return time.monotonic()
 def check_transport(remote):
     """Read-only schema/storage readiness. Never claims a job or advertises health.
 
@@ -171,6 +184,10 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         # The repair ladder's model calls for this job.
         for key, top in (('authorCalls', AUTHOR_CALLS), ('correctionCalls', CORRECTION_CALLS)):
             if type(metadata.get(key)) is int and 0 <= metadata[key] <= top: record[key] = metadata[key]
+        # Parallel author parts and the questions their duplicate filter refused: two small counts.
+        parts = metadata.get('authorSlices')
+        if isinstance(parts, dict) and all(type(parts.get(key)) is int and 0 <= parts[key] <= 99 for key in ('parts', 'duplicates')):
+            record['authorSlices'] = {'parts': parts['parts'], 'duplicates': parts['duplicates']}
         # Whether the author wrote the reserve questions it was asked for: two small counts.
         reserves = metadata.get('reserves')
         if isinstance(reserves, dict) and all(type(reserves.get(key)) is int and 0 <= reserves[key] <= 99 for key in ('offered', 'dropped')):
@@ -277,8 +294,8 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
     """Author and render one job. Returns (manifest, folder that holds the artifacts).
 
     ``summary``, when a dict, is filled as the job advances: the stage, the
-    calls used and what was replaced. ``claimed_at`` is the monotonic time of
-    the claim, for MODEL_CALL_WINDOW.
+    calls used and what was replaced. ``claimed_at`` is the clock() time of
+    the claim, for MODEL_DEADLINE.
     """
     lesson = job['lesson']
     metadata = {}
@@ -318,12 +335,23 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
         state['stage'] = 'render'
         return render_job(lesson, payload, target), target
 
-    claimed = time.monotonic() if claimed_at is None else claimed_at
+    claimed = clock() if claimed_at is None else claimed_at
     state.update(attempts=0, corrections=0)
     closed = False  # a model call failed without a reply: no further call for this job
 
     def may_call(kind):
-        if closed or time.monotonic() - claimed >= MODEL_CALL_WINDOW:
+        """Whether a model call of ``kind`` may start now (MODEL_DEADLINE)."""
+        if closed:
+            return False
+        if kind == 'author':
+            # A second attempt is written the way the first one was: one call, or parallel parts.
+            parts = metadata.get('authorSlices') if isinstance(metadata.get('authorSlices'), dict) else {}
+            author = PARTS_AUTHOR_SECONDS if type(parts.get('parts')) is int and parts['parts'] > 1 else AUTHOR_SECONDS
+            # Room for the attempt and for exactly one correction after it.
+            needed = author + CORRECTION_SECONDS
+        else:
+            needed = CORRECTION_SECONDS
+        if clock() - claimed + needed > MODEL_DEADLINE:
             return False
         return state['attempts'] < AUTHOR_CALLS if kind == 'author' else state['corrections'] < CORRECTION_CALLS
 
@@ -436,8 +464,8 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
                     state['gate'] = 'deliver'
                     if draft is not None:
                         state.update({key: value for key, value in draft.report().items()
-                                      if key in ('replaced', 'dropped', 'printed', 'replacedCodes', 'droppedCodes',
-                                                 'byReserve', 'byCorrection')})
+                                      if key in ('planned', 'replaced', 'dropped', 'printed', 'replacedCodes',
+                                                 'droppedCodes', 'byReserve', 'byCorrection')})
                     return manifest, folder
                 state['gate'] = gate.get('action') if gate.get('action') in ('replace', 'fail') else 'fail'
                 steps = manifest.get('steps') if isinstance(manifest.get('steps'), list) else []
@@ -500,7 +528,7 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
     if raw_target.is_symlink(): raise RuntimeError('JOB_PATH_DENIED')
     target=raw_target.resolve()
     if target.parent!=root or target.exists(): raise RuntimeError('JOB_PATH_DENIED')
-    claimed=time.monotonic()
+    claimed=clock()
     summary={}
     stage=None
     # Confirm the current lease against durable state before any billed call.
@@ -552,6 +580,11 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
                 # A shorter sheet is delivered with its own note for the teacher.
                 findings=(findings if isinstance(findings,list) else [])+[
                     {'code':'SHORTER_SHEET','class':'editorial','count':salvage['dropped']['count']}]
+            planned=summary.get('planned')
+            if type(planned) is int and 0<planned<lesson['questionCount']:
+                # An opening sheet planned by its minutes (skill_authoring.planned_count) has its own note.
+                findings=(findings if isinstance(findings,list) else [])+[
+                    {'code':'LESSON_SIZED','class':'editorial','count':lesson['questionCount']-planned}]
             unverified=unverified_rows(manifest.get('unverifiedAnswers',[])) or []
             # Editorial findings only: fixed codes, counts, question numbers and
             # this engine's own Hebrew notes. No gate or model text is forwarded.
@@ -580,7 +613,9 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
 def load_env(path):
     allowed={'QWEN_API_KEY','DASHSCOPE_API_KEY','QWEN_BASE_URL','QWEN_MODEL','TEACHER_GENERATION_SERVICE_KEY','ELEMENTARY_SKILL_PATH','MIDDLE_SKILL_PATH',
              # The author switch and the selected provider's own credential and model (provider.author_config).
-             'TEACHER_AUTHOR_PROVIDER','GEMINI_API_KEY','GEMINI_MODEL'}
+             'TEACHER_AUTHOR_PROVIDER','GEMINI_API_KEY','GEMINI_MODEL',
+             # Parallel author parts: 1-4 or auto (author_request.slice_setting).
+             'TEACHER_AUTHOR_SLICES'}
     for line in Path(path).read_text().splitlines():
         if not line.strip() or line.lstrip().startswith('#') or '=' not in line:continue
         key,value=line.split('=',1);key=key.strip()

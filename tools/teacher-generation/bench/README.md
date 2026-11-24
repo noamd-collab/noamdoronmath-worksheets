@@ -9,6 +9,7 @@ nothing here changes the engine.
 | --- | --- | --- |
 | `replay.py` | Of the recorded real replies, how many become a delivered sheet, and which question, field and substring stops each one? | none |
 | `probes/run.py` | Which natural ways of writing a question does the engine accept, reject or print wrongly, and what changed since the recorded state? | none |
+| `latency.py` | How long would the author stage take, in one call and in parallel parts, at the measured Gemini rate, and how many cross-part duplicates does each recorded reply hold? `--sizes` prints the characters of each request part. | none |
 | `sweep.py` | Across catalog topics and levels, how often does the default teacher request deliver, by grade, domain and failure class, and at what cost? | only with `--live` |
 
 Run from the repository root with the same `python3` as the engine's tests

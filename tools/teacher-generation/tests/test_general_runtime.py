@@ -103,7 +103,10 @@ class GeneralRuntimeTests(unittest.TestCase):
         self.assertTrue(measured['validated'])
         self.assertEqual(measured['usage'],{'prompt_tokens':123})
         sent=json.loads(body['messages'][1]['content'])
-        self.assertEqual(sent['authoringContext'],context)
+        # The author's copy of the context: without file hashes (author_request.trim_context).
+        import author_request
+        self.assertEqual(sent['authoringContext'],author_request.trim_context(context))
+        self.assertNotIn('files',sent['authoringContext']['scope']['source'])
         schema=body['response_format']['json_schema']['schema']
         self.assertEqual(set(schema['required']), {'title', 'rule', 'practice', 'challenges', 'reserves'})
         # Four reserves for a twenty-question sheet, each tagged with its group and concept.

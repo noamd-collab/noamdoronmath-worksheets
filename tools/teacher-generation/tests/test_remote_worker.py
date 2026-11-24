@@ -562,7 +562,10 @@ class WorkerTests(unittest.TestCase):
     def test_production_enables_the_repair_ladder_with_its_hard_limits(self):
         self.assertIs(worker.ENABLE_SKILL_REVISION, True)
         self.assertIs(worker.process_job.__kwdefaults__["enable_skill_revision"], True)
-        self.assertEqual((worker.AUTHOR_CALLS, worker.CORRECTION_CALLS, worker.MODEL_CALL_WINDOW), (2, 2, 150))
+        self.assertEqual((worker.AUTHOR_CALLS, worker.CORRECTION_CALLS), (2, 2))
+        # The deadline holds two attempts and two corrections at their measured maximum.
+        self.assertEqual((worker.AUTHOR_SECONDS, worker.PARTS_AUTHOR_SECONDS, worker.CORRECTION_SECONDS,
+                          worker.MODEL_DEADLINE), (80, 45, 25, 210))
         self.assertEqual((worker.PRECHECK_PASSES, worker.FULL_RENDERS), (2, 2))
 
     def test_ladder_does_not_reach_legacy_or_disabled_v3(self):
@@ -650,7 +653,7 @@ class WorkerTests(unittest.TestCase):
     def test_no_model_call_starts_after_the_window(self):
         self.use_general_lesson()
         for late in ('correction', 'second-attempt'):
-            with self.subTest(late=late), patch.object(worker, 'MODEL_CALL_WINDOW', 0):
+            with self.subTest(late=late), patch.object(worker, 'MODEL_DEADLINE', 0):
                 root = self.root / late
                 root.mkdir()
                 draft = FakeDraft(self.job['lesson'], missing=[3] if late == 'correction' else [], code='SOURCE_ANSWER')
@@ -807,7 +810,7 @@ class WorkerTests(unittest.TestCase):
         def always(lesson, payload, target, **kwargs):
             count.append(target)
             return refused(target, len(count))
-        with patch.object(worker, 'MODEL_CALL_WINDOW', 0), self.assertRaises(GenerationError) as caught:
+        with patch.object(worker, 'MODEL_DEADLINE', 0), self.assertRaises(GenerationError) as caught:
             self.run_general(self.general_author([draft]), always, root=root, precheck=not_applicable)
         self.assertEqual((caught.exception.code, len(count), len(draft.replaced)), ('QUALITY_GATE_FAILED', 3, 2))
         self.assertEqual(caught.exception.job_failure, {'stage': 'render', 'question': 3, 'gate': 'TRUSTED_ADAPTER',

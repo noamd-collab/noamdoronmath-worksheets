@@ -36,6 +36,7 @@ NOTES = {
     "PAGE_GAP": "בדף יש רווח ריק גדול בין שאלות.",
     "DIDACTIC_REVIEW": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
     "SHORTER_SHEET": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו.",
+    "LESSON_SIZED": "זה דף פתיחה, ולכן מספר השאלות בו הותאם למשך השיעור: בדף פחות שאלות מהמספר שנבחר.",
 }
 
 # Hebrew teacher notes for printed answers that no exact kernel verified, by
@@ -63,6 +64,7 @@ GATES = {
     "ARTIFACT_MISSING": (TRUTH, False),  # runner.py artifact-presence, word-upstream-presence
     "ANSWER_ORDER": (TRUTH, True),       # output_gates.py PDF-answer-LTR: the printed key reads in another order
     "SHORTER_SHEET": (EDITORIAL, False),  # remote_worker.py: a salvaged sheet prints fewer questions than requested
+    "LESSON_SIZED": (EDITORIAL, False),   # remote_worker.py: an opening sheet planned by its minutes (skill_authoring.planned_count)
     # The engine's own error codes for a printed key or figure it could not
     # bind (GeneralSourceError.code). In the trusted-adapter step they arrive
     # as TRUSTED_ADAPTER; a caller that holds the exception can classify the code.

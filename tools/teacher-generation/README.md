@@ -66,8 +66,10 @@ Before the PDF and Word steps the worker runs `runner.precheck_job` and replaces
 it names (at most two rounds). After a render it follows `manifest.gate`: `deliver` is a
 `needs_review` sheet with its notes; `replace` swaps the named questions and renders once more
 in a fresh folder; `fail` goes to step 4. Hard limits per job: two author calls, two correction
-calls, and no model call starts later than 150 seconds after the claim. A call that got no
-answer from the provider closes the job to further calls. The lease is confirmed before every
+calls, and a model call starts only when its measured duration fits before a per-job deadline
+of 210 seconds after the claim; a second author call starts only when one correction still fits
+after it (`remote_worker.MODEL_DEADLINE`). A call that got no answer from the provider closes the
+job to further calls. The lease is confirmed before every
 model call and every render. A delivered result carries `salvage` (attempts, corrections,
 replaced questions by code, dropped questions, the gate decision), `reviewFindings`,
 `teacherNotes` and `unverifiedAnswers` (a count by kind). A failed job stores its code only;

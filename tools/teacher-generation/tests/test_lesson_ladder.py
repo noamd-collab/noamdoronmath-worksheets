@@ -317,7 +317,7 @@ class LadderTests(unittest.TestCase):
         bad = copy.deepcopy(self.base)
         for question in bad['practice'][:5]:
             question['intro'] = BAD_NOTATION
-        with patch.object(remote_worker, 'MODEL_CALL_WINDOW', 0):
+        with patch.object(remote_worker, 'MODEL_DEADLINE', 0):
             transport = Scripted(bad, self.reply(), self.reply())
             outcome, _ = self.run_job(transport)
             self.assertFalse(outcome['delivered'])
@@ -336,13 +336,21 @@ class LadderTests(unittest.TestCase):
         transport = Scripted(self.reply())
         outcome, sheets = self.run_job(transport, lesson)
         self.assertTrue(outcome['delivered'], outcome.get('code'))
-        self.assertEqual((outcome['author']['contract'], len(self.printed(sheets[0]))), ('worksheet-source/4', 12))
+        # An opening sheet is planned by its minutes: 45 minutes hold ten questions of three items at
+        # 1.5 minutes an item (the request's floor is nine), and the twelve-question reply fills them.
+        self.assertEqual((outcome['author']['contract'], len(self.printed(sheets[0])), sheets[0]['salvagedFrom']),
+                         ('worksheet-source/4', 10, 12))
+        self.assertEqual([row['code'] for row in outcome['result']['reviewFindings']], ['LESSON_SIZED'])
+        self.assertEqual(outcome['result']['reviewFindings'][0]['count'], 2)
         sent, system = transport.sent(0), transport.bodies[0]['messages'][0]['content']
         self.assertIn('This is an opening sheet', system)
         self.assertEqual(sent['authoringContext']['teacherContext']['lessonGoal'], 'introduce')
         roles = [row.get('role') for row in sent['questionPlan']]
-        self.assertEqual(roles, ['guided_entry'] * 3 + [None] * 9)                      # the first quarter of the nine ordinary questions
+        self.assertEqual(roles, ['guided_entry'] * 3 + [None] * 7)                      # a quarter of the nine requested ordinary questions
         self.assertTrue(all('step' in row['activity'] or 'idea' in row['activity'] for row in sent['questionPlan'][:3]))
+        # Every question of an opening sheet has exactly its minimum of items.
+        items = sent['sourceSchema']['$defs']['question']['properties']['items']
+        self.assertEqual((items['minItems'], items['maxItems']), (3, 3))
         # A practice sheet states no goal and marks no entry question.
         practice = Scripted(self.reply())
         self.run_job(practice)

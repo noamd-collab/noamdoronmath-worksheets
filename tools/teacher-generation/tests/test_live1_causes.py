@@ -227,9 +227,12 @@ class LiveCauses(unittest.TestCase):
     def test_the_recorded_percent_sheets_reach_a_sheet_with_no_further_author_call(self):
         from bench import replay
         # The engine now asks for fewer questions than were recorded: each recorded correction answers
-        # the ones it holds (corrections='subset'). Live, both attempts ended on their rule.
-        results = replay.run(CORPUS, only=('L1-g8', 'L1-g8-a2'), work=Path(tempfile.mkdtemp(dir=self.scratch)),
-                             skills=self.skills, render=False, corrections='subset')
+        # the ones it holds (corrections='subset'). Live, both attempts ended on their rule. The
+        # recorded corrections are keyed to the 20-question plan, so the opening sheet keeps it here
+        # (skill_authoring.planned_count would plan 15).
+        with patch('skill_authoring.INTRODUCE_MINUTES_PER_ITEM', None):
+            results = replay.run(CORPUS, only=('L1-g8', 'L1-g8-a2'), work=Path(tempfile.mkdtemp(dir=self.scratch)),
+                                 skills=self.skills, render=False, corrections='subset')
         printed = {}
         for case in results['cases']:
             with self.subTest(case=case['id']):

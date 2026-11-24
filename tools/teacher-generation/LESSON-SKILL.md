@@ -74,15 +74,40 @@ scope by `curriculum_scope.validate_curriculum_scope`.
 
 Built in `general_provider.author_general_lesson`.
 
+- **Layout** (`author_request.py`): the system message opens with the pinned
+  skill documents (`author_request.document_prefix`), the same bytes for every
+  job of one skill version and grade band, so a provider prefix cache can serve
+  them; the user data names them only. The author's copy of the context drops
+  file hashes, glossary regexes and source notes (`author_request.trim_context`)
+  and keeps chronology, tools, terms and the notation contract.
+  `author_request.request_parts` measures each part; `bench/latency.py --sizes`
+  prints it (live round 2 rhombus: 162k → 146k characters, 83k of them documents).
 - **System text:** the fixed contract sentences in that function, plus
   `answer_kinds.DECISION_GUIDE`, and for grades 1–6
   `answer_kinds.ELEMENTARY_KINDS_GUIDE` and the claim-word bans of the truth
   gates (no `תמיד`, `לעולם`, `לכל מספר`…), or for grades 7–9 the `solve`/`review`
   block. Conditional blocks: reserves; `lessonGoal: "introduce"` (guided entry
   questions first, a rule with one worked example); a time budget of 1.8
-  minutes or less per question (exactly `minimumItems` short items); a
+  minutes or less per question, or an opening sheet (exactly `minimumItems`
+  short items, `skill_authoring.short_items`); a
   non-geometry topic ("text-and-math lesson", no drawing); middle-school
   geometry representations.
+- **Parallel parts** (`author_request.slice_plan`, `send_parts`, `join`): the
+  plan is split into 2–4 contiguous parts written at the same time with the same
+  system text and plans; each part's schema asks only for its rows
+  (`part_schema`), the first part also for title and rule. Setting
+  `TEACHER_AUTHOR_SLICES` = `1`–`4` or `auto`; unset means `auto` for Gemini
+  (about 9 question objects a part: 3 parts for 20 questions) and one call for
+  Qwen. A part with no reply, or a failed first part, fails the attempt as the
+  one call did; a later part whose reply cannot be used loses only its rows.
+  After the join a question that repeats another part's question (the same
+  item template, or most of its typed tasks) is refused as `DUPLICATE_QUESTION`
+  (`author_request.duplicates`) and takes a reserve.
+- **Sheet size** (`skill_authoring.planned_count`): an opening sheet
+  (`introduce`) is planned at 1.5 minutes an item with exactly the minimum
+  items per question, never above the request and never below
+  `lesson_select.minimum_count` of it (30 minutes, 20 requested: 15 questions,
+  45 items). The delivered result carries the editorial note `LESSON_SIZED`.
 - **User JSON:** `authoringContext`, `questionPlan`
   (`skill_authoring.question_plan`: number, group, conceptIds, minimumItems,
   `role: guided_entry`, `representation` for middle geometry, and an `activity`
@@ -269,7 +294,7 @@ original fragments with `[[...]]` marks inserted, keeping every word.
 
 ## 5. Gate policy
 
-`gate_policy.py` classifies 96 codes: 68 truth, 21 policy, 7 editorial. A code
+`gate_policy.py` classifies 98 codes: 68 truth, 22 policy, 8 editorial. A code
 not in `gate_policy.GATES` is truth.
 
 | Class | Meaning | Effect |
@@ -326,9 +351,14 @@ runs only when the one before left a deficit.
 6. **One second full author call** when a reply was received and the ladder
    ended without a sheet, or the reply was unusable as a whole.
 
-**Limits** (`remote_worker.py` constants): `AUTHOR_CALLS` = 2,
-`CORRECTION_CALLS` = 2, no model call starts later than `MODEL_CALL_WINDOW` =
-150 s after the claim, a call with no answer closes the job to further calls,
+**Limits** (`remote_worker.py` constants): `AUTHOR_CALLS` = 2 attempts (one
+call or one call per part each), `CORRECTION_CALLS` = 2. The per-job deadline
+`MODEL_DEADLINE` = 2 × (`AUTHOR_SECONDS` 80 + `CORRECTION_SECONDS` 25) = 210 s
+after the claim, sized from the live rounds of 23 Nov (author call median
+61.8 s, max 74.4 s; correction median 21.6 s, max 24.0 s): a correction starts
+only when 25 s still fit before it, and a second attempt only when the attempt
+(80 s, or `PARTS_AUTHOR_SECONDS` 45 s when the first attempt was written in
+parts) and exactly one correction after it still fit. A call with no answer closes the job to further calls,
 the lease is confirmed before every call and render, and the author call
 timeout is 300 s. A failed job reports `Draft.first_refusal`'s code
 (`general_provider.failure_code`).
@@ -401,6 +431,7 @@ Run from the repository root. Full guide: `bench/README.md`.
 | Tool | Answers | Calls |
 |---|---|---|
 | `bench/replay.py [--case ID] [--corrections exact\|subset\|none] [--compare bench/corpus/baseline/results.json]` | recorded replies through the unchanged worker (`bench/engine.run_job` → `remote_worker.process_job`) | none; sockets refused |
+| `bench/latency.py [--case ID] [--parts N] [--goal practice] [--sizes]` | the author stage in one call and in parts, at the measured Gemini rate (`engine.LATENCY`), on a virtual clock | none |
 | `bench/probes/run.py [--family F] [--show] [--update]` | 285 synthetic question forms: pass, rejected or wrong print; exit 1 on a regression | none |
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
