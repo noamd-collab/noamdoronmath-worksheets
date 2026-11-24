@@ -11,6 +11,7 @@
  let capabilities = [], online = false, planned = null, requestKey = null, polling = null, clock = null, startedAt = null, busy = false, submitting = false;
  let submittedJobId = null, terminal = false, pollFailures = 0, refreshing = null, initialized = false, dispatchPending = false;
  let wakingUntil = null, wakingChecks = 0, verificationAttempt=null, pendingLink=null, navigationTimer=null;
+ let planWaitDeadline=null;
  const field = name => form.elements.namedItem(name);
  const steps=Array.from(form.querySelectorAll('[data-generation-step]')), stepNames=['כיתה','נושא','רמה','השיעור'];
  let step=0, restorePending=true, attempted=false, receiptChecks=0;
@@ -151,7 +152,7 @@
   if(focus)steps[step].querySelector('h2').focus();
  }
  function showStep(index) {step=index;updateWizard(true);}
- function clearPlan() {attempted=false;receiptChecks=0;planned=null;requestKey=null;submittedJobId=null;terminal=false;dispatchPending=false;}
+ function clearPlan() {planWaitDeadline=null;attempted=false;receiptChecks=0;planned=null;requestKey=null;submittedJobId=null;terminal=false;dispatchPending=false;}
  function resetBoundary() {
   form.querySelectorAll('[name=learnedDivisor]').forEach(input=>{input.checked=false;});
   field('boundaryMaxDividend').value='';field('boundarySignedNumbers').value='';
@@ -181,6 +182,14 @@
  function stopClock() { clearInterval(clock); clock=null; startedAt=null; }
  function tick(phase,createdAt) { if(!startedAt) startedAt=Date.parse(createdAt) || Date.now(); clearInterval(clock); const show=()=>status((dispatchPending && phase==='queued'?'הבקשה נשמרה בתור, אך העבודה עדיין לא התחילה. רענון המצב ינסה להעיר את המנוע בלי ליצור בקשה נוספת.':(labels[phase]||labels.queued))+'… '+Math.floor((Date.now()-startedAt)/1000)+' שניות. אפשר לצאת ולחזור לעמוד למעקב.'); show(); clock=setInterval(show,1000); }
  function scheduleRefresh(delay) {clearTimeout(polling);polling=setTimeout(()=>requestRefresh(),delay);}
+ function pollPreparedPlan() {
+  if(!planned || online || accessDenied || terminal || busy || attempted || submitting || submittedJobId
+   || quotaBlock || document.hidden || polling!==null)return;
+  // The supervisor can wait through a 15-minute backoff and its next cron tick.
+  planWaitDeadline ??= Date.now()+960000;
+  const remaining=planWaitDeadline-Date.now();
+  if(remaining>0)scheduleRefresh(Math.min(60000,remaining));
+ }
  function denied(error) {return error.code==='TEACHER_ACCESS_DENIED' || error.code==='TEACHER_SIGN_IN_REQUIRED';}
  function refreshFailed(error) {
   online=false;$('create-button').disabled=true;
@@ -197,7 +206,7 @@
   return null;
  }
  function requestRefresh(resetRetries=false) {
-  if(resetRetries){pollFailures=0;wakingUntil=null;wakingChecks=0;}
+  if(resetRetries){planWaitDeadline=null;pollFailures=0;wakingUntil=null;wakingChecks=0;}
   if(refreshing)return refreshing;
   clearTimeout(polling);polling=null;refreshButton.disabled=true;
   // Planning needs the verified curriculum, even when the worker is waking or unavailable.
@@ -259,8 +268,30 @@
   if(code==='WORKER_INTERRUPTED' || code==='WORKER_FAILED')return 'עיבוד הדף בשרת נפסק לפני שהטיוטה הושלמה. אפשר לשלוח בקשת יצירה חדשה.';
   return 'הטיוטה לא הושלמה. כדי לנסות שוב, יש לשלוח בקשת יצירה חדשה.';
  }
- function renderHistory(history) {
+ function renderWorksheetDetails(container,result) {
+  const printed=result?.salvage?.printedQuestions, requested=result?.salvage?.requestedQuestions;
+  const shortened=Number.isInteger(printed) && Number.isInteger(requested) && printed>0 && printed<requested && requested<=30;
+  if(shortened) {
+   container.append(node('p','הדף כולל '+printed+' שאלות מתוך '+requested+' שביקשתם.'));
+  }
+  const notes=Array.isArray(result?.teacherNotes)?result.teacherNotes:[];
+  for(const entry of notes.slice(0,4)) {
+   if(entry?.code==='UNVERIFIED_ANSWER' && Number.isInteger(entry.count) && entry.count>0
+    && entry.count<=270 && typeof entry.note==='string' && entry.note.length<=240) {
+    container.append(node('p',entry.note+' ('+entry.count+' סעיפים)'));
+   }
+  }
+  const findings=Array.isArray(result?.reviewFindings)?result.reviewFindings:[];
+  for(const entry of findings.slice(0,40)) {
+   if(typeof entry?.note!=='string' || !entry.note || entry.note.length>240)continue;
+   if(shortened && ['LESSON_SIZED','SHORTER_SHEET'].includes(entry.code))continue;
+   container.append(node('p',entry.note));
+  }
+  return container.childNodes.length>0;
+ }
+ function renderHistory(history,jobs=[]) {
   const root=$('generation-jobs'), worksheets=new Set();
+  const recent=new Map(jobs.map(job=>[job.id,job.result]));
   root.replaceChildren();
   for(const job of history) {
    if(job.status!=='needs_review' || !Array.isArray(job.formats))continue;
@@ -276,7 +307,30 @@
    article.append(node('h3',topic?.title || 'דף לשיעור'));
    article.append(node('p',new Date(job.created_at).toLocaleString('he-IL')+' · '+labels.needs_review));
    if(job.lesson?.lastLesson)article.append(node('p','נקודת העצירה: '+job.lesson.lastLesson));
-   article.append(node('p',allPassed?'הבדיקות האוטומטיות עברו. יש לעיין בטיוטה לפני שימוש בכיתה.':'טיוטה לבדיקה — חלק מההסברים או ההוכחות דורשים בדיקה שלך.'));
+   article.append(node('p',allPassed?'הבדיקות האוטומטיות עברו. יש לעיין בטיוטה לפני שימוש בכיתה.':'הקבצים מוכנים. הטיוטה כוללת סעיפים לעיון המורה.'));
+   const recentResult=recent.get(job.id);
+   const notes=node('div');
+   if(renderWorksheetDetails(notes,recentResult || result))article.append(notes);
+   else if(!recentResult && uuid(job.id)) {
+    const menu=node('details'), summary=node('summary','פרטי הטיוטה');
+    menu.append(summary,notes);
+    let loaded=false, fetching=false;
+    menu.addEventListener('toggle',async()=>{
+     if(!menu.open || loaded || fetching || accessDenied || logoutButton?.disabled)return;
+     fetching=true;notes.replaceChildren(node('p','טוענים את פרטי הטיוטה…'));
+     try {
+      const details=await read(api+'?id='+encodeURIComponent(job.id));
+      if(!menu.isConnected || accessDenied || logoutButton?.disabled)return;
+      notes.replaceChildren();
+      const draft=details.job?.id===job.id && details.job?.status==='needs_review' && details.job.result;
+      if(!renderWorksheetDetails(notes,draft))notes.append(node('p','אין הערות נוספות לטיוטה.'));
+      loaded=true;
+     } catch {
+      notes.replaceChildren(node('p','פרטי הטיוטה אינם זמינים כרגע. אפשר לסגור ולפתוח שוב.'));
+     } finally {fetching=false;}
+    });
+    article.append(menu);
+   }
    const actions=node('div',null,'actions');
    for(const kind of formats) {
     const link=node('a',kind==='pdf'?'הורדת PDF לעיון':'הורדת Word לעריכה','download');
@@ -292,7 +346,7 @@
   if(pollFailures)status('');
   accessDenied=false;online=data.online===true;
   $('generation-quota').hidden=false;updateQuota(data.quota);
-  if(online){wakingUntil=null;wakingChecks=0;}
+  if(online){planWaitDeadline=null;wakingUntil=null;wakingChecks=0;}
   if(!online && data.waking===true && wakingUntil===null)wakingUntil=Date.now()+90000;
   const waking=!online && data.waking===true && Date.now()<wakingUntil && wakingChecks<18;
   generalReady=data.capabilities?.profile==='general-skill-source/v1' && data.capabilities.curriculumSha256===curriculumHash && Array.isArray(data.capabilities.acceptedIntakeVersions) && data.capabilities.acceptedIntakeVersions.includes(3);
@@ -306,8 +360,8 @@
   $('generator-availability').classList.toggle('notice',!online);
   restoreDraft();
   const history=Array.isArray(data.history)?data.history:[];
-  const worksheets=renderHistory(history);
   const jobs=Array.isArray(data.jobs)?data.jobs:[];
+  const worksheets=renderHistory(history,jobs);
   let current=jobs.find(j=>(submittedJobId && j.id===submittedJobId) || (requestKey && j.request_key===requestKey))
    || history.find(j=>j.id===submittedJobId);
   if(!current && uuid(submittedJobId) && !terminal && !submitting){
@@ -344,6 +398,7 @@
   // A timed-out POST may commit after the first owner status read. Only poll; never replay it.
   if(attempted && !submitting && !active && !awaitingCurrent && receiptChecks<3){receiptChecks++;scheduleRefresh(4000);}
   if(waking && !active && !awaitingCurrent){wakingChecks++;scheduleRefresh(Math.min(5000,Math.max(1,wakingUntil-Date.now())));}
+  pollPreparedPlan();
   $('create-button').hidden=terminal;$('edit-plan').hidden=terminal;newDraftButton.hidden=!terminal;newDraftButton.disabled=busy || !online || !quotaAllowsCreation;
   if(!planned && !busy && selectedTopic())updateTopicSettings(true);
   updateWizard();
@@ -385,6 +440,7 @@
   const boundaryText=boundary.kind==='curriculum_scope'?conceptGroups(topic).filter(group=>group.ids.some(id=>boundary.conceptIds.includes(id))).map(group=>group.text).join(' · '):boundary.kind==='division_facts'?'מחלקים: '+boundary.allowedDivisors.join(', ')+' · מחולק עד '+boundary.maxDividend:boundary.allowSignedNumbers?'כולל מספרים שליליים':'ללא מספרים שליליים';
   for(const [title,value] of [['כיתה',field('gradeNumber').selectedOptions[0].textContent],['נושא',topic?.title],['רמה',field('level').selectedOptions[0].textContent],['גבולות התרגול',boundaryText],['נקודת העצירה',planned.lastLesson],['מושגים מוכרים',planned.alreadyLearned.join(' · ')||'לפי תיאור השיעור האחרון'],['היקף',planned.questionCount+' שאלות · '+planned.minutes+' דקות מבוקשות']]) details.append(node('dt',title),node('dd',value));
   form.hidden=true;$('generation-plan').hidden=false;$('create-button').disabled=!canCreate(planned);$('plan-title').tabIndex=-1;if(focus)$('plan-title').focus();status(quotaBlock || (canCreate(planned)?'':'פרטי הדף מוכנים. היצירה בנושא הזה ממתינה למנוע זמין; אפשר לרענן את המצב בלי לשנות את הבחירות.'));
+  pollPreparedPlan();
  }
  function prepareNewDraft() {
   if(busy || accessDenied)return;

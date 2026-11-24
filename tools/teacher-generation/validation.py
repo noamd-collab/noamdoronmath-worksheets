@@ -79,7 +79,26 @@ def calculate(left, op, right):
     reject("INVALID_MODEL_OUTPUT", "Unknown operation or division by zero")
 
 
-def validate_lesson(lesson, *, allow_legacy=False):
+def salvaged_count(requested, printed):
+    """Whether ``printed`` questions may be delivered for a sheet of ``requested`` questions.
+
+    Only the worker's salvage shortens a sheet (lesson_select): never below
+    three quarters of the request, never below six questions.
+    """
+    from lesson_select import minimum_count
+    return (type(requested) is int and type(printed) is int and minimum_count(requested) <= printed < requested)
+
+
+def validate_lesson(lesson, *, allow_legacy=False, salvaged_from=None):
+    """``salvaged_from`` is the question count the teacher asked for when the
+    worker delivers a shorter, salvaged sheet. It is trusted worker state and
+    is never read from a job: the request itself must pass every check."""
+    if salvaged_from is not None:
+        if not isinstance(lesson, dict) or lesson.get('version') != 3 or not salvaged_count(salvaged_from, lesson.get('questionCount')):
+            reject("UNSUPPORTED_SHORT_SHEET", "A salvaged sheet keeps at least three quarters of the requested questions")
+        cap = validate_lesson({**lesson, 'questionCount': salvaged_from}, allow_legacy=allow_legacy)
+        integer(lesson.get("questionCount"), 4, 40, "questionCount")
+        return cap
     cap = capability(lesson)
     general = lesson['version'] == 3
     if not general:
@@ -93,7 +112,9 @@ def validate_lesson(lesson, *, allow_legacy=False):
     # Assessment needs a separate student file/key; do not silently print answers.
     if lesson["lessonGoal"] == "assessment":
         reject("UNSUPPORTED_GOAL", "Assessment with a separate answer key is not implemented")
-    if lesson["lessonGoal"] == "introduce":
+    # An opening sheet is written by the general author (version 3). Each local
+    # author keeps its own eligibility rule, and the legacy adapters never had one.
+    if lesson["lessonGoal"] == "introduce" and not general:
         reject("UNSUPPORTED_GOAL", "The first adapter supports practice and review only")
     integer(lesson.get("questionCount"), 4, 40, "questionCount")
     if cap.get("questionCounts") and lesson["questionCount"] not in cap["questionCounts"]:
@@ -124,8 +145,8 @@ def validate_lesson(lesson, *, allow_legacy=False):
     return cap
 
 
-def validate_model(lesson, payload, *, allow_legacy=False):
-    cap = validate_lesson(lesson, allow_legacy=allow_legacy)
+def validate_model(lesson, payload, *, allow_legacy=False, salvaged_from=None):
+    cap = validate_lesson(lesson, allow_legacy=allow_legacy, salvaged_from=salvaged_from)
     if lesson['version'] == 3:
         from general_source import validate_source, GeneralSourceError
         from runtime_catalog import scope_for_lesson
@@ -142,7 +163,7 @@ def validate_model(lesson, payload, *, allow_legacy=False):
                 counting_lesson.validate_parameters(lesson, payload)
             elif isinstance(payload, dict) and payload.get('version') == division_facts.VERSION:
                 division_facts.derive(lesson, payload)
-            elif isinstance(payload, dict) and payload.get('version') == square_lesson.VERSION:
+            elif isinstance(payload, dict) and payload.get('version') in (square_lesson.VERSION, square_lesson.INTRO_VERSION):
                 square_lesson.validate_parameters(lesson, payload)
             elif isinstance(payload, dict) and payload.get('version') == pythagoras_lesson.VERSION:
                 pythagoras_lesson.validate_parameters(lesson, payload)

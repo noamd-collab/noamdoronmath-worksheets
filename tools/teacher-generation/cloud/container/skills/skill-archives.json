@@ -7,12 +7,12 @@
       "skillSha256": "582ce27fd320b3714a248f2ef7adcfd9d96b0faf6644af7be7c78bb566418d5f"
     },
     "middle": {
-      "bytes": 2874115,
+      "bytes": 2874577,
       "files": 178,
-      "sha256": "1387c7d25fd403747de4ebdb5aa5ddecb635bf6d34f374f9d500787afbf25be0",
-      "skillSha256": "cbd46b144421db5260b3cb1142bc0e126c01335ce6fee8c32a24baf50e98a7bd"
+      "sha256": "c7a09659e4e43002e85ac5dc7bda3db5d1a9b453312768f8ddd202e8cbed71a7",
+      "skillSha256": "c930d010dcd69c574e7d4e265f50b36af6d4b9dac7c9e091ff2171f69de15ea5"
     }
   },
-  "skillLockSha256": "8c46e6af76bfd94d766199401cdf82862c577fb947f7ec7ab906769f69e05f81",
+  "skillLockSha256": "debdcc980f5ed7ee8c3560fd54c1d19c0ea17518e00fcd332b467715bf4025bc",
   "version": 1
 }

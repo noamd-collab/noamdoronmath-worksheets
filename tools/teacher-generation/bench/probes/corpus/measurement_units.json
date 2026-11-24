@@ -1,0 +1,220 @@
+{
+ "family": "measurement_units",
+ "probes": [
+  {
+   "id": "measurement_units-01",
+   "topic": "ג22",
+   "intro": "המירו את היחידות.",
+   "prompt": "[[3]] מטרים = ___ ס״מ",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3 * 100"
+    },
+    "unit": "ס״מ"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "3 מטרים = ___ ס״מ",
+    "key": "300 ס״מ"
+   }
+  },
+  {
+   "id": "measurement_units-02",
+   "topic": "ג22",
+   "intro": "המירו את היחידות.",
+   "prompt": "[[3]] מ׳ = ___ ס״מ",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3 * 100"
+    },
+    "unit": "ס״מ"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "3 מ׳ = ___ ס״מ",
+    "key": "300 ס״מ"
+   }
+  },
+  {
+   "id": "measurement_units-03",
+   "topic": "ג22",
+   "intro": "המירו את היחידות.",
+   "prompt": "[[235]] ס״מ = ___ מטרים ו־___ ס״מ",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "235"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "2",
+     "35"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "235 ס״מ = ___ מטרים ו־___ ס״מ",
+    "key": "2 מטרים ו־ 35 ס״מ"
+   }
+  },
+  {
+   "id": "measurement_units-04",
+   "topic": "ד21",
+   "intro": "המירו את היחידות.",
+   "prompt": "[[2.5]] ק״מ = ___ מ׳",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2.5 * 1,000"
+    },
+    "unit": "מ׳"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "2.5 ק״מ = ___ מ׳",
+    "key": "2500 מ׳"
+   }
+  },
+  {
+   "id": "measurement_units-05",
+   "topic": "ד21",
+   "intro": "המירו את היחידות.",
+   "prompt": "[[3 m = ___ cm]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3 * 100"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "measurement_units-06",
+   "topic": "ו15",
+   "intro": "המירו את היחידות.",
+   "prompt": "[[2]] ליטר = ___ סמ״ק",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2 * 1000"
+    },
+    "unit": "סמ״ק"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "2 ליטר = ___ סמ״ק",
+    "key": "2,000 סמ״ק"
+   }
+  },
+  {
+   "id": "measurement_units-07",
+   "topic": "ו15",
+   "intro": "המירו את היחידות.",
+   "prompt": "[[3]] מ״ק = ___ ליטר",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3 * 1000"
+    },
+    "unit": "ליטר"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "3 מ״ק = ___ ליטר",
+    "key": "3,000 ליטר"
+   }
+  },
+  {
+   "id": "measurement_units-08",
+   "topic": "ב23",
+   "intro": "מִדְדוּ וְהַשְׁווּ.",
+   "prompt": "אֹרֶךְ הָעִפָּרוֹן [[12]] ס״מ וְאֹרֶךְ הַמַּחַק [[5]] ס״מ. בְּכַמָּה ס״מ הָעִפָּרוֹן אָרֹךְ יוֹתֵר?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12 - 5"
+    },
+    "unit": "ס״מ"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NIQQUD"
+   }
+  },
+  {
+   "id": "measurement_units-09",
+   "topic": "ב23",
+   "intro": "חַשְּׁבוּ.",
+   "prompt": "אֹרֶךְ הָעִפָּרוֹן [[12]] סַנְטִימֶטְרִים וְאֹרֶךְ הַמַּחַק [[5]] סַנְטִימֶטְרִים. בְּכַמָּה הָעִפָּרוֹן אָרֹךְ יוֹתֵר?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12 - 5"
+    },
+    "unit": "ס״מ"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NIQQUD"
+   }
+  },
+  {
+   "id": "measurement_units-10",
+   "topic": "ב23",
+   "intro": "חַשְּׁבוּ.",
+   "prompt": "אֹרֶךְ הָעִפָּרוֹן [[12]] סַנְטִימֶטְרִים וְאֹרֶךְ הַמַּחַק [[5]] סַנְטִימֶטְרִים. בְּכַמָּה הָעִפָּרוֹן אָרֹךְ יוֹתֵר?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12 - 5"
+    },
+    "unit": "סַנְטִימֶטְרִים"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "אֹרֶךְ הָעִפָּרוֹן 12 סַנְטִימֶטְרִים וְאֹרֶךְ הַמַּחַק 5 סַנְטִימֶטְרִים. בְּכַמָּה הָעִפָּרוֹן אָרֹךְ יוֹתֵר?",
+    "key": "7 סַנְטִימֶטְרִים"
+   }
+  },
+  {
+   "id": "measurement_units-11",
+   "topic": "ב23",
+   "intro": "חַשְּׁבוּ.",
+   "prompt": "אֹרֶךְ הָעִפָּרוֹן [[12]] ס״מ. כַּמָּה ס״מ חֲסֵרִים עַד [[20]] ס״מ?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "20 - 12"
+    },
+    "unit": "סַנְטִימֶטְרִים"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NIQQUD"
+   }
+  }
+ ]
+}

@@ -1,5 +1,7 @@
 import copy
 import json
+import os
+import tempfile
 from pathlib import Path
 import sys
 import unittest
@@ -41,7 +43,7 @@ class CompactAuthoringTests(unittest.TestCase):
             ("x", 1),
             ("2*3", 1),
             ("2^3", 3),
-            ("3xy", 8),
+            ("3xx", 8),
             ("1 2", 8),
             ("1//2", 8),
             ("2+?", 8),
@@ -66,7 +68,9 @@ class CompactAuthoringTests(unittest.TestCase):
             _formula("a^2 + b^2 = c^2", 8, None), "$a^{2} + b^{2} = c^{2}$"
         )
         self.assertEqual(_formula("AD=8", 8, None), "$AD = 8$")
-        self.assertEqual(_formula("5 != 7", 8, None), "$5 ≠ 7$")
+        for symbol, macro in [("!=", r"\neq"), ("<=", r"\leq"), (">=", r"\geq")]:
+            with self.subTest(symbol=symbol):
+                self.assertEqual(_formula("5 " + symbol + " 7", 8, None), "$5 " + macro + " 7$")
         self.assertEqual(
             spans("[[1/2+___=5/6]]", 5, fraction_notation=True),
             [{"kind": "formula", "notation": "frac(1,2)+___=frac(5,6)"}],
@@ -164,6 +168,113 @@ class CompactAuthoringTests(unittest.TestCase):
             ):
                 validate_source(lesson, payload, scope_for_lesson(lesson))
             self.assertEqual(failure.exception.code, "DRAWING_POLICY")
+
+    def test_numeric_islands_preserve_percent_spelling_and_explicit_lists(self):
+        atoms = spans("התוצאות הן 20, 40, 60. ההנחה היא [[10.50]]%.", 8)
+        self.assertEqual([s["expression"]["numerator"] for s in atoms if s["kind"] == "math"], [20, 40, 60])
+        self.assertIn({"kind": "formula", "notation": "10.50%"}, atoms)
+        self.assertEqual(spans("[[point:A(-2,4)]]", 8), spans("[[A(-2,4)]]", 8))
+        for token, grade in [("point:A(-2,4)", 4), ("point:A(x,4)", 8), ("point:AB(1,2)", 8)]:
+            with self.subTest(token=token, grade=grade), self.assertRaises(GeneralSourceError):
+                spans("[[" + token + "]]", grade)
+
+    def test_only_complete_inline_rows_bind_to_a_printed_table(self):
+        from printed_tasks import printed_table_row
+
+        def question(records, grade, formula):
+            data = {"intro": "השלימו את הטבלה.", "items": [
+                {"prompt": record, "answer": {"kind": "computed", "unit": "",
+                                               "task": {"kind": "evaluate", "expression": formula}}}
+                for record in records
+            ]}
+            return expand_source({"version": 4, "sections": [{"questions": [data]}]}, grade)["sections"][0]["questions"][0]
+
+        for records, grade, formula in [
+            (["מחולק: 16, מחלק: 4, מנה: ___", "[[מחולק | מחלק | מנה]]\n[[12 | 3 | ___]]"], 3, "16/4"),
+            (["בטבלה: מספר=[[100]], אחוז=[[10]]%, תוצאה=?",
+              "בטבלה: מספר=[[200]], אחוז=[[5]]%, תוצאה=?"], 8, "100*0.10"),
+        ]:
+            with self.subTest(records=records):
+                q = question(records, grade, formula)
+                self.assertEqual(len(q["table"]["rows"]), 2)
+                for n, item in enumerate(q["items"], 1):
+                    self.assertEqual(item["prompt"], spans(f"שורה [[{n}]]", grade))
+                    solved = validate_and_solve_task(item["answer"]["task"])
+                    self.assertEqual(printed_table_row(q, item, solved)["row"], n)
+                    wrong = validate_and_solve_task({"kind": "evaluate", "expression": expression("3", grade)})
+                    with self.assertRaises(GeneralSourceError):
+                        printed_table_row(q, item, wrong)
+                item["answer"]["unit"] = "סנטימטרים"
+                with self.assertRaises(GeneralSourceError):
+                    printed_table_row(q, item, solved)
+        for records in [["מחולק: 16, מחלק: 4, מנה: ___", "מחולק: 30, מנה: ___, מחלק: 6"],
+                        ["מחולק: 16, מחלק: 4, מנה: ___", "כמה מספרים יש?"],
+                        ["סכום: ___, כמות: ___"], ["סכום: 3, כמות: 4"]]:
+            with self.subTest(records=records), self.assertRaisesRegex(GeneralSourceError, "table"):
+                question(records, 3, "4")
+
+    def test_explicit_table_references_in_intro_or_item_require_a_table(self):
+        from compact_authoring import requires_existing_table
+
+        for prompt in ["השתמשו בטבלה הנתונה.", "השלימו את הטבלה.", "קראו בטבלה שלפניכם."]:
+            with self.subTest(prompt=prompt):
+                self.assertTrue(requires_existing_table({"intro": spans(prompt, 3)}))
+                with self.assertRaisesRegex(GeneralSourceError, "table"):
+                    expand_source({"version": 4, "sections": [{"questions": [{"intro": "קראו.",
+                                  "items": [{"prompt": prompt}]}]}]}, 3)
+        self.assertFalse(requires_existing_table({"intro": "בנו טבלה והשלימו את הטבלה שלכם."}))
+        self.assertFalse(requires_existing_table({"intro": "השתמשו בלוח הכפל."}))
+        self.assertTrue(requires_existing_table({"intro": "בנו טבלה.", "items": [{"prompt": "עיינו בטבלה הנתונה."}]}))
+
+    def test_missing_number_equation_survives_partial_numeric_islands(self):
+        from printed_tasks import match_printed_task
+
+        for visible, value in [("24 : [[___]] = 6", 4), ("[[35]] : 7 = [[___]]", 5),
+                               ("[[___]] : 9 = 8", 72), ("24 : 6 = ___", 4)]:
+            with self.subTest(visible=visible):
+                item = {"prompt": spans(visible, 3), "answer": {"unit": ""}}
+                self.assertEqual([s["kind"] for s in item["prompt"]], ["formula"])
+                solved = validate_and_solve_task({"kind": "evaluate", "expression": expression(str(value), 3)})
+                self.assertEqual(match_printed_task(item, solved, 3).proof["value"]["numerator"], value)
+                wrong = validate_and_solve_task({"kind": "evaluate", "expression": expression(str(value + 1), 3)})
+                with self.assertRaises(GeneralSourceError):
+                    match_printed_task(item, wrong, 3)
+                item["answer"]["unit"] = "מטרים"
+                with self.assertRaises(GeneralSourceError):
+                    match_printed_task(item, solved, 3)
+        with self.assertRaises(GeneralSourceError):
+            spans("חשבו את הנעלם x בתרגיל: [[x : 5 = 8]]", 3)
+
+    def test_compiler_prints_requested_division_equations_from_verified_quantities(self):
+        from general_adapters import _compile_elementary, _load_skill
+        from printed_elementary import printed_intent
+
+        skill = Path(os.environ.get("ELEMENTARY_SKILL_PATH", str(Path.home() / ".codex/skills/hebrew-math-worksheet-elementary")))
+        if not (skill / "scripts/lib").is_dir():
+            self.skipTest("Installed elementary skill required to inspect the compiled answer key")
+        question = {"intro": "בנו דוגמה חדשה:", "star": False, "items": []}
+        for prompt, expr in [
+            ("כתבו תרגיל חילוק שהמחלק בו הוא 5 והתוצאה היא 8.", "5*8"),
+            ("כתבו תרגיל חילוק שהמחולק בו הוא 20 והמחלק הוא 5. מה המנה?", "20/5"),
+        ]:
+            question["items"].append({"prompt": prompt, "answer": {"kind": "computed", "unit": "",
+                                      "task": {"kind": "evaluate", "expression": expr}}})
+        q = expand_source({"version": 4, "sections": [{"questions": [question]}]}, 3)["sections"][0]["questions"][0]
+        computed = [validate_and_solve_task(item["answer"]["task"]) for item in q["items"]]
+        for item, bad in zip(q["items"], ["10*4", "16/4"]):
+            wrong = validate_and_solve_task({"kind": "evaluate", "expression": expression(bad, 3)})
+            with self.assertRaises(GeneralSourceError):
+                printed_intent(q, item, wrong, 3, location="q1")
+        source = {"title": "חילוק", "rule": spans("קראו.", 3),
+                  "sections": [{"title": "חילוק", "conceptIds": ["ג10#0"], "questions": [q]}]}
+        evidence = {"computations": [{"itemId": f"q1-i{i}", "computed": v} for i, v in enumerate(computed, 1)]}
+        _load_skill(skill, True)
+        with tempfile.TemporaryDirectory() as tmp:
+            _compile_elementary({"topicId": "ג10", "gradeNumber": 3, "level": "b"}, source, evidence,
+                                {"topic": {"topicId": "ג10", "sourceTopicId": "division", "domain": "מספרי"}}, skill, Path(tmp))
+            worksheet = json.loads((Path(tmp) / "worksheet-source.json").read_text())
+            answers = [item["answer"] for item in worksheet["questions"][0]["items"]]
+            self.assertEqual(answers, ["40 : 5 = 8", "20 : 5 = 4"])
 
     def test_coordinate_viewport_includes_origin_without_moving_the_data(self):
         figure = {

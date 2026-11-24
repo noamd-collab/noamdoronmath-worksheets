@@ -487,6 +487,40 @@ test('history and plan treat model/user strings as text, never HTML', async () =
   assert.ok(app.element('generation-jobs').textContent.includes(attack)); assert.ok(app.element('plan-details').textContent.includes(attack));
 });
 
+test('a shortened worksheet shows its actual question count and its review note', async () => {
+  const draft = {
+    id:'00000000-0000-4000-8000-000000000100', status:'needs_review',
+    created_at:'2026-11-12T00:00:00Z', formats:['pdf','docx'],
+    result:{automatedChecksPassed:true}
+  };
+  const full = {...draft, result:{...draft.result, salvage:{printedQuestions:18,requestedQuestions:20},
+    teacherNotes:[{code:'UNVERIFIED_ANSWER',kind:'review',note:'בדקו את ההוכחות.',count:2}],
+    reviewFindings:[{code:'SHORTER_SHEET',note:'הדף קצר מהבקשה.',count:2},
+      {code:'DIDACTIC_REVIEW',note:'עיינו בהדרגתיות.',count:1}]}};
+  const current = harness({history:[draft],jobs:[full]}); await current.flush();
+  assert.match(current.element('generation-jobs').textContent,/18 שאלות מתוך 20/);
+  assert.match(current.element('generation-jobs').textContent,/בדקו את ההוכחות/);
+  assert.match(current.element('generation-jobs').textContent,/עיינו בהדרגתיות/);
+  assert.doesNotMatch(current.element('generation-jobs').textContent,/הדף קצר מהבקשה/);
+  const older = harness({history:[draft],jobDetails:{[draft.id]:{body:{ok:true,job:full}}}}); await older.flush();
+  assert.equal(older.calls.some(call=>call.url.includes('?id=')),false);
+  const details = older.element('generation-jobs').querySelector('details');
+  details.open=true; await older.dispatch(details,'toggle');
+  assert.match(details.textContent,/18 שאלות מתוך 20/);
+  assert.equal(older.calls.filter(call=>call.url.includes('?id=')).length,1);
+  assert.equal(older.element('generation-jobs').querySelectorAll('a.download').length,2);
+});
+
+test('a prepared plan checks for an offline worker without resubmitting', async () => {
+  const app=harness({general:true,online:false,waking:false}); await app.flush(); await app.choose();
+  await app.submit();
+  assert.equal(app.element('create-button').disabled,true);
+  app.setOnline(true);
+  assert.equal(await app.nextRetry(),60000);
+  assert.equal(app.element('create-button').disabled,false);
+  assert.equal(app.posts.length,0);
+});
+
 test('captcha script failure permits a fresh load on retry without creating a job', async () => {
   const app = harness({ captcha: false }); await app.flush(); await app.choose(); await app.submit(); await app.click('create-button');
   const first = app.document.querySelector('script') as any; assert.ok(first); first.onerror(); await app.flush();
@@ -627,7 +661,7 @@ test('general review drafts disclose human review and never expose a failed outp
  const result={authoringProfile:'general-skill-source/v1',automatedChecksPassed:false,renderingChecksPassed:true,humanReviewRequired:true,checks:[{status:'PASS'},{status:'REVIEW'}]};
  const job={id:'review-draft',status:'needs_review',created_at:'2026-11-16T00:00:00Z',lesson:{topicId:'g8:congruence'},result};
  const app=harness({general:true,jobs:[job],history:[{...job,formats:['pdf','docx']}]});await app.flush();
- assert.equal(app.document.querySelectorAll('a.download').length,2);assert.match(app.element('generation-jobs').textContent,/ההסברים או ההוכחות דורשים בדיקה שלך/);
+ assert.equal(app.document.querySelectorAll('a.download').length,2);assert.match(app.element('generation-jobs').textContent,/סעיפים לעיון המורה/);
  assert.doesNotMatch(app.element('generation-jobs').textContent,/הבדיקות האוטומטיות עברו/);
  for(const change of [{checks:[{status:'FAIL'}]},{checks:[]},{renderingChecksPassed:false},{automatedChecksPassed:true,checks:[{status:'FAIL'}]}]) {
   app.setHistory([{...job,formats:['pdf','docx'],result:{...result,...change}}]);await app.visible();assert.equal(app.document.querySelectorAll('a.download').length,0);

@@ -103,9 +103,18 @@ class GeneralRuntimeTests(unittest.TestCase):
         self.assertTrue(measured['validated'])
         self.assertEqual(measured['usage'],{'prompt_tokens':123})
         sent=json.loads(body['messages'][1]['content'])
-        self.assertEqual(sent['authoringContext'],context)
+        # The author's copy of the context: without file hashes (author_request.trim_context).
+        import author_request
+        self.assertEqual(sent['authoringContext'],author_request.trim_context(context))
+        self.assertNotIn('files',sent['authoringContext']['scope']['source'])
         schema=body['response_format']['json_schema']['schema']
-        self.assertEqual(set(schema['required']), {'title', 'rule', 'practice', 'challenges'})
+        self.assertEqual(set(schema['required']), {'title', 'rule', 'practice', 'challenges', 'reserves'})
+        # Four reserves for a twenty-question sheet, each tagged with its group and concept.
+        reserve = schema['properties']['reserves']
+        self.assertEqual((reserve['minItems'], reserve['maxItems']), (4, 4))
+        self.assertEqual(reserve['items']['required'], ['group', 'conceptId', 'question'])
+        self.assertEqual(reserve['items']['properties']['question'], {'$ref': '#/$defs/question'})
+        self.assertEqual([row['group'] for row in sent['reservePlan']], ['practice'] * 3 + ['challenges'])
         self.assertFalse(schema['additionalProperties'])
         self.assertEqual(body['response_format']['type'],'json_schema')
         self.assertIs(body['response_format']['json_schema']['strict'],True)
@@ -183,7 +192,9 @@ class GeneralRuntimeTests(unittest.TestCase):
             if body["response_format"]["json_schema"]["name"] != "mark_skill_math":
                 return content
             fragments = json.loads(body["messages"][1]["content"])["fragments"]
-            self.assertCountEqual(fragments.values(), [rule,question_text])
+            # The reply is normalised on arrival: the rule and every string field were
+            # marked locally. Only the historical typed span list still needs the model.
+            self.assertCountEqual(fragments.values(), [question_text])
             self.assertNotIn("lastLesson", body["messages"][1]["content"])
             self.assertNotIn("items", body["messages"][1]["content"])
             measured["usage"] = {"total_tokens":48}
@@ -193,6 +204,8 @@ class GeneralRuntimeTests(unittest.TestCase):
                 provider.author_lesson(self.lesson,metadata=metadata,revision=revision,**self.config)
             self.assertEqual(first.exception.code,"SOURCE_PLAIN_MATH")
             self.assertNotIn(question_text, str(revision["sourceFindings"]))
+            # A count only: the rewrite notes quote worksheet text.
+            self.assertEqual(metadata["sourceRewrites"], 1 + len(rows) + 2 + 1)
             fixed = revision["revise"](revision["sourceFindings"])
             self.assertEqual(network.call_count,2)
             with self.assertRaises(GenerationError) as limit:
@@ -246,7 +259,8 @@ class GeneralRuntimeTests(unittest.TestCase):
             calls.assert_called_once()
 
     def test_retained_grade_seven_equation_recovery_recreates_the_same_verified_worksheet(self):
-        from compact_authoring import expand_source
+        from compact_authoring import expand_source, spans as tokenize
+        from general_source import rich
         from skill_authoring import notation_correction
         fixture = HERE / "cloud/container/fixtures/general/grade7-equation-skill"
         lesson = json.loads((fixture / "lesson.json").read_bytes())
@@ -259,9 +273,12 @@ class GeneralRuntimeTests(unittest.TestCase):
         plain = "".join(s["text"] if s["kind"]=="text" else s["notation"] for s in spans)
         marked = "".join(s["text"] if s["kind"]=="text" else "[["+s["notation"]+"]]" for s in spans)
         item["prompt"] = plain
+        # The tokenizer alone still rejects the unmarked equation ...
         with self.assertRaises(GeneralSourceError) as before:
-            validate_source(lesson, expand_source(reply,7), scope, provider=True)
+            rich(tokenize(plain,7),7,provider=True)
         self.assertEqual(before.exception.code,"SOURCE_PLAIN_MATH")
+        # ... and the local normaliser now recreates the worksheet without a model call.
+        self.assertEqual(validate_source(lesson, expand_source(reply,7), scope, provider=True), expected)
         correction = notation_correction(reply,lesson,scope)
         self.assertEqual(correction.fragments,{"f1":plain})
         repaired = correction.apply(reply,{"f1":marked})
@@ -329,7 +346,7 @@ class GeneralRuntimeTests(unittest.TestCase):
         scope = scope_for_lesson(self.lesson)
         rows = question_plan(self.lesson, scope)
         flat = {"title":"כותרת", "rule":"הנחיה", "practice":[{}]*17, "challenges":[{}]*3}
-        for indexes in ([], [False], [0], [21], [3,3], list(range(1,8))):
+        for indexes in ([], [False], [0], [21], [3,3], list(range(1,10))):
             with self.subTest(indexes=indexes), self.assertRaises(GeneralSourceError):
                 correction_body(flat, [{"question":i,"feedback":["fix"]} for i in indexes],
                     self.lesson, scope, rows, {}, "test")
@@ -371,13 +388,34 @@ class GeneralRuntimeTests(unittest.TestCase):
                     with self.assertRaises(StopIteration):
                         provider.author_lesson(lesson, **self.config)
                     args = request.call_args.args[2]["messages"]
-                    rows = json.loads(args[1]["content"])["questionPlan"]
+                    plan = json.loads(args[1]["content"])
+                    rows = plan["questionPlan"]
                     kinds = [row["representation"] for row in rows]
                     self.assertIn("Follow each question representation", args[0]["content"])
                     self.assertEqual(kinds.count("drawingFromWords"), sketches)
                     grids = (count + 3) // 4
                     self.assertEqual(kinds.count("coordinate_plane"), grids)
                     self.assertEqual(kinds.count("geometryFigure"), count - sketches - grids)
+                    reserve_kinds = [row["representation"] for row in plan["reservePlan"]]
+                    self.assertEqual(reserve_kinds.count("drawingFromWords"), 1)
+                    self.assertEqual(reserve_kinds.count("geometryFigure"), len(reserve_kinds) - 1)
+
+    def test_reviewed_coordinate_triangle_reply_is_not_forced_into_generic_figure_slots(self):
+        # g9m:computational_triangle level b reaches the general author. Its
+        # reviewed reply uses coordinate grids and verbal sketches where the
+        # generic sketch/grid/shape plan expects shapes; it must still pass.
+        import general_provider
+        fixture = HERE / 'cloud/container/fixtures/general/grade9-coordinate-triangles'
+        lesson = json.loads((fixture / 'lesson.json').read_text())
+        reviewed = json.loads((fixture / 'model-output.json').read_text())
+        questions = [{k: v for k, v in q.items() if k != 'star'} for q in reviewed['sections'][0]['questions']]
+        reply = {'title': reviewed['title'], 'rule': reviewed['rule'],
+                 'practice': questions[:-3], 'challenges': questions[-3:]}
+        meta = {}
+        with patch('provider.request_author_json', return_value=copy.deepcopy(reply)):
+            general_provider.author_general_lesson(lesson, metadata=meta, revision={},
+                authoring_context={'scope': scope_for_lesson(lesson)}, **self.config)
+        self.assertTrue(meta['validated'])
 
     def test_author_receives_skill_content_truth_and_only_applicable_elementary_principles(self):
         from general_provider import author_guidance

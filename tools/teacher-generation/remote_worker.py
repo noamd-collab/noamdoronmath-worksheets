@@ -1,8 +1,17 @@
-"""Private teacher job worker with a bounded, operator-controlled skill correction.
+"""Private teacher job worker with a bounded, operator-controlled repair ladder.
 
 Run only from a reviewed checkout with pinned skills and operator-supplied
 environment. Secrets are not accepted in job JSON, forwarded to child renders,
 logged, or copied to job artifacts. A process exit does not install a daemon.
+
+A version 3 job is repaired in this order, each step only when the one before
+left a deficit: reserve questions (no model call), ONE targeted correction
+call for the missing questions, a shorter sheet, ONE second full author call.
+Per job: at most AUTHOR_CALLS author attempts (each one call, or one call per
+parallel part: author_request) and CORRECTION_CALLS correction calls, and no
+model call starts unless its measured duration fits before MODEL_DEADLINE; a
+second author attempt starts only while one correction still fits after it.
+A sheet may fail; it never prints a question that a check refused.
 """
 from __future__ import annotations
 import argparse
@@ -14,20 +23,42 @@ import signal
 import ssl
 import certifi
 import threading
+import time
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPSHandler
 from urllib.error import HTTPError
-from provider import author_lesson, safe_usage
-from runner import render_job
-from skill_feedback import read_skill_feedback
+from provider import author_lesson, safe_transport_measurements, safe_usage
+from gate_policy import public_review_findings, public_teacher_notes, unverified_rows
+from runner import precheck_job, render_job
+from skill_feedback import gate_report
 from validation import GenerationError, capabilities, validate_lesson
 from preflight import check as check_readiness
 
 ORIGIN = 'https://ouzquolkeuceektfihss.supabase.co'
 BUCKET = 'teacher-generation-private'
 ENABLE_SKILL_REVISION = True
+# The repair ladder's hard limits for one job.
+AUTHOR_CALLS = 2          # the first reply and at most one second full attempt
+CORRECTION_CALLS = 2      # targeted corrections, for missing questions only
+# The per-job time budget, from the live rounds of 23 Nov (gemini-3.8-flash, 26
+# author and 15 correction calls). A call starts only when its measured
+# duration still fits before the deadline, and a second author attempt only
+# when one correction still fits after it.
+AUTHOR_SECONDS = 80           # one single-call author attempt: median 61.8 s, max 74.4 s
+PARTS_AUTHOR_SECONDS = 45     # one attempt in parallel parts (author_request): about 27 s expected by bench/latency.py
+CORRECTION_SECONDS = 25       # one correction call: median 21.6 s, max 24.0 s
+# Two attempts and two corrections at their measured maximum: 210 s after the claim.
+MODEL_DEADLINE = 2 * (AUTHOR_SECONDS + CORRECTION_SECONDS)
+PRECHECK_PASSES = 2       # rounds of replacing what the pre-pass names, before any PDF or Word file
+FULL_RENDERS = 2          # the render, and one more after a gate named questions
+RESULT_LIMIT = 30000      # the jobs table refuses a result above 32,000 bytes
+# A reply arrived but cannot be used as a whole: a second author call may help.
+# Any other failed call (the provider did not answer) closes the job to further calls.
+UNUSABLE_REPLY = frozenset({'PROVIDER_INVALID_RESPONSE', 'INVALID_MODEL_OUTPUT', 'PROVIDER_INCOMPLETE',
+                            'PROVIDER_OUTPUT_TOO_LARGE', 'REVISION_SCOPE'})
+STAGES = ('author', 'source', 'precheck', 'render', 'acceptance', 'upload')
 ARTIFACT_LIMIT = 15728640
 ARTIFACT_MIMES = {'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'}
 UUID = re.compile(r'^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$')
@@ -57,6 +88,9 @@ class Remote:
             raise RuntimeError('REMOTE_HTTP_'+str(e.code)) from None
 
 def utc(): return datetime.now(timezone.utc)
+def clock():
+    """Seconds on the worker's monotonic clock; the bench replaces it to replay measured durations."""
+    return time.monotonic()
 def check_transport(remote):
     """Read-only schema/storage readiness. Never claims a job or advertises health.
 
@@ -141,10 +175,32 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
             if isinstance(value, str) and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,127}', value): record[key] = value
         elapsed = metadata.get('elapsedSeconds')
         if type(elapsed) in (int, float) and 0 <= elapsed <= 86400: record['elapsedSeconds'] = round(elapsed, 3)
+        # Which provider answered, how the call ended and how many attempts it
+        # took: fixed labels and small numbers only (provider.py vocabularies).
+        record.update(safe_transport_measurements(metadata))
+        if metadata.get('correctionRequested') is True: record['correctionRequested'] = True
+        rewrites = metadata.get('sourceRewrites')
+        if type(rewrites) is int and 0 <= rewrites <= 100_000: record['sourceRewrites'] = rewrites
+        # The repair ladder's model calls for this job.
+        for key, top in (('authorCalls', AUTHOR_CALLS), ('correctionCalls', CORRECTION_CALLS)):
+            if type(metadata.get(key)) is int and 0 <= metadata[key] <= top: record[key] = metadata[key]
+        # Parallel author parts and the questions their duplicate filter refused: two small counts.
+        parts = metadata.get('authorSlices')
+        if isinstance(parts, dict) and all(type(parts.get(key)) is int and 0 <= parts[key] <= 99 for key in ('parts', 'duplicates')):
+            record['authorSlices'] = {'parts': parts['parts'], 'duplicates': parts['duplicates']}
+        # Whether the author wrote the reserve questions it was asked for: two small counts.
+        reserves = metadata.get('reserves')
+        if isinstance(reserves, dict) and all(type(reserves.get(key)) is int and 0 <= reserves[key] <= 99 for key in ('offered', 'dropped')):
+            record['reserves'] = {'offered': reserves['offered'], 'dropped': reserves['dropped']}
         record['usage'] = safe_usage(metadata.get('usage'))
         if 'revisionUsage' in metadata:
             record['revisionUsage'] = safe_usage(metadata.get('revisionUsage'))
-        if metadata.get('authorContract') in ('worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4', 'no-carry-addition/1', 'triangle-parameters/1', 'division-facts/1', 'square-parameters/1', 'counting-words/1', 'pythagoras-parameters/1', 'unlike-fractions/1'):
+        if metadata.get('authorContract') in (
+            'worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4', 'no-carry-addition/1',
+            'triangle-parameters/1', 'division-facts/1', 'square-parameters/1', 'counting-words/1',
+            'pythagoras-parameters/1', 'unlike-fractions/1', 'square-introduction/1',
+            'intro-algebra/1', 'intro-arithmetic/1',
+        ):
             record['authorContract'] = metadata['authorContract']
         derivation = metadata.get('derivation')
         if isinstance(derivation, dict) and type(derivation.get('performed')) is bool:
@@ -171,17 +227,86 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         return False
 
 
-def author_and_render(remote, job, target, lost, enable_skill_revision):
+def blocking_questions(folder, skill, steps, gate, count):
+    """{printed question: codes} for the blocking findings of one gate decision that name a question.
+
+    ``gate`` is the runner's decision (manifest['gate'] or the pre-pass
+    result). For a refusal of the trusted adapter the refused source code is
+    added from the structured report (skill_feedback.gate_report), so a
+    correction can carry that code's instruction.
+    """
+    named = {}
+    rows = gate.get('blocking') if isinstance(gate, dict) else None
+    for row in rows if isinstance(rows, list) else []:
+        question, code = (row.get('question'), row.get('code')) if isinstance(row, dict) else (None, None)
+        if type(question) is int and 1 <= question <= count and isinstance(code, str) and re.fullmatch(r'[A-Z][A-Z0-9_]{0,59}', code):
+            if code not in named.setdefault(question, []):
+                named[question].append(code)
+    if named:
+        for row in gate_report(folder, skill, steps, count)['findings']:
+            refusal = (row.get('evidence') or {}).get('refusal')
+            if row.get('question') in named and isinstance(refusal, str) and re.fullmatch(r'[A-Z_]{1,60}', refusal):
+                if refusal not in named[row['question']]:
+                    named[row['question']].append(refusal)
+    return named
+
+
+def public_salvage(summary, requested):
+    """What the repair ladder did, for the job result: counts and fixed codes only."""
+    if not isinstance(summary, dict) or type(summary.get('attempts')) is not int:
+        return None
+    def count(key, top=99):
+        value = summary.get(key)
+        return value if type(value) is int and 0 <= value <= top else 0
+    def codes(key):
+        found = summary.get(key) if isinstance(summary.get(key), dict) else {}
+        return {code: number for code, number in sorted(found.items())[:40]
+                if isinstance(code, str) and re.fullmatch(r'[A-Z][A-Z0-9_]{0,59}', code)
+                and type(number) is int and 0 < number <= 99}
+    result = {'attempts': count('attempts', AUTHOR_CALLS), 'corrections': count('corrections', CORRECTION_CALLS),
+              'requestedQuestions': requested, 'printedQuestions': count('printed') or requested,
+              # Questions that a reserve or a correction replaced, and questions that were left out.
+              'replaced': {'count': count('replaced'), 'codes': codes('replacedCodes')},
+              'dropped': {'count': count('dropped'), 'codes': codes('droppedCodes')}}
+    if summary.get('gate') in ('deliver', 'replace', 'fail'):
+        result['gate'] = summary['gate']
+    return result
+
+
+def failure_detail(error, summary, stage=None):
+    """One sanitised record of where a job failed: fixed labels, codes and small numbers only."""
+    summary = summary if isinstance(summary, dict) else {}
+    stage = stage or summary.get('stage')
+    question, gate = summary.get('question'), summary.get('gateCode')
+    detail = {'stage': stage if stage in STAGES else 'author',
+              'question': question if type(question) is int and 1 <= question <= 99 else None,
+              'gate': gate if isinstance(gate, str) and re.fullmatch(r'[A-Z][A-Z0-9_]{0,39}', gate) else None}
+    for key, top in (('attempts', AUTHOR_CALLS), ('corrections', CORRECTION_CALLS)):
+        if type(summary.get(key)) is int and 0 <= summary[key] <= top:
+            detail[key] = summary[key]
+    first = summary.get('firstCode')
+    if isinstance(first, str) and re.fullmatch(r'[A-Z_]{1,60}', first):
+        detail['firstCode'] = first
+    if isinstance(error, GenerationError) and error.code == 'PROVIDER_HTTP_ERROR':
+        transport = safe_transport_measurements(getattr(error, 'http_transport', None))
+        if transport.get('httpStatus', 0) >= 300:
+            detail['providerHttp'] = {key: transport[key] for key in
+                                      ('provider', 'httpStatus', 'providerError', 'attempts') if key in transport}
+    return detail
+
+
+def author_and_render(remote, job, target, lost, enable_skill_revision, *, claimed_at=None, summary=None):
+    """Author and render one job. Returns (manifest, folder that holds the artifacts).
+
+    ``summary``, when a dict, is filled as the job advances: the stage, the
+    calls used and what was replaced. ``claimed_at`` is the clock() time of
+    the claim, for MODEL_DEADLINE.
+    """
     lesson = job['lesson']
-    metadata, revision = {}, {}
-    options = {}
-    if lesson.get('version') == 3:
-        options['timeout'] = 300
-        if enable_skill_revision:
-            options['revision'] = revision
-    render_target = target
+    metadata = {}
+    state = summary if isinstance(summary, dict) else {}
+    state['stage'] = 'author'
     author_failure = None
-    diagnostics_due = True
 
     def save_diagnostics():
         if metadata.get('initialPlainMath') is True:
@@ -200,48 +325,207 @@ def author_and_render(remote, job, target, lost, enable_skill_revision):
         if lost.is_set():
             raise RuntimeError('JOB_LEASE_LOST')
 
-    def correct(findings):
-        nonlocal render_target, author_failure
-        revise = revision.pop('revise')  # shared budget for source and rendered feedback
-        render_target = target / 'revision'
-        if target.is_symlink() or render_target.is_symlink() or render_target.exists():
-            raise RuntimeError('JOB_PATH_DENIED')
-        render_target.mkdir(mode=0o700, parents=True)
-        set_phase('authoring')
+    if not (lesson.get('version') == 3 and enable_skill_revision):
+        # Legacy intake, or the ladder switched off: one author call, one render.
+        options = {'timeout': 300} if lesson.get('version') == 3 else {}
         try:
-            result = revise(findings)
-        except Exception as exc:
-            author_failure = exc
+            try:
+                payload = author_lesson(lesson, metadata=metadata, **options)
+            except Exception as exc:
+                author_failure = exc
+                raise
+        finally:
+            save_diagnostics()
+        set_phase('rendering')
+        state['stage'] = 'render'
+        return render_job(lesson, payload, target), target
+
+    claimed = clock() if claimed_at is None else claimed_at
+    state.update(attempts=0, corrections=0)
+    closed = False  # a model call failed without a reply: no further call for this job
+
+    def may_call(kind):
+        """Whether a model call of ``kind`` may start now (MODEL_DEADLINE)."""
+        if closed:
+            return False
+        if kind == 'author':
+            # A second attempt is written the way the first one was: one call, or parallel parts.
+            parts = metadata.get('authorSlices') if isinstance(metadata.get('authorSlices'), dict) else {}
+            author = PARTS_AUTHOR_SECONDS if type(parts.get('parts')) is int and parts['parts'] > 1 else AUTHOR_SECONDS
+            # Room for the attempt and for exactly one correction after it.
+            needed = author + CORRECTION_SECONDS
+        else:
+            needed = CORRECTION_SECONDS
+        if clock() - claimed + needed > MODEL_DEADLINE:
+            return False
+        return state['attempts'] < AUTHOR_CALLS if kind == 'author' else state['corrections'] < CORRECTION_CALLS
+
+    def fresh(name):
+        """A folder of this job that nothing has used yet."""
+        path = target / name
+        if target.is_symlink() or path.is_symlink() or path.exists():
+            raise RuntimeError('JOB_PATH_DENIED')
+        return path
+
+    def settle(draft):
+        """Correct missing questions within the job budget before considering a shorter sheet."""
+        nonlocal closed, author_failure
+        while draft.needs_model() and may_call('correction'):
+            before = set(draft.missing())
+            set_phase('authoring')
+            state['corrections'] += 1
+            try:
+                draft.correct()
+            except GenerationError as exc:
+                # The deficit stays and the next step is a shorter sheet.
+                author_failure = exc
+                state['correctionFailed'] = True
+                closed = closed or exc.code not in UNUSABLE_REPLY
+                break
+            author_failure = None
+            remaining = set(draft.missing())
+            if not remaining or not remaining < before:
+                break
+        try:
+            if draft.missing() and not draft.shorten():
+                # Shortening restores usable questions first. The first position
+                # still missing is the same one first_refusal() reports.
+                state['question'] = next(iter(draft.missing()), None)
+                raise draft.first_refusal()
+            payload = draft.source()
+        except GenerationError:
             raise
-        author_failure = None
-        return result
+        except ValueError as exc:  # GeneralSourceError and the kernel's error carry a fixed code
+            code = getattr(exc, 'code', None)
+            author_failure = GenerationError(code if isinstance(code, str) else 'QUALITY_GATE_FAILED', str(exc)[:240])
+            raise author_failure from None
+        author_failure = None  # the sheet is valid again, with or without the correction
+        return payload
+
+    def attempt(number):
+        """One author call and everything that follows it. Returns (manifest, folder) or raises."""
+        nonlocal author_failure
+        session = {}
+        state['stage'] = 'author'
+        try:
+            payload = author_lesson(lesson, metadata=metadata, timeout=300, revision=session)
+            author_failure = None
+        except GenerationError as exc:
+            author_failure = exc
+            draft = session.get('draft')
+            if draft is None:
+                exc.session = session
+                raise
+            state['stage'] = 'source'
+            try:
+                payload = settle(draft)
+            except GenerationError as failure:
+                failure.session = session
+                raise
+            author_failure = None
+        draft = session.get('draft')
+        requested = lesson['questionCount']
+
+        def sheet():
+            # The lesson of the current sheet; a salvaged one prints fewer questions.
+            current = draft.lesson if draft is not None else lesson
+            return current, ({'salvaged_from': requested} if current['questionCount'] != requested else {})
+
+        def swap(named):
+            if draft.replace(named, stage=state['stage']) != len(named):
+                raise GenerationError('QUALITY_GATE_FAILED', 'A gate named a question that is not on the sheet')
+            return settle(draft)
+
+        def note(named, gate):
+            state['question'] = min(named) if named else None
+            rows = gate.get('blocking') if isinstance(gate, dict) else None
+            codes = [row.get('code') for row in rows if isinstance(row, dict)] if isinstance(rows, list) else []
+            state['gateCode'] = next((code for code in codes if isinstance(code, str)), None)
+
+        try:
+            checks = renders = 0
+            prepass = draft is not None
+            set_phase('rendering')
+            while True:
+                # The pre-pass builds content.json and runs the gates that read it: no PDF, no Word file.
+                while prepass and checks < PRECHECK_PASSES:
+                    state['stage'] = 'precheck'
+                    current, salvage = sheet()
+                    folder = fresh(f'check-{number}-{checks + 1}')
+                    result = precheck_job(current, payload, folder, **salvage)
+                    if result.get('status') == 'not_applicable':
+                        # Nothing was written and no round was spent; the render's own adapter step decides.
+                        prepass = False
+                        break
+                    checks += 1
+                    named = blocking_questions(folder, 'elementary', result.get('steps') or [], result.get('gate'),
+                                               current['questionCount'])
+                    if not named:
+                        break
+                    note(named, result.get('gate'))
+                    before = state['corrections']
+                    payload = swap(named)
+                    if state['corrections'] != before:
+                        set_phase('rendering')  # a correction call had moved the job back to authoring
+                state['stage'] = 'render'
+                current, salvage = sheet()
+                folder = fresh(f'render-{number}-{renders + checks + 1}')
+                manifest = render_job(current, payload, folder, **salvage)
+                gate = manifest.get('gate') if isinstance(manifest.get('gate'), dict) else {}
+                if manifest.get('status') != 'failed':
+                    state['gate'] = 'deliver'
+                    if draft is not None:
+                        state.update({key: value for key, value in draft.report().items()
+                                      if key in ('planned', 'replaced', 'dropped', 'printed', 'replacedCodes',
+                                                 'droppedCodes', 'byReserve', 'byCorrection')})
+                    return manifest, folder
+                state['gate'] = gate.get('action') if gate.get('action') in ('replace', 'fail') else 'fail'
+                steps = manifest.get('steps') if isinstance(manifest.get('steps'), list) else []
+                skill = (manifest.get('skill') or {}).get('name') if isinstance(manifest.get('skill'), dict) else None
+                named = (blocking_questions(folder, skill, steps, gate, current['questionCount'])
+                         if draft is not None and gate.get('action') == 'replace' else {})
+                note(named, gate)
+                if not named:
+                    raise GenerationError('QUALITY_GATE_FAILED', 'A required output gate failed')
+                if [step.get('name') for step in steps if isinstance(step, dict)] == ['trusted-adapter']:
+                    # Nothing was built: the adapter's refusal is a pre-pass finding.
+                    if checks >= PRECHECK_PASSES:
+                        raise GenerationError('QUALITY_GATE_FAILED', 'A required output gate failed')
+                    checks += 1
+                else:
+                    renders += 1
+                    if renders >= FULL_RENDERS:
+                        raise GenerationError('QUALITY_GATE_FAILED', 'A required output gate failed')
+                payload = swap(named)
+                set_phase('rendering')  # the lease is confirmed again before another render
+        except GenerationError as failure:
+            failure.session = session
+            raise
 
     try:
-        try:
-            payload = author_lesson(lesson, metadata=metadata, **options)
-        except Exception as exc:
-            author_failure = exc
-            findings = revision.get('sourceFindings')
-            if not (isinstance(exc, GenerationError) and callable(revision.get('revise'))
-                    and isinstance(findings, list) and findings):
-                raise
-            payload = correct(findings)
-        if not callable(revision.get('revise')):
-            # Persist completed author diagnostics before the potentially long render.
-            save_diagnostics()
-            diagnostics_due = False
-        set_phase('rendering')
-        manifest = render_job(lesson, payload, render_target)
-        if manifest.get('status') == 'failed' and callable(revision.get('revise')):
-            findings = read_skill_feedback(render_target, lesson['questionCount'])
-            if findings:
-                payload = correct(findings)
-                set_phase('rendering')
-                manifest = render_job(lesson, payload, render_target)
-        return manifest, render_target
+        if target.is_symlink() or target.exists():
+            raise RuntimeError('JOB_PATH_DENIED')
+        target.mkdir(mode=0o700)
+        while True:
+            state['attempts'] += 1
+            try:
+                return attempt(state['attempts'])
+            except GenerationError as failure:
+                session = getattr(failure, 'session', {})
+                # A second full attempt: the reply is unusable as a whole, or the ladder ended below the minimum.
+                usable = session.get('replyReceived') is True or (
+                    session.get('requested') is True and failure.code in UNUSABLE_REPLY)
+                if not (usable and may_call('author')):
+                    raise
+                state['firstCode'] = failure.code
+                for key in ('question', 'gateCode', 'gate'):
+                    state.pop(key, None)
+                metadata.clear()
+                set_phase('authoring')
     finally:
-        if diagnostics_due:
-            save_diagnostics()
+        calls = {'authorCalls': state.get('attempts'), 'correctionCalls': state.get('corrections')}
+        metadata.update({key: value for key, value in calls.items() if type(value) is int})
+        save_diagnostics()
 
 
 def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISION):
@@ -256,6 +540,9 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
     if raw_target.is_symlink(): raise RuntimeError('JOB_PATH_DENIED')
     target=raw_target.resolve()
     if target.parent!=root or target.exists(): raise RuntimeError('JOB_PATH_DENIED')
+    claimed=clock()
+    summary={}
+    stage=None
     # Confirm the current lease against durable state before any billed call.
     update_job(remote,job,{'phase':'authoring'})
     stop=threading.Event();lost=threading.Event()
@@ -269,7 +556,9 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
                 lost.set();return
     thread=threading.Thread(target=renew,daemon=True);thread.start()
     try:
-        manifest, artifact_root = author_and_render(remote, job, target, lost, enable_skill_revision)
+        manifest, artifact_root = author_and_render(remote, job, target, lost, enable_skill_revision,
+                                                    claimed_at=claimed, summary=summary)
+        stage='acceptance'
         if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
         artifacts=manifest.get('artifacts',[])
         general=lesson.get('version')==3 and manifest.get('authoringProfile')=='general-skill-source/v1'
@@ -278,6 +567,7 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
         passed=passed and bool(manifest.get('steps')) and all(s.get('status') in (('PASS','REVIEW') if general else ('PASS',)) for s in manifest['steps'])
         if not passed or {a.get('kind') for a in artifacts}!={'pdf','docx'} or len(artifacts)!=2:
             raise GenerationError('QUALITY_GATE_FAILED','A required output gate failed')
+        stage='upload'
         check_transport(remote)
         # Bind private uploads to the durable claim again after the potentially long render.
         update_job(remote,job,{'phase':'checking'})
@@ -296,16 +586,48 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
         result={'version':1,'automatedChecksPassed':manifest.get('automatedChecksPassed') is True,'humanReviewRequired':True,'skill':manifest['skill'],
                 'artifacts':published,'checks':[{'name':s['name'],'status':s['status']} for s in manifest['steps']]}
         if general:
+            findings=manifest.get('reviewFindings',[])
+            salvage=public_salvage(summary,lesson['questionCount'])
+            if salvage and salvage['dropped']['count']:
+                # A shorter sheet is delivered with its own note for the teacher.
+                findings=(findings if isinstance(findings,list) else [])+[
+                    {'code':'SHORTER_SHEET','class':'editorial','count':salvage['dropped']['count']}]
+            planned=summary.get('planned')
+            if type(planned) is int and 0<planned<lesson['questionCount']:
+                # An opening sheet planned by its minutes (skill_authoring.planned_count) has its own note.
+                findings=(findings if isinstance(findings,list) else [])+[
+                    {'code':'LESSON_SIZED','class':'editorial','count':lesson['questionCount']-planned}]
+            unverified=unverified_rows(manifest.get('unverifiedAnswers',[])) or []
+            # Editorial findings only: fixed codes, counts, question numbers and
+            # this engine's own Hebrew notes. No gate or model text is forwarded.
             result.update(authoringProfile='general-skill-source/v1',renderingChecksPassed=True,
-                          reviewFindings=[{'code':r['code'],'count':r['count']} for r in manifest.get('reviewFindings',[])
-                                          if r.get('code')=='DIDACTIC_REVIEW' and type(r.get('count')) is int and 0<r['count']<=2000])
+                          reviewFindings=public_review_findings(findings),
+                          # Which printed answers no exact kernel verified: labels, open items,
+                          # story-typed decisions and review answers, by question and item.
+                          teacherNotes=public_teacher_notes(manifest.get('unverifiedAnswers',[])),
+                          unverifiedAnswers={kind:sum(row['kind']==kind for row in unverified)
+                                             for kind in sorted({row['kind'] for row in unverified})})
+            if salvage:
+                # What the repair ladder did: attempts, corrections, replaced questions, the gate decision.
+                result['salvage']=salvage
+            if len(json.dumps(result,ensure_ascii=False).encode())>RESULT_LIMIT:
+                # Keep the notes and their counts; the positions are also printed on the sheet's key.
+                for entry in result['teacherNotes']: entry.pop('items',None)
         if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
         stop.set();thread.join(timeout=3)
         update_job(remote,job,{'status':'needs_review','phase':'needs_review','result':result,'lease_token':None,'lease_until':None})
+    except Exception as error:
+        # For the container log: the failed row itself stores the code only.
+        error.job_failure=failure_detail(error,summary,stage)
+        raise
     finally: stop.set();thread.join(timeout=3)
 
 def load_env(path):
-    allowed={'QWEN_API_KEY','DASHSCOPE_API_KEY','QWEN_BASE_URL','QWEN_MODEL','TEACHER_GENERATION_SERVICE_KEY','ELEMENTARY_SKILL_PATH','MIDDLE_SKILL_PATH'}
+    allowed={'QWEN_API_KEY','DASHSCOPE_API_KEY','QWEN_BASE_URL','QWEN_MODEL','TEACHER_GENERATION_SERVICE_KEY','ELEMENTARY_SKILL_PATH','MIDDLE_SKILL_PATH',
+             # The author switch and the selected provider's own credential and model (provider.author_config).
+             'TEACHER_AUTHOR_PROVIDER','GEMINI_API_KEY','GEMINI_MODEL',
+             # Parallel author parts: 1-4 or auto (author_request.slice_setting).
+             'TEACHER_AUTHOR_SLICES'}
     for line in Path(path).read_text().splitlines():
         if not line.strip() or line.lstrip().startswith('#') or '=' not in line:continue
         key,value=line.split('=',1);key=key.strip()
@@ -366,7 +688,9 @@ def run_worker(args, shutdown):
                     if not re.fullmatch('[A-Z_]{1,60}',code):code='WORKER_FAILED'
                     try:update_job(remote,job,{'status':'failed','phase':'failed','error_code':code,'lease_token':None,'lease_until':None})
                     except Exception:pass
-                    print(json.dumps({'event':'generation_failed','jobId':job.get('id'),'code':code}),flush=True)
+                    # One line with where it failed: the stage, the question and the gate, when known.
+                    detail=getattr(e,'job_failure',None) or failure_detail(e,None)
+                    print(json.dumps({'event':'generation_failed','jobId':job.get('id'),'code':code,**detail}),flush=True)
                 else:print(json.dumps({'event':'generation_needs_review','jobId':job['id']}),flush=True)
             if args.once:return
         except Exception:

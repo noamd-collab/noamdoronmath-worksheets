@@ -1,5 +1,9 @@
-"""Qwen authoring only. Never used as a reviewer or as executable source."""
+"""Worksheet authoring transport: Qwen by default, Gemini by an explicit switch.
+
+Never used as a reviewer or as executable source.
+"""
 from __future__ import annotations
+import http.client
 import json
 import os
 import re
@@ -29,9 +33,120 @@ def qwen_chat_url(base):
     return 'https://'+u.hostname+path+('' if path.endswith('/chat/completions') else '/chat/completions')
 
 
+# Provider switch. Unset or empty keeps the unchanged Qwen path. Gemini has one
+# fixed OpenAI-compatible endpoint and a closed model list.
+AUTHOR_PROVIDER_ENV='TEACHER_AUTHOR_PROVIDER'
+AUTHOR_PROVIDERS=('qwen','gemini')
+GEMINI_CHAT_URL='https://generativelanguage.googleapis.com/v1beta/openai/chat/completions'
+GEMINI_MODELS=('gemini-3.8-flash',)
+GEMINI_REPLY_RULE=(
+    ' Reply with exactly one JSON object and nothing else. It must conform to sourceSchema in the user '
+    'message: the same field names, every required field, the exact array lengths and no other fields. '
+    'When replyExample is present it shows one valid question in the required notation. It illustrates '
+    'format only: write new content for the selected topic and never reuse its numbers, wording or tasks.')
+
+
+def author_provider():
+    """Closed provider switch; an unknown value fails closed."""
+    name=os.environ.get(AUTHOR_PROVIDER_ENV) or 'qwen'
+    if name not in AUTHOR_PROVIDERS:
+        reject('PROVIDER_CONFIG_INVALID','Unknown authoring provider')
+    return name
+
+
+def author_config(api_key=None, base_url=None, model=None):
+    """Return (key, chat URL, model id) for the selected provider, or fail closed.
+
+    Each provider reads only its own credential, so one provider's key can
+    never be sent to the other provider's host.
+    """
+    if author_provider()=='gemini':
+        # Explicit Qwen-style arguments are refused, never forwarded to Google.
+        if api_key is not None or base_url is not None:
+            reject('PROVIDER_CONFIG_INVALID','Gemini uses its dedicated credential and fixed endpoint')
+        key=os.environ.get('GEMINI_API_KEY')
+        if not key:
+            reject('PROVIDER_NOT_CONFIGURED','Configure GEMINI_API_KEY on the private worker')
+        chosen=model or os.environ.get('GEMINI_MODEL') or GEMINI_MODELS[0]
+        if chosen not in GEMINI_MODELS:
+            reject('PROVIDER_CONFIG_INVALID','Gemini model is outside the closed allowlist')
+        return key,GEMINI_CHAT_URL,chosen
+    key=api_key or os.environ.get('QWEN_API_KEY') or os.environ.get('DASHSCOPE_API_KEY')
+    base=base_url or os.environ.get('QWEN_BASE_URL')
+    chosen=model or os.environ.get('QWEN_MODEL')
+    if not key or not base or not chosen:
+        reject('PROVIDER_NOT_CONFIGURED','Configure QWEN_API_KEY, QWEN_BASE_URL and QWEN_MODEL on the private worker')
+    target=qwen_chat_url(base)
+    if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,63}',chosen):
+        reject('PROVIDER_CONFIG_INVALID','Invalid configured Qwen model')
+    return key,target,chosen
+
+
+def author_body(target, body, example=None):
+    """Return the request body this provider accepts. Qwen: the same object.
+
+    Google rejects the strict worksheet schema ("too many states for serving"),
+    so Gemini gets response_format json_object and low reasoning effort. The
+    full schema travels in the user message as sourceSchema, with one short
+    valid example. Local validation remains the only authority. Idempotent:
+    request_author_json applies it again as a guard for every caller.
+    """
+    if target!=GEMINI_CHAT_URL:
+        return body
+    form=body.get('response_format') if isinstance(body,dict) else None
+    if form=={'type':'json_object'}:
+        return body
+    try:
+        schema=form['json_schema']['schema']
+        system,user=body['messages']
+        data=json.loads(user['content'])
+        if not isinstance(data,dict) or not isinstance(system['content'],str):
+            raise ValueError()
+    except (KeyError,TypeError,ValueError):
+        reject('PROVIDER_CONFIG_INVALID','Authoring request cannot be adapted for the selected provider')
+    data.setdefault('sourceSchema',schema)
+    if example is not None:
+        data['replyExample']=example
+    adapted={k:v for k,v in body.items() if k not in ('enable_thinking','response_format','messages')}
+    adapted.update(messages=[{**system,'content':system['content']+GEMINI_REPLY_RULE},
+                             {**user,'content':json.dumps(data,ensure_ascii=False)}],
+                   response_format={'type':'json_object'},reasoning_effort='low')
+    return adapted
+
+
 class NoRedirects(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         return None
+
+
+CONNECT_TIMEOUT_SECONDS=10
+MAX_ATTEMPTS=2
+RETRY_STATUSES=(429,503)
+RETRY_BACKOFF_SECONDS=2.0
+RETRY_BACKOFF_CAP_SECONDS=8.0
+
+
+class BoundedConnection(http.client.HTTPSConnection):
+    """TCP connect and TLS handshake get a short limit; the reply keeps the caller's."""
+    def connect(self):
+        reply=self.timeout
+        timed=type(reply) in (int,float)
+        self.timeout=min(reply,CONNECT_TIMEOUT_SECONDS) if timed else CONNECT_TIMEOUT_SECONDS
+        try:
+            super().connect()
+        finally:
+            self.timeout=reply
+        if timed:
+            self.sock.settimeout(reply)
+
+
+class BoundedConnectHTTPS(HTTPSHandler):
+    def __init__(self, context):
+        super().__init__(context=context)
+        self.verified_context=context
+
+    def https_open(self, req):
+        return self.do_open(BoundedConnection,req,context=self.verified_context)
 
 
 def verified_tls_context():
@@ -54,6 +169,108 @@ def safe_usage(value):
             counts={k:v for k,v in details.items() if k in fields and type(v) is int and 0<=v<=1_000_000_000}
             if counts:result[key]=counts
     return result
+
+
+# Error-body reader from Codex's Gemini comparison (c1f4f4fb9): the provider's
+# text is matched against fixed vocabularies and only those labels are kept.
+_ERROR_BODY_LIMIT=16_384
+_ERROR_STATUSES={
+    'INVALID_ARGUMENT','FAILED_PRECONDITION','RESOURCE_EXHAUSTED','PERMISSION_DENIED',
+    'UNAUTHENTICATED','NOT_FOUND','UNAVAILABLE','INTERNAL','DEADLINE_EXCEEDED',
+    'invalid_request_error','invalid_json_schema','invalid_value','unsupported_parameter',
+    'rate_limit_exceeded','insufficient_quota','invalid_api_key','model_not_found',
+}
+_ERROR_FIELDS={
+    field.casefold():field for field in (
+        '$defs','$ref','oneOf','anyOf','allOf','additionalProperties','const','pattern',
+        'minItems','maxItems','minLength','maxLength','enum','required','strict',
+        'response_format','json_schema','responseSchema','responseJsonSchema','max_tokens',
+        'max_completion_tokens','maxOutputTokens','temperature','reasoning_effort',
+        'thinkingConfig','thinkingLevel','thinkingBudget',
+    )
+}
+_ERROR_TOKEN=re.compile(r'\$?[A-Za-z_][A-Za-z_0-9]*')
+_ERROR_REASONS={
+    'schema_complexity':re.compile(r'too (?:complex|many states|many branches|deeply nested)|nesting depth|schema complexity',re.I),
+    'unsupported_field':re.compile(r'unknown (?:field|name)|(?:unsupported|unrecognized) (?:field|parameter|keyword)|not supported',re.I),
+    'invalid_schema':re.compile(r'invalid[_ ](?:json[_ ])?schema|schema validation|schema (?:is )?invalid',re.I),
+    'quota':re.compile(r'quota|rate[_ ]limit',re.I),
+}
+
+
+def safe_http_diagnostic(error):
+    """Read the bounded error stream once. Return fixed labels, never provider text."""
+    try:
+        raw=error.read(_ERROR_BODY_LIMIT+1)
+    except Exception:  # Error-body I/O must not mask the HTTP status.
+        return {'body':'unreadable'}
+    if not isinstance(raw,bytes) or not raw:
+        return {'body':'empty' if raw==b'' else 'unreadable'}
+    if len(raw)>_ERROR_BODY_LIMIT:
+        return {'body':'truncated'}
+    try:
+        payload=json.loads(raw)
+    except (ValueError,RecursionError):
+        return {'body':'invalid_json'}
+    envelopes=payload if isinstance(payload,list) else [payload]
+    statuses,fields,reasons=set(),set(),set()
+    recognized=False
+    for envelope in envelopes[:16]:
+        if not isinstance(envelope,dict):
+            continue
+        entry=envelope.get('error',envelope)
+        if not isinstance(entry,dict) or not any(k in entry for k in ('message','status','code','type','param','details')):
+            continue
+        recognized=True
+        for key in ('status','code','type'):
+            status=entry.get(key)
+            if isinstance(status,str) and status in _ERROR_STATUSES:
+                statuses.add(status)
+        values=[entry.get(k) for k in ('message','param','code','type')]
+        details=entry.get('details')
+        for detail in details[:16] if isinstance(details,list) else ():
+            violations=detail.get('fieldViolations') if isinstance(detail,dict) else None
+            for violation in violations[:32] if isinstance(violations,list) else ():
+                if isinstance(violation,dict):
+                    values.extend((violation.get('field'),violation.get('description')))
+        for value in values:
+            if isinstance(value,str):
+                fields.update(_ERROR_FIELDS[t] for t in _ERROR_TOKEN.findall(value.casefold()) if t in _ERROR_FIELDS)
+                reasons.update(name for name,pattern in _ERROR_REASONS.items() if pattern.search(value))
+    if not recognized:
+        return {'body':'unrecognized_envelope'}
+    return {'body':'parsed','statuses':sorted(statuses),'fields':sorted(fields),'categories':sorted(reasons)}
+
+
+HTTP_BODY_LABELS=('unreadable','empty','truncated','invalid_json','unrecognized_envelope','parsed')
+PROVIDER_ERRORS=('schema_rejected','unsupported_parameter','bad_request','credential_rejected','model_not_found',
+                 'rate_limited','unavailable','server_error','http_error')
+TIMEOUT_PHASES=('connect','reply')
+REPLY_DEFECTS=('envelope','content_not_json')
+
+
+def provider_error_class(status, diagnostic):
+    """One fixed label per failed HTTP reply; the engine code stays PROVIDER_HTTP_ERROR."""
+    categories=set(diagnostic.get('categories',()))
+    if status==400:
+        # Google's "too many states for serving" and invalid-schema replies.
+        if categories&{'schema_complexity','invalid_schema'}: return 'schema_rejected'
+        return 'unsupported_parameter' if 'unsupported_field' in categories else 'bad_request'
+    if status in (401,403): return 'credential_rejected'
+    if status==404: return 'model_not_found'
+    if status==429: return 'rate_limited'
+    if status==503: return 'unavailable'
+    return 'server_error' if 500<=status<=599 else 'http_error'
+
+
+def retry_delay(error):
+    """Bounded wait before the single retry; a numeric Retry-After may lengthen it."""
+    delay=RETRY_BACKOFF_SECONDS
+    try:
+        delay=max(delay,float(error.headers.get('Retry-After')))
+    except (AttributeError,TypeError,ValueError):
+        pass
+    return min(delay,RETRY_BACKOFF_CAP_SECONDS)
 
 
 def question_plan(lesson, cap):
@@ -205,46 +422,167 @@ def derive_author_parameters(lesson, cap, payload):
 
 
 
-def request_author_json(target, key, body, measured, timeout):
-    """One bounded TLS authoring call, shared by pilot and skill-source contracts."""
-    req=Request(target,data=json.dumps(body).encode(),headers={'Authorization':'Bearer '+key,'Content-Type':'application/json'},method='POST')
-    started=time.monotonic()
+def fetch_author_reply(target, key, body, measured, timeout):
+    """POST one authoring request and return the raw reply bytes.
+
+    Only HTTP 429 and 503 are tried again, once, after a bounded wait: such a
+    reply carries no completion. Any other outcome, and every HTTP 200, is
+    final, so a delivered completion is never requested twice. Failures are
+    raised after the handler ends, so no provider exception, header or body
+    is chained to the engine error.
+    """
+    data=json.dumps(body).encode()
+    opener=build_opener(NoRedirects(),BoundedConnectHTTPS(verified_tls_context()))
+    for attempt in range(1,MAX_ATTEMPTS+1):
+        measured['attempts']=attempt
+        req=Request(target,data=data,headers={'Authorization':'Bearer '+key,'Content-Type':'application/json'},method='POST')
+        failure=wait=None
+        try:
+            with opener.open(req,timeout=timeout) as response:
+                raw=response.read(MAX_JSON_BYTES+100_001)
+                status=getattr(response,'status',200)
+            measured['httpStatus']=status if type(status) is int and 100<=status<=599 else 200
+            for stale in ('httpDiagnostic','providerError'):
+                measured.pop(stale,None)
+            return raw
+        except HTTPError as exc:
+            measured['httpStatus']=exc.code
+            measured['httpDiagnostic']=safe_http_diagnostic(exc)
+            measured['providerError']=provider_error_class(exc.code,measured['httpDiagnostic'])
+            if exc.code in RETRY_STATUSES and attempt<MAX_ATTEMPTS:
+                wait=retry_delay(exc)
+            else:
+                failure=('PROVIDER_HTTP_ERROR',f'Provider returned HTTP {exc.code}; body omitted')
+        except URLError as exc:
+            # urllib wraps failures up to sending the request, so a timeout here is the connect phase.
+            if isinstance(exc.reason,ssl.SSLError):
+                failure=('PROVIDER_TLS_ERROR','Verified TLS handshake failed; certificate verification remains enabled')
+            else:
+                if isinstance(exc.reason,TimeoutError):measured['timeoutPhase']='connect'
+                failure=('PROVIDER_UNAVAILABLE','Provider network request failed; retry requires the job policy')
+        except ssl.SSLError:
+            failure=('PROVIDER_TLS_ERROR','Verified TLS handshake failed; certificate verification remains enabled')
+        except TimeoutError:
+            measured['timeoutPhase']='reply'
+            failure=('PROVIDER_UNAVAILABLE','Provider request timed out; retry requires the job policy')
+        except (http.client.HTTPException,OSError):
+            failure=('PROVIDER_UNAVAILABLE','Provider network request failed; retry requires the job policy')
+        if failure:
+            error = GenerationError(*failure)
+            if error.code == 'PROVIDER_HTTP_ERROR':
+                # Attach only the final failed request. A sibling part, an earlier
+                # author call or a successful retry must not supply this evidence.
+                error.http_transport = {key: measured[key] for key in
+                                        ('provider', 'attempts', 'httpStatus', 'providerError') if key in measured}
+            raise error
+        time.sleep(wait)
+
+
+FINISH_REASONS=('stop','length','content_filter','tool_calls','function_call')
+
+
+def safe_transport_measurements(measured):
+    """The transport's own measurements, checked again against their fixed vocabularies.
+
+    For records that leave the authoring call (the operator's diagnostics
+    file). Every value is a bounded number or one of this module's labels; a
+    value outside its vocabulary is dropped, so no provider text can pass.
+    """
+    result={}
+    if not isinstance(measured,dict): return result
+    for key,labels in (('provider',AUTHOR_PROVIDERS),('providerError',PROVIDER_ERRORS),('timeoutPhase',TIMEOUT_PHASES),
+                       ('replyDefect',REPLY_DEFECTS),('finishReason',FINISH_REASONS+('other',))):
+        value=measured.get(key)
+        if isinstance(value,str) and value in labels: result[key]=value
+    attempts,status=measured.get('attempts'),measured.get('httpStatus')
+    if type(attempts) is int and 1<=attempts<=MAX_ATTEMPTS: result['attempts']=attempts
+    if type(status) is int and 100<=status<=599: result['httpStatus']=status
+    diagnostic=measured.get('httpDiagnostic')
+    if isinstance(diagnostic,dict) and diagnostic.get('body') in HTTP_BODY_LABELS:
+        checked={'body':diagnostic['body']}
+        for key,known in (('statuses',_ERROR_STATUSES),('fields',set(_ERROR_FIELDS.values())),('categories',set(_ERROR_REASONS))):
+            values=diagnostic.get(key)
+            if isinstance(values,list):
+                checked[key]=sorted({v for v in values if isinstance(v,str) and v in known})
+        result['httpDiagnostic']=checked
+    return result
+
+
+def author_reply_text(raw, measured):
+    """Check the chat envelope and return the model's content text, unparsed."""
+    invalid=False
     try:
-        with build_opener(NoRedirects(),HTTPSHandler(context=verified_tls_context())).open(req,timeout=timeout) as response:
-            raw=response.read(MAX_JSON_BYTES+100_001)
         if len(raw)>MAX_JSON_BYTES+100_000: reject('PROVIDER_OUTPUT_TOO_LARGE','Provider response exceeded limit')
         envelope=json.loads(raw)
         measured['responseReceived']=True
         measured['usage']=safe_usage(envelope.get('usage'))
         returned_model=envelope.get('model')
-        if isinstance(returned_model,str) and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,127}',returned_model):measured['responseModel']=returned_model
+        if isinstance(returned_model,str):
+            # Google prefixes its model resource name.
+            returned_model=returned_model.removeprefix('models/')
+            if re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,127}',returned_model):measured['responseModel']=returned_model
         choice=envelope['choices'][0]
-        if choice.get('finish_reason')!='stop': reject('PROVIDER_INCOMPLETE','Provider did not finish its JSON output')
+        finish=choice.get('finish_reason')
+        measured['finishReason']=finish if finish in FINISH_REASONS else 'other'
+        if finish!='stop': reject('PROVIDER_INCOMPLETE','Provider did not finish its JSON output')
         text=choice['message']['content']
         if not isinstance(text,str) or len(text.encode())>MAX_JSON_BYTES: reject('PROVIDER_OUTPUT_TOO_LARGE','Invalid provider content')
-        def pairs(values):
-            result={}
-            for k,v in values:
-                if k in result: reject('INVALID_MODEL_OUTPUT','Duplicate model JSON key')
-                result[k]=v
-            return result
-        payload=json.loads(text,object_pairs_hook=pairs,parse_constant=lambda _: reject('INVALID_MODEL_OUTPUT','Nonfinite number'))
-    except HTTPError as exc:
-        measured['httpStatus']=exc.code
-        reject('PROVIDER_HTTP_ERROR',f'Provider returned HTTP {exc.code}; body omitted')
-    except URLError as exc:
-        if isinstance(exc.reason,ssl.SSLError):reject('PROVIDER_TLS_ERROR','Verified TLS handshake failed; certificate verification remains enabled')
-        reject('PROVIDER_UNAVAILABLE','Provider network request failed; retry requires the job policy')
-    except ssl.SSLError:
-        reject('PROVIDER_TLS_ERROR','Verified TLS handshake failed; certificate verification remains enabled')
-    except TimeoutError:
-        reject('PROVIDER_UNAVAILABLE','Provider request timed out; retry requires the job policy')
-    except (ValueError,KeyError,TypeError,IndexError) as exc:
+        return text
+    except (ValueError,KeyError,TypeError,IndexError,AttributeError) as exc:
         if isinstance(exc,GenerationError): raise
+        invalid=True
+    if invalid:
+        measured['replyDefect']='envelope'
         reject('PROVIDER_INVALID_RESPONSE','Provider response did not match the expected JSON envelope')
+
+
+def parse_author_reply(raw, measured):
+    """Return the model's JSON object, strictly parsed. Never retried or repaired here.
+
+    A finished worksheet or correction reply whose text as a whole is not
+    JSON is read question by question (reply_salvage): each question that
+    decodes strictly on its own is kept in its place and examined like any
+    other; one that does not is lost and counts as refused.
+    """
+    text=author_reply_text(raw,measured)
+    def pairs(values):
+        result={}
+        for k,v in values:
+            if k in result: reject('INVALID_MODEL_OUTPUT','Duplicate model JSON key')
+            result[k]=v
+        return result
+    try:
+        return json.loads(text,object_pairs_hook=pairs,parse_constant=lambda _: reject('INVALID_MODEL_OUTPUT','Nonfinite number'))
+    except GenerationError:
+        raise
+    except (ValueError,RecursionError):
+        # A finished reply whose text is not JSON: seen live from gemini-3.8-flash
+        # in json_object mode (a stray character in place of closing brackets).
+        measured['replyDefect']='content_not_json'
+    from reply_salvage import salvage
+    salvaged=salvage(text)
+    if salvaged is not None:
+        reply,lost=salvaged
+        # Counts only: the lost text is never kept.
+        measured['replySalvaged']={'questionsLost':lost}
+        return reply
+    reject('PROVIDER_INVALID_RESPONSE','Provider response did not match the expected JSON envelope')
+
+
+def request_author_json(target, key, body, measured, timeout):
+    """One bounded TLS authoring call, shared by pilot and skill-source contracts."""
+    # Guard for every caller: Google never receives the strict worksheet schema.
+    body=author_body(target,body)
+    measured['provider']='gemini' if target==GEMINI_CHAT_URL else 'qwen'
+    started=time.monotonic()
+    try:
+        return parse_author_reply(fetch_author_reply(target,key,body,measured,timeout),measured)
     finally:
         measured['elapsedSeconds']=round(time.monotonic()-started,3)
-    return payload
+        # The returned model id is the only provider-chosen string that is kept.
+        # Every other measurement is a number or a fixed label. It must not echo the credential.
+        if key and key in str(measured.get('responseModel','')):
+            del measured['responseModel']
 
 def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None, allow_legacy=False, revision=None):
     """Author the initial requested lesson. A v3 worker may retain one revision callback.
@@ -301,14 +639,7 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
         return author_general_lesson(lesson, api_key=api_key, base_url=base_url, model=model,
                                      timeout=timeout, metadata=metadata, authoring_context=context,
                                      **({"revision": revision} if revision is not None else {}))
-    key=api_key or os.environ.get('QWEN_API_KEY') or os.environ.get('DASHSCOPE_API_KEY')
-    base=base_url or os.environ.get('QWEN_BASE_URL')
-    chosen=model or os.environ.get('QWEN_MODEL')
-    if not key or not base or not chosen:
-        reject('PROVIDER_NOT_CONFIGURED','Configure QWEN_API_KEY, QWEN_BASE_URL and QWEN_MODEL on the private worker')
-    target=qwen_chat_url(base)
-    if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,63}',chosen):
-        reject('PROVIDER_CONFIG_INVALID','Invalid configured Qwen model')
+    key,target,chosen=author_config(api_key,base_url,model)
     version=author_contract_version(lesson,cap)
     plan=question_plan(lesson,cap)
     system=(

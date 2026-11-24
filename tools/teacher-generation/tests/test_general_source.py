@@ -250,7 +250,9 @@ class PrintedElementaryTests(unittest.TestCase):
                 self.assertEqual(bound.proof["verifiedTypedValue"],typed)
                 with self.assertRaises(GeneralSourceError): self.bind(prompt,typed+1)
         self.assertIsNone(self.bind("חשבו את הביטוי.",3))
-        self.assertIsNone(self.bind(cases[0][0],308,lesson={"gradeNumber":3,"topicId":"ג10"}))
+        # A printed place-value form is answered from its own number in any elementary topic.
+        self.assertEqual(self.bind(cases[0][0],308,lesson={"gradeNumber":3,"topicId":"ג10"}).proof["rule"],"place_digits")
+        self.assertIsNone(self.bind(cases[0][0],308,lesson={"gradeNumber":7,"topicId":"g7:equations"}))
 
     def test_real_table_and_comparison_are_bound_to_the_data_students_see(self):
         from math_tasks import number

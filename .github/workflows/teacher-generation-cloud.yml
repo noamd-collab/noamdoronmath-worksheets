@@ -51,6 +51,10 @@ jobs:
           npm test
       - name: Check release plan and image verification guards
         run: python3 -m unittest discover -s tools/release/tests -p 'test_teacher_cloudflare_*.py' -v
+      - name: Install the pinned PDF reader for the host packaging tests
+        run: |
+          python3 -m pip install --no-deps --require-hashes -r \
+            <(sed -n '/^pymupdf==/p' tools/teacher-generation/cloud/container/requirements-linux-amd64.lock)
       - name: Build Linux image and run all offline render gates
         run: bash tools/teacher-generation/cloud/container/ci_check.sh "$RUNNER_TEMP/teacher-cloud-evidence"
       - name: Export the same qualified image for a separately approved release

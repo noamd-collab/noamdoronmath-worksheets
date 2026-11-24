@@ -8,10 +8,11 @@ from math_tasks import MAX_INPUT_INTEGER
 
 NUMBER_TOKEN = re.compile(r"(?:[1-9][0-9]{0,2}(?:,[0-9]{3})+|[0-9]+)(?:\.[0-9]+)?")
 PLAIN_TOKEN = re.compile(r"[0-9]+(?:\.[0-9]+)?")
-_SYNTAX = re.compile(r"sqrt|frac|[xyab+*/^(),-]")
+_SYNTAX = re.compile(r"sqrt|frac|pi|π|[xyab+*/^(),-]")
 _LITERAL = re.compile(rf"[+-]?{NUMBER_TOKEN.pattern}%?")
 COEFFICIENT = re.compile(r"(?<=[0-9])([xyab])(?![A-Za-z0-9_])")
-_SCHOOL_OPERATION = re.compile(r"(?:(?<=[0-9)])|(?<=___))\s+([x:])\s+(?=[0-9(]|___)")
+# A percentage is a complete operand too: 25% x 80.
+_SCHOOL_OPERATION = re.compile(r"(?:(?<=[0-9)%])|(?<=___))\s+([x:])\s+(?=[0-9(]|___)")
 
 
 def elementary_operations(source):
@@ -49,8 +50,13 @@ def printed_number(node, spellings):
     return spelling
 
 
-def decimal_result(node, notation):
-    """Use an exact terminating decimal when the task was entered in decimals."""
+def decimal_result(node, notation, *, money=False):
+    """Use an exact terminating decimal when the task was entered in decimals.
+
+    Prices keep two decimals: 12.50 + 7.90 is 20.40, not 20.4. That holds for a
+    money question, and for a task that combines several decimals of two places
+    with a written closing zero. Only the spelling changes, never the value.
+    """
     if (node.get("type") != "number" or not isinstance(notation, str) or
             not re.search(r"[0-9]\.[0-9]", notation) or "frac" in notation or "%" in notation):
         return None
@@ -70,6 +76,10 @@ def decimal_result(node, notation):
     while rem:
         digit, rem = divmod(rem * 10, d)
         digits.append(str(digit))
+    places = re.findall(r"[0-9]\.([0-9]+)", notation)
+    if len(digits) == 1 and all(len(p) == 2 for p in places) and (
+            money or (len(places) >= 2 and any(p.endswith("0") for p in places))):
+        digits.append("0")
     return ("−" if n < 0 else "") + str(integer) + "." + "".join(digits)
 
 

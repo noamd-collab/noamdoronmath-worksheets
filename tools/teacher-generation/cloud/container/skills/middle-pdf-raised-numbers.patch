@@ -1,0 +1,44 @@
+--- a/deliver.py
++++ b/deliver.py
+@@ -397,6 +397,32 @@
+     known |= set("%g" % i for i in range(1, int(pages) + 1))
+     return sorted(set(g for g in printed if g not in known),
+                   key=lambda v: (len(v), v))
++
++
++def _page_numbers_text(pg):
++    """The page's text as get_text("text") reads it, with one difference: a
++    run printed on another baseline (a raised exponent, 7² or (x + 2)², or a
++    lowered index) is set apart by a space. get_text("text") glues the run
++    to its neighbour, so 7² was read as the number 72, which no datum states
++    (r1, teacher generator: g9r quadratics refused for '72', '82', '22').
++    Digits printed on one baseline are read exactly as before, so a number
++    the level does not state still fails."""
++    lines = []
++    for blk in pg.get_text("dict")["blocks"]:
++        for ln in blk.get("lines", []):
++            parts, last = [], None
++            flat = abs(ln["dir"][1]) < 1e-3       # a horizontal line
++            for sp in ln["spans"]:
++                here = (bool(sp["flags"] & 1),
++                        sp["origin"][1] if flat else 0.0, sp["size"])
++                if last is not None and (
++                        here[0] != last[0] or abs(here[1] - last[1])
++                        > 0.15 * min(here[2], last[2])):
++                    parts.append(" ")
++                parts.append(sp["text"])
++                last = here
++            lines.append("".join(parts))
++    return "\n".join(lines)
+ 
+ 
+ def pdf_numbers(path):
+@@ -408,7 +434,7 @@
+     doc = pymupdf.open(str(path))
+     out = []
+     for pg in doc:
+-        for t in _NUM_RE.findall(pg.get_text("text").replace(u"−", "-")):
++        for t in _NUM_RE.findall(_page_numbers_text(pg).replace(u"−", "-")):
+             x = _norm_num(t)
+             if x is not None:
+                 out.append(x)

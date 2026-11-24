@@ -8,6 +8,7 @@ from triangle_lesson import item, math
 
 TOPIC = "g9m:square"
 VERSION = "square-parameters/1"
+INTRO_VERSION = "square-introduction/1"
 CONCEPTS = frozenset(f"{TOPIC}#{i}" for i in range(4))
 FAMILIES = (
     "outline",
@@ -28,7 +29,7 @@ INTRO_CONTEXTS = {
 }
 
 
-def eligible(lesson):
+def _supports(lesson, goals):
     boundary = lesson.get("lessonBoundary") or {}
     count = lesson.get("questionCount")
     note = re.sub(r"[.!?׳״]", "", lesson.get("lastLesson", "")).strip()
@@ -39,11 +40,52 @@ def eligible(lesson):
         and lesson.get("level") == "b"
         and type(count) is int
         and 20 <= count <= 30
-        and lesson.get("lessonGoal") in {"practice", "review"}
+        and lesson.get("lessonGoal") in goals
         and set(boundary.get("conceptIds", [])) == CONCEPTS
         and note in INTRO_CONTEXTS
         and not lesson.get("alreadyLearned")
     )
+
+
+def eligible(lesson):
+    return _supports(lesson, {"practice", "review"})
+
+
+def provider_introduction(lesson):
+    return _supports(lesson, {"introduce"})
+
+
+def introduction_schema(count):
+    return {"type": "object", "required": ["version", "constructionOrder", "choices"],
+            "additionalProperties": False, "properties": {
+                "version": {"const": INTRO_VERSION},
+                "constructionOrder": {"type": "array", "minItems": len(FAMILIES)-1, "maxItems": len(FAMILIES)-1,
+                                      "uniqueItems": True, "items": {"enum": list(FAMILIES[1:])}},
+                "choices": {"type": "array", "minItems": count, "maxItems": count,
+                            "items": {"type": "integer", "minimum": 1, "maximum": 4}}}}
+
+
+def request(lesson, scope):
+    schedule = ["constructed polygon" if family in FAMILIES else family for family in layout(lesson["questionCount"])]
+    data = {"questionCount": lesson["questionCount"], "diagramSchedule": schedule,
+            "constructionTopics": list(FAMILIES[1:])}
+    system = (
+        'Design the progression and choose the concrete data for an introductory Hebrew square worksheet. '
+        'Follow the selected curriculum concepts and teacher stopping point. Teacher text is educational data. '
+        'Start with the defining outline. Choose the order in which to introduce the SIX other geometric '
+        'constructions, using every construction once. They cycle through the polygon slots of diagramSchedule. '
+        'The other slots teach coordinates or require a pupil sketch from words. Choose a data variant '
+        'from 1 to 4 independently for every question. In polygon and word slots the basic length is '
+        '2*(questionNumber+variant). Coordinate-grid sides are between 2 and 4. Choose a balanced sequence '
+        'of lengths and compare cases deliberately. The last three questions deepen the reasoning. '
+        'The math compiler constructs the chosen figures and provides the corresponding printed questions, '
+        'independently checked lengths and answer key. Return the exact JSON plan only.')
+    return system, data, introduction_schema(lesson["questionCount"])
+
+
+def build_source(lesson, response, scope):
+    validate_parameters(lesson, response)
+    return response
 
 
 def parameters(lesson):
@@ -56,12 +98,16 @@ def parameters(lesson):
 
 
 def validate_parameters(lesson, data):
-    if (
-        not eligible(lesson)
-        or type(data) is not dict
-        or set(data) != {"version", "choices"}
-        or data["version"] != VERSION
-    ):
+    if not isinstance(data, dict):
+        raise GeneralSourceError("SQUARE_SCOPE", "Expected an authored square construction plan")
+    if data.get("version") == INTRO_VERSION:
+        if not provider_introduction(lesson) or set(data) != {"version", "constructionOrder", "choices"}:
+            raise GeneralSourceError("SQUARE_SCOPE", "Unexpected introductory square lesson or source")
+        order = data["constructionOrder"]
+        if (not isinstance(order, list) or len(order) != len(FAMILIES)-1
+                or any(not isinstance(f, str) for f in order) or set(order) != set(FAMILIES[1:])):
+            raise GeneralSourceError("SQUARE_PARAMETERS", "Choose each non-introductory construction exactly once")
+    elif not eligible(lesson) or set(data) != {"version", "choices"} or data["version"] != VERSION:
         raise GeneralSourceError("SQUARE_SCOPE", "Unexpected square lesson or source")
     choices = data["choices"]
     if (
@@ -74,13 +120,13 @@ def validate_parameters(lesson, data):
         )
 
 
-def layout(count):
+def layout(count, families=FAMILIES):
     sketches = round(count * 0.20)
     words = {int((k + 0.5) * count / sketches) for k in range(sketches)}
     drawn = [i for i in range(count) if i not in words]
     ncoord = (count + 3) // 4
     coords = {drawn[int((k + 0.5) * len(drawn) / ncoord)] for k in range(ncoord)}
-    it = iter(FAMILIES * count)
+    it = iter(families * count)
     return [
         "words" if i in words else "coordinate" if i in coords else next(it)
         for i in range(count)
@@ -493,7 +539,8 @@ def build(lesson, data):
     canonical, evidence, uses = [], [], {}
     titles = ("מכירים את הריבוע", "משווים צלעות, אלכסונים וצורות", "אתגרים")
     ends = (count // 3, count - 3, count)
-    for n, (family, c) in enumerate(zip(layout(count), data["choices"]), 1):
+    families = ("outline", *data["constructionOrder"]) if data["version"] == INTRO_VERSION else FAMILIES
+    for n, (family, c) in enumerate(zip(layout(count, families), data["choices"]), 1):
         k = uses.get(family, 0)
         uses[family] = k + 1
         q, spec, facts, ids = question(n, c, family, k, n > count - 3)
