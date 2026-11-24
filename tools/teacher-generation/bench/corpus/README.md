@@ -3,8 +3,9 @@
 Nineteen first replies of the author model to real lesson requests, with the
 requests, for `bench/replay.py`: fourteen from Qwen and five from Gemini.
 `index.json` names the provider, the model, the round and the time of each case.
-Thirteen more cases (`L1-*`, Gemini) come from live round 1 and three
-(`L2-*`, Gemini) from live round 2; see below.
+Thirteen more cases (`L1-*`, Gemini) come from live round 1 and eleven
+(`L2-*`, Gemini) from live round 2; see below. Together they are every author
+and correction reply of both live rounds, all eight lessons.
 
 ## Live round 1 (`L1-*`)
 
@@ -35,6 +36,12 @@ author and correction reply byte for byte: `L2-p1` (g9r:rhombus a), `L2-p2`
 with its second author attempt (`-a2`) and the correction that followed the
 first (`-c1`; `L2-p1-c1.txt` is not JSON and is declared as text). The tests in
 `tests/test_live2_print.py` read them.
+
+The square lesson of round 2 (g9m:square b, not delivered: G75 at render) is
+`L2-square` and `L2-square-a2`, each with its correction (`-c1`), byte for byte.
+Like round 1 it ran through the general author with its introduction contract
+bypassed, so it is replayed as `practice`. Round 2 did not run the ד07 lesson
+(`b-g4-order`) live; its round-1 reply is `L1-g4`.
 
 ## Origin
 
