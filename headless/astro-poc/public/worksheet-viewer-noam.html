@@ -33,7 +33,7 @@
   }
 }());
 </script>
-<script src="/noam-ai/catalog-migrations.js?v=20261027-native1"></script>
+<script src="/noam-ai/catalog-migrations.js?v=20261124-scale-feedback"></script>
 <script src="/noam-catalog-migration.js?v=20261027-native1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 
@@ -3284,7 +3284,7 @@ html.noam-a11y-motion .exact-viewer .panel-head .exact-ramzi-avatar ramzi-avatar
 <script src="noam-source-scaffold.js?v=20261029-scaffold1"></script>
 <script src="noam-glossary-curriculum.js?v=20261018-fracbar"></script>
 <script src="noam-glossary.js?v=20261114-trapezoid-context1"></script>
-<script src="noam-curated-hints.js?v=20261120-three-digit-editions"></script>
+<script src="noam-curated-hints.js?v=20261124-scale-feedback"></script>
 <script>
 (function(){
 
@@ -7623,6 +7623,10 @@ var noamVerifiedSourceAnalyses=new WeakMap();
 function noamNativeDataUrl(exercise){
   if(!exercise||!/^q[0-9]+$/.test(String(exercise.nativeQuestionId||''))||!exercise.nativeItemId){return null;}
   var url=String(manifest&&manifest.nativeExportUrl||noamNativeFocusUrl(exercise)||'');
+  // Wording revisions keep their own native text and leave archived exports intact.
+  if(manifest&&/^G[789]-T[0-9]+$/.test(manifest.prefix)&&/^[abc]$/.test(manifest.nativeLevel)&&
+      /^[a-f0-9]{32}$/.test(manifest.pdfHash)&&
+      url==='/noam-ai/native/'+manifest.prefix+'/'+manifest.nativeLevel+'/revisions/'+manifest.pdfHash+'/noam-ai.json'){return url;}
   return /^\/noam-ai\/native\/(?:G[789]-T[0-9]+|G7-ASSESS1|G8-(?:ASSESS1|CIRCLE|INTERP|TWOSRC)|G9-(?:3060|KITE|SIDEANG|TRAP))\/[abc]\/noam-ai\.json$/.test(url)?url:null;
 }
 function noamSourceVisualIdentity(exercise){
