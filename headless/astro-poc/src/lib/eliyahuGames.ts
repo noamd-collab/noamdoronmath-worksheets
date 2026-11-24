@@ -694,6 +694,203 @@ export const ENGINE_GAMES: EliyahuGame[] = [
     theme: TEAL,
     kind: 'engine',
     playPath: '/games/yesharim-makbilim/play'
+    slug: 'gozrim-umadbikim',
+    title: 'משחק שטח המקבילית, הטרפז והמצולע המורכב עם אליהו | נועם דורון',
+    h1: 'משחק שטח המקבילית, הטרפז והמצולע המורכב עם אליהו',
+    description: 'שיעור קצר עם אליהו: גוזרים משולש מהמקבילית והופכים אותה למלבן, מצמידים שני טרפזים למקבילית, ומפרקים מצולע מורכב לצורות מוכרות.',
+    short: 'גוזרים, מזיזים ומדביקים — והנוסחה של השטח מתגלה לבד.',
+    grade: 'כיתות ז׳–ט׳',
+    gradeOrder: 7,
+    emoji: '✂️',
+    links: [
+      { href: '/area-parallelogram-trapezoid-composite-grade-7', label: 'שטח מקבילית, טרפז ומצולע מורכב לכיתה ז׳' },
+      { href: '/parallelogram-trapezoid-area-grade-9', label: 'שטח מקבילית וטרפז לכיתה ט׳' },
+      { href: '/composite-polygons-area-grade-9', label: 'שטח מצולעים מורכבים לכיתה ט׳' }
+    ],
+    topics: [
+      { grade: 7, topic: 45, coverage: 'full' },
+      { grade: 7, topic: 46, coverage: 'full' },
+      { grade: 9, topic: 28, coverage: 'partial' },
+      { grade: 9, topic: 29, coverage: 'partial' }
+    ],
+    theme: AMBER,
+    kind: 'engine',
+    playPath: '/games/gozrim-umadbikim/play'
+  },
+  {
+    slug: 'bonim-minsara',
+    title: 'משחק התיבה והמנסרה המשולשת עם אליהו | נועם דורון',
+    h1: 'משחק התיבה והמנסרה המשולשת עם אליהו',
+    description: 'שיעור קצר עם אליהו: ממלאים תיבה בשכבות של קוביות, חוצים אותה למנסרה משולשת, ופורסים את המנסרה כדי לחשב את שטח הפנים.',
+    short: 'שטח הבסיס כפול הגובה — בתיבה ובמנסרה.',
+    grade: 'כיתות ז׳–ט׳',
+    gradeOrder: 7,
+    emoji: '🧊',
+    links: [
+      { href: '/box-and-cube-grade-7', label: 'תיבה וקובייה לכיתה ז׳' },
+      { href: '/solids-box-cube-prism-grade-7', label: 'מנסרה משולשת לכיתה ז׳' },
+      { href: '/triangular-prism-volume-grade-9', label: 'נפח המנסרה המשולשת לכיתה ט׳' },
+      { href: '/triangular-prism-surface-area-grade-9', label: 'שטח הפנים של המנסרה לכיתה ט׳' }
+    ],
+    topics: [
+      { grade: 7, topic: 20, coverage: 'partial' },
+      { grade: 7, topic: 47, coverage: 'full' },
+      { grade: 7, topic: 48, coverage: 'full' },
+      { grade: 9, topic: 30, coverage: 'partial' },
+      { grade: 9, topic: 31, coverage: 'partial' }
+    ],
+    theme: CYAN,
+    kind: 'engine',
+    playPath: '/games/bonim-minsara/play'
+  },
+  {
+    slug: 'shinui-baachuzim',
+    title: 'משחק שינוי באחוזים ושינויים עוקבים עם אליהו | נועם דורון',
+    h1: 'משחק שינוי באחוזים ושינויים עוקבים עם אליהו',
+    description: 'שיעור קצר עם אליהו: הופכים עלייה וירידה באחוזים לכפל, מחשבים אחוז שינוי, ומגלים למה עלייה וירידה של 10% לא מחזירות לאותו מחיר.',
+    short: 'עלייה של 20% היא כפל ב־1.2 — וכך גם שני שינויים ברצף.',
+    grade: 'כיתות ח׳–ט׳',
+    gradeOrder: 8,
+    emoji: '🏷️',
+    links: [
+      { href: '/percent-change-grade-8', label: 'שינוי באחוזים לכיתה ח׳' },
+      { href: '/successive-percent-changes-grade-8', label: 'שינויים עוקבים לכיתה ח׳' },
+      { href: '/percentage-problems-grade-8', label: 'בעיות אחוזים לכיתה ח׳' },
+      { href: '/percentages-grade-9', label: 'אחוזים לכיתה ט׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 6, coverage: 'partial' },
+      { grade: 8, topic: 7, coverage: 'partial' },
+      { grade: 8, topic: 8, coverage: 'full' },
+      { grade: 8, topic: 9, coverage: 'full' },
+      { grade: 9, topic: 53, coverage: 'full' }
+    ],
+    theme: ROSE,
+    kind: 'engine',
+    playPath: '/games/shinui-baachuzim/play'
+  },
+  {
+    slug: 'maazan-hamemutsa',
+    title: 'משחק הממוצע, הטווח ובחירת המדד עם אליהו | נועם דורון',
+    h1: 'משחק הממוצע, הטווח ובחירת המדד עם אליהו',
+    description: 'שיעור קצר עם אליהו: מיישרים מגדלי קוביות כדי לראות מהו ממוצע, מוצאים נתון חסר, משווים פיזור בעזרת הטווח ובוחרים את המדד המתאים.',
+    short: 'מיישרים את המגדלים — והממוצע מופיע.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '📊',
+    links: [
+      { href: '/mean-grade-8', label: 'הממוצע לכיתה ח׳' },
+      { href: '/data-range-grade-8', label: 'טווח הנתונים לכיתה ח׳' },
+      { href: '/choosing-measure-of-center-grade-8', label: 'בחירת מדד לכיתה ח׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 22, coverage: 'full' },
+      { grade: 8, topic: 23, coverage: 'full' },
+      { grade: 8, topic: 25, coverage: 'partial' }
+    ],
+    theme: FOREST,
+    kind: 'engine',
+    playPath: '/games/maazan-hamemutsa/play'
+  },
+  {
+    slug: 'galgal-haigul',
+    title: 'משחק העיגול והגליל עם אליהו | נועם דורון',
+    h1: 'משחק העיגול והגליל עם אליהו',
+    description: 'שיעור קצר עם אליהו: מגלגלים גלגל כדי למצוא את ההיקף, מסדרים גזרות של עיגול למלבן כדי למצוא את השטח, ופורסים גליל לשטח פנים ונפח.',
+    short: 'גלגל אחד מסתובב — ו־π מופיע על הסרגל.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '🛞',
+    links: [
+      { href: '/circle-area-circumference-grade-8', label: 'מעגל ועיגול לכיתה ח׳' },
+      { href: '/cylinder-surface-area-grade-8', label: 'שטח הפנים של הגליל לכיתה ח׳' },
+      { href: '/cylinder-volume-grade-8', label: 'נפח הגליל לכיתה ח׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 63, coverage: 'full' },
+      { grade: 8, topic: 13, coverage: 'full' },
+      { grade: 8, topic: 14, coverage: 'full' }
+    ],
+    theme: OCEAN,
+    kind: 'engine',
+    playPath: '/games/galgal-haigul/play'
+  },
+  {
+    slug: 'zchuchit-hamagdelet',
+    title: 'משחק דמיון משולשים עם אליהו | נועם דורון',
+    h1: 'משחק דמיון משולשים עם אליהו',
+    description: 'שיעור קצר עם אליהו: מגדילים משולש ורואים שהצלעות מוכפלות והזוויות נשמרות, מגלים ששתי זוויות מספיקות, ולמה השטח גדל פי k בריבוע.',
+    short: 'מגדילים פי 2 — והשטח גדל פי 4.',
+    grade: 'כיתות ח׳–ט׳',
+    gradeOrder: 8,
+    emoji: '🔍',
+    links: [
+      { href: '/similar-triangles-grade-8', label: 'דמיון משולשים לכיתה ח׳' },
+      { href: '/similar-triangles-area-ratio-grade-8', label: 'יחס שטחים לכיתה ח׳' },
+      { href: '/similar-triangles-grade-9', label: 'דמיון משולשים לכיתה ט׳' },
+      { href: '/triangle-similarity-aa-grade-9', label: 'משפט ז.ז לכיתה ט׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 43, coverage: 'full' },
+      { grade: 8, topic: 45, coverage: 'full' },
+      { grade: 9, topic: 19, coverage: 'full' },
+      { grade: 9, topic: 40, coverage: 'full' }
+    ],
+    theme: PLUM,
+    kind: 'engine',
+    playPath: '/games/zchuchit-hamagdelet/play'
+  },
+  {
+    slug: 'motsim-et-hayashar',
+    title: 'משחק משוואת הישר וחיתוך הצירים עם אליהו | נועם דורון',
+    h1: 'משחק משוואת הישר וחיתוך הצירים עם אליהו',
+    description: 'שיעור קצר עם אליהו: מוצאים איפה הישר חותך את הצירים, בונים משוואת ישר משתי נקודות ומכירים את הישרים המקבילים לצירים.',
+    short: 'שתי נקודות מספיקות כדי לכתוב את משוואת הישר.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '📍',
+    links: [
+      { href: '/axis-intercepts-grade-8', label: 'חיתוך צירים לכיתה ח׳' },
+      { href: '/equation-of-a-line-grade-8', label: 'משוואת ישר לכיתה ח׳' },
+      { href: '/lines-parallel-to-axes-grade-8', label: 'ישרים מקבילים לצירים לכיתה ח׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 30, coverage: 'full' },
+      { grade: 8, topic: 31, coverage: 'full' },
+      { grade: 8, topic: 32, coverage: 'full' }
+    ],
+    theme: SLATE,
+    kind: 'engine',
+    playPath: '/games/motsim-et-hayashar/play'
+  },
+  {
+    slug: 'mishpachat-hamerubaim',
+    title: 'משחק משפחת המרובעים עם אליהו | נועם דורון',
+    h1: 'משחק משפחת המרובעים עם אליהו',
+    description: 'שיעור קצר עם אליהו: בונים מרובע משני אלכסונים, מגלים מתי הוא מקבילית, מלבן, מעוין, ריבוע או דלתון, ומחשבים שטח לפי האלכסונים.',
+    short: 'האלכסונים מגלים איזה מרובע לפניך.',
+    grade: 'כיתה ט׳',
+    gradeOrder: 9,
+    emoji: '🪁',
+    links: [
+      { href: '/parallelogram-grade-9', label: 'המקבילית לכיתה ט׳' },
+      { href: '/rectangle-grade-9', label: 'המלבן לכיתה ט׳' },
+      { href: '/rhombus-grade-9', label: 'המעוין לכיתה ט׳' },
+      { href: '/square-grade-9', label: 'הריבוע לכיתה ט׳' },
+      { href: '/trapezoid-grade-9', label: 'הטרפז לכיתה ט׳' },
+      { href: '/kite-grade-9', label: 'הדלתון לכיתה ט׳' }
+    ],
+    topics: [
+      { grade: 9, topic: 7, coverage: 'partial' },
+      { grade: 9, topic: 11, coverage: 'partial' },
+      { grade: 9, topic: 13, coverage: 'partial' },
+      { grade: 9, topic: 14, coverage: 'partial' },
+      { grade: 9, topic: 39, coverage: 'partial' },
+      { grade: 9, topic: 46, coverage: 'partial' }
+    ],
+    theme: TEAL,
+    kind: 'engine',
+    playPath: '/games/mishpachat-hamerubaim/play'
   }
 ];
 
