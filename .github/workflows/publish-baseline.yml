@@ -9,7 +9,7 @@ name: publish-baseline
 # not republish the site. Manual retries use the same approved pin on main.
 
 env:
-  RELEASE_SHA: 347dbd83b182a54b284dbc093a2faff830273bb2
+  RELEASE_SHA: bafa36f0c0c867d7d26dea5d73f384f225706e15
 
 on:
   workflow_dispatch:
