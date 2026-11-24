@@ -1,0 +1,488 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import business from '../data/business.json';
+export const prerender = false;
+
+const plans = [
+  {
+    id: 'monthly',
+    name: 'חודשי',
+    days: 30,
+    price: 18,
+    note: 'גישה מלאה לאזור המורים ל־30 יום.',
+  },
+  {
+    id: 'yearly',
+    name: 'שנתי',
+    days: 365,
+    price: 180,
+    note: 'גישה מלאה לאזור המורים ל־365 יום. משלמים על 10 חודשים, מקבלים 12 — חודשיים מתנה.',
+  },
+];
+---
+<BaseLayout
+  title="תשלום על גישה לאזור המורים | נועם דורון מתמטיקה"
+  description="בחירת מסלול, פרטי הלקוח ותשלום חד־פעמי מאובטח דרך Grow. ללא חיוב חוזר וללא חידוש אוטומטי."
+  activeNav="teachers"
+  skipHref="#checkout-main"
+>
+  <main id="checkout-main" class="wrap co" data-checkout>
+    <nav class="co-crumbs" aria-label="מיקום">
+      <a href="/">בית</a>
+      <span aria-hidden="true">·</span>
+      <a href="/teachers">אזור המורים</a>
+      <span aria-hidden="true">·</span>
+      <span>תשלום</span>
+    </nav>
+
+    <header class="co-head">
+      <h1>תשלום על גישה לאזור המורים</h1>
+      <p class="co-lede">
+        בוחרים מסלול, ממלאים פרטים וממשיכים לדף התשלום המאובטח. התשלום הוא תשלום אחד — אין הוראת קבע
+        ואין חידוש אוטומטי.
+      </p>
+    </header>
+
+    <form class="co-form" method="post" action="/api/checkout" novalidate data-checkout-form>
+      <fieldset class="co-plans">
+        <legend>בחירת מסלול</legend>
+        {
+          plans.map((plan, index) => (
+            <label class="co-plan">
+              <input
+                type="radio"
+                name="plan"
+                value={plan.id}
+                checked={index === 1}
+                required
+                data-plan-price={plan.price}
+              />
+              <span class="co-plan__body">
+                <span class="co-plan__name">{plan.name} — {plan.price} ש״ח</span>
+                <span class="co-plan__note">{plan.note}</span>
+                <span class="co-plan__meta">תשלום אחד. לא מתחדש אוטומטית.</span>
+              </span>
+            </label>
+          ))
+        }
+      </fieldset>
+
+      <h2 class="co-sub">פרטי הלקוח</h2>
+      <p class="co-hint">כל השדות חובה. הפרטים משמשים לאספקת הגישה, לתיעוד העסקה ולמסמך המס.</p>
+
+      <div class="co-grid">
+        <label class="co-field">
+          <span>שם פרטי</span>
+          <input name="firstName" type="text" autocomplete="given-name" required minlength="2" />
+        </label>
+        <label class="co-field">
+          <span>שם משפחה</span>
+          <input name="lastName" type="text" autocomplete="family-name" required minlength="2" />
+        </label>
+        <label class="co-field co-field--phone">
+          <span>טלפון (ללא קידומת)</span>
+          <span class="co-phone">
+            <span class="co-phone__prefix" aria-hidden="true">0</span>
+            <input
+              name="phone"
+              type="tel"
+              inputmode="numeric"
+              autocomplete="tel-national"
+              placeholder="5X-XXX-XXXX"
+              pattern="[0-9\-\s]{9,11}"
+              maxlength="11"
+              required
+            />
+          </span>
+        </label>
+        <label class="co-field">
+          <span>מדינה</span>
+          <input name="country" type="text" autocomplete="country-name" value="ישראל" required />
+        </label>
+        <label class="co-field co-field--wide">
+          <span>כתובת דוא״ל</span>
+          <input name="email" type="email" autocomplete="email" required />
+        </label>
+      </div>
+
+      <div class="co-consent">
+        <label class="co-check">
+          <input type="checkbox" name="terms" value="1" required data-terms-checkbox />
+          <span>
+            אני מאשר/ת רכישת גישה ל־<span data-plan-days>365</span> יום ב־<span data-plan-total>180</span> ש״ח,
+            בתשלום אחד, בלי חידוש אוטומטי.
+            <a href="/purchase-terms" target="_blank" rel="noopener">תנאי הרכישה</a>
+            ·
+            <a href="/cancellation" target="_blank" rel="noopener">מדיניות הביטול</a>
+            ·
+            <a href="/terms" target="_blank" rel="noopener">תנאי השימוש</a>
+            ·
+            <a href="/privacy" target="_blank" rel="noopener">מדיניות הפרטיות</a>
+          </span>
+        </label>
+        <label class="co-check co-check--optional">
+          <input type="checkbox" name="reminder" value="1" />
+          <span>שלחו לי מייל אחד, 7 ימים לפני שהגישה מסתיימת. אפשר להפסיק בכל עת.</span>
+        </label>
+      </div>
+
+      <div class="co-summary" aria-live="polite">
+        <span>סה״כ לתשלום</span>
+        <strong><span data-plan-total>180</span> ש״ח</strong>
+      </div>
+
+      <button class="co-submit" type="submit">מעבר לתשלום מאובטח</button>
+
+      <p class="co-pay">
+        אפשר לשלם בכרטיס אשראי, בביט, בפייבוקס, ב־Apple Pay או ב־Google Pay. התשלום מתבצע בדף התשלום של
+        Grow, חברת תשלומים בעלת רישיון מרשות ניירות ערך. איננו רואים ואיננו שומרים את פרטי הכרטיס או החשבון.
+      </p>
+      <p class="co-status" role="status" aria-live="polite" data-checkout-status></p>
+    </form>
+
+    <section class="co-help" aria-label="עזרה">
+      <h2>צריך עזרה?</h2>
+      <p>
+        אפשר לפנות ל{business.name} בטלפון <a href={`tel:${business.phoneHref}`}>{business.phone}</a>
+        או בדוא״ל <a href={`mailto:${business.email}`}>{business.email}</a>. מענה בימי עסקים.
+      </p>
+      <p class="co-legal">
+        מפעיל האתר: {business.name}, מספר עוסק {business.businessId}.
+        {business.address ? ` כתובת: ${business.address}.` : ''}
+        <a href="/purchase-terms">תנאי רכישה</a> · <a href="/cancellation">ביטול עסקה והחזר</a> ·
+        <a href="/delivery">אספקת השירות</a> · <a href="/terms">תנאי השימוש</a>
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const form = document.querySelector('[data-checkout-form]');
+    const status = document.querySelector('[data-checkout-status]');
+    const totalNodes = document.querySelectorAll('[data-plan-total]');
+    const daysNodes = document.querySelectorAll('[data-plan-days]');
+    const DAYS = { monthly: 30, yearly: 365 };
+    const PRICES = { monthly: 18, yearly: 180 };
+
+    function selectedPlan() {
+      const checked = form?.querySelector('input[name="plan"]:checked');
+      return checked?.value === 'monthly' ? 'monthly' : 'yearly';
+    }
+
+    function syncSummary() {
+      const plan = selectedPlan();
+      totalNodes.forEach((node) => (node.textContent = String(PRICES[plan])));
+      daysNodes.forEach((node) => (node.textContent = String(DAYS[plan])));
+    }
+
+    form?.querySelectorAll('input[name="plan"]').forEach((input) => {
+      input.addEventListener('change', syncSummary);
+    });
+    syncSummary();
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!status) return;
+      status.textContent = '';
+      status.removeAttribute('data-state');
+
+      const data = new FormData(form);
+      const payload = {
+        plan: selectedPlan(),
+        firstName: String(data.get('firstName') || '').trim(),
+        lastName: String(data.get('lastName') || '').trim(),
+        phone: String(data.get('phone') || '').trim(),
+        country: String(data.get('country') || '').trim(),
+        email: String(data.get('email') || '').trim(),
+        terms: data.get('terms') === '1',
+        reminder: data.get('reminder') === '1',
+      };
+
+      if (!form.reportValidity()) return;
+      if (!payload.terms) {
+        status.textContent = 'צריך לאשר את תנאי הרכישה ומדיניות הביטול כדי להמשיך.';
+        status.setAttribute('data-state', 'error');
+        return;
+      }
+
+      const button = form.querySelector('.co-submit');
+      if (button instanceof HTMLButtonElement) button.disabled = true;
+      status.textContent = 'מעבירים אותך לדף התשלום…';
+
+      try {
+        const response = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+        if (result?.redirectUrl) {
+          window.location.assign(result.redirectUrl);
+          return;
+        }
+        status.textContent =
+          result?.message || 'לא הצלחנו לפתוח את התשלום כרגע. אפשר לנסות שוב בעוד רגע.';
+        status.setAttribute('data-state', 'error');
+      } catch {
+        status.textContent = 'לא הצלחנו להתחבר לשרת התשלום. אפשר לנסות שוב בעוד רגע.';
+        status.setAttribute('data-state', 'error');
+      } finally {
+        if (button instanceof HTMLButtonElement) button.disabled = false;
+      }
+    });
+  </script>
+
+  <style>
+    .co {
+      padding: 24px 20px 56px;
+      max-width: 760px;
+    }
+    .co-crumbs {
+      display: flex;
+      gap: 8px;
+      font-size: 14px;
+      color: #5a6478;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .co-crumbs a {
+      color: #22305a;
+      text-decoration: underline;
+    }
+    .co-head h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 4vw, 34px);
+      line-height: 1.25;
+    }
+    .co-lede {
+      margin: 0 0 22px;
+      font-size: 17px;
+      line-height: 1.7;
+      color: #3c4658;
+    }
+    .co-plans {
+      border: 0;
+      padding: 0;
+      margin: 0 0 8px;
+      display: grid;
+      gap: 12px;
+    }
+    .co-plans legend {
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 10px;
+      padding: 0;
+    }
+    .co-plan {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      border: 2px solid #c9d2e3;
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: #fff;
+      cursor: pointer;
+      min-height: 44px;
+    }
+    .co-plan:has(input:checked) {
+      border-color: #22305a;
+      background: #f3f6fc;
+    }
+    .co-plan input {
+      width: 22px;
+      height: 22px;
+      margin-top: 3px;
+      flex: none;
+      accent-color: #22305a;
+    }
+    .co-plan__body {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .co-plan__name {
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .co-plan__note {
+      font-size: 15px;
+      color: #3c4658;
+      line-height: 1.6;
+    }
+    .co-plan__meta {
+      font-size: 14px;
+      color: #5a6478;
+    }
+    .co-sub {
+      margin: 28px 0 6px;
+      font-size: 20px;
+    }
+    .co-hint {
+      margin: 0 0 14px;
+      font-size: 14px;
+      color: #5a6478;
+    }
+    .co-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .co-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .co-field--wide {
+      grid-column: 1 / -1;
+    }
+    .co-field input {
+      font: inherit;
+      font-weight: 400;
+      padding: 12px 12px;
+      border: 1.5px solid #b9c3d6;
+      border-radius: 10px;
+      min-height: 44px;
+      background: #fff;
+      color: #1c2333;
+    }
+    .co-field input:focus-visible {
+      outline: 3px solid #f2c46b;
+      outline-offset: 1px;
+      border-color: #22305a;
+    }
+    .co-phone {
+      display: flex;
+      align-items: stretch;
+      border: 1.5px solid #b9c3d6;
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .co-phone__prefix {
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      background: #eef1f7;
+      color: #22305a;
+      font-weight: 700;
+      border-left: 1px solid #d5dbe8;
+    }
+    .co-phone input {
+      border: 0;
+      border-radius: 0;
+      flex: 1;
+      min-width: 0;
+    }
+    .co-consent {
+      margin: 22px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+    .co-check {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 15px;
+      line-height: 1.65;
+      background: #f7f9fd;
+      border: 1.5px solid #d5dbe8;
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+    }
+    .co-check input {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      flex: none;
+      accent-color: #22305a;
+    }
+    .co-check a {
+      color: #1b4fa8;
+      text-decoration: underline;
+    }
+    .co-check--optional {
+      background: #fff;
+      font-size: 14px;
+    }
+    .co-summary {
+      margin: 22px 0 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 18px;
+      border-top: 2px solid #22305a;
+      padding-top: 14px;
+    }
+    .co-summary strong {
+      font-size: 26px;
+    }
+    .co-submit {
+      width: 100%;
+      min-height: 52px;
+      font: inherit;
+      font-size: 19px;
+      font-weight: 700;
+      color: #fff;
+      background: #22305a;
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+      padding: 14px 18px;
+    }
+    .co-submit:hover {
+      background: #1a2547;
+    }
+    .co-submit:disabled {
+      opacity: 0.6;
+      cursor: progress;
+    }
+    .co-submit:focus-visible {
+      outline: 3px solid #f2c46b;
+      outline-offset: 2px;
+    }
+    .co-pay {
+      margin: 14px 0 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #5a6478;
+    }
+    .co-status {
+      margin: 12px 0 0;
+      font-size: 15px;
+      font-weight: 600;
+      min-height: 22px;
+    }
+    .co-status[data-state='error'] {
+      color: #a11b1b;
+    }
+    .co-help {
+      margin-top: 36px;
+      border-top: 1px solid #d5dbe8;
+      padding-top: 18px;
+    }
+    .co-help h2 {
+      font-size: 18px;
+      margin: 0 0 8px;
+    }
+    .co-help p {
+      margin: 0 0 8px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #3c4658;
+    }
+    .co-legal {
+      font-size: 13px;
+      color: #5a6478;
+    }
+    .co-legal a {
+      color: #1b4fa8;
+    }
+    @media (max-width: 560px) {
+      .co-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>
