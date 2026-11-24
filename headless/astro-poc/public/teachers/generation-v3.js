@@ -270,7 +270,8 @@
  }
  function renderWorksheetDetails(container,result) {
   const printed=result?.salvage?.printedQuestions, requested=result?.salvage?.requestedQuestions;
-  if(Number.isInteger(printed) && Number.isInteger(requested) && printed>0 && printed<requested && requested<=30) {
+  const shortened=Number.isInteger(printed) && Number.isInteger(requested) && printed>0 && printed<requested && requested<=30;
+  if(shortened) {
    container.append(node('p','הדף כולל '+printed+' שאלות מתוך '+requested+' שביקשתם.'));
   }
   const notes=Array.isArray(result?.teacherNotes)?result.teacherNotes:[];
@@ -279,6 +280,12 @@
     && entry.count<=270 && typeof entry.note==='string' && entry.note.length<=240) {
     container.append(node('p',entry.note+' ('+entry.count+' סעיפים)'));
    }
+  }
+  const findings=Array.isArray(result?.reviewFindings)?result.reviewFindings:[];
+  for(const entry of findings.slice(0,40)) {
+   if(typeof entry?.note!=='string' || !entry.note || entry.note.length>240)continue;
+   if(shortened && ['LESSON_SIZED','SHORTER_SHEET'].includes(entry.code))continue;
+   container.append(node('p',entry.note));
   }
   return container.childNodes.length>0;
  }

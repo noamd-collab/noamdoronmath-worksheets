@@ -494,10 +494,14 @@ test('a shortened worksheet shows its actual question count and its review note'
     result:{automatedChecksPassed:true}
   };
   const full = {...draft, result:{...draft.result, salvage:{printedQuestions:18,requestedQuestions:20},
-    teacherNotes:[{code:'UNVERIFIED_ANSWER',kind:'review',note:'בדקו את ההוכחות.',count:2}]}};
+    teacherNotes:[{code:'UNVERIFIED_ANSWER',kind:'review',note:'בדקו את ההוכחות.',count:2}],
+    reviewFindings:[{code:'SHORTER_SHEET',note:'הדף קצר מהבקשה.',count:2},
+      {code:'DIDACTIC_REVIEW',note:'עיינו בהדרגתיות.',count:1}]}};
   const current = harness({history:[draft],jobs:[full]}); await current.flush();
   assert.match(current.element('generation-jobs').textContent,/18 שאלות מתוך 20/);
   assert.match(current.element('generation-jobs').textContent,/בדקו את ההוכחות/);
+  assert.match(current.element('generation-jobs').textContent,/עיינו בהדרגתיות/);
+  assert.doesNotMatch(current.element('generation-jobs').textContent,/הדף קצר מהבקשה/);
   const older = harness({history:[draft],jobDetails:{[draft.id]:{body:{ok:true,job:full}}}}); await older.flush();
   assert.equal(older.calls.some(call=>call.url.includes('?id=')),false);
   const details = older.element('generation-jobs').querySelector('details');
