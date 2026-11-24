@@ -241,7 +241,7 @@ test('both viewer copies gate three-digit links on edition mode and retain grade
       assert.equal(c.okX, want, rel + ' ' + JSON.stringify(c));
     }
     assert.ok(
-      src.includes('noam-curated-hints.js?v=20261120-three-digit-editions'),
+      src.includes('noam-curated-hints.js?v=20261124-scale-feedback'),
     );
   }
 });
