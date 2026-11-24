@@ -6,7 +6,7 @@ import re
 
 from general_source import GeneralSourceError, MAX_BYTES
 from math_tasks import MathTaskError, inspect_ast, number, operation
-from numeric_literals import COEFFICIENT, NUMBER_TOKEN, arithmetic_tokens, display_literal, elementary_operations, literal_value
+from numeric_literals import COEFFICIENT, NUMBER_TOKEN, arithmetic_tokens, display_literal, elementary_operations, literal_value, normalize_percent_spacing
 
 GEOMETRY = re.compile(r"(point|segment|triangle|angle|polygon):([A-Z]{1,8})")
 OP = {
@@ -143,7 +143,7 @@ DISPLAY_NAME = re.compile(r"sqrt|frac|___|[A-Z]{1,8}|[a-z]+")
 COORDINATE = re.compile(r"([A-Z]?)\(\s*(-?[0-9]{1,6})\s*,\s*(-?[0-9]{1,6})\s*\)")
 
 
-ANGLE_NAME = r"∠\s*(?:[A-Z]{3}|[A-Z])"
+ANGLE_NAME = r"[∡∠]\s*(?:[A-Z]{3}|[A-Z])"
 DEGREES = r"[0-9]{1,3}(?:\.[0-9]{1,4})?\s*°"
 ANGLE_MEASURE = rf"{ANGLE_NAME}(?:\s*=\s*(?:{ANGLE_NAME}|{DEGREES}))?"
 LINE_RELATION = r"[A-Z]{2}\s*[⊥∥]\s*[A-Z]{2}"
@@ -157,7 +157,7 @@ def geometric_display(source):
     if any(len(set(name)) != len(name) for name in re.findall(r"[A-Z]+", source)):
         invalid()
     # These four commands are emitted by us. Input cannot contain a command.
-    source = re.sub(r"∠\s*([A-Z]+)", lambda m: r"\angle{" + m[1] + "}", source)
+    source = re.sub(r"[∠∡]\s*([A-Z]+)", lambda m: r"\angle{" + m[1] + "}", source)
     source = re.sub(r"△\s*([A-Z]+)", lambda m: r"\tri " + m[1], source)
     source = re.sub(r"\s*([⊥∥=])\s*", lambda m: " " + {"⊥": r"\perp", "∥": r"\para", "=": "="}[m[1]] + " ", source)
     return re.sub(r"\s+°", "°", source)
@@ -289,7 +289,13 @@ def fraction_literals(value):
     return FRACTION_LITERAL.sub(lambda m: f"frac({m[1].replace(',', '')},{m[2].replace(',', '')})", value)
 
 
+MARKED_PERCENT = re.compile(
+    rf"\[\[([+−-]?{NUMBER_TOKEN.pattern})\]\][ \u00a0\u202f]*%(?![%A-Za-z0-9_])"
+)
+
+
 def join_islands(value):
+    value = MARKED_PERCENT.sub(r"[[\1%]]", value)
     # Read one arithmetic expression in LTR when the author wrote its
     # operands in adjacent islands. Ordinary Hebrew text is never joined.
     value = re.sub(r"(?<!\w)___\s*([+*/−÷×=<>-])\s*" + ISLAND, r"[[___ \1 \2]]", value)
@@ -317,7 +323,7 @@ MIDDLE_ATOM = re.compile(rf"(?P<geometric>{GEO_SYMBOLS.pattern}|{SEGMENT_EQUALIT
 HEBREW_PREFIX = re.compile(r"(?:^|\s)(?:ו[מבכלהש]?|[מבכלהש])$")
 LABEL_CONTEXT = re.compile(
     r"(?:^|\s)(?:[ובלכמשה]{0,3}(?:נקוד(?:ה|ת|ות)|קטע(?:ים)?|צלע(?:ות)?|זווית|"
-    r"משולש|מרובע|מלבן|ריבוע|מצולע|אלכסון|ישר|ציר|קודקוד|משתנה|נעלם|גובה|תיכון|"
+    r"משולש(?:ים| שוו[הי] (?:שוקיים|צלעות)| ישר זווית)?|מרובע|מלבן|ריבוע|מצולע|אלכסון|ישר|ציר|קודקוד|משתנה|נעלם|גובה|תיכון|"
     r"בסיס|ניצב|יתר|אמצע|אורך|רדיוס|מיתר|קוטר)|ער[ךכ]ו? של)\s+$"
 )
 LABEL_DESCRIPTION = re.compile(r"\s+(?:הוא|היא)\s+(?:ה?גובה|ה?תיכון|ה?צלע|ה?קטע|ה?יתר|ה?בסיס|חוצה זווית|אמצע|משולש|מרובע)(?![א-ת])")
@@ -353,6 +359,11 @@ def standalone_atom(prose, start, end):
 
 
 def prose_spans(prose, grade):
+    if grade >= 7:
+        # A degree value written out after an explicit angle equality is the
+        # same quantity when typeset with the skill's degrees glyph.
+        prose = re.sub(r"([∠∡]\s*(?:[A-Z]{3}|[A-Z])\s*=\s*[0-9]{1,3}(?:\.[0-9]{1,4})?)\s+מעלות(?![א-ת])",
+                      r"\g<1>°", prose)
     start = 0
     previous_label = False
     scanner = MIDDLE_ATOM if grade >= 7 else PROSE_ATOM
@@ -370,8 +381,8 @@ def prose_spans(prose, grade):
             if match.lastgroup in ("geometric", "equation"):
                 if match.lastgroup == "equation" and not EQUATION_CUE.search(prose[:first]):
                     continue
-                if (prose[:first].rstrip().endswith(("∠", "△", "⊥", "∥", "°"))
-                        or prose[last:].lstrip().startswith(("∠", "△", "⊥", "∥", "°"))):
+                if (prose[:first].rstrip().endswith(("∠", "∡", "△", "⊥", "∥", "°"))
+                        or prose[last:].lstrip().startswith(("∠", "∡", "△", "⊥", "∥", "°"))):
                     continue
                 atom = atom.translate(MATH_TRANSLATION)
                 display_parts(atom, grade)
@@ -467,7 +478,7 @@ def spans(value, grade, *, fraction_notation=False):
     if len(value) > 2400:
         invalid()
     result = []
-    pieces = re.split(r"(\[\[|\]\])", join_islands(value))
+    pieces = re.split(r"(\[\[|\]\])", join_islands(normalize_percent_spacing(value)))
     i = 0
     while i < len(pieces):
         prose = pieces[i]

@@ -355,6 +355,9 @@ def apply_replacements(original, fields, replacements):
 
 def source_findings(original, lesson, scope, error):
     """Localize recoverable wire errors without disclosing text or relaxing validation."""
+    if error.code == "TRIANGLE_SOURCE_MISMATCH":
+        issues = getattr(error, "findings", [])
+        return issues if 1 <= len(issues) <= 6 else []
     instructions = {
         "PRINTED_EXPRESSION_SCOPE": "Keep the requested skill. For writing an expression, use 'כתבו תרגיל וחשבו את התוצאה:' followed by complete descriptions such as 'הסכום של 6 ו־4, מוכפל ב־3.' Vary the actual numbers and intended operations. Put only the matching two-operation calculation in the typed answer. The compiler prints the expression and its value in the key.",
         "PRINTED_EXPRESSION_MISMATCH": "Ensure that the comparison operands or the expression to be written exactly match the printed givens, in the same order, with the requested units.",
