@@ -657,6 +657,53 @@ class WorkerTests(unittest.TestCase):
             self.assertTrue(worker.save_author_diagnostics(target, JOB_ID, {'reserves': reserves}))
             self.assertEqual(json.loads((target / 'author-diagnostics' / (JOB_ID + '.json')).read_text()).get('reserves'), kept)
 
+    def test_partial_source_correction_can_finish_the_sheet_with_the_remaining_targeted_call(self):
+        self.use_general_lesson()
+        lesson = self.job['lesson']
+        draft = FakeDraft(lesson, missing=[4, 11, 18, 20], code='SOURCE_NOTATION', fix=False)
+        seen, now = [], [0]
+        def correct():
+            seen.append(draft.missing())
+            draft._missing = [18, 20] if len(seen) == 1 else []
+            now[0] = 150  # one correction fits, a full second author and correction do not
+        draft.on_correct = correct
+        author = self.general_author([draft], fail=[GenerationError('SOURCE_NOTATION', 'private')])
+        with patch.object(worker, 'clock', side_effect=lambda: now[0]):
+            initial, renderer, _ = self.run_general(author, self.rendered_general)
+        self.assertEqual(seen, [[4, 11, 18, 20], [18, 20]])
+        initial.assert_called_once()
+        self.assertEqual(renderer.call_args.args[0]['questionCount'], lesson['questionCount'])
+        self.assertEqual(self.final_result()['salvage']['corrections'], 2)
+        self.assertEqual(len(self.remote.uploads()), 2)
+
+    def test_second_targeted_call_requires_progress_time_and_a_current_lease(self):
+        self.use_general_lesson()
+        for condition in ('unchanged', 'different positions', 'late', 'lease lost'):
+            with self.subTest(condition=condition):
+                remote, root, now = FakeRemote(), self.root / condition, [0]
+                root.mkdir()
+                draft = FakeDraft(self.job['lesson'], missing=[4, 11, 18], fix=False, can_shorten=True)
+                def correct():
+                    if condition == 'different positions':
+                        draft._missing = [18, 19]
+                    elif condition != 'unchanged':
+                        draft._missing = [18]
+                    if condition == 'late':
+                        now[0] = worker.MODEL_DEADLINE - worker.CORRECTION_SECONDS + 1
+                    if condition == 'lease lost':
+                        remote.fail_updates = True
+                draft.on_correct = correct
+                author = self.general_author([draft], fail=[GenerationError('SOURCE_SHAPE', 'private')])
+                with patch.object(worker, 'clock', side_effect=lambda: now[0]):
+                    if condition == 'lease lost':
+                        with self.assertRaisesRegex(RuntimeError, 'JOB_LEASE_LOST'):
+                            self.run_general(author, self.rendered_general, remote=remote, root=root)
+                        self.assertFalse(remote.uploads())
+                    else:
+                        self.run_general(author, self.rendered_general, remote=remote, root=root)
+                        self.assertGreater(self.final_result(remote)['salvage']['dropped']['count'], 0)
+                self.assertEqual((len(author.calls), draft.corrections), (1, 1))
+
     def test_a_job_spends_at_most_two_corrections_and_two_author_calls(self):
         self.use_general_lesson()
         # Each draft: missing at the source, then again after the gate names a question.

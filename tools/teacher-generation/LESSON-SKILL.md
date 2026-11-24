@@ -338,8 +338,10 @@ not in `gate_policy.GATES` is truth.
 runs only when the one before left a deficit.
 
 1. **Reserves**, no model call (inside `Draft.__init__`).
-2. **One correction call** for the missing questions only (`Draft.correct`):
-   the notation-only fix, or a rewrite of at most 8 questions and the rule.
+2. **Targeted correction** (`Draft.correct`) fixes notation or rewrites up to
+   8 missing questions and the rule. If it restores some of the missing questions
+   and leaves a smaller set, the worker requests the remaining questions while
+   the shared correction budget, deadline and lease permit.
 3. **A shorter sheet** (`Draft.shorten`, `lesson_select.Selection.shorten`): at
    least `max(6, ⌈3N/4⌉)` questions and two real challenges. The manifest keeps
    the requested count (`salvaged_from`).

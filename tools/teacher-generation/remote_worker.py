@@ -368,9 +368,10 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
         return path
 
     def settle(draft):
-        """Bring a draft to a sheet that may be rendered: one correction call, then a shorter sheet."""
+        """Correct missing questions within the job budget before considering a shorter sheet."""
         nonlocal closed, author_failure
-        if draft.needs_model() and may_call('correction'):
+        while draft.needs_model() and may_call('correction'):
+            before = set(draft.missing())
             set_phase('authoring')
             state['corrections'] += 1
             try:
@@ -380,8 +381,11 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
                 author_failure = exc
                 state['correctionFailed'] = True
                 closed = closed or exc.code not in UNUSABLE_REPLY
-            else:
-                author_failure = None
+                break
+            author_failure = None
+            remaining = set(draft.missing())
+            if not remaining or not remaining < before:
+                break
         try:
             if draft.missing() and not draft.shorten():
                 # Shortening restores usable questions first. The first position
