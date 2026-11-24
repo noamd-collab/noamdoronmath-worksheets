@@ -254,6 +254,15 @@ def part_user(user, part):
     return data
 
 
+def part_output_limit(part):
+    questions = (len(part['practiceQuestionNumbers']) + len(part['challengeQuestionNumbers'])
+                 + len(part['reserveNumbers']))
+    # Size the reservation for this part, including its heading and working.
+    # Even the maximum of four parts fits the worker's original 40k allowance
+    # for a 20-question draft with reserves.
+    return 700 + 1150 * questions
+
+
 def send_parts(bodies, ask):
     """Send every part at once; returns (replies, observed measurements), one per part.
 

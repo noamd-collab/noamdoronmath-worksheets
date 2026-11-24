@@ -136,6 +136,11 @@ class LiveCauses(unittest.TestCase):
         # The same items after a story that both continue are one chain of results.
         story = {**bare, 'intro': [{'kind': 'text', 'text': 'בחנות יש 30 מחברות.'}]}
         self.assertEqual(answer_leak(story, keys), 2)
+        shape = {'intro': [{'kind':'text', 'text':'בסרטוט נתון טרפז.'}],
+                 'figure': {'kind':'shape', 'shape':'trapezoid'},
+                 'items': [{'prompt':[{'kind':'text','text':'חשבו את שטח הטרפז.'}]},
+                           item('(7 + 13) / 2 * 6 = 60')]}
+        self.assertEqual(answer_leak(shape, {1: solved('(7+13)/2*6')}), 2)
 
     def test_the_same_number_printed_in_the_intro_is_not_a_leak(self):
         wire = question('L1-p2', 'practice', 17)
@@ -371,6 +376,14 @@ class LiveCauses(unittest.TestCase):
         self.assertIn('one question in five', FEEDBACK['G76'])
         scale = line.replace('decoration', 'decoration | SCALE: 10 drawn question(s) on 2 object(s)')
         self.assertEqual([row.get('question') for row in parse_build_plus_log(scale)], [None])
+        recoverable = line.replace('decoration', 'decoration | SCALE: 10 drawn question(s) on 3 object(s) — '
+                                                   'a sheet this size owes 4 (one per 3 drawn, capped at 8)')
+        findings = parse_build_plus_log(recoverable)
+        self.assertEqual([row.get('question') for row in findings], [10, 12, 15])
+        decision = gate_policy.decide({'findings':findings,'complete':True}, ['middle-build'])
+        self.assertEqual(decision['action'], 'replace')
+        still_unlocated = recoverable.rstrip() + ' | PART: practice needs a second point set\n'
+        self.assertEqual([row.get('question') for row in parse_build_plus_log(still_unlocated)], [None])
 
     def test_a_point_name_finding_on_one_item_names_its_question(self):
         # Recorded in the render of L1-p2: the self-check names the item (q16a), not only the question.

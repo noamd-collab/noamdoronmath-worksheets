@@ -16,7 +16,7 @@ from authoring_context import build_authoring_context, AuthoringContextError
 from general_source import validate_source, GeneralSourceError, geometry_topic
 from lesson_select import CHALLENGES, NO_QUESTION, PRACTICE, Selection, Shared
 from figure_probe import FIGURE_REUSE_CODE, FIGURE_REUSE_MAX
-from skill_authoring import (MAX_CORRECTED, bind_content, correction_instructions, examine_frame, instruction_for,
+from skill_authoring import (FIGURE_PARAMETERS, MAX_CORRECTED, bind_content, correction_instructions, examine_frame, instruction_for,
                              notation_correction, planned_count, question_codes, question_plan,
                              refers_to_another_question, refusal_feedback, reserve_plan, revision_request,
                              short_items, split_reserves, trim_rule, worksheet_schema)
@@ -675,12 +675,22 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'For a hypothetical write אם. Do not ask אילו מה..., מי מהם, האם ייתכן or כל האפשרויות.')
     if 'representation' in plan[0]:
         system += (
-            ' Follow each question representation in questionPlan. For drawingFromWords set that flag to true, '
+            ' Follow each question representation in questionPlan and reservePlan. For drawingFromWords set that flag to true, '
             'give precise verbal data, ask students to draw, and leave the figure absent. In coordinate_plane '
             'items supply the actual points and segments on a legible grid with placement=wide. '
             'Coordinates use [[A(2,3)]] or [[(2,3)]] in prose, never point:A(2,3). Use figure.points and figure.segments for each coordinate grid and include the origin within the integer axis limits. For angles name three distinct vertices. For geometryFigure include an actual, named, accurately dimensioned shape. Vary geometric '
-            'constructions across sections; numerically changing one drawing does not create variety. '
-            'Every question and its givens must match its own construction and the selected lesson.')
+            'constructions across sections and reserves. Each reserve needs its own construction that has '
+            'not already appeared. Vary what the reader uses, such as a diagonal, an altitude or a separate marked point, '
+            'when the selected concept and the figure support it. '
+            'Every question and its givens must match its own construction and the selected lesson. '
+            'A proof asks what to prove and has a review answer. For a question with a numeric figure answer, '
+            'ask for exactly one supported measure of that question’s construction. '
+            'Keep each subitem’s givens self-contained, apart from the common intro and figure. '
+            'Never put the answer to one subitem in the wording or givens of another. '
+            'Choose the figure parameters first. Derive every printed side, angle and relationship from those parameters. '
+            'Use lengths, parallel sides and relationships you can verify from the coordinates. '
+            'When an angle is not fixed by the figure constructor, ask for that angle in a sketch from words '
+            'with enough stated givens. ' + FIGURE_PARAMETERS)
     addition_plan = None
     if no_carry_addition.compatible(lesson):
         addition_plan = no_carry_addition.parameter_plan(lesson['questionCount'])
@@ -718,7 +728,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
     else:
         # Parallel parts of one plan: the same system text and plans, each part's own rows and schema.
         bodies = [build_body(prefix + system + author_request.SLICE_RULE, author_request.part_user(user, piece),
-                             author_request.part_schema(schema, piece), schema_name, 40000) for piece in pieces]
+                             author_request.part_schema(schema, piece), schema_name,
+                             author_request.part_output_limit(piece)) for piece in pieces]
         note_request(bodies[0], schema, 'worksheet-source/4')
         # Set before the calls: the worker sizes a second attempt by how the first one was written.
         measured['authorSlices'] = {'parts': len(pieces), 'duplicates': 0}

@@ -388,13 +388,17 @@ class GeneralRuntimeTests(unittest.TestCase):
                     with self.assertRaises(StopIteration):
                         provider.author_lesson(lesson, **self.config)
                     args = request.call_args.args[2]["messages"]
-                    rows = json.loads(args[1]["content"])["questionPlan"]
+                    plan = json.loads(args[1]["content"])
+                    rows = plan["questionPlan"]
                     kinds = [row["representation"] for row in rows]
                     self.assertIn("Follow each question representation", args[0]["content"])
                     self.assertEqual(kinds.count("drawingFromWords"), sketches)
                     grids = (count + 3) // 4
                     self.assertEqual(kinds.count("coordinate_plane"), grids)
                     self.assertEqual(kinds.count("geometryFigure"), count - sketches - grids)
+                    reserve_kinds = [row["representation"] for row in plan["reservePlan"]]
+                    self.assertEqual(reserve_kinds.count("drawingFromWords"), 1)
+                    self.assertEqual(reserve_kinds.count("geometryFigure"), len(reserve_kinds) - 1)
 
     def test_reviewed_coordinate_triangle_reply_is_not_forced_into_generic_figure_slots(self):
         # g9m:computational_triangle level b reaches the general author. Its

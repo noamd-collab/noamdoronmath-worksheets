@@ -206,6 +206,15 @@ class LayoutTests(Base):
 # ---------------------------------------------------------------------------- parts
 
 class PartsTests(Base):
+    def test_parallel_parts_reserve_output_budget_for_their_own_questions(self):
+        lesson = corpus('lessons/L1-g9r-rhombus-a.json')
+        scope = scope_for_lesson(lesson)
+        pieces = author_request.slice_plan(question_plan(lesson, scope), reserve_plan(lesson, scope), 3)
+        limits = [author_request.part_output_limit(part) for part in pieces]
+        self.assertEqual(len(limits), 3)
+        self.assertLess(sum(limits), 40000)
+        self.assertTrue(all(limit >= 8000 for limit in limits))
+
     def test_the_part_setting_and_count(self):
         with patch.dict(os.environ, {}, clear=False):
             os.environ.pop(author_request.SLICES_ENV, None)

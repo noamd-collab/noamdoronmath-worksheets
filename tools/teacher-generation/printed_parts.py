@@ -571,13 +571,14 @@ def earlier_answers(question, keys):
     read as a leaked answer, and neither is the exponent of a power.
 
     Only items that continue one another are read this way: those of a
-    question whose intro or table states numbers that the items share, and an
-    item whose words refer back to earlier results. Independent drill items
+    question whose intro or table states numbers that the items share, items
+    about the same drawn shape, and an item that refers back to earlier results. Independent drill items
     under an instruction without numbers (a letter such as [[x]] is not one)
     share small numbers by chance and stay as they are (None).
     """
     shown = visible_numbers(question["intro"]) | visible_numbers(_table_spans(question))
-    shared = bool(shown)
+    figure = question.get("figure") or {}
+    shared = bool(shown) or figure.get("kind") == "shape"
     answered, guard = set(), {}
     for j, item in enumerate(question["items"], 1):
         guard[j] = (frozenset(value for value in answered - shown if abs(value) not in (0, 1))

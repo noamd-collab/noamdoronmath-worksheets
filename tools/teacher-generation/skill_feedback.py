@@ -600,6 +600,8 @@ def parse_selfcheck_log(text, step="middle-build"):
 
 _DOMINANCE = re.compile(r"DOMINANCE: one shape carries ([0-9]{1,2}) of the [0-9]{1,2} drawn questions "
                         r"\(([0-9]{1,2}(?:, [0-9]{1,2}){0,29})\) \S the cap at this size is ([0-9]{1,2})\.")
+_SCALE = re.compile(r"SCALE: ([0-9]{1,2}) drawn question\(s\) on ([0-9]{1,2}) object\(s\) "
+                    r"\S a sheet this size owes ([0-9]{1,2}) \(")
 
 
 def parse_g76(line, step="middle-build"):
@@ -607,15 +609,20 @@ def parse_g76(line, step="middle-build"):
 
     The gate lists the questions that draw the busiest shape and the cap. The
     first ``cap`` of them stay and the rest are named, so that replacing them
-    brings the shape under the cap. A SCALE or PART finding is about the
-    whole sheet and names no question.
+    brings the shape under the cap. When a concurrent SCALE shortfall can
+    be covered by those same replacements, retest both constraints after
+    replacing them. An unlocated PART failure still blocks scoped repair.
     """
     found = _DOMINANCE.search(line)
-    if found is None or re.search(r"\b(?:SCALE|PART):", line):
+    if found is None or re.search(r"\bPART:", line):
         return [_finding("G76", step)]
     questions, cap = [int(n) for n in found[2].split(", ")], int(found[3])
-    if len(questions) != int(found[1]) or not 1 <= cap < len(questions):
+    if len(questions) != int(found[1]) or questions != sorted(set(questions)) or not 1 <= cap < len(questions):
         return [_finding("G76", step)]
+    if "SCALE:" in line:
+        scale = _SCALE.search(line)
+        if scale is None or not 1 <= int(scale[3]) - int(scale[2]) <= len(questions) - cap:
+            return [_finding("G76", step)]
     return [_finding("G76", step, question) for question in questions[cap:]]
 
 

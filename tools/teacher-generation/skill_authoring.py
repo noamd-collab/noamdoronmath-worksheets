@@ -117,10 +117,17 @@ def reserve_plan(lesson, scope):
     """
     groups = reserve_groups(lesson["questionCount"])
     concepts = scope["selectedConcepts"]
-    return [{"reserveNumber": i + 1, "group": group,
+    rows = [{"reserveNumber": i + 1, "group": group,
              "conceptId": concepts[i * len(concepts) // len(groups)]["id"],
-             "minimumItems": 5 if lesson["gradeNumber"] <= 2 else 3}
+             "minimumItems": minimum_items(lesson)}
             for i, group in enumerate(groups)]
+    if geometry_topic(scope) and scope["topic"]["skillId"] == "middle":
+        for row in rows:
+            row["representation"] = "geometryFigure"
+        # Keep an independent sketch option when the planned sheet has one.
+        if any(row["representation"] == "drawingFromWords" for row in question_plan(lesson, scope)):
+            rows[0]["representation"] = "drawingFromWords"
+    return rows
 
 
 def worksheet_schema(lesson, scope, *, count=None):
@@ -536,7 +543,9 @@ MISSING_INSTRUCTION = "No usable question was written for this position. Write o
 FIGURE_PARAMETERS = (
     "Shape measures: trapezoid a = bottom base AB, b = top base CD, h = height, dx = how far D lies right of A; "
     "an isosceles trapezoid has a > b and dx = (a - b) / 2, a right trapezoid dx = 0, and the intro must then say "
-    "טרפז שווה־שוקיים or טרפז ישר־זווית. Parallelogram a = AB, b = AD, angle = angle A; equal a and b only for a "
+    "טרפז שווה־שוקיים or טרפז ישר־זווית. For a scalene trapezoid with a > b use 0 < dx < a - b and "
+    "2*dx != a - b. Renaming vertices does not change lengths or angles. "
+    "Parallelogram a = AB, b = AD, angle = angle A; equal a and b only for a "
     "rhombus and angle 90 only for a rectangle, each named in the intro. Rhombus d1 = AC and d2 = BD differ. "
     "Triangle a = BC, b = CA, c = AB; two equal sides or a right angle only when the intro says שווה־שוקיים or "
     "ישר־זווית. Two sides the question does not make equal differ by more than a tenth, the two bases of a "
