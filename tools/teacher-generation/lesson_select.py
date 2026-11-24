@@ -71,6 +71,7 @@ class Reserve:
     question: object
     used: bool = False
     codes: tuple = ()
+    kept: bool = False          # placed by restore() although refused for a soft code
 
 
 def _entry(row):
@@ -89,8 +90,10 @@ class Selection:
     shorten() as later checks require.
     """
 
-    def __init__(self, planned, reserves, predicate):
+    def __init__(self, planned, reserves, predicate, soft=()):
         self.predicate = predicate
+        # Codes that mark a question as worse than a replacement, not as unfit (restore()).
+        self.soft = frozenset(soft)
         self.slots = []
         for number, row in enumerate(planned, 1):
             group, question, concepts = _entry(row)
@@ -158,15 +161,21 @@ class Selection:
         return False
 
     def _refill(self):
-        """Give every missing slot a reserve where the rules allow one."""
-        for slot in self.slots:
-            if slot.missing:
-                self._take(slot, slot.group, slot.group == CHALLENGES)
-        for slot in self.slots:
-            # A practice reserve in a challenge slot is an ordinary question, so
-            # two real challenges must already stand without it.
-            if slot.missing and slot.group == CHALLENGES and self.real_challenges() >= MINIMUM_CHALLENGES:
-                self._take(slot, PRACTICE, False)
+        """Give every missing slot a reserve where the rules allow one.
+
+        A question that cannot be printed takes a reserve before one refused only
+        for a soft code, which may still be printed when no reserve is left.
+        """
+        soft = [slot for slot in self.slots if slot.codes and set(slot.codes) <= self.soft]
+        for slots in ([slot for slot in self.slots if slot not in soft], soft):
+            for slot in slots:
+                if slot.missing:
+                    self._take(slot, slot.group, slot.group == CHALLENGES)
+            for slot in slots:
+                # A practice reserve in a challenge slot is an ordinary question, so
+                # two real challenges must already stand without it.
+                if slot.missing and slot.group == CHALLENGES and self.real_challenges() >= MINIMUM_CHALLENGES:
+                    self._take(slot, PRACTICE, False)
         return self.missing()
 
     def screen(self, stage="source"):
@@ -207,6 +216,36 @@ class Selection:
         self._place(slot, question, origin, challenge, origin)
         return ()
 
+    def restore(self, soft):
+        """Print what was refused only for codes in ``soft`` rather than leave a position missing. Returns how many.
+
+        A soft code marks a question as worse than a replacement, not as unfit.
+        First each such question goes back to its own position; then a position
+        whose question cannot be printed takes a reserve that was refused only
+        for a soft code, by the same group rules as any reserve.
+        """
+        soft, restored = frozenset(soft), 0
+        for slot in self.slots:
+            if slot.missing and slot.removed is not None and slot.codes and set(slot.codes) <= soft:
+                self._place(slot, slot.removed, slot.origin, slot.group == CHALLENGES, "kept")
+                restored += 1
+        spare = [r for r in self.reserves if r.used and not r.kept and r.codes and set(r.codes) <= soft]
+        for slot in self.slots:
+            if not slot.missing:
+                continue
+            for reserve in sorted(spare, key=lambda r: (not set(r.concepts) & set(slot.concepts), r.number)):
+                if reserve.kept:
+                    continue
+                stands_in = (slot.group == CHALLENGES and reserve.group == PRACTICE
+                             and self.real_challenges() >= MINIMUM_CHALLENGES)
+                if reserve.group == slot.group or stands_in:
+                    reserve.kept = True
+                    self._place(slot, reserve.question, "reserve", reserve.group == CHALLENGES,
+                                "reserve_kept", reserve=reserve.number)
+                    restored += 1
+                    break
+        return restored
+
     def can_shorten(self):
         """Whether the sheet may be printed without its missing questions."""
         present = sum(1 for slot in self.slots if slot.question is not None)
@@ -233,13 +272,13 @@ class Selection:
             for code in event["codes"]:
                 codes[code] = codes.get(code, 0) + 1
                 tally = (dropped if event["action"] == "dropped" else
-                         replaced if event["action"] in ("reserve", "reserve_as_practice", "correction") else None)
+                         replaced if event["action"] in ("reserve", "reserve_as_practice", "reserve_kept", "correction") else None)
                 if tally is not None:
                     tally[code] = tally.get(code, 0) + 1
         actions = [event["action"] for event in self.record]
         return {"planned": self.planned, "printed": len(self.layout()),
-                "replaced": sum(action in ("reserve", "reserve_as_practice", "correction") for action in actions),
-                "byReserve": sum(action in ("reserve", "reserve_as_practice") for action in actions),
+                "replaced": sum(action in ("reserve", "reserve_as_practice", "reserve_kept", "correction") for action in actions),
+                "byReserve": sum(action in ("reserve", "reserve_as_practice", "reserve_kept") for action in actions),
                 "byCorrection": actions.count("correction"),
                 "dropped": actions.count("dropped"), "missing": len(self.missing()),
                 "reservesOffered": len(self.reserves),

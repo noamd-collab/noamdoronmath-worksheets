@@ -84,12 +84,21 @@ def environment(values):
 
 
 def general_lessons():
-    """First topic of every grade that uses the general source author."""
+    """First topic of every grade that uses the general source author and whose boundary admits the example.
+
+    The reply example shows notation, not a topic: a topic whose catalog
+    boundary forbids one of its signs (א01 comes before '+', ב01 before ':')
+    would refuse every question of an example-only sheet (lesson_quality).
+    """
     import counting_lesson, division_facts, fraction_lesson, pythagoras_lesson, square_lesson, triangle_lesson
+    from lesson_quality import _contains_term, _plain
     native = (counting_lesson, division_facts, fraction_lesson, pythagoras_lesson, square_lesson, triangle_lesson)
     found = {}
     for topic in catalog().topics:
         lesson = intake(topic)
+        shown = _plain(json.dumps(example_question(topic['gradeNumber']), ensure_ascii=False))
+        if any(_contains_term(shown, term) for term in topic['forbiddenConcepts']):
+            continue
         if (topic['gradeNumber'] not in found and not any(m.eligible(lesson) for m in native)
                 and not no_carry_addition.compatible(lesson) and not square_lesson.provider_introduction(lesson)):
             found[topic['gradeNumber']] = lesson

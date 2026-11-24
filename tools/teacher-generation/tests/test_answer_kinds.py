@@ -544,7 +544,8 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(draft["questions"][0]["items"][0]["verification"], "unverified label; teacher review required")
         self.assertIsNone(draft["questions"][1]["items"][0]["task"])
         html_text = (work / "sheet.html").read_text(encoding="utf-8")
-        self.assertEqual(html_text.count('<div class="open-work"></div>'), 4)
+        # Each drawing gets its framed box beside the item, where the Word exporter reads it as blank lines.
+        self.assertEqual(html_text.count('<div class="open-work"><br><br><br><br></div>'), 4)
         self.assertIn('א. <span class="answer-text" dir="rtl">משולש שווה צלעות</span>', html_text)
         self.assertIn('<span class="answer-text" dir="rtl">סעיף פתוח: לבדיקת המורה.</span>', html_text)
 

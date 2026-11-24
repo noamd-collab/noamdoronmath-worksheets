@@ -19,6 +19,7 @@ from skill_authoring import (MAX_CORRECTED, bind_content, correction_instruction
                              notation_correction, question_codes, question_plan, refers_to_another_question,
                              refusal_feedback, reserve_plan, revision_request, split_reserves, trim_rule,
                              worksheet_schema)
+from lesson_quality import SOFT
 from source_normalize import normalize_question, normalize_rich, normalize_source
 from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 from runtime_catalog import catalog, scope_for_lesson
@@ -67,7 +68,9 @@ def failure_code(codes, stage='source'):
     code = codes[0] if codes else NO_QUESTION
     if code == NO_QUESTION:
         return 'AUTHOR_PLAN_MISMATCH'
-    if (stage not in ('source', 'correction') or code in ('QUESTION_REFERENCE', 'REJECTED')
+    # The teaching-quality codes (lesson_quality) are a check of the sheet, as the site names it.
+    if (stage not in ('source', 'correction')
+            or code in ('QUESTION_REFERENCE', 'REJECTED', 'QUESTION_SAME_ANSWERS', 'QUESTION_STEM_MISMATCH')
             or not re.fullmatch(r'[A-Z_]{1,60}', code)):
         return 'QUALITY_GATE_FAILED'
     return code
@@ -132,8 +135,9 @@ class Draft:
                 written.add(text)
                 spare.append(row)
         self.repeated_reserves = len(reserves) + len(extra) - len(spare)
-        self.selection = Selection(planned, spare, self._judge)
+        self.selection = Selection(planned, spare, self._judge, soft=SOFT)
         self.selection.screen()
+        self._keep_soft()
 
     @staticmethod
     def _text(question):
@@ -234,9 +238,27 @@ class Draft:
             self.selection.reject(named, stage)
         return len(named)
 
+    def _keep_soft(self):
+        """Print a question refused only for its teaching quality when nothing else is missing.
+
+        A soft code (lesson_quality.SOFT: one answer for every item, an intro
+        that promises what no item asks) gives the question's place to a
+        reserve, and to the correction call when one is made for a question
+        that cannot be printed; on its own it never costs a model call, a
+        question of the sheet or the sheet.
+        """
+        missing = [self.selection.slot(number) for number in self.selection.missing()]
+        if missing and all(slot.codes and set(slot.codes) <= SOFT for slot in missing):
+            self.selection.restore(SOFT)
+
     def shorten(self):
-        """Drop the positions that are still missing. False when the sheet would be too short."""
-        return self.selection.shorten()
+        """Drop the positions that are still missing. False when the sheet would be too short.
+
+        A question refused only for its teaching quality comes back first; only
+        the questions that cannot be printed are dropped.
+        """
+        self.selection.restore(SOFT)
+        return not self.selection.missing() or self.selection.shorten()
 
     # ------------------------------------------------------------------ one correction call
 
@@ -328,6 +350,7 @@ class Draft:
                         self.rule, self.rule_refusal, self.sheet_error = rule, None, None
             # A restored challenge may now let a practice reserve stand in for another one.
             self.selection.screen('correction')
+            self._keep_soft()
         except GeneralSourceError as exc:
             reject(exc.code, str(exc))
         finally:
@@ -514,8 +537,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         # The lesson goal changes the request in this one respect.
         system += (
             ' This is an opening sheet: the class meets this topic now. The questions marked guided_entry in '
-            'questionPlan come first and are entry-level and guided: each asks for one small step, and its intro '
-            'names that step in plain words. The rule introduces the idea itself in words a pupil can read before '
+            'questionPlan come first and are entry-level and guided: each asks for one small, concrete action, and its '
+            'intro says that action in classroom words (what to compute or complete), never "the first step". The rule introduces the idea itself in words a pupil can read before '
             'any exercise, with one worked example. Assume no knowledge beyond the teacher stopping point, and '
             'keep the challenges within what this one sheet has shown.')
     user = {'authoringContext': context,
@@ -525,30 +548,30 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'selectedConcepts': scope['selectedConcepts'],
             'finalContractReminder': 'Put all ordinary questions in practice and exactly three challenge questions in challenges; a challenge changes the reasoning, not the number of operations, digits or bracket depth. Put the reserve questions of reservePlan in reserves. Each question has intro and items. Use complete Hebrew words, typed math and no markup.'}
     activities = (
-        'read a given quantity from the data and compute one value from it',
+        'read the givens of a short story and compute one value from them',
         'work one direct case using the selected concept',
         'complete a missing part from known data',
         'apply the concept in an everyday situation',
         'compare two cases and identify a distinguishing feature',
         'recover an input or an intermediate value',
         'connect two representations using printed givens',
-        'match an example to a stated category and give a checkable result',
+        'compute, for each example, the quantity that the rule uses to tell its cases apart',
         'compare a short explicit set of data in each item; use a table only if it is included in table.head and table.rows',
         'choose needed data from a brief situation containing an extra detail',
-        'carry out two proposed methods on a concrete new example and give the number that each one yields',
-        'recover one missing value from an example under an explicit constraint',
+        'carry out two proposed methods on one concrete new example in the same item and give the number that each one yields',
+        'find one missing value from a condition that the item states in words',
         'organize and interpret a sequence of cases',
-        'use two sensible bounds as a check while computing one requested value',
+        'compute one requested value and check it by putting it back into the givens',
         'work backward from part of a completed solution',
         'apply the concept to a new verbal situation using exactly the facts printed in each item',
         'relate two results obtained from a shared starting value',
         'read givens in words and choose one appropriate operation',
         'identify a boundary case using a small explicit set of candidates',
-        'model a short everyday decision with a single measurable output',
+        'compute the one number that settles an everyday question, such as which costs less or how many are needed',
         'decide how changing one datum changes the answer',
         'find one missing input in a small table where all givens are present',
         'classify a new example by computing the measure that its defining property names',
-        'connect an estimate to a separately stated exact result',
+        'compute a result, then decide with a yes/no question whether a printed claim about it is right',
         'contrast two related configurations by computing, for each, the quantity that an explicit criterion names',
         'use the taught relationship in the opposite direction',
         'combine two previously used operations in a fresh setting',
@@ -558,11 +581,11 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                   'combine or compare two situations in a new way')
     # The opening questions of an introductory sheet (question_plan marks them).
     entry_activities = (
-        'meet the new idea in one small concrete case; the intro names the single step to take',
-        'take the same first step again with new numbers, the step still named in the intro',
+        'meet the new idea in one small concrete case; the intro tells the pupil exactly what to compute',
+        'work the new idea again with new numbers; the intro says again, in its own words, what to do',
         'complete one missing step of a short worked example of the new idea',
         'compute the defining measure of a small given case that shows the new idea',
-        'take the first step on a case that looks slightly different from the worked example',
+        'work the new idea on a case that looks slightly different from the worked example',
     )
     entry = sum(1 for row in plan if row.get('role') == 'guided_entry')
     for i, row in enumerate(user['questionPlan']):
@@ -582,7 +605,18 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                'purposeful subitems. Every actual exercise, data set and claim must appear only once; '
                'do not reuse earlier false statements or drills in the final three challenges. '
                'A new noun or changed operands alone do not constitute a new '
-               'activity. If a proposed activity requires an untaught operation, adapt it within scope.')
+               'activity. If a proposed activity requires an untaught operation, adapt it within scope. '
+               # The checkers of live rounds 1 and 2 found intros that copied the activity
+               # ("בצעו את הצעד הראשון", "תחת האילוץ הנתון", "השוו בין דרכי פתרון") over items
+               # that did something else, runs of one answer, and the next lesson's law.
+               'The activity is private guidance for the items; it is never written on the sheet. The intro is '
+               'one plain classroom instruction that says exactly what the items ask the pupil to do: it names a '
+               'choice only when the options are printed, a comparison or a decision only when an item asks for '
+               'it, data to select only for a story, and never a step, a constraint or a category (no צעד, אילוץ, '
+               'קטגוריה, ערך המוצא). Within one question the items have different answers, and a set of yes/no '
+               'items has both a yes and a no. Never build a question on the subject of a later lesson (such as '
+               'the distributive law a(b + c) = ab + ac in a lesson before it): use only selectedConcepts and what '
+               'the teacher stopping point says the class knows.')
     if lesson["minutes"] / lesson["questionCount"] <= 1.8:
         system += (' For this time budget give exactly minimumItems short subitems in every question. '
                    'Each subitem must ask for one checkable result. The key of a computed task is its one computed value: '
