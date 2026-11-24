@@ -270,7 +270,11 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
             match_printed_task(item, solved, grade)
             printed_table_row(question, item, solved)
             if grade <= 6:
-                from printed_elementary import printed_intent
+                from printed_elementary import printed_intent, validate_inverse_dividend
+                try:
+                    validate_inverse_dividend(question, item, solved, scope)
+                except GeneralSourceError as error:
+                    raise error.at(qcount, j)
                 printed_intent(question, item, solved, grade, location=f"q{qcount}.item.{j}")
             if "notation" in answer:
                 from compact_authoring import expression

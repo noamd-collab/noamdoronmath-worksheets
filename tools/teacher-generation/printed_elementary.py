@@ -61,6 +61,37 @@ DIVIDEND_FROM_ROLES = re.compile(
 DIVISION_INSTRUCTION = re.compile(
     r"(?:(?:בנו|כתבו|רשמו) (?:דוגמה (?:משלכם )?ל)?תרגיל חילוק(?: ובדקו אותו)?|בנו דוגמה חדשה)[.:]?"
 )
+INVERSE_INSTRUCTION = re.compile(r"פתרו את (?:הבעיות(?: ההפוכות)? הבאות|התרגילים הבאים)[.:]?")
+INVERSE_DIVIDEND = re.compile(
+    r"(?:מספר חולק|חילקו מספר) ב[־-]?\s*(?P<divisor>[0-9]+) "
+    r"ו(?:קיבל|קיבלו|התקבלה) ה?מנה(?: של)? (?P<quotient>[0-9]+)"
+    r"(?:,?\s*(?:(?:והשארית (?:היא )?|עם שארית )(?P<remainder>[0-9]+)|(?P<exact>ללא שארית|בלי שארית)))?"
+    r"\.מהו (?:המספר המקורי|המחולק)\?"
+)
+
+
+def validate_inverse_dividend(question, item, solved, scope):
+    """A Euclidean quotient q constrains the dividend to [dq, dq+d-1]."""
+    if question.get("table") or question.get("figure"):
+        return
+    match = INVERSE_DIVIDEND.fullmatch(_plain(item["prompt"]) or "")
+    if not match:
+        return
+    concepts = (concept["text"] for concept in scope["selectedConcepts"])
+    if not any("שארית" in text and not re.search(r"(?:ללא|בלי) שארית", text) for text in concepts):
+        return
+    # A shared introduction can supply the remainder or a bound on the answer.
+    intro = _plain(question["intro"])
+    if intro is None or (intro and not (INVERSE_INSTRUCTION.fullmatch(intro) or NEUTRAL_INTRO.fullmatch(intro))):
+        return
+    divisor, quotient = int(match["divisor"]), int(match["quotient"])
+    if not divisor or (divisor > 1 and match["remainder"] is None and not match["exact"]):
+        raise GeneralSourceError("PRINTED_TASK_MISMATCH",
+                                 "The printed divisor and quotient must determine a unique dividend")
+    remainder = int(match["remainder"] or 0)
+    if remainder >= divisor:
+        _reject()
+    _verify_integer(solved, divisor * quotient + remainder)
 
 
 def printed_intent(question, item, solved, grade, *, location):
