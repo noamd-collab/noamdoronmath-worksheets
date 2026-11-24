@@ -192,8 +192,9 @@
         s += hebT(x, 206, 22, good ? GOOD : BAD, good ? '✓' : '✗');
         if (i < 4) s += numT(x + 31, 114, 14, NEW, '+3');
       }
-      s += hebT(394, 36, 14, MUTED, 'ציור', 'end') + hebT(394, 84, 14, MUTED, 'גפרורים', 'end')
-        + hebT(394, 162, 14, MUTED, 'הנוסחה', 'end') + hebT(394, 206, 14, MUTED, 'התאמה', 'end');
+      // The page is RTL, so 'start' anchors the right edge of the label at x and the text runs left.
+      s += hebT(394, 36, 14, MUTED, 'ציור', 'start') + hebT(394, 84, 14, MUTED, 'גפרורים', 'start')
+        + hebT(394, 162, 14, MUTED, 'הנוסחה', 'start') + hebT(394, 206, 14, MUTED, 'התאמה', 'start');
       ctx.el('tb').innerHTML = s;
       return okAll;
     }

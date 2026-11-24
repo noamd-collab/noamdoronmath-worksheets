@@ -52,7 +52,7 @@
   function handleHtml(id, label, lo, hi, val) {
     return '<g id="' + id + '" tabindex="0" role="slider" aria-label="' + label + '" aria-valuemin="' + lo + '" aria-valuemax="' + hi
       + '" aria-valuenow="' + val + '" style="cursor:grab">'
-      + '<rect x="-28" y="-28" width="56" height="56" rx="14" fill="transparent"/>'
+      + '<rect x="-30" y="-30" width="60" height="60" rx="15" fill="transparent"/>'
       + '<circle r="13" fill="' + PAL.main + '" stroke="#fff" stroke-width="3"/></g>';
   }
   /** Drag, keyboard and buttons all end in the same setter. */
@@ -91,7 +91,8 @@
     var X0 = 51, STEP = 25, TRACK_Y = 286;
     ctx.draw('<rect x="36" y="12" width="330" height="130" rx="22" fill="' + PAL.warmSoft + '" stroke="' + PAL.warm + '" stroke-width="2"/>'
       + '<g id="balls"></g>'
-      + hebText(372, 190, 'ההסתברות לאדום', 15, PAL.ink, 'end')
+      // RTL page: 'start' keeps the right edge at x so the label runs left, inside the frame.
+      + hebText(372, 190, 'ההסתברות לאדום', 15, PAL.ink, 'start')
       + mathText(246, 198, '=', 24, PAL.ink)
       + '<g id="fr">' + fracSvg(200, 190, 'fn', 'fd', 0, 0, 20, PAL.dark) + '</g>'
       + '<rect x="36" y="222" width="330" height="22" rx="8" fill="' + GREY + '"/>'
