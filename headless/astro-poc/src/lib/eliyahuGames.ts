@@ -694,6 +694,8 @@ export const ENGINE_GAMES: EliyahuGame[] = [
     theme: TEAL,
     kind: 'engine',
     playPath: '/games/yesharim-makbilim/play'
+  },
+  {
     slug: 'gozrim-umadbikim',
     title: 'משחק שטח המקבילית, הטרפז והמצולע המורכב עם אליהו | נועם דורון',
     h1: 'משחק שטח המקבילית, הטרפז והמצולע המורכב עם אליהו',
