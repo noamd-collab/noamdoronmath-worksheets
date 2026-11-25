@@ -179,6 +179,103 @@ def is_known_code(code) -> bool:
     return code in CODES or (code.startswith(KERNEL_PREFIX) and len(code) > len(KERNEL_PREFIX))
 
 
+# ------------------------------------------------------------------ repair instructions (plan §b3)
+
+# One fixed English instruction per refusal code a question or a sheet check can give an empty slot. A targeted
+# repair call (structured_author) sends exactly these sentences, never a validator message or model text. The
+# groups covered are the ones whose codes reach a slot (REPAIR_GROUPS); KERNEL_* codes share one sentence.
+REPAIR_GROUPS = ("question_shape", "text", "references", "math", "key_display", "binding", "division", "structure",
+                 "probability", "leaks")
+REPAIR_INSTRUCTIONS = MappingProxyType({
+    "Q_SHAPE": "Write the question as one object with exactly the schema keys and value types, slot set to its slot.",
+    "Q_SLOT_UNKNOWN": "Use only the slot names of the plan.",
+    "Q_SLOT_DUPLICATE": "Write each slot exactly once.",
+    "Q_KIND_NOT_ALLOWED": "Use only a kind that the plan row allows for this slot.",
+    "FIELD_NOT_EMPTY": "Leave every field this kind does not read empty: an empty string or an empty list.",
+    "ITEM_COUNT": "Give the question three to six items, each of them valid on its own.",
+    "ITEM_SHAPE": "Write every item as one object with exactly the item keys of the schema.",
+    "QUESTION_MISSING": "The question for this slot was missing: write it.",
+    "TEXT_LENGTH": "Shorten the text field to the schema limit.",
+    "TEXT_MARKUP": "Remove markup, code and control characters from text fields.",
+    "TEXT_CHAR": "Use only Hebrew letters, spaces and ordinary punctuation in text fields.",
+    "TEXT_GLUED_REF": "Put a space on both sides of every given reference in a text field.",
+    "TEXT_PAREN_ADJACENT": "Never put a bracket in a text field right next to a number or an expression.",
+    "TEXT_NUMBER_WORD": "Never write a number as a Hebrew word; numbers belong in the math fields or the givens.",
+    "TEXT_ARGUMENT_REQUEST": "Never ask the pupil to prove, explain, justify or check; ask for a result only.",
+    "TEXT_FORBIDDEN_TERM": "Never use or hint at a term the card lists as forbidden.",
+    "TEXT_DRAWING_REQUEST": "Never ask for a drawing, a figure or a diagram.",
+    "TEXT_NIQQUD": "Write Hebrew text without niqqud.",
+    "TEXT_NOT_HEBREW": "Write text fields in Hebrew words only: no Latin letters and no digits.",
+    "ATOM_ADJACENT": "Separate two math expressions in a text field with Hebrew words.",
+    "REF_UNDECLARED": "Refer only to givens the question declares.",
+    "REF_UNUSED": "Use every declared given in the question, or leave it out.",
+    "GIVEN_SHAPE": "Write each given with its id, type, value and unit as the schema requires.",
+    "GIVEN_VALUE": "Give each given a value of its type inside the number ranges of the card.",
+    "MATH_PARSE": "Write math fields in the plain school notation of the card, with nothing else in them.",
+    "MATH_LENGTH": "Shorten the expression to the schema limit.",
+    "MATH_SYMBOL_UNDECLARED": "Use only the letters the card allows.",
+    "MATH_SCOPE_PRODUCT_OF_SUM": "Never multiply a bracketed sum.",
+    "MATH_SCOPE_BRACKETS": "Use brackets only where the card allows them.",
+    "MATH_SCOPE_POWER": "Never use a power or the same letter twice in one term.",
+    "MATH_SCOPE_DIVISION": "Never use division where the card does not allow it.",
+    "MATH_SCOPE_DECIMAL": "Use whole numbers only, without a decimal point.",
+    "MATH_SCOPE_PERCENT": "Never use a percent sign.",
+    "MATH_SCOPE_PRODUCT": "Never write an explicit product sign where the card does not allow it.",
+    "MATH_SCOPE_RANGE": "Keep every number and every answer inside the ranges of the card; never write a "
+                        "coefficient of zero, one or minus one before a letter.",
+    "MATH_SCOPE_TERMS": "Use no more terms in one expression than the card allows.",
+    "MATH_SCOPE_LETTERS": "Use no more different letters in one expression than the card allows.",
+    "MATH_SCOPE_RELATION": "Write an expression, never an equation or an inequality.",
+    "TASK_LITERAL": "Write this field with the givens and only the literal numbers the card allows.",
+    "FORM_UNKNOWN": "Set form to an empty string or to a form the kind declares.",
+    "FORM_UNREPRESENTABLE": "Choose a task whose answer can be written in the form of the item.",
+    "KEY_ROUNDTRIP": "Choose a task whose answer the code can print and read back exactly.",
+    "DISPLAY_ROUNDTRIP": "Write the expression in plain school notation that prints and reads back unchanged.",
+    "DISPLAY_INVALID": "Write an expression that parses with the letters the card allows.",
+    "BINDING_INTERNAL": "Write a simpler, ordinary item of this kind.",
+    "TEMPLATE_UNKNOWN": "Use only the template or story ids the card lists for this kind.",
+    "TEMPLATE_MISMATCH": "Make the expression match the shape of the chosen template exactly.",
+    "VALUES_SHAPE": "Write values as letter=number pairs separated by commas, with whole numbers only.",
+    "VALUES_MISMATCH": "Give one value for exactly each letter that appears in the expression.",
+    "MISTAKE_UNKNOWN": "Use only the mistake ids the card lists.",
+    "MISTAKE_NOT_APPLICABLE": "Choose an expression to which the chosen mistake applies.",
+    "MISTAKE_UNMODELED": "Make the wrong result exactly what the chosen mistake makes of the expression.",
+    "MISTAKE_NOT_WRONG": "Choose an expression for which the chosen mistake gives a wrong result.",
+    "NOTHING_TO_DO": "Choose an expression that still has like terms to collect.",
+    "REVEALS_ANSWER": "Never give a bare letter to substitute into; give an expression.",
+    "DIVISION_SHAPE": "Write each division as a whole number, a colon and a whole number.",
+    "ASK_UNKNOWN": "Use only the asks the card lists for this kind.",
+    "STORY_REMAINDER_ZERO": "Choose numbers whose division leaves a remainder.",
+    "CHALLENGE_PROFILE": "Follow the challenge rule the card gives for starred questions.",
+    "WORDING_CUE": "Pair each ask with the story question that matches it.",
+    "STRUCTURE_REPEATED": "Use a structure or a story the sheet has not already used too often.",
+    "PROB_RANGE": "Choose counts that make the probability strictly between zero and one.",
+    "ASK_MISMATCH": "Make the expression the probability the ask names, written over the givens.",
+    "KEY_REPEATED": "Give the items of one question different answers.",
+    "DUPLICATE_ITEM": "Never repeat an item inside the question.",
+    "LEAK_OWN": "Never print the answer of an item anywhere in its question.",
+    "LEAK_LINKED": "Never let the answer of one item appear inside another item of the question.",
+    "LEAK_RULE_FACT": "Never ask about the example the rule box already shows.",
+    "LEAK_PINNED_VALUE": "Never print all the numbers of an answer elsewhere in the question.",
+    "DUPLICATE_TASK": "Never repeat a task another question of the sheet already asks.",
+    "LEAK_SHEET_INVERSE": "Never let the answer of another question appear inside this question, or this "
+                          "answer inside another question.",
+    "EXAMPLE_COPY": "Never copy an example of the card or of the rule box.",
+    "DUPLICATE_REORDERED": "Never repeat the terms of another item in a different order.",
+})
+REPAIR_KERNEL_INSTRUCTION = "Write a task the exact math kernel can solve: an ordinary expression inside the number rules of the card."
+REPAIR_DEFAULT_INSTRUCTION = "Write a new question that follows every rule of the card."
+
+
+def repair_instruction(code) -> str:
+    """The fixed English repair instruction for one refusal code (KERNEL_* share one; any other code the default)."""
+    if type(code) is str and code in REPAIR_INSTRUCTIONS:
+        return REPAIR_INSTRUCTIONS[code]
+    if is_known_code(code) and code.startswith(KERNEL_PREFIX):
+        return REPAIR_KERNEL_INSTRUCTION
+    return REPAIR_DEFAULT_INSTRUCTION
+
+
 # ------------------------------------------------------------------ the overlay (§2.7)
 
 def _freeze(value):

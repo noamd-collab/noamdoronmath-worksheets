@@ -41,8 +41,8 @@ RENDER = S.APP / "cloud/render"
 # validate_source / validate_model / render_job of a `git archive bafa36f0` copy, on the unflagged payloads below.
 BASELINE_REFUSAL = ("SOURCE_SHAPE", "Unexpected or missing source fields")
 V5_MODULES = ("atom_order.py", "item_kinds.py", "leak_checks.py", "lesson_select.py", "mistake_models.py",
-              "school_math.py", "structured_contract.py", "structured_source.py", "text_lint.py",
-              "v5_offline_render.py")
+              "school_math.py", "structured_author.py", "structured_contract.py", "structured_source.py",
+              "text_lint.py", "v5_offline_render.py")
 
 
 def compile_question(slot, kind, items, skill_path=None):
@@ -266,7 +266,11 @@ class TrustedContract(unittest.TestCase):
 
     def test_only_the_compilers_set_the_flag(self):
         """Every `contract=` keyword in the app modules is a pass-through, except in the two modules that compile
-        the source themselves (structured_source, v5_offline_render)."""
+        the source themselves (structured_source, v5_offline_render).
+
+        Stage 4 wiring adds exactly one pass-through, remote_worker.author_and_render. Its value is bound only from
+        the StructuredAuthored that structured_author returned with the compiled source (whose contract is the
+        compiler's constant), and it reaches render_job only: never a literal, a payload field or another call."""
         setting, passing = {}, set()
         for path in sorted(S.APP.glob("*.py")):
             for node in ast.walk(ast.parse(path.read_text(encoding="utf-8"))):
@@ -285,7 +289,19 @@ class TrustedContract(unittest.TestCase):
                         setting.setdefault(path.name, []).append(ast.unparse(value))
         self.assertEqual(setting, {"structured_source.py": ["CONTRACT"],
                                    "v5_offline_render.py": ["CONTRACT", "CONTRACT"]})
-        self.assertEqual(passing, {"general_adapters.py", "runner.py", "validation.py", "general_source.py"})
+        self.assertEqual(passing, {"general_adapters.py", "runner.py", "validation.py", "general_source.py",
+                                   "remote_worker.py"})
+        worker = ast.parse((S.APP / "remote_worker.py").read_text(encoding="utf-8"))
+        stores = [node for node in ast.walk(worker)
+                  if isinstance(node, ast.Name) and node.id == "contract" and isinstance(node.ctx, ast.Store)]
+        self.assertEqual(len(stores), 1)
+        self.assertFalse([node for node in ast.walk(worker) if isinstance(node, ast.arg) and node.arg == "contract"])
+        bound = [ast.unparse(node) for node in ast.walk(worker) if isinstance(node, ast.Assign)
+                 and any(stores[0] in ast.walk(target) for target in node.targets)]
+        self.assertEqual(bound, ["source, contract = (structured.source, structured.contract)"])
+        callers = [ast.unparse(node.func) for node in ast.walk(worker) if isinstance(node, ast.Call)
+                   and any(keyword.arg == "contract" for keyword in node.keywords)]
+        self.assertEqual(callers, ["render_job"])
 
     @unittest.skipUnless(S.MIDDLE_PINNED, "Pinned middle skill unavailable")
     def test_the_compiled_ir_needs_the_flag_everywhere(self):
