@@ -2852,7 +2852,7 @@
       "siblings": {
         "pa": "79243d687e8c42a28d156ef6ecedfea8",
         "pb": "e1e7cbc0db784a6bace0b86b742659a7",
-        "pc": "e7b11e96954b4935951214f8a9035814"
+        "pc": "6009d89d81484f1aac92da7febec2905"
       }
     },
     "9b655681242f439994ba548e2dbe4106": {
@@ -2870,7 +2870,7 @@
       "siblings": {
         "pa": "79243d687e8c42a28d156ef6ecedfea8",
         "pb": "e1e7cbc0db784a6bace0b86b742659a7",
-        "pc": "e7b11e96954b4935951214f8a9035814"
+        "pc": "6009d89d81484f1aac92da7febec2905"
       }
     },
     "62ef925033ec4b3fa0f361ed601b3da7": {
@@ -2879,7 +2879,7 @@
         "grade": 8,
         "level": "c"
       },
-      "pdfId": "e7b11e96954b4935951214f8a9035814",
+      "pdfId": "6009d89d81484f1aac92da7febec2905",
       "prefix": "G8-T25",
       "grade": 8,
       "level": "c",
@@ -2888,7 +2888,7 @@
       "siblings": {
         "pa": "79243d687e8c42a28d156ef6ecedfea8",
         "pb": "e1e7cbc0db784a6bace0b86b742659a7",
-        "pc": "e7b11e96954b4935951214f8a9035814"
+        "pc": "6009d89d81484f1aac92da7febec2905"
       }
     },
     "c276156d21ab4682946847a38aa85683": {
@@ -13646,7 +13646,7 @@
       "siblings": {
         "pa": "79243d687e8c42a28d156ef6ecedfea8",
         "pb": "e1e7cbc0db784a6bace0b86b742659a7",
-        "pc": "e7b11e96954b4935951214f8a9035814"
+        "pc": "6009d89d81484f1aac92da7febec2905"
       }
     },
     "025d5bf773214ac187d51f2734d2975f": {
@@ -13655,7 +13655,7 @@
         "grade": 8,
         "level": "c"
       },
-      "pdfId": "e7b11e96954b4935951214f8a9035814",
+      "pdfId": "6009d89d81484f1aac92da7febec2905",
       "prefix": "G8-T25",
       "grade": 8,
       "level": "c",
@@ -13664,7 +13664,7 @@
       "siblings": {
         "pa": "79243d687e8c42a28d156ef6ecedfea8",
         "pb": "e1e7cbc0db784a6bace0b86b742659a7",
-        "pc": "e7b11e96954b4935951214f8a9035814"
+        "pc": "6009d89d81484f1aac92da7febec2905"
       }
     },
     "522ffec2cd564632a811cd4afc55596c": {
@@ -14440,7 +14440,7 @@
       "siblings": {
         "pa": "79243d687e8c42a28d156ef6ecedfea8",
         "pb": "e1e7cbc0db784a6bace0b86b742659a7",
-        "pc": "e7b11e96954b4935951214f8a9035814"
+        "pc": "6009d89d81484f1aac92da7febec2905"
       }
     },
     "de181fdb99b547c887627213597b7a84": {
@@ -15121,6 +15121,24 @@
         "pa": "15cdc869e656479e96162699e3571d49",
         "pb": "633bb6f33db64de2ad892ef5fd645407",
         "pc": "93dabb7c536e4aff911389c28531c691"
+      }
+    },
+    "e7b11e96954b4935951214f8a9035814": {
+      "original": {
+        "prefix": "G8-T25",
+        "grade": 8,
+        "level": "c"
+      },
+      "pdfId": "6009d89d81484f1aac92da7febec2905",
+      "prefix": "G8-T25",
+      "grade": 8,
+      "level": "c",
+      "topicId": 5,
+      "title": "קנה מידה",
+      "siblings": {
+        "pa": "79243d687e8c42a28d156ef6ecedfea8",
+        "pb": "e1e7cbc0db784a6bace0b86b742659a7",
+        "pc": "6009d89d81484f1aac92da7febec2905"
       }
     }
   }

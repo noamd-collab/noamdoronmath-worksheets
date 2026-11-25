@@ -1,0 +1,209 @@
+{
+ "family": "number_line_sequences",
+ "probes": [
+  {
+   "id": "number_line_sequences-01",
+   "topic": "ג02",
+   "intro": "ענו על השאלות.",
+   "prompt": "איזה מספר נמצא באמצע בין [[340]] ל־[[360]] על ישר המספרים?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(340 + 360) / 2"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "איזה מספר נמצא באמצע בין 340 ל־ 360 על ישר המספרים?",
+    "key": "350"
+   }
+  },
+  {
+   "id": "number_line_sequences-02",
+   "topic": "ג02",
+   "intro": "ענו על השאלות.",
+   "prompt": "מהו המספר העוקב של [[399]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "399 + 1"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "מהו המספר העוקב של 399 ?",
+    "key": "400"
+   }
+  },
+  {
+   "id": "number_line_sequences-03",
+   "topic": "ג03",
+   "intro": "השלימו את הסדרה.",
+   "prompt": "[[10]], [[20]], ___, [[40]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "20 + 10"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "30"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "10 , 20 , ___, 40",
+    "key": "30"
+   }
+  },
+  {
+   "id": "number_line_sequences-04",
+   "topic": "ג03",
+   "intro": "השלימו את הסדרה.",
+   "prompt": "[[5]], [[10]], ___, ___, [[25]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "15"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "15",
+     "20"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "5 , 10 , ___, ___, 25",
+    "key": "15 , 20"
+   }
+  },
+  {
+   "id": "number_line_sequences-05",
+   "topic": "ג03",
+   "intro": "השלימו את הסדרה.",
+   "prompt": "[[5, 10, 15, ___, 25]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "20"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "20"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "number_line_sequences-06",
+   "topic": "ג03",
+   "intro": "השלימו את הסדרה.",
+   "prompt": "[[5]], [[10]], [[15]], ...",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "20"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "20"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "5 , 10 , 15 , ...",
+    "key": "20"
+   }
+  },
+  {
+   "id": "number_line_sequences-07",
+   "topic": "ג02",
+   "intro": "סמנו על ישר המספרים.",
+   "prompt": "סמנו על ישר המספרים את המספר [[350]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "350"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": []
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
+   }
+  },
+  {
+   "id": "number_line_sequences-08",
+   "topic": "ג02",
+   "intro": "ציירו ישר מספרים.",
+   "prompt": "ציירו ישר מספרים מ־[[300]] עד [[400]] וסמנו את [[350]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "350"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": []
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "DRAWING_POLICY"
+   }
+  },
+  {
+   "id": "number_line_sequences-09",
+   "topic": "ד12",
+   "intro": "מקמו על ישר המספרים.",
+   "prompt": "בין אילו שני מספרים שלמים נמצא השבר [[frac(7,4)]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "1"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "1",
+     "2"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "QUALITY_GATE_FAILED"
+   }
+  }
+ ]
+}

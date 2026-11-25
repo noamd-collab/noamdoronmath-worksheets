@@ -48,6 +48,11 @@ drain.
 Runtime secrets are `TEACHER_GENERATION_SERVICE_KEY`, `QWEN_API_KEY`,
 `QWEN_BASE_URL`, `QWEN_MODEL`, and `TEACHER_CLOUD_OPERATOR_KEY`. Supply them through
 Cloudflare secrets, never build arguments, image layers, logs or committed files.
+Three more names are optional and reach the worker only when set:
+`TEACHER_AUTHOR_PROVIDER` (the author switch), `GEMINI_API_KEY` and `GEMINI_MODEL`.
+The release tool's runtime-secrets file still accepts only the five names above
+(`tools/release/teacher-cloudflare-release.py`, `RUNTIME_SECRET_KEYS`); switching the
+author in production needs that list extended on the controller branch first.
 The existing renderer subprocess environment remains filtered. The image contains
 the exact skill archives and fonts, not machine-specific home directories.
 

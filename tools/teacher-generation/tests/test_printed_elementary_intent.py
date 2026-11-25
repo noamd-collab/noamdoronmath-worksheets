@@ -68,10 +68,27 @@ class PrintedElementaryIntentTests(unittest.TestCase):
         with self.assertRaises(GeneralSourceError) as err:
             validate_source(lesson, source, scope)
         self.assertEqual(err.exception.code, "PRINTED_EXPRESSION_SCOPE")
-        count = lesson["questionCount"]
-        raw = {"practice": [{} for _ in range(count - 3)], "challenges": [{} for _ in range(3)]}
+        rows = [{k: v for k, v in q.items() if k != "star"} for q in source["sections"][0]["questions"]]
+        raw = {"practice": rows[:-3], "challenges": rows[-3:]}
         findings = source_findings(raw, lesson, scope, err.exception)
         self.assertEqual([(r["question"], r["codes"]) for r in findings], [(1, ["PRINTED_EXPRESSION_SCOPE"])])
+
+    def test_non_geometry_drawing_finding_localizes_before_rechecking(self):
+        fixture = ROOT / "cloud/container/fixtures/general/grade7-equation-skill"
+        lesson = json.loads((fixture / "lesson.json").read_text())
+        scope = scope_for_lesson(lesson)
+        error = GeneralSourceError("DRAWING_POLICY", "Only geometry lessons can give drawing instructions")
+        items = [{"prompt": "פתרו את המשוואה.", "answer": {"kind": "computed", "unit": "",
+                  "task": {"kind": "solve", "variable": "x", "lhs": "x+1", "rhs": "6"}}} for _ in range(3)]
+        rows = [{"intro": "פתרו את המשוואות.", "items": items} for _ in range(lesson["questionCount"])]
+        rows[1]["intro"] = "ציירו תרשים."
+        rows[3]["intro"] = "השלימו את הטבלה הבאה."
+        raw = {"practice": rows[:-3], "challenges": rows[-3:]}
+        findings = source_findings(raw, lesson, scope, error)
+        self.assertEqual([(r["question"], r["codes"]) for r in findings],
+                         [(2, ["DRAWING_POLICY"]), (4, ["SOURCE_TABLE"])])
+        rows[1]["intro"] = "פתרו את המשוואות."
+        self.assertEqual(source_findings(raw, lesson, scope, error), [])
 
 
 if __name__ == "__main__":

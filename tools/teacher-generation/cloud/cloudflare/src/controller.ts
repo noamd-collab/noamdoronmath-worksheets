@@ -6,6 +6,12 @@ export interface RuntimeEnv {
   QWEN_API_KEY: string;
   QWEN_BASE_URL: string;
   QWEN_MODEL: string;
+  // Author switch (qwen when unset) and the Gemini author's own credential and
+  // model. Optional: the worker's preflight fails closed on an unknown or
+  // unconfigured provider.
+  TEACHER_AUTHOR_PROVIDER?: string;
+  GEMINI_API_KEY?: string;
+  GEMINI_MODEL?: string;
 }
 export interface ContainerPort {
   running: boolean;
@@ -106,7 +112,19 @@ export class Supervisor {
       MIDDLE_SKILL_PATH: '/opt/noam/skills/middle',
     };
     if (Object.values(values).some(value => typeof value !== 'string' || !value || value.includes('\0'))) throw failure();
-    return values;
+    const optional: Record<string, string | undefined> = {
+      TEACHER_AUTHOR_PROVIDER: this.env.TEACHER_AUTHOR_PROVIDER,
+      GEMINI_API_KEY: this.env.GEMINI_API_KEY,
+      GEMINI_MODEL: this.env.GEMINI_MODEL,
+    };
+    const selected: Record<string, string> = {};
+    for (const [name, value] of Object.entries(optional)) {
+      // Unset or empty stays unset: the worker then keeps its default author.
+      if (value === undefined || value === null || value === '') continue;
+      if (typeof value !== 'string' || value.includes('\0')) throw failure();
+      selected[name] = value;
+    }
+    return { ...values, ...selected };
   }
   private async report() {
     const state = await this.state();

@@ -35,11 +35,12 @@ test('all fifteen PDFs coexist and both exact reversals recover the complete can
     const laterIds = reviewedBatch05.additions
       .filter(a => a.grade === addition.grade && a.topicId === addition.topicId)
       .map(a => a.editionId);
-    assert.equal(groups[1].editionId, addition.editionId);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', addition.editionId, ...laterIds]);
-    assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, addition.grade, addition.topicId, '/')[0]);
-    assert.equal(groups[1].pdfOnly, true);
-    for (const level of groups[1].levels) {
+    assert.equal(groups[0].editionId, addition.editionId);
+    assert.deepEqual(groups.map(g => g.editionId), [addition.editionId, ...laterIds]);
+    const earlier = topicWorksheetEditionLinks(previous, addition.grade, addition.topicId, '/').filter(g => g.editionId !== 'legacy');
+    assert.deepEqual(groups.slice(0, earlier.length), earlier);
+    assert.equal(groups[0].pdfOnly, true);
+    for (const level of groups[0].levels) {
       assert.ok(level.href.startsWith(catalog.config.pdfBase));
       assert.ok(!level.href.includes('worksheet-viewer'));
       links.add(level.href);

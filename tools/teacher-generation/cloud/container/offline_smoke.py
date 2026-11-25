@@ -25,7 +25,7 @@ from runner import render_job
 from validation import validate_lesson, validate_model
 from author_quality import prepare_didactics
 
-SECRET_KEYS = ('QWEN_API_KEY', 'DASHSCOPE_API_KEY', 'TEACHER_GENERATION_SERVICE_KEY')
+SECRET_KEYS = ('QWEN_API_KEY', 'DASHSCOPE_API_KEY', 'GEMINI_API_KEY', 'TEACHER_GENERATION_SERVICE_KEY')
 
 
 def native_preflight():

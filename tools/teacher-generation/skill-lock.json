@@ -78,7 +78,7 @@
     "middle": {
       "name": "hebrew-math-worksheet",
       "version": "7.2.0-noam",
-      "sha256": "cbd46b144421db5260b3cb1142bc0e126c01335ce6fee8c32a24baf50e98a7bd",
+      "sha256": "89697b363762936aa2bd7352427e99f39b740ca6c24d28a08c3bd6cb480bb944",
       "files": {
         "ENGINE-v618-MANUAL.md": "3db1b26e1bc9b02a95270fdef6ed94be99d6365fcfcd1c91d3fb625373e09dfc",
         "INSTALL-PROFILE.md": "b907709db6c7d9a864c872f426ad9bdb9cba4df30fe6d4c69ee26e212d80b9d1",
@@ -115,8 +115,8 @@
         "didactic.py": "f8a71c200f0d4902447132e5efe26780a4c0b82d28ae0cdb9fb8934554ffde54",
         "didactic_principles.json": "7ed152cd2b8375de86d2fd021589732f8aa2d70a1745fc2549d40bdf25ab30e4",
         "docx_render.py": "a69a0dbf365add10c33023572ddc8bf4bf2df2ed6edfc6b99a0b65bfd2287b85",
-        "emit_docx.py": "8ab0ef7e04766fe77f67a860bec8db940a39c3f9b5a84b95095ee69b2bdf4e47",
-        "emit_html.py": "c252b0b2c60c607af85441229a795b37843b6ea2da898ce00b5a7a46ef7abe9f",
+        "emit_docx.py": "d11cf472b5c08c192a2ea067317398ba011c973254f4d6ad746d6c8d1d990eaa",
+        "emit_html.py": "6a5a6390a655c06022bf9e3c05c289dbc0872a977284b84f16bc4e427c55cee9",
         "emit_plus.py": "e92e626507665428da449b363db4cd645b80683cbe154343aece690009449981",
         "euclid.py": "3a55dd94cffe136cb84748c3cf7ac3b74b599cf297f83e9e1fbb9482a9dd393e",
         "export.py": "d85ea0efef32fee379ca6e141e21ea5f1ca013a3cc4698a22d7babb0fa44b07c",

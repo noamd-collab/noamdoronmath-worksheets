@@ -13,7 +13,7 @@
 import type { CatalogLevelKey, CatalogTopic, CatalogV1 } from '../catalog/types';
 import { elementaryPrintEdition } from '../topicWorksheetEditions';
 import { buildWorksheetHref } from '../worksheetLinks';
-import { resolveEdition } from '../catalog/editions';
+import { studentFacingEditions } from '../catalog/editions';
 import { analyzeWord, buildLexicon, normalizeText, tokenize, type Lexicon } from './normalize';
 import { parseQuery, SOFT_WORDS, SYNONYMS } from './query';
 import type { IndexLevel, IndexRouting, LevelLink, SearchDoc, SearchIndex, SearchResponse, SearchResult, TitlePart } from './types';
@@ -253,7 +253,7 @@ function levelLinks(doc: SearchDoc, p: PreparedIndex): LevelLink[] {
   if (!t || doc.grade === null) return [];
   const grade = doc.grade;
   const links = (topic: CatalogTopic, of?: string): LevelLink[] => {
-    const edition = resolveEdition(topic);
+    const edition = studentFacingEditions(topic, grade)[0];
     const print = elementaryPrintEdition(p.catalogShell, grade, topic.id);
     return edition.levels.map((l) => ({
       key: l.key,

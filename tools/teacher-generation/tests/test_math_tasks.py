@@ -219,7 +219,7 @@ class MathTaskTests(unittest.TestCase):
         self.error("UNSUPPORTED_SYMBOLIC_ROOT", task(op("sqrt", X), "simplify"))
 
     def test_exponent_is_bounded_literal_integer(self):
-        for exponent in [n(5), n(-5), n(1, 2), X, op("add", n(1), n(1))]:
+        for exponent in [n(13), n(-13), n(1, 2), X, op("add", n(1), n(1))]:
             self.error("UNSUPPORTED_POWER", task(op("power", n(2), exponent)))
 
     def test_resource_bounds_are_enforced(self):

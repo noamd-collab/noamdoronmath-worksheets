@@ -75,7 +75,7 @@ test('twelve reviewed topics retain their previous catalog and offer all 36 stud
       assert.ok(edition.levels.every(level => !Object.hasOwn(level, 'nativeExportSha256')));
     }
     const groups = topicWorksheetEditionLinks(catalog, pack.grade, pack.topicId, '/' + pack.slug);
-    assert.deepEqual(groups.map(group => group.editionId), ['legacy', ...pack.priorEditionIds, edition.editionId]);
+    assert.deepEqual(groups.map(group => group.editionId), [...pack.priorEditionIds, edition.editionId]);
     const added = groups.at(-1)!;
     assert.equal(added.pdfOnly, true);
     const parts = topicPagePdfParts(catalog, pack.grade, [pack.topicId]).parts;
