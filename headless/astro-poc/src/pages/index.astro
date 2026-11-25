@@ -4,6 +4,7 @@ import HeroLoop from '../components/HeroLoop.astro';
 import ExactHeroControls from '../components/ExactHeroControls.astro';
 import JuniorHighLaunchBanner from '../components/JuniorHighLaunchBanner.astro';
 import KislevGreeting from '../components/KislevGreeting.astro';
+import InstagramFeaturedReel from '../components/InstagramFeaturedReel.astro';
 import { HERO_DEFAULT, heroChip, heroPanel } from '../lib/heroRotation';
 import { homePageJsonLd, loadHomePage } from '../lib/homePage';
 import { siteIdentityJsonLd } from '../lib/structuredData';
@@ -70,6 +71,8 @@ const midGrades = home.grades.slice(6).map((grade,i)=>({...grade,l:letters[i+6],
   </div>
         </div>
       </section>
+
+      <InstagramFeaturedReel />
 
       <!-- GRADES -->
       <section id="choose-grade" data-home-grades style="position:relative;max-width:1200px;margin:0 auto;padding:56px 24px 72px;scroll-margin-top:96px;">
