@@ -556,6 +556,24 @@ def _missing_targets(selection, planned) -> list:
     return out
 
 
+def _occupants(selection, planned, compiled) -> dict:
+    """{planned slot: {"slot": wire slot, "codes": [...]}} for every empty (missing or dropped) planned slot whose last
+    removed question (lesson_select.Slot.correction_input) is a question of the reply itself: the planned question,
+    or a reserve that stood in for it. The codes are exactly the ones that took that question out, so a repair prompt
+    can send the question with its own codes. A slot that never held a question, or whose last refused question came
+    from a repair, has no entry. Slot names and codes only (G11)."""
+    out = {}
+    for row in planned:
+        slot = selection.slot(row.number)
+        if slot.question is not None:
+            continue
+        question, codes, _ = slot.correction_input
+        name = next((wire for wire, compiled_question in compiled.items() if compiled_question is question), None)
+        if question is not None and name is not None and codes:
+            out[row.slot] = {"slot": name, "codes": _registered(codes)}
+    return out
+
+
 def _diagnostics(lesson, floor, selection, refusals, questions, rounds, delivered) -> dict:
     trimmed = [{"slot": question.slot, "items": list(question.trimmed)}
                for question in questions if question.ir is not None and question.trimmed]
@@ -645,6 +663,7 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
         diagnostics = _diagnostics(lesson, floor, selection, refusals, questions, rounds, len(selection.layout()))
         diagnostics["code"] = code
         diagnostics["missing"] = _missing_targets(selection, planned)
+        diagnostics["occupants"] = _occupants(selection, planned, compiled)
         return V5Error(code, diagnostics)
 
     # Acceptance: the exact delivery rule (§4).
@@ -672,6 +691,7 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
     # This code built the IR, so it is the trusted caller that may select worksheet-wire/5 (contract=...).
     checked = validate_source(lesson, ir, scope, contract=CONTRACT)
     diagnostics = _diagnostics(lesson, floor, selection, refusals, questions, rounds, len(layout))
+    diagnostics["occupants"] = _occupants(selection, planned, compiled)    # the dropped slots of a shorter sheet
     # Equivalent evaluations (same simplified expression and values after renaming letters) are recorded for the
     # owner's review, by slot and item index only (G11); they are not refused (no decision to refuse them yet).
     diagnostics["warnings"] = [] if elementary is not None or probability is not None else [

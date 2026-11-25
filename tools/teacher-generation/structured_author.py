@@ -10,13 +10,20 @@ holds; every other lesson keeps its existing path.
 2. One author call through the existing provider.request_author_json (its network behaviour is unchanged).
 3. structured_source.compile_sheet: plan, per-question checks, reserves, the delivery rule, the final validator.
 4. Slots that stay empty (missing, or dropped from a shorter sheet) get at most two repair rounds, one call each.
-   Round 1, targeted: the card, the plan rows of the empty slots, each slot's refused question JSON (model output
-   only, at most 2 KB) and one fixed instruction per refusal code (structured_contract.repair_instruction).
-   Round 2, fresh: the card, the plan rows and the codes only. Both: temperature 0.15,
-   max_tokens min(6000, 600+450n) for n slots, a reply schema {"Qk": question, ...} with every slot required.
-   An unusable first reply (no JSON, wrong root, no slot parsed) turns round 1 into a full re-author.
-5. Never more than three model calls per job. No call starts after deadline-120 s and none runs past the deadline;
-   a repair call waits at most ``repair_timeout`` seconds (default 200).
+   Round 1, targeted: the card, the plan rows of the empty slots, one fixed instruction per refusal code
+   (structured_contract.repair_instruction) and, as "refused", the question last taken out of the slot (model
+   output only, at most 2 KB) when it is a question of the reply (the planned one or the reserve that stood in)
+   whose own codes are the codes sent; otherwise no "refused". Round 2, fresh: the card, the plan rows and the
+   codes only. Both: temperature 0.15, max_tokens min(6000, 600+450n) for n slots, a reply schema
+   {"Qk": question, ...} with every slot required. An unusable first reply (no JSON, wrong root, no slot parsed)
+   turns round 1 into a full re-author.
+5. Never more than three model calls per job, and one place decides whether a call may start
+   (``_Session.no_call_reason``): no call starts with less than ``min_seconds_left`` (default 180 s, about one
+   measured Qwen call) before the deadline. A refused start is recorded as repairSkipped ("deadline" or "calls"),
+   or AUTHOR_DEADLINE before the first call. Each call's timeout (the author call: the caller's ``timeout``, 300 s
+   from the worker; a repair: ``repair_timeout``, default 200 s) is clipped to the time left. urllib applies it to
+   each socket operation (connect, each read), so it bounds a stalled connection, not the wall-clock length of a
+   call (V5-DESIGN §14).
 
 The result is StructuredAuthored(source, contract): the compiled, validated v4 source with the v5 additions, and
 the trusted contract value runner.render_job needs. The value is structured_source.CONTRACT, the compiler's own
@@ -27,13 +34,17 @@ timeoutSeconds, and code, httpStatus, httpClass when the call failed}, the refus
 the selection {requested, delivered, replaced, dropped}, the card and schema sha256 and authorContract
 worksheet-wire/5. It never holds teacher text, model text, prompts or provider bodies (the provider function never
 reads an HTTP error body). A failure raises StructuredAuthorError, a GenerationError whose ``failure_detail``
-{stage, questions, httpStatus?} feeds the worker's one-line failure log.
+{stage, questions, httpStatus?} feeds the worker's one-line failure log. HTTP, TLS, network and http.client errors
+of a call are provider failures (PROVIDER_UNAVAILABLE for the last two); after any provider failure in a repair
+round a sheet that already compiled is delivered. An unexpected exception is recorded as AUTHOR_INTERNAL with the
+stage it happened in (author, compile or repair), and the exception carries that stage to the worker's log line.
 """
 from __future__ import annotations
 
 import copy
 from dataclasses import dataclass
 import hashlib
+import http.client
 import json
 import os
 import re
@@ -49,9 +60,9 @@ AUTHOR_TEMPERATURE = 0.25
 REPAIR_TEMPERATURE = 0.15
 MAX_CALLS = 3
 REPAIR_ROUNDS = structured_source.REPAIR_ROUNDS
-REPAIR_TIMEOUT_SECONDS = 200
-CALL_GUARD_SECONDS = 120
-DEFAULT_BUDGET_SECONDS = 720          # no new call after start + 600 s when the caller gives no deadline (plan §b6)
+REPAIR_TIMEOUT_SECONDS = 200          # decision recorded for Noam in V5-DESIGN §14 (plan §b6 said 120 s)
+MIN_SECONDS_LEFT = 180                # no call starts with less left: the pilot measured 160-175 s per Qwen call
+DEFAULT_BUDGET_SECONDS = 720          # deadline = start + 720 s when the caller gives none: no call after +540 s
 REFUSED_JSON_MAX_BYTES = 2048
 MAX_RECORDED_REFUSALS = 64
 STAGES = ("author", "compile", "repair")
@@ -99,6 +110,18 @@ class StructuredAuthorError(GenerationError):
                                                              and structured_contract.SLOT_RE.match(q)][:32]}
         if type(http_status) is int and 100 <= http_status <= 599:
             self.failure_detail["httpStatus"] = http_status
+
+
+class _NoCall(Exception):
+    """call() refused to start a model call: ``reason`` is "calls" or "deadline" (_Session.no_call_reason)."""
+
+    def __init__(self, reason):
+        super().__init__(reason)
+        self.reason = reason
+
+
+class _CallDefect(Exception):
+    """The provider function raised something that is neither a GenerationError nor a transport error."""
 
 
 def route_enabled(lesson) -> bool:
@@ -208,16 +231,23 @@ class _Outcome:
     def delivered(self) -> int:
         return self.result.ir["selection"]["delivered"] if self.result is not None else -1
 
+    @property
+    def occupants(self) -> dict:
+        """{empty planned slot: {slot, codes}}: the reply's question last taken out of it (structured_source)."""
+        occupants = (self.diagnostics or {}).get("occupants")
+        return occupants if isinstance(occupants, dict) else {}
+
 
 class _Session:
     """One job: the provider target, the fixed card and schema, the call budget and the sanitized record."""
 
     def __init__(self, lesson, scope, overlay, skill_path, card, schema, target, key, model, timeout,
-                 repair_timeout, deadline, measured, record):
+                 repair_timeout, deadline, min_seconds_left, measured, record, state):
         self.lesson, self.scope, self.overlay, self.skill_path = lesson, scope, overlay, skill_path
         self.card, self.schema, self.target, self.key, self.model = card, schema, target, key, model
         self.timeout, self.repair_timeout, self.deadline = timeout, repair_timeout, deadline
-        self.measured, self.record = measured, record
+        self.min_seconds_left = min_seconds_left
+        self.measured, self.record, self.state = measured, record, state
         self.planned, self.reserves = structured_source.plan_slots(lesson, scope, overlay)
         self.rows = {row.slot: row for row in self.planned}
         self.names = {row["id"]: row["text"] for row in scope["selectedConcepts"]}
@@ -226,8 +256,14 @@ class _Session:
 
     # ---------------------------------------------------------------- calls
 
-    def may_call(self) -> bool:
-        return self.calls < MAX_CALLS and self.deadline - _clock() >= CALL_GUARD_SECONDS
+    def no_call_reason(self):
+        """The one place the call budget is decided: None when a model call may start now, else "calls" (three
+        calls made) or "deadline" (less than min_seconds_left before the deadline)."""
+        if self.calls >= MAX_CALLS:
+            return "calls"
+        if self.deadline - _clock() < self.min_seconds_left:
+            return "deadline"
+        return None
 
     def _body(self, user, schema, name, max_tokens, temperature) -> dict:
         return {"model": self.model,
@@ -239,10 +275,14 @@ class _Session:
 
     def call(self, purpose, body, limit, slots=0):
         """One provider call: (payload, None), or (None, code) for a reply that arrived but cannot be read.
-        Any other provider failure is recorded and raised as a GenerationError (stage decided by the caller)."""
+
+        Raises _NoCall, before anything is sent or counted, when no_call_reason() refuses the start. Any other
+        provider failure is recorded and raised as a GenerationError (stage decided by the caller); an exception the
+        provider function should not let through is recorded as AUTHOR_INTERNAL and raised as _CallDefect."""
         from provider import request_author_json, safe_usage
-        if not self.may_call():
-            raise AssertionError("call budget or deadline exceeded")
+        reason = self.no_call_reason()
+        if reason is not None:
+            raise _NoCall(reason)
         timeout = max(1.0, min(float(limit), self.deadline - _clock()))
         entry = {"purpose": purpose, "timeoutSeconds": round(timeout)}
         if slots:
@@ -254,8 +294,9 @@ class _Session:
         try:
             try:
                 payload = request_author_json(self.target, self.key, body, observed, timeout)
-            except OSError:
-                # A connection error the provider function does not map (e.g. a reset): classified, never retried.
+            except (OSError, http.client.HTTPException):
+                # A connection or HTTP-protocol error the provider function does not map (a reset, an
+                # IncompleteRead): classified, never retried.
                 raise GenerationError("PROVIDER_UNAVAILABLE",
                                       "Provider network request failed; retry requires the job policy") from None
         except GenerationError as exc:
@@ -268,6 +309,9 @@ class _Session:
             if exc.code in UNUSABLE_REPLY_CODES:
                 return None, exc.code
             raise
+        except Exception:
+            entry["code"] = "AUTHOR_INTERNAL"
+            raise _CallDefect("The provider call failed unexpectedly") from None
         else:
             entry["finishReason"] = "stop"
             return payload, None
@@ -303,17 +347,29 @@ class _Session:
         return "%s | %s | %s | %s" % (row.slot, group, " + ".join(self.names[c] for c in row.concepts),
                                       " or ".join(row.kinds))
 
-    def repair(self, empty, reply, targeted):
+    @staticmethod
+    def _refused(occupant, wires, codes):
+        """The wire question the reply wrote for the slot's last removed occupant (its planned question or the
+        reserve that stood in), only when the codes that removed it are exactly ``codes`` and it fits in 2 KB."""
+        if not isinstance(occupant, dict) or tuple(occupant.get("codes") or ()) != tuple(codes):
+            return None
+        refused = wires.get(occupant.get("slot"))
+        if refused is None or len(json.dumps(refused, ensure_ascii=False, separators=(",", ":"))
+                                  .encode("utf-8")) > REFUSED_JSON_MAX_BYTES:
+            return None
+        return refused
+
+    def repair(self, outcome, reply, targeted):
         """One repair round over the empty slots → {slot: wire question} (empty for an unusable reply)."""
+        empty = outcome.empty
         rows = [self.rows[slot] for slot, _ in empty]
         wires = structured_source.parse_wire(reply, self.planned, self.reserves)[0] if targeted else {}
         slots, fixes = [], {}
         for (slot, codes), row in zip(empty, rows):
             entry = {"plan": self._plan_line(row), "codes": list(codes)}
             if targeted:
-                refused = wires.get(slot)
-                if refused is not None and len(json.dumps(refused, ensure_ascii=False, separators=(",", ":"))
-                                               .encode("utf-8")) <= REFUSED_JSON_MAX_BYTES:
+                refused = self._refused(outcome.occupants.get(slot), wires, codes)
+                if refused is not None:
                     entry["refused"] = refused
                 fixes.update((code, structured_contract.repair_instruction(code)) for code in codes)
             slots.append(entry)
@@ -378,21 +434,26 @@ class _Session:
 
 
 def _run(session) -> StructuredAuthored:
-    record = session.record
-    if not session.may_call():
-        raise StructuredAuthorError("AUTHOR_DEADLINE", "No time left for an author call before the deadline",
-                                    stage="author")
+    record, state = session.record, session.state
+    rounds = 0
     try:
-        reply, unusable = session.author("author")
-        rounds = 0
+        try:
+            reply, unusable = session.author("author")
+        except _NoCall:
+            raise StructuredAuthorError("AUTHOR_DEADLINE", "No time left for an author call before the deadline",
+                                        stage="author") from None
         if unusable:
-            if not session.may_call():
-                raise StructuredAuthorError(unusable, "The author reply could not be read", stage="author")
+            # Round 1 becomes a full re-author with the same request, if the budget lets the call start.
+            try:
+                reply, again = session.author("reauthor")
+            except _NoCall as skipped:
+                record["repairSkipped"] = skipped.reason
+                raise StructuredAuthorError(unusable, "The author reply could not be read", stage="author") from None
+            finally:
+                record["reauthored"] = any(call["purpose"] == "reauthor" for call in record["calls"])
             rounds = 1
-            record["reauthored"] = True
-            reply, unusable = session.author("reauthor")
-            if unusable:
-                raise StructuredAuthorError(unusable, "The author reply could not be read", stage="author")
+            if again:
+                raise StructuredAuthorError(again, "The author reply could not be read", stage="author")
     except StructuredAuthorError:
         raise
     except GenerationError as exc:
@@ -400,23 +461,37 @@ def _run(session) -> StructuredAuthored:
                                     http_status=(record["calls"][-1].get("httpStatus") if record["calls"] else None)
                                     ) from None
     repairs = []
+    state["stage"] = "compile"
     outcome = session.compile(reply, repairs)
     best = outcome if outcome.result is not None else None
     failure = None
     while outcome.empty and rounds < REPAIR_ROUNDS:
-        if not session.may_call():
-            record["repairSkipped"] = "calls" if session.calls >= MAX_CALLS else "deadline"
-            break
-        rounds += 1
+        state["stage"] = "repair"
         try:
             # After a re-author (round 1) the one repair left is round 2: fresh.
-            repairs.append(session.repair(outcome.empty, reply, targeted=rounds == 1))
+            wires = session.repair(outcome, reply, targeted=rounds == 0)
+        except _NoCall as skipped:
+            record["repairSkipped"] = skipped.reason
+            break
         except GenerationError as exc:
             # A transport or HTTP failure ends the calls. A sheet that already compiled is kept.
+            rounds += 1
             failure = StructuredAuthorError(exc.code, str(exc), stage="repair",
                                             questions=[slot for slot, _ in outcome.empty],
                                             http_status=record["calls"][-1].get("httpStatus"))
             break
+        except _CallDefect:
+            # The provider function failed unexpectedly (recorded as AUTHOR_INTERNAL on the call): the calls end,
+            # and a sheet that already compiled is kept. Without one the job fails in the repair stage.
+            rounds += 1
+            if best is None:
+                record["repairRounds"] = rounds
+                session.note(outcome)
+                raise
+            break
+        rounds += 1
+        repairs.append(wires)
+        state["stage"] = "compile"
         outcome = session.compile(reply, repairs)
         if outcome.result is not None and (best is None or outcome.delivered > best.delivered):
             best = outcome
@@ -432,8 +507,10 @@ def _run(session) -> StructuredAuthored:
 
 
 def author_structured_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90, metadata=None,
-                             deadline=None, skill_path=None, repair_timeout=REPAIR_TIMEOUT_SECONDS):
-    """Author one worksheet-wire/5 sheet: at most three model calls, two repair rounds, no call after deadline-120 s.
+                             deadline=None, skill_path=None, repair_timeout=REPAIR_TIMEOUT_SECONDS,
+                             min_seconds_left=MIN_SECONDS_LEFT):
+    """Author one worksheet-wire/5 sheet: at most three model calls, two repair rounds, and no call that would start
+    with less than ``min_seconds_left`` seconds (default 180) before the deadline.
 
     ``deadline`` is a time.monotonic() value (default: now + 720 s). Returns StructuredAuthored. Raises
     StructuredAuthorError. ``metadata`` (a dict) receives the sanitized record described in the module docstring."""
@@ -444,17 +521,23 @@ def author_structured_lesson(lesson, *, api_key=None, base_url=None, model=None,
               "refusals": [], "refusalsTotal": 0, "selection": None, "questions": []}
     measured.update(purpose="authoring", authorContract=CONTRACT, providerCalled=False, responseReceived=False,
                     validated=False, structured=record)
+    state = {"stage": "author"}       # where the job is: author, compile or repair (for an internal failure)
     try:
         authored = _start(lesson, api_key, base_url, model, timeout, deadline, skill_path, repair_timeout,
-                          measured, record)
+                          max(0.0, float(min_seconds_left)), measured, record, state)
     except StructuredAuthorError as exc:
         record.update(outcome="failed", code=exc.code, stage=exc.failure_detail["stage"])
         raise
     except GenerationError as exc:
-        record.update(outcome="failed", code=exc.code, stage="author")
-        raise StructuredAuthorError(exc.code, str(exc), stage="author") from None
-    except Exception:
-        record.update(outcome="failed", code="AUTHOR_INTERNAL", stage="compile")
+        record.update(outcome="failed", code=exc.code, stage=state["stage"])
+        raise StructuredAuthorError(exc.code, str(exc), stage=state["stage"]) from None
+    except Exception as exc:
+        # An internal defect: recorded with the stage it happened in, which the worker's log line repeats.
+        record.update(outcome="failed", code="AUTHOR_INTERNAL", stage=state["stage"])
+        try:
+            exc.failure_detail = {"stage": state["stage"], "questions": list(record.get("questions") or [])}
+        except AttributeError:
+            pass
         raise
     finally:
         measured["elapsedSeconds"] = round(_clock() - started, 3)
@@ -463,7 +546,8 @@ def author_structured_lesson(lesson, *, api_key=None, base_url=None, model=None,
     return authored
 
 
-def _start(lesson, api_key, base_url, model, timeout, deadline, skill_path, repair_timeout, measured, record):
+def _start(lesson, api_key, base_url, model, timeout, deadline, skill_path, repair_timeout, min_seconds_left,
+           measured, record, state):
     from provider import qwen_chat_url
     from runtime_catalog import scope_for_lesson
     validate_lesson(lesson)
@@ -499,10 +583,10 @@ def _start(lesson, api_key, base_url, model, timeout, deadline, skill_path, repa
     record.update(cardSha256=_sha256(card.encode("utf-8")), schemaSha256=_sha256(schema),
                   deadlineSeconds=max(0, round(deadline - _clock())))
     session = _Session(lesson, scope, overlay, path, card, schema, target, key, chosen, timeout, repair_timeout,
-                       deadline, measured, record)
+                       deadline, min_seconds_left, measured, record, state)
     return _run(session)
 
 
 __all__ = ["StructuredAuthored", "StructuredAuthorError", "author_structured_lesson", "route_enabled",
            "repair_schema", "http_error_class", "CONTRACT", "MAX_CALLS", "REPAIR_ROUNDS", "REPAIR_TIMEOUT_SECONDS",
-           "CALL_GUARD_SECONDS", "DEFAULT_BUDGET_SECONDS"]
+           "MIN_SECONDS_LEFT", "DEFAULT_BUDGET_SECONDS"]

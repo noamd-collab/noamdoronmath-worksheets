@@ -11,8 +11,12 @@ timeout and the sha256 of the canonical request body, sets httpStatus 418 and ra
 real function does for an HTTP error. No network, no model call.
 
     python3 -B make_provider_golden.py --app <tools/teacher-generation dir> --out <file>
+        [--site-ready VALUE] [--topics VALUE]
 
 Skill paths come from MIDDLE_SKILL_PATH / ELEMENTARY_SKILL_PATH (they must match skill-lock.json).
+TEACHER_V5_SITE_READY is unset unless --site-ready gives its value for every case (added in stage 4, after the
+golden was recorded; the default output is unchanged). --topics replaces every case's TEACHER_V5_TOPICS value (and
+its "env" field), so a test can list the topics while the site is not ready and compare the rest of each case.
 """
 from __future__ import annotations
 
@@ -62,13 +66,14 @@ def _canonical(value) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
-def record(app) -> dict:
+def record(app, site_ready=None, topics=None) -> dict:
     sys.path.insert(0, str(app))
     import provider
     from validation import GenerationError
 
     out = {}
     for name, lesson, flag in cases(app):
+        flag = flag if topics is None else topics
         calls = []
 
         def fake(target, key, body, measured, timeout):
@@ -80,8 +85,11 @@ def record(app) -> dict:
 
         env = dict(os.environ)
         env.pop("TEACHER_V5_TOPICS", None)
+        env.pop("TEACHER_V5_SITE_READY", None)
         if flag is not None:
             env["TEACHER_V5_TOPICS"] = flag
+        if site_ready is not None:
+            env["TEACHER_V5_SITE_READY"] = site_ready
         metadata = {}
         case = {"env": flag}
         with patch.dict(os.environ, env, clear=True), patch.object(provider, "request_author_json", fake):
@@ -102,9 +110,11 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--app", required=True)
     parser.add_argument("--out", required=True)
+    parser.add_argument("--site-ready")
+    parser.add_argument("--topics")
     args = parser.parse_args()
     sys.dont_write_bytecode = True
-    data = record(Path(args.app).resolve())
+    data = record(Path(args.app).resolve(), site_ready=args.site_ready, topics=args.topics)
     Path(args.out).write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
