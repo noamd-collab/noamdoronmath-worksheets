@@ -731,8 +731,6 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
     # content.json carries the printed star: G50 counts it in the HTML and the
     # pinned G61 proxy weighs it; both gates judge the same sheet.
     gate_questions = [q[0] for q in qs]
-    from claim_words import register
-    register(ledger, gate_questions)
     ledger.save()
     meta = {"band": "elementary-ab" if ab else "elementary", "grade": grade, "level": {"a":"א", "b":"ב", "e":"מצוינות"}[lesson["level"]], "topic": source["title"], "topic_id": scope["topic"]["sourceTopicId"], "domain": scope["topic"]["domain"]}
     dump(work / "content.json", {"meta": meta, "questions": gate_questions})

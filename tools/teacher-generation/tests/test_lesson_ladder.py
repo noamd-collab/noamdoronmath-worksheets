@@ -133,59 +133,46 @@ class LadderTests(unittest.TestCase):
 
     # ------------------------------------------------------------------ reserves
 
-    def test_two_bad_questions_take_reserves_and_only_the_question_left_without_one_goes_to_the_model(self):
+    def test_two_bad_questions_take_reserves_and_the_questions_left_without_one_go_to_one_correction(self):
         reply = self.reply()
         reply['practice'][1]['intro'] = BAD_NOTATION                                    # a practice question
         reply['challenges'][1]['items'] = reply['challenges'][1]['items'][:2]           # a challenge: too few items
         transport = Scripted(reply)                                                     # the correction gets no answer
         outcome, sheets = self.run_job(transport)
-        self.assertTrue(outcome['delivered'], outcome.get('code'))
-        # The draft, then one correction for the one question no reserve was left for.
+        # Questions 2 and 11 took a reserve each. The pre-pass then named questions 4, 8, 10 and 12: the locked G32
+        # refuses the per-unit or instruction "לכל" of 4, 8 and 12, and the printed stars put the difficulty spread
+        # above the limit (G61 on 4 and 10). The last reserve took question 4; one correction asked for the other
+        # three and got no answer. Without 10 and 12 one real challenge would remain, so nothing is rendered.
+        self.assertFalse(outcome['delivered'])
+        self.assertEqual((outcome['code'], sheets, outcome['uploads']), ('QUALITY_GATE_FAILED', [], []))
         self.assertEqual(transport.names(), ['skill_worksheet_content', 'revise_skill_questions'])
-        self.assertEqual(transport.calls[1]['required'], ['q10'])
-        # The printed stars put the difficulty spread above the limit: the pre-pass named questions 4 and 10 (G61).
-        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [4, 10], 'codes': ['G61']},
-                                                {'status': 'clean', 'questions': [], 'codes': []}])
-        self.assertEqual(len(sheets), 1)
-        questions = self.printed(sheets[0])
-        self.assertEqual((sheets[0]['count'], len(questions), sheets[0]['salvagedFrom']), (11, 11, 12))
-        self.assertEqual([q['star'] for q in questions], [False] * 9 + [True] * 2)
-        self.assertNotIn('@', json.dumps(questions, ensure_ascii=False))
-        self.assertTrue(all(len(q['items']) >= 3 for q in questions))
-        salvage = outcome['result']['salvage']
-        self.assertEqual(salvage, {'attempts': 1, 'corrections': 1, 'requestedQuestions': 12, 'printedQuestions': 11,
-                                   'replaced': {'count': 3, 'codes': {'G61': 1, 'SOURCE_ITEMS': 1, 'SOURCE_NOTATION': 1}},
-                                   'dropped': {'count': 1, 'codes': {'G61': 1}}, 'gate': 'deliver'})
+        self.assertEqual(transport.calls[1]['required'], ['q10', 'q12', 'q8'])
+        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [4, 8, 10, 12], 'codes': ['G32', 'G61']}])
         events = outcome['ladder']['attemptRecords'][0]['events']
         self.assertEqual([(e['question'], e['group'], e['codes'], e['stage'], e['action']) for e in events],
                          [(2, 'practice', ['SOURCE_NOTATION'], 'source', 'reserve'),
                           (11, 'challenges', ['SOURCE_ITEMS'], 'source', 'reserve'),
-                          (4, 'practice', ['G61'], 'precheck', 'reserve'),
-                          (10, 'challenges', ['G61'], 'precheck', 'dropped')])
-        self.assertEqual([(row['code'], row['count']) for row in outcome['result']['reviewFindings'] if row['code'] == 'SHORTER_SHEET'],
-                         [('SHORTER_SHEET', 1)])
+                          (4, 'practice', ['G32', 'G61'], 'precheck', 'reserve'),
+                          (8, 'practice', ['G32'], 'precheck', 'missing'),
+                          (10, 'challenges', ['G61'], 'precheck', 'missing'),
+                          (12, 'challenges', ['G32'], 'precheck', 'missing')])
+        self.assertTrue(outcome['ladder']['correctionFailed'])
+        self.assertEqual((outcome['ladder']['attempts'], outcome['ladder']['corrections']), (1, 1))
 
-    def test_a_reply_without_reserves_still_compiles_and_delivers(self):
+    def test_a_reply_without_reserves_still_compiles_and_one_correction_asks_for_every_named_question(self):
         transport = Scripted(copy.deepcopy(self.base))                                  # as every recorded reply
         outcome, sheets = self.run_job(transport)                                       # the correction gets no answer
-        self.assertTrue(outcome['delivered'], outcome.get('code'))
-        # The pre-pass named questions 4 and 10 (G61 on the printed stars); with no reserve both went to one
-        # correction, which got no answer, so they were dropped and the shorter sheet carries its note.
-        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [4, 10], 'codes': ['G61']},
-                                                {'status': 'clean', 'questions': [], 'codes': []}])
-        self.assertEqual((len(transport.calls), transport.calls[1]['required'], len(self.printed(sheets[0]))), (2, ['q10', 'q4'], 10))
-        self.assertEqual((sheets[0]['count'], sheets[0]['salvagedFrom']), (10, 12))
-        self.assertEqual([q['star'] for q in self.printed(sheets[0])], [False] * 8 + [True] * 2)
-        result = outcome['result']
-        self.assertEqual(result['salvage']['replaced'], {'count': 0, 'codes': {}})
-        self.assertEqual((result['salvage']['requestedQuestions'], result['salvage']['printedQuestions'],
-                          result['salvage']['dropped'], result['salvage']['corrections']),
-                         (12, 10, {'count': 2, 'codes': {'G61': 2}}, 1))
-        note = [row for row in result['reviewFindings'] if row['code'] == 'SHORTER_SHEET']
-        self.assertEqual([(row['count'], 'פחות שאלות' in row['note']) for row in note], [(2, True)])
+        # The pre-pass named questions 4, 8, 10 and 12 (G32 on the "לכל" of 4, 8 and 12, G61 on the printed stars
+        # of 4 and 10); with no reserve all four went to one correction, which got no answer. Eight of twelve would
+        # remain, below three quarters: nothing is rendered.
+        self.assertFalse(outcome['delivered'])
+        self.assertEqual((outcome['code'], sheets, outcome['uploads']), ('QUALITY_GATE_FAILED', [], []))
+        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [4, 8, 10, 12], 'codes': ['G32', 'G61']}])
+        self.assertEqual((len(transport.calls), transport.calls[1]['required']), (2, ['q10', 'q12', 'q4', 'q8']))
         self.assertEqual([(e['question'], e['group'], e['codes'], e['stage'], e['action'])
                           for e in outcome['ladder']['attemptRecords'][0]['events']],
-                         [(4, 'practice', ['G61'], 'precheck', 'dropped'), (10, 'challenges', ['G61'], 'precheck', 'dropped')])
+                         [(4, 'practice', ['G32', 'G61'], 'precheck', 'missing'), (8, 'practice', ['G32'], 'precheck', 'missing'),
+                          (10, 'challenges', ['G61'], 'precheck', 'missing'), (12, 'challenges', ['G32'], 'precheck', 'missing')])
         self.assertTrue(outcome['ladder']['correctionFailed'])
         self.assertEqual(outcome['ladder']['attempts'], 1)
         # The request asked for the reserves: three beside twelve questions, each tagged.
@@ -195,28 +182,72 @@ class LadderTests(unittest.TestCase):
         self.assertEqual([(row['group'], row['conceptId']) for row in transport.sent(0)['reservePlan']],
                          [('practice', 'ד07#0'), ('practice', 'ד07#0'), ('challenges', 'ד07#1')])
 
+    def test_the_benign_each_of_the_recorded_reply_is_refused_by_the_locked_truth_gate_and_never_printed(self):
+        from claim_words import claim_lint, scan
+        # The recorded reply uses "לכל" in three questions, each in a per-unit or instruction reading: q4 (practice 4,
+        # item 2), q8 (practice 8, its intro) and q12 (challenge 3, item 3). No other question has a gate word.
+        # claim_lint names none of them; nothing is recorded in the ledger for them either.
+        numbered = list(enumerate(self.base['practice'] + self.base['challenges'], start=1))
+        texts = {n: ' '.join([q['intro']] + [item['prompt'] for item in q['items']]) for n, q in numbered}
+        self.assertEqual({n: [(row['word'], row['reading']) for row in scan(text)] for n, text in texts.items() if scan(text)},
+                         {4: [('לכל', 'per_unit')], 8: [('לכל', 'instruction')], 12: [('לכל', 'per_unit')]})
+        self.assertEqual([claim_lint(q) for _, q in numbered], [[]] * 12)
+        rows = []
+        real = remote_worker.precheck_job
+
+        def recording(*args, **kwargs):
+            result = real(*args, **kwargs)
+            rows.append([(b['code'], b['question']) for b in result['gate']['blocking']])
+            return result
+
+        # As recorded, with no reserve: the first pre-pass refuses 4, 8 and 12 with G32 (D19), and nothing is rendered.
+        with patch.object(remote_worker, 'precheck_job', recording):
+            outcome, sheets = self.run_job(Scripted(copy.deepcopy(self.base)))
+        self.assertEqual(rows, [[('G32', 4), ('G32', 8), ('G32', 12), ('G61', 4), ('G61', 10)]])
+        self.assertFalse(outcome['delivered'])
+        self.assertEqual((outcome['code'], sheets, outcome['uploads']), ('QUALITY_GATE_FAILED', [], []))
+        # With the three reserves: 4 and 8 take the practice reserves, 10 the challenge reserve, 12 is dropped; the
+        # second pre-pass is clean and the sheet that is rendered carries none of the three questions.
+        rows.clear()
+        with patch.object(remote_worker, 'precheck_job', recording):
+            outcome, sheets = self.run_job(Scripted(self.reply()))
+        self.assertEqual(rows, [[('G32', 4), ('G32', 8), ('G32', 12), ('G61', 4), ('G61', 10)], []])
+        self.assertTrue(outcome['delivered'], outcome.get('code'))
+        self.assertEqual([(e['question'], e['codes'], e['action']) for e in outcome['ladder']['attemptRecords'][0]['events']],
+                         [(4, ['G32', 'G61'], 'reserve'), (8, ['G32'], 'reserve'), (10, ['G61'], 'reserve'), (12, ['G32'], 'dropped')])
+        self.assertEqual(len(sheets), 1)
+        printed = json.dumps(self.printed(sheets[0]), ensure_ascii=False)
+        self.assertEqual((len(self.printed(sheets[0])), printed.count('לכל')), (11, 0))
+
     def test_a_question_named_by_a_truth_gate_is_swapped_before_any_render_and_delivers(self):
         reply = self.reply()
         reply['practice'][2] = copy.deepcopy(OUT_OF_RANGE)
         transport = Scripted(reply)
         outcome, sheets = self.run_job(transport)
         self.assertTrue(outcome['delivered'], outcome.get('code'))
-        # The pinned house gates named question 3 (G60) and the two ends of the difficulty spread, questions 4 and 10
-        # (G61 on the printed stars, which blocks like any other finding) in the pre-pass; reserves took their places;
-        # the second pass is clean.
-        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [3, 4, 10], 'codes': ['G60', 'G61']},
+        # In the pre-pass the pinned house gates named question 3 (G60) and the two ends of the difficulty spread,
+        # questions 4 and 10 (G61 on the printed stars, which blocks like any other finding); the locked G32 named the
+        # "לכל" of 4, 8 and 12. Reserves took the places of 3, 4 and 10; one correction asked for 8 and 12, got no
+        # answer, and they were dropped. The second pass is clean and the shorter sheet carries its note.
+        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [3, 4, 8, 10, 12], 'codes': ['G32', 'G60', 'G61']},
                                                 {'status': 'clean', 'questions': [], 'codes': []}])
-        self.assertEqual((len(transport.calls), len(sheets)), (1, 1))                   # no model call, one render
+        self.assertEqual((transport.names(), transport.calls[1]['required'], len(sheets)),
+                         (['skill_worksheet_content', 'revise_skill_questions'], ['q12', 'q8'], 1))   # one render
         questions = self.printed(sheets[0])
-        self.assertEqual(len(questions), 12)
-        self.assertEqual([q['star'] for q in questions], [False] * 9 + [True] * 3)
+        self.assertEqual((sheets[0]['count'], len(questions), sheets[0]['salvagedFrom']), (10, 10, 12))
+        self.assertEqual([q['star'] for q in questions], [False] * 8 + [True] * 2)
         self.assertNotIn('999999', json.dumps(questions, ensure_ascii=False))
+        self.assertNotIn('לכל', json.dumps(questions, ensure_ascii=False))
         salvage = outcome['result']['salvage']
-        self.assertEqual((salvage['replaced'], salvage['dropped'], salvage['corrections'], salvage['gate']),
-                         ({'count': 3, 'codes': {'G60': 1, 'G61': 2}}, {'count': 0, 'codes': {}}, 0, 'deliver'))
+        self.assertEqual(salvage, {'attempts': 1, 'corrections': 1, 'requestedQuestions': 12, 'printedQuestions': 10,
+                                   'replaced': {'count': 3, 'codes': {'G32': 1, 'G60': 1, 'G61': 2}},
+                                   'dropped': {'count': 2, 'codes': {'G32': 2}}, 'gate': 'deliver'})
         self.assertEqual([(e['question'], e['codes'], e['stage'], e['action']) for e in outcome['ladder']['attemptRecords'][0]['events']],
-                         [(3, ['G60'], 'precheck', 'reserve'), (4, ['G61'], 'precheck', 'reserve'), (10, ['G61'], 'precheck', 'reserve')])
-        self.assertEqual(outcome['result']['reviewFindings'], [])
+                         [(3, ['G60'], 'precheck', 'reserve'), (4, ['G32', 'G61'], 'precheck', 'reserve'),
+                          (8, ['G32'], 'precheck', 'dropped'), (10, ['G61'], 'precheck', 'reserve'),
+                          (12, ['G32'], 'precheck', 'dropped')])
+        self.assertEqual([(row['code'], row['count'], 'פחות שאלות' in row['note']) for row in outcome['result']['reviewFindings']],
+                         [('SHORTER_SHEET', 2, True)])
 
     # ------------------------------------------------------------------ one correction
 
@@ -227,13 +258,14 @@ class LadderTests(unittest.TestCase):
         fixed = copy.deepcopy(self.spare['practice'][5])
         transport = Scripted(reply, {'q5': fixed})                                      # the second correction gets no answer
         outcome, sheets = self.run_job(transport)
-        self.assertTrue(outcome['delivered'], outcome.get('code'))
         # Question 2 took the one reserve; only question 5 was left to the model. The pre-pass then named questions
-        # 4 and 10 (G61 on the printed stars), with no reserve left: a second correction asked for exactly those two.
+        # 4, 8, 10 and 12 (G32 on the "לכל" of 4, 8 and 12, G61 on the printed stars of 4 and 10), with no reserve
+        # left: a second correction asked for exactly those four, got no answer, and eight of twelve would remain.
+        self.assertFalse(outcome['delivered'])
+        self.assertEqual((outcome['code'], sheets, outcome['uploads']), ('QUALITY_GATE_FAILED', [], []))
         self.assertEqual(transport.names(), ['skill_worksheet_content', 'revise_skill_questions', 'revise_skill_questions'])
-        self.assertEqual((transport.calls[1]['required'], transport.calls[2]['required']), (['q5'], ['q10', 'q4']))
-        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [4, 10], 'codes': ['G61']},
-                                                {'status': 'clean', 'questions': [], 'codes': []}])
+        self.assertEqual((transport.calls[1]['required'], transport.calls[2]['required']), (['q5'], ['q10', 'q12', 'q4', 'q8']))
+        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [4, 8, 10, 12], 'codes': ['G32', 'G61']}])
         asked = transport.sent(1)['questionsToCorrect']
         self.assertEqual([(row['question'], row['plan']['questionNumber'], row['plan']['group']) for row in asked], [(5, 5, 'practice')])
         self.assertEqual(asked[0]['original']['intro'], BAD_NOTATION)
@@ -241,36 +273,36 @@ class LadderTests(unittest.TestCase):
         self.assertTrue(asked[0]['findings'][0].startswith('Check intro at «[[4 @ 2]]». '), asked[0]['findings'][0][:80])
         self.assertIn('ENTIRE expression in one math span', asked[0]['findings'][0])
         self.assertEqual([(row['question'], row['plan']['group']) for row in transport.sent(2)['questionsToCorrect']],
-                         [(4, 'practice'), (10, 'challenges')])
-        self.assertEqual((sheets[0]['count'], sheets[0]['salvagedFrom'], len(self.printed(sheets[0]))), (10, 12, 10))
-        salvage = outcome['result']['salvage']
-        self.assertEqual((salvage['attempts'], salvage['corrections'], salvage['replaced'], salvage['dropped']),
-                         (1, 2, {'count': 2, 'codes': {'SOURCE_NOTATION': 2}}, {'count': 2, 'codes': {'G61': 2}}))
-        self.assertEqual([(e['question'], e['stage'], e['action']) for e in outcome['ladder']['attemptRecords'][0]['events']],
-                         [(2, 'source', 'reserve'), (5, 'source', 'correction'), (4, 'precheck', 'dropped'), (10, 'precheck', 'dropped')])
+                         [(4, 'practice'), (8, 'practice'), (10, 'challenges'), (12, 'challenges')])
+        self.assertEqual((outcome['ladder']['attempts'], outcome['ladder']['corrections'], outcome['ladder']['correctionFailed']),
+                         (1, 2, True))
+        self.assertEqual([(e['question'], e['codes'], e['stage'], e['action']) for e in outcome['ladder']['attemptRecords'][0]['events']],
+                         [(2, ['SOURCE_NOTATION'], 'source', 'reserve'), (5, ['SOURCE_NOTATION'], 'source', 'correction'),
+                          (4, ['G32', 'G61'], 'precheck', 'missing'), (8, ['G32'], 'precheck', 'missing'),
+                          (10, ['G61'], 'precheck', 'missing'), (12, ['G32'], 'precheck', 'missing')])
 
-    def test_a_correction_also_serves_a_kernel_code_and_a_refused_correction_leaves_a_shorter_sheet(self):
+    def test_a_correction_also_serves_a_kernel_code_and_a_refused_correction_drops_its_question(self):
         reply = copy.deepcopy(self.base)
         reply['practice'][3]['items'][0]['answer'] = computed('2^13')                   # a kernel code: UNSUPPORTED_POWER
         still_bad = copy.deepcopy(reply['practice'][3])
         transport = Scripted(reply, {'q4': still_bad})
         outcome, sheets = self.run_job(transport)
-        self.assertTrue(outcome['delivered'], outcome.get('code'))
         finding = transport.sent(1)['questionsToCorrect'][0]['findings'][0]
         self.assertIn('The exact checker cannot compute this typed task', finding)
         self.assertIn('item.1', finding)
         # The corrected question was examined like any other and refused again: it is dropped, never printed.
-        # On the eleven questions left the pre-pass named questions 2 and 9 (G61 on the printed stars; questions 2
-        # and 10 of the draft); their correction got no answer and they were dropped too, leaving nine of twelve.
-        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [2, 9], 'codes': ['G61']},
-                                                {'status': 'clean', 'questions': [], 'codes': []}])
-        self.assertEqual((sheets[0]['count'], sheets[0]['salvagedFrom'], len(self.printed(sheets[0]))), (9, 12, 9))
+        # On the eleven questions left the pre-pass named questions 2, 7, 9 and 11 (questions 2, 8, 10 and 12 of the
+        # draft: G32 on the "לכל" of 8 and 12, G61 on the printed stars of 2 and 10); their correction got no answer,
+        # and seven of twelve would remain: nothing is rendered.
+        self.assertFalse(outcome['delivered'])
+        self.assertEqual((outcome['code'], sheets, outcome['uploads']), ('QUALITY_GATE_FAILED', [], []))
+        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [2, 7, 9, 11], 'codes': ['G32', 'G61']}])
         self.assertEqual((len(transport.calls), transport.calls[1]['required'], transport.calls[2]['required']),
-                         (3, ['q4'], ['q10', 'q2']))
-        self.assertEqual(outcome['result']['salvage']['dropped'], {'count': 3, 'codes': {'G61': 2, 'UNSUPPORTED_POWER': 1}})
+                         (3, ['q4'], ['q10', 'q12', 'q2', 'q8']))
         self.assertEqual([(e['question'], e['codes'], e['stage'], e['action']) for e in outcome['ladder']['attemptRecords'][0]['events']],
-                         [(4, ['UNSUPPORTED_POWER'], 'source', 'dropped'), (2, ['G61'], 'precheck', 'dropped'),
-                          (10, ['G61'], 'precheck', 'dropped')])
+                         [(4, ['UNSUPPORTED_POWER'], 'source', 'dropped'), (2, ['G61'], 'precheck', 'missing'),
+                          (8, ['G32'], 'precheck', 'missing'), (10, ['G61'], 'precheck', 'missing'),
+                          (12, ['G32'], 'precheck', 'missing')])
 
     # ------------------------------------------------------------------ a shorter sheet
 
@@ -280,19 +312,22 @@ class LadderTests(unittest.TestCase):
             reply['practice'][index]['intro'] = BAD_NOTATION
         transport = Scripted(reply)                                                     # the correction gets no answer
         outcome, sheets = self.run_job(transport)
-        # Questions 1 and 7 were dropped. On the ten left the pre-pass named questions 3 and 8 (G61 on the printed
-        # stars; questions 4 and 10 of the draft). No reserve and no further correction: eight of twelve would remain.
+        # Questions 1 and 7 were dropped. On the ten left the pre-pass named questions 3, 6, 8 and 10 (questions 4, 8,
+        # 10 and 12 of the draft: G32 on the "לכל" of 4, 8 and 12, G61 on the printed stars of 4 and 10). No reserve
+        # and no further correction: six of twelve would remain.
         self.assertFalse(outcome['delivered'])
         self.assertEqual((outcome['code'], sheets, outcome['uploads']), ('QUALITY_GATE_FAILED', [], []))
         self.assertEqual(transport.names(), ['skill_worksheet_content', 'revise_skill_questions'])
         self.assertEqual(transport.calls[1]['required'], ['q1', 'q7'])
-        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [3, 8], 'codes': ['G61']}])
+        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [3, 6, 8, 10], 'codes': ['G32', 'G61']}])
         self.assertEqual([(e['question'], e['group'], e['codes'], e['stage'], e['action'])
                           for e in outcome['ladder']['attemptRecords'][0]['events']],
                          [(1, 'practice', ['SOURCE_NOTATION'], 'source', 'dropped'),
                           (7, 'practice', ['SOURCE_NOTATION'], 'source', 'dropped'),
-                          (4, 'practice', ['G61'], 'precheck', 'missing'),
-                          (10, 'challenges', ['G61'], 'precheck', 'missing')])
+                          (4, 'practice', ['G32', 'G61'], 'precheck', 'missing'),
+                          (8, 'practice', ['G32'], 'precheck', 'missing'),
+                          (10, 'challenges', ['G61'], 'precheck', 'missing'),
+                          (12, 'challenges', ['G32'], 'precheck', 'missing')])
         self.assertTrue(outcome['ladder']['correctionFailed'])
         self.assertEqual(outcome['ladder']['attempts'], 1)   # a provider that did not answer is not asked for a second draft
 
@@ -312,12 +347,16 @@ class LadderTests(unittest.TestCase):
         transport = Scripted('{"title": "סדר פעולות", "rule": "כלל" ]', self.reply())
         outcome, sheets = self.run_job(transport)
         self.assertTrue(outcome['delivered'], outcome.get('code'))
-        self.assertEqual(transport.names(), ['skill_worksheet_content', 'skill_worksheet_content'])
+        # The second draft is the reply with three reserves: the pre-pass names 4, 8 and 12 (G32) and 4 and 10 (G61);
+        # reserves take 4, 8 and 10, and one correction, which gets no answer, asks for 12.
+        self.assertEqual(transport.names(), ['skill_worksheet_content', 'skill_worksheet_content', 'revise_skill_questions'])
+        self.assertEqual(transport.calls[2]['required'], ['q12'])
         self.assertEqual(outcome['author']['firstPass']['code'], 'PROVIDER_INVALID_RESPONSE')
-        self.assertEqual((outcome['result']['salvage']['attempts'], outcome['result']['salvage']['corrections']), (2, 0))
+        self.assertEqual((outcome['result']['salvage']['attempts'], outcome['result']['salvage']['corrections']), (2, 1))
         self.assertEqual(outcome['ladder']['firstCode'], 'PROVIDER_INVALID_RESPONSE')
-        self.assertEqual(len(self.printed(sheets[0])), 12)
-        self.assertEqual(outcome['phases'].count('authoring'), 2)   # the lease is confirmed again before the second draft
+        self.assertEqual(len(self.printed(sheets[0])), 11)
+        # The lease is confirmed again before the second draft and before the correction.
+        self.assertEqual(outcome['phases'].count('authoring'), 3)
 
     def test_a_reply_of_the_wrong_shape_or_below_the_minimum_gets_one_second_attempt_and_no_third(self):
         wrong_shape = {'title': 'כותרת', 'rule': 'כלל', 'practice': {'q1': {}}, 'challenges': []}
@@ -331,7 +370,9 @@ class LadderTests(unittest.TestCase):
                 outcome, sheets = self.run_job(transport)
                 if first is wrong_shape:
                     self.assertTrue(outcome['delivered'], outcome.get('code'))
-                    self.assertEqual(len(transport.calls), 2)
+                    # The second draft, then one correction for question 12, the one G32 question no reserve was left for.
+                    self.assertEqual((transport.names(), transport.calls[2]['required']),
+                                     (['skill_worksheet_content', 'skill_worksheet_content', 'revise_skill_questions'], ['q12']))
                 else:
                     # The failed correction closed the job: no second draft is requested.
                     self.assertFalse(outcome['delivered'])
@@ -368,10 +409,15 @@ class LadderTests(unittest.TestCase):
             outcome, _ = self.run_job(transport)
             self.assertFalse(outcome['delivered'])
             self.assertEqual(len(transport.calls), 1)                                   # neither correction nor second draft
-            # Inside the window nothing changes for a sheet that needs no further call.
+            # The reply with reserves needs one further call, a correction for question 12 (G32) once reserves took
+            # 4, 8 and 10: no call starts, the question is dropped and the shorter sheet is delivered.
             transport = Scripted(self.reply())
             outcome, _ = self.run_job(transport)
             self.assertTrue(outcome['delivered'], outcome.get('code'))
+            self.assertEqual(len(transport.calls), 1)
+            salvage = outcome['result']['salvage']
+            self.assertEqual((salvage['corrections'], salvage['printedQuestions'], salvage['dropped']),
+                             (0, 11, {'count': 1, 'codes': {'G32': 1}}))
 
     # ------------------------------------------------------------------ an opening sheet
 
@@ -382,7 +428,8 @@ class LadderTests(unittest.TestCase):
         transport = Scripted(self.reply())
         outcome, sheets = self.run_job(transport, lesson)
         self.assertTrue(outcome['delivered'], outcome.get('code'))
-        self.assertEqual((outcome['author']['contract'], len(self.printed(sheets[0]))), ('worksheet-source/4', 12))
+        # Eleven of twelve: question 12 (G32) had no reserve left and its correction got no answer.
+        self.assertEqual((outcome['author']['contract'], len(self.printed(sheets[0]))), ('worksheet-source/4', 11))
         sent, system = transport.sent(0), transport.bodies[0]['messages'][0]['content']
         self.assertIn('This is an opening sheet', system)
         self.assertEqual(sent['authoringContext']['teacherContext']['lessonGoal'], 'introduce')

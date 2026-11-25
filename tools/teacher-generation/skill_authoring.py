@@ -611,8 +611,11 @@ def question_codes(wire, lesson, scope, *, challenge, index=1, refusals=None):
     """Every reason one wire question may not be printed, as codes. [] for a usable question.
 
     After the validation of examine_question, an elementary question is read
-    for the claim words that the content-truth gates refuse (claim_words): the
-    gate would fail the built sheet on them, so the question is replaced first.
+    for the claims among the words that the content-truth gates search for
+    (claim_words.claim_lint): the gate would fail the built sheet on them, so
+    the question is replaced first. A word with a benign reading (a per-unit
+    לכל, a conditional אילו) is not named here; the gates refuse it in the
+    pre-pass.
     ``refusals``, when a dict, keeps the refusal under id(wire) for a caller
     that builds a correction request.
     """

@@ -156,9 +156,11 @@ A result is always `needs_review` or `failed`, never publication approval:
   pinned bracket gate G51 (a correctly printed product of two bracketed
   groups). A reversed pair still fails. A step whose only finding is a
   reconciled G51 is recorded as REVIEW (`RECONCILED_FINDINGS_ONLY`).
-- `claim_words.py` records in the ledger a closed-pattern reading of the words
-  that the pinned truth gates G32/G33 search for ("לכל תלמיד", conditional
-  "אילו"). Universal claims and requests to enumerate still fail.
+- `claim_words.py` names, before rendering, the claims among the words that
+  the pinned truth gates G32/G33 search for (`claim_lint`). Nothing is
+  recorded in the ledger, so the gates judge every listed word: a per-unit
+  "לכל" or a conditional "אילו" is refused in the pre-pass and the question is
+  replaced, like a universal claim or a request to enumerate.
 - `runner.precheck_job` builds `content.json` and runs only the content-truth
   and house gates that read it, before any PDF or Word file exists.
 - A narrowly verified middle-skill didactic REVIEW may produce a private draft

@@ -1565,6 +1565,24 @@
        {
         "action": "missing",
         "codes": [
+         "G32"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "precheck"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G32"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "precheck"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "G61"
         ],
         "group": "challenges",
@@ -1572,9 +1590,9 @@
         "stage": "precheck"
        }
       ],
-      "missing": 2,
+      "missing": 4,
       "planned": 20,
-      "printed": 13,
+      "printed": 11,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -1582,7 +1600,7 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gateCode": "G61",
+    "gateCode": "G32",
     "question": 1,
     "stage": "precheck"
    },
@@ -1606,10 +1624,13 @@
    "prechecks": [
     {
      "codes": [
+      "G32",
       "G61"
      ],
      "questions": [
       1,
+      4,
+      11,
       15
      ],
      "status": "replace"
@@ -3075,7 +3096,9 @@
      "requested": true,
      "requiredKeys": [
       "q10",
-      "q4"
+      "q12",
+      "q4",
+      "q8"
      ]
     },
     "firstPass": {
@@ -3084,79 +3107,23 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": true,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "content-truth",
-      "status": "PASS"
-     },
-     {
-      "name": "pdf",
-      "status": "PASS"
-     },
-     {
-      "name": "word",
-      "status": "PASS"
-     },
-     {
-      "name": "worksheet",
-      "status": "PASS"
-     },
-     {
-      "name": "output-gates",
-      "status": "PASS"
-     },
-     {
-      "name": "house-gates",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "SHORTER_SHEET",
-      "count": 2,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "G61": 2
-      },
-      "count": 2
-     },
-     "gate": "deliver",
-     "printedQuestions": 10,
-     "replaced": {
-      "codes": {},
-      "count": 0
-     },
-     "requestedQuestions": 12
-    },
-    "unverifiedAnswers": {}
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "OTHER:QUALITY_GATE_FAILED",
+   "finalCode": "QUALITY_GATE_FAILED",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "S-g4calc",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 2,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
+         "G32",
          "G61"
         ],
         "group": "practice",
@@ -3164,34 +3131,46 @@
         "stage": "precheck"
        },
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "G32"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "precheck"
+       },
+       {
+        "action": "missing",
         "codes": [
          "G61"
         ],
         "group": "challenges",
         "question": 10,
         "stage": "precheck"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G32"
+        ],
+        "group": "challenges",
+        "question": 12,
+        "stage": "precheck"
        }
       ],
-      "missing": 0,
+      "missing": 4,
       "planned": 12,
-      "printed": 10,
+      "printed": 8,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 2,
-    "gate": "deliver",
-    "gateCode": "G61",
-    "printed": 10,
+    "gateCode": "G32",
     "question": 4,
-    "replaced": 0,
-    "stage": "render"
+    "stage": "precheck"
    },
    "lesson": {
     "domain": "operations",
@@ -3213,18 +3192,16 @@
    "prechecks": [
     {
      "codes": [
+      "G32",
       "G61"
      ],
      "questions": [
       4,
-      10
+      8,
+      10,
+      12
      ],
      "status": "replace"
-    },
-    {
-     "codes": [],
-     "questions": [],
-     "status": "clean"
     }
    ],
    "provider": "qwen",
@@ -3234,48 +3211,7 @@
     "total": 12
    },
    "recorded": "2026-11-22 ~09:02Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [],
-     "skippedChecks": [
-      "worksheet: PASS — pdffonts missing — skipped (warn)",
-      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
-     ],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "content-truth",
-       "status": "PASS"
-      },
-      {
-       "name": "pdf",
-       "status": "PASS"
-      },
-      {
-       "name": "word",
-       "status": "PASS"
-      },
-      {
-       "name": "worksheet",
-       "status": "PASS"
-      },
-      {
-       "name": "output-gates",
-       "status": "PASS"
-      },
-      {
-       "name": "house-gates",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -3725,7 +3661,8 @@
       "q13",
       "q17",
       "q20",
-      "q4"
+      "q4",
+      "q7"
      ]
     },
     "firstPass": {
@@ -3770,7 +3707,7 @@
     "reviewFindings": [
      {
       "code": "SHORTER_SHEET",
-      "count": 4,
+      "count": 5,
       "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
      }
     ],
@@ -3779,13 +3716,14 @@
      "corrections": 1,
      "dropped": {
       "codes": {
+       "G32": 2,
        "G61": 2,
        "G62": 2
       },
-      "count": 4
+      "count": 5
      },
      "gate": "deliver",
-     "printedQuestions": 16,
+     "printedQuestions": 15,
      "replaced": {
       "codes": {},
       "count": 0
@@ -3803,15 +3741,25 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 4,
+      "dropped": 5,
       "events": [
        {
         "action": "dropped",
         "codes": [
+         "G32",
          "G61"
         ],
         "group": "practice",
         "question": 4,
+        "stage": "precheck"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "G32"
+        ],
+        "group": "practice",
+        "question": 7,
         "stage": "precheck"
        },
        {
@@ -3844,7 +3792,7 @@
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 16,
+      "printed": 15,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -3854,10 +3802,10 @@
     "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 4,
+    "dropped": 5,
     "gate": "deliver",
-    "gateCode": "G61",
-    "printed": 16,
+    "gateCode": "G32",
+    "printed": 15,
     "question": 4,
     "replaced": 0,
     "stage": "render"
@@ -3882,11 +3830,13 @@
    "prechecks": [
     {
      "codes": [
+      "G32",
       "G61",
       "G62"
      ],
      "questions": [
       4,
+      7,
       13,
       17,
       20
@@ -6699,74 +6649,11 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": true,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "content-truth",
-      "status": "PASS"
-     },
-     {
-      "name": "pdf",
-      "status": "PASS"
-     },
-     {
-      "name": "word",
-      "status": "PASS"
-     },
-     {
-      "name": "worksheet",
-      "status": "PASS"
-     },
-     {
-      "name": "output-gates",
-      "status": "PASS"
-     },
-     {
-      "name": "house-gates",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "SHORTER_SHEET",
-      "count": 5,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "G33": 1,
-       "PRINTED_ANSWER_KIND": 1,
-       "PRINTED_ANSWER_LEAK": 2,
-       "SOURCE_SHAPE": 1
-      },
-      "count": 5
-     },
-     "gate": "deliver",
-     "printedQuestions": 15,
-     "replaced": {
-      "codes": {
-       "PRINTED_ANSWER_LEAK": 1,
-       "PRINTED_TASK_MISMATCH": 1
-      },
-      "count": 2
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {}
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
+   "finalCode": "QUALITY_GATE_FAILED",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-g3",
    "ladder": {
@@ -6837,25 +6724,30 @@
         "group": "practice",
         "question": 17,
         "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G32"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "precheck"
        }
       ],
-      "missing": 0,
+      "missing": 1,
       "planned": 20,
-      "printed": 15,
+      "printed": 14,
       "reservesOffered": 4,
       "reservesRefused": 1
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 2,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 5,
-    "gate": "deliver",
-    "printed": 15,
-    "replaced": 2,
-    "stage": "render"
+    "gateCode": "G32",
+    "question": 11,
+    "stage": "precheck"
    },
    "lesson": {
     "domain": "operations",
@@ -6876,9 +6768,13 @@
    "origin": "live round 1 (milestone 2), b-g3-division, call 1, corrections: calls [2]",
    "prechecks": [
     {
-     "codes": [],
-     "questions": [],
-     "status": "clean"
+     "codes": [
+      "G32"
+     ],
+     "questions": [
+      11
+     ],
+     "status": "replace"
     }
    ],
    "provider": "gemini",
@@ -6966,48 +6862,7 @@
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [],
-     "skippedChecks": [
-      "worksheet: PASS — pdffonts missing — skipped (warn)",
-      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
-     ],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "content-truth",
-       "status": "PASS"
-      },
-      {
-       "name": "pdf",
-       "status": "PASS"
-      },
-      {
-       "name": "word",
-       "status": "PASS"
-      },
-      {
-       "name": "worksheet",
-       "status": "PASS"
-      },
-      {
-       "name": "output-gates",
-       "status": "PASS"
-      },
-      {
-       "name": "house-gates",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -7082,9 +6937,9 @@
      "printedQuestions": 20,
      "replaced": {
       "codes": {
-       "G32": 1
+       "G32": 2
       },
-      "count": 1
+      "count": 2
      },
      "requestedQuestions": 20
     },
@@ -7109,6 +6964,15 @@
         "group": "challenges",
         "question": 19,
         "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "G32"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "precheck"
        }
       ],
       "missing": 0,
@@ -7120,13 +6984,15 @@
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 1,
+    "byReserve": 2,
     "correctionFailed": false,
     "corrections": 0,
     "dropped": 0,
     "gate": "deliver",
+    "gateCode": "G32",
     "printed": 20,
-    "replaced": 1,
+    "question": 9,
+    "replaced": 2,
     "stage": "render"
    },
    "lesson": {
@@ -7147,6 +7013,15 @@
    "model": "gemini-3.8-flash",
    "origin": "live round 1 (milestone 2), b-g4-order, call 1",
    "prechecks": [
+    {
+     "codes": [
+      "G32"
+     ],
+     "questions": [
+      9
+     ],
+     "status": "replace"
+    },
     {
      "codes": [],
      "questions": [],
@@ -9262,35 +9137,36 @@
   "byProvider": {
    "gemini": {
     "cases": 21,
-    "delivered": 12,
+    "delivered": 11,
     "failingAlone": 153,
     "questions": 484
    },
    "qwen": {
     "cases": 14,
-    "delivered": 6,
+    "delivered": 5,
     "failingAlone": 81,
     "questions": 272
    }
   },
   "cases": 35,
   "correctionsNotRecorded": 28,
-  "delivered": 18,
-  "deliveredRate": 0.5143,
-  "deliveredShorter": 13,
+  "delivered": 16,
+  "deliveredRate": 0.4571,
+  "deliveredShorter": 11,
   "failureClasses": {
-   "DELIVERED": 18,
+   "DELIVERED": 16,
+   "OTHER:QUALITY_GATE_FAILED": 1,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 1,
    "SOURCE:PRINTED_ANSWER_KIND": 5,
-   "SOURCE:PRINTED_ANSWER_LEAK": 5,
+   "SOURCE:PRINTED_ANSWER_LEAK": 6,
    "SOURCE:PRINTED_TASK_MISMATCH": 1,
    "SOURCE:QUALITY_GATE_FAILED": 1,
    "SOURCE:SOURCE_FIGURE": 3,
    "SOURCE:SOURCE_RICH_TEXT": 1
   },
   "finalStatus": {
-   "delivered": 18,
-   "failed": 15,
+   "delivered": 16,
+   "failed": 17,
    "needs_unrecorded_reply": 2
   },
   "firstRenderGateFindings": {

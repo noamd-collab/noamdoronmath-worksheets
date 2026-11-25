@@ -604,7 +604,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'operation itself as the evaluate task. Check that word problems use plausible items and units. '
             'Across the whole sheet at most three subitems may share one bare form such as [[a : b = ___]] '
             '(two at excellence level). '
-            'Use לכל only for an amount per named person or container, or right after התאימו, כתבו or חשבו. '
+            'Never write לכל, not even for an amount per person or container or after התאימו, כתבו or חשבו; '
+            'state the amount that one named person or container gets or holds. '
             'Never write תמיד, לעולם, אי אפשר, לכל מספר or כל משולש. '
             'For a hypothetical write אם. Do not ask אילו מה..., מי מהם, האם ייתכן or כל האפשרויות.')
     if 'representation' in plan[0]:

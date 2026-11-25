@@ -190,9 +190,12 @@ class AuthorPromptTests(unittest.TestCase):
                 self.assertNotIn('progressively harder', reminder)
                 self.assertIn('a challenge changes the reasoning, not the number of operations, digits or bracket depth', reminder)
                 # Gates track: the elementary truth and house gates read these words and forms.
-                for sentence in ('at most three subitems may share one bare form', 'Use לכל only for an amount per named person',
+                for sentence in ('at most three subitems may share one bare form',
+                                 'Never write לכל, not even for an amount per person or container or after התאימו, כתבו or חשבו',
                                  'Never write תמיד, לעולם, אי אפשר, לכל מספר or כל משולש', 'For a hypothetical write אם'):
                     self.assertEqual(sentence in system, topic == 'ד07', sentence)
+                # The locked G32 refuses every "לכל", so no sentence may allow one.
+                self.assertNotIn('Use לכל', system)
 
     def test_the_request_examples_stay_inside_the_grammar(self):
         from compact_authoring import expression

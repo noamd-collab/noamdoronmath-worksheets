@@ -77,7 +77,7 @@ Built in `general_provider.author_general_lesson`.
 - **System text:** the fixed contract sentences in that function, plus
   `answer_kinds.DECISION_GUIDE`, and for grades 1–6
   `answer_kinds.ELEMENTARY_KINDS_GUIDE` and the claim-word bans of the truth
-  gates (no `תמיד`, `לעולם`, `לכל מספר`…), or for grades 7–9 the `solve`/`review`
+  gates (no `תמיד`, `לעולם`, and no `לכל` in any sense…), or for grades 7–9 the `solve`/`review`
   block. Conditional blocks: reserves; `lessonGoal: "introduce"` (guided entry
   questions first, a rule with one worked example); a time budget of 1.8
   minutes or less per question (exactly `minimumItems` short items); a
@@ -238,9 +238,10 @@ original fragments with `[[...]]` marks inserted, keeping every word.
   expanded and validated alone (`skill_authoring.examine_question`, the same
   `expand_source` and `validate_question` as the whole sheet); a middle-school
   figure is drawn with the pinned constructors (`figure_probe.figure_refusal`,
-  `SOURCE_FIGURE`); an elementary question is read for the truth gates' claim
-  words (`claim_words.claim_lint`). Any code makes it a bad question, never a
-  failed sheet.
+  `SOURCE_FIGURE`); an elementary question is read for the claims among the
+  truth gates' words (`claim_words.claim_lint`). A word with a benign reading (a
+  per-unit `לכל`, a conditional `אילו`) is not named there; G32/G33 refuse it in
+  the pre-pass. Any code makes it a bad question, never a failed sheet.
 - **Selection** is `lesson_select.Selection`, which knows no wire format, topic
   or grade. A bad question takes an unused reserve of its own group, same
   concept first. A practice reserve may fill a challenge slot only while two real

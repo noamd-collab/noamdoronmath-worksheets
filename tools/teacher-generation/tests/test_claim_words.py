@@ -12,7 +12,7 @@ HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
 import claim_words
 import runner
-from claim_words import claim_lint, claims, register, scan
+from claim_words import claim_lint, claims, scan
 
 # Wording of real Qwen replies (grade 3 division, grade 4 order of operations)
 # that the pinned gates failed on 2026-11-23.
@@ -113,15 +113,14 @@ class PinnedSkillTests(unittest.TestCase):
     def gate(self, questions):
         ledger = self.truth.Ledger(str(self.root / "unused.json"))
         ledger.claim("5", "בדיקת הנתונים בשרטוט המודפס", (1 + 1 == 2, 2), method="figure_assert")
-        recorded = register(ledger, questions)
         labelled = [("content.json.questions#" + q["n"], q) for q in questions]
         fails = self.truth.Fail()
         ids = [entry["id"] for entry in ledger.entries]
         self.truth.g32_universal_claims(labelled, ids, fails)
         self.truth.g33_enumeration(labelled, ids, fails)
-        return recorded, [line.split("  ")[0] + line.split("#")[1].split("]")[0] for line in fails], ledger
+        return [line.split("  ")[0] + line.split("#")[1].split("]")[0] for line in fails], ledger
 
-    def test_pinned_gates_pass_benign_readings_and_still_fail_claims(self):
+    def test_pinned_gates_fail_every_listed_word_without_a_ledger_entry(self):
         questions = [
             {"n": "1", "intro": "כמה עפרונות יש לכל תלמיד בסוף?", "items": ["(20 : 4) + 3"], "answer": "א. 8"},
             {"n": "2", "intro": "מכפלה תמיד גדולה מכל אחד מהגורמים.", "items": ["3 x 4"], "answer": "א. 12"},
@@ -131,16 +130,12 @@ class PinnedSkillTests(unittest.TestCase):
             {"n": "6", "intro": "חשבו.", "items": ["24 : 6 + 9"], "answer": "א. 13"},
             {"n": "7", "intro": "לכל מספר זוגי יש מחלק 2.", "items": ["6 : 2"], "answer": "א. 3"},
         ]
-        recorded, failed, ledger = self.gate(questions)
-        self.assertEqual(recorded, ["1", "3"])
-        # 4 mixes a benign word with a real request to enumerate: nothing is recorded, both gates fail it.
-        # 5 already holds a measured-figure entry, which the pinned gate accepts; nothing was added for it.
-        self.assertEqual(failed, ["G322", "G324", "G327", "G334"])
-        entry = next(e for e in ledger.entries if e["id"] == "1")
-        self.assertEqual((entry["method"], entry["statement"]), ("closed_form", claim_words.STATEMENT))
-        self.assertEqual(entry["evidence"], {"words": [{"gate": "G32", "word": "לכל", "reading": "per_unit"}]})
-        self.assertEqual(len([e for e in ledger.entries if e["id"] == "5"]), 1)
-        self.assertNotIn("עפרונות", json.dumps(entry, ensure_ascii=False))
+        failed, ledger = self.gate(questions)
+        # The locked gates refuse the benign readings too (D19): the per-unit "לכל" of 1 and the conditional
+        # "אילו" of 3 fail like the claims of 2, 4 and 7. 4 fails both gates. Only 5, which holds a
+        # measured-figure entry under its own number, passes; nothing else is in the ledger.
+        self.assertEqual(failed, ["G321", "G322", "G324", "G327", "G333", "G334"])
+        self.assertEqual([e["id"] for e in ledger.entries], ["5"])
 
     def precheck(self, extra, name):
         model = copy.deepcopy(self.model)
@@ -148,17 +143,19 @@ class PinnedSkillTests(unittest.TestCase):
         work = self.root / "runs" / name
         return runner.precheck_job(self.lesson, model, work, {"elementary": str(self.skill)}), work
 
-    def test_real_prepass_passes_benign_wording_and_names_the_question_of_a_real_claim(self):
+    def test_real_prepass_names_the_question_of_every_gate_word(self):
         # The fixture prints its three challenges with a star, and the pinned G61 proxy weighs that star: the
         # difficulty spread of the sheet as printed is 5 > 4 (Q41=2 against Q102=7), so G61 names questions 4 and
-        # 10 in every case but "always", whose "תמיד" also lifts question 4. Benign wording passes the truth step.
+        # 10 in every case but "always", whose "תמיד" also lifts question 4. The truth step fails question 4 in
+        # every case: the locked G32 / G33 refuse a per-unit "לכל" and a conditional "אילו" as they refuse a claim.
         spread = [("G61", 4, "editorial"), ("G61", 10, "editorial")]
-        cases = {"benign": (" תנו לכל תלמיד בקבוצה סעיף אחד.", spread, ["PASS", "PASS", "FAIL"], ["4"]),
-                 "if": (" אילו המורה הייתה מוסיפה עוד מחברת, התוצאה הייתה גדלה.", spread, ["PASS", "PASS", "FAIL"], ["4"]),
-                 "always": (" זכרו: מכפלה תמיד גדולה מכל אחד מהגורמים.", [("G32", 4, "truth")], ["PASS", "FAIL", "PASS"], []),
-                 "every": (" לכל מספר זוגי יש מחלק 2.", [("G32", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"], []),
-                 "which": (" אילו מהתרגילים קלים?", [("G33", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"], [])}
-        for name, (extra, blocking, statuses, recorded) in cases.items():
+        cases = {"benign": (" תנו לכל תלמיד בקבוצה סעיף אחד.", [("G32", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"]),
+                 "if": (" אילו המורה הייתה מוסיפה עוד מחברת, התוצאה הייתה גדלה.", [("G33", 4, "truth")] + spread,
+                        ["PASS", "FAIL", "FAIL"]),
+                 "always": (" זכרו: מכפלה תמיד גדולה מכל אחד מהגורמים.", [("G32", 4, "truth")], ["PASS", "FAIL", "PASS"]),
+                 "every": (" לכל מספר זוגי יש מחלק 2.", [("G32", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"]),
+                 "which": (" אילו מהתרגילים קלים?", [("G33", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"])}
+        for name, (extra, blocking, statuses) in cases.items():
             with self.subTest(name=name):
                 result, work = self.precheck(extra, name)
                 self.assertEqual(result["status"], "replace")
@@ -167,8 +164,11 @@ class PinnedSkillTests(unittest.TestCase):
                 self.assertEqual([(step["name"], step["status"]) for step in result["steps"]],
                                  list(zip(["trusted-adapter", "content-truth", "house-gates"], statuses)))
                 self.assertFalse((work / "sheet.pdf").exists() or (work / "sheet.docx").exists())
-                self.assertEqual([c["id"] for c in json.loads((work / "verified.json").read_text())["claims"] if c["id"] == "4"],
-                                 recorded)
+                claims = json.loads((work / "verified.json").read_text())["claims"]
+                # The compiler never writes a ledger entry under a bare question number, except a measured figure:
+                # that is the id the locked gates accept for the whole question.
+                self.assertEqual([c["id"] for c in claims if c["id"] == "4"], [])
+                self.assertEqual([c for c in claims if str(c["id"]).isdigit() and c["method"] != "figure_assert"], [])
 
     def test_adapter_refusal_inside_the_compiler_names_the_question_and_item(self):
         # A binder that only the trusted adapter runs refuses the second item of question 3.
