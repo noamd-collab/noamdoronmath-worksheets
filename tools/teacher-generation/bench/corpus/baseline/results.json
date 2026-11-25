@@ -1567,8 +1567,8 @@
         "codes": [
          "G61"
         ],
-        "group": "practice",
-        "question": 11,
+        "group": "challenges",
+        "question": 20,
         "stage": "precheck"
        }
       ],
@@ -1610,7 +1610,7 @@
      ],
      "questions": [
       1,
-      9
+      15
      ],
      "status": "replace"
     }
@@ -3070,15 +3070,18 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": null,
+     "answered": false,
      "questions": [],
-     "requested": false,
-     "requiredKeys": null
+     "requested": true,
+     "requiredKeys": [
+      "q10",
+      "q4"
+     ]
     },
     "firstPass": {
      "ok": true
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
    "delivered": true,
@@ -3114,16 +3117,24 @@
       "status": "PASS"
      }
     ],
-    "reviewFindings": [],
+    "reviewFindings": [
+     {
+      "code": "SHORTER_SHEET",
+      "count": 2,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
+     }
+    ],
     "salvage": {
      "attempts": 1,
-     "corrections": 0,
+     "corrections": 1,
      "dropped": {
-      "codes": {},
-      "count": 0
+      "codes": {
+       "G61": 2
+      },
+      "count": 2
      },
      "gate": "deliver",
-     "printedQuestions": 12,
+     "printedQuestions": 10,
      "replaced": {
       "codes": {},
       "count": 0
@@ -3141,11 +3152,30 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 0,
-      "events": [],
+      "dropped": 2,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "G61"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "precheck"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "G61"
+        ],
+        "group": "challenges",
+        "question": 10,
+        "stage": "precheck"
+       }
+      ],
       "missing": 0,
       "planned": 12,
-      "printed": 12,
+      "printed": 10,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -3153,11 +3183,13 @@
     "attempts": 1,
     "byCorrection": 0,
     "byReserve": 0,
-    "correctionFailed": false,
-    "corrections": 0,
-    "dropped": 0,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 2,
     "gate": "deliver",
-    "printed": 12,
+    "gateCode": "G61",
+    "printed": 10,
+    "question": 4,
     "replaced": 0,
     "stage": "render"
    },
@@ -3179,6 +3211,16 @@
    "model": "qwen (model id not recorded)",
    "origin": "shared-engine-qa",
    "prechecks": [
+    {
+     "codes": [
+      "G61"
+     ],
+     "questions": [
+      4,
+      10
+     ],
+     "status": "replace"
+    },
     {
      "codes": [],
      "questions": [],
@@ -3681,7 +3723,9 @@
      "requested": true,
      "requiredKeys": [
       "q13",
-      "q17"
+      "q17",
+      "q20",
+      "q4"
      ]
     },
     "firstPass": {
@@ -3692,7 +3736,7 @@
    },
    "delivered": true,
    "delivery": {
-    "automatedChecksPassed": false,
+    "automatedChecksPassed": true,
     "checks": [
      {
       "name": "trusted-adapter",
@@ -3720,17 +3764,13 @@
      },
      {
       "name": "house-gates",
-      "status": "REVIEW"
-     },
-     {
-      "name": "bracket-order-reconciliation",
       "status": "PASS"
      }
     ],
     "reviewFindings": [
      {
       "code": "SHORTER_SHEET",
-      "count": 2,
+      "count": 4,
       "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
      }
     ],
@@ -3739,12 +3779,13 @@
      "corrections": 1,
      "dropped": {
       "codes": {
+       "G61": 2,
        "G62": 2
       },
-      "count": 2
+      "count": 4
      },
      "gate": "deliver",
-     "printedQuestions": 18,
+     "printedQuestions": 16,
      "replaced": {
       "codes": {},
       "count": 0
@@ -3762,8 +3803,17 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 2,
+      "dropped": 4,
       "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "G61"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "precheck"
+       },
        {
         "action": "dropped",
         "codes": [
@@ -3781,11 +3831,20 @@
         "group": "practice",
         "question": 17,
         "stage": "precheck"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "G61"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "precheck"
        }
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 18,
+      "printed": 16,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -3795,11 +3854,11 @@
     "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 2,
+    "dropped": 4,
     "gate": "deliver",
-    "gateCode": "G62",
-    "printed": 18,
-    "question": 13,
+    "gateCode": "G61",
+    "printed": 16,
+    "question": 4,
     "replaced": 0,
     "stage": "render"
    },
@@ -3823,11 +3882,14 @@
    "prechecks": [
     {
      "codes": [
+      "G61",
       "G62"
      ],
      "questions": [
+      4,
       13,
-      17
+      17,
+      20
      ],
      "status": "replace"
     },
@@ -3848,17 +3910,7 @@
     {
      "attempt": 1,
      "gateFindings": [],
-     "reviewFindings": [
-      {
-       "class": "reconciled",
-       "code": "G51",
-       "count": 1,
-       "questions": [],
-       "steps": [
-        "house-gates"
-       ]
-      }
-     ],
+     "reviewFindings": [],
      "skippedChecks": [
       "worksheet: PASS — pdffonts missing — skipped (warn)",
       "worksheet: PASS — pdftoppm missing — skipped render (warn)"
@@ -3891,11 +3943,6 @@
       },
       {
        "name": "house-gates",
-       "reason": "RECONCILED_FINDINGS_ONLY",
-       "status": "REVIEW"
-      },
-      {
-       "name": "bracket-order-reconciliation",
        "status": "PASS"
       }
      ]
@@ -9227,10 +9274,10 @@
    }
   },
   "cases": 35,
-  "correctionsNotRecorded": 27,
+  "correctionsNotRecorded": 28,
   "delivered": 18,
   "deliveredRate": 0.5143,
-  "deliveredShorter": 12,
+  "deliveredShorter": 13,
   "failureClasses": {
    "DELIVERED": 18,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 1,

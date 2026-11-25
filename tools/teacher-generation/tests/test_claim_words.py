@@ -2,6 +2,7 @@
 import copy
 import importlib.util
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -147,22 +148,27 @@ class PinnedSkillTests(unittest.TestCase):
         work = self.root / "runs" / name
         return runner.precheck_job(self.lesson, model, work, {"elementary": str(self.skill)}), work
 
-    def test_real_prepass_delivers_benign_wording_and_names_the_question_of_a_real_claim(self):
-        cases = {"benign": (" תנו לכל תלמיד בקבוצה סעיף אחד.", "clean", []),
-                 "if": (" אילו המורה הייתה מוסיפה עוד מחברת, התוצאה הייתה גדלה.", "clean", []),
-                 "always": (" זכרו: מכפלה תמיד גדולה מכל אחד מהגורמים.", "replace", [("G32", 4)]),
-                 "every": (" לכל מספר זוגי יש מחלק 2.", "replace", [("G32", 4)]),
-                 "which": (" אילו מהתרגילים קלים?", "replace", [("G33", 4)])}
-        for name, (extra, status, blocking) in cases.items():
+    def test_real_prepass_passes_benign_wording_and_names_the_question_of_a_real_claim(self):
+        # The fixture prints its three challenges with a star, and the pinned G61 proxy weighs that star: the
+        # difficulty spread of the sheet as printed is 5 > 4 (Q41=2 against Q102=7), so G61 names questions 4 and
+        # 10 in every case but "always", whose "תמיד" also lifts question 4. Benign wording passes the truth step.
+        spread = [("G61", 4, "editorial"), ("G61", 10, "editorial")]
+        cases = {"benign": (" תנו לכל תלמיד בקבוצה סעיף אחד.", spread, ["PASS", "PASS", "FAIL"], ["4"]),
+                 "if": (" אילו המורה הייתה מוסיפה עוד מחברת, התוצאה הייתה גדלה.", spread, ["PASS", "PASS", "FAIL"], ["4"]),
+                 "always": (" זכרו: מכפלה תמיד גדולה מכל אחד מהגורמים.", [("G32", 4, "truth")], ["PASS", "FAIL", "PASS"], []),
+                 "every": (" לכל מספר זוגי יש מחלק 2.", [("G32", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"], []),
+                 "which": (" אילו מהתרגילים קלים?", [("G33", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"], [])}
+        for name, (extra, blocking, statuses, recorded) in cases.items():
             with self.subTest(name=name):
                 result, work = self.precheck(extra, name)
-                self.assertEqual(result["status"], status)
-                self.assertEqual([(b["code"], b["question"]) for b in result["gate"]["blocking"]], blocking)
-                self.assertEqual({b["class"] for b in result["gate"]["blocking"]}, {"truth"} if blocking else set())
-                self.assertEqual([step["name"] for step in result["steps"]], ["trusted-adapter", "content-truth", "house-gates"])
+                self.assertEqual(result["status"], "replace")
+                self.assertEqual([(b["code"], b["question"], b["class"]) for b in result["gate"]["blocking"]], blocking)
+                self.assertEqual(result["gate"]["review"], [])
+                self.assertEqual([(step["name"], step["status"]) for step in result["steps"]],
+                                 list(zip(["trusted-adapter", "content-truth", "house-gates"], statuses)))
                 self.assertFalse((work / "sheet.pdf").exists() or (work / "sheet.docx").exists())
-                recorded = [c["id"] for c in json.loads((work / "verified.json").read_text())["claims"] if c["id"] == "4"]
-                self.assertEqual(recorded, ["4"] if status == "clean" else [])
+                self.assertEqual([c["id"] for c in json.loads((work / "verified.json").read_text())["claims"] if c["id"] == "4"],
+                                 recorded)
 
     def test_adapter_refusal_inside_the_compiler_names_the_question_and_item(self):
         # A binder that only the trusted adapter runs refuses the second item of question 3.
@@ -202,25 +208,36 @@ class PinnedSkillTests(unittest.TestCase):
                                  "evidence": {"error": "GeneralSourceError", "refusal": "PRINTED_TASK_MISMATCH"}}])
         self.assertTrue(complete)
 
-    def test_gate_content_follows_the_pinned_schema_and_the_page_keeps_its_stars(self):
+    def test_gate_content_carries_the_printed_stars(self):
         result, work = self.precheck("", "schema")
-        self.assertEqual(result["status"], "clean")
+        # The star the page prints is the star the pinned G61 proxy weighs: both ends of the spread are named.
+        self.assertEqual(result["status"], "replace")
+        self.assertEqual([(b["code"], b["question"], b["item"]) for b in result["gate"]["blocking"]], [("G61", 4, 1), ("G61", 10, 2)])
+        self.assertEqual(result["gate"]["review"], [])
         content = json.loads((work / "content.json").read_text())
         keys = {key for question in content["questions"] for key in question}
-        self.assertNotIn("star", keys)
-        self.assertLessEqual({"n", "intro", "items", "answer"}, keys)
-        self.assertEqual((work / "sheet.html").read_text().count('class="starred"'), 3)
-        # With the star in content.json the pinned difficulty proxy adds two points to every challenge item.
+        self.assertEqual(keys, {"n", "intro", "items", "answer", "star"})
+        stars = [question["star"] for question in content["questions"]]
+        self.assertEqual(stars, [False] * 9 + [True] * 3)
+        page = (work / "sheet.html").read_text()
+        self.assertEqual([marked == ' class="starred"' for marked in re.findall(r'<li( class="starred")?>', page)], stars)
+        self.assertEqual(page.count('class="starred"'), 3)
+        # The pinned difficulty proxy adds two points to every item of a starred question, and to nothing else.
         spec = importlib.util.spec_from_file_location("pinned_content_quality", self.skill / "scripts/lib/content_quality.py")
         quality = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(quality)
         profile = quality.profile_of(content)
-        plain = [quality.difficulty(r, profile) for r in quality.normalize(content)]
-        for question in content["questions"][-3:]:
-            question["star"] = True
+        stripped = copy.deepcopy(content)
+        for question in stripped["questions"]:
+            del question["star"]
+        plain = [quality.difficulty(r, profile) for r in quality.normalize(stripped)]
         starred = [quality.difficulty(r, profile) for r in quality.normalize(content)]
         challenge_items = sum(len(q["items"]) for q in content["questions"][-3:])
+        self.assertEqual((len(plain), challenge_items), (36, 9))
         self.assertEqual([b - a for a, b in zip(plain, starred)], [0] * (len(plain) - challenge_items) + [2] * challenge_items)
+        self.assertEqual([r["starred"] for r in quality.normalize(content)], [False] * (len(plain) - challenge_items) + [True] * challenge_items)
+        self.assertEqual(quality.g61_level_consistency(quality.normalize(content), profile),
+                         (quality.FAIL, "פער קושי 5 > 4 — הדף מערבב רמות (Q41=2 מול Q102=7)"))
 
 
 if __name__ == "__main__":

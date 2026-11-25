@@ -16,10 +16,10 @@ Delivered with no further model call: **18 of 35 (51%)**. Questions rejected whe
 | B-square | qwen | g9m:square | 20 | general | AUTHOR_PLAN_MISMATCH | 8 of 20 | — | 2nd attempt after AUTHOR_PLAN_MISMATCH | — | needs_unrecorded_reply |
 | T1-triangle | qwen | g8:triangle_parts | 20 | worker | SOURCE_FIGURE | 14 of 20 | 8 q (not recorded) | — | — | failed |
 | T2-triangle | qwen | g8:triangle_parts | 20 | worker | SOURCE_FIGURE | 15 of 20 | 8 q (not recorded) | — | — | failed |
-| S-g4calc | qwen | ד07 | 12 | worker | pass | 0 of 12 | — | — | pass | delivered |
+| S-g4calc | qwen | ד07 | 12 | worker | pass | 0 of 12 | 2 q (not recorded) | dropped 2, prints 10 | pass | delivered |
 | S-g7eq | qwen | g7:equations | 20 | worker | pass | 0 of 20 | — | — | pass | delivered |
 | G-division | gemini | ג10 | 20 | worker | QUALITY_GATE_FAILED | 7 of 20 | 7 q (not recorded) | — | — | failed |
-| G-order | gemini | ד07 | 20 | worker | pass | 0 of 20 | 2 q (not recorded) | dropped 2, prints 18 | pass | delivered |
+| G-order | gemini | ד07 | 20 | worker | pass | 0 of 20 | 4 q (not recorded) | dropped 4, prints 16 | pass | delivered |
 | G-equations | gemini | g7:equations | 20 | worker | AUTHOR_PLAN_MISMATCH | 0 of 20 | 3 q (not recorded) | dropped 3, prints 17 | pass | delivered |
 | G-percent | gemini | g8:percentages | 20 | worker | SOURCE_PLAIN_MATH | 3 of 20 | 3 q (not recorded) | dropped 3, prints 17 | pass | delivered |
 | G-square | gemini | g9m:square | 20 | general | PRINTED_ANSWER_LEAK | 5 of 20 | 5 q (not recorded) | — | fail: middle-build, didactic-review-reconciliation | failed |
@@ -40,7 +40,7 @@ Delivered with no further model call: **18 of 35 (51%)**. Questions rejected whe
 | L2-g7 | gemini | g7:equations | 20 | worker | pass | 3 of 24 | — | replaced 2 | pass | delivered |
 | L2-g8 | gemini | g8:percentages | 20 | worker | pass | 2 of 24 | — | replaced 2 | pass | delivered |
 
-Delivered with fewer questions than requested: 12. Corrections the engine asked for that were never recorded: 27. Second author replies it asked for that were never recorded: 2.
+Delivered with fewer questions than requested: 13. Corrections the engine asked for that were never recorded: 28. Second author replies it asked for that were never recorded: 2.
 
 ## By provider
 

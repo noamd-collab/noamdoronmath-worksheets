@@ -728,10 +728,9 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
             qs.append((q, intro, ''.join(pieces), H.keyed(answers)))
             canon.append({"id": f"q{n}", "n": n, "section": section["title"], "conceptIds": section["conceptIds"], "intro": intro_spans, "table": question.get("table"), "figure": question.get("figure"), "items": source_items})
     cursor["question"] = None
-    # The pinned content schema is {n, intro, items, answer, fig}. The star stays
-    # in the HTML, where G50 counts it; in content.json the pinned difficulty
-    # proxy (G61) would add two points to exactly the three challenge questions.
-    gate_questions = [{k: v for k, v in q[0].items() if k != "star"} for q in qs]
+    # content.json carries the printed star: G50 counts it in the HTML and the
+    # pinned G61 proxy weighs it; both gates judge the same sheet.
+    gate_questions = [q[0] for q in qs]
     from claim_words import register
     register(ledger, gate_questions)
     ledger.save()
