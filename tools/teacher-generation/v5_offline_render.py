@@ -12,9 +12,14 @@ DIR/NAME/: sheet.pdf, page-<n>.png per PDF page (n from 1) and the same JSON fil
 report.json (per-step status, the atom-order result, the selection record, refusals, trimmed items, the printed
 keys, the PDF Producer and the v5 verdict).
 
-The pinned build's own report is copied as pinned-v72-report.raw.json: its "result" covers only the pinned
-steps it ran. The v5 verdict is in summary.json and report.json ("verdict"): automated checks pass only when
-every check ran and passed and the overlay is reviewed; a SKIP is notRun, never PASS (D1).
+report.json is the authoritative record of a render ("authoritative": true, "verdictFile": "report.json"); the
+v5 verdict is its "verdict" (summary.json repeats it): automated checks pass only when every check ran and
+passed and the overlay is reviewed; a SKIP is notRun, never PASS (D1). The pinned build's own report is copied,
+byte for byte, as pinned-v72-report.raw.json: its "result" covers only the pinned steps it ran, so it is never
+the verdict. report.json says so under "pinnedReport" (its sha256, its own result and "isVerdict": false) and
+gives every output file's role under "fileRoles". Files of these names that this run did not write (left in the
+folder by an earlier render, including the old v72-report.json name) are listed under "staleFiles"; nothing is
+deleted.
 
 Exit 0 = every executed check PASS (notRun listed; the verdict says whether anything did not run), 1 = render
 or gate failure, 2 = compile/selection failure.
@@ -35,8 +40,24 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-COPIES = (("manifest.json", "manifest.json"), ("out/v72-report.json", "pinned-v72-report.raw.json"),
+VERDICT_FILE = "report.json"
+PINNED_REPORT = "pinned-v72-report.raw.json"
+COPIES = (("manifest.json", "manifest.json"), ("out/v72-report.json", PINNED_REPORT),
           ("logs/atom-order.json", "atom-order.json"))
+# Earlier versions of this tool copied the pinned report under this name. A copy left in an output folder is
+# never this render's verdict: report.json lists it under staleFiles (it is not deleted).
+LEGACY_NAMES = ("v72-report.json",)
+FILE_ROLES = {
+    VERDICT_FILE: "AUTHORITATIVE: the v5 verdict of this render and its evidence",
+    "summary.json": "a short digest of report.json; not a verdict of its own",
+    "manifest.json": "the runner's v5 manifest for this render",
+    PINNED_REPORT: ("raw byte copy of the pinned build's out/v72-report.json; NOT the v5 verdict: its result "
+                    "covers only the pinned steps it ran, and checks listed in notRun did not run"),
+    "atom-order.json": "the atom-order check's own result (one executed step of the verdict)",
+    "ir.json": "the validated worksheet-wire/5 source that was rendered",
+    "compile-diagnostics.json": "compile refusals, trimming and warnings (codes, slots and items only)",
+    "sheet.pdf": "the rendered sheet",
+}
 CASE_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}")
 STATUSES = ("PASS", "FAIL", "REVIEW", "SKIP")
 
@@ -90,11 +111,46 @@ def _verdict(manifest) -> dict:
                      "it ran. Checks listed in notRun did not run and are not passed.")}
 
 
+def _pinned_report(work) -> dict | None:
+    """What the pinned report copied by this render is (from the work dir, so a stale copy is never described):
+    its file name, sha256 and own "result", and that it is not the v5 verdict. None when the build wrote none."""
+    path = Path(work) / "out/v72-report.json"
+    if not path.is_file():
+        return None
+    data = path.read_bytes()
+    try:
+        raw = json.loads(data.decode("utf-8"))
+    except (UnicodeDecodeError, ValueError, RecursionError):
+        raw = None
+    result = raw.get("result") if isinstance(raw, dict) else None
+    return {"file": PINNED_REPORT, "copiedFrom": "out/v72-report.json", "sha256": hashlib.sha256(data).hexdigest(),
+            "pinnedResult": result if type(result) is str else None, "isVerdict": False,
+            "verdictFile": VERDICT_FILE, "note": FILE_ROLES[PINNED_REPORT]}
+
+
+def _stale(out, written, pages_dir=None, pages=()) -> list:
+    """Output names in ``out`` that this run did not write: files of a known output name (FILE_ROLES, the legacy
+    v72-report.json) and page images, left by an earlier render into the same folder. Recorded, never deleted."""
+    out = Path(out)
+    names = [name for name in list(FILE_ROLES) + list(LEGACY_NAMES)
+             if name not in written and (out / name).exists()]
+    if pages_dir is not None and Path(pages_dir).is_dir():
+        prefix = "" if Path(pages_dir) == out else Path(pages_dir).name + "/"
+        names += [prefix + path.name for path in sorted(Path(pages_dir).glob("page-*.png")) if path.name not in pages]
+    return names
+
+
 def _report(case, lesson_path, reply_path, repairs, *, status, exit_code, result=None, error=None, manifest=None,
-            work=None, pdf_facts=None, pages=(), dpi=150) -> dict:
-    """report.json of one render (codes, statuses and printed math only; no model text beyond the sheet)."""
+            work=None, pdf_facts=None, pages=(), dpi=150, stale=(), pinned=None) -> dict:
+    """report.json of one render (codes, statuses and printed math only; no model text beyond the sheet).
+
+    It is the authoritative record: "verdictFile" names it, "fileRoles" says what every output file is (the raw
+    pinned report is never the verdict), "pinnedReport" describes this render's pinned report copy and
+    "staleFiles" lists outputs this run did not write."""
     report = {"case": case, "lesson": Path(lesson_path).name, "reply": Path(reply_path).name,
-              "repairs": [Path(path).name for path in repairs], "status": status, "exitCode": exit_code}
+              "repairs": [Path(path).name for path in repairs], "status": status, "exitCode": exit_code,
+              "authoritative": True, "verdictFile": VERDICT_FILE, "fileRoles": dict(FILE_ROLES),
+              "pinnedReport": pinned, "staleFiles": list(stale)}
     if error is not None:
         report.update({"code": error.code, "refusals": error.diagnostics.get("refusals", []),
                        "missing": error.diagnostics.get("missing", []), "diagnostics": error.diagnostics})
@@ -136,6 +192,7 @@ def run(lesson_path, reply_path, out_dir, *, repairs=(), work_dir=None, skill_pa
     With ``case`` the deliverables go to out_dir/case/ (page-<n>.png next to sheet.pdf, plus report.json)."""
     from general_source import validate_source
     from runtime_catalog import scope_for_lesson
+    from structured_contract import CONTRACT
     from structured_source import V5Error, compile_sheet
     from validation import read_json, validate_lesson
     import runner
@@ -150,32 +207,36 @@ def run(lesson_path, reply_path, out_dir, *, repairs=(), work_dir=None, skill_pa
     skill_path = skill_path or os.environ.get("MIDDLE_SKILL_PATH", "")
     out = Path(out_dir) if case is None else Path(out_dir) / case
     out.mkdir(parents=True, exist_ok=True)
+    pages_dir = out if case is not None else out / "pages"
     try:
         result = compile_sheet(lesson, scope, reply, skill_path=skill_path, repairs=rounds)
     except V5Error as error:
         _dump(out / "compile-diagnostics.json", error.diagnostics)
         summary = {"status": "compile_failed", "code": error.code}
         _dump(out / "summary.json", summary)
+        stale = _stale(out, {"compile-diagnostics.json", "summary.json", VERDICT_FILE}, pages_dir)
         _dump(out / "report.json", _report(case, lesson_path, reply_path, repairs, status="compile_failed",
-                                           exit_code=2, error=error, dpi=dpi))
+                                           exit_code=2, error=error, dpi=dpi, stale=stale))
         return summary
-    validate_source(lesson, result.ir, scope)
+    # The IR was compiled here (compile_sheet), so this caller sets the trusted worksheet-wire/5 flag.
+    validate_source(lesson, result.ir, scope, contract=CONTRACT)
     _dump(out / "ir.json", result.ir)
     _dump(out / "compile-diagnostics.json", result.diagnostics)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     work = Path(work_dir) if work_dir else Path(os.environ.get("TMPDIR", "/tmp")) / ("v5-work-" + stamp)
     if " " in str(work.resolve()):
         raise ValueError("The work dir must not contain spaces")
-    manifest = runner.render_job(lesson, result.ir, work, skill_paths={"middle": skill_path})
+    manifest = runner.render_job(lesson, result.ir, work, skill_paths={"middle": skill_path}, contract=CONTRACT)
     key = {"a": "a", "b": "b", "e": "c"}[lesson["level"]]
     pdf = work / ("out/deliver/%s/sheet.pdf" % key)
     pages = 0
     page_files = []
     pdf_facts = None
+    written = {"ir.json", "compile-diagnostics.json", "summary.json", VERDICT_FILE}
     if pdf.is_file():
         import pymupdf
         shutil.copyfile(pdf, out / "sheet.pdf")
-        pages_dir = out if case is not None else out / "pages"
+        written.add("sheet.pdf")
         pages_dir.mkdir(exist_ok=True)
         with pymupdf.open(str(pdf)) as document:
             for number, page in enumerate(document, 1):
@@ -187,21 +248,23 @@ def run(lesson_path, reply_path, out_dir, *, repairs=(), work_dir=None, skill_pa
     for source, target in COPIES:
         if (work / source).is_file():
             shutil.copyfile(work / source, out / target)
+            written.add(target)
     atom = json.loads((work / "logs/atom-order.json").read_text(encoding="utf-8")) if (
         work / "logs/atom-order.json").is_file() else {}
     selection = result.ir["selection"]
     summary = {"status": manifest["status"], "requested": selection["requested"], "delivered": selection["delivered"],
                "replaced": selection["replaced"], "trimmed": result.diagnostics["trimmed"],
                "warnings": result.diagnostics.get("warnings", []),
-               "notRun": manifest.get("notRun"), "verdict": _verdict(manifest), "pages": pages,
-               "producer": atom.get("producer"), "workDir": str(work),
+               "notRun": manifest.get("notRun"), "verdict": _verdict(manifest), "verdictFile": VERDICT_FILE,
+               "pages": pages, "producer": atom.get("producer"), "workDir": str(work),
                "failedSteps": [step["name"] for step in manifest["steps"] if step["status"] not in ("PASS", "SKIP")]}
     _dump(out / "summary.json", summary)
     _dump(out / "report.json", _report(case, lesson_path, reply_path, repairs, status=manifest["status"],
                                        exit_code=0 if manifest["status"] == "needs_review" else 1,
                                        result=result, manifest=manifest, work=work, pdf_facts=pdf_facts,
                                        pages=[("pages/" + name) if case is None else name for name in page_files],
-                                       dpi=dpi))
+                                       dpi=dpi, stale=_stale(out, written, pages_dir, page_files),
+                                       pinned=_pinned_report(work)))
     return summary
 
 

@@ -47,9 +47,10 @@ class MiddleInputs(unittest.TestCase):
             (cls.work / name).write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
         env = {key: value for key, value in os.environ.items() if key in ("PATH", "HOME", "TMPDIR", "LANG")}
         env["PYTHONDONTWRITEBYTECODE"] = "1"
+        # As runner.render_job(contract=...) runs it: the trusted flag, never the payload's marker, selects v5.
         cls.done = subprocess.run([sys.executable, "-B", str(S.APP / "general_adapters.py"), "--skill", str(S.MIDDLE),
-                                   "--work", str(cls.work)], cwd=cls.work, env=env, capture_output=True, text=True,
-                                  timeout=300)
+                                   "--work", str(cls.work), "--contract", "worksheet-wire/5"], cwd=cls.work, env=env,
+                                  capture_output=True, text=True, timeout=300)
         cls.ir = ir
 
     @classmethod
@@ -114,10 +115,20 @@ class MiddleInputs(unittest.TestCase):
         lesson, _ = fixture("ד11", 4)
         scope = S.scope(lesson)
         with self.assertRaises(GeneralSourceError) as caught:
-            general_adapters.compile_source(lesson, {"source": S.ir_good()}, scope, "/unused", self.work / "x")
+            general_adapters.compile_source(lesson, {"source": S.ir_good()}, scope, "/unused", self.work / "x",
+                                            contract="worksheet-wire/5")
         self.assertEqual(caught.exception.code, "SOURCE_WIRE_SCOPE")
-        with self.assertRaises(GeneralSourceError):
-            validate_source(lesson, S.ir_good(), scope)
+        with self.assertRaises(GeneralSourceError) as caught:
+            validate_source(lesson, S.ir_good(), scope, contract="worksheet-wire/5")
+        self.assertEqual(caught.exception.code, "SOURCE_WIRE_SCOPE")
+        for call in (lambda: general_adapters.compile_source(lesson, {"source": S.ir_good()}, scope, "/unused",
+                                                             self.work / "y"),
+                     lambda: validate_source(lesson, S.ir_good(), scope)):
+            with self.assertRaises(GeneralSourceError) as caught:
+                call()
+            self.assertEqual(caught.exception.code, "SOURCE_SHAPE")      # unflagged: as before v5
+        self.assertFalse((self.work / "x").exists())
+        self.assertFalse((self.work / "y").exists())
 
 
 if __name__ == "__main__":

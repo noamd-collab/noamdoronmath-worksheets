@@ -14,6 +14,7 @@ import runner  # noqa: E402
 from validation import GenerationError  # noqa: E402
 
 V5_PAYLOAD = {"version": 4, "contract": "worksheet-wire/5"}
+TRUSTED = "worksheet-wire/5"          # the flag only structured_source / v5_offline_render pass to render_job
 LESSON = S.lesson()
 CAP = {"skill": "middle", "family": "general"}
 
@@ -44,16 +45,19 @@ class RunnerV5(unittest.TestCase):
                     else:
                         (self.work / "out/v72-report.json").write_text(report)
             return SimpleNamespace(stdout="", stderr="", returncode=1 if script in fail else 0)
-        with patch.object(runner, "validate_model", return_value=cap), \
+        with patch.object(runner, "validate_model", return_value=cap) as validate, \
                 patch.object(runner, "verify_skill", return_value=(self.skill, {"version": "7.2.0-noam",
                                                                                 "sha256": "a" * 64})), \
                 patch.object(runner.subprocess, "run", side_effect=execute):
-            return runner.render_job(LESSON, payload, self.work, skill_paths={"middle": self.skill})
+            self.validate = validate
+            return runner.render_job(LESSON, payload, self.work, skill_paths={"middle": self.skill}, contract=TRUSTED)
 
     def test_all_pass_legacy_report_is_needs_review_with_not_run(self):
         manifest = self.render()
         self.assertEqual([script for script, _ in self.calls],
                          ["general_adapters.py", "text_lint.py", "build_v72.py", "atom_order.py"])
+        self.assertEqual(self.calls[0][1][-2:], ["--contract", TRUSTED])      # passed through to the adapter
+        self.assertEqual(self.validate.call_args.kwargs.get("contract"), TRUSTED)
         self.assertIn("--no-docx", self.calls[2][1])
         self.assertEqual(manifest["status"], "needs_review")
         self.assertIs(manifest["executedChecksPassed"], True)
@@ -123,7 +127,10 @@ class RunnerV5(unittest.TestCase):
         self.assertFalse(runner._is_v5({"version": 4, "title": "x"}))
         self.assertFalse(runner._is_v5({"version": 4, "contract": "worksheet-wire/4"}))
         self.assertFalse(runner._is_v5([]))
-        self.assertTrue(runner._is_v5(V5_PAYLOAD))
+        self.assertFalse(runner._is_v5(V5_PAYLOAD))                    # the payload's own marker selects nothing
+        self.assertTrue(runner._is_v5(V5_PAYLOAD, contract=TRUSTED))
+        self.assertFalse(runner._is_v5({"version": 4, "title": "x"}, contract=TRUSTED))
+        self.assertFalse(runner._is_v5({"version": 4, "contract": "worksheet-wire/4"}, contract=TRUSTED))
 
 
 if __name__ == "__main__":

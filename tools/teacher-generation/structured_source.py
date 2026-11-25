@@ -4,7 +4,8 @@ Order (compile_sheet, also exported as compile_reply):
 
 1. plan: planned rows Q1..QN and reserve rows R1..RR (structured_contract.plan_rows);
 2. parse the wire: {slot: question}, first occurrence wins; Q_SHAPE / Q_SLOT_UNKNOWN / Q_SLOT_DUPLICATE;
-3. compile every question once against its own row (compile_question: Q1-Q3, items I1-I6, Q4 leaks, Q5 trim);
+3. compile every question once against its own row (compile_question: Q1-Q3, items I1-I6, Q4 leaks and
+   reordered repeats inside the question, Q5 trim);
 4. lesson_select.Selection(...).screen(): a refused planned question takes a reserve of its group;
 5. sheet loop: leak_checks.sheet_leaks over the printed order → Selection.reject, until nothing new;
 6. at most two repair rounds ({slot: wire question}), each followed by the sheet loop;
@@ -175,7 +176,11 @@ def _compile_item_safely(kind, item, index, ctx):
 
 
 def compile_question(wire: dict, row: PlanRow, ctx: Context) -> CompiledQuestion:
-    """Checks Q1–Q5 and per item I1–I6 (§4); refused items are trimmed while ≥3 clean items remain."""
+    """Checks Q1–Q5 and per item I1–I6 (§4); refused items are trimmed while ≥3 clean items remain.
+
+    Q4 also refuses a later item whose task has the same signed-term multiset as an earlier clean item of this
+    question in another order (DUPLICATE_REORDERED, leak_checks.reordered_items): trimmed like any refused item,
+    so the question is refused (with ITEM_COUNT) when fewer than three clean items remain."""
     slot, overlay = row.slot, ctx.overlay
     refusals = []
 
@@ -229,11 +234,14 @@ def compile_question(wire: dict, row: PlanRow, ctx: Context) -> CompiledQuestion
         return {"intro": intro_spans(kind, overlay), "star": star,
                 "items": [{"prompt": item.prompt, "answer": item.answer} for item in chosen]}
 
-    # Q4 leaks over the clean items (monotone: removing the hit items adds no hit)
+    # Q4 leaks over the clean items (monotone: removing the hit items adds no hit), plus a later item that repeats
+    # an earlier item of this question in another order (DUPLICATE_REORDERED; question_leaks keeps the §4 rule).
     if clean:
-        hits = leak_checks.question_leaks(question(clean), overlay, skill_path=ctx.skill_path)
+        built = question(clean)
+        hits = set(leak_checks.question_leaks(built, overlay, skill_path=ctx.skill_path))
+        hits.update(leak_checks.reordered_items(built))
         hit_items = set()
-        for position, code in hits:
+        for position, code in sorted(hits):
             item = clean[position - 1]
             refuse(item.index, "expr", code)
             hit_items.add(item.index)
@@ -396,7 +404,8 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
                         "questions": [deepcopy(slot.question.ir) for slot in layout]}],
           "selection": _selection_record(lesson, floor, selection)}
     ir = thaw(ir)
-    checked = validate_source(lesson, ir, scope)
+    # This code built the IR, so it is the trusted caller that may select worksheet-wire/5 (contract=...).
+    checked = validate_source(lesson, ir, scope, contract=CONTRACT)
     diagnostics = _diagnostics(lesson, floor, selection, refusals, questions, rounds, len(layout))
     # Equivalent evaluations (same simplified expression and values after renaming letters) are recorded for the
     # owner's review, by slot and item index only (G11); they are not refused (no decision to refuse them yet).

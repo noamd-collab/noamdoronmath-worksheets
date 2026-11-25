@@ -161,10 +161,13 @@ class Sheet(unittest.TestCase):
         self.assertNotIn("R6", [row["slot"] for row in selection["questions"]])
 
     def test_ir_passes_validate_source(self):
-        from general_source import validate_source
-        checked = validate_source(S.lesson(), S.ir_good(), S.scope())
+        from general_source import GeneralSourceError, validate_source
+        checked = validate_source(S.lesson(), S.ir_good(), S.scope(), contract="worksheet-wire/5")
         self.assertEqual(len(checked["evidence"]["computations"]), 60)
         self.assertEqual(checked["evidence"]["unverifiedAnswers"], [])
+        with self.assertRaises(GeneralSourceError) as caught:              # the marker alone selects nothing
+            validate_source(S.lesson(), S.ir_good(), S.scope())
+        self.assertEqual(caught.exception.code, "SOURCE_SHAPE")
 
     def test_determinism(self):
         first = json.dumps(self.compile().ir, ensure_ascii=False)

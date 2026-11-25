@@ -18,6 +18,8 @@ Paths: `TG` = tools/teacher-generation. `SKM` = the pinned middle skill (`MIDDLE
 6. Test plan, golden files and the offline end-to-end script
 7. Fixtures (the lesson JSON, verbatim)
 8. Deviations from the plan, open items, merge order
+9. Review fixes (2026-11-25)
+10. Stage-3 hardening (2026-11-25): reordered items in one question, the trusted v5 flag, container packaging, the pinned report copy
 
 ---
 
@@ -925,3 +927,32 @@ Tests: `tests/test_v5_review_fixes.py` (new). No existing test was relaxed; one 
 - D5 stand-ins and trimming inside a question: both are pinned by tests, so a flag that is off by default needs a decision.
 - An exit code for "not fully checked": `report.exitCode` 0 is pinned. The verdict carries `fullyChecked`.
 - A real-page render of `%` and brackets; the D22 allowlist.
+
+---
+
+## 10. Stage-3 hardening (2026-11-25)
+
+Tests: `tests/test_v5_stage3_hardening.py` (new). Branch tests touched by this stage were only made stricter: they pass the trusted flag where they validate or render a v5 source, and assert the unflagged refusal next to it. No baseline test changed.
+
+1. **Reordered repeats inside one question.** `leak_checks.reordered_items(question)` returns `(later item, DUPLICATE_REORDERED)` when an item has the same signed-term multiset as an earlier item of the same question in another order. Exact repeats stay `DUPLICATE_ITEM`.
+   - `structured_source.compile_question` (Q4) refuses that item and trims it while three clean items remain; otherwise the question is refused with `ITEM_COUNT`, and a reserve fills its slot.
+   - As with `DUPLICATE_ITEM`, the canonical task is the task expression, so a substitute item's values do not make it another task.
+   - The final validator refuses a v5 IR that still holds one (`SOURCE_LEAK`).
+   - `question_leaks` keeps the §4 rule, and the order-sensitive assertions in `test_v5_leak_checks` still hold. `test_duplicate_item` now also asserts the refusal at the `structured_source` level.
+2. **Trusted v5 marker.** The root `"contract": "worksheet-wire/5"` is honoured only when the caller passes the keyword-only trusted flag `contract="worksheet-wire/5"`. This applies to `general_source.validate_source`, `validation.validate_model`, `runner.render_job` and `runner._is_v5`, and to the adapter CLI as `--contract`.
+   - Only `structured_source.compile_sheet` and `v5_offline_render` set the flag. `runner` passes it to `validate_model` and to the adapter; `validate_model` and `general_adapters.compile_source` pass it to `validate_source`. A test scans every `contract=` keyword to keep it that way.
+   - Without the flag, a payload that carries the v5 root keys is refused with `SOURCE_SHAPE` and the message "Unexpected or missing source fields", byte for byte as at `bafa36f0` (probed on a `git archive bafa36f0` copy). `render_job` refuses it before any step runs or any work dir is made. G1 still holds; what changes is that the marker alone no longer selects v5 anywhere, which closes the residual named in §9.3.
+   - With the flag, the source must carry the marker (`SOURCE_SHAPE`), and the lesson must be version 3 (`WIRE_SCOPE_UNSUPPORTED`).
+   - Any other flag value, or the flag together with `provider=True`, raises `ValueError`. That is a trusted-caller bug, not a refusal.
+   - The runner CLI takes no such flag, so it renders no v5 source.
+3. **Container packaging.** The ten v5 modules are in the exact Docker-context allowlist: `atom_order`, `item_kinds`, `leak_checks`, `lesson_select`, `mistake_models`, `school_math`, `structured_contract`, `structured_source`, `text_lint` and `v5_offline_render`.
+   - They are listed in `cloud/container/context-files.json` and `cloud/container/Dockerfile.dockerignore`. `cloud/render/Dockerfile.dockerignore` is kept equal to the container list plus its three render lines, as `test_http_supervisor` requires.
+   - No data file is needed at runtime beyond what was already shipped (`skill-lock.json`, `generation-curriculum.json`). The pinned skill archives are unchanged.
+   - v5 tests and fixtures are not shipped: the image's `unittest discover` runs the shipped baseline tests only.
+   - A test checks that every module the image ships imports only modules the image ships.
+4. **The pinned report copy is never the verdict** (`v5_offline_render` only).
+   - The copy keeps its name `pinned-v72-report.raw.json`, byte for byte.
+   - `report.json` is marked `"authoritative": true` with `"verdictFile": "report.json"`, and gives every output file's role under `fileRoles`.
+   - It describes the pinned copy under `pinnedReport`: its sha256, its own `result` and `"isVerdict": false`.
+   - It lists under `staleFiles` any file of a known output name, or any page image, that this run did not write. That includes a legacy `v72-report.json` left by an earlier render. Nothing is deleted.
+   - `summary.json` carries `verdictFile`. The compile-failure summary is unchanged.

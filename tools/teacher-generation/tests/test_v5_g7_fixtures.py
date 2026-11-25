@@ -206,7 +206,7 @@ class Sheets(unittest.TestCase):
         self.assertEqual(result.diagnostics["repairRounds"], 0)
         self.assertTrue(set(expected["unusedReserves"]).isdisjoint(row["slot"] for row in selection["questions"]))
         self.check_printed(result, expected)
-        checked = validate_source(lesson(), result.ir, scope())
+        checked = validate_source(lesson(), result.ir, scope(), contract="worksheet-wire/5")
         self.assertEqual(len(checked["evidence"]["computations"]), sum(len(row["keys"]) for row in expected["printed"]))
         self.assertEqual(checked["evidence"]["unverifiedAnswers"], [])
 

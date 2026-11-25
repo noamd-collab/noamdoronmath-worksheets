@@ -38,9 +38,15 @@ Reordered repeats, reordered_tasks() -> {0-based index of the LATER question: co
                        an item of an earlier question, written in another order
                        ("x+6+5x+2" then "5x+2+x+6"). Exact repeats stay
                        DUPLICATE_TASK (sheet_leaks), so the two never overlap.
-This is a separate sheet-level rule: DUPLICATE_ITEM and DUPLICATE_TASK keep the
-section 4 definition (the same canonical task display), which the stage-2 tests
-pin; within one question a reordered item is not refused.
+and inside one question, reordered_items() -> [(item index, code)], 1-based:
+- DUPLICATE_REORDERED  a later item with the same multiset of signed terms as an
+                       earlier item of the same question, in another order. Exact
+                       repeats stay DUPLICATE_ITEM (question_leaks).
+These are separate rules: DUPLICATE_ITEM and DUPLICATE_TASK keep the section 4
+definition (the same canonical task display), which the stage-2 tests pin, and
+question_leaks() never returns DUPLICATE_REORDERED. structured_source.compile_question
+refuses (and trims) the later item; general_source refuses a v5 IR that still
+holds a reordered pair inside a question (SOURCE_LEAK).
 
 D12 mirror (G6, D12; critique: no dict givens, no exemption): the pinned
 check_didactic.py is loaded by path after a sha256 check against skill-lock.json
@@ -406,6 +412,19 @@ def question_leaks(question: dict, overlay, *, skill_path: str | None) -> list[t
     if skill_path is not None:
         hits.update((index, LEAK_PINNED_VALUE) for index in d12_mirror(question, skill_path))
     return sorted(hits)
+
+
+def reordered_items(question: dict) -> list[tuple[int, str]]:
+    """[(item index, DUPLICATE_REORDERED)] over one IR question, 1-based: a LATER item whose task has the same
+    multiset of signed terms as an earlier item of the same question but another written order ("x+6+5x+2" then
+    "5x+2+x+6", both keyed 6x + 8). Exact repeats are DUPLICATE_ITEM (question_leaks), so the two never overlap.
+
+    As with DUPLICATE_ITEM, the canonical task is the task expression: a substitute item's values do not make it
+    another task. Monotone: removing items never adds a hit (a hit needs an earlier partner)."""
+    items = _read(question)
+    return [(later.index, DUPLICATE_REORDERED) for later in items
+            if any(earlier.terms == later.terms and earlier.task != later.task
+                   for earlier in items[:later.index - 1])]
 
 
 def _linked(source, target):

@@ -363,6 +363,19 @@ class QuestionLeakTests(unittest.TestCase):
         q = question("collect_like_terms", [collect("3x+5+2x-1", "5x+4"), collect("2x+5+3x-1", "5x+4"),
                                             collect("8a-3+a-5", "9a-8")])
         self.assertEqual(leaks(q), [])
+        # Stricter since stage 3: "2x+5+3x-1" holds the terms of "3x+5+2x-1" in another order. question_leaks keeps
+        # the section 4 rule above; the item-level rule hits the later item, and structured_source refuses it.
+        self.assertEqual(leak_checks.reordered_items(q), [(2, "DUPLICATE_REORDERED")])
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import structured_source
+        import v5_support as S
+        wire = S.question("Q13", "collect_like_terms", [S.item("3x+5+2x-1"), S.item("2x+5+3x-1"), S.item("8a-3+a-5")])
+        compiled = structured_source.compile_question(wire, S.rows()["Q13"], S.context())
+        self.assertIsNone(compiled.ir)
+        self.assertEqual(compiled.codes, ("DUPLICATE_REORDERED", "ITEM_COUNT"))
+        self.assertEqual([refusal.record() for refusal in compiled.refusals],
+                         [{"slot": "Q13", "item": 2, "field": "expr", "code": "DUPLICATE_REORDERED"},
+                          {"slot": "Q13", "item": 0, "field": "items", "code": "ITEM_COUNT"}])
 
     def test_leak_own(self):
         # The key equals the rule fact's right side.

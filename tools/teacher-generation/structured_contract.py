@@ -107,7 +107,8 @@ CODE_GROUPS = MappingProxyType({
                 "REVEALS_ANSWER"),
     # EXAMPLE_COPY (plan §c2) is emitted by leak_checks.sheet_leaks although §4 does not list it.
     # DUPLICATE_REORDERED (leak_checks.reordered_tasks): a later question repeats an earlier item's terms in
-    # another order; added after the stage-2 review (a starred reserve repeated a practice item).
+    # another order; added after the stage-2 review (a starred reserve repeated a practice item). Since stage 3
+    # also a later item of the same question (leak_checks.reordered_items, structured_source.compile_question).
     "leaks": ("DUPLICATE_ITEM", "LEAK_OWN", "LEAK_LINKED", "LEAK_RULE_FACT", "LEAK_PINNED_VALUE",
               "DUPLICATE_TASK", "LEAK_SHEET_INVERSE", "EXAMPLE_COPY", "DUPLICATE_REORDERED"),
     # Raised while loading a pinned module by path (leak_checks.pinned_module; runner.verify_skill).

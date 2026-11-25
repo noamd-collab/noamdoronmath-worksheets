@@ -110,8 +110,11 @@ class ReorderedRepeats(unittest.TestCase):
         self.assertEqual(leak_checks.reordered_tasks([value, plain]), {1: ["DUPLICATE_REORDERED"]})
 
     def test_one_question_alone_is_never_hit(self):
-        """Within one question the section 4 rule applies (test_v5_leak_checks.test_duplicate_item pins it)."""
+        """The sheet-level rule never hits one question alone; inside a question the item-level rule
+        (leak_checks.reordered_items, refused by structured_source.compile_question) hits the later item."""
         self.assertEqual(leak_checks.reordered_tasks([collect("3x+5+2x-1", "2x+5+3x-1", "8a-3+a-5")]), {})
+        self.assertEqual(leak_checks.reordered_items(collect("3x+5+2x-1", "2x+5+3x-1", "8a-3+a-5")),
+                         [(2, "DUPLICATE_REORDERED")])
 
     def test_removing_questions_never_adds_a_hit(self):
         import itertools
@@ -148,13 +151,13 @@ class ReorderedRepeatsOnTheSheet(unittest.TestCase):
         self.assertEqual([row["slot"] for row in selection["questions"]][17:], ["Q18", "R6", "Q20"])
         self.assertEqual(result.diagnostics["record"][-1]["stage"], "sheet")
         self.assertEqual(leak_checks.reordered_tasks(result.ir["sections"][0]["questions"]), {})
-        validate_source(S.lesson(), result.ir, S.scope())
+        validate_source(S.lesson(), result.ir, S.scope(), contract="worksheet-wire/5")
 
     def test_the_final_validator_refuses_a_reordered_repeat(self):
         with patch.object(leak_checks, "reordered_tasks", return_value={}):
             result = ss.compile_sheet(S.lesson(), S.scope(), self.original_reply(), skill_path=str(S.MIDDLE))
         self.assertEqual([row["slot"] for row in result.ir["selection"]["questions"]][18], "R5")
-        self.assertEqual(code_of(S.lesson(), result.ir, S.scope()), "SOURCE_LEAK")
+        self.assertEqual(code_of(S.lesson(), result.ir, S.scope(), contract="worksheet-wire/5"), "SOURCE_LEAK")
 
     def test_the_fixture_reserve_is_clean_and_unused_reserves_stay_unused(self):
         """reply-g7-good.json R5 item א is now '5x+2+x+9' → '17x' (key 6x + 11): R5 still fills Q19, R4/R6 unused."""
@@ -271,7 +274,10 @@ class ProviderBoundary(unittest.TestCase):
         self.assertEqual(payload.get("contract"), "worksheet-wire/5")      # the marker survives to the validator
         self.assertEqual(code_of(lesson, payload, scope, provider=True), "SOURCE_SHAPE")
         self.assertEqual(code_of(lesson, ir, scope, provider=True), "SOURCE_SHAPE")
-        validate_source(lesson, ir, scope)                                   # off the provider path: still v5
+        validate_source(lesson, ir, scope, contract="worksheet-wire/5")     # a trusted caller's flag: v5
+        self.assertEqual(code_of(lesson, ir, scope), "SOURCE_SHAPE")        # the marker alone: as before v5
+        with self.assertRaises(ValueError):                                 # the provider boundary never flags v5
+            validate_source(lesson, ir, scope, provider=True, contract="worksheet-wire/5")
 
 
 # ------------------------------------------------------------------ minor: result bound, coefficients, ':'
@@ -392,7 +398,7 @@ class FinalValidatorCodeWrittenParts(unittest.TestCase):
     def refused(self, change):
         ir = S.ir_good()
         change(ir)
-        return code_of(S.lesson(), ir, S.scope())
+        return code_of(S.lesson(), ir, S.scope(), contract="worksheet-wire/5")
 
     def test_title_section_title_and_rule_are_the_overlays(self):
         self.assertEqual(self.refused(lambda ir: ir.update(title="פרק 3: חוק הפילוג")), "SOURCE_BINDING")
@@ -419,11 +425,11 @@ class D12MirrorAtTheAdapter(unittest.TestCase):
         with patch.object(leak_checks, "d12_mirror", return_value=[]):
             result = ss.compile_sheet(S.lesson(), S.scope(), S.reply(), skill_path=str(S.MIDDLE))
         self.assertNotIn("R3", [row["slot"] for row in result.ir["selection"]["questions"]])
-        validate_source(S.lesson(), result.ir, S.scope())
+        validate_source(S.lesson(), result.ir, S.scope(), contract="worksheet-wire/5")
         with tempfile.TemporaryDirectory() as tmp:
             with self.assertRaises(GeneralSourceError) as caught:
                 general_adapters.compile_source(S.lesson(), {"source": result.ir}, S.scope(), str(S.MIDDLE),
-                                                Path(tmp) / "work")
+                                                Path(tmp) / "work", contract="worksheet-wire/5")
         self.assertEqual(caught.exception.code, "SOURCE_LEAK")
 
 
@@ -461,7 +467,7 @@ class OverlayReviewGuard(unittest.TestCase):
             item.start()
             self.addCleanup(item.stop)
         return runner.render_job(S.lesson(), {"version": 4, "contract": "worksheet-wire/5"}, work,
-                                 skill_paths={"middle": skill})
+                                 skill_paths={"middle": skill}, contract="worksheet-wire/5")
 
     def test_an_unreviewed_overlay_never_counts_as_passed(self):
         manifest = self.render()
@@ -509,6 +515,16 @@ class OfflineRenderRecords(unittest.TestCase):
             self.assertEqual(len(report["keys"]), 20)
             self.assertTrue((out / "pinned-v72-report.raw.json").is_file())
             self.assertFalse((out / "v72-report.json").exists())
+            # Stricter since stage 3: report.json says it is the verdict and what the pinned copy is.
+            import hashlib
+            pinned = report["pinnedReport"]
+            self.assertEqual((report["authoritative"], report["verdictFile"], summary["verdictFile"]),
+                             (True, "report.json", "report.json"))
+            self.assertEqual((pinned["file"], pinned["isVerdict"], pinned["pinnedResult"]),
+                             ("pinned-v72-report.raw.json", False, "PASS"))
+            self.assertEqual(pinned["sha256"],
+                             hashlib.sha256((out / "pinned-v72-report.raw.json").read_bytes()).hexdigest())
+            self.assertEqual(report["staleFiles"], [])
 
 
 if __name__ == "__main__":

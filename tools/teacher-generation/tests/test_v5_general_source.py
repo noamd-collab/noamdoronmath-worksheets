@@ -1,4 +1,5 @@
-"""general_source v5 hooks: only a source carrying the v5 marker reaches them (V5-DESIGN §2.6, §6.1)."""
+"""general_source v5 hooks: only a source carrying the v5 marker reaches them, and only when the trusted caller
+passes contract=V5_CONTRACT (V5-DESIGN §2.6, §6.1, §10)."""
 import copy
 from pathlib import Path
 import sys
@@ -11,11 +12,12 @@ import structured_contract  # noqa: E402
 from test_general_source import fixture  # noqa: E402
 
 DISPLAY = {"kind": "display", "notation": "3x+5x=8x", "symbols": ["x"]}
+TRUSTED = {"contract": V5_CONTRACT}      # what structured_source / v5_offline_render pass
 
 
-def code_of(lesson, payload, scope):
+def code_of(lesson, payload, scope, **trusted):
     with unittest.TestCase().assertRaises(GeneralSourceError) as caught:
-        validate_source(lesson, payload, scope)
+        validate_source(lesson, payload, scope, **trusted)
     return caught.exception.code
 
 
@@ -86,20 +88,26 @@ class V5Source(unittest.TestCase):
     def refused(self, change, lesson=None, scope=None):
         ir = copy.deepcopy(self.ir)
         change(ir)
-        return code_of(lesson or self.lesson, ir, scope or self.scope)
+        return code_of(lesson or self.lesson, ir, scope or self.scope, **TRUSTED)
 
     def question(self, ir, n):
         return ir["sections"][0]["questions"][n - 1]
 
     def test_compiled_ir_validates(self):
-        checked = validate_source(self.lesson, self.ir, self.scope)
+        checked = validate_source(self.lesson, self.ir, self.scope, **TRUSTED)
         self.assertEqual(checked["source"], self.ir)
         self.assertEqual(len(checked["evidence"]["computations"]), 60)
-        from validation import validate_model
-        self.assertEqual(validate_model(self.lesson, self.ir)["skill"], "middle")
+        from validation import GenerationError, validate_model
+        self.assertEqual(validate_model(self.lesson, self.ir, **TRUSTED)["skill"], "middle")
         without = copy.deepcopy(self.ir)
         del without["contract"]
+        self.assertEqual(code_of(self.lesson, without, self.scope, **TRUSTED), "SOURCE_SHAPE")
         self.assertEqual(code_of(self.lesson, without, self.scope), "SOURCE_SHAPE")
+        # Without the trusted flag the payload's own marker selects nothing: SOURCE_SHAPE, as at bafa36f0.
+        self.assertEqual(code_of(self.lesson, self.ir, self.scope), "SOURCE_SHAPE")
+        with self.assertRaises(GenerationError) as caught:
+            validate_model(self.lesson, self.ir)
+        self.assertEqual(caught.exception.code, "SOURCE_SHAPE")
 
     def test_answer_refusals(self):
         def review(ir):
@@ -166,11 +174,14 @@ class V5Source(unittest.TestCase):
 
     def test_scope_refusals(self):
         lesson, _ = fixture("ד11", 4)
-        self.assertEqual(code_of(lesson, copy.deepcopy(self.ir), S.scope(lesson)), "SOURCE_WIRE_SCOPE")
+        self.assertEqual(code_of(lesson, copy.deepcopy(self.ir), S.scope(lesson), **TRUSTED), "SOURCE_WIRE_SCOPE")
         equations = S.load("../../../cloud/container/fixtures/general/grade7-equation-skill/lesson.json")
-        self.assertEqual(code_of(equations, copy.deepcopy(self.ir), S.scope(equations)), "SOURCE_WIRE_SCOPE")
+        self.assertEqual(code_of(equations, copy.deepcopy(self.ir), S.scope(equations), **TRUSTED),
+                         "SOURCE_WIRE_SCOPE")
         level_a = dict(self.lesson, level="a")
-        self.assertEqual(code_of(level_a, copy.deepcopy(self.ir), S.scope(level_a)), "SOURCE_WIRE_SCOPE")
+        self.assertEqual(code_of(level_a, copy.deepcopy(self.ir), S.scope(level_a), **TRUSTED), "SOURCE_WIRE_SCOPE")
+        for other in (lesson, equations, level_a):
+            self.assertEqual(code_of(other, copy.deepcopy(self.ir), S.scope(other)), "SOURCE_SHAPE")
 
 
 if __name__ == "__main__":
