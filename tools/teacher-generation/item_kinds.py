@@ -227,10 +227,15 @@ def verify_item(prompt: list, answer: dict, solved: dict, overlay) -> None:
     The key must also be exactly the house key printer's output for the kernel result (first-appearance order,
     §2.8 rule 5), and a find_error wrong result exactly the code-printed result of its mistake model.
 
-    An elementary overlay (skill "elementary") is checked by division_kinds.verify_item."""
+    An elementary overlay (skill "elementary") is checked by division_kinds.verify_item, a probability overlay
+    (family "probability") by probability_kinds.verify_item."""
     if overlay.get("skill") == "elementary":
         import division_kinds
         division_kinds.verify_item(prompt, answer, solved, overlay)
+        return
+    if overlay.get("family") == "probability":
+        import probability_kinds
+        probability_kinds.verify_item(prompt, answer, solved, overlay)
         return
 
     def fail(code):
@@ -401,6 +406,10 @@ def verify_question(question: dict, overlay) -> None:
         import division_kinds
         division_kinds.verify_question(question, overlay)
         return
+    if overlay.get("family") == "probability":
+        import probability_kinds
+        probability_kinds.verify_question(question, overlay)
+        return
     if type(question) is not dict or type(question.get("items")) is not list:
         raise BindingError("BINDING_INTERNAL")
     items = question["items"]
@@ -423,15 +432,20 @@ def verify_question(question: dict, overlay) -> None:
 
 # ------------------------------------------------------------------ compile one wire item
 
-def compile_item(kind: str, item: dict, index: int, ctx: Context, *, givens=None) -> CompiledItem:
+def compile_item(kind: str, item: dict, index: int, ctx: Context, *, givens=None, template=None) -> CompiledItem:
     """Wire item → IR prompt and answer (§2.6) through checks I1–I6 (§4); ends by calling verify_item.
 
     An elementary overlay compiles in division_kinds.compile_item; ``givens`` (keyword only) is the question's
-    checked {given id: value} map there. The middle kinds declare no givens and ignore it."""
+    checked {given id: value} map there. The middle kinds declare no givens and ignore it. A probability overlay
+    compiles in probability_kinds.compile_item (``givens`` = the question's checked counts, ``template`` = its
+    story)."""
     overlay = ctx.overlay
     if overlay.get("skill") == "elementary":
         import division_kinds
         return division_kinds.compile_item(kind, item, index, ctx, givens=givens)
+    if overlay.get("family") == "probability":
+        import probability_kinds
+        return probability_kinds.compile_item(kind, item, index, ctx, givens=givens, template=template)
     row = overlay["kinds"].get(kind)
     if row is None:
         raise ValueError("compile_item needs a kind of the overlay")

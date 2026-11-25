@@ -115,6 +115,11 @@ CODE_GROUPS = MappingProxyType({
     # The source-side mirror of the pinned elementary G62 clone gate (division_kinds.clone_hits): an item whose
     # structure the sheet already printed as often as the pinned profile allows (sheet loop, final adapter check).
     "structure": ("STRUCTURE_REPEATED", "SOURCE_STRUCTURE"),
+    # The probability kinds (probability_kinds, overlay g9r:probability): a probability that is not strictly between
+    # 0 and 1 (the model's expr or the key), an expr that is not the probability its ask names (it disagrees with
+    # the story's canonical probability at the givens or at a fixed probe point), and a later item of a question
+    # with the same key value as an earlier one (one answer would give the other away).
+    "probability": ("PROB_RANGE", "ASK_MISMATCH", "KEY_REPEATED"),
     # EXAMPLE_COPY (plan §c2) is emitted by leak_checks.sheet_leaks although §4 does not list it.
     # DUPLICATE_REORDERED (leak_checks.reordered_tasks): a later question repeats an earlier item's terms in
     # another order; added after the stage-2 review (a starred reserve repeated a practice item). Since stage 3
@@ -407,9 +412,297 @@ _D10_LONG_DIVISION = {
     },
 }
 
+def _prob_story(kind, categories, intro, asks, table=None):
+    """One Tier A probability story: the intro as T/D parts (n1..nK = the counts of the K categories), the
+    code-written question of every ask of the story and, for a relative-frequency story, its one-way table (head
+    labels and the label of the count row; the count cells are the givens)."""
+    out = {"kind": kind, "categories": categories, "intro": intro, "asks": asks}
+    if table is not None:
+        out["table"] = {"head": table[0], "rowHead": table[1]}
+    return out
+
+
+PROBABILITY_FORMS = ("fraction", "decimal", "percent")
+_P0, _P1, _P2, _P3 = ("g9r:probability#%d" % n for n in range(4))
+_TWO_STAGE_ASKS = ("both_1", "both_2", "first_1_second_2", "first_2_second_1", "one_of_each", "same")
+
+# The probability overlay of g9r:probability (grade 9, track ט רגילה), level e only, for the repro lesson: concepts
+# #0 מהי הסתברות, מושגים בסיסיים, #1 חישובי הסתברות והקשר לשכיחות יחסית, #2 מאורע משלים and #3 מאורעות דו־שלביים.
+# The teacher wrote that a tree diagram was learned and a two-way table was not: no kind prints a two-way table,
+# and no kind draws (this is not a geometry page, so there is no figure field and no tree drawing). Every Hebrew
+# string is code-written Tier A text and NOT reviewed (D7). Tier B (model-written story context) stays off: the
+# model chooses a story, the counts of its givens, one ask and one form per item, and writes the probability the
+# ask names as expr over the givens; code prints every sentence and table and keys the kernel's value of the
+# story's own (canonical) probability of the ask.
+_G9R_PROBABILITY = {
+    "topicId": "g9r:probability",
+    "family": "probability",
+    "reviewed": False,
+    "pendingReview": ("title", "rule", "stories", "tables", "formNotes", "profile", "challengeRule",
+                      "forbiddenTerms"),
+    "levels": ("e",),
+    "title": "הסתברות: שכיחות יחסית, מאורע משלים ומאורעות דו־שלביים",
+    "letters": (),
+    "conceptKinds": {_P0: ("single_draw_probability",),
+                     _P1: ("relative_frequency",),
+                     _P2: ("complement_probability",),
+                     _P3: ("two_stage_with_replacement", "two_stage_without_replacement")},
+    # Starred questions are two-draw stories without replacement written for a challenge row; every item of one
+    # asks an event of more than one branch, or at least one of a colour (challengeAsks).
+    "challengeKinds": {"two_stage_without_replacement": (_P3,)},
+    "challengeAsks": ("one_of_each", "same", "at_least_one_1", "at_least_one_2"),
+    "kinds": {
+        "single_draw_probability": {
+            "groups": (PRACTICE,), "reads": ("expr", "variant", "ask"), "form": "fraction", "forms": ("fraction",),
+            "asks": ("one_1", "one_2", "one_3", "either_12", "either_13", "either_23"),
+            "variants": ("D_BALLS", "D_CARDS", "D_CANDIES", "D_CLUB"), "givens": True, "items": (3, 6),
+            "replacement": None, "counts": {"min": 2, "max": 20, "totalMin": 6, "totalMax": 40},
+            "card": "one draw, three categories n1 n2 n3. one_k: category k; either_jk: category j or k.",
+        },
+        "relative_frequency": {
+            "groups": (PRACTICE,), "reads": ("expr", "variant", "ask"), "form": "fraction",
+            "forms": PROBABILITY_FORMS,
+            "asks": ("freq_1", "freq_2", "freq_3", "freq_4", "prob_1", "prob_2", "prob_3", "prob_4"),
+            "variants": ("F_SPINNER", "F_SURVEY", "F_CARS", "F_DRAWS"), "givens": True, "items": (3, 6),
+            "replacement": None, "counts": {"min": 1, "max": 400, "totalMin": 10, "totalMax": 1000},
+            "card": "a one-way table of counts n1..n4 (n1..n3 in F_DRAWS). freq_k: the relative frequency of "
+                    "outcome k; prob_k: the probability it gives. form fraction, decimal (two places at most) or "
+                    "percent (whole).",
+        },
+        "complement_probability": {
+            "groups": (PRACTICE,), "reads": ("expr", "variant", "ask"), "form": "fraction", "forms": ("fraction",),
+            "asks": ("not_first_1", "not_first_2", "at_least_one_1", "at_least_one_2"),
+            "variants": ("C_BALLS", "C_SPINNER", "C_CARDS"), "givens": True, "items": (3, 4),
+            "replacement": True, "counts": {"min": 2, "max": 20, "totalMin": 4, "totalMax": 30},
+            "card": "two draws with replacement, categories n1 n2. not_first_k: the first draw is not k; "
+                    "at_least_one_k: 1 minus the probability of no k.",
+        },
+        "two_stage_with_replacement": {
+            "groups": (PRACTICE,), "reads": ("expr", "variant", "ask"), "form": "fraction", "forms": ("fraction",),
+            "asks": _TWO_STAGE_ASKS, "variants": ("R_BALLS", "R_SPINNER", "R_CARDS"), "givens": True,
+            "items": (3, 6), "replacement": True, "counts": {"min": 2, "max": 20, "totalMin": 4, "totalMax": 30},
+            "card": "two draws with replacement, categories n1 n2: products of fractions.",
+        },
+        "two_stage_without_replacement": {
+            "groups": (PRACTICE, CHALLENGES), "reads": ("expr", "variant", "ask"), "form": "fraction",
+            "forms": ("fraction",), "asks": _TWO_STAGE_ASKS + ("at_least_one_1", "at_least_one_2"),
+            "variants": ("N_BALLS", "N_PENS", "N_MARBLES"), "givens": True, "items": (3, 6),
+            "replacement": False, "counts": {"min": 2, "max": 20, "totalMin": 4, "totalMax": 30},
+            "card": "two draws without replacement, categories n1 n2: the second fraction counts what is left.",
+        },
+    },
+    # A story prints each count before a plural noun ("5 כדורים"), so a bag count is at least 2; a table cell may
+    # hold 1. Keys: a reduced fraction, a decimal of at most decimalPlaces places, or a whole percent.
+    "profile": {"decimalPlaces": 2, "percentPlaces": 0, "literals": (1, 2), "power": 2},
+    "challengeRule": "combined_event",
+    "givenTypes": ("count",),
+    "units": (),
+    # The form instruction of an item whose kind declares more than one form (code-written, after the ask).
+    "formNotes": {"fraction": "כתבו את התשובה כשבר מצומצם.", "decimal": "כתבו את התשובה כמספר עשרוני.",
+                  "percent": "כתבו את התשובה באחוזים."},
+    "stories": {
+        "D_BALLS": _prob_story("single_draw_probability", 3, (
+            ("T", "בשקית יש "), ("D", "n1"), ("T", " כדורים אדומים, "), ("D", "n2"), ("T", " כדורים כחולים ו־"),
+            ("D", "n3"), ("T", " כדורים ירוקים. מוציאים מהשקית כדור באקראי.")), {
+            "one_1": "מה ההסתברות להוציא כדור אדום?", "one_2": "מה ההסתברות להוציא כדור כחול?",
+            "one_3": "מה ההסתברות להוציא כדור ירוק?", "either_12": "מה ההסתברות להוציא כדור אדום או כחול?",
+            "either_13": "מה ההסתברות להוציא כדור אדום או ירוק?",
+            "either_23": "מה ההסתברות להוציא כדור כחול או ירוק?"}),
+        "D_CARDS": _prob_story("single_draw_probability", 3, (
+            ("T", "בקופסה יש "), ("D", "n1"), ("T", " כרטיסים צהובים, "), ("D", "n2"), ("T", " כרטיסים לבנים ו־"),
+            ("D", "n3"), ("T", " כרטיסים סגולים. בוחרים מהקופסה כרטיס באקראי.")), {
+            "one_1": "מה ההסתברות לבחור כרטיס צהוב?", "one_2": "מה ההסתברות לבחור כרטיס לבן?",
+            "one_3": "מה ההסתברות לבחור כרטיס סגול?", "either_12": "מה ההסתברות לבחור כרטיס צהוב או לבן?",
+            "either_13": "מה ההסתברות לבחור כרטיס צהוב או סגול?",
+            "either_23": "מה ההסתברות לבחור כרטיס לבן או סגול?"}),
+        "D_CANDIES": _prob_story("single_draw_probability", 3, (
+            ("T", "בצנצנת יש "), ("D", "n1"), ("T", " סוכריות בטעם תות, "), ("D", "n2"),
+            ("T", " סוכריות בטעם לימון ו־"), ("D", "n3"),
+            ("T", " סוכריות בטעם ענבים. שולפים מהצנצנת סוכרייה באקראי.")), {
+            "one_1": "מה ההסתברות לשלוף סוכרייה בטעם תות?", "one_2": "מה ההסתברות לשלוף סוכרייה בטעם לימון?",
+            "one_3": "מה ההסתברות לשלוף סוכרייה בטעם ענבים?",
+            "either_12": "מה ההסתברות לשלוף סוכרייה בטעם תות או בטעם לימון?",
+            "either_13": "מה ההסתברות לשלוף סוכרייה בטעם תות או בטעם ענבים?",
+            "either_23": "מה ההסתברות לשלוף סוכרייה בטעם לימון או בטעם ענבים?"}),
+        "D_CLUB": _prob_story("single_draw_probability", 3, (
+            ("T", "בחוג מדעים משתתפים "), ("D", "n1"), ("T", " תלמידים מכיתה ז׳, "), ("D", "n2"),
+            ("T", " תלמידים מכיתה ח׳ ו־"), ("D", "n3"), ("T", " תלמידים מכיתה ט׳. בוחרים באקראי תלמיד מהחוג.")), {
+            "one_1": "מה ההסתברות שהתלמיד שנבחר לומד בכיתה ז׳?",
+            "one_2": "מה ההסתברות שהתלמיד שנבחר לומד בכיתה ח׳?",
+            "one_3": "מה ההסתברות שהתלמיד שנבחר לומד בכיתה ט׳?",
+            "either_12": "מה ההסתברות שהתלמיד שנבחר לומד בכיתה ז׳ או בכיתה ח׳?",
+            "either_13": "מה ההסתברות שהתלמיד שנבחר לומד בכיתה ז׳ או בכיתה ט׳?",
+            "either_23": "מה ההסתברות שהתלמיד שנבחר לומד בכיתה ח׳ או בכיתה ט׳?"}),
+        "F_SPINNER": _prob_story("relative_frequency", 4, (
+            ("T", "דנה סובבה חץ על לוח צבעוני פעמים רבות. בטבלה רשום כמה פעמים נעצר החץ על כל צבע."),), {
+            "freq_1": "מהי השכיחות היחסית של הצבע אדום?", "freq_2": "מהי השכיחות היחסית של הצבע כחול?",
+            "freq_3": "מהי השכיחות היחסית של הצבע צהוב?", "freq_4": "מהי השכיחות היחסית של הצבע ירוק?",
+            "prob_1": "העריכו לפי הטבלה את ההסתברות שבסיבוב הבא ייעצר החץ על הצבע אדום.",
+            "prob_2": "העריכו לפי הטבלה את ההסתברות שבסיבוב הבא ייעצר החץ על הצבע כחול.",
+            "prob_3": "העריכו לפי הטבלה את ההסתברות שבסיבוב הבא ייעצר החץ על הצבע צהוב.",
+            "prob_4": "העריכו לפי הטבלה את ההסתברות שבסיבוב הבא ייעצר החץ על הצבע ירוק."},
+            (("צבע", "אדום", "כחול", "צהוב", "ירוק"), "מספר הפעמים")),
+        "F_SURVEY": _prob_story("relative_frequency", 4, (
+            ("T", "בסקר שאלו תלמידים איזה ענף ספורט הם אוהבים יותר מכול. בטבלה רשום כמה תלמידים בחרו בכל ענף."),), {
+            "freq_1": "מהי השכיחות היחסית של התלמידים שבחרו בכדורגל?",
+            "freq_2": "מהי השכיחות היחסית של התלמידים שבחרו בכדורסל?",
+            "freq_3": "מהי השכיחות היחסית של התלמידים שבחרו בשחייה?",
+            "freq_4": "מהי השכיחות היחסית של התלמידים שבחרו בטניס?",
+            "prob_1": "בוחרים באקראי תלמיד שהשתתף בסקר. מה ההסתברות שהוא בחר בכדורגל?",
+            "prob_2": "בוחרים באקראי תלמיד שהשתתף בסקר. מה ההסתברות שהוא בחר בכדורסל?",
+            "prob_3": "בוחרים באקראי תלמיד שהשתתף בסקר. מה ההסתברות שהוא בחר בשחייה?",
+            "prob_4": "בוחרים באקראי תלמיד שהשתתף בסקר. מה ההסתברות שהוא בחר בטניס?"},
+            (("ענף", "כדורגל", "כדורסל", "שחייה", "טניס"), "מספר התלמידים")),
+        "F_CARS": _prob_story("relative_frequency", 4, (
+            ("T", "בצומת ספרו במשך שעה את המכוניות שעברו בו, לפי הצבע שלהן."),), {
+            "freq_1": "מהי השכיחות היחסית של המכוניות הלבנות?", "freq_2": "מהי השכיחות היחסית של המכוניות השחורות?",
+            "freq_3": "מהי השכיחות היחסית של המכוניות האפורות?", "freq_4": "מהי השכיחות היחסית של המכוניות האדומות?",
+            "prob_1": "העריכו לפי הטבלה את ההסתברות שהמכונית הבאה שתעבור בצומת תהיה לבנה.",
+            "prob_2": "העריכו לפי הטבלה את ההסתברות שהמכונית הבאה שתעבור בצומת תהיה שחורה.",
+            "prob_3": "העריכו לפי הטבלה את ההסתברות שהמכונית הבאה שתעבור בצומת תהיה אפורה.",
+            "prob_4": "העריכו לפי הטבלה את ההסתברות שהמכונית הבאה שתעבור בצומת תהיה אדומה."},
+            (("צבע", "לבן", "שחור", "אפור", "אדום"), "מספר המכוניות")),
+        "F_DRAWS": _prob_story("relative_frequency", 3, (
+            ("T", "יואב הוציא כדור משקית, רשם את צבעו והחזיר אותו לשקית. הוא חזר על כך פעמים רבות. בטבלה רשום "
+                  "כמה פעמים יצא כל צבע."),), {
+            "freq_1": "מהי השכיחות היחסית של הכדורים האדומים שיצאו?",
+            "freq_2": "מהי השכיחות היחסית של הכדורים הכחולים שיצאו?",
+            "freq_3": "מהי השכיחות היחסית של הכדורים הירוקים שיצאו?",
+            "prob_1": "העריכו לפי הטבלה את ההסתברות שבהוצאה הבאה ייצא כדור אדום.",
+            "prob_2": "העריכו לפי הטבלה את ההסתברות שבהוצאה הבאה ייצא כדור כחול.",
+            "prob_3": "העריכו לפי הטבלה את ההסתברות שבהוצאה הבאה ייצא כדור ירוק."},
+            (("צבע", "אדום", "כחול", "ירוק"), "מספר הפעמים")),
+        "C_BALLS": _prob_story("complement_probability", 2, (
+            ("T", "בשקית יש "), ("D", "n1"), ("T", " כדורים ירוקים ו־"), ("D", "n2"),
+            ("T", " כדורים כחולים. מוציאים מהשקית כדור באקראי, רושמים את צבעו ומחזירים אותו לשקית. אחר כך "
+                  "מוציאים שוב כדור באקראי.")), {
+            "not_first_1": "מה ההסתברות שבהוצאה הראשונה לא ייצא כדור ירוק?",
+            "not_first_2": "מה ההסתברות שבהוצאה הראשונה לא ייצא כדור כחול?",
+            "at_least_one_1": "מה ההסתברות שלפחות אחד משני הכדורים שהוציאו יהיה ירוק?",
+            "at_least_one_2": "מה ההסתברות שלפחות אחד משני הכדורים שהוציאו יהיה כחול?"}),
+        "C_SPINNER": _prob_story("complement_probability", 2, (
+            ("T", "לוח עגול מחולק לגזרות שוות: "), ("D", "n1"), ("T", " גזרות כתומות ו־"), ("D", "n2"),
+            ("T", " גזרות סגולות. מסובבים את החץ שעל הלוח, רושמים את הצבע שעליו נעצר ומסובבים אותו שוב.")), {
+            "not_first_1": "מה ההסתברות שבסיבוב הראשון החץ לא ייעצר על גזרה כתומה?",
+            "not_first_2": "מה ההסתברות שבסיבוב הראשון החץ לא ייעצר על גזרה סגולה?",
+            "at_least_one_1": "מה ההסתברות שלפחות באחד משני הסיבובים ייעצר החץ על גזרה כתומה?",
+            "at_least_one_2": "מה ההסתברות שלפחות באחד משני הסיבובים ייעצר החץ על גזרה סגולה?"}),
+        "C_CARDS": _prob_story("complement_probability", 2, (
+            ("T", "בחפיסה יש "), ("D", "n1"), ("T", " קלפים שחורים ו־"), ("D", "n2"),
+            ("T", " קלפים אדומים. בוחרים מהחפיסה קלף באקראי, רושמים את צבעו ומחזירים אותו לחפיסה. אחר כך "
+                  "בוחרים שוב קלף באקראי.")), {
+            "not_first_1": "מה ההסתברות שהקלף הראשון שנבחר לא יהיה שחור?",
+            "not_first_2": "מה ההסתברות שהקלף הראשון שנבחר לא יהיה אדום?",
+            "at_least_one_1": "מה ההסתברות שלפחות אחד משני הקלפים שנבחרו יהיה שחור?",
+            "at_least_one_2": "מה ההסתברות שלפחות אחד משני הקלפים שנבחרו יהיה אדום?"}),
+        "R_BALLS": _prob_story("two_stage_with_replacement", 2, (
+            ("T", "בשקית יש "), ("D", "n1"), ("T", " כדורים לבנים ו־"), ("D", "n2"),
+            ("T", " כדורים שחורים. מוציאים מהשקית כדור באקראי, רושמים את צבעו ומחזירים אותו לשקית. אחר כך "
+                  "מוציאים שוב כדור באקראי.")), {
+            "both_1": "מה ההסתברות ששני הכדורים שהוציאו לבנים?",
+            "both_2": "מה ההסתברות ששני הכדורים שהוציאו שחורים?",
+            "first_1_second_2": "מה ההסתברות שהכדור הראשון לבן והכדור השני שחור?",
+            "first_2_second_1": "מה ההסתברות שהכדור הראשון שחור והכדור השני לבן?",
+            "one_of_each": "מה ההסתברות שהוציאו כדור לבן אחד וכדור שחור אחד?",
+            "same": "מה ההסתברות ששני הכדורים שהוציאו לבנים או ששניהם שחורים?"}),
+        "R_SPINNER": _prob_story("two_stage_with_replacement", 2, (
+            ("T", "לוח עגול מחולק לגזרות שוות: "), ("D", "n1"), ("T", " גזרות כחולות ו־"), ("D", "n2"),
+            ("T", " גזרות צהובות. מסובבים את החץ שעל הלוח, רושמים את הצבע שעליו נעצר ומסובבים אותו שוב.")), {
+            "both_1": "מה ההסתברות שבשני הסיבובים ייעצר החץ על גזרה כחולה?",
+            "both_2": "מה ההסתברות שבשני הסיבובים ייעצר החץ על גזרה צהובה?",
+            "first_1_second_2": "מה ההסתברות שבסיבוב הראשון ייעצר החץ על גזרה כחולה ובסיבוב השני על גזרה צהובה?",
+            "first_2_second_1": "מה ההסתברות שבסיבוב הראשון ייעצר החץ על גזרה צהובה ובסיבוב השני על גזרה כחולה?",
+            "one_of_each": "מה ההסתברות שבסיבוב אחד ייעצר החץ על גזרה כחולה ובסיבוב האחר על גזרה צהובה?",
+            "same": "מה ההסתברות שבשני הסיבובים ייעצר החץ על גזרות באותו צבע?"}),
+        "R_CARDS": _prob_story("two_stage_with_replacement", 2, (
+            ("T", "בקופסה יש "), ("D", "n1"), ("T", " כרטיסים ירוקים ו־"), ("D", "n2"),
+            ("T", " כרטיסים אדומים. בוחרים מהקופסה כרטיס באקראי, רושמים את צבעו ומחזירים אותו לקופסה. אחר כך "
+                  "בוחרים שוב כרטיס באקראי.")), {
+            "both_1": "מה ההסתברות ששני הכרטיסים שנבחרו ירוקים?",
+            "both_2": "מה ההסתברות ששני הכרטיסים שנבחרו אדומים?",
+            "first_1_second_2": "מה ההסתברות שהכרטיס הראשון ירוק והכרטיס השני אדום?",
+            "first_2_second_1": "מה ההסתברות שהכרטיס הראשון אדום והכרטיס השני ירוק?",
+            "one_of_each": "מה ההסתברות שנבחרו כרטיס ירוק אחד וכרטיס אדום אחד?",
+            "same": "מה ההסתברות ששני הכרטיסים שנבחרו ירוקים או ששניהם אדומים?"}),
+        "N_BALLS": _prob_story("two_stage_without_replacement", 2, (
+            ("T", "בשקית יש "), ("D", "n1"), ("T", " כדורים אדומים ו־"), ("D", "n2"),
+            ("T", " כדורים צהובים. מוציאים מהשקית כדור באקראי ולא מחזירים אותו. אחר כך מוציאים מהשקית כדור נוסף "
+                  "באקראי.")), {
+            "both_1": "מה ההסתברות ששני הכדורים שהוציאו אדומים?",
+            "both_2": "מה ההסתברות ששני הכדורים שהוציאו צהובים?",
+            "first_1_second_2": "מה ההסתברות שהכדור הראשון אדום והכדור השני צהוב?",
+            "first_2_second_1": "מה ההסתברות שהכדור הראשון צהוב והכדור השני אדום?",
+            "one_of_each": "מה ההסתברות שהוציאו כדור אדום אחד וכדור צהוב אחד?",
+            "same": "מה ההסתברות ששני הכדורים שהוציאו אדומים או ששניהם צהובים?",
+            "at_least_one_1": "מה ההסתברות שלפחות אחד משני הכדורים שהוציאו יהיה אדום?",
+            "at_least_one_2": "מה ההסתברות שלפחות אחד משני הכדורים שהוציאו יהיה צהוב?"}),
+        "N_PENS": _prob_story("two_stage_without_replacement", 2, (
+            ("T", "בקלמר יש "), ("D", "n1"), ("T", " עטים כחולים ו־"), ("D", "n2"),
+            ("T", " עטים שחורים. מוציאים מהקלמר עט באקראי ולא מחזירים אותו. אחר כך מוציאים מהקלמר עט נוסף "
+                  "באקראי.")), {
+            "both_1": "מה ההסתברות ששני העטים שהוציאו כחולים?",
+            "both_2": "מה ההסתברות ששני העטים שהוציאו שחורים?",
+            "first_1_second_2": "מה ההסתברות שהעט הראשון כחול והעט השני שחור?",
+            "first_2_second_1": "מה ההסתברות שהעט הראשון שחור והעט השני כחול?",
+            "one_of_each": "מה ההסתברות שהוציאו עט כחול אחד ועט שחור אחד?",
+            "same": "מה ההסתברות ששני העטים שהוציאו כחולים או ששניהם שחורים?",
+            "at_least_one_1": "מה ההסתברות שלפחות אחד משני העטים שהוציאו יהיה כחול?",
+            "at_least_one_2": "מה ההסתברות שלפחות אחד משני העטים שהוציאו יהיה שחור?"}),
+        "N_MARBLES": _prob_story("two_stage_without_replacement", 2, (
+            ("T", "בכד יש "), ("D", "n1"), ("T", " גולות לבנות ו־"), ("D", "n2"),
+            ("T", " גולות שחורות. שולפים מהכד גולה באקראי ולא מחזירים אותה. אחר כך שולפים מהכד גולה נוספת "
+                  "באקראי.")), {
+            "both_1": "מה ההסתברות ששתי הגולות שנשלפו לבנות?",
+            "both_2": "מה ההסתברות ששתי הגולות שנשלפו שחורות?",
+            "first_1_second_2": "מה ההסתברות שהגולה הראשונה לבנה והגולה השנייה שחורה?",
+            "first_2_second_1": "מה ההסתברות שהגולה הראשונה שחורה והגולה השנייה לבנה?",
+            "one_of_each": "מה ההסתברות שנשלפו גולה לבנה אחת וגולה שחורה אחת?",
+            "same": "מה ההסתברות ששתי הגולות שנשלפו לבנות או ששתיהן שחורות?",
+            "at_least_one_1": "מה ההסתברות שלפחות אחת משתי הגולות שנשלפו תהיה לבנה?",
+            "at_least_one_2": "מה ההסתברות שלפחות אחת משתי הגולות שנשלפו תהיה שחורה?"}),
+    },
+    # The middle overlay's write_from_words templates and fixed layouts have no probability counterpart: the
+    # stories above are the probability Tier A texts. Both keys stay so a reader of every overlay finds them.
+    "templates": {},
+    "layouts": {},
+    # A relative-frequency question prints its counts in a one-way table (no two-way table: not taught yet).
+    "tables": True,
+    # Keys print as stacked fractions (\f) and decimals: the atom-order check runs in its fraction mode.
+    "atomFractions": True,
+    "rule": [{"kind": "text", "text": "ההסתברות של מאורע היא מספר בין אפס לאחת. כשלכל התוצאות יש אותו סיכוי, "
+              "ההסתברות של מאורע היא מספר התוצאות המתאימות לו חלקי מספר כל התוצאות. השכיחות היחסית של תוצאה היא "
+              "מספר הפעמים שהתקבלה חלקי מספר הפעמים שחזרו על הניסוי, והיא מאפשרת להעריך את ההסתברות שלה. "
+              "ההסתברות של המאורע המשלים היא אחת פחות ההסתברות של המאורע, למשל "},
+             {"kind": "display", "notation": "1-3/10=7/10", "symbols": []},
+             {"kind": "text", "text": ". בניסוי דו־שלבי כופלים את ההסתברות של התוצאה בשלב הראשון בהסתברות של "
+              "התוצאה בשלב השני, ובהוצאה בלי החזרה סופרים בשלב השני רק את מה שנשאר. כתבו כל הסתברות כשבר "
+              "מצומצם, אלא אם נאמר אחרת."}],
+    "forbiddenTerms": ("דיאגרמת עץ", "מודל השטח", "דו ממדית", "דו ממדי", "תוחלת", "בלתי תלויים"),
+    "levelNotes": {"e": "Level e (excellence): two-step reasoning, complements and draws without replacement; "
+                        "the relative-frequency answers come as a fraction, a decimal or a percent as declared."},
+    # Card examples deliberately outside the profile (counts above 20 in a bag), so a copied example is refused.
+    "exampleQuestion": ("two_stage_with_replacement", ("both_1", "both_2", "first_1_second_2")),
+    "examples": {
+        "single_draw_probability": {"text": "", "expr": "{n2}/({n1}+{n2}+{n3})", "expr2": "", "values": "",
+                                    "ask": "one_2", "form": "", "variant": "D_BALLS"},
+        "relative_frequency": {"text": "", "expr": "{n3}/({n1}+{n2}+{n3}+{n4})", "expr2": "", "values": "",
+                               "ask": "freq_3", "form": "percent", "variant": "F_SPINNER"},
+        "complement_probability": {"text": "", "expr": "1-({n2}/({n1}+{n2}))*({n2}/({n1}+{n2}))", "expr2": "",
+                                   "values": "", "ask": "at_least_one_1", "form": "", "variant": "C_BALLS"},
+        "two_stage_with_replacement": {"text": "", "expr": "({n1}/({n1}+{n2}))*({n1}/({n1}+{n2}))", "expr2": "",
+                                       "values": "", "ask": "both_1", "form": "", "variant": "R_BALLS"},
+        "two_stage_without_replacement": {"text": "", "expr": "({n1}/({n1}+{n2}))*({n2}/({n1}+{n2}-1))",
+                                          "expr2": "", "values": "", "ask": "first_1_second_2", "form": "",
+                                          "variant": "N_BALLS"},
+    },
+    "exampleGivens": ({"id": "n1", "type": "count", "value": "23", "unit": ""},
+                      {"id": "n2", "type": "count", "value": "27", "unit": ""}),
+}
+
 OVERLAYS = MappingProxyType({
     _G7_ALGEBRAIC_EXPRESSIONS["topicId"]: _freeze(_G7_ALGEBRAIC_EXPRESSIONS),
     _D10_LONG_DIVISION["topicId"]: _freeze(_D10_LONG_DIVISION),
+    _G9R_PROBABILITY["topicId"]: _freeze(_G9R_PROBABILITY),
 })
 
 
@@ -430,6 +723,19 @@ def rule_spans(overlay) -> list:
 
 def code_strings(overlay) -> list:
     """[(path, text)] of every code-written Hebrew string of one overlay, in a fixed order."""
+    if overlay.get("family") == "probability":
+        out = [("title", overlay["title"])]
+        out += [("rule.%d" % i, span["text"]) for i, span in enumerate(overlay["rule"]) if span["kind"] == "text"]
+        out += [("formNotes." + form, text) for form, text in overlay["formNotes"].items()]
+        for sid, story in overlay["stories"].items():
+            out += [("stories.%s.intro.%d" % (sid, i), value) for i, (part, value) in enumerate(story["intro"])
+                    if part == "T"]
+            out += [("stories.%s.asks.%s" % (sid, ask), text) for ask, text in story["asks"].items()]
+            if "table" in story:
+                out += [("stories.%s.table.head.%d" % (sid, i), text)
+                        for i, text in enumerate(story["table"]["head"])]
+                out.append(("stories.%s.table.rowHead" % sid, story["table"]["rowHead"]))
+        return out
     if overlay.get("skill") == "elementary":
         out = [("title", overlay["title"])]
         out += [("verbs." + kind, text) for kind, text in overlay["verbs"].items()]
@@ -511,6 +817,69 @@ def _check_elementary_overlay(overlay, need) -> None:
                 need(not value.lstrip().startswith(":"), "colon beside an atom")
 
 
+_PROBABILITY_KINDS = ("single_draw_probability", "relative_frequency", "complement_probability",
+                      "two_stage_with_replacement", "two_stage_without_replacement")
+
+
+def _check_probability_overlay(overlay, need) -> None:
+    """check_overlay for a probability overlay (family "probability": the kinds of probability_kinds)."""
+    from probability_kinds import ASKS_BY_KIND, ask_available
+    kinds = overlay["kinds"]
+    need(overlay["reviewed"] is False or overlay["reviewed"] is True, "reviewed")
+    need(tuple(overlay["letters"]) == () and overlay.get("skill", "middle") == "middle", "letters")
+    for concept, names in overlay["conceptKinds"].items():
+        need(concept.startswith(overlay["topicId"] + "#") and names, "conceptKinds")
+        need(all(name in kinds and PRACTICE in kinds[name]["groups"] for name in names), "conceptKinds")
+    for name, concepts in overlay["challengeKinds"].items():
+        need(name in kinds and CHALLENGES in kinds[name]["groups"], "challengeKinds")
+        need(concepts and all(c in overlay["conceptKinds"] for c in concepts), "challengeKinds")
+    used = {name for names in overlay["conceptKinds"].values() for name in names} | set(overlay["challengeKinds"])
+    need(used == set(kinds) == set(_PROBABILITY_KINDS), "kinds")
+    need(set(overlay["challengeAsks"]) <= {ask for name in overlay["challengeKinds"] for ask in kinds[name]["asks"]}
+         and overlay["challengeRule"] == "combined_event", "challengeAsks")
+    stories = overlay["stories"]
+    for name, row in kinds.items():
+        need(set(row["groups"]) <= {PRACTICE, CHALLENGES} and row["groups"], "kinds.groups")
+        need(tuple(row["reads"]) == ("expr", "variant", "ask") and row["givens"] is True, "kinds.reads")
+        need(row["form"] == "fraction" and row["form"] in row["forms"]
+             and set(row["forms"]) <= set(PROBABILITY_FORMS), "kinds.form")
+        need(tuple(row["asks"]) == ASKS_BY_KIND[name], "kinds.asks")
+        need(row["variants"] and all(stories.get(v, {}).get("kind") == name for v in row["variants"]), "kinds.variants")
+        low, high = row["items"]
+        need(LIMITS["items_min"] <= low <= high <= LIMITS["items_max"], "kinds.items")
+        counts = row["counts"]
+        need(1 <= counts["min"] <= counts["max"] and counts["totalMin"] <= counts["totalMax"] <= 1000, "kinds.counts")
+        need(name in overlay["examples"] and tuple(overlay["examples"][name]) == ITEM_FIELDS, "examples")
+    need({v for row in kinds.values() for v in row["variants"]} == set(stories), "stories")
+    texts = set()
+    for sid, story in stories.items():
+        row = kinds[story["kind"]]
+        categories = story["categories"]
+        parts = story["intro"]
+        need(all(part in ("T", "D") for part, _ in parts) and parts[0][0] == "T"
+             and all(a[0] != b[0] for a, b in zip(parts, parts[1:])), "stories.intro")
+        holes = [value for part, value in parts if part == "D"]
+        need(set(story["asks"]) == {ask for ask in row["asks"] if ask_available(story["kind"], ask, categories)},
+             "stories.asks")
+        texts.update(story["asks"].values())
+        if "table" in story:
+            need(story["kind"] == "relative_frequency" and holes == [] and len(story["table"]["head"]) == categories + 1
+                 and 2 <= categories + 1 <= LIMITS["table_cols"], "stories.table")
+        else:
+            need(story["kind"] != "relative_frequency" and holes == ["n%d" % i for i in range(1, categories + 1)],
+                 "stories.intro")
+        need(2 <= categories <= 4 and (categories == 2 or row["replacement"] is None), "stories.categories")
+    need(len(texts) == sum(len(story["asks"]) for story in stories.values()), "stories.asks")
+    need(set(overlay["formNotes"]) == set(PROBABILITY_FORMS), "formNotes")
+    profile = overlay["profile"]
+    need(profile["decimalPlaces"] in (1, 2, 3) and profile["percentPlaces"] == 0 and profile["power"] == 2
+         and tuple(profile["literals"]) == (1, 2), "profile")
+    need(tuple(overlay["givenTypes"]) == ("count",) and tuple(overlay["units"]) == (), "givenTypes")
+    need(overlay["tables"] is True and overlay["atomFractions"] is True, "tables")
+    need(set(overlay["levelNotes"]) == set(overlay["levels"]), "levelNotes")
+    need(overlay["exampleQuestion"][0] in kinds and 3 <= len(overlay["exampleQuestion"][1]) <= 6, "exampleQuestion")
+
+
 def check_overlay(overlay) -> None:
     """Internal consistency of one overlay; raises ValueError naming the broken field (English only)."""
     def need(condition, field):
@@ -519,6 +888,9 @@ def check_overlay(overlay) -> None:
 
     if overlay.get("skill") == "elementary":
         _check_elementary_overlay(overlay, need)
+        return
+    if overlay.get("family") == "probability":
+        _check_probability_overlay(overlay, need)
         return
     kinds = overlay["kinds"]
     need(overlay["reviewed"] is False or overlay["reviewed"] is True, "reviewed")
@@ -702,7 +1074,9 @@ def wire_schema(lesson, scope, overlay, reserves: int) -> dict:
     kinds = _unique([kind for names in practice.values() for kind in names] + list(challenge_kinds))
     rows = [overlay["kinds"][kind] for kind in kinds]
     slots = slot_names(count, reserves)
-    forms = ("",) + tuple(form for form in _unique(FORMS + ELEMENTARY_FORMS) if any(row["form"] == form for row in rows))
+    # A kind declares one form, or (the probability kinds) the tuple of forms it accepts.
+    declared = {form for row in rows for form in row.get("forms", (row["form"],))}
+    forms = ("",) + tuple(form for form in _unique(FORMS + ELEMENTARY_FORMS + PROBABILITY_FORMS) if form in declared)
     asks = _unique(("",) + tuple(ask for row in rows for ask in row["asks"]))
     variants = _unique(("",) + tuple(v for row in rows for v in row["variants"]))
     given = _object({"id": _choice(GIVEN_IDS), "type": _choice(GIVEN_TYPES),
@@ -900,6 +1274,72 @@ def _elementary_card(lesson, scope, overlay) -> str:
     return text
 
 
+def _probability_card(lesson, scope, overlay) -> str:
+    """authoring_card for a probability overlay: same sections, the story/given/ask rules of probability_kinds."""
+    practice, challenge_kinds, _ = _sheet_kinds(scope, overlay)
+    planned, reserves = plan_rows(lesson, scope, overlay)
+    kinds = _unique([kind for names in practice.values() for kind in names] + list(challenge_kinds))
+    names = {row["id"]: row["text"] for row in scope["selectedConcepts"]}
+    lines = [
+        "AUTHORING CARD | contract %s | overlay reviewed: %s" % (CONTRACT, "yes" if overlay["reviewed"] else "no"),
+        "",
+        "ROLE",
+        "Write the questions of one Hebrew mathematics worksheet as JSON that follows the response schema. "
+        "Code writes the title, rule box, every story sentence and table, numbering, stars, answer keys and "
+        "layout: never write them.",
+        "",
+        "OUTPUT",
+        "- One question object per PLAN slot, each slot once. Every key is required: write \"\" or [] for an "
+        "empty value.",
+        "- intro is \"\", table is {\"head\":[],\"rows\":[]}; every item has text, expr2 and values \"\". Write no "
+        "Hebrew word.",
+        "- 3 to 6 items (complement_probability 3 or 4), one variant per question, a different ask per item.",
+        "- givens: n1..nK of the variant, each {\"id\":\"nK\",\"type\":\"count\",\"value\":\"<whole number>\","
+        "\"unit\":\"\"}.",
+        "",
+        "MATH FIELD (expr)",
+        "- expr is the probability the ask names, over the givens: {n1}..{n4}, the numbers 1 and 2, + - * / ^2 and "
+        "brackets, as {n2}/({n1}+{n2}+{n3}). Code keys the story's own probability.",
+        "- form \"\" is a reduced fraction; relative_frequency may also say decimal or percent.",
+        "",
+        "TOPIC",
+        "- Grade %d (%s), level %s. Title: %s" % (lesson["gradeNumber"], GRADE_LINE[lesson["gradeNumber"]],
+                                                 lesson["level"], overlay["title"]),
+        "- Teach: " + "; ".join(names[c] for c in _selected(scope)),
+        "- Never use or hint at: " + "; ".join(overlay["forbiddenTerms"]) + ". No drawing, no two-way table.",
+        "- Every probability lies strictly between 0 and 1. No two items of a question share a value; no answer's "
+        "number is printed in its question; never repeat a story with the same counts.",
+        "",
+        "KINDS (counts min..max, total min..max)",
+    ]
+    for kind in kinds:
+        row = overlay["kinds"][kind]
+        group = "+".join("challenge" if g == CHALLENGES else "practice" for g in row["groups"])
+        counts = row["counts"]
+        lines.append("%s (%s; %d..%d, %d..%d): %s Variants %s." % (
+            kind, group, counts["min"], counts["max"], counts["totalMin"], counts["totalMax"], row["card"],
+            " ".join(row["variants"])))
+    lines.append("Two-draw asks: both_k, first_j_second_k, one_of_each (either order), same (one colour), "
+                 "at_least_one_k (without replacement and complement only). A challenge asks only "
+                 + ", ".join(overlay["challengeAsks"]) + ".")
+    lines += ["", "PLAN (slot | group | concept | kind)"]
+    lines += _plan_lines(planned, names)
+    lines += _plan_lines(reserves, names)
+    lines.append("R slots are reserves under the same rules, printed only in place of a refused question.")
+    lines += ["", "EXAMPLE (counts deliberately outside this sheet's range: never copy them)"]
+    example_kind, asks = overlay["exampleQuestion"]
+    example = thaw(overlay["examples"][example_kind])
+    from probability_kinds import canonical_text
+    items = [dict(example, ask=ask, expr=canonical_text(example_kind, ask, 2)) for ask in asks]
+    lines.append(_json({"slot": "Q1", "kind": example_kind, "intro": "", "givens": thaw(overlay["exampleGivens"]),
+                        "table": {"head": [], "rows": []}, "items": items}))
+    text = "\n".join(lines) + "\n"
+    problems = card_problems(text)
+    if problems:
+        raise ContractError(problems[0], "Authoring card breaks the card lint")
+    return text
+
+
 def authoring_card(lesson, scope, overlay) -> str:
     """Per-topic authoring card text (English rules, Hebrew catalog labels) for one lesson.
 
@@ -908,6 +1348,8 @@ def authoring_card(lesson, scope, overlay) -> str:
     _check_lesson(lesson, scope, overlay)
     if overlay.get("skill") == "elementary":
         return _elementary_card(lesson, scope, overlay)
+    if overlay.get("family") == "probability":
+        return _probability_card(lesson, scope, overlay)
     practice, challenge_kinds, _ = _sheet_kinds(scope, overlay)
     planned, reserves = plan_rows(lesson, scope, overlay)
     kinds = _unique([kind for names in practice.values() for kind in names] + list(challenge_kinds))

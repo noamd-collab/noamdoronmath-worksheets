@@ -1165,6 +1165,13 @@ def from_house_flat(text: str, *, letters, allow_relation: bool = False):
     return _from_house(text, letters, allow_relation)
 
 
+def from_house(text: str, *, letters, allow_relation: bool = False):
+    """Inverse of to_house including its non-flat output (\\f, \\g, ^{}): the CST that to_house prints exactly as
+    `text`, else MATH_PARSE. Used by the probability kinds, whose keys are stacked fractions (helper; from_house_flat
+    keeps refusing non-flat text)."""
+    return _from_house(text, letters, allow_relation)
+
+
 def _fields(value):
     if not isinstance(value, Mapping):
         _fail("MATH_PARSE", "expected an object with notation and symbols")
@@ -1273,4 +1280,4 @@ def to_elementary(node, grade: str) -> str:
     return text
 
 
-__all__ += ["ELEMENTARY_GRADES", "ELEMENTARY_SIGNS", "elementary_number", "to_elementary"]
+__all__ += ["ELEMENTARY_GRADES", "ELEMENTARY_SIGNS", "elementary_number", "to_elementary", "from_house"]

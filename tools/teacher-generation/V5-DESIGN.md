@@ -21,6 +21,7 @@ Paths: `TG` = tools/teacher-generation. `SKM` = the pinned middle skill (`MIDDLE
 9. Review fixes (2026-11-25)
 10. Stage-3 hardening (2026-11-25): reordered items in one question, the trusted v5 flag, container packaging, the pinned report copy
 11. Stage 3, elementary path (2026-11-25): grade 4, ד10 חילוק ארוך ושארית, level a
+12. Stage 3, middle path (2026-11-25): grade 9, g9r:probability הסתברות, level e
 
 ---
 
@@ -1011,3 +1012,37 @@ Tests: `tests/test_v5_d10_elementary.py` and `tests/test_v5_d10_render.py` (new)
 - The work area beside each story, and four questions to a page.
 - Every code-written Hebrew string of the overlay is unreviewed.
 - On this Mac `pdftoppm`/`pdffonts` are missing, so the pinned check_worksheet reports its page-fill and font checks as warn-PASS. The container has poppler-utils. The page-fill rule was checked here with the pinned `check_page_fill` on 110-dpi PyMuPDF renders.
+
+---
+
+## 12. Stage 3, middle path (2026-11-25): grade 9, g9r:probability הסתברות, level e
+
+Tests: `tests/test_v5_g9r_probability.py` and `tests/test_v5_g9r_render.py` (new). Fixtures: `tests/fixtures/v5/g9r_probability/`. No existing test changed. The g7 and ד10 overlays, every v4 path and the golden outputs (§6.3) are unchanged; the flat atom-order check still refuses a fraction (`ATOM_NOT_FLAT`).
+
+**Scope.** One topic and level: `overlay_for("g9r:probability", "e")`. The lesson is the repro lesson, verbatim: concepts #0 מהי הסתברות, מושגים בסיסיים, #1 חישובי הסתברות והקשר לשכיחות יחסית, #2 מאורע משלים, #3 מאורעות דו־שלביים. The teacher learned the tree diagram and not the two-way table, so no item prints a two-way table; the domain is אי-ודאות (not geometry), so no question has a figure field and nothing draws a tree.
+
+1. **The overlay** (`structured_contract.OVERLAYS["g9r:probability"]`, `"family": "probability"`, `reviewed: False`). Every Hebrew string is code-written Tier A text pending Noam's review (`pendingReview`): the title, the rule box, 17 stories (intros, 108 ask sentences, 4 table heads), the three form notes. Tier B stays off: the model writes a story id, typed count givens, one ask, one form and the probability as `expr` per item, never Hebrew and never a table.
+   - Plan (20 questions, floor 20): Q1–Q5 #0 `single_draw_probability`, Q6–Q9 #1 `relative_frequency`, Q10–Q13 #2 `complement_probability`, Q14–Q17 #3 `two_stage_with_replacement` or `two_stage_without_replacement`, Q18–Q20 challenges (`two_stage_without_replacement`, starred); reserves R1–R4 practice, R5–R6 challenges.
+   - Counts are typed givens n1..nK (type `count`): 2–20 in a bag story (a count of 1 would print "1 כדורים"), total 6–40 (three categories) or 4–30 (two); 1–400 in a frequency table, total 10–1000.
+   - `check_overlay`, `code_strings`, `wire_schema` (forms `""`, fraction, decimal, percent) and `authoring_card` (4.8 KB, same lint) have a probability branch.
+2. **The five kinds** (`probability_kinds`, dispatched from `item_kinds` and `structured_source`, so `item_kinds` stays the only producer and checker).
+   - `single_draw_probability`: one draw from three categories; asks `one_k`, `either_jk`.
+   - `relative_frequency`: a one-way table (head labels, one count row of display atoms); asks `freq_k` (the relative frequency) and `prob_k` (the probability it gives); each item declares fraction, decimal (at most two places) or percent (a whole percent), and code prints the form note after the ask.
+   - `complement_probability`: two draws with replacement; asks `not_first_k` (1 minus P) and `at_least_one_k` (1 minus P(no k)).
+   - `two_stage_with_replacement` / `two_stage_without_replacement`: asks `both_k`, `first_j_second_k`, `one_of_each`, `same`, and (without replacement) `at_least_one_k`. A starred question asks only `one_of_each`, `same`, `at_least_one_k` (`challengeRule` "combined_event", code `CHALLENGE_PROFILE`).
+   - **Keys.** For every (kind, ask, categories) code holds one canonical probability (`canonical_text`). The task is the kernel's `evaluate` of it with the counts in place; the key is the kernel's exact value as a reduced fraction (`2/5` → `\f{2}{5}`), a decimal (`0.35`) or a whole percent (`35%` → `35\%`, the sign inside the atom). `verify_item` recovers the counts from the task by unification, recomputes the value with an independent Fraction formula and checks the printed key; `verify_question` checks that the intro and the table are the story printed with those counts. The final validator needs no givens list.
+   - **The model's expr is bound, never trusted.** It is written over the givens only (literals 1 and 2, the power 2: `TASK_LITERAL`, `REF_UNDECLARED`, `MATH_SCOPE_POWER`); its exact value at the givens must lie strictly between 0 and 1 (`PROB_RANGE`); and it must equal the canonical probability at the givens and at six fixed probe points (`ASK_MISMATCH`). The kernel's expansion budget (`RESOURCE_LIMIT`) cannot compare the long two-draw rational functions symbolically, so the binding is exact evaluation; the key never comes from the model's expr.
+   - New codes (group `probability`): `PROB_RANGE`, `ASK_MISMATCH`, `KEY_REPEATED`. Reused: `GIVEN_SHAPE`, `GIVEN_VALUE`, `REF_UNUSED`, `TEMPLATE_*`, `ASK_UNKNOWN`, `CHALLENGE_PROFILE`, `FORM_*`, `DUPLICATE_*`, `LEAK_PINNED_VALUE`.
+3. **Repeats and leaks.** Inside a question: `DUPLICATE_ITEM` (an ask or a task twice; equal counts make two asks one task), `KEY_REPEATED` (two items with one value), and the D12 mirror `LEAK_PINNED_VALUE`: the pinned `f_atoms` of the key island against the pinned `f_hit` of each printed string of the question (the intro, every table cell, every prompt), as the pinned D12 file check reads a question's own words field by field and cell by cell. A fraction key is printed only when one string prints both its numerator and its denominator; a percent key when one string prints its percent number (a count of 35 in a table of 100 gives away 35%). Across the sheet: `DUPLICATE_TASK` (a task printed twice) and `DUPLICATE_REORDERED` (the same kind with the same counts in another order). The mirror runs at compile time and again in `general_adapters.compile_source` with the trusted skill path.
+4. **The IR and the final validator.** A v5 question may carry `"table"` only on an overlay with `"tables": true`; its cells pass the v5 span rules (text and display only). `general_source` passes `v5`/`overlay` to the table cells' `rich` calls (unchanged for v4: `v5=False`).
+5. **Rendering.** The middle adapter, the pinned build (`build_v72 --no-docx`), the pinned report parsing and the D22 allowlist are unchanged. `text_lint.lint_levels` also lints table cells. `school_math.from_house` (new, non-flat inverse of `to_house`) checks a key island round trip.
+6. **atom_order fraction mode** (`--fractions`, `check_atom_order(..., fractions=True)`), used by the runner only for an overlay with `"atomFractions": true`. An island is a sequence of segments: flat runs on one baseline and stacked `\f{…}{…}` fractions (numerator above the denominator, same centre). Every segment of an island must lie left to right in written order, the flat ones between each fraction's numerator and denominator rows; a decimal point joins a run only between two digits. Fractions and composite islands are placed first (each run used once), then the flat atoms are counted among the runs left over. Table cells are atoms of the question region. Without the flag the check is byte-for-byte the stage-2 flat check.
+7. **Packaging.** `probability_kinds.py` is in the exact Docker-context allowlists.
+
+**Render** (`v5_offline_render --case g9r_probability_good`): 20 of 20, nothing replaced or trimmed, 10 pages, producer WeasyPrint 70.0; check_didactic PASS 86, FAIL 0, REVIEW 0; G84-chronology PASS (track ט_רגילה, topic probability, 0 premature terms); atom-order PASS, 159 atoms of which 59 fractions (58 fraction keys and the rule box `1 − \f{3}{10} = \f{7}{10}`). `notRun` is the same nine allowed SKIPs as every middle v5 sheet.
+
+**For Noam to decide:**
+- Every code-written Hebrew string of the overlay is unreviewed (stories, ask sentences, table heads, form notes, rule box, title).
+- The kinds, the asks and the challenge rule (a starred question asks only combined events), and the count ranges.
+- Whether a decimal may have three places (now two) and a percent one place (now whole).
+- Questions are not split across pages, so some pages end half empty (pinned layout).

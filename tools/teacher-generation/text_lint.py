@@ -296,6 +296,21 @@ def lint_levels(levels: list) -> list:
                     invalid(where)
                     continue
                 check(where + "/intro", question.get("intro"))
+                if "table" in question:
+                    # A printed table (the probability overlay's one-way count table): every head and row cell.
+                    table = question["table"]
+                    if (type(table) is not dict or type(table.get("head", [])) is not list
+                            or type(table.get("rows")) is not list):
+                        invalid(where + "/table")
+                    else:
+                        for ci, cell in enumerate(table.get("head") or []):
+                            check("%s/table/head/%d" % (where, ci), cell)
+                        for ri, line in enumerate(table["rows"]):
+                            if type(line) is not list:
+                                invalid("%s/table/rows/%d" % (where, ri))
+                                continue
+                            for ci, cell in enumerate(line):
+                                check("%s/table/rows/%d/%d" % (where, ri, ci), cell)
                 for ii, item in enumerate(question["items"]):
                     if type(item) is not dict:
                         invalid("%s/items/%d" % (where, ii))

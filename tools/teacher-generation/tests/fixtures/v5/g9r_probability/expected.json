@@ -1,0 +1,786 @@
+{
+ "note": "Keys computed by hand (reduced fractions; decimals of at most two places; whole percents). printed is the answer island the key prints as.",
+ "delivered": 20,
+ "replaced": [],
+ "trimmed": [],
+ "questions": {
+  "Q1": {
+   "kind": "single_draw_probability",
+   "story": "D_BALLS",
+   "counts": [
+    3,
+    5,
+    2
+   ],
+   "items": [
+    {
+     "ask": "one_1",
+     "form": "fraction",
+     "key": "3/10",
+     "printed": "$\\f{3}{10}$"
+    },
+    {
+     "ask": "one_2",
+     "form": "fraction",
+     "key": "1/2",
+     "printed": "$\\f{1}{2}$"
+    },
+    {
+     "ask": "either_23",
+     "form": "fraction",
+     "key": "7/10",
+     "printed": "$\\f{7}{10}$"
+    }
+   ]
+  },
+  "Q2": {
+   "kind": "single_draw_probability",
+   "story": "D_CARDS",
+   "counts": [
+    4,
+    7,
+    9
+   ],
+   "items": [
+    {
+     "ask": "one_1",
+     "form": "fraction",
+     "key": "1/5",
+     "printed": "$\\f{1}{5}$"
+    },
+    {
+     "ask": "one_3",
+     "form": "fraction",
+     "key": "9/20",
+     "printed": "$\\f{9}{20}$"
+    },
+    {
+     "ask": "either_12",
+     "form": "fraction",
+     "key": "11/20",
+     "printed": "$\\f{11}{20}$"
+    },
+    {
+     "ask": "either_23",
+     "form": "fraction",
+     "key": "4/5",
+     "printed": "$\\f{4}{5}$"
+    }
+   ]
+  },
+  "Q3": {
+   "kind": "single_draw_probability",
+   "story": "D_CANDIES",
+   "counts": [
+    6,
+    4,
+    2
+   ],
+   "items": [
+    {
+     "ask": "one_1",
+     "form": "fraction",
+     "key": "1/2",
+     "printed": "$\\f{1}{2}$"
+    },
+    {
+     "ask": "one_2",
+     "form": "fraction",
+     "key": "1/3",
+     "printed": "$\\f{1}{3}$"
+    },
+    {
+     "ask": "one_3",
+     "form": "fraction",
+     "key": "1/6",
+     "printed": "$\\f{1}{6}$"
+    }
+   ]
+  },
+  "Q4": {
+   "kind": "single_draw_probability",
+   "story": "D_CLUB",
+   "counts": [
+    8,
+    5,
+    7
+   ],
+   "items": [
+    {
+     "ask": "one_2",
+     "form": "fraction",
+     "key": "1/4",
+     "printed": "$\\f{1}{4}$"
+    },
+    {
+     "ask": "either_12",
+     "form": "fraction",
+     "key": "13/20",
+     "printed": "$\\f{13}{20}$"
+    },
+    {
+     "ask": "either_13",
+     "form": "fraction",
+     "key": "3/4",
+     "printed": "$\\f{3}{4}$"
+    }
+   ]
+  },
+  "Q5": {
+   "kind": "single_draw_probability",
+   "story": "D_BALLS",
+   "counts": [
+    6,
+    9,
+    3
+   ],
+   "items": [
+    {
+     "ask": "one_2",
+     "form": "fraction",
+     "key": "1/2",
+     "printed": "$\\f{1}{2}$"
+    },
+    {
+     "ask": "one_3",
+     "form": "fraction",
+     "key": "1/6",
+     "printed": "$\\f{1}{6}$"
+    },
+    {
+     "ask": "either_12",
+     "form": "fraction",
+     "key": "5/6",
+     "printed": "$\\f{5}{6}$"
+    }
+   ]
+  },
+  "Q6": {
+   "kind": "relative_frequency",
+   "story": "F_SPINNER",
+   "counts": [
+    12,
+    18,
+    6,
+    14
+   ],
+   "items": [
+    {
+     "ask": "freq_1",
+     "form": "decimal",
+     "key": "0.24",
+     "printed": "$0.24$"
+    },
+    {
+     "ask": "freq_2",
+     "form": "fraction",
+     "key": "9/25",
+     "printed": "$\\f{9}{25}$"
+    },
+    {
+     "ask": "prob_4",
+     "form": "percent",
+     "key": "28%",
+     "printed": "$28\\%$"
+    }
+   ]
+  },
+  "Q7": {
+   "kind": "relative_frequency",
+   "story": "F_SURVEY",
+   "counts": [
+    70,
+    56,
+    44,
+    30
+   ],
+   "items": [
+    {
+     "ask": "freq_1",
+     "form": "percent",
+     "key": "35%",
+     "printed": "$35\\%$"
+    },
+    {
+     "ask": "freq_4",
+     "form": "decimal",
+     "key": "0.15",
+     "printed": "$0.15$"
+    },
+    {
+     "ask": "prob_2",
+     "form": "fraction",
+     "key": "7/25",
+     "printed": "$\\f{7}{25}$"
+    }
+   ]
+  },
+  "Q8": {
+   "kind": "relative_frequency",
+   "story": "F_CARS",
+   "counts": [
+    28,
+    20,
+    24,
+    8
+   ],
+   "items": [
+    {
+     "ask": "freq_1",
+     "form": "decimal",
+     "key": "0.35",
+     "printed": "$0.35$"
+    },
+    {
+     "ask": "freq_3",
+     "form": "percent",
+     "key": "30%",
+     "printed": "$30\\%$"
+    },
+    {
+     "ask": "prob_2",
+     "form": "fraction",
+     "key": "1/4",
+     "printed": "$\\f{1}{4}$"
+    }
+   ]
+  },
+  "Q9": {
+   "kind": "relative_frequency",
+   "story": "F_DRAWS",
+   "counts": [
+    16,
+    10,
+    14
+   ],
+   "items": [
+    {
+     "ask": "freq_1",
+     "form": "percent",
+     "key": "40%",
+     "printed": "$40\\%$"
+    },
+    {
+     "ask": "freq_2",
+     "form": "decimal",
+     "key": "0.25",
+     "printed": "$0.25$"
+    },
+    {
+     "ask": "prob_3",
+     "form": "fraction",
+     "key": "7/20",
+     "printed": "$\\f{7}{20}$"
+    }
+   ]
+  },
+  "Q10": {
+   "kind": "complement_probability",
+   "story": "C_BALLS",
+   "counts": [
+    3,
+    5
+   ],
+   "items": [
+    {
+     "ask": "not_first_1",
+     "form": "fraction",
+     "key": "5/8",
+     "printed": "$\\f{5}{8}$"
+    },
+    {
+     "ask": "at_least_one_1",
+     "form": "fraction",
+     "key": "39/64",
+     "printed": "$\\f{39}{64}$"
+    },
+    {
+     "ask": "at_least_one_2",
+     "form": "fraction",
+     "key": "55/64",
+     "printed": "$\\f{55}{64}$"
+    }
+   ]
+  },
+  "Q11": {
+   "kind": "complement_probability",
+   "story": "C_SPINNER",
+   "counts": [
+    2,
+    3
+   ],
+   "items": [
+    {
+     "ask": "not_first_1",
+     "form": "fraction",
+     "key": "3/5",
+     "printed": "$\\f{3}{5}$"
+    },
+    {
+     "ask": "not_first_2",
+     "form": "fraction",
+     "key": "2/5",
+     "printed": "$\\f{2}{5}$"
+    },
+    {
+     "ask": "at_least_one_1",
+     "form": "fraction",
+     "key": "16/25",
+     "printed": "$\\f{16}{25}$"
+    },
+    {
+     "ask": "at_least_one_2",
+     "form": "fraction",
+     "key": "21/25",
+     "printed": "$\\f{21}{25}$"
+    }
+   ]
+  },
+  "Q12": {
+   "kind": "complement_probability",
+   "story": "C_CARDS",
+   "counts": [
+    3,
+    7
+   ],
+   "items": [
+    {
+     "ask": "not_first_1",
+     "form": "fraction",
+     "key": "7/10",
+     "printed": "$\\f{7}{10}$"
+    },
+    {
+     "ask": "at_least_one_1",
+     "form": "fraction",
+     "key": "51/100",
+     "printed": "$\\f{51}{100}$"
+    },
+    {
+     "ask": "at_least_one_2",
+     "form": "fraction",
+     "key": "91/100",
+     "printed": "$\\f{91}{100}$"
+    }
+   ]
+  },
+  "Q13": {
+   "kind": "complement_probability",
+   "story": "C_BALLS",
+   "counts": [
+    4,
+    3
+   ],
+   "items": [
+    {
+     "ask": "not_first_1",
+     "form": "fraction",
+     "key": "3/7",
+     "printed": "$\\f{3}{7}$"
+    },
+    {
+     "ask": "at_least_one_1",
+     "form": "fraction",
+     "key": "40/49",
+     "printed": "$\\f{40}{49}$"
+    },
+    {
+     "ask": "at_least_one_2",
+     "form": "fraction",
+     "key": "33/49",
+     "printed": "$\\f{33}{49}$"
+    }
+   ]
+  },
+  "Q14": {
+   "kind": "two_stage_with_replacement",
+   "story": "R_BALLS",
+   "counts": [
+    2,
+    3
+   ],
+   "items": [
+    {
+     "ask": "both_1",
+     "form": "fraction",
+     "key": "4/25",
+     "printed": "$\\f{4}{25}$"
+    },
+    {
+     "ask": "first_1_second_2",
+     "form": "fraction",
+     "key": "6/25",
+     "printed": "$\\f{6}{25}$"
+    },
+    {
+     "ask": "one_of_each",
+     "form": "fraction",
+     "key": "12/25",
+     "printed": "$\\f{12}{25}$"
+    },
+    {
+     "ask": "same",
+     "form": "fraction",
+     "key": "13/25",
+     "printed": "$\\f{13}{25}$"
+    }
+   ]
+  },
+  "Q15": {
+   "kind": "two_stage_with_replacement",
+   "story": "R_SPINNER",
+   "counts": [
+    4,
+    2
+   ],
+   "items": [
+    {
+     "ask": "both_1",
+     "form": "fraction",
+     "key": "4/9",
+     "printed": "$\\f{4}{9}$"
+    },
+    {
+     "ask": "both_2",
+     "form": "fraction",
+     "key": "1/9",
+     "printed": "$\\f{1}{9}$"
+    },
+    {
+     "ask": "first_2_second_1",
+     "form": "fraction",
+     "key": "2/9",
+     "printed": "$\\f{2}{9}$"
+    },
+    {
+     "ask": "same",
+     "form": "fraction",
+     "key": "5/9",
+     "printed": "$\\f{5}{9}$"
+    }
+   ]
+  },
+  "Q16": {
+   "kind": "two_stage_without_replacement",
+   "story": "N_BALLS",
+   "counts": [
+    5,
+    3
+   ],
+   "items": [
+    {
+     "ask": "both_1",
+     "form": "fraction",
+     "key": "5/14",
+     "printed": "$\\f{5}{14}$"
+    },
+    {
+     "ask": "both_2",
+     "form": "fraction",
+     "key": "3/28",
+     "printed": "$\\f{3}{28}$"
+    },
+    {
+     "ask": "first_2_second_1",
+     "form": "fraction",
+     "key": "15/56",
+     "printed": "$\\f{15}{56}$"
+    },
+    {
+     "ask": "one_of_each",
+     "form": "fraction",
+     "key": "15/28",
+     "printed": "$\\f{15}{28}$"
+    }
+   ]
+  },
+  "Q17": {
+   "kind": "two_stage_with_replacement",
+   "story": "R_CARDS",
+   "counts": [
+    7,
+    3
+   ],
+   "items": [
+    {
+     "ask": "both_1",
+     "form": "fraction",
+     "key": "49/100",
+     "printed": "$\\f{49}{100}$"
+    },
+    {
+     "ask": "first_2_second_1",
+     "form": "fraction",
+     "key": "21/100",
+     "printed": "$\\f{21}{100}$"
+    },
+    {
+     "ask": "same",
+     "form": "fraction",
+     "key": "29/50",
+     "printed": "$\\f{29}{50}$"
+    }
+   ]
+  },
+  "Q18": {
+   "kind": "two_stage_without_replacement",
+   "story": "N_PENS",
+   "counts": [
+    4,
+    6
+   ],
+   "items": [
+    {
+     "ask": "one_of_each",
+     "form": "fraction",
+     "key": "8/15",
+     "printed": "$\\f{8}{15}$"
+    },
+    {
+     "ask": "same",
+     "form": "fraction",
+     "key": "7/15",
+     "printed": "$\\f{7}{15}$"
+    },
+    {
+     "ask": "at_least_one_1",
+     "form": "fraction",
+     "key": "2/3",
+     "printed": "$\\f{2}{3}$"
+    },
+    {
+     "ask": "at_least_one_2",
+     "form": "fraction",
+     "key": "13/15",
+     "printed": "$\\f{13}{15}$"
+    }
+   ]
+  },
+  "Q19": {
+   "kind": "two_stage_without_replacement",
+   "story": "N_MARBLES",
+   "counts": [
+    5,
+    7
+   ],
+   "items": [
+    {
+     "ask": "one_of_each",
+     "form": "fraction",
+     "key": "35/66",
+     "printed": "$\\f{35}{66}$"
+    },
+    {
+     "ask": "at_least_one_1",
+     "form": "fraction",
+     "key": "15/22",
+     "printed": "$\\f{15}{22}$"
+    },
+    {
+     "ask": "at_least_one_2",
+     "form": "fraction",
+     "key": "28/33",
+     "printed": "$\\f{28}{33}$"
+    }
+   ]
+  },
+  "Q20": {
+   "kind": "two_stage_without_replacement",
+   "story": "N_BALLS",
+   "counts": [
+    8,
+    3
+   ],
+   "items": [
+    {
+     "ask": "same",
+     "form": "fraction",
+     "key": "31/55",
+     "printed": "$\\f{31}{55}$"
+    },
+    {
+     "ask": "at_least_one_2",
+     "form": "fraction",
+     "key": "27/55",
+     "printed": "$\\f{27}{55}$"
+    },
+    {
+     "ask": "one_of_each",
+     "form": "fraction",
+     "key": "24/55",
+     "printed": "$\\f{24}{55}$"
+    }
+   ]
+  },
+  "R1": {
+   "kind": "single_draw_probability",
+   "story": "D_CANDIES",
+   "counts": [
+    5,
+    8,
+    11
+   ],
+   "items": [
+    {
+     "ask": "one_1",
+     "form": "fraction",
+     "key": "5/24",
+     "printed": "$\\f{5}{24}$"
+    },
+    {
+     "ask": "one_2",
+     "form": "fraction",
+     "key": "1/3",
+     "printed": "$\\f{1}{3}$"
+    },
+    {
+     "ask": "either_23",
+     "form": "fraction",
+     "key": "19/24",
+     "printed": "$\\f{19}{24}$"
+    }
+   ]
+  },
+  "R2": {
+   "kind": "relative_frequency",
+   "story": "F_DRAWS",
+   "counts": [
+    21,
+    12,
+    27
+   ],
+   "items": [
+    {
+     "ask": "freq_1",
+     "form": "decimal",
+     "key": "0.35",
+     "printed": "$0.35$"
+    },
+    {
+     "ask": "prob_2",
+     "form": "percent",
+     "key": "20%",
+     "printed": "$20\\%$"
+    },
+    {
+     "ask": "freq_3",
+     "form": "fraction",
+     "key": "9/20",
+     "printed": "$\\f{9}{20}$"
+    }
+   ]
+  },
+  "R3": {
+   "kind": "complement_probability",
+   "story": "C_CARDS",
+   "counts": [
+    5,
+    2
+   ],
+   "items": [
+    {
+     "ask": "not_first_2",
+     "form": "fraction",
+     "key": "5/7",
+     "printed": "$\\f{5}{7}$"
+    },
+    {
+     "ask": "at_least_one_1",
+     "form": "fraction",
+     "key": "45/49",
+     "printed": "$\\f{45}{49}$"
+    },
+    {
+     "ask": "at_least_one_2",
+     "form": "fraction",
+     "key": "24/49",
+     "printed": "$\\f{24}{49}$"
+    }
+   ]
+  },
+  "R4": {
+   "kind": "two_stage_without_replacement",
+   "story": "N_MARBLES",
+   "counts": [
+    4,
+    5
+   ],
+   "items": [
+    {
+     "ask": "both_1",
+     "form": "fraction",
+     "key": "1/6",
+     "printed": "$\\f{1}{6}$"
+    },
+    {
+     "ask": "first_1_second_2",
+     "form": "fraction",
+     "key": "5/18",
+     "printed": "$\\f{5}{18}$"
+    },
+    {
+     "ask": "same",
+     "form": "fraction",
+     "key": "4/9",
+     "printed": "$\\f{4}{9}$"
+    }
+   ]
+  },
+  "R5": {
+   "kind": "two_stage_without_replacement",
+   "story": "N_PENS",
+   "counts": [
+    5,
+    9
+   ],
+   "items": [
+    {
+     "ask": "one_of_each",
+     "form": "fraction",
+     "key": "45/91",
+     "printed": "$\\f{45}{91}$"
+    },
+    {
+     "ask": "same",
+     "form": "fraction",
+     "key": "46/91",
+     "printed": "$\\f{46}{91}$"
+    },
+    {
+     "ask": "at_least_one_1",
+     "form": "fraction",
+     "key": "55/91",
+     "printed": "$\\f{55}{91}$"
+    }
+   ]
+  },
+  "R6": {
+   "kind": "two_stage_without_replacement",
+   "story": "N_MARBLES",
+   "counts": [
+    3,
+    9
+   ],
+   "items": [
+    {
+     "ask": "same",
+     "form": "fraction",
+     "key": "13/22",
+     "printed": "$\\f{13}{22}$"
+    },
+    {
+     "ask": "at_least_one_1",
+     "form": "fraction",
+     "key": "5/11",
+     "printed": "$\\f{5}{11}$"
+    },
+    {
+     "ask": "at_least_one_2",
+     "form": "fraction",
+     "key": "21/22",
+     "printed": "$\\f{21}{22}$"
+    }
+   ]
+  }
+ }
+}

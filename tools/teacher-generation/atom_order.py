@@ -120,8 +120,9 @@ def expected_atoms(levels: list) -> tuple:
     return questions, answers
 
 
-def _read_pdf(pdf_path):
-    """(producer, pages, rows): rows are [(page, [(char, x0, x1, size)...] sorted by x)], top to bottom per page."""
+def _read_pdf_rows(pdf_path):
+    """(producer, pages, rows): rows are [(page, y, [(char, x0, x1, size)...] sorted by x)], top to bottom per page;
+    y is the origin y of the row's first glyph (the row grouping key)."""
     try:
         import pymupdf
         document = pymupdf.open(str(pdf_path))
@@ -143,17 +144,23 @@ def _read_pdf(pdf_path):
             current = []
             for glyph in sorted(glyphs, key=lambda g: (g[0], g[1])):
                 if current and glyph[0] - current[0][0] > ROW_TOLERANCE:
-                    rows.append((page_number, sorted(current, key=lambda g: g[1])))
+                    rows.append((page_number, current[0][0], sorted(current, key=lambda g: g[1])))
                     current = []
                 current.append(glyph)
             if current:
-                rows.append((page_number, sorted(current, key=lambda g: g[1])))
+                rows.append((page_number, current[0][0], sorted(current, key=lambda g: g[1])))
         pages = len(document)
     except Exception:  # noqa: BLE001
         raise AtomOrderError("ATOM_PDF_UNREADABLE") from None
     finally:
         document.close()
-    return producer, pages, [(page, [(g[3], g[1], g[2], g[4]) for g in row]) for page, row in rows]
+    return producer, pages, [(page, y, [(g[3], g[1], g[2], g[4]) for g in row]) for page, y, row in rows]
+
+
+def _read_pdf(pdf_path):
+    """(producer, pages, rows): rows are [(page, [(char, x0, x1, size)...] sorted by x)], top to bottom per page."""
+    producer, pages, rows = _read_pdf_rows(pdf_path)
+    return producer, pages, [(page, glyphs) for page, _, glyphs in rows]
 
 
 def _runs(row, chars=ATOM_CHARS) -> list:
@@ -224,9 +231,14 @@ def _read_levels(path):
         raise AtomOrderError("ATOM_LEVELS_INVALID") from None
 
 
-def check_atom_order(levels_path, pdf_path) -> dict:
+def check_atom_order(levels_path, pdf_path, *, fractions=False) -> dict:
     """Producer must start with 'WeasyPrint'; every expected atom must be found as a run in its region, with multiplicity
-    (found[s] ≥ expected[s]) on any page. Returns {"status":"PASS","atoms":n,"pages":p,"producer":…}; else raises."""
+    (found[s] ≥ expected[s]) on any page. Returns {"status":"PASS","atoms":n,"pages":p,"producer":…}; else raises.
+
+    fractions=True (CLI --fractions; an overlay whose keys print stacked fractions and decimals) is the fraction
+    mode of check_atom_order_fractions; without it a fraction island stays ATOM_NOT_FLAT."""
+    if fractions:
+        return check_atom_order_fractions(levels_path, pdf_path)
     questions, answers = expected_atoms(_read_levels(levels_path))
     producer, pages, rows = _read_pdf(pdf_path)
     if not producer.startswith("WeasyPrint"):
@@ -238,6 +250,302 @@ def check_atom_order(levels_path, pdf_path) -> dict:
         raise AtomOrderError("ATOM_MISSING", missing)
     return {"status": "PASS", "atoms": sum(questions.values()) + sum(answers.values()), "pages": pages,
             "producer": producer}
+
+
+# ------------------------------------------------------------------ the fraction mode (--fractions)
+# An island of the fraction mode is a sequence of segments, left to right: ("flat", glyphs) for a run of flat glyphs
+# on the island's baseline, ("frac", numerator glyphs, denominator glyphs) for one stacked \f{…}{…} whose two parts
+# are flat. A flat run may hold a decimal point between two digits ("0.35"). Any other markup (\g, ^, a nested
+# fraction, \d) is ATOM_NOT_FLAT. On the page a fraction is two runs, the numerator above the denominator with the
+# same horizontal centre; the segments of one island lie left to right in their written order, the flat ones on one
+# baseline row between the numerator and denominator rows of the fractions beside them.
+FRACTION_ROW_GAP = (0.3, 2.5)          # denominator baseline below the numerator's, in font sizes
+FRACTION_CENTRE = 0.35                 # |centre of numerator − centre of denominator| ≤ this × font size
+SEGMENT_GAP = 1.5                      # the gap between two segments of one island ≤ this × font size
+SEGMENT_OVERLAP = 0.5                  # a segment may start at most this many points left of the previous end
+
+
+def _flat_glyphs(text: str, *, decimals: bool) -> str:
+    """Glyphs of one flat piece of an island (spaces dropped, '\\%' → '%'); with decimals a '.' between two digits."""
+    out, index = [], 0
+    while index < len(text):
+        char = text[index]
+        if char in (" ", "\u00a0"):
+            index += 1
+        elif text.startswith("\\%", index):
+            out.append("%")
+            index += 2
+        elif char == "." and decimals:
+            before = out[-1] if out else ""
+            after = text[index + 1] if index + 1 < len(text) else ""
+            number = "".join(out)[len("".join(out).rstrip("0123456789.")):]
+            if not (before.isdigit() and after.isdigit()) or "." in number:      # one point per number
+                raise AtomOrderError("ATOM_NOT_FLAT")
+            out.append(".")
+            index += 1
+        elif char not in ATOM_CHARS:
+            raise AtomOrderError("ATOM_NOT_FLAT")
+        else:
+            out.append(char)
+            index += 1
+    return "".join(out)
+
+
+def _brace_part(text: str, start: int):
+    """text[start] == '{' → (its content, the index after the closing brace); unbalanced → ATOM_LEVELS_INVALID."""
+    depth = 0
+    for index in range(start, len(text)):
+        if text[index] == "{":
+            depth += 1
+        elif text[index] == "}":
+            depth -= 1
+            if depth == 0:
+                return text[start + 1:index], index + 1
+    raise AtomOrderError("ATOM_LEVELS_INVALID")
+
+
+def island_segments(island: str) -> tuple:
+    """Fraction mode: one island → its segments (see above). An island with no glyph → ATOM_LEVELS_INVALID."""
+    if type(island) is not str:
+        raise AtomOrderError("ATOM_LEVELS_INVALID")
+    segments, flat, index = [], [], 0
+
+    def close_flat():
+        if flat:
+            glyphs = _flat_glyphs("".join(flat), decimals=True)
+            if glyphs:
+                segments.append(("flat", glyphs))
+            flat.clear()
+
+    while index < len(island):
+        if island.startswith("\\f{", index):
+            close_flat()
+            top, index = _brace_part(island, index + 2)
+            if not island.startswith("{", index):
+                raise AtomOrderError("ATOM_NOT_FLAT")
+            bottom, index = _brace_part(island, index)
+            if any(mark in part for part in (top, bottom) for mark in ("\\f", "\\g", "\\d", "^", "{", "}")):
+                raise AtomOrderError("ATOM_NOT_FLAT")
+            numerator, denominator = _flat_glyphs(top, decimals=True), _flat_glyphs(bottom, decimals=True)
+            if not numerator or not denominator:
+                raise AtomOrderError("ATOM_LEVELS_INVALID")
+            segments.append(("frac", numerator, denominator))
+        elif island.startswith("\\%", index):
+            flat.append("\\%")
+            index += 2
+        elif island[index] in ("\\", "^", "_", "{", "}"):
+            raise AtomOrderError("ATOM_NOT_FLAT")
+        else:
+            flat.append(island[index])
+            index += 1
+    close_flat()
+    if not segments:
+        raise AtomOrderError("ATOM_LEVELS_INVALID")
+    return tuple(segments)
+
+
+def _islands_segments(value) -> list:
+    if type(value) is not str:
+        raise AtomOrderError("ATOM_LEVELS_INVALID")
+    parts = value.split("$")
+    if len(parts) % 2 == 0:
+        raise AtomOrderError("ATOM_LEVELS_INVALID")
+    return [island_segments(island) for island in parts[1::2]]
+
+
+def _table_strings(question) -> list:
+    """Every printed string of a question's table (head and rows), or [] without a table."""
+    table = question.get("table")
+    if table is None:
+        return []
+    if type(table) is not dict or type(table.get("head", [])) is not list or type(table.get("rows")) is not list:
+        raise AtomOrderError("ATOM_LEVELS_INVALID")
+    cells = list(table.get("head") or [])
+    for row in table["rows"]:
+        if type(row) is not list:
+            raise AtomOrderError("ATOM_LEVELS_INVALID")
+        cells += row
+    return cells
+
+
+def expected_atoms_fractions(levels: list) -> tuple:
+    """Fraction mode: (question flats, answer flats, question shapes, answer shapes). A flat island counts by its
+    glyphs as in expected_atoms; an island holding a fraction counts as its segment tuple. The question region also
+    reads every table cell (the probability overlay prints its counts in a one-way table)."""
+    if type(levels) is not list or not levels:
+        raise AtomOrderError("ATOM_LEVELS_INVALID")
+    flats = (Counter(), Counter())
+    shapes = (Counter(), Counter())
+
+    def add(region, value):
+        for segments in _islands_segments(value):
+            if len(segments) == 1 and segments[0][0] == "flat":
+                flats[region][segments[0][1]] += 1
+            else:
+                shapes[region][segments] += 1
+
+    for level in levels:
+        if type(level) is not dict or type(level.get("questions")) is not list or type(level.get("answers")) is not list:
+            raise AtomOrderError("ATOM_LEVELS_INVALID")
+        for field in ("title", "rule"):
+            add(0, level.get(field, ""))
+        for question in level["questions"]:
+            if type(question) is not dict or type(question.get("items")) is not list:
+                raise AtomOrderError("ATOM_LEVELS_INVALID")
+            flats[0][_marker(question.get("n"))] += 1
+            add(0, question.get("intro", ""))
+            for cell in _table_strings(question):
+                add(0, cell)
+            for item in question["items"]:
+                if type(item) is not dict:
+                    raise AtomOrderError("ATOM_LEVELS_INVALID")
+                add(0, item.get("text"))
+        for row in level["answers"]:
+            if type(row) is not list or len(row) < 2 or type(row[1]) is not list:
+                raise AtomOrderError("ATOM_LEVELS_INVALID")
+            flats[1][_marker(row[0])] += 1
+            for pair in row[1]:
+                if type(pair) is not list or len(pair) != 2:
+                    raise AtomOrderError("ATOM_LEVELS_INVALID")
+                add(1, pair[1])
+    return flats[0], flats[1], shapes[0], shapes[1]
+
+
+def _positioned_runs(row) -> list:
+    """Fraction-mode runs of one row: [(text, x0, x1, size)]. As _runs, plus a '.' that joins a run only between two
+    digits (the decimal point of "0.35"); any other '.' breaks it."""
+    out, run, previous = [], None, None
+    for index, (char, x0, x1, size) in enumerate(row):
+        if char == ".":
+            nxt = row[index + 1] if index + 1 < len(row) else None
+            decimal = (run is not None and run[0][-1:].isdigit() and previous is not None and x0 > previous[0]
+                       and x0 - previous[1] <= GAP_FACTOR * size and nxt is not None and nxt[0].isdigit()
+                       and nxt[1] > x0 and nxt[1] - x1 <= GAP_FACTOR * nxt[3])
+            if decimal:
+                run = (run[0] + ".", run[1], x1, max(run[3], size))
+                previous = (x0, x1)
+                continue
+        joined = (run is not None and char in ATOM_CHARS and previous is not None and x0 > previous[0]
+                  and x0 - previous[1] <= GAP_FACTOR * size)
+        if char in ATOM_CHARS and len(char) == 1:
+            if joined:
+                run = (run[0] + char, run[1], x1, max(run[3], size))
+            else:
+                if run is not None:
+                    out.append(run)
+                run = (char, x0, x1, size)
+            previous = (x0, x1)
+        else:
+            if run is not None:
+                out.append(run)
+            run, previous = None, None
+    if run is not None:
+        out.append(run)
+    return out
+
+
+def _fraction_regions(rows, anchor) -> tuple:
+    """(runs before the anchor row, runs after it): each run a dict with page, row index, y, x0, x1, size, text."""
+    before, after = [], []
+    for index, (page, y, glyphs) in enumerate(rows):
+        for text, x0, x1, size in _positioned_runs(glyphs):
+            run = {"page": page, "row": index, "y": y, "x0": x0, "x1": x1, "size": size, "text": text, "used": False}
+            (before if index < anchor else after).append(run)
+    return before, after
+
+
+def _stacked(numerator, denominator) -> bool:
+    size = max(numerator["size"], denominator["size"])
+    low, high = FRACTION_ROW_GAP
+    centre = abs((numerator["x0"] + numerator["x1"]) / 2 - (denominator["x0"] + denominator["x1"]) / 2)
+    return (numerator["page"] == denominator["page"] and low * size <= denominator["y"] - numerator["y"] <= high * size
+            and centre <= FRACTION_CENTRE * size)
+
+
+def _match_shape(segments, runs) -> bool:
+    """Find one placement of an island's segments among the unused runs (left to right, one baseline for the flat
+    segments between each fraction's numerator and denominator rows); mark its runs used. False when none."""
+    by_text = {}
+    for run in runs:
+        if not run["used"]:
+            by_text.setdefault(run["text"], []).append(run)
+
+    def candidates(segment, previous, baseline):
+        if segment[0] == "flat":
+            for run in by_text.get(segment[1], ()):
+                if run["used"] or (baseline is not None and abs(run["y"] - baseline) > ROW_TOLERANCE):
+                    continue
+                yield (run,), run["x0"], run["x1"], run["page"], run["size"]
+        else:
+            for top in by_text.get(segment[1], ()):
+                if top["used"]:
+                    continue
+                for bottom in by_text.get(segment[2], ()):
+                    if bottom["used"] or bottom is top or not _stacked(top, bottom):
+                        continue
+                    if baseline is not None and not top["y"] < baseline < bottom["y"]:
+                        continue
+                    yield ((top, bottom), min(top["x0"], bottom["x0"]), max(top["x1"], bottom["x1"]), top["page"],
+                           max(top["size"], bottom["size"]))
+
+    def search(index, previous, baseline, chosen):
+        if index == len(segments):
+            fractions = [runs for kind_, runs in chosen if kind_ == "frac"]
+            if baseline is not None and any(not top["y"] < baseline < bottom["y"] for top, bottom in fractions):
+                return None
+            return chosen
+        segment = segments[index]
+        for picked, left, right, page, size in candidates(segment, previous, baseline):
+            if previous is not None:
+                prev_right, prev_page, prev_size = previous
+                gap = left - prev_right
+                if page != prev_page or gap < -SEGMENT_OVERLAP or gap > SEGMENT_GAP * max(size, prev_size):
+                    continue
+            for run in picked:
+                run["used"] = True
+            line = picked[0]["y"] if segment[0] == "flat" and baseline is None else baseline
+            found = search(index + 1, (right, page, size), line, chosen + [(segment[0], picked)])
+            if found is not None:
+                return found
+            for run in picked:
+                run["used"] = False
+        return None
+
+    return search(0, None, None, []) is not None
+
+
+def check_atom_order_fractions(levels_path, pdf_path) -> dict:
+    """The fraction mode of check_atom_order: every fraction or composite island placed as its segments (most
+    segments first, each run used once), then every flat atom counted among the runs no placement used, in its
+    region, with multiplicity, on any page. Producer WeasyPrint. Returns the PASS report; else raises."""
+    questions, answers, question_shapes, answer_shapes = expected_atoms_fractions(_read_levels(levels_path))
+    producer, pages, rows = _read_pdf_rows(pdf_path)
+    if not producer.startswith("WeasyPrint"):
+        raise AtomOrderError("PDF_PRODUCER_NOT_WEASYPRINT")
+    anchor = _anchor([(page, glyphs) for page, _, glyphs in rows])
+    before, after = _fraction_regions(rows, anchor)
+    missing = []
+    for region, shapes, runs in (("questions", question_shapes, before), ("answers", answer_shapes, after)):
+        for segments in sorted(shapes, key=lambda s: (-len(s), repr(s))):
+            for _ in range(shapes[segments]):
+                if not _match_shape(segments, runs):
+                    missing.append((region, _shape_text(segments)))
+                    break
+    found_before = Counter(run["text"] for run in before if not run["used"])
+    found_after = Counter(run["text"] for run in after if not run["used"])
+    missing += [("questions", atom) for atom, count in sorted(questions.items()) if found_before[atom] < count]
+    missing += [("answers", atom) for atom, count in sorted(answers.items()) if found_after[atom] < count]
+    if missing:
+        raise AtomOrderError("ATOM_MISSING", missing)
+    atoms = (sum(questions.values()) + sum(answers.values()) + sum(question_shapes.values())
+             + sum(answer_shapes.values()))
+    return {"status": "PASS", "atoms": atoms, "fractions": sum(question_shapes.values()) + sum(answer_shapes.values()),
+            "pages": pages, "producer": producer}
+
+
+def _shape_text(segments) -> str:
+    """A readable code-only name of a segment tuple for the missing list: 1−[3/10]=[7/10]."""
+    return "".join(segment[1] if segment[0] == "flat" else "[%s/%s]" % (segment[1], segment[2]) for segment in segments)
 
 
 class _ElementaryAtoms:
@@ -370,9 +678,13 @@ def main(argv=None) -> int:
     source.add_argument("--html")
     parser.add_argument("--pdf", required=True)
     parser.add_argument("--json", required=True)
+    # The fraction mode (stacked fractions, composite fraction islands, decimals); --levels only.
+    parser.add_argument("--fractions", action="store_true")
     args = parser.parse_args(argv)
+    if args.fractions and args.levels is None:
+        parser.error("--fractions needs --levels")
     try:
-        report = (check_atom_order(args.levels, args.pdf) if args.levels is not None
+        report = (check_atom_order(args.levels, args.pdf, fractions=args.fractions) if args.levels is not None
                   else check_atom_order_html(args.html, args.pdf))
         report["missing"] = []
     except AtomOrderError as error:
