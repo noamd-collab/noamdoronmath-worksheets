@@ -55,6 +55,8 @@ export type EliyahuGame = {
   links: GameLink[];
   /** Catalog topics this game teaches; drives the coverage map in gameCoverage.ts. */
   topics: GameTopicRef[];
+  /** Subject badge for a cross-curricular game; omitted for maths games. */
+  subject?: string;
   /** Palette, injected as custom properties into the document. */
   theme: GameTheme;
   /**
@@ -544,7 +546,516 @@ export const ENGINE_GAMES: EliyahuGame[] = [
     theme: ROSE,
     kind: 'engine',
     playPath: '/games/nuschat-hashorashim/play'
-  }
+  },
+  {
+    slug: 'mad-hazavit',
+    title: 'משחק מד הזווית עם אליהו | נועם דורון',
+    h1: 'משחק מד הזווית עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מודדים זוויות במד זווית, מסווגים אותן ומשלימים ל־90° ול־180°. משחקים בגרירה, בכפתורים או במקלדת.',
+    short: 'מודדים זוויות במד זווית, מסווגים אותן ומשלימים ל־90° ול־180°.',
+    grade: 'כיתה ז׳',
+    gradeOrder: 7,
+    emoji: '📐',
+    links: [{ href: '/angles-introduction-measurement-grade-7', label: 'זוויות לכיתה ז׳' }, { href: '/angles-review-grade-7', label: 'זוויות — דף חזרה לכיתה ז׳' }],
+    topics: [{ grade: 7, topic: 11, coverage: 'partial' }, { grade: 7, topic: 13, coverage: 'partial' }],
+    theme: INDIGO,
+    kind: 'engine',
+    playPath: '/games/mad-hazavit/play'
+  },
+  {
+    slug: 'chukiyot-vedfusim',
+    title: 'משחק ציידי החוקיות עם אליהו | נועם דורון',
+    h1: 'משחק ציידי החוקיות עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מגלים את הכלל שמאחורי סדרת ציורים ומספרים ובונים ביטוי לאיבר הכללי. משחקים בגרירה, בכפתורים או במקלדת.',
+    short: 'מגלים את הכלל שמאחורי סדרת ציורים ומספרים ובונים ביטוי לאיבר הכללי.',
+    grade: 'כיתה ז׳',
+    gradeOrder: 7,
+    emoji: '🔁',
+    links: [{ href: '/number-patterns-grade-7', label: 'חוקיות לכיתה ז׳' }, { href: '/patterns-and-graphs-grade-7', label: 'חוקיות וגרפים לכיתה ז׳' }],
+    topics: [{ grade: 7, topic: 21, coverage: 'partial' }],
+    theme: FOREST,
+    kind: 'engine',
+    playPath: '/games/chukiyot-vedfusim/play'
+  },
+  {
+    slug: 'mechonat-hahatsava',
+    title: 'משחק מכונת ההצבה עם אליהו | נועם דורון',
+    h1: 'משחק מכונת ההצבה עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מתרגמים סיפור לביטוי אלגברי ומציבים בו מספרים, גם שליליים. משחקים בגרירה, בכפתורים או במקלדת.',
+    short: 'מתרגמים סיפור לביטוי אלגברי ומציבים בו מספרים, גם שליליים.',
+    grade: 'כיתה ז׳',
+    gradeOrder: 7,
+    emoji: '⚙️',
+    links: [{ href: '/algebraic-expressions-grade-7', label: 'ביטויים אלגבריים לכיתה ז׳' }, { href: '/algebraic-language-grade-7', label: 'שפה אלגברית לכיתה ז׳' }],
+    topics: [{ grade: 7, topic: 22, coverage: 'partial' }, { grade: 7, topic: 23, coverage: 'partial' }],
+    theme: AMBER,
+    kind: 'engine',
+    playPath: '/games/mechonat-hahatsava/play'
+  },
+  {
+    slug: 'model-hashetach',
+    title: 'משחק מודל השטח עם אליהו | נועם דורון',
+    h1: 'משחק מודל השטח עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: חותכים מלבן לחלקים ורואים למה a(b+c)=ab+ac — עד מכפלת שני סוגריים. משחקים בגרירה, בכפתורים או במקלדת.',
+    short: 'חותכים מלבן לחלקים ורואים למה a(b+c)=ab+ac — עד מכפלת שני סוגריים.',
+    grade: 'כיתות ז׳–ט׳',
+    gradeOrder: 7,
+    emoji: '🧱',
+    links: [{ href: '/equations-advanced-grade-7', label: 'סוגריים וחוק הפילוג לכיתה ז׳' }, { href: '/distributive-law-grade-9', label: 'חוק הפילוג המורחב לכיתה ט׳' }],
+    topics: [{ grade: 7, topic: 38, coverage: 'partial' }, { grade: 9, topic: 1, coverage: 'partial' }],
+    theme: EMBER,
+    kind: 'engine',
+    playPath: '/games/model-hashetach/play'
+  },
+  {
+    slug: 'tavlat-hashkichut',
+    title: 'משחק טבלת השכיחות עם אליהו | נועם דורון',
+    h1: 'משחק טבלת השכיחות עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: אוספים נתונים גולמיים, בונים טבלת שכיחות ועמודות שמספרות את האמת. משחקים בגרירה, בכפתורים או במקלדת.',
+    short: 'אוספים נתונים גולמיים, בונים טבלת שכיחות ועמודות שמספרות את האמת.',
+    grade: 'כיתות ז׳–ח׳',
+    gradeOrder: 7,
+    emoji: '📊',
+    links: [{ href: '/data-collection-reading-grade-7', label: 'איסוף וקריאת מידע לכיתה ז׳' }, { href: '/frequency-grade-7', label: 'שכיחות לכיתה ז׳' }, { href: '/bar-charts-pictograms-grade-8', label: 'עמודות ופיקטוגרמות לכיתה ח׳' }],
+    topics: [{ grade: 7, topic: 24, coverage: 'partial' }, { grade: 7, topic: 25, coverage: 'partial' }, { grade: 8, topic: 17, coverage: 'partial' }],
+    theme: CYAN,
+    kind: 'engine',
+    playPath: '/games/tavlat-hashkichut/play'
+  },
+  {
+    slug: 'diagramat-haouga',
+    title: 'משחק דיאגרמת העוגה עם אליהו | נועם דורון',
+    h1: 'משחק דיאגרמת העוגה עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מתרגמים אחוזים למעלות וחותכים עוגה שמסכמת בדיוק ל־100%. משחקים בגרירה, בכפתורים או במקלדת.',
+    short: 'מתרגמים אחוזים למעלות וחותכים עוגה שמסכמת בדיוק ל־100%.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '🥧',
+    links: [{ href: '/pie-charts-grade-8', label: 'דיאגרמת עוגה לכיתה ח׳' }],
+    topics: [{ grade: 8, topic: 18, coverage: 'partial' }],
+    theme: ROSE,
+    kind: 'engine',
+    playPath: '/games/diagramat-haouga/play'
+  },
+  {
+    slug: 'merchav-hatotsaot',
+    title: 'משחק מרחב התוצאות עם אליהו | נועם דורון',
+    h1: 'משחק מרחב התוצאות עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: בונים את כל התוצאות האפשריות ומחשבים הסתברות של אירוע. משחקים בגרירה, בכפתורים או במקלדת.',
+    short: 'בונים את כל התוצאות האפשריות ומחשבים הסתברות של אירוע.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '🎲',
+    links: [{ href: '/probability-sample-space-grade-8', label: 'מרחב תוצאות לכיתה ח׳' }, { href: '/probability-experiments-fairness-grade-8', label: 'ניסוי והוגנות לכיתה ח׳' }],
+    topics: [{ grade: 8, topic: 50, coverage: 'partial' }, { grade: 8, topic: 51, coverage: 'partial' }],
+    theme: PLUM,
+    kind: 'engine',
+    playPath: '/games/merchav-hatotsaot/play'
+  },
+  {
+    slug: 'ee-shivyon-batsir',
+    title: 'משחק אי־שוויון על הציר עם אליהו | נועם דורון',
+    h1: 'משחק אי־שוויון על הציר עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: פותרים אי־שוויון, מסמנים אותו על הציר וזוכרים מתי הסימן מתהפך. משחקים בגרירה, בכפתורים או במקלדת.',
+    short: 'פותרים אי־שוויון, מסמנים אותו על הציר וזוכרים מתי הסימן מתהפך.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '↔️',
+    links: [{ href: '/inequalities-grade-8', label: 'אי־שוויון לכיתה ח׳' }, { href: '/graphical-inequalities-grade-8', label: 'אי־שוויון גרפי לכיתה ח׳' }],
+    topics: [{ grade: 8, topic: 52, coverage: 'partial' }, { grade: 8, topic: 53, coverage: 'partial' }],
+    theme: OCEAN,
+    kind: 'engine',
+    playPath: '/games/ee-shivyon-batsir/play'
+  },
+  {
+    slug: 'chafifat-meshulashim',
+    title: 'משחק חפיפת משולשים עם אליהו | נועם דורון',
+    h1: 'משחק חפיפת משולשים עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מתאימים צלעות וזוויות ובודקים איזה משפט חפיפה באמת מספיק. משחקים בגרירה, בכפתורים או במקלדת.',
+    short: 'מתאימים צלעות וזוויות ובודקים איזה משפט חפיפה באמת מספיק.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '🔺',
+    links: [{ href: '/triangle-congruence-grade-8', label: 'חפיפת משולשים לכיתה ח׳' }, { href: '/congruence-theorems-grade-8', label: 'משפטי חפיפה לכיתה ח׳' }],
+    topics: [{ grade: 8, topic: 36, coverage: 'partial' }, { grade: 8, topic: 37, coverage: 'partial' }],
+    theme: SLATE,
+    kind: 'engine',
+    playPath: '/games/chafifat-meshulashim/play'
+  },
+  {
+    slug: 'yesharim-makbilim',
+    title: 'משחק ישרים מקבילים עם אליהו | נועם דורון',
+    h1: 'משחק ישרים מקבילים עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: גוררים חותך בין שני מקבילים ומגלים אילו זוויות שוות ואילו משלימות ל־180°. משחקים בגרירה, בכפתורים או במקלדת.',
+    short: 'גוררים חותך בין שני מקבילים ומגלים אילו זוויות שוות ואילו משלימות ל־180°.',
+    grade: 'כיתה ט׳',
+    gradeOrder: 9,
+    emoji: '🛤️',
+    links: [{ href: '/parallel-lines-angles-grade-9', label: 'זוויות בין מקבילים לכיתה ט׳' }, { href: '/co-interior-angles-grade-9', label: 'זוויות חד־צדדיות לכיתה ט׳' }],
+    topics: [{ grade: 9, topic: 50, coverage: 'partial' }, { grade: 9, topic: 51, coverage: 'partial' }],
+    theme: TEAL,
+    kind: 'engine',
+    playPath: '/games/yesharim-makbilim/play'
+  },
+  {
+    slug: 'mashvim-shvarim',
+    title: 'משחק משווים שברים עם אליהו | נועם דורון',
+    h1: 'משחק משווים שברים עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: משווים שברים על אותו שלם, בעזרת רצועות וישר מספרים. משחקים בגרירה, בכפתורים או במקלדת, מקבלים משוב מידי ומסיימים עם דוח מיומנויות.',
+    short: 'משווים שברים על אותו שלם, בעזרת רצועות וישר מספרים.',
+    grade: 'כיתות ד׳–ו׳',
+    gradeOrder: 4,
+    emoji: '◆',
+    subject: 'מתמטיקה',
+    links: [{ href: '/compare-fractions-decimals-grade-5', label: 'השוואת שברים לכיתה ה׳' }],
+    topics: [{ grade: 5, topic: 29, coverage: 'partial' }],
+    theme: PLUM,
+    kind: 'engine',
+    playPath: '/games/mashvim-shvarim/play'
+  },
+  {
+    slug: 'masaa-baolam',
+    title: 'משחק מסע בעולם עם אליהו | נועם דורון',
+    h1: 'משחק מסע בעולם עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מוצאים מדינות על מפת העולם ומחברים אותן ליבשות. משחקים בגרירה, בכפתורים או במקלדת, מקבלים משוב מידי ומסיימים עם דוח מיומנויות.',
+    short: 'מוצאים מדינות על מפת העולם ומחברים אותן ליבשות.',
+    grade: 'כיתות ה׳–ח׳',
+    gradeOrder: 5,
+    emoji: '◆',
+    subject: 'גאוגרפיה',
+    links: [],
+    topics: [],
+    theme: OCEAN,
+    kind: 'engine',
+    playPath: '/games/masaa-baolam/play'
+  },
+  {
+    slug: 'masaa-shel-tipa',
+    title: 'משחק מסע של טיפה עם אליהו | נועם דורון',
+    h1: 'משחק מסע של טיפה עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מלווים טיפה דרך אידוי, עיבוי, משקעים וזרימה. משחקים בגרירה, בכפתורים או במקלדת, מקבלים משוב מידי ומסיימים עם דוח מיומנויות.',
+    short: 'מלווים טיפה דרך אידוי, עיבוי, משקעים וזרימה.',
+    grade: 'כיתות ג׳–ו׳',
+    gradeOrder: 3,
+    emoji: '◆',
+    subject: 'מדעים',
+    links: [],
+    topics: [],
+    theme: CYAN,
+    kind: 'engine',
+    playPath: '/games/masaa-shel-tipa/play'
+  },
+  {
+    slug: 'milim-vetmunot',
+    title: 'משחק מילים ותמונות עם אליהו | נועם דורון',
+    h1: 'משחק מילים ותמונות עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מחברים מילים באנגלית לאיורים, ומגלים את המילה בתוך משפט. משחקים בגרירה, בכפתורים או במקלדת, מקבלים משוב מידי ומסיימים עם דוח מיומנויות.',
+    short: 'מחברים מילים באנגלית לאיורים, ומגלים את המילה בתוך משפט.',
+    grade: 'כיתות ג׳–ו׳',
+    gradeOrder: 3,
+    emoji: '◆',
+    subject: 'אנגלית',
+    links: [],
+    topics: [],
+    theme: ROSE,
+    kind: 'engine',
+    playPath: '/games/milim-vetmunot/play'
+  },
+  {
+    slug: 'tzir-hazman',
+    title: 'משחק ציר הזמן עם אליהו | נועם דורון',
+    h1: 'משחק ציר הזמן עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מסדרים אירועים על ציר זמן ומשווים מרחקים בין שנים. משחקים בגרירה, בכפתורים או במקלדת, מקבלים משוב מידי ומסיימים עם דוח מיומנויות.',
+    short: 'מסדרים אירועים על ציר זמן ומשווים מרחקים בין שנים.',
+    grade: 'כיתות ה׳–ח׳',
+    gradeOrder: 5,
+    emoji: '◆',
+    subject: 'היסטוריה',
+    links: [{ href: '/coordinate-plane-scale-grade-7', label: 'מערכת צירים וקנה מידה לכיתה ז׳' }],
+    topics: [{ grade: 7, topic: 8, coverage: 'partial' }],
+    theme: AMBER,
+    kind: 'engine',
+    playPath: '/games/tzir-hazman/play'
+  },
+  {
+    slug: 'sipur-vedmut',
+    title: 'משחק סיפור ודמות עם אליהו | נועם דורון',
+    h1: 'משחק סיפור ודמות עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מחברים דמויות לסיפוריהן ומסדרים את מהלך הסיפור. משחקים בגרירה, בכפתורים או במקלדת, מקבלים משוב מידי ומסיימים עם דוח מיומנויות.',
+    short: 'מחברים דמויות לסיפוריהן ומסדרים את מהלך הסיפור.',
+    grade: 'כיתות ג׳–ו׳',
+    gradeOrder: 3,
+    emoji: '◆',
+    subject: 'תנ״ך ומורשת',
+    links: [],
+    topics: [],
+    theme: FOREST,
+    kind: 'engine',
+    playPath: '/games/sipur-vedmut/play'
+  },
+  {
+    slug: 'kod-batzadim',
+    title: 'משחק קוד בצעדים עם אליהו | נועם דורון',
+    h1: 'משחק קוד בצעדים עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: בונים רצף הוראות, מתקנים שגיאה ומגלים חזרות בקוד. משחקים בגרירה, בכפתורים או במקלדת, מקבלים משוב מידי ומסיימים עם דוח מיומנויות.',
+    short: 'בונים רצף הוראות, מתקנים שגיאה ומגלים חזרות בקוד.',
+    grade: 'כיתות ד׳–ח׳',
+    gradeOrder: 4,
+    emoji: '◆',
+    subject: 'תכנות',
+    links: [{ href: '/patterns-multistep-grade-6', label: 'חוקיות ובעיות רב־שלביות לכיתה ו׳' }],
+    topics: [{ grade: 6, topic: 27, coverage: 'partial' }],
+    theme: SLATE,
+    kind: 'engine',
+    playPath: '/games/kod-batzadim/play'
+  },
+  {
+    slug: 'tslilim-vetavim',
+    title: 'משחק צלילים ותווים עם אליהו | נועם דורון',
+    h1: 'משחק צלילים ותווים עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מגלים איך מיקום התו קשור לגובה הצליל, ומנגנים מנגינה קצרה. משחקים בגרירה, בכפתורים או במקלדת, מקבלים משוב מידי ומסיימים עם דוח מיומנויות.',
+    short: 'מגלים איך מיקום התו קשור לגובה הצליל, ומנגנים מנגינה קצרה.',
+    grade: 'כיתות ג׳–ו׳',
+    gradeOrder: 3,
+    emoji: '◆',
+    subject: 'מוזיקה',
+    links: [],
+    topics: [],
+    theme: EMBER,
+    kind: 'engine',
+    playPath: '/games/tslilim-vetavim/play'
+  },
+  {
+    slug: 'kefel-bezek',
+    title: 'משחק כפל בזק עם אליהו | נועם דורון',
+    h1: 'משחק כפל בזק עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מוצאים עובדות כפל מהר, בעזרת פירוק, זוגות ותרגול קצר. משחקים בגרירה, בכפתורים או במקלדת, מקבלים משוב מידי ומסיימים עם דוח מיומנויות.',
+    short: 'מוצאים עובדות כפל מהר, בעזרת פירוק, זוגות ותרגול קצר.',
+    grade: 'כיתות ג׳–ה׳',
+    gradeOrder: 3,
+    emoji: '◆',
+    subject: 'מתמטיקה',
+    links: [{ href: '/multiplication-facts-arrays-grade-3', label: 'עובדות הכפל לכיתה ג׳' }],
+    topics: [{ grade: 3, topic: 9, coverage: 'partial' }],
+    theme: INDIGO,
+    kind: 'engine',
+    playPath: '/games/kefel-bezek/play'
+  },
+  {
+    slug: 'zchuyot-veachrayut',
+    title: 'משחק זכויות ואחריות עם אליהו | נועם דורון',
+    h1: 'משחק זכויות ואחריות עם אליהו',
+    description: 'שיעור אינטראקטיבי בעברית עם אליהו: מבחינים בין זכות, חובה חוקית ואחריות בחיי היומיום. משחקים בגרירה, בכפתורים או במקלדת, מקבלים משוב מידי ומסיימים עם דוח מיומנויות.',
+    short: 'מבחינים בין זכות, חובה חוקית ואחריות בחיי היומיום.',
+    grade: 'כיתות ה׳–ח׳',
+    gradeOrder: 5,
+    emoji: '◆',
+    subject: 'אזרחות',
+    links: [],
+    topics: [],
+    theme: TEAL,
+    kind: 'engine',
+    playPath: '/games/zchuyot-veachrayut/play'
+  },
+  {
+    slug: 'bonim-minsara',
+    title: 'משחק התיבה והמנסרה המשולשת עם אליהו | נועם דורון',
+    h1: 'משחק התיבה והמנסרה המשולשת עם אליהו',
+    description: 'שיעור קצר עם אליהו: ממלאים תיבה בשכבות של קוביות, חוצים אותה למנסרה משולשת, ופורסים את המנסרה כדי לחשב את שטח הפנים.',
+    short: 'שטח הבסיס כפול הגובה — בתיבה ובמנסרה.',
+    grade: 'כיתות ז׳–ט׳',
+    gradeOrder: 7,
+    emoji: '🧊',
+    links: [
+      { href: '/box-and-cube-grade-7', label: 'תיבה וקובייה לכיתה ז׳' },
+      { href: '/solids-box-cube-prism-grade-7', label: 'מנסרה משולשת לכיתה ז׳' },
+      { href: '/triangular-prism-volume-grade-9', label: 'נפח המנסרה המשולשת לכיתה ט׳' },
+      { href: '/triangular-prism-surface-area-grade-9', label: 'שטח הפנים של המנסרה לכיתה ט׳' }
+    ],
+    topics: [
+      { grade: 7, topic: 20, coverage: 'partial' },
+      { grade: 7, topic: 47, coverage: 'full' },
+      { grade: 7, topic: 48, coverage: 'full' },
+      { grade: 9, topic: 30, coverage: 'partial' },
+      { grade: 9, topic: 31, coverage: 'partial' }
+    ],
+    theme: CYAN,
+    kind: 'engine',
+    playPath: '/games/bonim-minsara/play'
+  },
+  {
+    slug: 'galgal-haigul',
+    title: 'משחק העיגול והגליל עם אליהו | נועם דורון',
+    h1: 'משחק העיגול והגליל עם אליהו',
+    description: 'שיעור קצר עם אליהו: מגלגלים גלגל כדי למצוא את ההיקף, מסדרים גזרות של עיגול למלבן כדי למצוא את השטח, ופורסים גליל לשטח פנים ונפח.',
+    short: 'גלגל אחד מסתובב — ו־π מופיע על הסרגל.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '🛞',
+    links: [
+      { href: '/circle-area-circumference-grade-8', label: 'מעגל ועיגול לכיתה ח׳' },
+      { href: '/cylinder-surface-area-grade-8', label: 'שטח הפנים של הגליל לכיתה ח׳' },
+      { href: '/cylinder-volume-grade-8', label: 'נפח הגליל לכיתה ח׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 63, coverage: 'full' },
+      { grade: 8, topic: 13, coverage: 'full' },
+      { grade: 8, topic: 14, coverage: 'full' }
+    ],
+    theme: OCEAN,
+    kind: 'engine',
+    playPath: '/games/galgal-haigul/play'
+  },
+  {
+    slug: 'gozrim-umadbikim',
+    title: 'משחק שטח המקבילית, הטרפז והמצולע המורכב עם אליהו | נועם דורון',
+    h1: 'משחק שטח המקבילית, הטרפז והמצולע המורכב עם אליהו',
+    description: 'שיעור קצר עם אליהו: גוזרים משולש מהמקבילית והופכים אותה למלבן, מצמידים שני טרפזים למקבילית, ומפרקים מצולע מורכב לצורות מוכרות.',
+    short: 'גוזרים, מזיזים ומדביקים — והנוסחה של השטח מתגלה לבד.',
+    grade: 'כיתות ז׳–ט׳',
+    gradeOrder: 7,
+    emoji: '✂️',
+    links: [
+      { href: '/area-parallelogram-trapezoid-composite-grade-7', label: 'שטח מקבילית, טרפז ומצולע מורכב לכיתה ז׳' },
+      { href: '/parallelogram-trapezoid-area-grade-9', label: 'שטח מקבילית וטרפז לכיתה ט׳' },
+      { href: '/composite-polygons-area-grade-9', label: 'שטח מצולעים מורכבים לכיתה ט׳' }
+    ],
+    topics: [
+      { grade: 7, topic: 45, coverage: 'full' },
+      { grade: 7, topic: 46, coverage: 'full' },
+      { grade: 9, topic: 28, coverage: 'partial' },
+      { grade: 9, topic: 29, coverage: 'partial' }
+    ],
+    theme: AMBER,
+    kind: 'engine',
+    playPath: '/games/gozrim-umadbikim/play'
+  },
+  {
+    slug: 'maazan-hamemutsa',
+    title: 'משחק הממוצע, הטווח ובחירת המדד עם אליהו | נועם דורון',
+    h1: 'משחק הממוצע, הטווח ובחירת המדד עם אליהו',
+    description: 'שיעור קצר עם אליהו: מיישרים מגדלי קוביות כדי לראות מהו ממוצע, מוצאים נתון חסר, משווים פיזור בעזרת הטווח ובוחרים את המדד המתאים.',
+    short: 'מיישרים את המגדלים — והממוצע מופיע.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '📊',
+    links: [
+      { href: '/mean-grade-8', label: 'הממוצע לכיתה ח׳' },
+      { href: '/data-range-grade-8', label: 'טווח הנתונים לכיתה ח׳' },
+      { href: '/choosing-measure-of-center-grade-8', label: 'בחירת מדד לכיתה ח׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 22, coverage: 'full' },
+      { grade: 8, topic: 23, coverage: 'full' },
+      { grade: 8, topic: 25, coverage: 'partial' }
+    ],
+    theme: FOREST,
+    kind: 'engine',
+    playPath: '/games/maazan-hamemutsa/play'
+  },
+  {
+    slug: 'mishpachat-hamerubaim',
+    title: 'משחק משפחת המרובעים עם אליהו | נועם דורון',
+    h1: 'משחק משפחת המרובעים עם אליהו',
+    description: 'שיעור קצר עם אליהו: בונים מרובע משני אלכסונים, מגלים מתי הוא מקבילית, מלבן, מעוין, ריבוע או דלתון, ומחשבים שטח לפי האלכסונים.',
+    short: 'האלכסונים מגלים איזה מרובע לפניך.',
+    grade: 'כיתה ט׳',
+    gradeOrder: 9,
+    emoji: '🪁',
+    links: [
+      { href: '/parallelogram-grade-9', label: 'המקבילית לכיתה ט׳' },
+      { href: '/rectangle-grade-9', label: 'המלבן לכיתה ט׳' },
+      { href: '/rhombus-grade-9', label: 'המעוין לכיתה ט׳' },
+      { href: '/square-grade-9', label: 'הריבוע לכיתה ט׳' },
+      { href: '/trapezoid-grade-9', label: 'הטרפז לכיתה ט׳' },
+      { href: '/kite-grade-9', label: 'הדלתון לכיתה ט׳' }
+    ],
+    topics: [
+      { grade: 9, topic: 7, coverage: 'partial' },
+      { grade: 9, topic: 11, coverage: 'partial' },
+      { grade: 9, topic: 13, coverage: 'partial' },
+      { grade: 9, topic: 14, coverage: 'partial' },
+      { grade: 9, topic: 39, coverage: 'partial' },
+      { grade: 9, topic: 46, coverage: 'partial' }
+    ],
+    theme: TEAL,
+    kind: 'engine',
+    playPath: '/games/mishpachat-hamerubaim/play'
+  },
+  {
+    slug: 'motsim-et-hayashar',
+    title: 'משחק משוואת הישר וחיתוך הצירים עם אליהו | נועם דורון',
+    h1: 'משחק משוואת הישר וחיתוך הצירים עם אליהו',
+    description: 'שיעור קצר עם אליהו: מוצאים איפה הישר חותך את הצירים, בונים משוואת ישר משתי נקודות ומכירים את הישרים המקבילים לצירים.',
+    short: 'שתי נקודות מספיקות כדי לכתוב את משוואת הישר.',
+    grade: 'כיתה ח׳',
+    gradeOrder: 8,
+    emoji: '📍',
+    links: [
+      { href: '/axis-intercepts-grade-8', label: 'חיתוך צירים לכיתה ח׳' },
+      { href: '/equation-of-a-line-grade-8', label: 'משוואת ישר לכיתה ח׳' },
+      { href: '/lines-parallel-to-axes-grade-8', label: 'ישרים מקבילים לצירים לכיתה ח׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 30, coverage: 'full' },
+      { grade: 8, topic: 31, coverage: 'full' },
+      { grade: 8, topic: 32, coverage: 'full' }
+    ],
+    theme: SLATE,
+    kind: 'engine',
+    playPath: '/games/motsim-et-hayashar/play'
+  },
+  {
+    slug: 'shinui-baachuzim',
+    title: 'משחק שינוי באחוזים ושינויים עוקבים עם אליהו | נועם דורון',
+    h1: 'משחק שינוי באחוזים ושינויים עוקבים עם אליהו',
+    description: 'שיעור קצר עם אליהו: הופכים עלייה וירידה באחוזים לכפל, מחשבים אחוז שינוי, ומגלים למה עלייה וירידה של 10% לא מחזירות לאותו מחיר.',
+    short: 'עלייה של 20% היא כפל ב־1.2 — וכך גם שני שינויים ברצף.',
+    grade: 'כיתות ח׳–ט׳',
+    gradeOrder: 8,
+    emoji: '🏷️',
+    links: [
+      { href: '/percent-change-grade-8', label: 'שינוי באחוזים לכיתה ח׳' },
+      { href: '/successive-percent-changes-grade-8', label: 'שינויים עוקבים לכיתה ח׳' },
+      { href: '/percentage-problems-grade-8', label: 'בעיות אחוזים לכיתה ח׳' },
+      { href: '/percentages-grade-9', label: 'אחוזים לכיתה ט׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 6, coverage: 'partial' },
+      { grade: 8, topic: 7, coverage: 'partial' },
+      { grade: 8, topic: 8, coverage: 'full' },
+      { grade: 8, topic: 9, coverage: 'full' },
+      { grade: 9, topic: 53, coverage: 'full' }
+    ],
+    theme: ROSE,
+    kind: 'engine',
+    playPath: '/games/shinui-baachuzim/play'
+  },
+  {
+    slug: 'zchuchit-hamagdelet',
+    title: 'משחק דמיון משולשים עם אליהו | נועם דורון',
+    h1: 'משחק דמיון משולשים עם אליהו',
+    description: 'שיעור קצר עם אליהו: מגדילים משולש ורואים שהצלעות מוכפלות והזוויות נשמרות, מגלים ששתי זוויות מספיקות, ולמה השטח גדל פי k בריבוע.',
+    short: 'מגדילים פי 2 — והשטח גדל פי 4.',
+    grade: 'כיתות ח׳–ט׳',
+    gradeOrder: 8,
+    emoji: '🔍',
+    links: [
+      { href: '/similar-triangles-grade-8', label: 'דמיון משולשים לכיתה ח׳' },
+      { href: '/similar-triangles-area-ratio-grade-8', label: 'יחס שטחים לכיתה ח׳' },
+      { href: '/similar-triangles-grade-9', label: 'דמיון משולשים לכיתה ט׳' },
+      { href: '/triangle-similarity-aa-grade-9', label: 'משפט ז.ז לכיתה ט׳' }
+    ],
+    topics: [
+      { grade: 8, topic: 43, coverage: 'full' },
+      { grade: 8, topic: 45, coverage: 'full' },
+      { grade: 9, topic: 19, coverage: 'full' },
+      { grade: 9, topic: 40, coverage: 'full' }
+    ],
+    theme: PLUM,
+    kind: 'engine',
+    playPath: '/games/zchuchit-hamagdelet/play'
+  },
 ];
 
 /** The two hand-written games that already live on the site. */
@@ -594,7 +1105,7 @@ export const GAMES_INDEX_PATH = '/games';
 export const GAMES_INDEX_TITLE = 'פינת המשחקים של אליהו | נועם דורון';
 export const GAMES_INDEX_H1 = 'פינת המשחקים של אליהו';
 export const GAMES_INDEX_DESCRIPTION =
-  'שיעורים קצרים ואינטראקטיביים עם אליהו: כל משחק מסביר רעיון אחד במתמטיקה בעיניים, מכיתה ג׳ ועד כיתה ט׳.';
+  'שיעורים קצרים ואינטראקטיביים עם אליהו במתמטיקה, בשפה ובתחומי דעת נוספים: לומדים בעיניים, בכפתורים ובמקלדת, מכיתה ג׳ ועד כיתה ט׳.';
 
 export function gamePath(game: EliyahuGame): string {
   return `/games/${game.slug}`;
