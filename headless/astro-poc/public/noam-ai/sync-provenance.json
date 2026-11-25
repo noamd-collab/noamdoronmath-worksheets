@@ -11,8 +11,8 @@
     "catalogPath": "src/data/catalog.v1.json",
     "count": 456
   },
-  "generatedAt": "2026-11-18T21:12:55.843Z",
-  "aggregateSha256": "e347d74dec97c8ba06c8ec703d90e6cd7658ec64fd2d0aee08bb97df1fd25a56",
+  "generatedAt": "2026-11-24T08:13:47.335Z",
+  "aggregateSha256": "9fbdf233b93817d1e391826d681af67f12319e93b250e5f18b3a3cc5c85d08cd",
   "files": {
     "00469caa9cc343ab945e5a4a826b6a88": {
       "source": "noam-ai/manifests/00469caa9cc343ab945e5a4a826b6a88.json",
@@ -883,6 +883,11 @@
       "source": "noam-ai/manifests/5ff9bbaff1b9498b98aa660692de2635.json",
       "sha256": "a432d0554a377a78592456e6e39777251be796b3a98b6b5c4dd35906aa5a98f3",
       "bytes": 231461
+    },
+    "6009d89d81484f1aac92da7febec2905": {
+      "source": "noam-ai/manifests/6009d89d81484f1aac92da7febec2905.json",
+      "sha256": "88aa89f900d22aff0501f572fc7c03d860f707badbf6a7ab32ae1ee3828aa518",
+      "bytes": 159300
     },
     "603ae3022235401285aef9c415ec56b3": {
       "source": "noam-ai/manifests/603ae3022235401285aef9c415ec56b3.json",
@@ -2139,11 +2144,6 @@
       "sha256": "8bd9dcf428c4221dd95466c456548443d2e27156c6a11099aacb406f836e3d0a",
       "bytes": 194669
     },
-    "e7b11e96954b4935951214f8a9035814": {
-      "source": "noam-ai/manifests/e7b11e96954b4935951214f8a9035814.json",
-      "sha256": "bfe29343a079c8716027f6e8b392081eacc38b39dcfe23be76ad8a502d70e89d",
-      "bytes": 159361
-    },
     "eb78ab16801b4be1a9eb12a94bc118b9": {
       "source": "noam-ai/manifests/eb78ab16801b4be1a9eb12a94bc118b9.json",
       "sha256": "41af14ffa213b7149914c566724bdd7a2d79b952085d2169bbeefe1c056a13a4",
@@ -2298,7 +2298,7 @@
   "legacyIndex": {
     "path": "public/legacy-github/index.html",
     "source": "index.html",
-    "sha256": "ea9201fcff8ecc93ecbbf2c65b614d7a7179693a06298c3c3d331a5069c1bf95",
+    "sha256": "2b0ed61bb37b9317072794a77dfc4ea9f580491a684e7628d7fdab186766edec",
     "bytes": 194069,
     "note": "Sibling-level discovery fallback when pa/pb/pc are incomplete; not the Astro home route."
   },
@@ -3115,6 +3115,7 @@
     "e660427d09434064b2da6b6da7a29fe3": "fb23977f739a70c086ca4869c597be6f866a2bcc918aa8800cda8ec359c62440",
     "e6bad05438cb48f4ab5f7d894727625f": "09c3dd2f76ea29a67ac502f52f1d055791acf07f16d197e119126118a7ada29b",
     "e77d5e23afb24ad6813bd63dfb6cf9f3": "bc74e0182b46cebb631c1195ea6b5b4c9042cb911e49e9dacf018a0407fbc4ad",
+    "e7b11e96954b4935951214f8a9035814": "bfe29343a079c8716027f6e8b392081eacc38b39dcfe23be76ad8a502d70e89d",
     "e7baeb6f360142e08b2461d93537be8f": "354719f5ac263efe2ff05393aefe9c2421e9bdd3da21a1313997ef67e8643c1e",
     "e7dabad1a411443f97cef61aba49941b": "af4c7e78bf30d1ba3f8f88657261e5b80c715ea04366cff63e34d1c3377e6142",
     "e8740dd02e8e412c9b099b231c6c255c": "c9a64d81ff8f6903f0a4b652a6df60284afe559aa530b231bc0a25f2d35d34c0",
