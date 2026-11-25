@@ -290,6 +290,9 @@ export const NON_LANDING_SITE_SLUGS = [
   'terms',
   'conditionforfreeworksheets',
   'privacy',
+  'purchase-terms',
+  'cancellation',
+  'delivery',
 ] as const;
 
 /**

@@ -11,8 +11,8 @@ import {
 } from '../src/lib/sitePages';
 
 describe('M24 site / policy pages', () => {
-  it('manifest has 7 migrated exact pages (incl. standalone /privacy) + 2 redirects', () => {
-    assert.equal(SITE_PAGE_M24_SLUGS.length, 7);
+  it('manifest has 10 migrated exact pages (incl. /privacy and the three payment pages) + 2 redirects', () => {
+    assert.equal(SITE_PAGE_M24_SLUGS.length, 10);
     assert.equal(SITE_PAGE_M24_REDIRECTS.length, 2);
     assert.deepEqual(
       SITE_PAGE_M24_REDIRECTS.map((r) => r.from).sort(),
