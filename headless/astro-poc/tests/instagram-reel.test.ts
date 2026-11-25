@@ -1,7 +1,7 @@
 /**
  * Homepage Instagram reel sits where the game promo cards were.
- * The permalink stays in INSTAGRAM_FEATURED_REEL_URL; an unset value
- * renders the profile card instead of a blockquote embed.
+ * The permalink stays in INSTAGRAM_FEATURED_REEL_URL. Anything that is
+ * not a reel, post, or TV permalink renders the profile card instead.
  */
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -18,9 +18,9 @@ import {
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 describe('featured Instagram reel permalink', () => {
-  it('keeps the unset permalink in one constant and falls back', () => {
-    assert.equal(INSTAGRAM_FEATURED_REEL_URL, '');
-    assert.equal(featuredReelUrl(), null);
+  it('points the homepage at the published reel and rejects other URLs', () => {
+    assert.equal(INSTAGRAM_FEATURED_REEL_URL, 'https://www.instagram.com/reel/DgKT5HMOfTy/');
+    assert.equal(featuredReelUrl(), 'https://www.instagram.com/reel/DgKT5HMOfTy/');
     assert.equal(INSTAGRAM_PROFILE_URL, 'https://www.instagram.com/noamdoronmath/');
     assert.equal(instagramPermalink(''), null);
     assert.equal(instagramPermalink('TODO'), null);
@@ -73,7 +73,6 @@ describe('homepage placement', () => {
     assert.ok(card.indexOf('reelUrl ?') < card.indexOf('class="instagram-media"'));
     assert.ok(card.indexOf('class="instagram-media"') < card.indexOf('ig-feature__card'));
     const lib = readFileSync(join(root, 'src/lib/instagramReel.ts'), 'utf8');
-    assert.match(lib, /export const INSTAGRAM_FEATURED_REEL_URL/);
-    assert.match(lib, /TODO/);
+    assert.match(lib, /export const INSTAGRAM_FEATURED_REEL_URL = 'https:\/\/www\.instagram\.com\/reel\/DgKT5HMOfTy\/'/);
   });
 });

@@ -1,12 +1,8 @@
 /**
  * Homepage Instagram reel, in the slot that held the game promo cards.
- *
- * TODO: set INSTAGRAM_FEATURED_REEL_URL to the reel permalink once it is
- * published, for example https://www.instagram.com/reel/SHORTCODE/
- * Until it is a real reel, post, or TV permalink, the homepage shows the
- * profile card instead of an embed.
+ * A non-permalink value still shows the profile card instead of an embed.
  */
-export const INSTAGRAM_FEATURED_REEL_URL = '';
+export const INSTAGRAM_FEATURED_REEL_URL = 'https://www.instagram.com/reel/DgKT5HMOfTy/';
 
 export const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/noamdoronmath/';
 
