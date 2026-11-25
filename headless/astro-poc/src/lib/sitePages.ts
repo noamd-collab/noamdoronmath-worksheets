@@ -114,6 +114,9 @@ const BY_SLUG: Record<string, SitePageContent> = {
 export function loadSitePage(slug: string): SitePageContent {
   const page = BY_SLUG[slug];
   if (!page) throw new Error(`Unknown site page slug: ${slug}`);
+  // terms.json stores the legal body once: legalBlocks is omitted when it is
+  // byte-identical to blocks, and resolved here so callers always see both.
+  if (slug === 'terms' && !page.legalBlocks) return { ...page, legalBlocks: page.blocks };
   return page;
 }
 
