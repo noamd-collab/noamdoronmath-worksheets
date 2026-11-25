@@ -58,12 +58,12 @@ test('six exact additional PDFs preserve every preceding catalog and registry by
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`);
     const laterIds = reviewedBatch05.additions
       .filter(later => later.grade === a.grade && later.topicId === a.topicId).map(later => later.editionId);
-    const previousGroups = topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`);
+    const previousGroups = topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`).filter(g => g.editionId !== 'legacy');
     assert.deepEqual(groups.map(g => g.editionId), [...previousGroups.map(g => g.editionId), a.editionId, ...laterIds]);
     assert.deepEqual(groups.filter(g => g.editionId !== a.editionId).map(g => g.editionId),
       [...previousGroups.map(g => g.editionId), ...laterIds]);
     for (const [index, group] of previousGroups.entries()) assert.deepEqual(groups[index], group);
-    assert.deepEqual(groups[1].levels.map(l => l.href), a.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
+    assert.deepEqual(groups[previousGroups.length].levels.map(l => l.href), a.pdfIds.map(id => `${catalog.config.pdfBase}${id}.pdf`));
     for (const level of edition.levels) {
       assert.equal(buildWorksheetHref({ catalog, grade: a.grade, topic, editionId: a.editionId, levelKey: level.key }), `${catalog.config.pdfBase}${level.pdfId}.pdf`);
       assert.equal(Object.hasOwn(level, 'ramzi'), false);

@@ -116,8 +116,9 @@ test('all nine additions open their own reviewed PDF directly while the legacy c
   const groups = topicWorksheetEditionLinks(catalog, 9, 10, back);
   const laterBatch06 = reviewedBatch06.additions
     .filter(a => a.grade === 9 && a.topicId === 10).map(a => a.editionId);
-  assert.deepEqual(groups.map(g => g.editionId), ['legacy', ...ids, ...laterBatch06]);
-  assert.deepEqual(groups.slice(0, 1), topicWorksheetEditionLinks(previousSsr, 9, 10, back));
+  assert.deepEqual(groups.map(g => g.editionId), [...ids, ...laterBatch06]);
+  const earlier = topicWorksheetEditionLinks(previousSsr, 9, 10, back).filter(g => g.editionId !== 'legacy');
+  assert.deepEqual(groups.slice(0, earlier.length), earlier);
   assert.deepEqual(topic.levels.map(l => l.key), ['a', 'b', 'c']);
   for (const [index, addition] of reviewed.additions.entries()) {
     const edition = topic.editions!.find(e => e.editionId === addition.editionId)!;

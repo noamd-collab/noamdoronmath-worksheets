@@ -50,8 +50,9 @@ test('four exact editions add twelve verified PDFs and preserve the complete pre
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, '/');
     // Batch 03 appends its own series after this one on 9/39 (ITP-01) and 7/6 (POW-01).
     const later = [...reviewedBatch03.additions, ...reviewedBatch07.additions].filter(x => x.grade === a.grade && x.topicId === a.topicId).map(x => x.editionId);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId, ...later]);
-    assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/')[0]);
+    assert.deepEqual(groups.map(g => g.editionId), [a.editionId, ...later]);
+    const earlier = topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').filter(g => g.editionId !== 'legacy');
+    assert.deepEqual(groups.slice(0, earlier.length), earlier);
     assert.equal(topic.defaultEditionId, 'legacy'); assert.equal(edition.routing.usesViewer, false);
     assert.equal(edition.routing.aiHintShown, false);
     const proof = receipt.packages.find((p: any) => p.editionId === a.editionId);

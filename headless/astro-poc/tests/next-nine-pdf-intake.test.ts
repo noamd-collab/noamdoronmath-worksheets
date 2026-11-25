@@ -79,8 +79,9 @@ test('the nine exact PDF additions reverse to the complete preceding catalog, in
     }
     if (a.editionId) {
       assert.equal(topic.defaultEditionId, 'legacy');
-      assert.deepEqual(groups.map(g => g.editionId), ['legacy', a.editionId]);
-      assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`)[0]);
+      assert.deepEqual(groups.map(g => g.editionId), [a.editionId]);
+      const earlier = topicWorksheetEditionLinks(previous, a.grade, a.topicId, `/worksheets?grade=${a.grade}&topic=${a.topicId}`).filter(g => g.editionId !== 'legacy');
+      assert.deepEqual(groups.slice(0, earlier.length), earlier);
     } else {
       assert.equal(groups.length, 1); assert.equal(topic.noamTopicId, undefined);
       assert.equal(topic.routing.resolvedNoamPrefix, null);

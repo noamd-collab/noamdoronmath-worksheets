@@ -265,12 +265,11 @@ test('catalog AI badge names only the selected edition and PDF-only additions st
   const render = await renderer();
   const card = (catalog: CatalogV1) => parseHTML(render(catalog, 7)).document.querySelector('[data-topic-id="17"]')!;
   const current = card(committed);
-  assert.equal(current.querySelector('.aihint')?.textContent, activation.ready ? '✦ רמזי AI' : '✦ רמזי AI בדפים קודמים');
-  const addition = current.querySelector('.worksheet-editions details')!;
-  assert.equal(addition.querySelector('.note')?.textContent, activation.ready ? 'קובצי PDF להדפסה · רמזים בשלוש דרגות' : 'קובצי PDF להדפסה');
-  assert.equal(addition.querySelector('.aihint'), null);
-  assert.equal(addition.querySelectorAll('a.lvl--pdf').length, activation.ready ? 0 : 3);
-  if (activation.ready) for (const link of addition.querySelectorAll('a.lvl')) {
+  assert.equal(current.querySelector('.aihint')?.textContent, activation.ready ? '✦ רמזי AI זמין בדף הזה' : null);
+  assert.equal(current.querySelector('.worksheet-editions details'), null);
+  const links = [...current.querySelectorAll('a.lvl')];
+  assert.equal(links.filter(link => link.classList.contains('lvl--pdf')).length, activation.ready ? 0 : 3);
+  if (activation.ready) for (const link of links) {
     assert.match(link.getAttribute('href') || '', /edition=ms-20261113-trn-r1/);
   }
   assert.equal(card(base).querySelector('.aihint')?.textContent, '✦ רמזי AI זמין בדף הזה');
@@ -280,10 +279,11 @@ test('catalog AI badge names only the selected edition and PDF-only additions st
   const pdfTopic = topic(pdfDefault, 7, 17);
   pdfTopic.defaultEditionId = pdfTopic.editions!.find(e => e.publicationMode === 'pdf-only')!.editionId;
   assert.equal(card(pdfDefault).querySelector('.aihint'), null, 'legacy AI must not label a selected PDF-only set');
-  assert.equal(card(pdfDefault).querySelector('.worksheet-editions > .note')?.textContent, 'קובצי PDF להדפסה');
+  assert.equal(card(pdfDefault).querySelectorAll('a.lvl--pdf').length, 3);
 
   const other = mergeWorksheetEditions(base, middleEditionFixture());
   const otherTopic = topic(other, 7, 17), selected = otherTopic.editions![0];
+  otherTopic.editions = [...otherTopic.editions!, { ...selected, editionId: 'test-renewal-r2', label: 'עוד סדרה' }];
   otherTopic.defaultEditionId = selected.editionId;
   selected.routing.aiHintShown = true; // Synthetic future edition to check badge scoping, not a publication.
   assert.equal(card(other).querySelector('.aihint')?.textContent, `✦ רמזי AI · ${selected.label}`);
