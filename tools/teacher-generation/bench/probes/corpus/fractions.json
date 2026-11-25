@@ -1,0 +1,476 @@
+{
+ "family": "fractions",
+ "probes": [
+  {
+   "id": "fractions-01",
+   "topic": "ה11",
+   "intro": "חשבו.",
+   "prompt": "[[frac(1,2) + frac(1,4)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(1,2) + frac(1,4)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "1 2 + 1 4",
+    "key": "3 4"
+   }
+  },
+  {
+   "id": "fractions-02",
+   "topic": "ה11",
+   "intro": "חשבו.",
+   "prompt": "[[1/2]] + [[1/4]] = ___",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "1/2 + 1/4"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "1 2 + 1 4 = ___",
+    "key": "3 4"
+   }
+  },
+  {
+   "id": "fractions-03",
+   "topic": "ה11",
+   "intro": "חשבו.",
+   "prompt": "[[frac(1,2)]] + [[frac(1,4)]] = ___",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(1,2) + frac(1,4)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "1 2 + 1 4 = ___",
+    "key": "3 4"
+   }
+  },
+  {
+   "id": "fractions-04",
+   "topic": "ה09",
+   "intro": "השלימו את המונה החסר.",
+   "prompt": "[[frac(1,2) = frac(___,8)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "4"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "4"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "fractions-05",
+   "topic": "ה09",
+   "intro": "השלימו את המונה החסר.",
+   "prompt": "[[1/2 = ___/8]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "4"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "4"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "1 2 = ___ : 8",
+    "key": "4"
+   }
+  },
+  {
+   "id": "fractions-06",
+   "topic": "ה09",
+   "intro": "צמצמו את השבר.",
+   "prompt": "[[frac(6,8)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(6,8)"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "3",
+     "4"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "6 8",
+    "key": "3 4"
+   }
+  },
+  {
+   "id": "fractions-07",
+   "topic": "ה09",
+   "intro": "צמצמו את השבר.",
+   "prompt": "צמצמו: [[frac(6,8)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "simplify",
+     "expression": "frac(6,8)"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "3",
+     "4"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "צמצמו: 6 8",
+    "key": "3 4"
+   }
+  },
+  {
+   "id": "fractions-08",
+   "topic": "ה13",
+   "intro": "כתבו כמספר מעורב.",
+   "prompt": "[[frac(7,3)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(7,3)"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "2",
+     "1",
+     "3"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "7 3",
+    "key": "2 1 3"
+   }
+  },
+  {
+   "id": "fractions-09",
+   "topic": "ה13",
+   "intro": "כתבו כשבר מדומה.",
+   "prompt": "[[2 frac(1,3)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2 + frac(1,3)"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "7",
+     "3"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "fractions-10",
+   "topic": "ה13",
+   "intro": "כתבו כשבר מדומה.",
+   "prompt": "[[2 1/3]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2 + 1/3"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "7",
+     "3"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "fractions-11",
+   "topic": "ה14",
+   "intro": "חשבו.",
+   "prompt": "[[2 + frac(1,3)]] + [[1 + frac(1,6)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2 + frac(1,3) + 1 + frac(1,6)"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "3",
+     "1",
+     "2"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "2 + 1 3 + 1 + 1 6",
+    "key": "3 1 2"
+   }
+  },
+  {
+   "id": "fractions-12",
+   "topic": "ה12",
+   "intro": "חשבו.",
+   "prompt": "כמה הם [[frac(2,3)]] מתוך [[12]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(2,3) * 12"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "8"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "כמה הם 2 3 מתוך 12 ?",
+    "key": "8"
+   }
+  },
+  {
+   "id": "fractions-13",
+   "topic": "ב26",
+   "intro": "הַשְׁלִימוּ.",
+   "prompt": "חֲצִי מִ־[[8]] הוּא ___",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "8 / 2"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "4"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "חֲצִי מִ־ 8 הוּא ___",
+    "key": "4"
+   }
+  },
+  {
+   "id": "fractions-14",
+   "topic": "ג11",
+   "intro": "ענו.",
+   "prompt": "איזה חלק מהשלם הוא חלק אחד מתוך [[4]] חלקים שווים?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(1,4)"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "1",
+     "4"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "איזה חלק מהשלם הוא חלק אחד מתוך 4 חלקים שווים?",
+    "key": "1 4"
+   }
+  },
+  {
+   "id": "fractions-15",
+   "topic": "ו03",
+   "intro": "חשבו.",
+   "prompt": "[[frac(2,3) x frac(3,5)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(2,3) * frac(3,5)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "fractions-16",
+   "topic": "ו07",
+   "intro": "חשבו.",
+   "prompt": "[[frac(2,3) : frac(1,6)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(2,3) / frac(1,6)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "fractions-17",
+   "topic": "ה15",
+   "intro": "מצאו את המספר החסר.",
+   "prompt": "[[___ + frac(1,4) = frac(3,4)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(3,4) - frac(1,4)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "___ + 1 4 = 3 4",
+    "key": "1 2"
+   }
+  },
+  {
+   "id": "fractions-18",
+   "topic": "ה15",
+   "intro": "פתרו את המשוואה.",
+   "prompt": "[[x + frac(1,4) = frac(3,4)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(3,4) - frac(1,4)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "fractions-19",
+   "topic": "ה08",
+   "intro": "השוו.",
+   "prompt": "[[½]] ___ [[¼]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "frac(1,2)",
+     "right": "frac(1,4)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "1 2 ___ 1 4",
+    "key": "1 2 > 1 4"
+   }
+  },
+  {
+   "id": "fractions-20",
+   "topic": "ה11",
+   "intro": "חשבו.",
+   "prompt": "חשבו.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(1,2) + frac(1,4)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "חשבו. 1 2 + 1 4",
+    "key": "3 4"
+   }
+  },
+  {
+   "id": "fractions-21",
+   "topic": "ה13",
+   "intro": "חשבו.",
+   "prompt": "חשבו.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2 + frac(1,3) + 1 + frac(1,6)"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "3",
+     "1",
+     "2"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "חשבו. 2 + 1 3 + 1 + 1 6",
+    "key": "3 1 2"
+   }
+  }
+ ]
+}

@@ -24,22 +24,97 @@ chronology and the stopping point to the general author. The compiler assigns se
 concepts to practice and challenge slots, owns their numbering and creates the versioned
 source. Adding a subject from the curriculum does not require a subject-specific author.
 
-The general author supplies a title, one rule and two groups of questions. Mathematical
+The general author supplies a title, one rule, two groups of questions and a few
+reserve questions (three beside fewer than 16 planned questions, four beside fewer
+than 24, otherwise five), each tagged with its group and concept. Reserves are
+optional on arrival: a reply without them still compiles. Mathematical
 tasks are parsed into bounded, verified expressions. Printed literals preserve significant
 decimal zeros, thousands separators, and percent signs. A completed source-v4 document
 remains a supported input. Basic grade-two no-regrouping addition also accepts its existing
 compact parameter format. Every output goes through the same applicable skill gates.
 
-The production worker can request one targeted revision for up to six questions when the skill identifies their
-locations and the job still owns its lease. The second provider call has a separate usage
-record. Both outputs are rebuilt in a fresh directory and rechecked before any upload.
-An infrastructure failure or an unlocalized report does not trigger a correction.
+Every question is examined alone by one predicate, `skill_authoring.question_codes`:
+it is expanded and validated by itself (notation, typed task, printed-key binders,
+answer kinds) and, in elementary school, read for the claim words of the truth gates.
+Any code it raises (a notation fault, a printed-key refusal, a kernel limit such as a
+power beyond the bound) makes it a bad question to replace, never a failed sheet.
+In middle school its figure is also drawn with the pinned constructors
+(`figure_probe.py`), so a figure the skill refuses is a refused question
+(`SOURCE_FIGURE`) and not an unnamed render failure. The rule is examined alone
+too: a refused rule loses each sentence that is refused on its own, or is asked for
+again in the one correction call. A finished reply that is not JSON as a whole is
+read question by question (`reply_salvage.py`); a question that does not decode
+counts as refused.
+`lesson_select.py` chooses the sheet: a bad question takes a reserve of its own group;
+a practice reserve may stand in for a challenge only while two real challenges remain,
+and is then printed as an ordinary question. It knows nothing about the wire format or
+a topic. The unchanged whole-sheet validation runs on the chosen sheet.
+
+The production worker repairs a version 3 job in this order, each step only when the one
+before left a deficit (`remote_worker.author_and_render`, through `general_provider.Draft`):
+
+1. reserve questions, with no model call;
+2. ONE targeted correction call for the missing questions only (at most eight), each with
+   the fixed instruction of its code and the exact field and substring that carries the fault;
+3. a shorter sheet: at least three quarters of the requested questions, never fewer than six,
+   with at least two real challenges. The lesson of that sheet carries the rewritten count
+   and the request travels beside it (`salvaged_from`); the result holds a `SHORTER_SHEET` note;
+4. ONE second full author call, when the first reply is unusable as a whole (not JSON, wrong
+   shape, plan mismatch) or the steps above ended without a sheet.
+
+Before the PDF and Word steps the worker runs `runner.precheck_job` and replaces the questions
+it names (at most two rounds). After a render it follows `manifest.gate`: `deliver` is a
+`needs_review` sheet with its notes; `replace` swaps the named questions and renders once more
+in a fresh folder; `fail` goes to step 4. Hard limits per job: two author calls, two correction
+calls, and no model call starts later than 150 seconds after the claim. A call that got no
+answer from the provider closes the job to further calls. The lease is confirmed before every
+model call and every render. A delivered result carries `salvage` (attempts, corrections,
+replaced questions by code, dropped questions, the gate decision), `reviewFindings`,
+`teacherNotes` and `unverifiedAnswers` (a count by kind). A failed job stores its code only;
+the worker logs one `generation_failed` line with the code, the stage, the question and the gate.
+
+`lessonGoal: "introduce"` is accepted for version 3 lessons that the general author writes: the
+request states that this is an opening sheet and the plan marks its first questions as guided
+entry questions. Each local author keeps its own eligibility rule; `assessment` stays unsupported.
+
+`source_normalize.py` runs once on the reply when it arrives
+(`general_provider.author_general_lesson`), so the compile, the notation correction
+and the per-question predicate read the same text, and again inside `expand_source`,
+where it is a no-op on text that is already normal. It rewrites spellings that
+have exactly one reading into the contract's notation (an unspaced school operator,
+`$...$` math, a letter for the single missing number of an elementary formula, a label
+after the Hebrew noun that names it). It never computes and never chooses between two
+readings; such a spelling is left for validation to reject. Its module docstring lists every rule.
 
 `general_source.py` checks closed shapes, size, volume, niqqud, allowed concepts
 and expression bounds. `math_tasks.py` verifies typed arithmetic, symbolic
 operations, bounded equations/systems, inequalities and descriptive statistics.
 No model string is passed to eval, exec or a symbolic expression parser.
-Computed answers are derived from the same typed task printed in the question.
+Computed answers are derived from the typed task. The task is printed after
+a prompt only when the prompt carries no numbers of its own, and never when the
+print would be the answer; `printed_parts.py` and the other `printed_*` binders
+tie the key to an exercise that the prompt already shows. A prompt with several
+blanks gets one answer for each blank, or the question is refused.
+
+A yes/no or true/false question carries a typed claim (task kind `decide`: an
+order or equality of two expressions, divisibility, membership in a short
+list). The kernel decides it; no field holds an authored yes or no.
+`answer_kinds.py` ties the claim to the printed question, by the one printed
+statement whose correctness is asked about or by the relation word, its order
+and the printed quantities, and refuses a true claim that is not that
+question. The key prints the verdict with its exact calculation. Grades 1–6
+also have a `label` answer (a short Hebrew name, only for a prompt that asks
+for a name; printed as authored) and an `open` answer (a drawing, a
+construction, an explanation; the key says that the teacher checks it). A
+number is never the key of a drawing. Labels, open items and verdicts whose
+claim was typed from a story are listed as `unverifiedAnswers`
+(`question`, `item`, `kind`) in the adapter result and in
+`general-evidence.json`. `runner.render_job` copies the positions and kinds to
+`manifest.unverifiedAnswers`, and the worker result carries them as
+`teacherNotes`: one entry per kind with a fixed Hebrew sentence
+(`gate_policy.UNVERIFIED_NOTES`) and the question and item numbers. Evidence
+that is present but unreadable fails the render before anything is built.
+Authored prose answers (`review`) remain middle-school only.
 Prose, reasoning and pedagogical correspondence still require human review.
 
 `general_adapters.py` compiles only trusted templates. Typed figures are
@@ -66,12 +141,32 @@ compiler and native skill gates. Each job uses an isolated directory.
 A result is always `needs_review` or `failed`, never publication approval:
 
 - All PASS steps and both exact output files produce `automatedChecksPassed`.
-- A genuine FAIL exposes no downloadable artifacts.
+- A blocking failure exposes no downloadable artifacts.
+- Version 3 lessons follow one delivery policy (`gate_policy.py`). Every gate
+  outcome has a class. Truth findings (the mathematics, the key or its print
+  form) and policy findings (chronology, drawings, signs, brand) block; when
+  the gate output names questions, `manifest.gate.questions` lists them.
+  Editorial findings (difficulty spread, repeated item structure, star count,
+  page fill) do not block: the step is recorded as REVIEW and
+  `reviewFindings` carries the code, the questions and a fixed Hebrew teacher
+  note. An unknown line, a timeout or a crashed step blocks.
+  `skill_feedback.gate_report` reads every finding of a work folder. When the
+  trusted adapter refuses a question it leaves `adapter-failure.json`
+  (`code`, `question`, `item`), and the report names that question from it.
+- `paren_order.py` measures again the one documented false positive of the
+  pinned bracket gate G51 (a correctly printed product of two bracketed
+  groups). A reversed pair still fails.
+- `claim_words.py` records in the ledger a closed-pattern reading of the words
+  that the pinned truth gates G32/G33 search for ("לכל תלמיד", conditional
+  "אילו"). Universal claims and requests to enumerate still fail.
+- `runner.precheck_job` builds `content.json` and runs only the content-truth
+  and house gates that read it, before any PDF or Word file exists.
 - A narrowly verified middle-skill didactic REVIEW may produce a private draft
   with `automatedChecksPassed: false`, `renderingChecksPassed: true` and explicit
   review findings. `didactic_review.py` reconciles only the pinned driver's
   documented REVIEW-only exit discrepancy, checks every other gate and output
-  hash, and reruns the pinned checker. It never converts FAIL to REVIEW.
+  hash, and reruns the pinned checker. It never converts a FAIL finding to
+  REVIEW.
 - API, UI and private-storage RLS use equivalent readiness rules. Only exact
   owner PDF/DOCX paths can be downloaded; source, logs and keys remain private.
 

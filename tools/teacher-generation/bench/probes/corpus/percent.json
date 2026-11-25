@@ -1,0 +1,205 @@
+{
+ "family": "percent",
+ "probes": [
+  {
+   "id": "percent-01",
+   "topic": "ו19",
+   "intro": "חשבו.",
+   "prompt": "כמה הם [[25%]] מתוך [[80]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "25% * 80"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "כמה הם 25% מתוך 80 ?",
+    "key": "20"
+   }
+  },
+  {
+   "id": "percent-02",
+   "topic": "ו19",
+   "intro": "חשבו.",
+   "prompt": "כמה הם [[25]]% מתוך [[80]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(25/100) * 80"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "כמה הם 25% מתוך 80 ?",
+    "key": "20"
+   }
+  },
+  {
+   "id": "percent-03",
+   "topic": "ו19",
+   "intro": "חשבו.",
+   "prompt": "[[25% x 80]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "25% * 80"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "25% x 80",
+    "key": "20"
+   }
+  },
+  {
+   "id": "percent-04",
+   "topic": "ו18",
+   "intro": "כתבו כאחוז.",
+   "prompt": "[[frac(1,4)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "frac(1,4) * 100"
+    },
+    "unit": "%"
+   },
+   "expect": {
+    "key": [
+     "25"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "1 4",
+    "key": "25%"
+   }
+  },
+  {
+   "id": "percent-05",
+   "topic": "ו18",
+   "intro": "כתבו כאחוז.",
+   "prompt": "[[0.25]] = ___%",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "0.25 * 100"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "25"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "0.25 = ___ %",
+    "key": "25"
+   }
+  },
+  {
+   "id": "percent-06",
+   "topic": "ו20",
+   "intro": "מצאו את השלם.",
+   "prompt": "[[20%]] מהמספר הם [[16]]. מהו המספר?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "16 / 20%"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "20% מהמספר הם 16 . מהו המספר?",
+    "key": "80"
+   }
+  },
+  {
+   "id": "percent-07",
+   "topic": "g8:percentages",
+   "intro": "חשבו.",
+   "prompt": "מחיר חולצה הוא [[120]] שקלים. המחיר ירד ב־[[15%]]. מהו המחיר החדש?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "120 * (1 - 15%)"
+    },
+    "unit": "שקלים"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "מחיר חולצה הוא $120$ שקלים. המחיר ירד ב־$15%$. מהו המחיר החדש?",
+    "key": "$102$ שקלים"
+   }
+  },
+  {
+   "id": "percent-08",
+   "topic": "g8:percentages",
+   "intro": "חשבו.",
+   "prompt": "כמה אחוזים הם [[30]] מתוך [[120]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "30/120*100"
+    },
+    "unit": "%"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "כמה אחוזים הם $30$ מתוך $120$?",
+    "key": "$25%$"
+   }
+  },
+  {
+   "id": "percent-09",
+   "topic": "g9m:percentages",
+   "intro": "חשבו.",
+   "prompt": "מחיר עלה מ־[[80]] ל־[[100]] שקלים. בכמה אחוזים עלה המחיר?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(100-80)/80*100"
+    },
+    "unit": "%"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "מחיר עלה מ־$80$ ל־$100$ שקלים. בכמה אחוזים עלה המחיר?",
+    "key": "$25%$"
+   }
+  },
+  {
+   "id": "percent-10",
+   "topic": "g8:percentages",
+   "intro": "חשבו.",
+   "prompt": "כמה הם 15% מ־80?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(15/100)*80"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "כמה הם $15%$ מ־$80$?",
+    "key": "$12$"
+   }
+  }
+ ]
+}

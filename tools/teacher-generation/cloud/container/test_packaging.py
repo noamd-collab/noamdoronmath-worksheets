@@ -2,6 +2,7 @@
 import gzip
 import hashlib
 import io
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -11,6 +12,8 @@ import tarfile
 import tempfile
 import time
 import unittest
+from xml.etree import ElementTree
+from zipfile import ZipFile
 
 HERE = Path(__file__).resolve().parent
 APP = HERE.parents[1]
@@ -34,6 +37,29 @@ class PackagingTests(unittest.TestCase):
             blob = (HERE / 'skills' / (kind + '.tar.gz')).read_bytes()
             self.assertEqual(bundle.sha(blob), manifest['archives'][kind]['sha256'])
             self.assertEqual(len(bundle.verify(kind, blob, self.lock)), manifest['archives'][kind]['files'])
+
+    def test_private_middle_closing_stays_with_last_question(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "skills"
+            bundle.install(HERE / "skills", root, APP / "skill-lock.json")
+            middle = root / "middle"
+            self.assertRegex((middle / "emit_html.py").read_text(), r"\.good\s*\{[^}]*break-before:\s*avoid")
+            spec = importlib.util.spec_from_file_location("private_emit_docx", middle / "emit_docx.py")
+            emitter = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(emitter)
+            level = {"key": "b", "level": "רמה ב׳", "title": "תרגול", "questions": [
+                {"n": 1, "intro": "כתבו תשובה.", "items": [("א", "הסבירו.", 30)]}
+            ]}
+            docx = Path(tmp) / "sheet.docx"
+            emitter.build_docx(level, docx)
+            ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+            with ZipFile(docx) as package:
+                document = ElementTree.fromstring(package.read("word/document.xml"))
+            body = list(document.find("w:body", ns))
+            closing = next(i for i, p in enumerate(body) if
+                           any(t.text == "בהצלחה!" for t in p.findall(".//w:t", ns)))
+            self.assertGreater(closing, 0)
+            self.assertIsNotNone(body[closing - 1].find("w:pPr/w:keepNext", ns))
 
     def test_archive_is_reproducible_and_installs_without_existing_paths(self):
         with tempfile.TemporaryDirectory() as tmp:
