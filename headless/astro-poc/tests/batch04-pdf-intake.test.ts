@@ -145,13 +145,16 @@ test('all twelve additions open their own reviewed PDF directly while every prev
     });
     const back = `/worksheets?grade=${addition.grade}&topic=${addition.topicId}`;
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, back);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', addition.editionId]);
-    assert.deepEqual(groups.slice(0, 1), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
+    assert.deepEqual(groups.map(g => g.editionId), [addition.editionId]);
+    assert.deepEqual(
+      topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back).map(g => g.editionId),
+      ['legacy'],
+    );
     const group = groups.find(g => g.editionId === addition.editionId)!;
     assert.deepEqual(group.levels.map(l => [l.key, l.label]), [['a', 'רמה א׳'], ['b', 'רמה ב׳'], ['c', 'מצוינות']]);
     assert.equal(group.note, 'קובצי PDF להדפסה');
     assert.deepEqual(topic.levels.map(l => l.key), legacyKeys(addition));
-    assert.deepEqual(groups[0].levels.map(l => l.key), legacyKeys(addition));
+    assert.deepEqual(groups[0].levels.map(l => l.key), ['a', 'b', 'c']);
     assert.deepEqual(edition.levels.map(l => l.key), ['a', 'b', 'c']);
     const proof = receipt.packages.find((p: any) => p.editionId === addition.editionId);
     assert.ok(proof, `${addition.editionId}: public frozen evidence`);

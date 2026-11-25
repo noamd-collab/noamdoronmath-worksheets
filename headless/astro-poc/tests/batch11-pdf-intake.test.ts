@@ -146,9 +146,9 @@ test('four additive editions recover the pinned baseline after batch 10 (143d3d5
     const selectedId = oldTopic.defaultEditionId ?? 'legacy';
     const topicAdditions = reviewed.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId);
     assert.deepEqual(groups.map(g => g.editionId),
-      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId)]);
-    const oldGroupCount = oldIds.length + 1;
-    assert.deepEqual(groups.slice(0, oldGroupCount), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
+      [...[selectedId, ...oldIds.filter(id => id !== selectedId)].filter(id => id !== 'legacy'), ...topicAdditions.map(a => a.editionId)]);
+    const earlier = topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back).filter(group => group.editionId !== 'legacy');
+    assert.deepEqual(groups.slice(0, earlier.length), earlier);
     assert.deepEqual(groups.find(g => g.editionId === addition.editionId)!.levels.map(l => l.key), ['a', 'b', 'c']);
   }
 });

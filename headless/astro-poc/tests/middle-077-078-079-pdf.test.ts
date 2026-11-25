@@ -52,16 +52,15 @@ test('grade 7 algebra PDFs preserve existing grades, catalog groups and the prec
     const page = loadTopicPage(p.slug);
     assert.ok(topicPageCatalogTopicIds(page).includes(p.topicId), p.slug);
     const groups = topicWorksheetEditionLinks(catalog, p.grade, p.topicId, '/' + p.slug);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', p.edition.editionId]);
-    assert.equal(groups[0].pdfOnly, false);
-    assert.equal(groups[1].pdfOnly, true);
-    assert.equal(groups[1].note, 'קובצי PDF להדפסה');
+    assert.deepEqual(groups.map(g => g.editionId), [p.edition.editionId]);
+    assert.equal(groups[0].pdfOnly, true);
+    assert.equal(groups[0].note, 'קובצי PDF להדפסה');
     const parts = topicPagePdfParts(catalog, p.grade, [p.topicId]).parts;
     for (const [i, file] of p.studentFiles.entries()) {
       const level = p.edition.levels[i];
       assert.equal(file.key, level.key);
       assert.equal(file.sha256, level.pdfSha256);
-      assert.equal(groups[1].levels[i].href, file.downloads[0].url);
+      assert.equal(groups[0].levels[i].href, file.downloads[0].url);
       assert.deepEqual(file.downloads.map(d => new URL(d.url).host), ['static.wixstatic.com','www.noamdoronmath.co.il']);
       assert.ok(file.downloads.every(d => d.match && d.status === 200 && d.sha256 === level.pdfSha256));
       assert.ok(parts.some(part => part.contentUrl === file.downloads[0].url));

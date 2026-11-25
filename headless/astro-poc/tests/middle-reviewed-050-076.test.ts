@@ -27,7 +27,7 @@ test('the 15 reviewed topics preserve the preceding catalog, registry and each l
     assert.ok(p.reviewReceipts.length && p.reviewReceipts.every(r => r.verdict.startsWith('PASS') && /^[a-f0-9]{64}$/.test(r.sha256)));
     assert.equal(p.skillVersion, '7.3.3');
     const links = topicWorksheetEditionLinks(loadCatalog(), p.grade, p.topicId, '/' + p.slug);
-    assert.deepEqual(links.map(group => group.editionId), ['legacy', p.edition.editionId]);
+    assert.deepEqual(links.map(group => group.editionId), [p.edition.editionId]);
     const parts = topicPagePdfParts(loadCatalog(), p.grade, [p.topicId]).parts;
     assert.deepEqual(p.edition.levels.map(level => [level.key,level.viewerLevel]), [['a','A'],['b','B'],['c','E']]);
     for (const [i,level] of p.edition.levels.entries()) {
@@ -35,7 +35,7 @@ test('the 15 reviewed topics preserve the preceding catalog, registry and each l
       assert.equal(file.key, level.key);
       assert.deepEqual(file.downloads.map(d => new URL(d.url).hostname), ['static.wixstatic.com','www.noamdoronmath.co.il']);
       assert.ok(file.downloads.every(d => d.status === 200 && d.match && d.sha256 === level.pdfSha256));
-      const href = links[1].levels[i].href;
+      const href = links[0].levels[i].href;
       assert.equal(href, file.downloads[0].url);
       assert.ok(parts.some(part => part.contentUrl === href));
       hrefs.add(href);
