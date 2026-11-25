@@ -1,8 +1,12 @@
 /**
  * Homepage Instagram reel, in the slot that held the game promo cards.
- * A non-permalink value still shows the profile card instead of an embed.
+ *
+ * TODO: set INSTAGRAM_FEATURED_REEL_URL to the next reel permalink once it
+ * is published, for example https://www.instagram.com/reel/SHORTCODE/
+ * The previous reel was removed by its owner. Until this is a real reel,
+ * post, or TV permalink, the homepage shows the profile card.
  */
-export const INSTAGRAM_FEATURED_REEL_URL = 'https://www.instagram.com/reel/DgKT5HMOfTy/';
+export const INSTAGRAM_FEATURED_REEL_URL = '';
 
 export const INSTAGRAM_PROFILE_URL = 'https://www.instagram.com/noamdoronmath/';
 

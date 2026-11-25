@@ -18,9 +18,10 @@ import {
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 describe('featured Instagram reel permalink', () => {
-  it('points the homepage at the published reel and rejects other URLs', () => {
-    assert.equal(INSTAGRAM_FEATURED_REEL_URL, 'https://www.instagram.com/reel/DgKT5HMOfTy/');
-    assert.equal(featuredReelUrl(), 'https://www.instagram.com/reel/DgKT5HMOfTy/');
+  it('keeps the permalink empty until the next reel is published', () => {
+    assert.equal(INSTAGRAM_FEATURED_REEL_URL, '');
+    assert.equal(featuredReelUrl(), null);
+    assert.equal(instagramPermalink('https://www.instagram.com/reel/DgKT5HMOfTy/'), 'https://www.instagram.com/reel/DgKT5HMOfTy/');
     assert.equal(INSTAGRAM_PROFILE_URL, 'https://www.instagram.com/noamdoronmath/');
     assert.equal(instagramPermalink(''), null);
     assert.equal(instagramPermalink('TODO'), null);
@@ -73,6 +74,7 @@ describe('homepage placement', () => {
     assert.ok(card.indexOf('reelUrl ?') < card.indexOf('class="instagram-media"'));
     assert.ok(card.indexOf('class="instagram-media"') < card.indexOf('ig-feature__card'));
     const lib = readFileSync(join(root, 'src/lib/instagramReel.ts'), 'utf8');
-    assert.match(lib, /export const INSTAGRAM_FEATURED_REEL_URL = 'https:\/\/www\.instagram\.com\/reel\/DgKT5HMOfTy\/'/);
+    assert.match(lib, /export const INSTAGRAM_FEATURED_REEL_URL = ''/);
+    assert.match(lib, /TODO/);
   });
 });
