@@ -53,7 +53,7 @@ const plans = [
                 type="radio"
                 name="plan"
                 value={plan.id}
-                checked={index === 1}
+                checked={index === 0}
                 required
                 data-plan-price={plan.price}
               />
@@ -109,8 +109,8 @@ const plans = [
         <label class="co-check">
           <input type="checkbox" name="terms" value="1" required data-terms-checkbox />
           <span>
-            אני מאשר/ת רכישת גישה ל־<span data-plan-days>365</span> יום ב־<span data-plan-total>180</span> ש״ח,
-            בתשלום אחד, בלי חידוש אוטומטי.
+            אני מאשר/ת את תנאי הרכישה ואת מדיניות הביטול, ורוכש/ת גישה ל־<span data-plan-days>30</span> יום
+            ב־<span data-plan-total>18</span> ש״ח, בתשלום אחד, בלי חידוש אוטומטי.
             <a href="/purchase-terms" target="_blank" rel="noopener">תנאי הרכישה</a>
             ·
             <a href="/cancellation" target="_blank" rel="noopener">מדיניות הביטול</a>
@@ -128,7 +128,7 @@ const plans = [
 
       <div class="co-summary" aria-live="polite">
         <span>סה״כ לתשלום</span>
-        <strong><span data-plan-total>180</span> ש״ח</strong>
+        <strong><span data-plan-total>18</span> ש״ח</strong>
       </div>
 
       <button class="co-submit" type="submit">מעבר לתשלום מאובטח</button>
