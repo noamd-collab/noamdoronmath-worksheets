@@ -175,6 +175,7 @@ function beforeLearningNavRainbow(file: string, content: string): string {
   return content;
 }
 function beforeWhatsappRemoval(file: string, content: string): string {
+  content = beforeGrowLegalLinks(file, content);
   content = beforeLearningNavRainbow(file, content);
   const delta = whatsappRemovalDeltas.find((entry: any) => entry.file === file);
   if (!delta) return content;
@@ -185,6 +186,29 @@ function beforeWhatsappRemoval(file: string, content: string): string {
     content = parts.join(hunk.before);
   }
   assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside the WhatsApp removal hunks');
+  return content;
+}
+// Grow readiness, 2026-11-24: the footer gained the three payment-policy links
+// and the "everything on the site is free" disclaimer was corrected because the
+// teacher area now has a paid plan. Reverse only these two reviewed hunks, so
+// every historical hash below still describes the same bytes.
+function beforeGrowLegalLinks(file: string, content: string): string {
+  if (file !== 'src/data/home-page.json') return content;
+  const hunks: Array<[string, string]> = [
+    [
+      '\n      { "label": "תנאי רכישה — אזור המורים", "href": "/purchase-terms" },\n      { "label": "ביטול עסקה והחזר", "href": "/cancellation" },\n      { "label": "מדיניות אספקת השירות", "href": "/delivery" },',
+      '',
+    ],
+    [
+      '"disclaimer": "דפי העבודה באתר ניתנים להורדה ללא תשלום. אזור המורים כולל מסלול בתשלום, ותנאיו מופיעים בעמוד תנאי הרכישה ובעמוד ביטול עסקה והחזר.",',
+      '"disclaimer": "האתר נמצא כעת בשלבי הקמה ופיתוח, וכל השירותים והתכנים המוצגים בו ניתנים ללא תשלום. אין לראות באמור באתר משום התחייבות סופית מצד בעלי האתר, וייתכנו שינויים בתכנים בהמשך.",',
+    ],
+  ];
+  for (const [after, before] of hunks) {
+    const parts = content.split(after);
+    assert.equal(parts.length, 2, 'one exact Grow legal footer hunk');
+    content = parts.join(before);
+  }
   return content;
 }
 // First567 drawing policy changes exactly one allowlist line. Reverse only the
