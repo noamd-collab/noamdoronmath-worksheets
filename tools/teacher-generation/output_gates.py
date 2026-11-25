@@ -5,7 +5,11 @@ from pathlib import Path
 
 if __name__ == '__main__':
     p=argparse.ArgumentParser();p.add_argument('--skill',required=True);p.add_argument('--pdf',required=True);p.add_argument('--band',required=True);p.add_argument('--html');p.add_argument('--general',action='store_true')
+    # worksheet-wire/5 elementary keys print "(n)" row markers; every other caller keeps the "n." form.
+    p.add_argument('--paren-markers',action='store_true')
     a=p.parse_args();sys.path.insert(0,str(Path(a.skill)/'scripts/lib'))
+    if a.paren_markers and not a.general:
+        raise SystemExit('PDF-answer-LTR FAIL --paren-markers needs --general')
     from gates_runner import run_output_gates
     run_output_gates([a.pdf],strict=True,band=a.band)
     if a.band in ('elementary', 'elementary-ab'):
@@ -14,7 +18,8 @@ if __name__ == '__main__':
         else:
             from elementary_pdf_order import AnswerOrderError, check_answer_order
         try:
-            report = check_answer_order(a.pdf, a.html)
+            report = (check_answer_order(a.pdf, a.html, markers='paren') if a.paren_markers
+                      else check_answer_order(a.pdf, a.html))
         except AnswerOrderError as error:
             raise SystemExit('PDF-answer-LTR FAIL ' + str(error)) from None
         print('PDF-answer-LTR PASS %d formula(s) after answers heading' % report['formulas'])

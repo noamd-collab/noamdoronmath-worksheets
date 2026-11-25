@@ -23,6 +23,7 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import dataclass
 import json
+import re
 
 import leak_checks
 import lesson_select
@@ -163,14 +164,14 @@ def _lint(text, ctx, maximum):
     return codes
 
 
-def _compile_item_safely(kind, item, index, ctx):
+def _compile_item_safely(kind, item, index, ctx, **extra):
     """compile_item, with any unexpected exception turned into a BINDING_INTERNAL refusal of this item only.
 
     Decision 3 (per-question refusal with reserves): one item the checks did not foresee must cost that item
     (and, through trimming, at most its question), never the whole sheet. Nothing is passed by this guard:
-    the item is refused and its code recorded."""
+    the item is refused and its code recorded. ``extra`` (the elementary givens) passes through."""
     try:
-        return compile_item(kind, item, index, ctx)
+        return compile_item(kind, item, index, ctx, **extra)
     except Exception:  # noqa: BLE001 - fail closed: refuse the item, keep the sheet
         return CompiledItem(index, None, None, None, [("", "BINDING_INTERNAL")])
 
@@ -180,7 +181,11 @@ def compile_question(wire: dict, row: PlanRow, ctx: Context) -> CompiledQuestion
 
     Q4 also refuses a later item whose task has the same signed-term multiset as an earlier clean item of this
     question in another order (DUPLICATE_REORDERED, leak_checks.reordered_items): trimmed like any refused item,
-    so the question is refused (with ITEM_COUNT) when fewer than three clean items remain."""
+    so the question is refused (with ITEM_COUNT) when fewer than three clean items remain.
+
+    An elementary overlay (skill "elementary", the division kinds) takes _compile_question_elementary."""
+    if ctx.overlay.get("skill") == "elementary":
+        return _compile_question_elementary(wire, row, ctx)
     slot, overlay = row.slot, ctx.overlay
     refusals = []
 
@@ -257,6 +262,126 @@ def compile_question(wire: dict, row: PlanRow, ctx: Context) -> CompiledQuestion
     return CompiledQuestion(slot, kind, row, question(clean), refusals, trimmed)
 
 
+def _compile_question_elementary(wire: dict, row: PlanRow, ctx: Context) -> CompiledQuestion:
+    """Q1-Q5 for the elementary division kinds (division_kinds), with the same records and trimming rule.
+
+    Q1 shape and kind; the kind's own item count (overlay kinds[kind]["items"]). Q2 intro and table stay empty
+    (FIELD_NOT_EMPTY plus the text lint of anything written). Q3 givens: a story checks them (GIVEN_SHAPE,
+    GIVEN_VALUE, and REF_UNUSED for a given no item names); a drill declares none (FIELD_NOT_EMPTY). Items I1-I6 in
+    division_kinds.compile_item; a story item with another template than the first clean item is
+    TEMPLATE_MISMATCH. Q4 DUPLICATE_ITEM (division_kinds.question_leaks). A story written for a challenge row must
+    meet the overlay's challengeRule (CHALLENGE_PROFILE, question level). Q5: refused items are trimmed while the
+    kind's minimum of clean items remains; otherwise the question is refused with ITEM_COUNT. The star is the
+    row's group: a question written for a challenge row is a starred challenge."""
+    import division_kinds
+    from item_kinds import verify_question
+    slot, overlay = row.slot, ctx.overlay
+    refusals = []
+
+    def refuse(item, field, code):
+        refusal = Refusal(slot, item, field, code)
+        if refusal not in refusals:
+            refusals.append(refusal)
+
+    def refused(kind=None):
+        return CompiledQuestion(slot, kind, row, None, refusals, ())
+
+    # Q1 shape
+    if type(wire) is not dict or set(wire) != set(QUESTION_FIELDS) or wire.get("slot") != slot:
+        refuse(0, "", "Q_SHAPE")
+        return refused()
+    kind, intro, givens, table, items = (wire[field] for field in ("kind", "intro", "givens", "table", "items"))
+    if (type(kind) is not str or type(intro) is not str or type(givens) is not list or type(items) is not list
+            or type(table) is not dict or set(table) != {"head", "rows"} or type(table["head"]) is not list
+            or type(table["rows"]) is not list):
+        refuse(0, "", "Q_SHAPE")
+        return refused()
+    if kind not in row.kinds:
+        refuse(0, "kind", "Q_KIND_NOT_ALLOWED")
+    known = overlay["kinds"].get(kind)
+    low, high = known["items"] if known is not None else (LIMITS["items_min"], LIMITS["items_max"])
+    if not low <= len(items) <= high:
+        refuse(0, "items", "ITEM_COUNT")
+    # Q2 text: code writes every sentence of these kinds
+    if intro != "":
+        refuse(0, "intro", "FIELD_NOT_EMPTY")
+        for code in _lint(intro, ctx, LIMITS["intro"]):
+            refuse(0, "intro", code)
+    if table["head"] or table["rows"]:
+        refuse(0, "table", "FIELD_NOT_EMPTY")
+        cells = list(table["head"]) + [cell for line in table["rows"] if type(line) is list for cell in line]
+        for cell in cells:
+            for code in (_lint(cell, ctx, LIMITS["cell"]) if type(cell) is str and cell else ()):
+                refuse(0, "table", code)
+    if known is None:
+        return refused()
+    # Q3 givens
+    values = None
+    if known["givens"]:
+        values, problems = division_kinds.check_givens(givens, overlay)
+        for field, code in problems:
+            refuse(0, field, code)
+    elif givens:
+        refuse(0, "givens", "FIELD_NOT_EMPTY")
+
+    # Items I1-I6
+    compiled = [_compile_item_safely(kind, item, index, ctx, givens=values) for index, item in enumerate(items, 1)]
+    for item in compiled:
+        for field, code in item.refusals:
+            refuse(item.index, field, code)
+    if values is not None:
+        named = set()
+        for item in items:
+            if type(item) is dict and type(item.get("expr")) is str:
+                named.update(match[1:-1] for match in re.findall(r"\{n[1-8]\}", item["expr"]))
+        if set(values) - named:
+            refuse(0, "givens", "REF_UNUSED")
+    clean = [item for item in compiled if not item.refusals and item.prompt is not None]
+    if kind == division_kinds.STORY and clean:
+        template = clean[0].answer["key"]["binding"]["template"]
+        for item in clean[1:]:
+            if item.answer["key"]["binding"]["template"] != template:
+                refuse(item.index, "variant", "TEMPLATE_MISMATCH")
+        clean = [item for item in clean if item.answer["key"]["binding"]["template"] == template]
+    star = row.group == CHALLENGES
+
+    def question(chosen):
+        if kind == division_kinds.DRILL:
+            spans = division_kinds.drill_intro(overlay)
+        else:
+            pair = division_kinds.task_pair(chosen[0].answer["task"])
+            spans = division_kinds.story_intro(chosen[0].answer["key"]["binding"]["template"], pair, overlay)
+        return {"intro": spans, "star": star,
+                "items": [{"prompt": item.prompt, "answer": item.answer} for item in chosen]}
+
+    # Q4 repeats inside the question (monotone), then the challenge profile of a starred story
+    if clean:
+        hit_items = set()
+        for position, code in division_kinds.question_leaks(question(clean)):
+            item = clean[position - 1]
+            refuse(item.index, "expr", code)
+            hit_items.add(item.index)
+        clean = [item for item in clean if item.index not in hit_items]
+    if clean and star and kind == division_kinds.STORY:
+        if not division_kinds.meets_challenge(division_kinds.task_pair(clean[0].answer["task"]), overlay):
+            refuse(0, "expr", "CHALLENGE_PROFILE")
+
+    # Q5 trim
+    if any(refusal.item == 0 for refusal in refusals):
+        return refused(kind)
+    if len(clean) < low:
+        refuse(0, "items", "ITEM_COUNT")
+        return refused(kind)
+    built = question(clean)
+    try:
+        verify_question(built, overlay)
+    except Exception:  # noqa: BLE001 - the question checker disagreeing with compile is an internal bug: refuse
+        refuse(0, "", "BINDING_INTERNAL")
+        return refused(kind)
+    trimmed = tuple(item.index for item in compiled if item not in clean)
+    return CompiledQuestion(slot, kind, row, built, refusals, trimmed)
+
+
 # ------------------------------------------------------------------ the sheet
 
 def _registered(codes) -> list:
@@ -267,20 +392,33 @@ def _registered(codes) -> list:
     return out[:structured_contract.MAX_ENTRY_CODES]
 
 
-def _sheet_hits(questions, examples) -> dict:
-    """{0-based index of the later question: sorted codes}: sheet_leaks plus reordered repeats (DUPLICATE_REORDERED)."""
+def _sheet_hits(questions, examples, elementary=None) -> dict:
+    """{0-based index of the later question: sorted codes}: sheet_leaks plus reordered repeats (DUPLICATE_REORDERED).
+
+    ``elementary`` = (overlay, skill path, grade number, level) for an elementary overlay: the division sheet checks
+    (DUPLICATE_TASK, EXAMPLE_COPY) and the pinned G62 mirror (STRUCTURE_REPEATED) replace the middle ones."""
+    if elementary is not None:
+        import division_kinds
+        overlay, skill_path, grade_number, level = elementary
+        found = {index: set(codes) for index, codes in division_kinds.sheet_leaks(questions, overlay).items()}
+        clean = [question for index, question in enumerate(questions) if index not in found]
+        positions = [index for index in range(len(questions)) if index not in found]
+        for index, codes in division_kinds.clone_hits(clean, skill_path=skill_path, grade_number=grade_number,
+                                                      level=level).items():
+            found.setdefault(positions[index], set()).update(codes)
+        return {index: sorted(codes) for index, codes in sorted(found.items())}
     hits = {index: set(codes) for index, codes in leak_checks.sheet_leaks(questions, examples=examples).items()}
     for index, codes in leak_checks.reordered_tasks(questions).items():
         hits.setdefault(index, set()).update(codes)
     return {index: sorted(codes) for index, codes in sorted(hits.items())}
 
 
-def _sheet_loop(selection, examples) -> None:
+def _sheet_loop(selection, examples, elementary=None) -> None:
     """Sheet checks over the printed order → reject the later question, until no new codes. Bounded by N+R+1."""
     bound = selection.planned + len(selection.reserves) + 1
     for _ in range(bound):
         layout = selection.layout()
-        hits = _sheet_hits([slot.question.ir for slot in layout], examples)
+        hits = _sheet_hits([slot.question.ir for slot in layout], examples, elementary)
         if not hits:
             return
         selection.reject({layout[index].number: tuple(codes) for index, codes in hits.items()}, stage="sheet")
@@ -339,8 +477,11 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
         raise V5Error("RUNTIME_NOT_CONFIGURED")
     if overlay is None:
         overlay = structured_contract.overlay_for(lesson.get("topicId"), lesson.get("level"))
-    if overlay is None or scope["topic"]["skillId"] != "middle":
+    if overlay is None or scope["topic"]["skillId"] != overlay.get("skill", "middle"):
         raise V5Error("WIRE_TOPIC_UNSUPPORTED")
+    # The elementary sheet checks need the trusted (pinned) elementary skill path for the G62 mirror.
+    elementary = ((overlay, skill_path, lesson["gradeNumber"], lesson["level"])
+                  if overlay.get("skill") == "elementary" else None)
     planned, reserves = plan_slots(lesson, scope, overlay)
     floor = question_floor(lesson["gradeNumber"])
     wires, refusals = parse_wire(reply, planned, reserves)
@@ -357,7 +498,7 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
         lambda question, challenge, number: question.codes, minimum=floor)
     selection.screen()
     examples = rule_spans(overlay)
-    _sheet_loop(selection, examples)
+    _sheet_loop(selection, examples, elementary)
 
     by_slot = {row.slot: row for row in planned}
     rounds = 0
@@ -374,7 +515,7 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
             questions.append(candidate)
             refusals.extend(candidate.refusals)
             selection.fill(row.number, candidate, origin="repair")
-        _sheet_loop(selection, examples)
+        _sheet_loop(selection, examples, elementary)
 
     def failure(code):
         diagnostics = _diagnostics(lesson, floor, selection, refusals, questions, rounds, len(selection.layout()))
@@ -395,7 +536,7 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
     printed = {concept for slot in layout for concept in slot.question.row.concepts}
     if not set(selected) <= printed:
         raise failure("SHEET_COVERAGE")
-    left = _sheet_hits([slot.question.ir for slot in layout], examples)
+    left = _sheet_hits([slot.question.ir for slot in layout], examples, elementary)
     if left:
         raise failure(sorted({code for codes in left.values() for code in codes})[0])
 
@@ -409,7 +550,7 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
     diagnostics = _diagnostics(lesson, floor, selection, refusals, questions, rounds, len(layout))
     # Equivalent evaluations (same simplified expression and values after renaming letters) are recorded for the
     # owner's review, by slot and item index only (G11); they are not refused (no decision to refuse them yet).
-    diagnostics["warnings"] = [
+    diagnostics["warnings"] = [] if elementary is not None else [
         {"code": warning["code"], "slots": [layout[n].question.slot for n in warning["questions"]],
          "items": list(warning["items"])}
         for warning in leak_checks.equivalent_tasks(ir["sections"][0]["questions"])]

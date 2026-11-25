@@ -1204,3 +1204,73 @@ def key_roundtrip(key: dict, result: dict, mapping=None) -> bool:
         return printed == node and kernel_equal(printed, result, mapping)
     except SchoolMathError:
         return False
+
+
+# ------------------------------------------------------ elementary house ----
+# The elementary sign table (worksheet-wire/5 elementary overlays), one row per grade letter: the multiplication
+# glyph (× in grade ב, Latin x in ג–ו, none in א), the division sign ':' printed with a space on each side, U+2212
+# for every minus, and the thousands comma from grade ג (none in א–ב). It mirrors the pinned elementary
+# scripts/lib/signs.py PROFILE (tests compare the two); to_house above stays the middle printer and is unchanged.
+ELEMENTARY_GRADES = ("א", "ב", "ג", "ד", "ה", "ו")
+ELEMENTARY_SIGNS = {
+    "א": {"mul": None, "div": None, "thousands": False},
+    "ב": {"mul": "×", "div": ":", "thousands": False},
+    "ג": {"mul": "x", "div": ":", "thousands": True},
+    "ד": {"mul": "x", "div": ":", "thousands": True},
+    "ה": {"mul": "x", "div": ":", "thousands": True},
+    "ו": {"mul": "x", "div": ":", "thousands": True},
+}
+
+
+def elementary_number(text: str, grade: str) -> str:
+    """A whole-number literal in the grade's writing: '1250' → '1,250' from grade ג, unchanged in א–ב.
+    Anything but a whole number (a decimal, a percent) → FORM_UNREPRESENTABLE (not in the elementary printer)."""
+    if grade not in ELEMENTARY_SIGNS:
+        raise ValueError("unknown elementary grade letter")
+    if type(text) is not str or not re.fullmatch(r"0|[1-9][0-9]*", text):
+        _fail("FORM_UNREPRESENTABLE", "the elementary printer prints whole numbers only")
+    return "{:,}".format(int(text)) if ELEMENTARY_SIGNS[grade]["thousands"] else text
+
+
+def to_elementary(node, grade: str) -> str:
+    """Elementary house text for one LTR atom (the inside of the pinned ws_html H.ltr span) in grade `grade`.
+
+    Whole numbers in the grade's writing; ':' and '/' print ' : '; '*' and an implicit product print the grade's
+    multiplication glyph with a space each side; binary + and − (U+2212) and '=' get one space each side; a leading
+    minus is glued; brackets print as written. A letter, a power, a reference, a decimal or a percent, and a sign
+    the grade does not have, are FORM_UNREPRESENTABLE: no elementary v5 kind prints them. Never emits ASCII '-'."""
+    if grade not in ELEMENTARY_SIGNS:
+        raise ValueError("unknown elementary grade letter")
+    _check(node)
+    signs = ELEMENTARY_SIGNS[grade]
+
+    def operator(op):
+        glyph = signs["div"] if op in (":", "/") else signs["mul"]
+        if glyph is None:
+            _fail("FORM_UNREPRESENTABLE", "the grade has no sign for this operation")
+        return " " + glyph + " "
+
+    def walk(item):
+        kind = type(item)
+        if kind is Num:
+            return elementary_number(item.text, grade)
+        if kind is Neg:
+            return MINUS + walk(item.operand)
+        if kind is Group:
+            return "(" + walk(item.inner) + ")"
+        if kind is Sum:
+            return walk(item.first) + "".join((" + " if op == "+" else " " + MINUS + " ") + walk(child)
+                                              for op, child in item.rest)
+        if kind is Product:
+            return walk(item.first) + "".join(operator(op) + walk(child) for op, child in item.rest)
+        if kind is Relation:
+            return walk(item.left) + " = " + walk(item.right)
+        _fail("FORM_UNREPRESENTABLE", "the elementary printer has no letters, powers or references")
+
+    text = walk(node)
+    if "-" in text:
+        _fail("FORM_UNREPRESENTABLE", "elementary house text with an ASCII hyphen")
+    return text
+
+
+__all__ += ["ELEMENTARY_GRADES", "ELEMENTARY_SIGNS", "elementary_number", "to_elementary"]

@@ -17,6 +17,8 @@ from bs4 import BeautifulSoup, NavigableString, Tag
 from elementary_pdf_order import AnswerOrderError, compact
 
 MATH = re.compile(r"[0-9A-Za-z+\-−×÷:·=().<>≤≥,%₪]+")
+# Answer-row labels: "n." (every existing caller) or "(n)" (worksheet-wire/5 elementary keys, markers="paren").
+LABELS = {"dot": re.compile(r"[1-9][0-9]?\."), "paren": re.compile(r"\([1-9][0-9]?\)")}
 
 @dataclass(frozen=True)
 class Superscript:
@@ -68,7 +70,8 @@ def _tree(element, depth=0):
     return tuple(result)
 
 
-def expected_answers(html):
+def expected_answers(html, *, markers="dot"):
+    label_form = LABELS[markers]
     soup = BeautifulSoup(Path(html).read_text(encoding="utf-8"), "html.parser")
     sections = soup.select(".answers")
     if len(sections) != 1:
@@ -82,7 +85,7 @@ def expected_answers(html):
         if len(cells) != 2 or len(qn) != 1:
             raise AnswerOrderError("GENERAL_ANSWER_TABLE_STRUCTURE")
         label = compact(qn[0].get_text())
-        if not re.fullmatch(r"[1-9][0-9]?\.", label):
+        if not label_form.fullmatch(label):
             raise AnswerOrderError("GENERAL_ANSWER_QUESTION_LABEL")
         cell = next(cell for cell in cells if cell is not qn[0])
         formulas = [_tree(span) for span in cell.select("span.ltr") if not span.find_parent("span", class_="ltr")]
@@ -245,10 +248,10 @@ def _matches(tree, glyphs, rules, region, depth=0):
     return result
 
 
-def check_answer_order(pdf, html=None):
+def check_answer_order(pdf, html=None, *, markers="dot"):
     pdf=Path(pdf);html=Path(html) if html is not None else pdf.with_suffix(".html")
     if not pdf.is_file() or not html.is_file():raise AnswerOrderError("ANSWER_PDF_OR_HTML_MISSING")
-    heading, expected=expected_answers(html)
+    heading, expected=expected_answers(html, markers=markers)
     with pymupdf.open(pdf) as document:
         heading=_heading_key(heading)
         visible_pages={i:_glyphs(page) for i,page in enumerate(document)}

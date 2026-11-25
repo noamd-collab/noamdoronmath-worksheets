@@ -45,6 +45,8 @@ LIMITS = MappingProxyType({
     "items_min": 3, "items_max": 6, "givens_max": 8, "table_cols": 6, "table_rows": 8, "reply_bytes": 200_000,
 })
 FORMS = ("expression", "integer")
+# Key forms of the elementary overlays (division_kinds): a whole number, or a quotient with its remainder.
+ELEMENTARY_FORMS = ("integer", "quotient_remainder")
 GRADE_LINE = MappingProxyType({7: "כיתה ז׳", 8: "כיתה ח׳", 9: "כיתה ט׳"})
 
 PRACTICE, CHALLENGES = "practice", "challenges"
@@ -105,6 +107,14 @@ CODE_GROUPS = MappingProxyType({
     "binding": ("TEMPLATE_UNKNOWN", "TEMPLATE_MISMATCH", "VALUES_SHAPE", "VALUES_MISMATCH", "MISTAKE_UNKNOWN",
                 "MISTAKE_NOT_APPLICABLE", "MISTAKE_UNMODELED", "MISTAKE_NOT_WRONG", "NOTHING_TO_DO",
                 "REVEALS_ANSWER"),
+    # The elementary division kinds (division_kinds, overlay ד10): a drill expr that is not NUMBER:NUMBER, a
+    # story ask outside the kind's asks, a story whose division leaves no remainder (its three asks would not be
+    # three answers), a starred story without the overlay's challenge profile, and a printed ask text that lacks
+    # its wording cue (a template/ask mismatch in code-written text).
+    "division": ("DIVISION_SHAPE", "ASK_UNKNOWN", "STORY_REMAINDER_ZERO", "CHALLENGE_PROFILE", "WORDING_CUE"),
+    # The source-side mirror of the pinned elementary G62 clone gate (division_kinds.clone_hits): an item whose
+    # structure the sheet already printed as often as the pinned profile allows (sheet loop, final adapter check).
+    "structure": ("STRUCTURE_REPEATED", "SOURCE_STRUCTURE"),
     # EXAMPLE_COPY (plan §c2) is emitted by leak_checks.sheet_leaks although §4 does not list it.
     # DUPLICATE_REORDERED (leak_checks.reordered_tasks): a later question repeats an earlier item's terms in
     # another order; added after the stage-2 review (a starred reserve repeated a practice item). Since stage 3
@@ -280,8 +290,126 @@ _G7_ALGEBRAIC_EXPRESSIONS = {
     "exampleQuestion": ("collect_like_terms", ("31x+47+26x-15", "-22y+43+35y-27", "38b-23+b-29")),
 }
 
+def _story(intro, full_groups, leftover, groups_needed):
+    """One Tier A story template: the intro as T/D parts (n1 = the whole amount, n2 = the size of one group) and
+    one code-written question per ask."""
+    return {"intro": intro, "asks": {"full_groups": full_groups, "leftover": leftover,
+                                     "groups_needed": groups_needed}}
+
+
+# The elementary overlay of ד10 (grade 4, חילוק ארוך ושארית), level a only, for the repro lesson: concepts #0
+# חילוק ארוך (מאונך) and #1 מנה ושארית; #2 בדיקת חילוק is not yet taught ("עדיין לא למדנו בדיקת חילוק בעזרת כפל"),
+# so no kind, verb, story or rule mentions multiplication or checking. Every Hebrew string here is code-written
+# Tier A text and NOT reviewed (D7): reviewed stays False until Noam signs. Tier B (model-written story context)
+# stays off: the model chooses a story template, the two whole numbers of its givens and the three asks.
+_D10_LONG_DIVISION = {
+    "topicId": "ד10",
+    "skill": "elementary",
+    "reviewed": False,
+    "pendingReview": ("title", "rule", "verbs", "stories", "remainderWord", "profile", "challengeRule",
+                      "forbiddenTerms"),
+    "levels": ("a",),
+    "title": "חילוק ארוך ושארית",
+    "letters": (),
+    "conceptKinds": {"ד10#0": ("division_remainder_drill", "division_story"),
+                     "ד10#1": ("division_story",)},
+    # Starred questions are stories written for a challenge row (the star follows the row, as validate_selection
+    # requires); a starred story must also meet challengeRule.
+    "challengeKinds": {"division_story": ("ד10#1",)},
+    "kinds": {
+        "division_remainder_drill": {
+            "groups": (PRACTICE,), "reads": ("expr",), "form": "quotient_remainder", "asks": ("",),
+            "variants": ("",), "givens": False, "items": (3, 3),
+            "card": "expr is one division NUMBER:NUMBER, as 4371:6; code prints it with a blank and keys the quotient "
+                    "with its remainder. Three items, all different.",
+        },
+        "division_story": {
+            "groups": (PRACTICE, CHALLENGES), "reads": ("expr", "variant", "ask"), "form": "integer",
+            "asks": ("full_groups", "leftover", "groups_needed"), "variants": (
+                "S_PENCILS", "S_EGGS", "S_BOATS", "S_SHELVES", "S_COOKIES", "S_TEAMS", "S_BOTTLES", "S_STICKERS"),
+            "givens": True, "items": (3, 3),
+            "card": "variant names a story code writes around two givens: n1 (type count) is the whole amount and "
+                    "n2 (type count) the size of one group. Every item has expr {n1}:{n2} and one ask; the three "
+                    "items ask full_groups, leftover and groups_needed once each. The division must leave a "
+                    "remainder.",
+        },
+    },
+    # Level a: a three-digit dividend and a one-digit divisor of at least 2, with and without a remainder.
+    "profile": {"dividend_min": 100, "dividend_max": 999, "divisor_min": 2, "divisor_max": 9},
+    # A starred story divides so that the quotient has a zero digit (413:4 gives 103), the long-division step
+    # most often skipped; a practice reserve standing in for a challenge prints unstarred and needs none.
+    "challengeRule": "quotient_zero_digit",
+    "asks": {"full_groups": "floor", "leftover": "remainder", "groups_needed": "ceil"},
+    # Wording cues of a printed ask (checked on every story text at compile time and in the final validator).
+    "cues": {"full": r"(?<![א-ת])[הבלוכמש]?(?:מלא|שלמ)", "leftover": r"(?:יישאר|נשאר|שארית)",
+             "needed": r"צריך[^.?!]*כדי"},
+    "givenTypes": ("count",),
+    "units": (),
+    "verbs": {"division_remainder_drill": "פתרו בחילוק ארוך. אם יש שארית, כתבו גם אותה."},
+    # The word between the two atoms of a drill key: "31 שארית 1" (the order pinned gate G66 requires).
+    "remainderWord": "שארית",
+    "stories": {
+        "S_PENCILS": _story((("T", "בחנות יש "), ("D", "n1"), ("T", " עפרונות. אורזים אותם בקופסאות, "),
+                             ("D", "n2"), ("T", " עפרונות בכל קופסה.")),
+                            "כמה קופסאות מלאות יהיו?", "כמה עפרונות יישארו מחוץ לקופסאות המלאות?",
+                            "כמה קופסאות צריך כדי לארוז את כל העפרונות?"),
+        "S_EGGS": _story((("T", "בלול נאספו "), ("D", "n1"), ("T", " ביצים. מסדרים אותן בתבניות, "), ("D", "n2"),
+                          ("T", " ביצים בכל תבנית.")),
+                         "כמה תבניות מלאות יהיו?", "כמה ביצים יישארו מחוץ לתבניות המלאות?",
+                         "כמה תבניות צריך כדי לסדר את כל הביצים?"),
+        "S_BOATS": _story((("T", "לשיט יצאו "), ("D", "n1"), ("T", " ילדים. בכל סירה יש מקום ל־"), ("D", "n2"),
+                           ("T", " ילדים.")),
+                          "כמה סירות יהיו מלאות?", "כמה ילדים יישארו בלי מקום בסירות המלאות?",
+                          "כמה סירות צריך כדי שכל הילדים יצאו לשיט?"),
+        "S_SHELVES": _story((("T", "בספרייה יש "), ("D", "n1"), ("T", " ספרים חדשים. מסדרים אותם על מדפים, "),
+                             ("D", "n2"), ("T", " ספרים על כל מדף.")),
+                            "כמה מדפים מלאים יהיו?", "כמה ספרים יישארו מחוץ למדפים המלאים?",
+                            "כמה מדפים צריך כדי לסדר את כל הספרים?"),
+        "S_COOKIES": _story((("T", "לקראת המסיבה אפו "), ("D", "n1"), ("T", " עוגיות. אורזים אותן בשקיות, "),
+                             ("D", "n2"), ("T", " עוגיות בכל שקית.")),
+                            "כמה שקיות מלאות יהיו?", "כמה עוגיות יישארו מחוץ לשקיות המלאות?",
+                            "כמה שקיות צריך כדי לארוז את כל העוגיות?"),
+        "S_TEAMS": _story((("T", "בטורניר משתתפים "), ("D", "n1"), ("T", " תלמידים. מחלקים אותם לקבוצות, "),
+                           ("D", "n2"), ("T", " תלמידים בכל קבוצה.")),
+                          "כמה קבוצות מלאות יהיו?", "כמה תלמידים יישארו מחוץ לקבוצות המלאות?",
+                          "כמה קבוצות צריך כדי שכל התלמידים ישחקו?"),
+        "S_BOTTLES": _story((("T", "במפעל מילאו "), ("D", "n1"), ("T", " בקבוקי מיץ. אורזים אותם בארגזים, "),
+                             ("D", "n2"), ("T", " בקבוקים בכל ארגז.")),
+                            "כמה ארגזים מלאים יהיו?", "כמה בקבוקים יישארו מחוץ לארגזים המלאים?",
+                            "כמה ארגזים צריך כדי לארוז את כל הבקבוקים?"),
+        "S_STICKERS": _story((("T", "לנועה יש "), ("D", "n1"), ("T", " מדבקות. היא מדביקה אותן בשורות, "),
+                              ("D", "n2"), ("T", " מדבקות בכל שורה.")),
+                             "כמה שורות מלאות יהיו?", "כמה מדבקות יישארו מחוץ לשורות המלאות?",
+                             "כמה שורות צריך כדי להדביק את כל המדבקות?"),
+    },
+    # The rule box (code-written) and the division it shows as a worked example (EXAMPLE_COPY for an item).
+    # No text span ends with ':' before an atom (or starts with one after it): in the elementary atom-order check
+    # ':' is an atom glyph (the division sign), so an adjacent colon would glue onto the atom's glyph run.
+    # The middle overlay's write_from_words templates and fixed layouts have no elementary counterpart: the stories
+    # above are the elementary Tier A texts. Both shapes keep these keys so a reader of every overlay finds them.
+    "templates": {},
+    "layouts": {},
+    "rule": [{"kind": "text", "text": "בחילוק ארוך מחלקים קודם את המאות, אחר כך את העשרות ובסוף את היחידות. מה "
+              "שנשאר בסוף קטן מהמחלק, והוא נקרא שארית. למשל, "},
+             {"kind": "display", "notation": "125:4=31", "symbols": []}, {"kind": "text", "text": " שארית "},
+             {"kind": "display", "notation": "1", "symbols": []}, {"kind": "text", "text": "."}],
+    "ruleExamples": (("125", "4"),),
+    "forbiddenTerms": ("בדיקת חילוק", "בדיקה", "בדקו", "כפל", "שבר", "עשרוני", "אחוז"),
+    "levelNotes": {"a": "Level a: a three-digit number divided by a one-digit number (2 to 9), with and without "
+                        "a remainder. Checking a division by multiplication is not taught yet."},
+    # Card examples deliberately outside the profile (four-digit dividends), so a copied example is refused.
+    "exampleQuestion": ("division_remainder_drill", ("4371:6", "5208:7", "6115:8")),
+    "examples": {
+        "division_remainder_drill": {"text": "", "expr": "4371:6", "expr2": "", "values": "", "ask": "", "form": "",
+                                     "variant": ""},
+        "division_story": {"text": "", "expr": "{n1}:{n2}", "expr2": "", "values": "", "ask": "full_groups",
+                           "form": "", "variant": "S_PENCILS"},
+    },
+}
+
 OVERLAYS = MappingProxyType({
     _G7_ALGEBRAIC_EXPRESSIONS["topicId"]: _freeze(_G7_ALGEBRAIC_EXPRESSIONS),
+    _D10_LONG_DIVISION["topicId"]: _freeze(_D10_LONG_DIVISION),
 })
 
 
@@ -302,6 +430,16 @@ def rule_spans(overlay) -> list:
 
 def code_strings(overlay) -> list:
     """[(path, text)] of every code-written Hebrew string of one overlay, in a fixed order."""
+    if overlay.get("skill") == "elementary":
+        out = [("title", overlay["title"])]
+        out += [("verbs." + kind, text) for kind, text in overlay["verbs"].items()]
+        out.append(("remainderWord", overlay["remainderWord"]))
+        out += [("rule.%d" % i, span["text"]) for i, span in enumerate(overlay["rule"]) if span["kind"] == "text"]
+        for sid, story in overlay["stories"].items():
+            out += [("stories.%s.intro.%d" % (sid, i), value) for i, (part, value) in enumerate(story["intro"])
+                    if part == "T"]
+            out += [("stories.%s.asks.%s" % (sid, ask), text) for ask, text in story["asks"].items()]
+        return out
     out = [("title", overlay["title"])]
     out += [("verbs." + kind, text) for kind, text in overlay["verbs"].items()]
     out += [("rule.%d" % i, span["text"]) for i, span in enumerate(overlay["rule"]) if span["kind"] == "text"]
@@ -314,12 +452,74 @@ def code_strings(overlay) -> list:
     return out
 
 
+def _check_elementary_overlay(overlay, need) -> None:
+    """check_overlay for an elementary overlay (skill "elementary": the division kinds of division_kinds)."""
+    kinds = overlay["kinds"]
+    need(overlay["reviewed"] is False or overlay["reviewed"] is True, "reviewed")
+    need(tuple(overlay["letters"]) == (), "letters")
+    for concept, names in overlay["conceptKinds"].items():
+        need(concept.startswith(overlay["topicId"] + "#") and names, "conceptKinds")
+        need(all(name in kinds and PRACTICE in kinds[name]["groups"] for name in names), "conceptKinds")
+    for name, concepts in overlay["challengeKinds"].items():
+        need(name in kinds and CHALLENGES in kinds[name]["groups"], "challengeKinds")
+        need(concepts and all(c in overlay["conceptKinds"] for c in concepts), "challengeKinds")
+    used = {name for names in overlay["conceptKinds"].values() for name in names} | set(overlay["challengeKinds"])
+    need(used == set(kinds) == {"division_remainder_drill", "division_story"}, "kinds")
+    for name, row in kinds.items():
+        need(row["form"] in ELEMENTARY_FORMS and set(row["groups"]) <= {PRACTICE, CHALLENGES} and row["groups"],
+             "kinds.form")
+        need(set(row["reads"]) <= {"expr", "variant", "ask"} and "expr" in row["reads"], "kinds.reads")
+        need(("ask" in row["reads"]) == (tuple(row["asks"]) != ("",)), "kinds.asks")
+        need(("variant" in row["reads"]) == (tuple(row["variants"]) != ("",)), "kinds.variants")
+        low, high = row["items"]
+        need(LIMITS["items_min"] <= low <= high <= LIMITS["items_max"], "kinds.items")
+        need(name in overlay["examples"] and tuple(overlay["examples"][name]) == ITEM_FIELDS, "examples")
+    drill, story = kinds["division_remainder_drill"], kinds["division_story"]
+    need(drill["form"] == "quotient_remainder" and drill["givens"] is False and "division_remainder_drill"
+         in overlay["verbs"], "kinds.division_remainder_drill")
+    need(story["form"] == "integer" and story["givens"] is True and set(story["asks"]) == set(overlay["asks"])
+         and tuple(story["variants"]) == tuple(overlay["stories"]), "kinds.division_story")
+    need(tuple(story["items"]) == (len(story["asks"]), len(story["asks"])), "kinds.division_story")
+    need(set(overlay["asks"].values()) == {"floor", "remainder", "ceil"}, "asks")
+    profile = overlay["profile"]
+    need(2 <= profile["divisor_min"] <= profile["divisor_max"] and 1 <= profile["dividend_min"]
+         <= profile["dividend_max"] <= 999_999, "profile")
+    need(overlay["challengeRule"] in ("quotient_zero_digit", ""), "challengeRule")
+    need(tuple(overlay["givenTypes"]) == ("count",) and tuple(overlay["units"]) == (), "givenTypes")
+    need(overlay["remainderWord"] == "שארית", "remainderWord")      # the pinned G66 house form names this word
+    texts = set()
+    for story_row in overlay["stories"].values():
+        parts = story_row["intro"]
+        need(all(part in ("T", "D") for part, _ in parts) and parts[0][0] == "T"
+             and all(a[0] != b[0] for a, b in zip(parts, parts[1:])), "stories.intro")
+        need(sorted(value for part, value in parts if part == "D") == ["n1", "n2"], "stories.intro")
+        need(set(story_row["asks"]) == set(overlay["asks"]), "stories.asks")
+        texts.update(story_row["asks"].values())
+    need(len(texts) == len(overlay["stories"]) * len(overlay["asks"]), "stories.asks")
+    need(set(overlay["levelNotes"]) == set(overlay["levels"]), "levelNotes")
+    # ':' is an atom glyph of the elementary atom-order check: no code-written text touches an atom with one.
+    sequences = [[(span["kind"] == "text", span.get("text", "")) for span in overlay["rule"]]]
+    sequences += [[(part == "T", value) for part, value in story_row["intro"]]
+                  for story_row in overlay["stories"].values()]
+    for sequence in sequences:
+        for index, (is_text, value) in enumerate(sequence):
+            if not is_text:
+                continue
+            if index + 1 < len(sequence) and not sequence[index + 1][0]:
+                need(not value.rstrip().endswith(":"), "colon beside an atom")
+            if index > 0 and not sequence[index - 1][0]:
+                need(not value.lstrip().startswith(":"), "colon beside an atom")
+
+
 def check_overlay(overlay) -> None:
     """Internal consistency of one overlay; raises ValueError naming the broken field (English only)."""
     def need(condition, field):
         if not condition:
             raise ValueError("Overlay field is inconsistent: " + field)
 
+    if overlay.get("skill") == "elementary":
+        _check_elementary_overlay(overlay, need)
+        return
     kinds = overlay["kinds"]
     need(overlay["reviewed"] is False or overlay["reviewed"] is True, "reviewed")
     need(set(overlay["letters"]) <= {"x", "y", "a", "b"} and len(set(overlay["letters"])) == len(overlay["letters"]),
@@ -412,7 +612,7 @@ def _check_lesson(lesson, scope, overlay) -> int:
         raise ContractError("WIRE_TOPIC_UNSUPPORTED", "Topic and level are not enabled for the structured wire")
     topic = scope["topic"]
     if (topic["topicId"] != overlay["topicId"] or topic["gradeNumber"] != lesson.get("gradeNumber")
-            or topic["skillId"] != "middle"):
+            or topic["skillId"] != overlay.get("skill", "middle")):
         raise ContractError("WIRE_TOPIC_UNSUPPORTED", "Lesson, scope and overlay disagree")
     count = lesson.get("questionCount")
     if not _plain_int(count) or not CHALLENGE_SLOTS + 1 <= count <= 30:
@@ -502,7 +702,7 @@ def wire_schema(lesson, scope, overlay, reserves: int) -> dict:
     kinds = _unique([kind for names in practice.values() for kind in names] + list(challenge_kinds))
     rows = [overlay["kinds"][kind] for kind in kinds]
     slots = slot_names(count, reserves)
-    forms = ("",) + tuple(form for form in FORMS if any(row["form"] == form for row in rows))
+    forms = ("",) + tuple(form for form in _unique(FORMS + ELEMENTARY_FORMS) if any(row["form"] == form for row in rows))
     asks = _unique(("",) + tuple(ask for row in rows for ask in row["asks"]))
     variants = _unique(("",) + tuple(v for row in rows for v in row["variants"]))
     given = _object({"id": _choice(GIVEN_IDS), "type": _choice(GIVEN_TYPES),
@@ -614,12 +814,100 @@ def _scope_sentence(profile) -> str:
     return (" " + ", ".join(parts) + ".").replace(" no", " No", 1) if parts else ""
 
 
+_ELEMENTARY_GRADES = "אבגדהו"
+_STORY_GLOSSES = {"S_PENCILS": "pencils packed in boxes", "S_EGGS": "eggs set in trays",
+                  "S_BOATS": "children sailing in boats", "S_SHELVES": "books put on shelves",
+                  "S_COOKIES": "cookies packed in bags", "S_TEAMS": "pupils split into teams",
+                  "S_BOTTLES": "bottles packed in crates", "S_STICKERS": "stickers stuck in rows"}
+
+
+def _elementary_card(lesson, scope, overlay) -> str:
+    """authoring_card for an elementary overlay (the division kinds): same sections, elementary rules."""
+    practice, challenge_kinds, _ = _sheet_kinds(scope, overlay)
+    planned, reserves = plan_rows(lesson, scope, overlay)
+    kinds = _unique([kind for names in practice.values() for kind in names] + list(challenge_kinds))
+    names = {row["id"]: row["text"] for row in scope["selectedConcepts"]}
+    profile, story = overlay["profile"], overlay["kinds"]["division_story"]
+    grade = lesson["gradeNumber"]
+    lines = [
+        "AUTHORING CARD | contract %s | overlay reviewed: %s" % (CONTRACT, "yes" if overlay["reviewed"] else "no"),
+        "",
+        "ROLE",
+        "Write the questions of one Hebrew mathematics worksheet as JSON that follows the response schema. "
+        "Code writes the instructions, title, rule box, every story sentence, numbering, stars, answer keys and "
+        "layout: never write them.",
+        "",
+        "OUTPUT",
+        "- One question object per PLAN slot, each slot once. Every key is required: write \"\" or [] for an "
+        "empty value.",
+        "- question keys: %s. item keys: %s." % (", ".join(QUESTION_FIELDS), ", ".join(ITEM_FIELDS)),
+        "- On this sheet intro is \"\", table is {\"head\":[],\"rows\":[]}, and every item has text \"\", expr2 \"\" "
+        "and values \"\". Leave every field the kind does not read as \"\".",
+        "- Each question has exactly %d items, all of its kind and all different." % story["items"][0],
+        "- Write no Hebrew word anywhere: code writes every sentence the sheet prints.",
+        "",
+        "MATH FIELDS (expr)",
+        "- ASCII school notation: whole numbers and the division sign : only, as 4371:6. Never write / or any other "
+        "sign, a space inside a number, a leading zero or a decimal point.",
+        "- A story item writes its two givens as {n1}:{n2}, exactly in that order.",
+        "",
+        "TOPIC",
+        "- Grade %d (כיתה %s׳), level %s. Title: %s" % (grade, _ELEMENTARY_GRADES[grade - 1], lesson["level"],
+                                                     overlay["title"]),
+        "- " + overlay["levelNotes"][lesson["level"]],
+        "- Teach: " + "; ".join(names[c] for c in _selected(scope)),
+        "- Never use or hint at: " + "; ".join(overlay["forbiddenTerms"]),
+        "- Every dividend is a whole number from %d to %d; every divisor is a whole number from %d to %d."
+        % (profile["dividend_min"], profile["dividend_max"], profile["divisor_min"], profile["divisor_max"]),
+        "- Never repeat a division on the sheet, and never use %s, which the rule box already shows."
+        % ", ".join("%s:%s" % pair for pair in overlay["ruleExamples"]),
+        "- The sheet may print one exercise structure at most three times: write at most one drill question, "
+        "and use each story variant for at most three questions.",
+        "",
+        "KINDS (form is \"\" or the kind's own form)",
+    ]
+    for kind in kinds:
+        row = overlay["kinds"][kind]
+        group = " and ".join("challenge" if g == CHALLENGES else "practice" for g in row["groups"])
+        lines.append("%s (%s, form %s): %s" % (kind, group, row["form"], row["card"]))
+        if kind == "division_story":
+            lines.append("  asks: full_groups (how many full groups: the quotient), leftover (how many are left "
+                         "over: the remainder), groups_needed (how many groups hold everything: one more than the "
+                         "quotient).")
+            lines.append("  variants: " + "; ".join("%s %s" % (sid, _STORY_GLOSSES.get(sid, "a story"))
+                                                    for sid in row["variants"]))
+            lines.append("  givens: [{\"id\":\"n1\",\"type\":\"count\",\"value\":\"<whole amount>\",\"unit\":\"\"},"
+                         "{\"id\":\"n2\",\"type\":\"count\",\"value\":\"<group size>\",\"unit\":\"\"}]")
+            if overlay["challengeRule"] == "quotient_zero_digit":
+                lines.append("  In a challenge slot the quotient has a zero digit, as 4113:4 gives 1028 remainder 1.")
+    lines += ["", "PLAN (slot | group | concept | kind)"]
+    lines += _plan_lines(planned, names)
+    lines += _plan_lines(reserves, names)
+    lines.append("R slots are reserves under the same rules, printed only in place of a refused question.")
+    lines += ["", "EXAMPLES (numbers deliberately outside this sheet's range: never copy them)"]
+    example_kind, exprs = overlay["exampleQuestion"]
+    if example_kind in kinds:
+        items = [dict(thaw(overlay["examples"][example_kind]), expr=expr) for expr in exprs]
+        lines.append(_json({"slot": "Q1", "kind": example_kind, "intro": "", "givens": [],
+                            "table": {"head": [], "rows": []}, "items": items}))
+    for kind in kinds:
+        if kind != example_kind:
+            lines.append("%s item: %s" % (kind, _json(overlay["examples"][kind])))
+    text = "\n".join(lines) + "\n"
+    problems = card_problems(text)
+    if problems:
+        raise ContractError(problems[0], "Authoring card breaks the card lint")
+    return text
+
+
 def authoring_card(lesson, scope, overlay) -> str:
     """Per-topic authoring card text (English rules, Hebrew catalog labels) for one lesson.
 
     Deterministic; 3 KB..5,000 bytes; never contains $ \\ [[ ]] · × ÷ − √. Teacher text is not part of the
     card: a caller appends it verbatim as data, outside this budget (stage 3). Raises ContractError."""
     _check_lesson(lesson, scope, overlay)
+    if overlay.get("skill") == "elementary":
+        return _elementary_card(lesson, scope, overlay)
     practice, challenge_kinds, _ = _sheet_kinds(scope, overlay)
     planned, reserves = plan_rows(lesson, scope, overlay)
     kinds = _unique([kind for names in practice.values() for kind in names] + list(challenge_kinds))

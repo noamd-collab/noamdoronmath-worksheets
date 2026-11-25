@@ -1,7 +1,7 @@
 """Offline end-to-end render of one worksheet-wire/5 sheet (V5-DESIGN §6.4). No network, no model call.
 
-compile_sheet → validate_source (explicit) → runner.render_job (real WeasyPrint, pinned middle skill, atom_order
-inside) → PNG of every PDF page. The build runs in a space-free work dir; only the deliverables are copied to
+compile_sheet → validate_source (explicit) → runner.render_job (real WeasyPrint, the pinned skill of the topic's
+overlay — middle, or elementary for ד10 — atom_order inside) → PNG of every PDF page. The build runs in a space-free work dir; only the deliverables are copied to
 --out. Nothing outside the work dir and --out is written.
 
     python3 -B v5_offline_render.py --lesson L --reply R [--repair ROUND.json]... --out DIR [--case NAME]
@@ -82,6 +82,20 @@ def _pdf_facts(pdf) -> dict:
             "producer": metadata.get("producer") or "", "creator": metadata.get("creator") or ""}
 
 
+def _printed_keys_elementary(content, selection) -> list:
+    """The elementary analogue of _printed_keys, read from content.json: per question in printed order its slot,
+    origin, star, intro, the item texts and the whole key line exactly as content.json holds them."""
+    rows = {row["n"]: row for row in (selection or {}).get("questions") or ()}
+    out = []
+    for question in (content or {}).get("questions") or ():
+        n = int(question.get("n")) if str(question.get("n", "")).isdigit() else question.get("n")
+        row = rows.get(n, {})
+        out.append({"n": n, "slot": row.get("slot"), "origin": row.get("origin"), "star": question.get("star"),
+                    "instruction": question.get("intro"), "items": list(question.get("items") or ()),
+                    "key": question.get("answer")})
+    return out
+
+
 def _printed_keys(levels, selection) -> list:
     """What the sheet prints, per question in printed order: slot and origin from the selection record, the
     instruction, each item's label, prompt and answer island exactly as levels.json holds them."""
@@ -160,6 +174,7 @@ def _report(case, lesson_path, reply_path, repairs, *, status, exit_code, result
     counts["OTHER"] = sum(1 for step in steps if step["status"] not in STATUSES)
     atom = _read(work / "logs/atom-order.json") if work is not None else None
     levels = _read(work / "levels.json") if work is not None else None
+    content = _read(work / "content.json") if work is not None and levels is None else None
     report.update({
         "executedChecksPassed": (manifest or {}).get("executedChecksPassed"),
         "automatedChecksPassed": (manifest or {}).get("automatedChecksPassed"),
@@ -175,7 +190,8 @@ def _report(case, lesson_path, reply_path, repairs, *, status, exit_code, result
         "trimmed": result.diagnostics["trimmed"],
         "warnings": result.diagnostics.get("warnings", []),
         "repairRounds": result.diagnostics["repairRounds"],
-        "keys": _printed_keys(levels, result.ir["selection"]),
+        "keys": (_printed_keys(levels, result.ir["selection"]) if levels is not None
+                 else _printed_keys_elementary(content, result.ir["selection"])),
         "pdf": pdf_facts,
         "pdfProducer": (pdf_facts or {}).get("producer"),
         "pages": list(pages),
@@ -204,7 +220,9 @@ def run(lesson_path, reply_path, out_dir, *, repairs=(), work_dir=None, skill_pa
     rounds = [read_json(path) for path in repairs]
     validate_lesson(lesson)
     scope = scope_for_lesson(lesson)
-    skill_path = skill_path or os.environ.get("MIDDLE_SKILL_PATH", "")
+    skill = scope["topic"]["skillId"]           # the overlay's skill: compile_sheet refuses any other
+    skill_path = skill_path or os.environ.get("ELEMENTARY_SKILL_PATH" if skill == "elementary"
+                                              else "MIDDLE_SKILL_PATH", "")
     out = Path(out_dir) if case is None else Path(out_dir) / case
     out.mkdir(parents=True, exist_ok=True)
     pages_dir = out if case is not None else out / "pages"
@@ -226,9 +244,9 @@ def run(lesson_path, reply_path, out_dir, *, repairs=(), work_dir=None, skill_pa
     work = Path(work_dir) if work_dir else Path(os.environ.get("TMPDIR", "/tmp")) / ("v5-work-" + stamp)
     if " " in str(work.resolve()):
         raise ValueError("The work dir must not contain spaces")
-    manifest = runner.render_job(lesson, result.ir, work, skill_paths={"middle": skill_path}, contract=CONTRACT)
+    manifest = runner.render_job(lesson, result.ir, work, skill_paths={skill: skill_path}, contract=CONTRACT)
     key = {"a": "a", "b": "b", "e": "c"}[lesson["level"]]
-    pdf = work / ("out/deliver/%s/sheet.pdf" % key)
+    pdf = work / ("sheet.pdf" if skill == "elementary" else "out/deliver/%s/sheet.pdf" % key)
     pages = 0
     page_files = []
     pdf_facts = None

@@ -20,6 +20,7 @@ Paths: `TG` = tools/teacher-generation. `SKM` = the pinned middle skill (`MIDDLE
 8. Deviations from the plan, open items, merge order
 9. Review fixes (2026-11-25)
 10. Stage-3 hardening (2026-11-25): reordered items in one question, the trusted v5 flag, container packaging, the pinned report copy
+11. Stage 3, elementary path (2026-11-25): grade 4, ד10 חילוק ארוך ושארית, level a
 
 ---
 
@@ -956,3 +957,57 @@ Tests: `tests/test_v5_stage3_hardening.py` (new). Branch tests touched by this s
    - It describes the pinned copy under `pinnedReport`: its sha256, its own `result` and `"isVerdict": false`.
    - It lists under `staleFiles` any file of a known output name, or any page image, that this run did not write. That includes a legacy `v72-report.json` left by an earlier render. Nothing is deleted.
    - `summary.json` carries `verdictFile`. The compile-failure summary is unchanged.
+
+---
+
+## 11. Stage 3, elementary path (2026-11-25): grade 4, ד10 חילוק ארוך ושארית, level a
+
+Tests: `tests/test_v5_d10_elementary.py` and `tests/test_v5_d10_render.py` (new). Fixtures: `tests/fixtures/v5/d10/`. No existing test changed. The middle path and every v4 path are unchanged: the golden tests (§6.3) stay byte-identical.
+
+**Scope.** One topic and level: `overlay_for("ד10", "a")`. Every other elementary topic and every other ד10 level keeps `SOURCE_WIRE_SCOPE` / `WIRE_TOPIC_UNSUPPORTED`. The lesson is the repro lesson, verbatim: concepts #0 חילוק ארוך (מאונך) and #1 מנה ושארית; #2 בדיקת חילוק is not taught yet, so nothing asks for a check by multiplication.
+
+1. **Kernel task `divide_remainder`** (`math_tasks`): `{dividend, divisor}` → `{"type": "quotient_remainder", "quotient", "remainder"}`.
+   - Both operands are positive integer literals (bounded by `inspect_ast`); the divisor is at least 2.
+   - The result is re-checked against dividend = quotient · divisor + remainder, 0 ≤ remainder < divisor.
+   - It uses existing codes only (`INVALID_TASK`, `INVALID_AST`, `UNVERIFIED_SOLUTION`). No existing kind and not `to_house_math` changed.
+   - `general_source` keeps refusing it on the v4 path, with the same code and message as before the kernel learned it (G1).
+2. **Elementary sign table** (`school_math.to_elementary`, `ELEMENTARY_SIGNS`): Latin x from grade ג (× in ב), the division sign printed ` : `, U+2212, the thousands comma from grade ג. A test compares it with the pinned `signs.py` PROFILE. `to_house` is unchanged.
+3. **The ד10 overlay** (`structured_contract.OVERLAYS["ד10"]`, `"skill": "elementary"`, `reviewed: False`). Every Hebrew string is code-written Tier A text pending Noam's review (`pendingReview`): title, rule box, the drill verb, eight story templates, the remainder word, the profile and the challenge rule. Tier B stays off: the model writes numbers, a story id and asks, never Hebrew.
+   - Profile (level a): dividend 100–999, divisor 2–9.
+   - Plan (12 questions, floor 12): Q1–Q5 #0 (drill or story), Q6–Q9 #1 (story), Q10–Q12 challenges (story, starred), reserves R1–R3 practice and R4 challenge.
+   - `check_overlay` has an elementary branch. `authoring_card` has an elementary card (3–5 KB, same lint).
+4. **The two kinds** (`division_kinds`, dispatched from `item_kinds`, so `item_kinds` stays the only producer and checker).
+   - `division_remainder_drill`: an item is `expr` NUMBER:NUMBER. It prints one atom `347 : 5 = ___`. The key is `{form: quotient_remainder, quotient, remainder}` and prints `69 שארית 2`, or `27` when nothing is left over.
+   - `division_story`: typed givens n1 (whole amount) and n2 (group size), type count. Every item is `{n1}:{n2}` with one ask. Code prints the template story and the template's question for each ask. Keys: full_groups → floor, leftover → remainder, groups_needed → ceil.
+   - Wording cues on every printed ask (`WORDING_CUE`): full needs מלא…/שלמ… and no other cue; leftover needs יישאר/נשאר/שארית; groups_needed needs צריך … כדי.
+   - A story must leave a remainder (`STORY_REMAINDER_ZERO`). A starred story needs a zero digit in its quotient (`CHALLENGE_PROFILE`, e.g. 413:4 = 103 r1).
+   - The star follows the row (`validate_selection` already checked it); `verify_question` also refuses a starred drill.
+   - New codes: `DIVISION_SHAPE`, `ASK_UNKNOWN`, `STORY_REMAINDER_ZERO`, `CHALLENGE_PROFILE`, `WORDING_CUE`, `STRUCTURE_REPEATED`, `SOURCE_STRUCTURE`.
+5. **Repeats and the pinned G62 mirror.**
+   - Inside a question: `DUPLICATE_ITEM` (a division or an ask twice). Across the sheet: `DUPLICATE_TASK` (a division printed twice) and `EXAMPLE_COPY` (the rule box's 125:4).
+   - `STRUCTURE_REPEATED` mirrors the pinned G62 clone gate. It loads the pinned `content_quality` by path after a sha256 check and applies its own fingerprint, skip rule and `max_clone` to the exact content.json item strings.
+   - At grade ד `max_clone` is 3 and every drill item has the fingerprint `#:#=`. So **a sheet holds one drill question**, and a story template serves at most three questions. The mirror runs in the sheet loop (a later question takes a reserve) and again in `general_adapters.compile_source` with the trusted skill path (`SOURCE_STRUCTURE`).
+6. **The adapter branch** (`general_adapters._compile_elementary_v5`).
+   - It writes `sheet.html` through the pinned elementary template, plus `content.json`, `worksheet-source.json` and `verified.json`. No Word file.
+   - Every number or expression is exactly one `H.ltr` atom; Hebrew is escaped prose between atoms.
+   - The answer key prints `(n)` markers (v5 only; the v4 elementary key keeps `n.`). The house form `69 שארית 2` is two atoms around the word.
+   - Each answer is claimed in the Ledger against the pinned `div_qr`, independent of the kernel.
+   - Stories get a dashed work area for the long division (a frame, not a drawing). Questions are four to a page, so no page is near-empty for the pinned page-fill check.
+   - No vertical long-division SVG: this is not a geometry page.
+7. **The runner path** (`runner._render_job_v5_elementary`): content-truth → `pdf_weasyprint_only.py` → check_worksheet → output-gates → house-gates (no `--docx`) → atom-order.
+   - Every step must PASS and none may SKIP, so `notRun` is empty. Artifacts are `[sheet.pdf]`.
+   - `automatedChecksPassed` stays false while the overlay is unreviewed (D7).
+   - The overlay's skill must equal the lesson's skill, else `WIRE_SCOPE_UNSUPPORTED`.
+8. **`pdf_weasyprint_only.py`** (new). It loads the pinned `ensure_fonts` and `build_with_weasyprint` by path after a sha256 check and never calls the Chromium fallback. It fails when WeasyPrint fails or when the Producer does not start with "WeasyPrint", and removes such a PDF.
+9. **Gate support.**
+   - `atom_order.py --html`: every outermost `span.ltr` is an atom, plus `(n)` per question from the template's CSS counter. The elementary atom glyphs add `:` and `×`. No code-written text may touch an atom with a colon (checked by `check_overlay`).
+   - `output_gates.py --paren-markers` and `general_pdf_order.check_answer_order(..., markers="paren")` accept `(n)` key labels. The default stays `n.`.
+   - `v5_offline_render` picks the skill path and the PDF location from the topic's skill.
+10. **Packaging.** `division_kinds.py` and `pdf_weasyprint_only.py` are in the exact Docker-context allowlists.
+
+**For Noam to decide:**
+- The ★ rule: a story in a challenge row with a zero digit in the quotient. The same story kind serves practice and challenge rows.
+- The one-drill limit, which follows from the pinned G62 at grade ד.
+- The work area beside each story, and four questions to a page.
+- Every code-written Hebrew string of the overlay is unreviewed.
+- On this Mac `pdftoppm`/`pdffonts` are missing, so the pinned check_worksheet reports its page-fill and font checks as warn-PASS. The container has poppler-utils. The page-fill rule was checked here with the pinned `check_page_fill` on 110-dpi PyMuPDF renders.

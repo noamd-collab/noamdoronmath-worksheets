@@ -13,6 +13,13 @@ increasing and each gap at most 1.0 × the font size; any other glyph breaks it.
 
 CLI: python3 -B atom_order.py --levels L --pdf P --json J  → exit 0 PASS / 1 FAIL;
      J = {status, code?, missing, atoms, pages, producer}. Codes only, never sheet text.
+
+Elementary sheets (worksheet-wire/5 elementary, no levels.json): --html sheet.html instead of --levels. Every
+outermost span.ltr of the pinned elementary template's HTML is one atom (the ws_html H.ltr convention), read with
+its whitespace removed; the question markers "(n)" come from the template's CSS counter, one per li of
+ol.questions; the answer region is div.answers, whose "(n)" key markers are atoms too. The elementary atom glyphs
+add ':' (the spaced division sign) and '×' (grade ב) to ATOM_CHARS; any other glyph in an atom is ATOM_NOT_FLAT
+(a thousands comma among them, which no elementary v5 profile prints yet). The anchor row is the answers heading.
 Imports: the standard library and pymupdf (lazily).
 """
 from __future__ import annotations
@@ -24,6 +31,7 @@ from pathlib import Path
 import sys
 
 ATOM_CHARS = frozenset("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+−=()%·")
+ELEMENTARY_ATOM_CHARS = ATOM_CHARS | frozenset(":×")
 ANCHOR = "תשובות סופיות"                       # emit_html answers band
 ROW_TOLERANCE = 0.75
 GAP_FACTOR = 1.0
@@ -148,12 +156,12 @@ def _read_pdf(pdf_path):
     return producer, pages, [(page, [(g[3], g[1], g[2], g[4]) for g in row]) for page, row in rows]
 
 
-def _runs(row) -> list:
+def _runs(row, chars=ATOM_CHARS) -> list:
     out, run, previous = [], "", None
     for char, x0, x1, size in row:
-        joined = (run and char in ATOM_CHARS and previous is not None and x0 > previous[0]
+        joined = (run and char in chars and previous is not None and x0 > previous[0]
                   and x0 - previous[1] <= GAP_FACTOR * size)
-        if char in ATOM_CHARS and len(char) == 1:
+        if char in chars and len(char) == 1:
             if joined:
                 run += char
             else:
@@ -170,8 +178,8 @@ def _runs(row) -> list:
     return out
 
 
-def _anchor(rows) -> int:
-    compact = ANCHOR.replace(" ", "")
+def _anchor(rows, anchor=ANCHOR) -> int:
+    compact = anchor.replace(" ", "")
     found = [index for index, (_, row) in enumerate(rows)
              if "".join(glyph[0] for glyph in row) in (compact, compact[::-1])]
     if len(found) != 1:
@@ -179,11 +187,11 @@ def _anchor(rows) -> int:
     return found[0]
 
 
-def _split(rows, anchor):
+def _split(rows, anchor, chars=ATOM_CHARS):
     before, after = Counter(), Counter()
     for index, (_, row) in enumerate(rows):
         target = before if index < anchor else after
-        target.update(_runs(row))
+        target.update(_runs(row, chars))
     return before, after
 
 
@@ -232,14 +240,140 @@ def check_atom_order(levels_path, pdf_path) -> dict:
             "producer": producer}
 
 
+class _ElementaryAtoms:
+    """Outermost span.ltr texts of an elementary sheet.html by region, the li count of ol.questions and the
+    answers heading (html.parser; style and script content ignored)."""
+
+    def __init__(self):
+        from html.parser import HTMLParser
+
+        outer = self
+
+        class Parser(HTMLParser):
+            def handle_starttag(self, tag, attrs):
+                outer.start(tag, dict(attrs))
+
+            def handle_endtag(self, tag):
+                outer.end(tag)
+
+            def handle_data(self, data):
+                outer.data(data)
+
+        self.parser = Parser(convert_charrefs=True)
+        self.stack = []                 # (tag, flags) for every open element
+        self.questions, self.answers = Counter(), Counter()
+        self.items, self.heading, self.text, self.hidden = 0, "", None, 0
+
+    def _inside(self, flag):
+        return any(flag in flags for _, flags in self.stack)
+
+    def start(self, tag, attrs):
+        if tag in ("br", "hr", "img", "meta", "link", "input", "col", "wbr"):
+            return
+        classes = set((attrs.get("class") or "").split())
+        flags = set()
+        if tag in ("style", "script"):
+            flags.add("hidden")
+            self.hidden += 1
+        if tag == "div" and "answers" in classes:
+            flags.add("answers")
+        if tag == "ol" and "questions" in classes:
+            flags.add("questions")
+        if tag == "li" and self.stack and "questions" in self.stack[-1][1]:
+            self.items += 1
+        if tag == "span" and "ltr" in classes and self.text is None:
+            flags.add("atom")
+            self.text = []
+        if tag in ("h1", "h2", "h3") and self._inside("answers") and not self.heading:
+            flags.add("heading")
+            self.heading_parts = []
+        self.stack.append((tag, flags))
+
+    def end(self, tag):
+        for index in range(len(self.stack) - 1, -1, -1):
+            if self.stack[index][0] == tag:
+                for _, flags in reversed(self.stack[index:]):
+                    if "atom" in flags:
+                        atom = "".join(ch for ch in "".join(self.text) if not ch.isspace())
+                        (self.answers if self._inside("answers") else self.questions)[atom] += 1
+                        self.text = None
+                    if "heading" in flags:
+                        self.heading = "".join(ch for ch in "".join(self.heading_parts) if not ch.isspace())
+                    if "hidden" in flags:
+                        self.hidden -= 1
+                del self.stack[index:]
+                return
+
+    def data(self, data):
+        if self.hidden:
+            return
+        if self.text is not None:
+            self.text.append(data)
+        if self._inside("heading"):
+            self.heading_parts.append(data)
+
+    def feed(self, source):
+        self.parser.feed(source)
+        self.parser.close()
+        return self
+
+
+def expected_atoms_html(source: str) -> tuple:
+    """(question region, answer region, anchor) of an elementary sheet.html: every outermost span.ltr text without
+    whitespace, plus '(n)' per li of ol.questions in the question region; a glyph outside ELEMENTARY_ATOM_CHARS →
+    ATOM_NOT_FLAT; no atom, no answers heading or an unparsable page → ATOM_LEVELS_INVALID."""
+    if type(source) is not str:
+        raise AtomOrderError("ATOM_LEVELS_INVALID")
+    try:
+        found = _ElementaryAtoms().feed(source)
+    except Exception:  # noqa: BLE001 - an unreadable page is one code
+        raise AtomOrderError("ATOM_LEVELS_INVALID") from None
+    questions, answers = Counter(found.questions), Counter(found.answers)
+    for counter in (questions, answers):
+        for atom in counter:
+            if not atom or any(char not in ELEMENTARY_ATOM_CHARS for char in atom):
+                raise AtomOrderError("ATOM_NOT_FLAT" if atom else "ATOM_LEVELS_INVALID")
+    for n in range(1, found.items + 1):
+        questions[_marker(n)] += 1
+    if not found.items or not answers or not found.heading:
+        raise AtomOrderError("ATOM_LEVELS_INVALID")
+    return questions, answers, found.heading
+
+
+def check_atom_order_html(html_path, pdf_path) -> dict:
+    """check_atom_order for an elementary sheet: the atoms of sheet.html, matched as glyph runs of
+    ELEMENTARY_ATOM_CHARS before and after the answers heading, with multiplicity, on any page."""
+    try:
+        data = Path(html_path).read_bytes()
+        if len(data) > MAX_LEVELS_BYTES:
+            raise ValueError("sheet.html too large")
+        source = data.decode("utf-8")
+    except (OSError, ValueError, UnicodeDecodeError):
+        raise AtomOrderError("ATOM_LEVELS_INVALID") from None
+    questions, answers, heading = expected_atoms_html(source)
+    producer, pages, rows = _read_pdf(pdf_path)
+    if not producer.startswith("WeasyPrint"):
+        raise AtomOrderError("PDF_PRODUCER_NOT_WEASYPRINT")
+    before, after = _split(rows, _anchor(rows, heading), ELEMENTARY_ATOM_CHARS)
+    missing = [("questions", atom) for atom, count in sorted(questions.items()) if before[atom] < count]
+    missing += [("answers", atom) for atom, count in sorted(answers.items()) if after[atom] < count]
+    if missing:
+        raise AtomOrderError("ATOM_MISSING", missing)
+    return {"status": "PASS", "atoms": sum(questions.values()) + sum(answers.values()), "pages": pages,
+            "producer": producer}
+
+
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(description="Glyph-run check of every math atom of a v5 middle PDF.")
-    parser.add_argument("--levels", required=True)
+    parser = argparse.ArgumentParser(description="Glyph-run check of every math atom of a v5 PDF.")
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--levels")
+    source.add_argument("--html")
     parser.add_argument("--pdf", required=True)
     parser.add_argument("--json", required=True)
     args = parser.parse_args(argv)
     try:
-        report = check_atom_order(args.levels, args.pdf)
+        report = (check_atom_order(args.levels, args.pdf) if args.levels is not None
+                  else check_atom_order_html(args.html, args.pdf))
         report["missing"] = []
     except AtomOrderError as error:
         report = {"status": "FAIL", "code": error.code, "missing": [list(entry) for entry in error.missing],
