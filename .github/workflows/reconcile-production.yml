@@ -1,6 +1,10 @@
 name: Reconcile failed landing publication
 
 # Records verified existing production only. Never invokes Wix or republishes.
+# Active incident: deployment 8059175006 (run 45625886565). The publish step
+# exited on the worker budget before `wix release`, so that run published nothing.
+# Write only after Noam says, exactly:
+# NOAM APPROVED RECONCILIATION OF 8059175006 TO LIVE ee96eeb3cdb47171f11405bf48fb2ba18f0412bc
 on:
   workflow_dispatch:
     inputs:
@@ -13,12 +17,12 @@ on:
         description: Exact failed deployment ID
         type: string
         required: true
-        default: '7706338816'
+        default: '8059175006'
       failed_run_id:
         description: Exact failed publication run ID
         type: string
         required: true
-        default: '42994193052'
+        default: '45625886565'
       confirmed_live_sha:
         description: Independently confirmed unchanged live SHA (full 40 characters)
         type: string

@@ -5,7 +5,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { INCIDENT, EVIDENCE_PATH, reconcileProduction, validateEvidence, writeConfirmation } from './reconcile-production.mjs';
+import { INCIDENT, GROW_PAYLOAD_INCIDENT, EVIDENCE_PATH, reconcileProduction, validateEvidence, writeConfirmation } from './reconcile-production.mjs';
 import { readLiveDeployment, publicationRequested, readApprovedSha } from './production-release.mjs';
 
 const NOW = Date.parse('2026-11-11T10:00:00Z');
@@ -91,6 +91,18 @@ test('incident policy is pinned to the actual failed deployment/run/status and p
   assert.equal(INCIDENT.failedDeploymentId, 7706338816); assert.equal(INCIDENT.failedRunId, 42994193052);
   assert.equal(INCIDENT.failedStatusId, 21934891324); assert.equal(INCIDENT.previousDeploymentId, 7669709987);
   assert.notEqual(INCIDENT.failedSha, INCIDENT.previousLiveSha); assert.ok(Object.isFrozen(INCIDENT));
+});
+
+test('the grow payload incident records ee96eeb3, not the older success record', () => {
+  assert.equal(GROW_PAYLOAD_INCIDENT.failedDeploymentId, 8059175006);
+  assert.equal(GROW_PAYLOAD_INCIDENT.failedRunId, 45625886565);
+  assert.equal(GROW_PAYLOAD_INCIDENT.failedStatusId, 23134699071);
+  assert.equal(GROW_PAYLOAD_INCIDENT.failedJobId, 139246081490);
+  assert.equal(GROW_PAYLOAD_INCIDENT.previousLiveSha, '83e7dd3447adfa7b7fa570548ca3728d52e7eca8');
+  assert.equal(GROW_PAYLOAD_INCIDENT.confirmedLiveSha, GROW_PAYLOAD_INCIDENT.failedSha);
+  assert.equal(writeConfirmation(GROW_PAYLOAD_INCIDENT),
+    'NOAM APPROVED RECONCILIATION OF 8059175006 TO LIVE ee96eeb3cdb47171f11405bf48fb2ba18f0412bc');
+  assert.ok(Object.isFrozen(GROW_PAYLOAD_INCIDENT));
 });
 
 test('dry-run inspects Git, terminal history and public evidence without mutation', async t => {
