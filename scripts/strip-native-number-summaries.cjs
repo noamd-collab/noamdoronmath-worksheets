@@ -59,6 +59,7 @@ function scan(repo, write = false) {
   const directory = path.join(repo, 'noam-ai/manifests');
   const files = fs.readdirSync(directory).filter(name => name.endsWith('.json')).sort();
   const result = { nativeManifests: 0, mainQuestions: 0, strictSummaryEntries: 0,
+    revisionManifests: 0, revisionQuestions: 0, revisionSummaryEntries: 0,
     affectedManifests: 0, affectedQuestions: 0, affectedExercises: 0, removedLineOccurrences: 0, changes: [] };
   // Validate the entire input set before writing either public mirror.
   const writes = [];
@@ -68,16 +69,24 @@ function scan(repo, write = false) {
     if (!manifest.nativeExportUrl) continue;
     // A sheet republished with its final answers repeats its original manifest; scan the original once.
     if (manifest.questionPagesIdenticalTo) continue;
-    if (!/^\/noam-ai\/native\/G[789]-[A-Z0-9]+\/[abc]\/noam-ai\.json$/.test(manifest.nativeExportUrl)) throw Error('Invalid native path: ' + name);
+    if (!/^\/noam-ai\/native\/G[789]-[A-Z0-9]+\/[abc]\/(?:revisions\/[0-9a-f]{32}\/)?noam-ai\.json$/.test(manifest.nativeExportUrl)) throw Error('Invalid native path: ' + name);
     const nativePath = path.join(repo, manifest.nativeExportUrl), nativeBytes = fs.readFileSync(nativePath);
     if (sha(nativeBytes) !== manifest.nativeExportSha256) throw Error('Native SHA mismatch: ' + name);
     const publicPath = path.join(repo, 'headless/astro-poc/public/noam-ai/manifests', name);
     if (!bytes.equals(fs.readFileSync(publicPath))) throw Error('Manifest mirror mismatch: ' + name);
     if (!nativeBytes.equals(fs.readFileSync(path.join(repo, 'headless/astro-poc/public', manifest.nativeExportUrl)))) throw Error('Native mirror mismatch: ' + name);
     const native = JSON.parse(nativeBytes), fixed = cleanManifest(manifest, native);
-    result.nativeManifests++;
-    result.mainQuestions += native.questions.length;
-    result.strictSummaryEntries += native.questions.reduce((n, q) => n + (q.given || []).filter(isGenericNumberSummary).length, 0);
+    // A corrected revision replaces its published sheet; it is scanned but never
+    // counted as a new legacy sheet.
+    if (/\/revisions\//.test(manifest.nativeExportUrl)) {
+      result.revisionManifests++;
+      result.revisionQuestions += native.questions.length;
+      result.revisionSummaryEntries += native.questions.reduce((n, q) => n + (q.given || []).filter(isGenericNumberSummary).length, 0);
+    } else {
+      result.nativeManifests++;
+      result.mainQuestions += native.questions.length;
+      result.strictSummaryEntries += native.questions.reduce((n, q) => n + (q.given || []).filter(isGenericNumberSummary).length, 0);
+    }
     if (!fixed.changes.length) continue;
     const record = { pdfId: name.slice(0, -5), nativeExportUrl: manifest.nativeExportUrl,
       nativeSha256: manifest.nativeExportSha256, changes: fixed.changes };

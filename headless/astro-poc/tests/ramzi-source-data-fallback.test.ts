@@ -66,10 +66,11 @@ it('whole corpus preserves412 legacy,12 evidence-gated measured and42 explicitly
  const passivePaths=new Map(passiveEditions.flatMap(([prefix,editionId])=>['a','b','c'].map(level=>
   [`/noam-ai/native/${prefix}/${level}/noam-ai.json`,{prefix,editionId}] as const)));
  const legacy={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},measured={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},passive={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>},seen:string[]=[],passiveSeen:string[]=[],passivePins:string[]=[];
+ const revision={manifests:0,parts:0,affected:[] as string[],kinds:{} as Record<string,number>};
  for(const file of readdirSync(new URL('noam-ai/manifests/',pub))){
    const manifestBytes=readFileSync(new URL('noam-ai/manifests/'+file,pub));
    const m=JSON.parse(manifestBytes.toString());if(!m.nativeExportUrl||m.questionPagesIdenticalTo)continue;
-   const isMeasured=measuredPaths.has(m.nativeExportUrl),binding=passivePaths.get(m.nativeExportUrl),group=isMeasured?measured:binding?passive:legacy;
+   const isRevision=/\/revisions\//.test(m.nativeExportUrl),isMeasured=measuredPaths.has(m.nativeExportUrl),binding=passivePaths.get(m.nativeExportUrl),group=isRevision?revision:isMeasured?measured:binding?passive:legacy;
    if(isMeasured){seen.push(m.nativeExportUrl);assertFirst567Phase(m,readFileSync(new URL('noam-ai/manifests/'+file,pub)),phase);assert.equal(m.geometryContract,'measured-v1');}
    if(binding){
     // The receipt-backed activation publishes each staged source with exactly three
@@ -99,6 +100,7 @@ it('whole corpus preserves412 legacy,12 evidence-gated measured and42 explicitly
  const tableParts=[['G7-T86-A-Q08','אבגד'],['G7-T86-B-Q05','אבגדהו'],['G7-T86-E-Q09','אבגדה'],['G8-T84-A-Q10','אבגד'],['G8-T84-B-Q02','אבגד'],['G8-T84-E-Q02','אבגד'],['G8-T84-E-Q06','אבגדהו'],['G9-T85-E-Q06','אבגד']];
  assert.deepEqual(measured.affected.sort(),tableParts.flatMap(([question,parts])=>[...parts].map(part=>question+part)).sort());
  assert.equal(legacy.manifests+measured.manifests,424);assert.equal(legacy.parts+measured.parts,31539);
+ assert.equal(revision.manifests,1);assert.equal(revision.parts,80);assert.deepEqual(revision.kinds,{'typed-table':8});
  assert.deepEqual(passiveSeen.sort(),[...passivePaths.keys()].sort());assert.equal(passive.manifests,42);assert.equal(passive.parts,1066);
  assert.equal(createHash('sha256').update(passivePins.sort().join('\n')).digest('hex'),'7d754c932071385aae894029f5c9a7239821e03bb4bbe5f5e4dcb6f05d71bcf8');
  assert.equal(legacy.manifests+measured.manifests+passive.manifests,466);assert.equal(legacy.parts+measured.parts+passive.parts,32605);
