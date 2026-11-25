@@ -106,8 +106,10 @@ CODE_GROUPS = MappingProxyType({
                 "MISTAKE_NOT_APPLICABLE", "MISTAKE_UNMODELED", "MISTAKE_NOT_WRONG", "NOTHING_TO_DO",
                 "REVEALS_ANSWER"),
     # EXAMPLE_COPY (plan §c2) is emitted by leak_checks.sheet_leaks although §4 does not list it.
+    # DUPLICATE_REORDERED (leak_checks.reordered_tasks): a later question repeats an earlier item's terms in
+    # another order; added after the stage-2 review (a starred reserve repeated a practice item).
     "leaks": ("DUPLICATE_ITEM", "LEAK_OWN", "LEAK_LINKED", "LEAK_RULE_FACT", "LEAK_PINNED_VALUE",
-              "DUPLICATE_TASK", "LEAK_SHEET_INVERSE", "EXAMPLE_COPY"),
+              "DUPLICATE_TASK", "LEAK_SHEET_INVERSE", "EXAMPLE_COPY", "DUPLICATE_REORDERED"),
     # Raised while loading a pinned module by path (leak_checks.pinned_module; runner.verify_skill).
     "pinned": ("SKILL_HASH_MISMATCH", "SKILL_MODULE_NOT_STDLIB"),
     "sheet": ("SHEET_BELOW_MINIMUM", "SHEET_STARS", "SHEET_COVERAGE", "REPAIR_BUDGET", "REPAIR_SLOT_NOT_MISSING",
@@ -118,6 +120,8 @@ CODE_GROUPS = MappingProxyType({
                "ATOM_NOT_FLAT", "ATOM_ANCHOR_MISSING", "ATOM_PDF_UNREADABLE", "ATOM_LEVELS_INVALID",
                "PDF_PRODUCER_NOT_WEASYPRINT"),
     "contract": ("CARD_CHAR", "CARD_SIZE"),
+    # Recorded in the compile diagnostics for the owner's review; never a refusal (leak_checks.equivalent_tasks).
+    "warnings": ("EQUIVALENT_TASK",),
 })
 CODES = frozenset(code for group in CODE_GROUPS.values() for code in group)
 KERNEL_PREFIX = "KERNEL_"

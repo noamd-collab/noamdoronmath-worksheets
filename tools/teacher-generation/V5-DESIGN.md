@@ -897,3 +897,31 @@ Before any container build, the new runtime modules must also be added to the ex
 2. E4: golden fixtures generated at `bafa36f0`.
 3. In parallel: E1 school_math and mistake_models; E2 text_lint and leak_checks; E3 lesson_select, item_kinds, structured_source and fixtures; E4 atom_order and the hooks.
 4. Integration: `v5_offline_render.py` on the fixtures. Each step is one commit, ending with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
+
+---
+
+## 9. Review fixes (2026-11-25)
+
+Tests: `tests/test_v5_review_fixes.py` (new). No existing test was relaxed; one branch-added test lost its `@expectedFailure` because its defect is fixed.
+
+1. **Reordered repeats.** `leak_checks.reordered_tasks` refuses a later question with an item whose signed-term multiset equals an earlier question's item in another order (`DUPLICATE_REORDERED`, registered). Stage 2 printed `x + 6 + 5x + 2` (Q16) and then the starred reserve `5x + 2 + x + 6` (Q19). It runs in the sheet loop, at acceptance and in the final validator (`SOURCE_LEAK`). `DUPLICATE_ITEM`/`DUPLICATE_TASK` keep the §4 definition (the exact canonical display), because `test_v5_leak_checks` pins order-sensitive cases (`test_duplicate_item`, `test_inverse_leaks_across_questions_in_both_directions`). So a reordered item inside one question is not refused. The fixture `reply-g7-good.json` R5 item א became `5x+2+x+9` → `17x`, so R5 stays the clean reserve §7 describes.
+2. **References in model math.** `school_math.parse(..., allow_refs=False)` refuses `{nK}` (`MATH_PARSE`). `item_kinds.compile_item` uses it for every kind that declares no givens (all stage-2 kinds). The code is `MATH_PARSE` for every kind, as `math_ref_in_collect_expr` pins it. A kernel-conversion failure is a refusal of that item. `structured_source` turns an unexpected exception in one item into `BINDING_INTERNAL` for that item only.
+3. **Provider boundary.** `validate_source(..., provider=True)` (every model reply, `general_provider.compile_content`) never selects v5. A root `contract`/`selection` key stays `SOURCE_SHAPE`, as at `bafa36f0`. `validate_model` and `runner._is_v5` still read the marker, because the v5 tests pin that. Those paths get no model payload that is not first validated with `provider=True`.
+4. **Scope.**
+   - Keys obey `result_literal_max` (`MATH_SCOPE_RANGE`, in compile and in `verify_item`).
+   - A written coefficient 0, 1 or (−1) before a letter (`1x`, `0x`, `(-1)x`) is `MATH_SCOPE_RANGE`. It is checked after the other checks, so `TEMPLATE_MISMATCH` still wins for `W_TIMES` `1x`.
+   - An implicit product after `:` (`6:2x`) is `MATH_SCOPE_DIVISION` even where division is allowed.
+5. **Final validator.**
+   - The title, the section titles and the rule box must equal the overlay (`SOURCE_BINDING`).
+   - Each printed question's kind and `conceptIds` must match its slot's row, recomputed with `plan_rows` (`SOURCE_SELECTION`).
+   - `general_adapters.compile_source` runs the D12 mirror with the trusted skill path (`SOURCE_LEAK`).
+6. **Records.**
+   - Compile diagnostics carry `warnings`. `EQUIVALENT_TASK` (registered as a warning, never a refusal) marks two substitute items with the same simplified expression and values after renaming letters, for example root Q7 א and Q10 ג.
+   - The v5 manifest records `overlayReviewed` and `overlayPendingReview`. `automatedChecksPassed` also needs a reviewed overlay (D7).
+   - `v5_offline_render` writes `report.json` for every render, with `trimmed`, `warnings` and a `verdict`. It copies the pinned report as `pinned-v72-report.raw.json`.
+
+**Still open, for Noam:**
+- One-term answer leaks; the order of the challenge templates and harder challenges; the `W_TIMES_MINUS`/`W_TIMES_PLUS` wording.
+- D5 stand-ins and trimming inside a question: both are pinned by tests, so a flag that is off by default needs a decision.
+- An exit code for "not fully checked": `report.exitCode` 0 is pinned. The verdict carries `fullyChecked`.
+- A real-page render of `%` and brackets; the D22 allowlist.

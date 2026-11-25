@@ -26,7 +26,7 @@ import json
 import leak_checks
 import lesson_select
 import structured_contract
-from item_kinds import Context, compile_item, intro_spans
+from item_kinds import CompiledItem, Context, compile_item, intro_spans
 from structured_contract import (CHALLENGES, CONTRACT, LIMITS, QUESTION_FIELDS, SLOT_RE, ContractError, PlanRow,
                                  is_known_code, rule_spans, thaw)
 
@@ -162,6 +162,18 @@ def _lint(text, ctx, maximum):
     return codes
 
 
+def _compile_item_safely(kind, item, index, ctx):
+    """compile_item, with any unexpected exception turned into a BINDING_INTERNAL refusal of this item only.
+
+    Decision 3 (per-question refusal with reserves): one item the checks did not foresee must cost that item
+    (and, through trimming, at most its question), never the whole sheet. Nothing is passed by this guard:
+    the item is refused and its code recorded."""
+    try:
+        return compile_item(kind, item, index, ctx)
+    except Exception:  # noqa: BLE001 - fail closed: refuse the item, keep the sheet
+        return CompiledItem(index, None, None, None, [("", "BINDING_INTERNAL")])
+
+
 def compile_question(wire: dict, row: PlanRow, ctx: Context) -> CompiledQuestion:
     """Checks Q1–Q5 and per item I1–I6 (§4); refused items are trimmed while ≥3 clean items remain."""
     slot, overlay = row.slot, ctx.overlay
@@ -206,7 +218,7 @@ def compile_question(wire: dict, row: PlanRow, ctx: Context) -> CompiledQuestion
         return refused()
 
     # Items I1-I6
-    compiled = [compile_item(kind, item, index, ctx) for index, item in enumerate(items, 1)]
+    compiled = [_compile_item_safely(kind, item, index, ctx) for index, item in enumerate(items, 1)]
     for item in compiled:
         for field, code in item.refusals:
             refuse(item.index, field, code)
@@ -247,12 +259,20 @@ def _registered(codes) -> list:
     return out[:structured_contract.MAX_ENTRY_CODES]
 
 
+def _sheet_hits(questions, examples) -> dict:
+    """{0-based index of the later question: sorted codes}: sheet_leaks plus reordered repeats (DUPLICATE_REORDERED)."""
+    hits = {index: set(codes) for index, codes in leak_checks.sheet_leaks(questions, examples=examples).items()}
+    for index, codes in leak_checks.reordered_tasks(questions).items():
+        hits.setdefault(index, set()).update(codes)
+    return {index: sorted(codes) for index, codes in sorted(hits.items())}
+
+
 def _sheet_loop(selection, examples) -> None:
-    """sheet_leaks over the printed order → reject the later question, until no new codes. Bounded by N+R+1."""
+    """Sheet checks over the printed order → reject the later question, until no new codes. Bounded by N+R+1."""
     bound = selection.planned + len(selection.reserves) + 1
     for _ in range(bound):
         layout = selection.layout()
-        hits = leak_checks.sheet_leaks([slot.question.ir for slot in layout], examples=examples)
+        hits = _sheet_hits([slot.question.ir for slot in layout], examples)
         if not hits:
             return
         selection.reject({layout[index].number: tuple(codes) for index, codes in hits.items()}, stage="sheet")
@@ -367,7 +387,7 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
     printed = {concept for slot in layout for concept in slot.question.row.concepts}
     if not set(selected) <= printed:
         raise failure("SHEET_COVERAGE")
-    left = leak_checks.sheet_leaks([slot.question.ir for slot in layout], examples=examples)
+    left = _sheet_hits([slot.question.ir for slot in layout], examples)
     if left:
         raise failure(sorted({code for codes in left.values() for code in codes})[0])
 
@@ -378,6 +398,12 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
     ir = thaw(ir)
     checked = validate_source(lesson, ir, scope)
     diagnostics = _diagnostics(lesson, floor, selection, refusals, questions, rounds, len(layout))
+    # Equivalent evaluations (same simplified expression and values after renaming letters) are recorded for the
+    # owner's review, by slot and item index only (G11); they are not refused (no decision to refuse them yet).
+    diagnostics["warnings"] = [
+        {"code": warning["code"], "slots": [layout[n].question.slot for n in warning["questions"]],
+         "items": list(warning["items"])}
+        for warning in leak_checks.equivalent_tasks(ir["sections"][0]["questions"])]
     return CompileResult(ir, checked["evidence"], diagnostics)
 
 

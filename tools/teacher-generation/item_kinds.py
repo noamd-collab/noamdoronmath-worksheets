@@ -296,6 +296,8 @@ def verify_item(prompt: list, answer: dict, solved: dict, overlay) -> None:
     scope = school_math.check_scope(expression, profile, role="task")
     if scope:
         fail(scope[0])
+    if school_math.written_unit_coefficient(expression):
+        fail("MATH_SCOPE_RANGE")
     expected_task = ("kind", "expression", "values") if kind == "substitute" else ("kind", "expression")
     if (type(task) is not dict or set(task) != set(expected_task)
             or task["kind"] != ("substitute" if kind == "substitute" else "simplify")):
@@ -366,6 +368,8 @@ def verify_item(prompt: list, answer: dict, solved: dict, overlay) -> None:
         fail("FORM_UNREPRESENTABLE" if error.code == "FORM_UNREPRESENTABLE" else "KEY_ROUNDTRIP")
     if _form_problem(key["form"], poly):
         fail("FORM_UNREPRESENTABLE")
+    for code in school_math.check_scope(expected_key, profile, role="result"):
+        fail(code)
     symbols, notation = key["symbols"], key["notation"]
     if (type(symbols) is not list or any(type(letter) is not str for letter in symbols)
             or any(letter not in overlay["letters"] for letter in symbols) or type(notation) is not str):
@@ -447,13 +451,16 @@ def compile_item(kind: str, item: dict, index: int, ctx: Context) -> CompiledIte
         for code in codes:
             refuse("text", code)
 
-    # I2 parse
+    # I2 parse. A kind that declares no givens (every stage-2 kind: FIELD_NOT_EMPTY on givens) has no `{nK}`
+    # reference in its math grammar, so a reference is MATH_PARSE here and can never reach the kernel.
     letters = tuple(overlay["letters"])
+    allow_refs = bool(row.get("givens", False))
     nodes = {}
     for field in ("expr", "expr2"):
         if field in reads:
             try:
-                nodes[field] = school_math.parse(item[field], letters=letters, max_length=LIMITS[field])
+                nodes[field] = school_math.parse(item[field], letters=letters, max_length=LIMITS[field],
+                                                 allow_refs=allow_refs)
             except SchoolMathError as error:
                 refuse(field, error.code)
     values = None
@@ -513,16 +520,25 @@ def compile_item(kind: str, item: dict, index: int, ctx: Context) -> CompiledIte
                     mistake_models.verify_wrong(variant, expression, nodes["expr2"])
                 except mistake_models.MistakeError as error:
                     refuse("expr2", error.code)
+    # A written coefficient 1 or 0 before a letter ("1x+2x") prints as written but is never house notation.
+    # Checked last on a printed expr no other check refused, so a more specific code (TEMPLATE_MISMATCH) wins.
+    if (expression is not None and not any(field == "expr" for field, _ in refusals)
+            and school_math.written_unit_coefficient(expression)):
+        refuse("expr", "MATH_SCOPE_RANGE")
     if refusals:
         return done()
 
-    # I5 kernel
-    if kind == "substitute":
-        ordered = dict(values)
-        task = {"kind": "substitute", "expression": school_math.to_kernel(expression),
-                "values": {letter: number(ordered[letter]) for letter in school_math.letters_of(expression)}}
-    else:
-        task = {"kind": "simplify", "expression": school_math.to_kernel(expression)}
+    # I5 kernel. A conversion failure is a refusal of this item, never an exception out of the sheet.
+    try:
+        if kind == "substitute":
+            ordered = dict(values)
+            task = {"kind": "substitute", "expression": school_math.to_kernel(expression),
+                    "values": {letter: number(ordered[letter]) for letter in school_math.letters_of(expression)}}
+        else:
+            task = {"kind": "simplify", "expression": school_math.to_kernel(expression)}
+    except SchoolMathError as error:
+        refuse("expr", error.code)
+        return done()
     try:
         solved = validate_and_solve_task(task)
     except MathTaskError as error:
@@ -541,6 +557,12 @@ def compile_item(kind: str, item: dict, index: int, ctx: Context) -> CompiledIte
         return done()
     if _form_problem(row["form"], poly):
         refuse("form", "FORM_UNREPRESENTABLE")
+        return done()
+    # The key is a result: the profile's result bound applies to it as to a find_error wrong result.
+    scope_codes = school_math.check_scope(key_node, profile, role="result")
+    for code in scope_codes:
+        refuse("expr", code)
+    if scope_codes:
         return done()
     if kind == "write_from_words":
         binding = {"kind": kind, "template": variant}

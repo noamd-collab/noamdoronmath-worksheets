@@ -8,10 +8,16 @@ inside) → PNG of every PDF page. The build runs in a space-free work dir; only
                                     [--work DIR] [--dpi N]
 
 Without --case the deliverables use the §6.4 layout in DIR (pages/page-NN.png). With --case NAME they go to
-DIR/NAME/: sheet.pdf, page-<n>.png per PDF page (n from 1), the same JSON files, and report.json (per-step
-status, the atom-order result, the selection record, refusals, the printed keys and the PDF Producer).
+DIR/NAME/: sheet.pdf, page-<n>.png per PDF page (n from 1) and the same JSON files. Both layouts write
+report.json (per-step status, the atom-order result, the selection record, refusals, trimmed items, the printed
+keys, the PDF Producer and the v5 verdict).
 
-Exit 0 = every executed check PASS (notRun listed), 1 = render or gate failure, 2 = compile/selection failure.
+The pinned build's own report is copied as pinned-v72-report.raw.json: its "result" covers only the pinned
+steps it ran. The v5 verdict is in summary.json and report.json ("verdict"): automated checks pass only when
+every check ran and passed and the overlay is reviewed; a SKIP is notRun, never PASS (D1).
+
+Exit 0 = every executed check PASS (notRun listed; the verdict says whether anything did not run), 1 = render
+or gate failure, 2 = compile/selection failure.
 """
 from __future__ import annotations
 
@@ -29,7 +35,7 @@ HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-COPIES = (("manifest.json", "manifest.json"), ("out/v72-report.json", "v72-report.json"),
+COPIES = (("manifest.json", "manifest.json"), ("out/v72-report.json", "pinned-v72-report.raw.json"),
           ("logs/atom-order.json", "atom-order.json"))
 CASE_RE = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}")
 STATUSES = ("PASS", "FAIL", "REVIEW", "SKIP")
@@ -70,9 +76,23 @@ def _printed_keys(levels, selection) -> list:
     return out
 
 
+def _verdict(manifest) -> dict:
+    """The v5 verdict of one render: executed checks, what did not run, the overlay review, and whether the
+    automated checks count as passed (they never do while anything did not run or the overlay is unreviewed)."""
+    manifest = manifest or {}
+    not_run = list(manifest.get("notRun") or ())
+    return {"executedChecksPassed": manifest.get("executedChecksPassed") is True,
+            "automatedChecksPassed": manifest.get("automatedChecksPassed") is True,
+            "notRunCount": len(not_run),
+            "overlayReviewed": manifest.get("overlayReviewed") is True,
+            "fullyChecked": manifest.get("executedChecksPassed") is True and not not_run,
+            "note": ("pinned-v72-report.raw.json is the pinned build's own report; its result covers only the steps "
+                     "it ran. Checks listed in notRun did not run and are not passed.")}
+
+
 def _report(case, lesson_path, reply_path, repairs, *, status, exit_code, result=None, error=None, manifest=None,
             work=None, pdf_facts=None, pages=(), dpi=150) -> dict:
-    """report.json of one --case render (codes, statuses and printed math only; no model text beyond the sheet)."""
+    """report.json of one render (codes, statuses and printed math only; no model text beyond the sheet)."""
     report = {"case": case, "lesson": Path(lesson_path).name, "reply": Path(reply_path).name,
               "repairs": [Path(path).name for path in repairs], "status": status, "exitCode": exit_code}
     if error is not None:
@@ -88,12 +108,16 @@ def _report(case, lesson_path, reply_path, repairs, *, status, exit_code, result
         "executedChecksPassed": (manifest or {}).get("executedChecksPassed"),
         "automatedChecksPassed": (manifest or {}).get("automatedChecksPassed"),
         "notRun": (manifest or {}).get("notRun"),
+        "verdict": _verdict(manifest),
+        "overlayReviewed": (manifest or {}).get("overlayReviewed"),
+        "overlayPendingReview": (manifest or {}).get("overlayPendingReview"),
         "stepCounts": counts,
         "steps": steps,
         "atomOrder": atom,
         "selection": result.ir["selection"],
         "refusals": result.diagnostics["refusals"],
         "trimmed": result.diagnostics["trimmed"],
+        "warnings": result.diagnostics.get("warnings", []),
         "repairRounds": result.diagnostics["repairRounds"],
         "keys": _printed_keys(levels, result.ir["selection"]),
         "pdf": pdf_facts,
@@ -132,9 +156,8 @@ def run(lesson_path, reply_path, out_dir, *, repairs=(), work_dir=None, skill_pa
         _dump(out / "compile-diagnostics.json", error.diagnostics)
         summary = {"status": "compile_failed", "code": error.code}
         _dump(out / "summary.json", summary)
-        if case is not None:
-            _dump(out / "report.json", _report(case, lesson_path, reply_path, repairs, status="compile_failed",
-                                               exit_code=2, error=error, dpi=dpi))
+        _dump(out / "report.json", _report(case, lesson_path, reply_path, repairs, status="compile_failed",
+                                           exit_code=2, error=error, dpi=dpi))
         return summary
     validate_source(lesson, result.ir, scope)
     _dump(out / "ir.json", result.ir)
@@ -168,15 +191,17 @@ def run(lesson_path, reply_path, out_dir, *, repairs=(), work_dir=None, skill_pa
         work / "logs/atom-order.json").is_file() else {}
     selection = result.ir["selection"]
     summary = {"status": manifest["status"], "requested": selection["requested"], "delivered": selection["delivered"],
-               "replaced": selection["replaced"], "notRun": manifest.get("notRun"), "pages": pages,
+               "replaced": selection["replaced"], "trimmed": result.diagnostics["trimmed"],
+               "warnings": result.diagnostics.get("warnings", []),
+               "notRun": manifest.get("notRun"), "verdict": _verdict(manifest), "pages": pages,
                "producer": atom.get("producer"), "workDir": str(work),
                "failedSteps": [step["name"] for step in manifest["steps"] if step["status"] not in ("PASS", "SKIP")]}
     _dump(out / "summary.json", summary)
-    if case is not None:
-        _dump(out / "report.json", _report(case, lesson_path, reply_path, repairs, status=manifest["status"],
-                                           exit_code=0 if manifest["status"] == "needs_review" else 1,
-                                           result=result, manifest=manifest, work=work, pdf_facts=pdf_facts,
-                                           pages=page_files, dpi=dpi))
+    _dump(out / "report.json", _report(case, lesson_path, reply_path, repairs, status=manifest["status"],
+                                       exit_code=0 if manifest["status"] == "needs_review" else 1,
+                                       result=result, manifest=manifest, work=work, pdf_facts=pdf_facts,
+                                       pages=[("pages/" + name) if case is None else name for name in page_files],
+                                       dpi=dpi))
     return summary
 
 

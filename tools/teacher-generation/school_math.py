@@ -27,7 +27,7 @@ __all__ = [
     "to_kernel", "polynomial_of_kernel", "first_appearance", "key_node", "kernel_equal", "to_house",
     "from_house_flat", "display_island", "key_island",
     # helpers beyond the V5-DESIGN §3 list
-    "kernel_mapping", "polynomial", "key_from_result", "key_roundtrip",
+    "kernel_mapping", "polynomial", "key_from_result", "key_roundtrip", "written_unit_coefficient",
 ]
 
 ERROR_CODES = frozenset({"MATH_PARSE", "MATH_LENGTH", "MATH_SYMBOL_UNDECLARED", "REF_UNDECLARED",
@@ -259,9 +259,10 @@ def _declared(letters):
     return tuple(ordered)
 
 
-def _tokens(text, declared):
+def _tokens(text, declared, refs=True):
     """[(kind, value, position)], kind ∈ num, var, ref, op. ASCII only; U+2212 reads as '-'; spaces separate
-    tokens but never split a number (so "3 4", "2 .5" and "30 %" fail)."""
+    tokens but never split a number (so "3 4", "2 .5" and "30 %" fail). With refs=False a given reference is
+    outside the grammar (MATH_PARSE): the field belongs to a kind that declares no givens."""
     out, index, size = [], 0, len(text)
     while index < size:
         char = text[index]
@@ -290,6 +291,8 @@ def _tokens(text, declared):
             out.append(("var", char, index))
             index += 1
         elif char == "{":
+            if not refs:
+                _fail("MATH_PARSE", "no given reference is allowed here (position %d)" % index)
             if not _REF.match(text, index):
                 _fail("MATH_PARSE", "malformed given reference at position %d" % index)
             out.append(("ref", text[index + 1:index + 3], index))
@@ -400,8 +403,11 @@ class _Parser:
         self.fail("unexpected token")
 
 
-def parse(text: str, *, letters, allow_relation: bool = False, max_length: int = 120):
-    """Parse school grammar (§2.4) into a CST. Letters outside `letters` → MATH_SYMBOL_UNDECLARED."""
+def parse(text: str, *, letters, allow_relation: bool = False, max_length: int = 120, allow_refs: bool = True):
+    """Parse school grammar (§2.4) into a CST. Letters outside `letters` → MATH_SYMBOL_UNDECLARED.
+
+    allow_refs=False (a model math field of a kind that declares no givens, as every stage-2 kind): a `{nK}`
+    reference is outside the field's grammar → MATH_PARSE, so no unresolvable Ref ever reaches the kernel."""
     if type(text) is not str:
         _fail("MATH_PARSE", "expected a string")
     if type(max_length) is not int or max_length < 1:
@@ -411,7 +417,7 @@ def parse(text: str, *, letters, allow_relation: bool = False, max_length: int =
     declared = _declared(letters)
     if not text.strip(" "):
         _fail("MATH_PARSE", "empty expression")
-    return _Parser(_tokens(text, declared), bool(allow_relation)).display()
+    return _Parser(_tokens(text, declared, refs=allow_refs is not False), bool(allow_relation)).display()
 
 
 def parse_values(text: str, *, letters) -> tuple:
@@ -592,6 +598,27 @@ def _term_count(node):
     return 1 + len(node.rest) if type(node) is Sum else 1
 
 
+def _written_unit(node):
+    """A number literal (or a bracketed negative literal) whose value is 0, 1 or −1: never a written coefficient."""
+    if type(node) is Group and type(node.inner) is Neg:
+        node = node.inner.operand
+    return type(node) is Num and node.value in (0, 1)
+
+
+def written_unit_coefficient(node) -> bool:
+    """True when a literal 0, 1 or (−1) is written directly before a letter, a reference or a bracket as an
+    implicit-product coefficient ("1x+2x", "0x+3x+y", "(-1)x"). House notation never prints one (key_node drops
+    a coefficient 1 and every zero term), so model math with one is refused (MATH_SCOPE_RANGE in item_kinds)."""
+    _check(node)
+    stack = [node]
+    while stack:
+        item = stack.pop()
+        if type(item) is Product and item.rest and item.rest[0][0] == "" and _written_unit(item.first):
+            return True
+        stack.extend(_children(item))
+    return False
+
+
 def check_scope(node, profile, *, role: str = "task") -> list:
     """Sorted unique MATH_SCOPE_* codes, [] when in scope. Each offending node gives only its most specific code:
     a bracketed sum used as a factor → PRODUCT_OF_SUM (not BRACKETS/PRODUCT); any other Group except Group(Neg(Num))
@@ -653,6 +680,10 @@ def check_scope(node, profile, *, role: str = "task") -> list:
             if repeated:
                 codes.add("MATH_SCOPE_POWER")
             if ("/" in ops or ":" in ops) and not rules["division"]:
+                codes.add("MATH_SCOPE_DIVISION")
+            if ":" in ops and "" in ops[ops.index(":"):]:
+                # "6:2x" prints "6 : 2x" (read 6 : (2x)) but means (6 : 2)·x: an implicit product after ':'
+                # is never in scope, even where division is (a ':' prints inline, unlike the stacked '/').
                 codes.add("MATH_SCOPE_DIVISION")
             sum_factor = not rules["distributive"] and any(
                 type(f) is Group and _sum_like(f.inner) for f in factors)

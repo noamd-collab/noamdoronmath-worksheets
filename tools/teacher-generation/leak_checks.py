@@ -33,6 +33,15 @@ display their task, verify_item proves to_kernel(display) == task.expression, so
 this is the canonical task display; it also covers write_from_words, whose task
 is not displayed as one atom.
 
+Reordered repeats, reordered_tasks() -> {0-based index of the LATER question: codes}:
+- DUPLICATE_REORDERED  an item whose task has the same multiset of signed terms as
+                       an item of an earlier question, written in another order
+                       ("x+6+5x+2" then "5x+2+x+6"). Exact repeats stay
+                       DUPLICATE_TASK (sheet_leaks), so the two never overlap.
+This is a separate sheet-level rule: DUPLICATE_ITEM and DUPLICATE_TASK keep the
+section 4 definition (the same canonical task display), which the stage-2 tests
+pin; within one question a reordered item is not refused.
+
 D12 mirror (G6, D12; critique: no dict givens, no exemption): the pinned
 check_didactic.py is loaded by path after a sha256 check against skill-lock.json
 and its own f_atoms / f_hit are applied to the exact strings the middle adapter
@@ -49,6 +58,7 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import itertools
 import json
 import sys
 import types
@@ -71,6 +81,8 @@ LEAK_PINNED_VALUE = "LEAK_PINNED_VALUE"
 DUPLICATE_TASK = "DUPLICATE_TASK"
 LEAK_SHEET_INVERSE = "LEAK_SHEET_INVERSE"
 EXAMPLE_COPY = "EXAMPLE_COPY"
+DUPLICATE_REORDERED = "DUPLICATE_REORDERED"
+EQUIVALENT_TASK = "EQUIVALENT_TASK"              # a warning code of equivalent_tasks(), never a refusal
 QUESTION_CODES = (DUPLICATE_ITEM, LEAK_OWN, LEAK_LINKED, LEAK_RULE_FACT, LEAK_PINNED_VALUE)
 SHEET_CODES = (DUPLICATE_TASK, LEAK_SHEET_INVERSE, EXAMPLE_COPY)
 
@@ -201,6 +213,30 @@ def _canonical(kernel):
     return json.dumps(kernel, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
 
 
+def _signed_terms(kernel, sign=1, out=None):
+    """The signed terms of a kernel expression, read through its add/subtract chain (the order is lost):
+    [exact value of each term as sorted (signature, coefficient) pairs]."""
+    if out is None:
+        out = []
+    op = kernel.get("op") if isinstance(kernel, dict) and kernel.get("type") == "operation" else None
+    args = (kernel.get("args") or []) if op in ("add", "subtract") else []
+    if op == "add" and args:
+        for arg in args:
+            _signed_terms(arg, sign, out)
+    elif op == "subtract" and len(args) == 2:
+        _signed_terms(args[0], sign, out)
+        _signed_terms(args[1], -sign, out)
+    else:
+        out.append(tuple(sorted(_scale(_poly(kernel), sign).items())))
+    return out
+
+
+def task_key(kernel):
+    """Order-blind canonical task: the multiset of the signed terms of a kernel task expression (hashable).
+    Equal kernel expressions give equal keys; "x+6+5x+2" and "5x+2+x+6" give equal keys too."""
+    return frozenset(Counter(_signed_terms(kernel)).items())
+
+
 # ------------------------------------------------------------------ reading one IR question
 
 def _sides(node):
@@ -253,6 +289,7 @@ class _Item:
         task = answer["task"]
         self.task_expression = task["expression"]
         self.task = _canonical(self.task_expression)
+        self.terms = task_key(self.task_expression)       # order-blind, for reordered_tasks()
         values = task.get("values") or {}
         key = answer["key"]
         self.key_node = school_math.parse(key["notation"], letters=tuple(key["symbols"]))
@@ -408,4 +445,55 @@ def sheet_leaks(questions: list, *, examples=()) -> dict[int, list[str]]:
             codes.add(EXAMPLE_COPY)
         if codes:
             hits[later] = sorted(codes)
+    return hits
+
+
+def _evaluation(item):
+    """Canonical (simplified polynomial, values) of a substitute task, letters renamed to fit (None otherwise)."""
+    task = item["answer"]["task"]
+    if task.get("kind") != "substitute":
+        return None
+    poly = _poly(task["expression"])
+    values = {letter: Fraction(value["numerator"], value["denominator"]) for letter, value in task["values"].items()}
+    letters = sorted(values)
+    best = None
+    for order in itertools.permutations(range(len(letters))):
+        rename = {letter: order[index] for index, letter in enumerate(letters)}
+        shape = tuple(sorted((tuple(sorted(rename[symbol] for symbol in signature)), coefficient)
+                             for signature, coefficient in poly.items()))
+        key = (shape, tuple(sorted((rename[letter], value) for letter, value in values.items())))
+        best = key if best is None or key < best else best
+    return best
+
+
+def equivalent_tasks(questions: list) -> list[dict]:
+    """Warnings, never refusals: [{"code": EQUIVALENT_TASK, "questions": [i, j], "items": [a, b]}] (0-based
+    questions in printed order, 1-based items) for two substitute items whose simplified expression and values are
+    the same after renaming letters ("4y-y" at y=-2 and "b+b+b" at b=-2), unless they are exact or reordered
+    repeats (refused elsewhere). For the owner's review; refusing them is a decision Noam has not taken."""
+    found = [(q, item.index, _evaluation(raw), item.terms)
+             for q, question in enumerate(questions)
+             for item, raw in zip(_read(question), question["items"])]
+    warnings = []
+    for at, (q1, i1, value1, terms1) in enumerate(found):
+        for q2, i2, value2, terms2 in found[at + 1:]:
+            if value1 is not None and value1 == value2 and terms1 != terms2:
+                warnings.append({"code": EQUIVALENT_TASK, "questions": [q1, q2], "items": [i1, i2]})
+    return warnings
+
+
+def reordered_tasks(questions: list) -> dict[int, list[str]]:
+    """{0-based index of the LATER question: [DUPLICATE_REORDERED]} when one of its items has the same multiset of
+    signed terms as an item of an earlier question but another written order (exact repeats are DUPLICATE_TASK).
+
+    "x+6+5x+2" (collect) and a later "5x+2+x+6" (find_error) ask for the same collection, so the later question
+    is answered by the earlier one. Monotone: removing questions never adds a hit."""
+    read = [_read(question) for question in questions]
+    hits = {}
+    for later, items in enumerate(read):
+        for earlier in range(later):
+            if any(item.terms == other.terms and item.task != other.task
+                   for item in items for other in read[earlier]):
+                hits[later] = [DUPLICATE_REORDERED]
+                break
     return hits

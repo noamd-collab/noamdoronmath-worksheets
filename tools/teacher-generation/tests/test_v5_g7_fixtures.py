@@ -5,7 +5,7 @@
 - reply_with_failures.json: six planned questions are refused (text, scope, two leaks, an unmodeled mistake,
   a wrong kind); the six reserves fill them, Q12 is trimmed to three items, and 20/20 are delivered.
 - adversarial.json: single questions, each refused with an exact code set and exact refusal records.
-  One case is a known defect, recorded as an expected failure (it must flip when the defect is fixed).
+  One case was a known defect, recorded as an expected failure; it is fixed and the test now runs normally.
 - expected.json: the hand-computed keys, cross-checked here against an independent sympy evaluation.
 """
 import json
@@ -160,10 +160,9 @@ class AdversarialQuestions(unittest.TestCase):
                 self.assertEqual(list(compiled.codes), case["expect"])
                 self.assertEqual(records(compiled.refusals), sorted(case["refusals"]))
 
-    @unittest.expectedFailure
     def test_known_defect_a_reference_in_a_substitute_expression_is_refused_not_raised(self):
-        """Today `{n1}` in a substitute expr passes parse, scope and binding, and school_math.to_kernel then raises
-        an uncaught SchoolMathError out of compile_item (and out of compile_sheet). Spec: refuse the item."""
+        """Flipped when the defect was fixed: `{n1}` in a substitute expr used to pass parse, scope and binding and
+        then raise an uncaught SchoolMathError out of compile_item (and out of compile_sheet). Spec: refuse the item."""
         import structured_source as ss
         for case in load("adversarial.json"):
             if not case.get("knownDefect"):
