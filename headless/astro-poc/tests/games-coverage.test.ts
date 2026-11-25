@@ -10,6 +10,7 @@ import { ALL_GAMES, ENGINE_GAMES } from '../src/lib/eliyahuGames.ts';
 import {
   MIDDLE_SCHOOL_GRADES,
   gamesForTopic,
+  gamesOutsideMathsMap,
   gradeGameCoverage,
   middleSchoolGameCoverage,
   topicGameCoverage,
@@ -17,6 +18,15 @@ import {
 
 const catalog = loadCatalog();
 const topicIds = new Map(catalog.grades.map((g) => [g.grade, new Set(g.topics.map((t) => t.id))]));
+
+/**
+ * A game counts as a maths game unless it declares another subject. Only maths
+ * games must name catalog topics; a cross-curricular game may name one when it
+ * genuinely teaches it (and is then checked like any other), or name none.
+ */
+function isMathsGame(game: { subject?: string }): boolean {
+  return !game.subject || game.subject === 'מתמטיקה';
+}
 
 /** Topic-page slug → the catalog topics whose worksheets it links. */
 function pageTopics(): Map<string, Set<string>> {
@@ -35,7 +45,7 @@ function pageTopics(): Map<string, Set<string>> {
 describe('games coverage', () => {
   it('every game names at least one real catalog topic, once', () => {
     for (const game of ALL_GAMES) {
-      assert.ok(game.topics.length > 0, game.slug);
+      if (isMathsGame(game)) assert.ok(game.topics.length > 0, game.slug);
       const keys = game.topics.map((ref) => `${ref.grade}-${ref.topic}`);
       assert.equal(new Set(keys).size, keys.length, `${game.slug} repeats a topic`);
       for (const ref of game.topics) {
@@ -48,6 +58,7 @@ describe('games coverage', () => {
   it('every game links a topic page of one of its topics', () => {
     const byPage = pageTopics();
     for (const game of ALL_GAMES) {
+      if (game.topics.length === 0) continue;
       const keys = new Set(game.topics.map((ref) => `${ref.grade}-${ref.topic}`));
       const linked = game.links.some((link) => {
         const topics = byPage.get(link.href.replace(/^\//, ''));
@@ -55,6 +66,33 @@ describe('games coverage', () => {
       });
       assert.ok(linked, `${game.slug}: no link reaches a page of its topics`);
     }
+  });
+
+  it('a cross-curricular game carries a subject badge and never claims maths', () => {
+    for (const game of ALL_GAMES) {
+      if (game.subject === undefined) continue;
+      assert.ok(game.subject.trim().length > 0, `${game.slug}: empty subject`);
+      if (isMathsGame(game)) assert.equal(game.subject, 'מתמטיקה', game.slug);
+      else assert.notEqual(game.subject, 'מתמטיקה', game.slug);
+    }
+    const cross = ALL_GAMES.filter((game) => !isMathsGame(game));
+    assert.ok(cross.length > 0, 'the corner lists at least one cross-curricular game');
+    for (const game of cross) assert.ok(game.topics.length <= 1, `${game.slug} claims several maths topics`);
+  });
+
+  it('keeps cross-curricular games out of the maths coverage map', () => {
+    const outside = gamesOutsideMathsMap();
+    for (const game of outside) {
+      assert.equal(game.topics.length, 0, game.slug);
+      for (const grade of [3, 4, 5, 6, 7, 8, 9]) {
+        const rows = gradeGameCoverage(grade);
+        assert.equal(rows.some((row) => row.games.includes(game.slug)), false, `${game.slug} on grade ${grade}`);
+      }
+    }
+    // kod-batzadim names one real topic, so it does appear in the map.
+    const anchored = ALL_GAMES.find((game) => game.slug === 'kod-batzadim');
+    assert.ok(anchored);
+    assert.equal(gamesOutsideMathsMap().some((game) => game.slug === 'kod-batzadim'), false);
   });
 
   it('a full topic is full, a partial one partial, and an untaught one none', () => {
