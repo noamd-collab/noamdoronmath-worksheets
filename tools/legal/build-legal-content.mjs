@@ -158,8 +158,13 @@ const terms = {
   description:
     'תנאי השימוש באתר, תנאי הרכישה של אזור המורים, אספקת השירות, ביטול עסקה והחזר, אחריות ופרטי העוסק.',
   blocks: termsBlocks,
-  legalBlocks: termsBlocks,
+  // legalBlocks is written only when it differs from blocks. The loader falls
+  // back to blocks for terms, so the same 12 KB of Hebrew text is not shipped
+  // twice inside the worker bundle (the deployment payload is at its budget).
 };
+// The base snapshot still carries an older legalBlocks copy; drop it so the
+// rendered body and the legal body can never drift apart.
+delete terms.legalBlocks;
 
 /* ----------------------------------------------------- purchase terms page */
 
