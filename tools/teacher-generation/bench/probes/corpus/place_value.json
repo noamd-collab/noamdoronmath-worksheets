@@ -1,0 +1,304 @@
+{
+ "family": "place_value",
+ "probes": [
+  {
+   "id": "place_value-01",
+   "topic": "ג01",
+   "intro": "השלימו את המספרים החסרים.",
+   "prompt": "[[345]] = ___ מאות + ___ עשרות + ___ אחדות",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "345"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "3",
+     "4",
+     "5"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "345 = ___ מאות + ___ עשרות + ___ אחדות",
+    "key": "3 מאות, 4 עשרות, 5 אחדות"
+   }
+  },
+  {
+   "id": "place_value-02",
+   "topic": "ב02",
+   "intro": "הַשְׁלִימוּ אֶת הַמִּסְפָּרִים הַחֲסֵרִים.",
+   "prompt": "[[47]] = ___ עֲשָׂרוֹת + ___ יְחִידוֹת",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "47"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "4",
+     "7"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "47 = ___ עֲשָׂרוֹת + ___ יְחִידוֹת",
+    "key": "4 עֲשָׂרוֹת, 7 יְחִידוֹת"
+   }
+  },
+  {
+   "id": "place_value-03",
+   "topic": "ב02",
+   "intro": "הַשְׁלִימוּ אֶת הַמִּסְפָּרִים הַחֲסֵרִים.",
+   "prompt": "בַּמִּסְפָּר [[47]] יֵשׁ ___ עֲשָׂרוֹת וְ־___ יְחִידוֹת.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "47"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "4",
+     "7"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "בַּמִּסְפָּר 47 יֵשׁ ___ עֲשָׂרוֹת וְ־___ יְחִידוֹת.",
+    "key": "4 עֲשָׂרוֹת, 7 יְחִידוֹת"
+   }
+  },
+  {
+   "id": "place_value-04",
+   "topic": "ד01",
+   "intro": "פרקו את המספר לפי ערך המקום.",
+   "prompt": "[[45,238]] = [[40,000]] + ___ + [[200]] + [[30]] + [[8]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "45,238 - 40,000 - 200 - 30 - 8"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "5000"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "45,238 = 40,000 + ___ + 200 + 30 + 8",
+    "key": "5,000"
+   }
+  },
+  {
+   "id": "place_value-05",
+   "topic": "ד01",
+   "intro": "כתבו את המספר בספרות.",
+   "prompt": "ארבעים וחמישה אלף מאתיים שלושים ושמונה",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "45238"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "45238"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "ארבעים וחמישה אלף מאתיים שלושים ושמונה",
+    "key": "45,238"
+   }
+  },
+  {
+   "id": "place_value-06",
+   "topic": "ד01",
+   "intro": "ענו על השאלות.",
+   "prompt": "במספר [[45,238]], מהו הערך של הספרה [[5]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "5000"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "5000"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "במספר 45,238 , מהו הערך של הספרה 5 ?",
+    "key": "5,000"
+   }
+  },
+  {
+   "id": "place_value-07",
+   "topic": "ה28",
+   "intro": "ענו על השאלות.",
+   "prompt": "מהי ספרת העשיריות במספר [[3.47]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "4"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "4"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "מהי ספרת העשיריות במספר 3.47 ?",
+    "key": "4"
+   }
+  },
+  {
+   "id": "place_value-08",
+   "topic": "ה28",
+   "intro": "פרקו את המספר.",
+   "prompt": "[[3.47]] = [[3]] + [[0.4]] + ___",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3.47 - 3 - 0.4"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "0.07"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "3.47 = 3 + 0.4 + ___",
+    "key": "0.07"
+   }
+  },
+  {
+   "id": "place_value-09",
+   "topic": "ב15",
+   "intro": "הַשְׁלִימוּ.",
+   "prompt": "[[300 + 40 + 5 = ___]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "300 + 40 + 5"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "300 + 40 + 5 = ___",
+    "key": "345"
+   }
+  },
+  {
+   "id": "place_value-10",
+   "topic": "ג04",
+   "intro": "השלימו את המספרים החסרים.",
+   "prompt": "[[4,507]] = ___ אלפים + ___ מאות + ___ עשרות + ___ אחדות",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "4507"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "4",
+     "5",
+     "0",
+     "7"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "4,507 = ___ אלפים + ___ מאות + ___ עשרות + ___ אחדות",
+    "key": "4 אלפים, 5 מאות, 0 עשרות, 7 אחדות"
+   }
+  },
+  {
+   "id": "place_value-11",
+   "topic": "ג10",
+   "intro": "השלימו.",
+   "prompt": "24 : 6 = ___",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "24/6"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "24 : 6 = ___",
+    "key": "4"
+   }
+  },
+  {
+   "id": "place_value-12",
+   "topic": "ג10",
+   "intro": "השלימו.",
+   "prompt": "24 : [[___]] = 6",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "24/6"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "24 : ___ = 6",
+    "key": "4"
+   }
+  },
+  {
+   "id": "place_value-13",
+   "topic": "ג10",
+   "intro": "השלימו.",
+   "prompt": "35 : 7 = [[___]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "35/7"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "35 : 7 = ___",
+    "key": "5"
+   }
+  }
+ ]
+}

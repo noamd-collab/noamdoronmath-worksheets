@@ -246,6 +246,30 @@ test('concurrent ticks start one process and busy ticks only refresh timeout', a
   f.container.stop(); await flush();
 });
 
+test('the author switch and its own credential reach the worker only when set', async () => {
+  const plain = fixture(); await plain.active(); await plain.supervisor.tick();
+  for (const name of ['TEACHER_AUTHOR_PROVIDER', 'GEMINI_API_KEY', 'GEMINI_MODEL']) {
+    assert.equal(name in plain.container.starts[1].env, false);
+  }
+  plain.container.stop(); await flush();
+
+  const f = fixture();
+  Object.assign(f.env, { TEACHER_AUTHOR_PROVIDER: 'gemini', GEMINI_API_KEY: 'PRIVATE_SECOND_PROVIDER_SECRET', GEMINI_MODEL: '' });
+  await f.active(); await f.supervisor.tick();
+  const env = f.container.starts[1].env;
+  assert.equal(env.TEACHER_AUTHOR_PROVIDER, 'gemini');
+  assert.equal(env.GEMINI_API_KEY, 'PRIVATE_SECOND_PROVIDER_SECRET');
+  assert.equal('GEMINI_MODEL' in env, false); // empty counts as unset
+  assert.equal(env.QWEN_API_KEY, 'PRIVATE_PROVIDER_SECRET');
+  assert.equal(JSON.stringify(await f.supervisor.status()).includes('PRIVATE_'), false);
+  f.container.stop(); await flush();
+
+  const bad = fixture();
+  Object.assign(bad.env, { GEMINI_API_KEY: 'with\0nul' });
+  await fails(bad.supervisor.preflight());
+  assert.equal(bad.container.starts.length, 0);
+});
+
 test('successful idle exit cannot restart in same UTC minute, including DO reconstruction', async () => {
   const f = fixture(); await f.active(); await f.supervisor.tick();
   f.container.stop(); await flush();

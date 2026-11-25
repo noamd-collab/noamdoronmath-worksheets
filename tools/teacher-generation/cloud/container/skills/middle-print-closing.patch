@@ -1,0 +1,23 @@
+--- a/emit_html.py
++++ b/emit_html.py
+@@ -665,7 +665,7 @@
+                       text-align:center; min-width:56pt; height:19pt}
+ table.g th{background:#efefec; font-weight:700; font-size:10.4pt}
+ 
+-.good{text-align:center; font-weight:700; font-size:13pt; margin-top:14pt}
++.good{break-before:avoid;text-align:center; font-weight:700; font-size:13pt; margin-top:14pt}
+ 
+ /* --- answers ----------------------------------------------------------- */
+ .ansband{background:#e9e9e6; border:1.2px solid #111; padding:4pt 9pt;
+--- a/emit_docx.py
++++ b/emit_docx.py
+@@ -1888,6 +1888,9 @@
+         blocks = self.head()
+         for q in self.L["questions"]:
+             blocks.extend(self.question(q))
++        # Keep the closing with the final question before the separate answer page.
++        if self.L["questions"]:
++            last_para(blocks).keep_next = True
+         blocks.append(self.para(u"בהצלחה!", SZ["good"], True, center=True,
+                                 before=14 * TW_PER_PT))
+         blocks.extend(self.answers())
