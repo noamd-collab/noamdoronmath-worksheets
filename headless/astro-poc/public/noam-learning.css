@@ -162,6 +162,7 @@ body.nl-page .exact-nav-drop a:hover{
   background:rgba(42,124,122,.12);
 }
 /* Same per-letter games label as SiteHeader / exact-site.css (PR 537). */
+body.nl-page .exact-nav-games .exact-nav-rainbow,
 body.nl-page .exact-nav-tools__btn .exact-nav-rainbow{font-size:1.2em;font-weight:800;letter-spacing:.01em;}
 body.nl-page .exact-nav-rainbow>span:nth-child(4n+1){color:#c92f55;}
 body.nl-page .exact-nav-rainbow>span:nth-child(4n+2){color:#b85513;}
@@ -305,8 +306,29 @@ body.nl-page .exact-nav-search-mobile{display:none!important;}
   body.nl-page .nl-primary-nav a{min-height:44px;padding:10px 12px;border-radius:10px;text-align:start;}
   body.nl-page .exact-nav-learn-mobile,
   body.nl-page .exact-nav-search-mobile{display:block!important;}
-  body.nl-page .exact-nav-tools__btn{display:none!important;}
-  body.nl-page .exact-nav-drop{position:static;opacity:1;visibility:visible;pointer-events:auto;border:0;box-shadow:none;padding:0;background:transparent;}
+  body.nl-page .exact-nav-tools__btn{
+    display:inline-flex!important;
+    width:100%;
+    justify-content:flex-start;
+    min-height:44px;
+    padding:10px 12px!important;
+    border-radius:10px;
+    text-align:start;
+  }
+  body.nl-page .exact-nav-drop{
+    position:static;
+    display:none;
+    min-width:0;
+    padding:0;
+    border:0;
+    box-shadow:none;
+    background:transparent;
+    opacity:1;
+    visibility:visible;
+  }
+  body.nl-page .exact-nav-tools[data-open] .exact-nav-drop,
+  body.nl-page .exact-nav-tools:focus-within .exact-nav-drop{display:flex;}
+  body.nl-page .nl-primary-nav .exact-nav-drop a{padding-inline-start:28px;}
 }
 body.nl-page .nl-kicker{
   display:inline-block;
