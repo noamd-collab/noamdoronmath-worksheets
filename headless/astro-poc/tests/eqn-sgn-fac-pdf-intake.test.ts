@@ -16,6 +16,7 @@ import { beforeEqnSgnFacCatalog, beforeEqnSgnFacCopy, reviewedEqnSgnFac as revie
 import { beforeBatch09Copy, reviewedBatch09 } from './fixtures/batch09-pdf';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
+import { catalogBeforeCorrections } from './fixtures/middle-090-091-094';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -27,6 +28,7 @@ const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(va
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = { ...registry, editions: beforeExtra15Registry(registry).editions.filter((e: any) => !ids.includes(e.editionId)) };
 const catalog = beforeReviewedRamziActivation(loadCatalog());
+const corrected = catalogBeforeCorrections(catalog);
 const rawCatalog = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
 const previous = beforeEqnSgnFacCatalog(rawCatalog);
 const receipt = read('docs/eqn-sgn-fac-pdf-first-20261115.json');
@@ -72,15 +74,15 @@ test('nine exact additional PDFs preserve every preceding catalog and registry b
 });
 
 test('teacher sources, learning regeneration and viewer dependencies reject all nine PDF-only additions', () => {
-  assert.deepEqual(buildTeacherCatalog(catalog), buildTeacherCatalog(previous));
-  const teacher = buildTeacherLandingCatalog(catalog);
+  assert.deepEqual(buildTeacherCatalog(corrected), buildTeacherCatalog(previous));
+  const teacher = buildTeacherLandingCatalog(corrected);
   assert.deepEqual(teacher, buildTeacherLandingCatalog(previous));
   for (const a of reviewed.additions) {
     assert.equal(getTeacherLandingScope({ grade: a.grade, topic: a.topicId, edition: a.editionId }, teacher), null);
     assert.ok(getTeacherLandingScope({ grade: a.grade, topic: a.topicId }, teacher));
   }
-  assert.deepEqual(collectViewerPdfIds(catalog), collectViewerPdfIds(previous));
-  for (const pdfId of reviewed.additions.flatMap(a => a.pdfIds)) assert.ok(!collectViewerPdfIds(catalog).includes(pdfId));
+  assert.deepEqual(collectViewerPdfIds(corrected), collectViewerPdfIds(previous));
+  for (const pdfId of reviewed.additions.flatMap(a => a.pdfIds)) assert.ok(!collectViewerPdfIds(corrected).includes(pdfId));
   const raw = loadIndexCatalog();
   const activation = loadRamziActivationEvidence(new URL('headless/catalog/', root).pathname, new URL('headless/astro-poc/public/', root).pathname);
   assert.deepEqual(buildLearningCatalog(raw, registry, activation), buildLearningCatalog(raw, priorRegistry, activation));

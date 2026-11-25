@@ -47,8 +47,29 @@ const legalPrivacyDeltaText = read('tests/fixtures/legal-privacy-reviewed-delta.
 assert.equal(sha256(legalPrivacyDeltaText), '3953c82c1b08b81cf1b2bf76d977f11d6457f0cdeed2c74c2de4cacbe0b38753');
 const legalPrivacyDeltas = JSON.parse(legalPrivacyDeltaText).files;
 
+// Retain the previous viewer fences after the scale PDF and its native text split into an immutable revision.
+function beforeScaleFeedback(content: string): string {
+  const revision = [
+    '  // Wording revisions keep their own native text and leave archived exports intact.',
+    '  if(manifest&&/^G[789]-T[0-9]+$/.test(manifest.prefix)&&/^[abc]$/.test(manifest.nativeLevel)&&',
+    '      /^[a-f0-9]{32}$/.test(manifest.pdfHash)&&',
+    "      url==='/noam-ai/native/'+manifest.prefix+'/'+manifest.nativeLevel+'/revisions/'+manifest.pdfHash+'/noam-ai.json'){return url;}",
+    '',
+  ].join('\n');
+  for (const [current, prior] of [
+    [revision, ''],
+    ['catalog-migrations.js?v=20261124-scale-feedback', 'catalog-migrations.js?v=20261027-native1'],
+    ['noam-curated-hints.js?v=20261124-scale-feedback', 'noam-curated-hints.js?v=20261120-three-digit-editions'],
+  ]) {
+    assert.equal(content.split(current).length, 2, 'one exact scale revision hunk');
+    content = content.replace(current, prior);
+  }
+  return content;
+}
+
 // Restore the single GET and its two stale-response guards from f25bd4798.
 function beforeManifestRecovery(content: string): string {
+  content = beforeScaleFeedback(content);
   const requests = content.match(/^  function isCurrentLoad\(\)\{\n[\s\S]*?^  return fetchManifest\(\)$/gm) || [];
   assert.equal(requests.length, 1, 'one manifest retry block');
   assert.equal(sha256(requests[0]), 'e78fbfb98a1dbcfebd00ce0a307dcc72f5b96dc5210bde4cca5258cdf6573838', 'exact manifest retry block');
@@ -479,7 +500,9 @@ describe('exact-design protected live-baseline boundaries', () => {
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
         // Reverse the exact three additional PDF overlays before all older fences.
-        const publishedCatalog = JSON.parse(content);
+        const revisedScale = '6009d89d81484f1aac92da7febec2905';
+        assert.equal(content.split(revisedScale).length, 3, 'only the excellence level and sibling route use the revised PDF');
+        const publishedCatalog = JSON.parse(content.replaceAll(revisedScale, 'e7b11e96954b4935951214f8a9035814'));
         const activation = readFirst567Activation();
         assert.deepEqual(publishedCatalog.ramziHintCorrection, activation.hintCorrection,
           'current snapshot correction matches the verified receipt bundle');

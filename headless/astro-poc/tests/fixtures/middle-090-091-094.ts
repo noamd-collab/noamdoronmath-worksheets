@@ -26,6 +26,7 @@ import eighthRenew from '../../../../docs/middle-renewal-wave8-20261122.json';
 
 import finalRenew from '../../../../docs/middle-renewal-final-20261123.json';
 
+import scaleFeedback from '../../../../docs/middle-scale-feedback-20261124.json';
 export { finalRenew, reviewed, seven, three, renew, nextRenew, thirdRenew, fourthRenew, fifthRenew, sixthRenew, seventhRenew, eighthRenew };
 const releases = [finalRenew, eighthRenew, seventhRenew, sixthRenew, fifthRenew, fourthRenew, thirdRenew, nextRenew, renew, three, seven, reviewed];
 const allPackages = [...reviewed.packages, ...seven.packages, ...three.packages, ...renew.packages, ...nextRenew.packages, ...thirdRenew.packages, ...fourthRenew.packages, ...fifthRenew.packages, ...sixthRenew.packages, ...seventhRenew.packages, ...eighthRenew.packages, ...finalRenew.packages];
@@ -43,7 +44,7 @@ export function beforeNovember21Catalog<T>(catalog: T): T {
 }
 
 export function catalogBeforePackages<T>(catalog: T, packages: typeof allPackages): T {
-  const result: any = structuredClone(catalog);
+  const result: any = catalogBeforeCorrections(catalog);
   for (const item of [...packages].reverse()) {
     const topic = result.grades.find((g: any) => g.grade === item.grade)?.topics.find((t: any) => t.id === item.topicId);
     assert.ok(topic, item.slug);
@@ -67,6 +68,26 @@ export function registryBeforeRelease<T>(registry: T, expected: RegistryEdition[
   const index = result.editions.findIndex((edition: RegistryEdition) => edition.editionId === expected[0].editionId);
   assert.ok(index >= 0, expected[0].editionId);
   assert.deepEqual(result.editions.splice(index, expected.length), expected);
+  return result;
+}
+
+/**
+ * A release may correct a legacy levels row in place, without adding an edition.
+ * Put the earlier PDF ids back, checking the current and restored topic exactly,
+ * so that every baseline recorded before the correction keeps its recorded hash.
+ */
+export function catalogBeforeCorrections<T>(catalog: T): T {
+  const result: any = structuredClone(catalog);
+  for (const item of (scaleFeedback as any).corrections) {
+    const topic = result.grades.find((g: any) => g.grade === item.grade)?.topics.find((t: any) => t.id === item.topicId);
+    assert.ok(topic, item.slug);
+    for (const edit of item.edits) {
+      const holder = edit.path.slice(0, -1).reduce((node: any, key: any) => node[key], topic);
+      const leaf = edit.path[edit.path.length - 1];
+      assert.ok([edit.from, edit.to].includes(holder[leaf]), `${item.slug} ${edit.path.join('.')} ${holder[leaf]}`);
+      if (holder[leaf] === edit.from) holder[leaf] = edit.to;
+    }
+  }
   return result;
 }
 

@@ -73,6 +73,12 @@
       ctx.levelCode!==manifest.levelCode){return Promise.resolve(false);}
     return Promise.all([digest(pdfBytes),verifyTaskText(source)]).then(function(results){return results[0]===source.pdfSha;}).catch(function(){return false;});
   }
+  // The reviewed scale revision clarifies Q1(d) without changing its task or hints.
+  function reviewedPriorSource(worksheet,level,pdf,native){
+    if(worksheet!=="G8-T25-E"||level!=="E"||pdf!=="6009d89d81484f1aac92da7febec2905"||
+        native!=="83ca4c8ec60b3199679a623e0c13b51dbe0d9db72f3e01761856bb1f89987c02"){return null;}
+    return {pdf:"e7b11e96954b4935951214f8a9035814",native:"606809a15c8056d81bd2f94cd4ab0008f24e780932c40f14927ef6eebbab8bec"};
+  }
   function scope(manifest){
     // Any canonical/edition signal selects the strict branch, even if malformed.
     // A broken new manifest must never become a legacy hint query.
@@ -101,8 +107,9 @@
     (Array.isArray(manifest.questionPagesIdenticalTo)?manifest.questionPagesIdenticalTo:[]).forEach(function(alias){
       if(typeof alias==="string"&&/^[a-f0-9]{32}$/.test(alias)){pdfs[alias]=true;}
     });
-    return {worksheet:worksheet,known:known,pdf:manifest.pdfHash,pdfs:pdfs,native:native,binding:binding,
-      key:worksheet+":"+binding+":"+ids.sort().join(",")};
+    var priorSource=reviewedPriorSource(worksheet,manifest.levelCode,manifest.pdfHash,native);
+    return {worksheet:worksheet,known:known,pdf:manifest.pdfHash,pdfs:pdfs,native:native,binding:binding,priorSource:priorSource,
+      key:worksheet+":"+binding+":"+ids.sort().join(",")+(priorSource?":reviewed-scale":"")};
   }
   function waitForConfig(deadline){
     var cfg=config(),doc=root&&root.document;
@@ -168,8 +175,12 @@
             row.source_pdf_sha256!==source.pdfSha||row.canonical_source_sha256!==source.canonical||
             row.canonical_question_sha256!==ex.canonicalQuestionSha256||row.canonical_item_id!==ex.canonicalItemId||
             row.source_exercise_sha256!==ex.sourceExerciseSha256){return;}
-        }else if(typeof row.source_pdf_hash!=="string"||source.pdfs[row.source_pdf_hash]!==true||
-            (source.native&&row.source_native_sha256!==source.native)){return;}
+        }else{
+          var prior=source.priorSource;
+          if(!(prior&&row.source_pdf_hash===prior.pdf&&row.source_native_sha256===prior.native)&&
+              (typeof row.source_pdf_hash!=="string"||source.pdfs[row.source_pdf_hash]!==true||
+              (source.native&&row.source_native_sha256!==source.native))){return;}
+        }
         var hints=[row.hint_1,row.hint_2,row.hint_3].map(function(item){return typeof item==="string"?item.trim():"";});
         if(!hints.every(function(item){return item&&item.length<=MAX_HINT;})){return;}
         var itemBinding=source.edition?JSON.stringify([source.binding,id,source.known[id].canonicalQuestionSha256,
@@ -191,5 +202,5 @@
   }
   function invalidate(manifest){var source=scope(manifest);if(source){delete loaded[source.key];}}
   return {prefetch:prefetch,get:get,status:status,invalidate:invalidate,table:TABLE,editionTable:EDITION_TABLE,
-    isEditionManifest:editionManifest,validateViewerBinding:validateViewerBinding};
+    isEditionManifest:editionManifest,validateViewerBinding:validateViewerBinding,reviewedPriorSource:reviewedPriorSource};
 });
