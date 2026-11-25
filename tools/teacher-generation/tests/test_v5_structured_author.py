@@ -932,13 +932,18 @@ class WorkerPath(unittest.TestCase):
         self.assertEqual([call[0].rsplit("/", 1)[1] for call in self.remote.uploads()], ["sheet.pdf"])
         return None
 
-    def test_every_skip_is_refused_while_d22_is_pending(self):
-        self.assertIs(worker.D22_APPROVED, False)
-        self.assertIn("D22_APPROVED = False\n", (S.APP / "remote_worker.py").read_text(encoding="utf-8"))
+    def test_d22_approval_is_recorded_exactly(self):
+        # Noam approved D22 on 2026-11-25; the constant and its record must say exactly that.
+        self.assertIs(worker.D22_APPROVED, True)
+        self.assertEqual(worker.D22_APPROVAL, {"approvedBy": "Noam", "approvedAt": "2026-11-25"})
+        self.assertIn("D22_APPROVED = True\n", (S.APP / "remote_worker.py").read_text(encoding="utf-8"))
+
+    def test_every_skip_is_refused_without_d22(self):
+        # With the approval withdrawn (False), every allowlisted SKIP is refused again.
         for name in sorted(runner.V5_NOT_RUN_ALLOWED):
             with self.subTest(name):
-                self.assertIsNotNone(self.accept(d22=worker.D22_APPROVED, skipped=(name,)))
-        self.assertIsNone(self.accept(skipped=()))                         # no SKIP: accepted with D22 pending
+                self.assertIsNotNone(self.accept(d22=False, skipped=(name,)))
+        self.assertIsNone(self.accept(d22=False, skipped=()))              # no SKIP: accepted without D22
 
     def test_once_d22_is_approved_only_an_allowlisted_middle_skip_in_not_run_passes(self):
         self.assertIsNone(self.accept(d22=True))                           # pinned:emit_docx, listed in notRun
@@ -974,7 +979,11 @@ class WorkerPath(unittest.TestCase):
                 self.assertFalse(worker.accepted_step(bad, "middle", [allowed]), bad)
         with patch.object(worker, "D22_APPROVED", 1):                       # only True itself approves
             self.assertFalse(worker.accepted_step(skip, "middle", [allowed]))
-        self.assertFalse(worker.accepted_step(skip, "middle", [allowed]))
+        with patch.object(worker, "D22_APPROVED", False):                   # approval withdrawn: refused
+            self.assertFalse(worker.accepted_step(skip, "middle", [allowed]))
+        self.assertTrue(worker.accepted_step(skip, "middle", [allowed]))    # default: D22 approved 2026-11-25
+        self.assertFalse(worker.accepted_step(skip, "elementary", [allowed]))
+        self.assertFalse(worker.accepted_step(skip, "middle", []))
         self.assertTrue(worker.accepted_step({"name": "atom-order", "status": "PASS"}, "elementary", []))
 
     @NEEDS
