@@ -33,7 +33,7 @@ test('the nine reviewed student PDFs match the frozen inputs and both public med
     assert.equal(edition.publicationMode, 'pdf-only');
     assert.equal(edition.isDefault, false);
     const groups = topicWorksheetEditionLinks(catalog, p.grade, p.topicId, '/' + p.slug);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', edition.editionId]);
+    assert.deepEqual(groups.map(g => g.editionId), [edition.editionId]);
     assert.deepEqual(edition.levels.map(l => [l.key, l.viewerLevel]), [['a', 'A'], ['b', 'B'], ['c', 'E']]);
     for (const [idx, level] of edition.levels.entries()) {
       const evidence = p.studentFiles[idx];
@@ -41,7 +41,7 @@ test('the nine reviewed student PDFs match the frozen inputs and both public med
       assert.equal(evidence.sha256, level.pdfSha256);
       assert.equal(evidence.downloads.length, 2);
       assert.ok(evidence.downloads.every(d => d.status === 200 && d.match && d.sha256 === level.pdfSha256));
-      assert.equal(groups[1].levels[idx].href, evidence.downloads[0].url);
+      assert.equal(groups[0].levels[idx].href, evidence.downloads[0].url);
       assert.deepEqual(evidence.downloads.map(d => new URL(d.url).host), ['static.wixstatic.com', 'www.noamdoronmath.co.il']);
       files.add(level.pdfId);
     }

@@ -29,7 +29,7 @@ test('reviewed worksheet additions preserve prior editions, hints, and landing c
     assert.ok(pack.skillVersion.startsWith('7.3.3'));
     assert.deepEqual(pack.priorEditionIds, pack.number === 29 ? ['ms-20261117-grd-01-r1'] : []);
     const links = topicWorksheetEditionLinks(loadCatalog(), pack.grade, pack.topicId, '/' + pack.slug);
-    assert.deepEqual(links.map(g => g.editionId), ['legacy', ...pack.priorEditionIds, pack.edition.editionId]);
+    assert.deepEqual(links.map(g => g.editionId), [...pack.priorEditionIds, pack.edition.editionId]);
     const added = links.at(-1)!;
     const parts = topicPagePdfParts(loadCatalog(), pack.grade, [pack.topicId]).parts;
     assert.deepEqual(pack.edition.levels.map(l => [l.key,l.viewerLevel]), [['a','A'],['b','B'],['c','E']]);

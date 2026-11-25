@@ -115,8 +115,9 @@ test('all twelve additions open their own reviewed PDF directly while every prev
     });
     const back = `/worksheets?grade=${addition.grade}&topic=${addition.topicId}`;
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, back);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', ...addition.baselineEditionIds, addition.editionId]);
-    assert.deepEqual(groups.slice(0, -1), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
+    assert.deepEqual(groups.map(g => g.editionId), [...addition.baselineEditionIds, addition.editionId]);
+    const earlier = topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back).filter(group => group.editionId !== 'legacy');
+    assert.deepEqual(groups.slice(0, earlier.length), earlier);
     assert.deepEqual(groups.at(-1)!.levels.map(l => [l.key, l.label]), [['a', 'רמה א׳'], ['b', 'רמה ב׳'], ['c', 'מצוינות']]);
     assert.equal(groups.at(-1)!.note, 'קובצי PDF להדפסה');
     const proof = receipt.packages.find((p: any) => p.editionId === addition.editionId);

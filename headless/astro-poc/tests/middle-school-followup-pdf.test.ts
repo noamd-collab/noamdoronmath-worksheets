@@ -88,8 +88,8 @@ test('parallelogram landing exposes all focused sets without changing legacy def
   }
   const groups = topicWorksheetEditionLinks(catalog, 9, 7, '/worksheets?grade=9&topic=7');
   const laterTopicIds = reviewedBatch05.additions.filter(a => a.grade === 9 && a.topicId === 7).map(a => a.editionId);
-  assert.deepEqual(groups.map(g => g.editionId), ['legacy', 'ms-20261113-par-r1', ...ids, 'ms-20261113-par-04-r1', ...laterTopicIds]);
-  assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, 9, 7, '/worksheets?grade=9&topic=7')[0]);
+  assert.deepEqual(groups.map(g => g.editionId), ['ms-20261113-par-r1', ...ids, 'ms-20261113-par-04-r1', ...laterTopicIds]);
+  assert.equal(groups.some(group => group.editionId === 'legacy'), false);
   for (const row of additions) {
     const selected = resolveEdition(currentTopic, row.editionId);
     assert.equal(selected.routing.usesViewer, false);
