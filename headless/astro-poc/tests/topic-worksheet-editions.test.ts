@@ -300,6 +300,20 @@ test('real single-topic hero retains one download group and direct level-B/excel
   assert.equal(hero.querySelector('[data-topic-levels]')?.previousElementSibling, ctas.at(-1)!.parentElement);
 });
 
+test('the grade 8 non-routine problems landing pairs all three 111 PDFs with their own reader', async () => {
+  const catalog = loadCatalog();
+  const doc = await renderTopic('non-routine-problems-grade-8');
+  const group = doc.querySelector('#topic-levels')!;
+  const pdfIds = ['b54d114575ca4b8c9370e9751a475d92', 'b489df5b0d2f4667a9c65a067ae43470', 'e6a467b7126a4d29ae9f1b3369e85de7'];
+  const links = [...group.querySelectorAll('a[data-edition-id="ms-20261123-g8-nrp-01-r1"]')];
+  assert.deepEqual(links.map(pdf => [pdf.getAttribute('href'), pdf.nextElementSibling?.getAttribute('href')]),
+    pdfIds.map(id => [`${catalog.config.pdfBase}${id}.pdf`, `/ramzi-partial?pdf=${id}`]));
+  assert.equal(group.querySelectorAll('a.partial-ramzi-link').length, 3);
+  const original = topicWorksheetEditionLinks(catalog, 8, 56, '/worksheets?grade=8&topic=56');
+  assert.deepEqual([...group.querySelectorAll('a[data-edition-id]')].map(a => a.getAttribute('href')),
+    original.flatMap(edition => edition.levels.map(level => level.href)));
+});
+
 test('the composite-area landing pairs package 092 with each reviewed reader and preserves both topic groups', async () => {
   const catalog = loadCatalog();
   const doc = await renderTopic('area-parallelogram-trapezoid-composite-grade-7');
