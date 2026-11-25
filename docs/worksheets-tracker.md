@@ -1023,3 +1023,7 @@ Package 119 adds three printable review worksheets for students preparing for fo
 ### Final twelve middle-school renewal packages, 23 November 2026
 
 Packages 103, 104, 107, 108, 109 and 111–117 contribute 36 printable worksheets in three levels, with 1,647 subitems and final answers. The new Grade 9 prism and transformations pages identify prerequisite knowledge. Grade 8 assessment task 1 is labelled as practice. The renewal spans allocations 040–119. The [per-edition record](middle-renewal-final-20261123.json) binds each level to its reviewed PDF and both media readbacks. New-edition hints require a separate source-bound review.
+
+### Grade 8 non-routine problems with Ramzi, 23 November 2026
+
+Package 111 (G8-T157) pairs each of its three PDFs with a Ramzi reader. The 180 subsection markers were measured on the published student PDFs. Each marker binds three text hints written by ZCode to the matching edition, PDF and native subsection. At the owner's request, the intake check verifies all 540 strings against the original return and checks source identities and completeness. The six answer pages have no markers.
