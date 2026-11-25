@@ -37,7 +37,7 @@ test('reviewed middle-school worksheets and the first Grade 7 assessment link th
     assert.ok(pack.skillVersion.startsWith('7.3.3'));
     assert.deepEqual(pack.priorEditionIds, []);
     const links = topicWorksheetEditionLinks(loadCatalog(), pack.grade, pack.topicId, '/' + pack.slug);
-    assert.deepEqual(links.map(g => g.editionId), ['legacy', ...pack.priorEditionIds, pack.edition.editionId]);
+    assert.deepEqual(links.map(g => g.editionId), [...pack.priorEditionIds, pack.edition.editionId]);
     const added = links.at(-1)!;
     const parts = topicPagePdfParts(loadCatalog(), pack.grade, [pack.topicId]).parts;
     assert.deepEqual(pack.edition.levels.map(l => [l.key,l.viewerLevel]), [['a','A'],['b','B'],['c','E']]);

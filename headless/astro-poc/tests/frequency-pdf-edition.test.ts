@@ -45,8 +45,8 @@ test('FRQ adds exact reviewed PDFs while preserving the legacy default and every
   // Batch 11 (18.11) adds G7-DGM-01 on 7/26 after FRQ-01.
   const later = reviewedBatch11.additions.filter(a => a.grade === 7 && a.topicId === 26).map(a => a.editionId);
   assert.deepEqual(later, ['ms-20261118-dgm-01-r1']);
-  assert.deepEqual(groups.map(g => g.editionId), ['legacy', id, ...later]);
-  assert.deepEqual(groups[1].levels.map(l => l.href), pdfs.map(pdf => `${catalog.config.pdfBase}${pdf}.pdf`));
+  assert.deepEqual(groups.map(g => g.editionId), [id, ...later]);
+  assert.deepEqual(groups[0].levels.map(l => l.href), pdfs.map(pdf => `${catalog.config.pdfBase}${pdf}.pdf`));
   for (const level of topic.levels) {
     assert.equal(buildWorksheetHref({ catalog, grade: 7, topic, levelKey: level.key }),
       buildWorksheetHref({ catalog: before, grade: 7, topic: priorTopic, levelKey: level.key }));

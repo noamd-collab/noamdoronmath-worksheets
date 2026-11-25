@@ -49,10 +49,10 @@ test('three exact editions add nine verified PDFs and preserve the complete prec
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, '/');
     const laterIds = reviewedBatch05.additions
       .filter(later => later.grade === a.grade && later.topicId === a.topicId).map(later => later.editionId);
-    const previousIds = topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').map(g => g.editionId);
+    const previousIds = topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').map(g => g.editionId).filter(id => id !== 'legacy');
     assert.deepEqual(groups.map(g => g.editionId), [...previousIds, a.editionId, ...laterIds]);
     assert.deepEqual(groups.filter(g => g.editionId !== a.editionId).map(g => g.editionId), [...previousIds, ...laterIds]);
-    for (const [index, group] of topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').entries()) {
+    for (const [index, group] of topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').filter(g => g.editionId !== 'legacy').entries()) {
       assert.deepEqual(groups[index], group);
     }
     assert.equal(topic.defaultEditionId, 'legacy'); assert.equal(edition.routing.usesViewer, false);
