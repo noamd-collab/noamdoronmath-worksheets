@@ -26,7 +26,9 @@ class OfflineRender(unittest.TestCase):
             self.assertEqual(summary["status"], "needs_review", summary)
             self.assertEqual((summary["requested"], summary["delivered"]), (20, 20))
             self.assertEqual([entry["by"] for entry in summary["replaced"]], ["R1", "R2", "R3", "R5"])
-            self.assertEqual(set(summary["notRun"]), runner.V5_NOT_RUN_ALLOWED)
+            # Stricter since the stage-3 verification: the pinned build_plus gates that did not run are notRun too.
+            self.assertEqual(set(summary["notRun"]), runner.V5_NOT_RUN_ALLOWED | {
+                "pinned-log:build_plus:G83:b", "pinned-log:build_plus:G83-room:b"})
             self.assertEqual(summary["failedSteps"], [])
             self.assertTrue(summary["producer"].startswith("WeasyPrint"))
             manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))

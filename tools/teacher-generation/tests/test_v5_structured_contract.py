@@ -242,8 +242,9 @@ class OverlayTests(unittest.TestCase):
         for value in sc.OVERLAYS.values():
             sc.check_overlay(value)
         ov = overlay()
-        self.assertIs(ov["reviewed"], False)
-        self.assertLessEqual({"title", "rule", "verbs", "templates", "layouts"}, set(ov["pendingReview"]))
+        # Noam approved the g7 overlay as a whole on 2026-11-25 (D7): reviewed, recorded, nothing left pending.
+        self.assertIs(ov["reviewed"], True)
+        self.assertEqual((ov["approvedBy"], ov["approvedAt"], ov["pendingReview"]), ("Noam", "2026-11-25", ()))
         with self.assertRaises(TypeError):
             ov["title"] = "x"
         with self.assertRaises(TypeError):
@@ -543,7 +544,7 @@ class CardTests(unittest.TestCase):
                     self.assertNotIn(mark, card)
                 self.assertEqual(sc.card_problems(card), [])
                 self.assertEqual(card, sc.authoring_card(lesson, scope, overlay()))
-                self.assertIn("reviewed: no", card)
+                self.assertIn("overlay reviewed: yes", card)               # approved by Noam, 2026-11-25
                 self.assertIn(overlay()["title"], card)
                 for term in overlay()["forbiddenTerms"]:
                     self.assertIn(term, card)

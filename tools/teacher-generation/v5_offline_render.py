@@ -17,7 +17,10 @@ v5 verdict is its "verdict" (summary.json repeats it): automated checks pass onl
 passed and the overlay is reviewed; a SKIP is notRun, never PASS (D1). The pinned build's own report is copied,
 byte for byte, as pinned-v72-report.raw.json: its "result" covers only the pinned steps it ran, so it is never
 the verdict. report.json says so under "pinnedReport" (its sha256, its own result and "isVerdict": false) and
-gives every output file's role under "fileRoles". Files of these names that this run did not write (left in the
+gives every output file's role under "fileRoles". The elementary skill writes no such report: then "pinnedReport"
+is null and neither "fileRoles" nor the verdict note names the file. Sub-checks a pinned step did not run although
+the step passed (runner: "pinned-log:..." entries) are in notRun, with their log lines under "notRunDetail".
+Files of these names that this run did not write (left in the
 folder by an earlier render, including the old v72-report.json name) are listed under "staleFiles"; nothing is
 deleted.
 
@@ -111,18 +114,27 @@ def _printed_keys(levels, selection) -> list:
     return out
 
 
-def _verdict(manifest) -> dict:
+def _verdict(manifest, pinned_copied=True) -> dict:
     """The v5 verdict of one render: executed checks, what did not run, the overlay review, and whether the
-    automated checks count as passed (they never do while anything did not run or the overlay is unreviewed)."""
+    automated checks count as passed (they never do while anything did not run or the overlay is unreviewed).
+    The note names pinned-v72-report.raw.json only when this render copied one (the elementary skill writes none)."""
     manifest = manifest or {}
     not_run = list(manifest.get("notRun") or ())
+    pinned = ("pinned-v72-report.raw.json is the pinned build's own report; its result covers only the steps it ran."
+              if pinned_copied else
+              "No pinned build report exists for this render (the elementary skill writes none): each pinned "
+              "step's result is its entry under steps.")
     return {"executedChecksPassed": manifest.get("executedChecksPassed") is True,
             "automatedChecksPassed": manifest.get("automatedChecksPassed") is True,
             "notRunCount": len(not_run),
             "overlayReviewed": manifest.get("overlayReviewed") is True,
             "fullyChecked": manifest.get("executedChecksPassed") is True and not not_run,
-            "note": ("pinned-v72-report.raw.json is the pinned build's own report; its result covers only the steps "
-                     "it ran. Checks listed in notRun did not run and are not passed.")}
+            "note": pinned + " Checks listed in notRun did not run and are not passed."}
+
+
+def _file_roles(pinned) -> dict:
+    """The role of every output file; the pinned report copy is described only when this render made one."""
+    return {name: role for name, role in FILE_ROLES.items() if name != PINNED_REPORT or pinned is not None}
 
 
 def _pinned_report(work) -> dict | None:
@@ -159,11 +171,11 @@ def _report(case, lesson_path, reply_path, repairs, *, status, exit_code, result
     """report.json of one render (codes, statuses and printed math only; no model text beyond the sheet).
 
     It is the authoritative record: "verdictFile" names it, "fileRoles" says what every output file is (the raw
-    pinned report is never the verdict), "pinnedReport" describes this render's pinned report copy and
-    "staleFiles" lists outputs this run did not write."""
+    pinned report is never the verdict, and has a role only when this render copied one), "pinnedReport"
+    describes this render's pinned report copy and "staleFiles" lists outputs this run did not write."""
     report = {"case": case, "lesson": Path(lesson_path).name, "reply": Path(reply_path).name,
               "repairs": [Path(path).name for path in repairs], "status": status, "exitCode": exit_code,
-              "authoritative": True, "verdictFile": VERDICT_FILE, "fileRoles": dict(FILE_ROLES),
+              "authoritative": True, "verdictFile": VERDICT_FILE, "fileRoles": _file_roles(pinned),
               "pinnedReport": pinned, "staleFiles": list(stale)}
     if error is not None:
         report.update({"code": error.code, "refusals": error.diagnostics.get("refusals", []),
@@ -179,9 +191,11 @@ def _report(case, lesson_path, reply_path, repairs, *, status, exit_code, result
         "executedChecksPassed": (manifest or {}).get("executedChecksPassed"),
         "automatedChecksPassed": (manifest or {}).get("automatedChecksPassed"),
         "notRun": (manifest or {}).get("notRun"),
-        "verdict": _verdict(manifest),
+        "notRunDetail": (manifest or {}).get("notRunDetail"),
+        "verdict": _verdict(manifest, pinned is not None),
         "overlayReviewed": (manifest or {}).get("overlayReviewed"),
         "overlayPendingReview": (manifest or {}).get("overlayPendingReview"),
+        "overlayApproval": (manifest or {}).get("overlayApproval"),
         "stepCounts": counts,
         "steps": steps,
         "atomOrder": atom,
@@ -270,10 +284,12 @@ def run(lesson_path, reply_path, out_dir, *, repairs=(), work_dir=None, skill_pa
     atom = json.loads((work / "logs/atom-order.json").read_text(encoding="utf-8")) if (
         work / "logs/atom-order.json").is_file() else {}
     selection = result.ir["selection"]
+    pinned = _pinned_report(work)
     summary = {"status": manifest["status"], "requested": selection["requested"], "delivered": selection["delivered"],
                "replaced": selection["replaced"], "trimmed": result.diagnostics["trimmed"],
                "warnings": result.diagnostics.get("warnings", []),
-               "notRun": manifest.get("notRun"), "verdict": _verdict(manifest), "verdictFile": VERDICT_FILE,
+               "notRun": manifest.get("notRun"), "verdict": _verdict(manifest, pinned is not None),
+               "verdictFile": VERDICT_FILE,
                "pages": pages, "producer": atom.get("producer"), "workDir": str(work),
                "failedSteps": [step["name"] for step in manifest["steps"] if step["status"] not in ("PASS", "SKIP")]}
     _dump(out / "summary.json", summary)
@@ -282,7 +298,7 @@ def run(lesson_path, reply_path, out_dir, *, repairs=(), work_dir=None, skill_pa
                                        result=result, manifest=manifest, work=work, pdf_facts=pdf_facts,
                                        pages=[("pages/" + name) if case is None else name for name in page_files],
                                        dpi=dpi, stale=_stale(out, written, pages_dir, page_files),
-                                       pinned=_pinned_report(work)))
+                                       pinned=pinned))
     return summary
 
 

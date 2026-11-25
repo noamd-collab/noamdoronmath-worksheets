@@ -247,7 +247,7 @@ class Sheets(unittest.TestCase):
         prompts = {(n, j): render(questions[n - 1]["items"][j - 1]["prompt"])
                    for n, j in ((1, 3), (2, 2), (2, 4), (8, 2), (9, 4), (14, 2), (19, 3))}
         self.assertEqual(prompts, {
-            (1, 3): "פי $2$ מ־$a$ פחות $y$",
+            (1, 3): "ההפרש בין פי $2$ מ־$a$ לבין $y$",          # Noam's wording, 2026-11-25
             (2, 2): "מספר הגדול פי $12$ מ־$b$",
             (2, 4): "פי $4$ מ־$a$ ועוד פי $3$ מ־$b$",
             (8, 2): "$2x + y$ עבור $x = 6$ ו־$y = −2$",
@@ -305,9 +305,14 @@ class CaseRender(unittest.TestCase):
             self.assertEqual((report["status"], report["exitCode"]), ("needs_review", 0))
             self.assertEqual((report["stepCounts"]["FAIL"], report["stepCounts"]["REVIEW"],
                               report["stepCounts"]["OTHER"]), (0, 0, 0))
-            self.assertEqual(set(report["notRun"]), runner.V5_NOT_RUN_ALLOWED)
+            # Stricter since the stage-3 verification: the pinned build_plus gates that did not run are notRun too.
+            self.assertEqual(set(report["notRun"]), runner.V5_NOT_RUN_ALLOWED | {
+                "pinned-log:build_plus:G83:b", "pinned-log:build_plus:G83-room:b"})
             self.assertEqual({step["name"] for step in report["steps"] if step["status"] == "SKIP"},
                              runner.V5_NOT_RUN_ALLOWED)
+            self.assertIs(report["verdict"]["fullyChecked"], False)
+            self.assertIs(report["overlayReviewed"], True)                # Noam approved the g7 overlay
+            self.assertEqual(report["overlayApproval"], {"by": "Noam", "at": "2026-11-25"})
             self.assertIs(report["executedChecksPassed"], True)
             self.assertIs(report["automatedChecksPassed"], False)        # SKIP is notRun, never PASS (D1)
             self.assertEqual(report["atomOrder"]["status"], "PASS")

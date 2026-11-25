@@ -12,9 +12,11 @@ the final-authority check of the IR selection record (``validate_selection``).
 Nothing here parses mathematics, reads a file, calls a model or renders.
 Imports: the standard library, plus ``runtime_catalog`` lazily (grade floor).
 
-The overlay is NOT reviewed (D7). Every code-written Hebrew string in it -- the
-title, the rule box, the instruction verbs, the template and layout texts --
-waits for Noam's sign-off; ``reviewed`` stays False until then.
+Review state (D7). Every code-written Hebrew string of an overlay -- the title,
+the rule box, the instruction verbs, the template, layout and story texts --
+waits for Noam's sign-off; ``reviewed`` stays False until then. Noam approved
+the g7 overlay on 2026-11-25 (``reviewed`` True, ``approvedBy``/``approvedAt``,
+nothing pending); the ד10 and g9r:probability overlays are not reviewed yet.
 
 Code names follow G9 (``^[A-Z_]{1,60}$``, no digits). Three names in the design
 table carried a digit and could never reach the job row (MIG/PILOT:13); they are
@@ -201,8 +203,12 @@ _W_TEMPLATES = ("W_TIMES", "W_SUM", "W_DIFF", "W_PRODUCT", "W_TIMES_PLUS", "W_TI
 
 _G7_ALGEBRAIC_EXPRESSIONS = {
     "topicId": "g7:algebraic_expressions",
-    "reviewed": False,
-    "pendingReview": ("title", "rule", "verbs", "templates", "layouts", "forbiddenTerms"),
+    # D7: Noam approved this overlay as a whole on 2026-11-25 (title, rule, verbs, templates, layouts, forbidden
+    # terms), together with the W_TIMES_MINUS wording "ההפרש בין פי k מ־u לבין v"; nothing is pending.
+    "reviewed": True,
+    "approvedBy": "Noam",
+    "approvedAt": "2026-11-25",
+    "pendingReview": (),
     "levels": ("b",),
     # The catalog title names חוק הפילוג and זהות, which the lesson excludes, so the title is curated.
     "title": "ביטויים אלגבריים: הצבה וכינוס איברים דומים",
@@ -240,7 +246,7 @@ _G7_ALGEBRAIC_EXPRESSIONS = {
                 "terms_max": 4, "letters_max": 2, "power": False, "division": False, "decimal": False,
                 "percent": False, "explicit_product": False, "brackets": "negative_number"},
     "levelNotes": {"b": "Level b: a guided entry, one step per item, friendly numbers."},
-    # Tier A instructions, written by code above each question (reviewed: False).
+    # Tier A instructions, written by code above each question (approved by Noam, 2026-11-25).
     "verbs": {"write_from_words": "כתבו ביטוי אלגברי מתאים לכל תיאור:",
               "substitute": "חשבו את ערך הביטוי:",
               "collect_like_terms": "כנסו איברים דומים:",
@@ -256,8 +262,9 @@ _G7_ALGEBRAIC_EXPRESSIONS = {
         "W_PRODUCT": {"shape": "vw", "layout": (("T", "המכפלה של "), ("D", "v"), ("T", " ב־"), ("D", "w"))},
         "W_TIMES_PLUS": {"shape": "kv+w", "layout": (("T", "פי "), ("D", "k"), ("T", " מ־"), ("D", "v"),
                                                      ("T", " ועוד "), ("D", "w"))},
-        "W_TIMES_MINUS": {"shape": "kv-w", "layout": (("T", "פי "), ("D", "k"), ("T", " מ־"), ("D", "v"),
-                                                      ("T", " פחות "), ("D", "w"))},
+        # Noam's wording (2026-11-25): "ההפרש בין פי k מ־u לבין v", keyed ku − v.
+        "W_TIMES_MINUS": {"shape": "kv-w", "layout": (("T", "ההפרש בין פי "), ("D", "k"), ("T", " מ־"), ("D", "v"),
+                                                      ("T", " לבין "), ("D", "w"))},
         "W_TWO_TIMES": {"shape": "kv+mw", "layout": (("T", "פי "), ("D", "k"), ("T", " מ־"), ("D", "v"),
                                                      ("T", " ועוד פי "), ("D", "m"), ("T", " מ־"), ("D", "w"))},
     },
@@ -390,13 +397,18 @@ _D10_LONG_DIVISION = {
     # The rule box (code-written) and the division it shows as a worked example (EXAMPLE_COPY for an item).
     # No text span ends with ':' before an atom (or starts with one after it): in the elementary atom-order check
     # ':' is an atom glyph (the division sign), so an adjacent colon would glue onto the atom's glyph run.
+    # Every number of the example is its own atom with Hebrew between ("כשמחלקים 125 ב־4 מקבלים 31 שארית 1"): an
+    # atom holding an equation beside the remainder word ("125 : 4 = 31 שארית 1") reads right to left as the word
+    # after the dividend, so only a plain number may stand next to it, the quotient first (check_overlay).
     # The middle overlay's write_from_words templates and fixed layouts have no elementary counterpart: the stories
     # above are the elementary Tier A texts. Both shapes keep these keys so a reader of every overlay finds them.
     "templates": {},
     "layouts": {},
     "rule": [{"kind": "text", "text": "בחילוק ארוך מחלקים קודם את המאות, אחר כך את העשרות ובסוף את היחידות. מה "
-              "שנשאר בסוף קטן מהמחלק, והוא נקרא שארית. למשל, "},
-             {"kind": "display", "notation": "125:4=31", "symbols": []}, {"kind": "text", "text": " שארית "},
+              "שנשאר בסוף קטן מהמחלק, והוא נקרא שארית. למשל, כשמחלקים "},
+             {"kind": "display", "notation": "125", "symbols": []}, {"kind": "text", "text": " ב־"},
+             {"kind": "display", "notation": "4", "symbols": []}, {"kind": "text", "text": " מקבלים "},
+             {"kind": "display", "notation": "31", "symbols": []}, {"kind": "text", "text": " שארית "},
              {"kind": "display", "notation": "1", "symbols": []}, {"kind": "text", "text": "."}],
     "ruleExamples": (("125", "4"),),
     "forbiddenTerms": ("בדיקת חילוק", "בדיקה", "בדקו", "כפל", "שבר", "עשרוני", "אחוז"),
@@ -669,14 +681,20 @@ _G9R_PROBABILITY = {
     "tables": True,
     # Keys print as stacked fractions (\f) and decimals: the atom-order check runs in its fraction mode.
     "atomFractions": True,
+    # The rule box prints no number: its complement example is in words. A numeric example could never lie outside
+    # what the questions may print (a frequency table counts up to 400 of up to 1000 trials, so nearly every
+    # fraction with a denominator up to 1000 can be a key), and "1 − 3/10 = 7/10" gave away whole items.
     "rule": [{"kind": "text", "text": "ההסתברות של מאורע היא מספר בין אפס לאחת. כשלכל התוצאות יש אותו סיכוי, "
               "ההסתברות של מאורע היא מספר התוצאות המתאימות לו חלקי מספר כל התוצאות. השכיחות היחסית של תוצאה היא "
               "מספר הפעמים שהתקבלה חלקי מספר הפעמים שחזרו על הניסוי, והיא מאפשרת להעריך את ההסתברות שלה. "
-              "ההסתברות של המאורע המשלים היא אחת פחות ההסתברות של המאורע, למשל "},
-             {"kind": "display", "notation": "1-3/10=7/10", "symbols": []},
-             {"kind": "text", "text": ". בניסוי דו־שלבי כופלים את ההסתברות של התוצאה בשלב הראשון בהסתברות של "
-              "התוצאה בשלב השני, ובהוצאה בלי החזרה סופרים בשלב השני רק את מה שנשאר. כתבו כל הסתברות כשבר "
-              "מצומצם, אלא אם נאמר אחרת."}],
+              "ההסתברות של המאורע המשלים היא אחת פחות ההסתברות של המאורע. למשל, ההסתברות שלא ייצא כדור אדום "
+              "היא אחת פחות ההסתברות שייצא כדור אדום. בניסוי דו־שלבי כופלים את ההסתברות של התוצאה בשלב הראשון "
+              "בהסתברות של התוצאה בשלב השני, ובהוצאה בלי החזרה סופרים בשלב השני רק את מה שנשאר. כתבו כל הסתברות "
+              "כשבר מצומצם, אלא אם נאמר אחרת."}],
+    # Every equation the rule box prints, as (left, right) (check_overlay: exactly its display spans; none now).
+    # probability_kinds.sheet_leaks refuses a question that prints or keys a value of one of them (LEAK_RULE_FACT),
+    # so a reserve takes its place.
+    "ruleFacts": (),
     "forbiddenTerms": ("דיאגרמת עץ", "מודל השטח", "דו ממדית", "דו ממדי", "תוחלת", "בלתי תלויים"),
     "levelNotes": {"e": "Level e (excellence): two-step reasoning, complements and draws without replacement; "
                         "the relative-frequency answers come as a fraction, a decimal or a percent as declared."},
@@ -758,10 +776,52 @@ def code_strings(overlay) -> list:
     return out
 
 
+_APPROVAL_DATE = re.compile(r"^20[0-9]{2}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$")
+# What may stand right next to an elementary remainder word: one plain whole number (or a story's given).
+_REMAINDER_NEIGHBOUR = re.compile(r"^(?:[0-9]+|n[1-8])$")
+
+
+def _check_review(overlay, need) -> None:
+    """D7: an overlay is either unreviewed (reviewed False, something pending, no approval record) or approved as a
+    whole by Noam (reviewed True, nothing pending, approvedBy "Noam" and approvedAt as YYYY-MM-DD)."""
+    reviewed = overlay["reviewed"]
+    need(reviewed is False or reviewed is True, "reviewed")
+    if reviewed is True:
+        need(overlay.get("approvedBy") == "Noam" and type(overlay.get("approvedAt")) is str
+             and _APPROVAL_DATE.match(overlay["approvedAt"]) is not None and tuple(overlay["pendingReview"]) == (),
+             "reviewed")
+    else:
+        need("approvedBy" not in overlay and "approvedAt" not in overlay and len(overlay["pendingReview"]) > 0,
+             "reviewed")
+
+
+def remainder_word_neighbours(spans, word) -> list:
+    """[(index of the text span, neighbouring atom)] of every atom right next to ``word`` in a span sequence
+    ({"kind": "text"|"display"} dicts, or (is_text, value) pairs) that is not one plain number: the word reads
+    right to left between two plain numbers only ("31 שארית 1", the quotient first)."""
+    sequence = [(span[0], span[1]) if isinstance(span, tuple) else
+                (span.get("kind") == "text", span.get("text") if span.get("kind") == "text" else span.get("notation"))
+                for span in spans]
+    out = []
+    for index, (is_text, value) in enumerate(sequence):
+        if not is_text or word not in (value or ""):
+            continue
+        stripped = value.strip()
+        if index > 0 and not sequence[index - 1][0] and stripped.startswith(word):
+            neighbour = str(sequence[index - 1][1] or "")
+            if not _REMAINDER_NEIGHBOUR.match(neighbour):
+                out.append((index, neighbour))
+        if index + 1 < len(sequence) and not sequence[index + 1][0] and stripped.endswith(word):
+            neighbour = str(sequence[index + 1][1] or "")
+            if not _REMAINDER_NEIGHBOUR.match(neighbour):
+                out.append((index, neighbour))
+    return out
+
+
 def _check_elementary_overlay(overlay, need) -> None:
     """check_overlay for an elementary overlay (skill "elementary": the division kinds of division_kinds)."""
     kinds = overlay["kinds"]
-    need(overlay["reviewed"] is False or overlay["reviewed"] is True, "reviewed")
+    _check_review(overlay, need)
     need(tuple(overlay["letters"]) == (), "letters")
     for concept, names in overlay["conceptKinds"].items():
         need(concept.startswith(overlay["topicId"] + "#") and names, "conceptKinds")
@@ -815,6 +875,11 @@ def _check_elementary_overlay(overlay, need) -> None:
                 need(not value.rstrip().endswith(":"), "colon beside an atom")
             if index > 0 and not sequence[index - 1][0]:
                 need(not value.lstrip().startswith(":"), "colon beside an atom")
+    # The remainder word stands only between plain numbers (no equation atom beside it), in the rule and stories.
+    need(not remainder_word_neighbours(overlay["rule"], overlay["remainderWord"]), "atom beside the remainder word")
+    for story_row in overlay["stories"].values():
+        need(not remainder_word_neighbours([(part == "T", value) for part, value in story_row["intro"]],
+                                           overlay["remainderWord"]), "atom beside the remainder word")
 
 
 _PROBABILITY_KINDS = ("single_draw_probability", "relative_frequency", "complement_probability",
@@ -825,7 +890,10 @@ def _check_probability_overlay(overlay, need) -> None:
     """check_overlay for a probability overlay (family "probability": the kinds of probability_kinds)."""
     from probability_kinds import ASKS_BY_KIND, ask_available
     kinds = overlay["kinds"]
-    need(overlay["reviewed"] is False or overlay["reviewed"] is True, "reviewed")
+    _check_review(overlay, need)
+    # ruleFacts lists exactly the equations the rule box prints, so the LEAK_RULE_FACT sheet check sees every one.
+    need(["%s=%s" % tuple(pair) for pair in overlay["ruleFacts"]]
+         == [span["notation"] for span in overlay["rule"] if span["kind"] == "display"], "ruleFacts")
     need(tuple(overlay["letters"]) == () and overlay.get("skill", "middle") == "middle", "letters")
     for concept, names in overlay["conceptKinds"].items():
         need(concept.startswith(overlay["topicId"] + "#") and names, "conceptKinds")
@@ -893,7 +961,7 @@ def check_overlay(overlay) -> None:
         _check_probability_overlay(overlay, need)
         return
     kinds = overlay["kinds"]
-    need(overlay["reviewed"] is False or overlay["reviewed"] is True, "reviewed")
+    _check_review(overlay, need)
     need(set(overlay["letters"]) <= {"x", "y", "a", "b"} and len(set(overlay["letters"])) == len(overlay["letters"]),
          "letters")
     for concept, names in overlay["conceptKinds"].items():
@@ -1309,9 +1377,11 @@ def _probability_card(lesson, scope, overlay) -> str:
         "- Never use or hint at: " + "; ".join(overlay["forbiddenTerms"]) + ". No drawing, no two-way table.",
         "- Every probability lies strictly between 0 and 1. No two items of a question share a value; no answer's "
         "number is printed in its question; never repeat a story with the same counts.",
-        "",
-        "KINDS (counts min..max, total min..max)",
     ]
+    for left, right in overlay["ruleFacts"]:
+        lines.append("- The rule box already shows %s=%s: no question may print or key one of its values."
+                     % (left, right))
+    lines += ["", "KINDS (counts min..max, total min..max)"]
     for kind in kinds:
         row = overlay["kinds"][kind]
         group = "+".join("challenge" if g == CHALLENGES else "practice" for g in row["groups"])

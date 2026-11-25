@@ -245,7 +245,8 @@ class D10Overlay(unittest.TestCase):
         import text_lint as tl
         ov = overlay()
         strings = sc.code_strings(ov)
-        self.assertEqual(len(strings), 1 + 1 + 1 + 3 + 8 * (3 + 3))
+        # The rule box has 5 text spans since the stage-3 verification (every number of its example is one atom).
+        self.assertEqual(len(strings), 1 + 1 + 1 + 5 + 8 * (3 + 3))
         self.assertIn(("remainderWord", "שארית"), strings)
         for path, text in strings:
             self.assertEqual(tl.check_ir_text(text), [], path)

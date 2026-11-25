@@ -470,11 +470,16 @@ class OverlayReviewGuard(unittest.TestCase):
                                  skill_paths={"middle": skill}, contract="worksheet-wire/5")
 
     def test_an_unreviewed_overlay_never_counts_as_passed(self):
-        manifest = self.render()
+        # The g7 overlay itself is approved since 2026-11-25, so the unreviewed case uses an unreviewed copy of it.
+        unreviewed = thaw(S.overlay())
+        unreviewed.update(reviewed=False, pendingReview=["title", "rule", "verbs", "templates", "layouts"])
+        del unreviewed["approvedBy"], unreviewed["approvedAt"]
+        manifest = self.render(overlay=unreviewed)
         self.assertEqual((manifest["status"], manifest["notRun"], manifest["executedChecksPassed"]),
                          ("needs_review", [], True))
         self.assertIs(manifest["overlayReviewed"], False)
-        self.assertEqual(manifest["overlayPendingReview"], list(S.overlay()["pendingReview"]))
+        self.assertEqual(manifest["overlayPendingReview"], ["title", "rule", "verbs", "templates", "layouts"])
+        self.assertIsNone(manifest["overlayApproval"])
         self.assertIs(manifest["automatedChecksPassed"], False)
         self.assertIs(manifest["renderingChecksPassed"], False)
 
@@ -503,14 +508,17 @@ class OfflineRenderRecords(unittest.TestCase):
                                             skill_path=str(S.MIDDLE), dpi=30)
             self.assertEqual(summary["status"], "needs_review", summary)
             self.assertEqual(summary["trimmed"], [{"slot": "Q12", "items": [3]}])
-            verdict = {"executedChecksPassed": True, "automatedChecksPassed": False, "notRunCount": 9,
-                       "overlayReviewed": False, "fullyChecked": False}
+            # 9 pinned SKIPs and (stricter since the stage-3 verification) the 2 build_plus gates that did not
+            # run; the g7 overlay is approved since 2026-11-25, yet nothing counts as passed while anything is notRun.
+            verdict = {"executedChecksPassed": True, "automatedChecksPassed": False, "notRunCount": 11,
+                       "overlayReviewed": True, "fullyChecked": False}
             self.assertEqual({key: summary["verdict"][key] for key in verdict}, verdict)
             report = json.loads((out / "report.json").read_text(encoding="utf-8"))
             self.assertEqual((report["case"], report["status"], report["exitCode"]), (None, "needs_review", 0))
             self.assertEqual(report["verdict"], summary["verdict"])
             self.assertEqual(report["trimmed"], summary["trimmed"])
-            self.assertIs(report["overlayReviewed"], False)
+            self.assertIs(report["overlayReviewed"], True)
+            self.assertEqual(report["overlayApproval"], {"by": "Noam", "at": "2026-11-25"})
             self.assertTrue(all((out / name).is_file() for name in report["pages"]))
             self.assertEqual(len(report["keys"]), 20)
             self.assertTrue((out / "pinned-v72-report.raw.json").is_file())

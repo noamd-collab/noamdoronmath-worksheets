@@ -241,7 +241,11 @@ class MiddleAdapter(unittest.TestCase):
     def test_grade_line_rule_and_no_figure(self):
         self.assertEqual(self.level["grade"], "כיתה ט׳")
         self.assertEqual(self.level["key"], "c")
-        self.assertIn("למשל $1 − \\f{3}{10} = \\f{7}{10}$. בניסוי", self.level["rule"])
+        # Since the stage-3 verification the rule box's complement example is in words and prints no number.
+        self.assertIn("למשל, ההסתברות שלא ייצא כדור אדום היא אחת פחות ההסתברות שייצא כדור אדום. בניסוי",
+                      self.level["rule"])
+        self.assertNotIn("$", self.level["rule"])
+        self.assertIsNone(re.search(r"[0-9]", self.level["rule"]))
         self.assertEqual(self.level["figure_topic"][0], False)
         self.assertFalse(any("fig" in question for question in self.level["questions"]))
         self.assertEqual(skill_tree_state(S.MIDDLE), self.before)
@@ -270,7 +274,8 @@ class MiddleAdapter(unittest.TestCase):
                 self.assertEqual(entry["to_prove"][0]["value"], entry["answer"])
         self.assertEqual(text_lint.lint_levels(self.levels), [])
         flat_q, flat_a, shapes_q, shapes_a = expected_atoms_fractions(self.levels)
-        self.assertEqual(sum(shapes_a.values()) + sum(shapes_q.values()), 59)  # 58 fraction keys and the rule box
+        self.assertEqual(sum(shapes_a.values()), 58)                            # 58 fraction keys
+        self.assertEqual(sum(shapes_q.values()), 0)                             # the rule box prints no fraction
 
 
 # ------------------------------------------------------------------ the runner flag
@@ -326,13 +331,19 @@ class OfflineRender(unittest.TestCase):
             report = json.loads((out / "g9r_good/report.json").read_text(encoding="utf-8"))
             self.assertEqual(summary["status"], "needs_review", summary)
             self.assertEqual(report["exitCode"], 0)
-            self.assertEqual(set(report["notRun"]), runner.V5_NOT_RUN_ALLOWED)
+            # Stricter since the stage-3 verification: the pinned build_plus gates that did not run are notRun too.
+            self.assertEqual(set(report["notRun"]), runner.V5_NOT_RUN_ALLOWED | {
+                "pinned-log:build_plus:G83:c", "pinned-log:build_plus:G83-room:c"})
+            self.assertEqual(len(report["notRun"]), 11)
+            self.assertEqual([entry["name"] for entry in report["notRunDetail"]],
+                             ["pinned-log:build_plus:G83:c", "pinned-log:build_plus:G83-room:c"])
             self.assertFalse(report["verdict"]["automatedChecksPassed"])      # notRun and an unreviewed overlay
+            self.assertFalse(report["verdict"]["fullyChecked"])
             failed = [step for step in report["steps"] if step["status"] not in ("PASS", "SKIP")]
             self.assertEqual(failed, [])
             self.assertTrue(report["pdfProducer"].startswith("WeasyPrint"))
             self.assertEqual(report["atomOrder"]["status"], "PASS")
-            self.assertEqual(report["atomOrder"]["fractions"], 59)
+            self.assertEqual(report["atomOrder"]["fractions"], 58)             # the keys; the rule box has none
             self.assertEqual(report["selection"]["delivered"], 20)
             self.assertEqual(report["pages"], ["page-%d.png" % n for n in range(1, report["pdf"]["pages"] + 1)])
             argv = json.loads((work / "manifest.json").read_text(encoding="utf-8"))

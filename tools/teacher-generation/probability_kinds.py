@@ -34,8 +34,9 @@ the key never comes from the model's expr.)
 Leaks and repeats (codes only, G11): DUPLICATE_ITEM (a later item repeating an ask or a task of its question),
 KEY_REPEATED (a later item with the value of an earlier one), LEAK_PINNED_VALUE (the pinned D12 f_atoms / f_hit on the
 key island against each printed string of the question: the intro, every table cell and every prompt, as the pinned
-D12 file check reads a question's own words), DUPLICATE_TASK (a task an earlier question printed) and DUPLICATE_REORDERED (the same kind with
-the same counts as an earlier question). No drawing is ever emitted: this is not a geometry page.
+D12 file check reads a question's own words), DUPLICATE_TASK (a task an earlier question printed), DUPLICATE_REORDERED (the same kind with
+the same counts as an earlier question) and LEAK_RULE_FACT (a question sharing a probability with an equation of the
+rule box, overlay ruleFacts). No drawing is ever emitted: this is not a geometry page.
 
 Imports: the standard library, math_tasks, school_math, structured_contract, item_kinds, leak_checks (lazily).
 """
@@ -778,15 +779,47 @@ def question_leaks(question: dict, overlay, *, skill_path=None) -> list:
     return sorted(hits)
 
 
+def rule_values(overlay) -> frozenset:
+    """Every probability (a value strictly between 0 and 1) an equation of the rule box prints: for each pair of
+    overlay["ruleFacts"], the value of each side and of every number and fraction inside it ("1-3/10" = "7/10"
+    gives 3/10 and 7/10). Empty when the rule box prints no equation."""
+    out = set()
+    for pair in (overlay or {}).get("ruleFacts") or ():
+        for side in pair:
+            stack = [school_math.parse(side, letters=())]
+            while stack:
+                node = stack.pop()
+                value = evaluate(node, {})
+                if value is not None and 0 < value < 1:
+                    out.add(value)
+                stack.extend(_children(node))
+    return frozenset(out)
+
+
+def question_values(question, overlay) -> frozenset:
+    """The probabilities a question prints or asks for: every item's key value and the single-draw probability of
+    each category of its story (count over total), so a rule-box example equal to a step of an item is seen too."""
+    values = {key_value(item["answer"]["key"]) for item in question["items"]}
+    found = question_counts(question, overlay)
+    if found is not None and sum(found[2]) > 0:
+        values |= {Fraction(count, sum(found[2])) for count in found[2]}
+    return frozenset(value for value in values if value is not None and 0 < value < 1)
+
+
 def sheet_leaks(questions: list, overlay) -> dict:
     """{0-based index of the LATER question: sorted codes}: DUPLICATE_TASK (a task an earlier, unrefused question
-    prints) and DUPLICATE_REORDERED (the same kind with the same counts, in any order, as an earlier one)."""
+    prints), DUPLICATE_REORDERED (the same kind with the same counts, in any order, as an earlier one) and
+    LEAK_RULE_FACT (any question sharing a probability with an equation of the rule box: rule_values against
+    question_values; the sheet loop puts a reserve in its place)."""
     seen_tasks, seen_stories, hits = set(), set(), {}
+    facts = rule_values(overlay)
     for index, question in enumerate(questions):
         tasks = {_task_mark(item["answer"]["task"]) for item in question["items"]}
         found = question_counts(question, overlay)
         story = (found[0], tuple(sorted(found[2]))) if found is not None else None
         codes = set()
+        if facts and question_values(question, overlay) & facts:
+            codes.add("LEAK_RULE_FACT")
         if tasks & seen_tasks:
             codes.add("DUPLICATE_TASK")
         elif story is not None and story in seen_stories:
@@ -804,4 +837,5 @@ __all__ = ["KINDS", "ASKS_BY_KIND", "REPLACEMENT", "FORMS", "PROBE_POINTS", "is_
            "ask_available", "canonical_text", "canonical_node", "probability_value", "evaluate", "task_counts",
            "task_of", "binds", "story_intro", "story_table", "ask_prompt", "key_notation", "key_value",
            "key_roundtrip", "in_profile", "check_givens", "expr_codes", "verify_item", "question_counts",
-           "verify_question", "compile_item", "printed_words", "d12_mirror", "question_leaks", "sheet_leaks"]
+           "verify_question", "compile_item", "printed_words", "d12_mirror", "question_leaks", "rule_values",
+           "question_values", "sheet_leaks"]

@@ -80,7 +80,10 @@ class ElementaryAdapter(unittest.TestCase):
         self.assertIn('בחנות יש <span class="ltr">158</span> עפרונות. אורזים אותם בקופסאות, '
                       '<span class="ltr">6</span> עפרונות בכל קופסה.', body)
         self.assertIn('בכל סירה יש מקום ל־<span class="ltr">4</span> ילדים.', body)
-        self.assertIn('למשל, <span class="ltr">125 : 4 = 31</span> שארית <span class="ltr">1</span>.', body)
+        # The rule's example: every number its own atom, the quotient right before the remainder word.
+        self.assertIn('למשל, כשמחלקים <span class="ltr">125</span> ב־<span class="ltr">4</span> מקבלים '
+                      '<span class="ltr">31</span> שארית <span class="ltr">1</span>.', body)
+        self.assertNotIn('<span class="ltr">125 : 4 = 31</span>', body)
         # Outside an LTR atom no digit is printed (labels, Hebrew and punctuation only), and no forbidden sign.
         outside = re.sub(r'<span class="ltr">.*?</span>(?:</span>)?', " ", body)
         outside = re.sub(r"<[^>]+>", " ", outside)
@@ -388,9 +391,27 @@ class OfflineRender(unittest.TestCase):
             report = json.loads((out / "d10_good/report.json").read_text(encoding="utf-8"))
             self.assertEqual(summary["status"], "needs_review", summary)
             self.assertEqual(report["exitCode"], 0)
-            self.assertEqual(report["notRun"], [])
-            self.assertTrue(report["verdict"]["fullyChecked"])
+            # Stricter since the stage-3 verification: a pinned check_worksheet sub-check this host cannot run
+            # (no pdffonts / pdftoppm, or no PIL for the page-fill check) is notRun, never PASS.
+            expected = (["pinned-log:check_worksheet:fonts"] if shutil.which("pdffonts") is None else []) + (
+                ["pinned-log:check_worksheet:render"] if shutil.which("pdftoppm") is None else [])
+            try:
+                import PIL  # noqa: F401
+                pil = True
+            except ImportError:
+                pil = False
+            if shutil.which("pdftoppm") is None or not pil:
+                expected.append("pinned-log:check_worksheet:page-fill")
+            self.assertEqual(report["notRun"], expected)
+            self.assertEqual([entry["name"] for entry in report["notRunDetail"]], expected)
+            self.assertTrue(all(entry["line"].endswith("(warn)") and entry["log"] == "logs/worksheet.txt"
+                                for entry in report["notRunDetail"]))
+            self.assertIs(report["verdict"]["fullyChecked"], expected == [])
+            self.assertEqual(report["verdict"]["notRunCount"], len(expected))
             self.assertFalse(report["verdict"]["automatedChecksPassed"])     # unreviewed overlay
+            self.assertNotIn("pinned-v72-report.raw.json", report["fileRoles"])
+            self.assertNotIn("pinned-v72-report.raw.json", report["verdict"]["note"])
+            self.assertNotIn("pinned-v72-report.raw.json", summary["verdict"]["note"])
             self.assertEqual([step["name"] for step in report["steps"]],
                              ["trusted-adapter", "content-truth", "pdf", "worksheet", "output-gates", "house-gates",
                               "atom-order"])
