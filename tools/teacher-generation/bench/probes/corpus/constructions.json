@@ -1,0 +1,112 @@
+{
+ "family": "constructions",
+ "probes": [
+  {
+   "id": "constructions-01",
+   "topic": "ד28",
+   "intro": "בנו משולש.",
+   "prompt": "שרטטו משולש שצלעותיו [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ.",
+   "answer": {
+    "kind": "review",
+    "text": "שרטוט של משולש ישר זווית"
+   },
+   "expect": {
+    "key": []
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "adapter",
+    "code": "UNVERIFIED_ANSWERS"
+   }
+  },
+  {
+   "id": "constructions-02",
+   "topic": "ד28",
+   "intro": "בנו משולש.",
+   "prompt": "שרטטו משולש שצלעותיו [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ. מה היקפו?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "3 + 4 + 5"
+    },
+    "unit": "ס״מ"
+   },
+   "drawingFromWords": true,
+   "expect": {
+    "key": [
+     "12"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "שרטטו משולש שצלעותיו 3 ס״מ, 4 ס״מ ו־ 5 ס״מ. מה היקפו?",
+    "key": "12 ס״מ"
+   }
+  },
+  {
+   "id": "constructions-03",
+   "topic": "ג18",
+   "intro": "בנו צורה על הרשת.",
+   "prompt": "ציירו על הרשת מלבן ששטחו [[12]] משבצות.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "12"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": []
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_ANSWER_KIND"
+   }
+  },
+  {
+   "id": "constructions-04",
+   "topic": "g7:transformations",
+   "intro": "שרטטו.",
+   "prompt": "שרטטו את המשולש [[triangle:ABC]] ואת שיקופו בציר [[x]].",
+   "answer": {
+    "kind": "review",
+    "text": "המשולש המשוקף"
+   },
+   "drawingFromWords": true,
+   "recorded": {
+    "outcome": "pass",
+    "unverified": true,
+    "printed": "שרטטו את המשולש $\\tri ABC$ ואת שיקופו בציר $x$.",
+    "key": "המשולש המשוקף"
+   }
+  },
+  {
+   "id": "constructions-05",
+   "topic": "g9r:rhombus",
+   "intro": "שרטטו לפי הנתונים.",
+   "prompt": "שרטטו מעוין [[polygon:ABCD]] שאלכסוניו [[6]] ס״מ ו־[[8]] ס״מ, וחשבו את אורך הצלע.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "sqrt(3^2 + 4^2)"
+    },
+    "unit": "ס״מ"
+   },
+   "drawingFromWords": true,
+   "expect": {
+    "key": [
+     "5"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "שרטטו מעוין $ABCD$ שאלכסוניו $6$ ס״מ ו־$8$ ס״מ, וחשבו את אורך הצלע.",
+    "key": "$5$ ס״מ"
+   }
+  }
+ ]
+}

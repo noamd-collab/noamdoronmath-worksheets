@@ -79,6 +79,10 @@ class ConfigurationTests(unittest.TestCase):
                              'PYTHONPATH': '/tmp/untrusted', 'LD_PRELOAD': 'bad',
                              'TEACHER_FREE_WORKER_ENABLED': 'true', 'HOME': '/home/worker'})
         self.assertEqual(r.env, {'QWEN_API_KEY': 'fake', 'HOME': '/home/worker'})
+        # The author switch and the selected provider's own credential pass; nothing else does.
+        r = m.ProcessRunner({'WORKER_WAKE_SECRET': KEY, 'TEACHER_AUTHOR_PROVIDER': 'gemini', 'GEMINI_API_KEY': 'fake',
+                             'GEMINI_MODEL': 'model', 'GEMINI_BASE_URL': 'https://example.invalid', 'GOOGLE_API_KEY': 'other'})
+        self.assertEqual(r.env, {'TEACHER_AUTHOR_PROVIDER': 'gemini', 'GEMINI_API_KEY': 'fake', 'GEMINI_MODEL': 'model'})
 
     def test_preflight_requires_all_no_side_effect_flags(self):
         proof = {'event': 'worker_preflight_pass', 'claimVerified': False,

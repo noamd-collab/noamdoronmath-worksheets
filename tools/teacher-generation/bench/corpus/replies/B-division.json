@@ -1,0 +1,804 @@
+{
+  "title": "חילוק בתחום לוח הכפל",
+  "rule": "כדי לבדוק תרגיל חילוק, מכפילים את התוצאה במחלק. אם מקבלים את המספר המקורי, החילוק נכון.",
+  "practice": [
+    {
+      "intro": "השלימו את המספר החסר בתרגילי החילוק הבאים:",
+      "items": [
+        {
+          "prompt": "24 : [[___]] = 6",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "24/6"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "35 : 7 = [[___]]",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "35/7"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "[[___]] : 9 = 8",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "9*8"
+            },
+            "unit": ""
+          }
+        }
+      ],
+      "table": {
+        "head": [
+          "תרגיל",
+          "מספר חסר"
+        ],
+        "rows": [
+          [
+            "12 : 3",
+            "4"
+          ]
+        ]
+      }
+    },
+    {
+      "intro": "פתרו את תרגילי החילוק הבאים:",
+      "items": [
+        {
+          "prompt": "כמה זה [[18 : 2]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "18/2"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "כמה זה [[27 : 3]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "27/3"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "כמה זה [[40 : 8]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "40/8"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "מצאו את המחלק החסר:",
+      "items": [
+        {
+          "prompt": "30 : [[___]] = 5",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "30/5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "42 : [[___]] = 6",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "42/6"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "56 : [[___]] = 7",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "56/7"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "פתרו בעיות מהחיים:",
+      "items": [
+        {
+          "prompt": "יש 20 עוגיות ומחלקים אותן שווה בשווה בין 4 ילדים. כמה עוגיות מקבל כל ילד?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "20/4"
+            },
+            "unit": "עוגיות"
+          }
+        },
+        {
+          "prompt": "אריזה אחת מכילה 6 בקבוקים. יש 36 בקבוקים בסך הכל. כמה אריזות צריך?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "36/6"
+            },
+            "unit": "אריזות"
+          }
+        },
+        {
+          "prompt": "מורה מחלקת 45 דפים בין 9 תלמידים שווה בשווה. כמה דפים מקבל כל תלמיד?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "45/9"
+            },
+            "unit": "דפים"
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השוו בין התוצאות:",
+      "items": [
+        {
+          "prompt": "איזה תרגיל נותן תוצאה גדולה יותר: [[12 : 2]] או [[12 : 3]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12/2"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "איזה תרגיל נותן תוצאה קטנה יותר: [[24 : 4]] או [[24 : 6]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "24/6"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "האם התוצאה של [[30 : 5]] גדולה מהתוצאה של [[30 : 6]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "30/5"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "מצאו את המספר שהיה לפני החילוק:",
+      "items": [
+        {
+          "prompt": "מספר מסוים חולק ב-4 והתקבל 7. מה היה המספר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4*7"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מספר מסוים חולק ב-8 והתקבל 5. מה היה המספר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "8*5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מספר מסוים חולק ב-3 והתקבל 9. מה היה המספר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "3*9"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השלימו את הקשר בין כפל לחילוק:",
+      "items": [
+        {
+          "prompt": "ידוע ש-[[5 x 6 = 30]]. מהו הערך של [[30 : 6]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "30/6"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "ידוע ש-[[7 x 4 = 28]]. מהו הערך של [[28 : 7]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "28/7"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "ידוע ש-[[9 x 3 = 27]]. מהו הערך של [[27 : 3]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "27/3"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "שייכו כל תרגיל לקטגוריה המתאימה:",
+      "items": [
+        {
+          "prompt": "האם [[16 : 4]] הוא חילוק שמביא לתוצאה זוגית?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "16/4"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "האם [[25 : 5]] הוא חילוק שמביא לתוצאה אי-זוגית?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "25/5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "האם [[36 : 6]] הוא חילוק שמביא לתוצאה זוגית?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "36/6"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השתמשו בטבלה כדי להשוות:",
+      "items": [
+        {
+          "prompt": "בהתבסס על הטבלה, מהו הערך של [[48 : 8]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "48/8"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "בהתבסס על הטבלה, מהו הערך של [[54 : 9]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "54/9"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "בהתבסס על הטבלה, מהו הערך של [[63 : 7]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "63/7"
+            },
+            "unit": ""
+          }
+        }
+      ],
+      "table": {
+        "head": [
+          "מספר",
+          "מחלק",
+          "תוצאה"
+        ],
+        "rows": [
+          [
+            "48",
+            "8",
+            "6"
+          ],
+          [
+            "54",
+            "9",
+            "6"
+          ],
+          [
+            "63",
+            "7",
+            "9"
+          ]
+        ]
+      }
+    },
+    {
+      "intro": "בחרו את הנתונים הנכונים לפתרון הבעיה:",
+      "items": [
+        {
+          "prompt": "יש 24 סוכריות. רון אכל 2 סוכריות. שאר הסוכריות חולקו שווה בשווה בין 4 חברים. כמה סוכריות קיבל כל חבר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(24-2)/4"
+            },
+            "unit": "סוכריות"
+          }
+        },
+        {
+          "prompt": "יש 30 עטים. 6 עטים היו תקולים ונזרקו. שאר העטים חולקו שווה בשווה בין 4 תלמידים. כמה עטים קיבל כל תלמיד?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(30-6)/4"
+            },
+            "unit": "עטים"
+          }
+        },
+        {
+          "prompt": "יש 40 כדורים. 10 כדורים נשברו. שאר הכדורים חולקו שווה בשווה בין 5 קופסאות. כמה כדורים בכל קופסה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "(40-10)/5"
+            },
+            "unit": "כדורים"
+          }
+        }
+      ]
+    },
+    {
+      "intro": "בדקו איזו שיטה נכונה:",
+      "items": [
+        {
+          "prompt": "מי מהשיטות הבאות בודקת נכון את התרגיל [[20 : 4 = 5]]? א. [[4 x 5 = 20]]. ב. [[20 + 4 = 24]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4*5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מי מהשיטות הבאות בודקת נכון את התרגיל [[36 : 6 = 6]]? א. [[6 x 6 = 36]]. ב. [[36 - 6 = 30]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "6*6"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מי מהשיטות הבאות בודקת נכון את התרגיל [[42 : 7 = 6]]? א. [[7 x 6 = 42]]. ב. [[42 / 6 = 7]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "7*6"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "בנו דוגמה חדשה:",
+      "items": [
+        {
+          "prompt": "כתבו תרגיל חילוק שהמחלק בו הוא 5 והתוצאה היא 8.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "5*8"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "כתבו תרגיל חילוק שהמחלק בו הוא 9 והתוצאה היא 4.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "9*4"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "כתבו תרגיל חילוק שהמחלק בו הוא 7 והתוצאה היא 6.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "7*6"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "סדרו את התרגילים לפי גודל התוצאה:",
+      "items": [
+        {
+          "prompt": "מהי התוצאה של [[12 : 3]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12/3"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מהי התוצאה של [[12 : 4]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12/4"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מהי התוצאה של [[12 : 6]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12/6"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "נחשו טווח וחשבו:",
+      "items": [
+        {
+          "prompt": "האם התוצאה של [[50 : 10]] היא קטנה מ-6? חשבו את התוצאה המדויקת.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "50/10"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "האם התוצאה של [[64 : 8]] היא גדולה מ-7? חשבו את התוצאה המדויקת.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "64/8"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "האם התוצאה של [[72 : 9]] היא שווה ל-8? חשבו את התוצאה המדויקת.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "72/9"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "עבדו לאחור מהפתרון:",
+      "items": [
+        {
+          "prompt": "בתרגיל [[___ : 5 = 7]], מהו המספר החסר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "5*7"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "בתרגיל [[48 : ___ = 6]], מהו המספר החסר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "48/6"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "בתרגיל [[___ : 8 = 4]], מהו המספר החסר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "8*4"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "פתרו בעיות מילוליות חדשות:",
+      "items": [
+        {
+          "prompt": "יש 56 פרחים. סידרו אותם בשורות שוות של 8 פרחים. כמה שורות יש?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "56/8"
+            },
+            "unit": "שורות"
+          }
+        },
+        {
+          "prompt": "יש 63 מטבעות. חילקו אותן שווה בשווה בין 9 ילדים. כמה מטבעות קיבל כל ילד?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "63/9"
+            },
+            "unit": "מטבעות"
+          }
+        },
+        {
+          "prompt": "יש 72 דפים. מדפיסים אותם בחוברות של 6 דפים כל אחת. כמה חוברות מתקבלות?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "72/6"
+            },
+            "unit": "חוברות"
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השוו תוצאות מאותו מספר:",
+      "items": [
+        {
+          "prompt": "חשבו את [[80 : 10]] ואת [[80 : 8]]. מה ההפרש בין התוצאות?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "80/8 - 80/10"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "חשבו את [[90 : 9]] ואת [[90 : 10]]. מה ההפרש בין התוצאות?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "90/9 - 90/10"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "חשבו את [[100 : 10]] ואת [[100 : 5]]. מה ההפרש בין התוצאות?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "100/5 - 100/10"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "intro": "חשבו לאחור:",
+      "items": [
+        {
+          "prompt": "מספר חולק ב-6 והתקבל 7. האם המספר המקורי גדול מ-40?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "6*7"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מספר חולק ב-8 והתקבל 5. האם המספר המקורי קטן מ-40?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "8*5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מספר חולק ב-9 והתקבל 4. האם המספר המקורי שווה ל-36?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "9*4"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "מצאו את הטעות:",
+      "items": [
+        {
+          "prompt": "דני כתב ש-[[32 : 4 = 7]]. בדקו באמצעות כפל האם התשובה נכונה.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4*7"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "רות כתבה ש-[[45 : 5 = 8]]. בדקו באמצעות כפל האם התשובה נכונה.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "5*8"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "יוסי כתב ש-[[54 : 6 = 9]]. בדקו באמצעות כפל האם התשובה נכונה.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "6*9"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השוו מצבים:",
+      "items": [
+        {
+          "prompt": "בקבוצה א' יש 24 חפצים שמחולקים ל-4 קבוצות. בקבוצה ב' יש 24 חפצים שמחולקים ל-6 קבוצות. בכמה חפצים גדולה הקבוצה הראשונה מהשנייה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "24/4 - 24/6"
+            },
+            "unit": "חפצים"
+          }
+        },
+        {
+          "prompt": "בקבוצה א' יש 36 חפצים שמחולקים ל-6 קבוצות. בקבוצה ב' יש 36 חפצים שמחולקים ל-9 קבוצות. בכמה חפצים גדולה הקבוצה הראשונה מהשנייה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "36/6 - 36/9"
+            },
+            "unit": "חפצים"
+          }
+        },
+        {
+          "prompt": "בקבוצה א' יש 48 חפצים שמחולקים ל-8 קבוצות. בקבוצה ב' יש 48 חפצים שמחולקים ל-6 קבוצות. בכמה חפצים גדולה הקבוצה השנייה מהראשונה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "48/6 - 48/8"
+            },
+            "unit": "חפצים"
+          }
+        }
+      ]
+    }
+  ]
+}
