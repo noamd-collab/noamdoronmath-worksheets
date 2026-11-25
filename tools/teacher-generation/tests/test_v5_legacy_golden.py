@@ -1,7 +1,9 @@
-"""The pre-v5 paths are byte-identical to the base b5577690 (V5-DESIGN §6.3, G1).
+"""The pre-v5 paths are byte-identical to the strict base without v5 (V5-DESIGN §6.3, G1).
 
 golden/*.json were recorded by fixtures/v5/make_golden.py from a clean copy of b5577690 (the base after
-#635, with its locked skill archives), before any integrator edit; first recorded at bafa36f0. This test
+#635, with its locked skill archives), before any integrator edit; first recorded at bafa36f0. The adapter
+golden was re-recorded from the same base plus the removals of #635's relaxations and no v5 code (local
+strict-base commit ff6b1f6c: content.json carries the printed star again). This test
 runs the same script against the working tree and requires byte-equal output: the 6 closed authors' adapter
 outputs, 8 v4 fixtures (elementary and middle), and the runner's steps and manifests for v3 middle and
 elementary general jobs and the v2 grade 7 pilot.
