@@ -156,8 +156,7 @@ class PinnedSkillTests(unittest.TestCase):
         for name, (extra, status, blocking) in cases.items():
             with self.subTest(name=name):
                 result, work = self.precheck(extra, name)
-                # Editorial findings of the fixture itself would make a benign case "review".
-                self.assertIn(result["status"], ("clean", "review") if status == "clean" else (status,))
+                self.assertEqual(result["status"], status)
                 self.assertEqual([(b["code"], b["question"]) for b in result["gate"]["blocking"]], blocking)
                 self.assertEqual({b["class"] for b in result["gate"]["blocking"]}, {"truth"} if blocking else set())
                 self.assertEqual([step["name"] for step in result["steps"]], ["trusted-adapter", "content-truth", "house-gates"])
@@ -205,7 +204,7 @@ class PinnedSkillTests(unittest.TestCase):
 
     def test_gate_content_follows_the_pinned_schema_and_the_page_keeps_its_stars(self):
         result, work = self.precheck("", "schema")
-        self.assertIn(result["status"], ("clean", "review"))
+        self.assertEqual(result["status"], "clean")
         content = json.loads((work / "content.json").read_text())
         keys = {key for question in content["questions"] for key in question}
         self.assertNotIn("star", keys)

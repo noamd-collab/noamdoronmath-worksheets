@@ -147,15 +147,15 @@ A result is always `needs_review` or `failed`, never publication approval:
   form) and policy findings (chronology, drawings, signs, brand) block; when
   the gate output names questions, `manifest.gate.questions` lists them.
   Editorial findings (difficulty spread, repeated item structure, star count,
-  page fill) do not block: the step is recorded as REVIEW and
-  `reviewFindings` carries the code, the questions and a fixed Hebrew teacher
-  note. An unknown line, a timeout or a crashed step blocks.
+  page fill) block in the same way. An unknown line, a timeout or a crashed
+  step blocks.
   `skill_feedback.gate_report` reads every finding of a work folder. When the
   trusted adapter refuses a question it leaves `adapter-failure.json`
   (`code`, `question`, `item`), and the report names that question from it.
 - `paren_order.py` measures again the one documented false positive of the
   pinned bracket gate G51 (a correctly printed product of two bracketed
-  groups). A reversed pair still fails.
+  groups). A reversed pair still fails. A step whose only finding is a
+  reconciled G51 is recorded as REVIEW (`RECONCILED_FINDINGS_ONLY`).
 - `claim_words.py` records in the ledger a closed-pattern reading of the words
   that the pinned truth gates G32/G33 search for ("לכל תלמיד", conditional
   "אילו"). Universal claims and requests to enumerate still fail.

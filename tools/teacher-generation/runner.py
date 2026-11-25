@@ -11,7 +11,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from validation import GenerationError, read_json, reject, validate_model
 from adapters import dump
-from gate_policy import RECONCILIATION_STEPS, decide, unverified_rows
+from gate_policy import RECONCILIATION_STEPS, STEP_CODES, decide, finding, unverified_rows
 from skill_feedback import gate_report
 
 HERE=Path(__file__).resolve().parent
@@ -354,9 +354,10 @@ def _house_gate_args(job, lesson, *, rendered):
 def lesson_gate(job, lesson):
     """Read every finding of a version 3 lesson and decide (gate_policy.decide).
 
-    Truth and policy findings block; when each names a question the caller can
-    replace those questions and render again. Editorial findings alone do not
-    block. An unknown finding, a timeout or a crashed step blocks.
+    Truth, policy and editorial findings block; when each names a question the
+    caller can replace those questions and render again. Only a reconciled
+    finding does not block (gate_policy.blocks). An unknown finding, a timeout
+    or a crashed step blocks.
     """
     count=lesson['questionCount']
     report=gate_report(job.work,job.cap['skill'],job.steps,count)
@@ -378,9 +379,8 @@ def precheck_job(lesson, model_payload, workdir, skill_paths=None, *, salvaged_f
     questions that the truth and house gates name and then render once.
     Returns {'status','steps','gate'}:
       clean           the trusted adapter and both gates passed
-      review          only editorial findings (they would not block a render)
       replace         blocking findings that each name a question: gate['questions']
-      failed          a blocking finding that names no question
+      failed          anything else that did not pass; gate['action'] is then 'fail'
       not_applicable  not a version 3 elementary lesson; nothing was written
     The gates that need the rendered PDF or Word file still run in render_job.
     """
@@ -393,9 +393,11 @@ def precheck_job(lesson, model_payload, workdir, skill_paths=None, *, salvaged_f
         job.run('house-gates',_house_gate_args(job,lesson,rendered=False))
     report,decision=lesson_gate(job,lesson)
     clean=all(step['status']=='PASS' for step in job.steps)
-    status='clean' if clean else {'deliver':'review','replace':'replace'}.get(decision['action'],'failed')
+    # A step that did not pass is never clean: it is replaced when every blocking finding names a question.
+    status='clean' if clean else 'replace' if decision['action']=='replace' else 'failed'
+    action='fail' if status=='failed' else decision['action']
     result={'version':1,'status':status,'steps':job.steps,
-            'gate':{'version':1,'action':decision['action'],'complete':report['complete'],'blocking':decision['blocking'],
+            'gate':{'version':1,'action':action,'complete':report['complete'],'blocking':decision['blocking'],
                     'questions':decision['questions'],'review':decision['reviewFindings']}}
     dump(job.work/'precheck.json',result)
     return result
@@ -429,10 +431,11 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
     status failed with no downloadable artifacts. Caller owns authorization,
     job leasing and storage. skill_paths is trusted operator configuration only.
 
-    Version 3 lessons follow the delivery policy in gate_policy: a render
-    whose failed steps hold only editorial findings is delivered as
-    needs_review with those findings in reviewFindings; anything else that
-    fails stays failed, and manifest['gate'] says which questions are named.
+    Version 3 lessons follow the delivery policy in gate_policy: every
+    finding blocks, editorial ones included, and a render that fails stays
+    failed; manifest['gate'] says which questions are named. Only a failed
+    step whose findings are all reconciled (a G51 that paren_order.py measured
+    again) becomes REVIEW, reason RECONCILED_FINDINGS_ONLY.
 
     ``salvaged_from`` is the question count the teacher asked for when the
     worker renders a shorter, salvaged sheet; the manifest records it.
@@ -524,29 +527,39 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
                     'provenanceReport':'logs/word-web-layout.json',
                     'finalGateReport':'logs/word-web-rtl-parity.json'}
         outputs=[f'out/deliver/{key}/sheet.pdf',original if general else final]
-    gate=None
+    report=decision=None
     if general and any(step['status']!='PASS' for step in steps):
         report,decision=lesson_gate(job,lesson)
         if not ok and decision['action']=='deliver':
-            # Every failed step holds only editorial or reconciled findings.
+            # Nothing blocks, so every failed step holds only reconciled findings (gate_policy.blocks).
             for step in steps:
                 if step['status']=='FAIL' and step['name'] in decision['reviewSteps']:
-                    step['status']='REVIEW';step['reason']='EDITORIAL_FINDINGS_ONLY'
+                    step['status']='REVIEW';step['reason']='RECONCILED_FINDINGS_ONLY'
             ok=all(step['status'] in ('PASS','REVIEW') for step in steps)
         if ok:
             for row in decision['reviewFindings']:
                 known=next((r for r in review_findings if r['code']==row['code']),None)
                 if known is None:review_findings.append(row)
                 elif known['count']==row['count']:known.update(row)
-        gate={'version':1,'action':decision['action'] if not ok else 'deliver','complete':report['complete'],
-              'blocking':decision['blocking'] if not ok else [],'questions':decision['questions'] if not ok else [],
-              'review':decision['reviewFindings']}
     artifacts=[]
     if ok:
         for name in outputs:
             path=work/name
             if not path.is_file(): ok=False;steps.append({'name':'artifact-presence','status':'FAIL'});break
             artifacts.append({'path':name,'sha256':sha(path),'bytes':path.stat().st_size,'kind':'pdf' if name.endswith('.pdf') else 'docx'})
+    gate=None
+    if decision is not None:
+        # Built after the artifact check: a failed manifest never says 'deliver'.
+        action,blocking,questions='deliver',[],[]
+        if not ok and decision['action']!='deliver':
+            action,blocking,questions=decision['action'],decision['blocking'],decision['questions']
+        elif not ok:
+            # The gates found nothing that blocks, but a later step failed (artifact-presence).
+            action='fail'
+            blocking=[finding(STEP_CODES.get(step['name'],'STEP_FAILED'),step['name'])
+                      for step in steps if step['status']=='FAIL']
+        gate={'version':1,'action':action,'complete':report['complete'],'blocking':blocking,'questions':questions,
+              'review':decision['reviewFindings']}
     manifest={'version':1,'status':'needs_review' if ok else 'failed','automatedChecksPassed':bool(ok and len(artifacts)==2 and all(s['status']=='PASS' for s in steps)),'skill':{'name':cap['skill'],'version':pin['version'],'sha256':pin['sha256']},'topicId':lesson['topicId'],'gradeNumber':lesson['gradeNumber'],'modelInputSha256':sha(work/'model-output.json'),'adapterSha256':sha(HERE/'adapters.py'),'steps':steps,'artifacts':artifacts if ok else [],'review':{'mathematical':'exact typed arithmetic verified; prose/template review pending','visual':'pending; every final PDF page and actual Word rendering must be inspected','curriculum':'bounded topic allowlist; free-text progress is not independently verified','publication':'not approved; private owner preview only'}}
     manifest['lessonBoundary']=lesson.get('lessonBoundary')
     if salvaged_from is not None:
@@ -581,7 +594,7 @@ if __name__=='__main__':
         if a.precheck:
             r=precheck_job(read_json(a.lesson),read_json(a.model_output),a.out)
             print(json.dumps({'status':r['status'],'gate':r['gate']},ensure_ascii=False))
-            sys.exit(0 if r['status'] in ('clean','review') else 1)
+            sys.exit(0 if r['status']=='clean' else 1)
         m=render_job(read_json(a.lesson),read_json(a.model_output),a.out,allow_legacy=a.allow_legacy_intake)
         print(json.dumps({'status':m['status'],'manifest':str(Path(a.out)/'manifest.json'),'artifacts':m['artifacts']},ensure_ascii=False))
         sys.exit(0 if m['status']=='needs_review' else 1)

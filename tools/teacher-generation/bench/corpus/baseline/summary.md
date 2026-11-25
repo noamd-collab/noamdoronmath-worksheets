@@ -10,7 +10,7 @@ Delivered with no further model call: **18 of 35 (51%)**. Questions rejected whe
 | A-percent | qwen | g8:percentages | 20 | worker | PRINTED_ANSWER_KIND | 1 of 20 | 1 q (not recorded) | dropped 1, prints 19 | pass | delivered |
 | A-square | qwen | g9m:square | 20 | general | SOURCE_RICH_TEXT | 6 of 20 | 6 q (not recorded) | — | — | failed |
 | B-division | qwen | ג10 | 20 | worker | PRINTED_ANSWER_LEAK | 7 of 20 | 7 q (not recorded) | — | — | failed |
-| B-order | qwen | ד07 | 20 | worker | PRINTED_ANSWER_KIND | 5 of 20 | 5 q (not recorded) | — | fail: output-gates, house-gates | failed |
+| B-order | qwen | ד07 | 20 | worker | PRINTED_ANSWER_KIND | 5 of 20 | 5 q (not recorded) | — | — | failed |
 | B-equations | qwen | g7:equations | 20 | worker | SOURCE_TABLE | 2 of 20 | 2 q (not recorded) | dropped 2, prints 18 | pass | delivered |
 | B-percent | qwen | g8:percentages | 20 | worker | SOURCE_TABLE | 2 of 20 | 2 q (not recorded) | dropped 2, prints 18 | pass | delivered |
 | B-square | qwen | g9m:square | 20 | general | AUTHOR_PLAN_MISMATCH | 8 of 20 | — | 2nd attempt after AUTHOR_PLAN_MISMATCH | — | needs_unrecorded_reply |
@@ -19,7 +19,7 @@ Delivered with no further model call: **18 of 35 (51%)**. Questions rejected whe
 | S-g4calc | qwen | ד07 | 12 | worker | pass | 0 of 12 | — | — | pass | delivered |
 | S-g7eq | qwen | g7:equations | 20 | worker | pass | 0 of 20 | — | — | pass | delivered |
 | G-division | gemini | ג10 | 20 | worker | QUALITY_GATE_FAILED | 7 of 20 | 7 q (not recorded) | — | — | failed |
-| G-order | gemini | ד07 | 20 | worker | pass | 0 of 20 | — | — | pass | delivered |
+| G-order | gemini | ד07 | 20 | worker | pass | 0 of 20 | 2 q (not recorded) | dropped 2, prints 18 | pass | delivered |
 | G-equations | gemini | g7:equations | 20 | worker | AUTHOR_PLAN_MISMATCH | 0 of 20 | 3 q (not recorded) | dropped 3, prints 17 | pass | delivered |
 | G-percent | gemini | g8:percentages | 20 | worker | SOURCE_PLAIN_MATH | 3 of 20 | 3 q (not recorded) | dropped 3, prints 17 | pass | delivered |
 | G-square | gemini | g9m:square | 20 | general | PRINTED_ANSWER_LEAK | 5 of 20 | 5 q (not recorded) | — | fail: middle-build, didactic-review-reconciliation | failed |
@@ -40,7 +40,7 @@ Delivered with no further model call: **18 of 35 (51%)**. Questions rejected whe
 | L2-g7 | gemini | g7:equations | 20 | worker | pass | 3 of 24 | — | replaced 2 | pass | delivered |
 | L2-g8 | gemini | g8:percentages | 20 | worker | pass | 2 of 24 | — | replaced 2 | pass | delivered |
 
-Delivered with fewer questions than requested: 11. Corrections the engine asked for that were never recorded: 26. Second author replies it asked for that were never recorded: 2.
+Delivered with fewer questions than requested: 12. Corrections the engine asked for that were never recorded: 27. Second author replies it asked for that were never recorded: 2.
 
 ## By provider
 
@@ -88,11 +88,8 @@ Recorded as text that is not JSON: G-equations. The replay sends the text as rec
 | Gate | Findings |
 | --- | --- |
 | BLOCKING_BUILD_FAILURE | 2 |
-| G51 | 1 |
-| G61 | 1 |
 | G75 | 1 |
 | middle-build/selfcheck_noam_package.py | 1 |
-| output-gates | 1 |
 
 Not installed on this machine: pdffonts, pdftoppm, tesseract. Without poppler the elementary page-fill check is deferred with a warning, and without tesseract the middle-school figure reader cannot run; the worker image has both.
 

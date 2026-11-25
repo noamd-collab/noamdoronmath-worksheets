@@ -16,6 +16,9 @@ from gate_policy import EDITORIAL, POLICY, TRUTH, decide, finding, public_review
 from test_skill_feedback import (ADAPTER_REFUSAL, HOUSE_G51_G61, HOUSE_G61, HOUSE_G61_G62, HOUSE_PASSING,
                                  OUTPUT_ANSWER_ORDER, TRUTH_G32)
 
+# The recorded bracket sample of HOUSE_G51_G61 alone.
+HOUSE_G51 = HOUSE_G51_G61.split("FAIL — G61-level")[0] + "HOUSE GATES: FAIL (1)\n"
+
 
 def report(*rows, complete=True):
     return {"version": 1, "skill": "elementary", "complete": complete,
@@ -51,29 +54,42 @@ class TableTests(unittest.TestCase):
         self.assertTrue(policy.blocks(forged))
         self.assertTrue(policy.blocks({**forged, "reconciled": True}))
         self.assertFalse(policy.blocks({"code": "G51", "class": "truth", "step": "house-gates", "reconciled": True}))
-        self.assertFalse(policy.blocks(finding("G61", "house-gates", 2)))
+        for code in ("G50", "G61", "G62", "PAGE_FILL", "PAGE_GAP", "SHORTER_SHEET"):
+            self.assertTrue(policy.blocks(finding(code, "house-gates", 2)), code)
+            self.assertTrue(policy.blocks(finding(code, "worksheet")), code)
+        # The one editorial row that does not block: middle-build DIDACTIC_REVIEW, already reconciled by the runner.
+        self.assertFalse(policy.blocks(finding("DIDACTIC_REVIEW", "middle-build", 2)))
+        self.assertTrue(policy.blocks(finding("DIDACTIC_REVIEW", "house-gates", 2)))
+        self.assertTrue(policy.blocks({**finding("DIDACTIC_REVIEW", "middle-build", 2), "class": "truth"}))
 
 
 class DecisionTests(unittest.TestCase):
-    def test_editorial_findings_alone_deliver_with_teacher_notes(self):
+    def test_editorial_findings_block_and_name_their_questions(self):
         rows = [finding("G61", "house-gates", 2, 3, score=3), finding("G61", "house-gates", 10, 1, score=8),
                 finding("G62", "house-gates", 3, 1), finding("PAGE_FILL", "worksheet", page=4)]
+        decision = decide(report(*rows[:3]), ["house-gates"])
+        self.assertEqual((decision["action"], decision["questions"]), ("replace", [2, 3, 10]))
+        self.assertEqual(decision["blocking"], [
+            {"code": "G61", "class": EDITORIAL, "step": "house-gates", "question": 2, "item": 3},
+            {"code": "G61", "class": EDITORIAL, "step": "house-gates", "question": 10, "item": 1},
+            {"code": "G62", "class": EDITORIAL, "step": "house-gates", "question": 3, "item": 1}])
+        self.assertEqual((decision["reviewSteps"], decision["reviewFindings"]), ([], []))
+        # A page-fill finding names no question: nothing can be replaced, the render fails.
         decision = decide(report(*rows), ["house-gates", "worksheet"])
-        self.assertEqual((decision["action"], decision["blocking"], decision["questions"]), ("deliver", [], []))
-        self.assertEqual(decision["reviewSteps"], ["house-gates", "worksheet"])
-        self.assertEqual([(r["code"], r["count"], r["questions"]) for r in decision["reviewFindings"]],
-                         [("G61", 2, [2, 10]), ("G62", 1, [3]), ("PAGE_FILL", 1, [])])
-        self.assertTrue(all(r["note"] == policy.NOTES[r["code"]] and r["class"] == EDITORIAL for r in decision["reviewFindings"]))
+        self.assertEqual((decision["action"], decision["questions"]), ("fail", [2, 3, 10]))
+        self.assertEqual([(b["code"], b["step"]) for b in decision["blocking"]],
+                         [("G61", "house-gates"), ("G61", "house-gates"), ("G62", "house-gates"), ("PAGE_FILL", "worksheet")])
+        self.assertEqual((decision["reviewSteps"], decision["reviewFindings"]), ([], []))
 
     def test_named_truth_and_policy_findings_ask_for_those_questions(self):
         rows = [finding("G32", "content-truth", 8), finding("G32", "content-truth", 4), finding("G66", "house-gates", 4, 2),
                 finding("G61", "house-gates", 10, 1)]
         decision = decide(report(*rows), ["content-truth", "house-gates"])
-        self.assertEqual((decision["action"], decision["questions"]), ("replace", [4, 8]))
+        self.assertEqual((decision["action"], decision["questions"]), ("replace", [4, 8, 10]))
         self.assertEqual([(b["code"], b["class"], b["question"]) for b in decision["blocking"]],
-                         [("G32", TRUTH, 8), ("G32", TRUTH, 4), ("G66", POLICY, 4)])
+                         [("G32", TRUTH, 8), ("G32", TRUTH, 4), ("G66", POLICY, 4), ("G61", EDITORIAL, 10)])
         self.assertEqual(decision["reviewSteps"], [])  # house-gates also holds a blocking finding
-        self.assertEqual([r["code"] for r in decision["reviewFindings"]], ["G61"])
+        self.assertEqual(decision["reviewFindings"], [])
 
     def test_unnamed_unknown_incomplete_and_unexplained_failures_block(self):
         named = finding("G32", "content-truth", 4)
@@ -93,7 +109,8 @@ class DecisionTests(unittest.TestCase):
             self.assertIn(code, [row["code"] for row in decision["blocking"]])
         # A reconciliation step that refused adds nothing of its own.
         decision = decide(report(finding("G61", "house-gates", 2)), ["house-gates", "bracket-order-reconciliation"])
-        self.assertEqual(decision["action"], "deliver")
+        self.assertEqual((decision["action"], decision["questions"], [b["code"] for b in decision["blocking"]]),
+                         ("replace", [2], ["G61"]))
         self.assertEqual(decide(report(), [])["action"], "deliver")
 
     def test_only_fixed_editorial_notes_reach_the_job_result(self):
@@ -150,20 +167,23 @@ class RunnerPolicyTests(unittest.TestCase):
     def statuses(self, manifest):
         return {step["name"]: step["status"] for step in manifest["steps"]}
 
-    def test_editorial_findings_only_deliver_a_needs_review_sheet_with_notes(self):
+    def test_editorial_findings_fail_the_render(self):
         manifest = self.render({"house_gates.py": (HOUSE_G61_G62, 1)})
-        self.assertEqual(manifest["status"], "needs_review")
+        self.assertEqual((manifest["status"], manifest["artifacts"], manifest["reviewFindings"]), ("failed", [], []))
         self.assertFalse(manifest["automatedChecksPassed"])
-        self.assertTrue(manifest["renderingChecksPassed"])
-        self.assertEqual({a["kind"] for a in manifest["artifacts"]}, {"pdf", "docx"})
+        self.assertFalse(manifest["renderingChecksPassed"])
         gates = next(step for step in manifest["steps"] if step["name"] == "house-gates")
-        self.assertEqual((gates["status"], gates["reason"], gates["exitCode"]), ("REVIEW", "EDITORIAL_FINDINGS_ONLY", 1))
-        # The recorded sheet had 20 questions; this one has 12, so Q201 and Q142 name nothing here.
-        self.assertEqual([(r["code"], r["count"], r["questions"]) for r in manifest["reviewFindings"]],
-                         [("G61", 2, [1]), ("G62", 9, [1, 3, 5])])
-        self.assertTrue(all(r["note"] == policy.NOTES[r["code"]] for r in manifest["reviewFindings"]))
-        self.assertEqual((manifest["gate"]["action"], manifest["gate"]["blocking"]), ("deliver", []))
-        self.assertEqual(json.loads((self.work / "manifest.json").read_text())["status"], "needs_review")
+        self.assertEqual((gates["status"], gates.get("reason"), gates["exitCode"]), ("FAIL", None, 1))
+        self.assertNotIn("REVIEW", [step["status"] for step in manifest["steps"]])
+        # The recorded sheet had 20 questions; this one has 12, so Q201 and Q142 name nothing here
+        # and nothing can be replaced: the action is fail.
+        gate = manifest["gate"]
+        self.assertEqual((gate["action"], gate["questions"], gate["review"]), ("fail", [1, 3, 5], []))
+        self.assertEqual([(b["code"], b["class"], b.get("question"), b.get("item")) for b in gate["blocking"]],
+                         [("G61", EDITORIAL, 1, 1)] + [("G62", EDITORIAL, q, i) for q, i in ((1, 1), (3, 1), (3, 2), (3, 3), (1, 2),
+                                                                                         (5, 1), (5, 2), (5, 3))]
+                         + [("G61", EDITORIAL, None, None), ("G62", EDITORIAL, None, None)])
+        self.assertEqual(json.loads((self.work / "manifest.json").read_text())["status"], "failed")
 
     def test_truth_findings_block_and_say_which_questions_to_replace(self):
         manifest = self.render({"content_truth.py": (TRUTH_G32, 1), "house_gates.py": (HOUSE_G61, 1)})
@@ -171,9 +191,10 @@ class RunnerPolicyTests(unittest.TestCase):
         self.assertFalse(manifest["renderingChecksPassed"])
         self.assertEqual(self.statuses(manifest)["house-gates"], "FAIL")
         gate = manifest["gate"]
-        self.assertEqual((gate["action"], gate["questions"], gate["complete"]), ("replace", [4, 8, 12], True))
-        self.assertEqual({(b["code"], b["class"], b["step"]) for b in gate["blocking"]}, {("G32", "truth", "content-truth")})
-        self.assertEqual([(r["code"], r["questions"]) for r in gate["review"]], [("G61", [2, 10])])
+        self.assertEqual((gate["action"], gate["questions"], gate["complete"]), ("replace", [2, 4, 8, 10, 12], True))
+        self.assertEqual({(b["code"], b["class"], b["step"]) for b in gate["blocking"]},
+                         {("G32", "truth", "content-truth"), ("G61", "editorial", "house-gates")})
+        self.assertEqual(gate["review"], [])
 
     def test_printed_key_order_names_its_question_and_the_adapter_names_its_item(self):
         manifest = self.render({"output_gates.py": (OUTPUT_ANSWER_ORDER, 1)})
@@ -204,19 +225,46 @@ class RunnerPolicyTests(unittest.TestCase):
     def test_bracket_sample_is_measured_again_and_only_a_balanced_product_is_reconciled(self):
         good = json.dumps({"status": "RECONCILED", "code": "G51", "matches": 1, "unbalanced": 0, "pages": [9]})
         bad = json.dumps({"status": "UNBALANCED", "code": "G51", "matches": 1, "unbalanced": 1, "pages": [9]})
-        manifest = self.render({"house_gates.py": (HOUSE_G51_G61, 1), "paren_order.py": ("", 0), "bracket-order.json": good})
+        manifest = self.render({"house_gates.py": (HOUSE_G51, 1), "paren_order.py": ("", 0), "bracket-order.json": good})
         self.assertEqual(manifest["status"], "needs_review")
+        self.assertEqual({a["kind"] for a in manifest["artifacts"]}, {"pdf", "docx"})
+        self.assertEqual((manifest["automatedChecksPassed"], manifest["renderingChecksPassed"]), (False, True))
         self.assertEqual(self.statuses(manifest), {"trusted-adapter": "PASS", "content-truth": "PASS", "pdf": "PASS", "word": "PASS",
                                                    "worksheet": "PASS", "output-gates": "PASS", "house-gates": "REVIEW",
                                                    "bracket-order-reconciliation": "PASS"})
-        self.assertEqual([(r["code"], r["class"]) for r in manifest["reviewFindings"]], [("G61", "editorial"), ("G51", "reconciled")])
-        self.assertEqual([r["code"] for r in public_review_findings(manifest["reviewFindings"])], ["G61"])
+        gates = next(step for step in manifest["steps"] if step["name"] == "house-gates")
+        self.assertEqual((gates["reason"], gates["exitCode"]), ("RECONCILED_FINDINGS_ONLY", 1))
+        self.assertEqual([(r["code"], r["class"]) for r in manifest["reviewFindings"]], [("G51", "reconciled")])
+        self.assertEqual(public_review_findings(manifest["reviewFindings"]), [])
+        self.assertEqual((manifest["gate"]["action"], manifest["gate"]["blocking"], manifest["gate"]["questions"]), ("deliver", [], []))
+        # A reconciled bracket beside an editorial finding: the editorial finding still blocks.
+        self.work = Path(self.tmp.name) / "with-g61"
+        manifest = self.render({"house_gates.py": (HOUSE_G51_G61, 1), "paren_order.py": ("", 0), "bracket-order.json": good})
+        self.assertEqual((manifest["status"], manifest["artifacts"], manifest["reviewFindings"]), ("failed", [], []))
+        self.assertEqual(self.statuses(manifest), {"trusted-adapter": "PASS", "content-truth": "PASS", "pdf": "PASS", "word": "PASS",
+                                                   "worksheet": "PASS", "output-gates": "PASS", "house-gates": "FAIL",
+                                                   "bracket-order-reconciliation": "PASS"})
+        self.assertEqual((manifest["gate"]["action"], manifest["gate"]["questions"]), ("replace", [4, 11]))
+        self.assertEqual([row["code"] for row in manifest["gate"]["blocking"]], ["G61", "G61"])
+        self.assertEqual(public_review_findings(manifest["reviewFindings"]), [])
         self.work = Path(self.tmp.name) / "reversed"
         manifest = self.render({"house_gates.py": (HOUSE_G51_G61, 1), "paren_order.py": ("", 1), "bracket-order.json": bad})
         self.assertEqual((manifest["status"], manifest["gate"]["action"]), ("failed", "fail"))
-        self.assertEqual([row["code"] for row in manifest["gate"]["blocking"]], ["G51"])
+        self.assertEqual([row["code"] for row in manifest["gate"]["blocking"]], ["G61", "G61", "G51"])
         self.assertEqual(self.statuses(manifest)["bracket-order-reconciliation"], "FAIL")
-        self.assertEqual(self.calls.count("paren_order.py"), 2)
+        self.assertEqual(self.calls.count("paren_order.py"), 3)
+
+    def test_a_failed_artifact_check_after_a_reconciled_gate_never_reports_deliver(self):
+        good = json.dumps({"status": "RECONCILED", "code": "G51", "matches": 1, "unbalanced": 0, "pages": [9]})
+        real = Path.is_file
+        def missing_docx(path):
+            return path.name != "sheet.docx" and real(path)
+        with patch.object(runner.Path, "is_file", missing_docx):
+            manifest = self.render({"house_gates.py": (HOUSE_G51, 1), "paren_order.py": ("", 0), "bracket-order.json": good})
+        self.assertEqual((manifest["status"], manifest["artifacts"]), ("failed", []))
+        self.assertEqual(self.statuses(manifest)["artifact-presence"], "FAIL")
+        self.assertEqual((manifest["gate"]["action"], manifest["gate"]["questions"]), ("fail", []))
+        self.assertEqual(manifest["gate"]["blocking"], [{"code": "ARTIFACT_MISSING", "class": "truth", "step": "artifact-presence"}])
 
     def test_clean_render_has_no_gate_block_and_legacy_lessons_keep_the_old_rule(self):
         manifest = self.render({})
@@ -233,17 +281,21 @@ class RunnerPolicyTests(unittest.TestCase):
     def test_precheck_runs_only_the_gates_that_read_content_before_any_pdf(self):
         result = self.render({"content_truth.py": (TRUTH_G32, 1), "house_gates.py": (HOUSE_G61, 1)}, precheck=True)
         self.assertEqual(self.calls, ["general_adapters.py", "content_truth.py", "house_gates.py"])
-        self.assertEqual((result["status"], result["gate"]["questions"]), ("replace", [4, 8, 12]))
+        self.assertEqual((result["status"], result["gate"]["questions"]), ("replace", [2, 4, 8, 10, 12]))
         self.assertEqual([step["name"] for step in result["steps"]], ["trusted-adapter", "content-truth", "house-gates"])
         self.assertFalse((self.work / "sheet.pdf").exists() or (self.work / "manifest.json").exists())
         self.assertEqual(json.loads((self.work / "precheck.json").read_text())["status"], "replace")
-        for name, outputs, status in (("clean", {}, "clean"), ("review", {"house_gates.py": (HOUSE_G61, 1)}, "review"),
-                                      ("adapter", {"general_adapters.py": (ADAPTER_REFUSAL, 1)}, "replace"),
-                                      ("unknown", {"content_truth.py": ("odd", 1)}, "failed")):
+        for name, outputs, status, action, questions in (
+                ("clean", {}, "clean", "deliver", []),
+                ("editorial", {"house_gates.py": (HOUSE_G61, 1)}, "replace", "replace", [2, 10]),
+                ("editorial-unnamed", {"house_gates.py": (HOUSE_G61_G62, 1)}, "failed", "fail", [1, 3, 5]),
+                ("adapter", {"general_adapters.py": (ADAPTER_REFUSAL, 1)}, "replace", "replace", [5]),
+                ("unknown", {"content_truth.py": ("odd", 1)}, "failed", "fail", [])):
             self.work = Path(self.tmp.name) / ("pre-" + name)
             self.calls = []
             result = self.render(outputs, precheck=True)
-            self.assertEqual(result["status"], status, name)
+            self.assertEqual((result["status"], result["gate"]["action"], result["gate"]["questions"]), (status, action, questions), name)
+            self.assertEqual(result["gate"]["review"], [], name)
             self.assertNotIn("build_pdf.py", self.calls)
 
     def test_precheck_gate_arguments_never_name_a_pdf_or_word_file(self):
@@ -273,11 +325,11 @@ class RunnerPolicyTests(unittest.TestCase):
 
 
 class WorkerResultTests(unittest.TestCase):
-    def test_job_result_carries_editorial_notes_and_nothing_else_from_the_manifest(self):
-        import copy
+    def test_job_result_carries_the_didactic_review_note_and_nothing_else_from_the_manifest(self):
         from datetime import datetime, timedelta, timezone
         from test_remote_worker import FakeRemote, JOB_ID, LEASE, TEACHER_A
-        lesson = json.loads((HERE / "cloud/container/fixtures/general/grade4-skill-calculation/lesson.json").read_text())
+        # The one REVIEW a render still delivers: the middle driver's reconciled didactic REVIEW.
+        lesson = json.loads((HERE / "cloud/container/fixtures/general/grade7-equation-skill/lesson.json").read_text())
         job = {"id": JOB_ID, "owner_id": TEACHER_A, "lease_token": LEASE, "status": "running",
                "lease_until": (datetime.now(timezone.utc) + timedelta(minutes=20)).isoformat(), "lesson": lesson}
 
@@ -290,11 +342,12 @@ class WorkerResultTests(unittest.TestCase):
                 (target / ("sheet." + kind)).write_bytes(blob)
                 artifacts.append({"kind": kind, "path": "sheet." + kind, "sha256": hashlib.sha256(blob).hexdigest(), "bytes": len(blob)})
             return {"status": "needs_review", "automatedChecksPassed": False, "renderingChecksPassed": True,
-                    "authoringProfile": "general-skill-source/v1", "skill": {"name": "elementary"}, "artifacts": artifacts,
-                    "steps": [{"name": "trusted-adapter", "status": "PASS"}, {"name": "house-gates", "status": "REVIEW"},
-                              {"name": "bracket-order-reconciliation", "status": "PASS"}],
-                    "reviewFindings": [{"code": "G61", "class": "editorial", "count": 2, "steps": ["house-gates"],
-                                        "questions": [4, 11], "note": "PRIVATE MODEL TEXT"},
+                    "authoringProfile": "general-skill-source/v1", "skill": {"name": "middle"}, "artifacts": artifacts,
+                    "steps": [{"name": "trusted-adapter", "status": "PASS"},
+                              {"name": "middle-build", "status": "REVIEW", "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY"},
+                              {"name": "didactic-review-reconciliation", "status": "PASS"}],
+                    "reviewFindings": [{"code": "DIDACTIC_REVIEW", "class": "editorial", "count": 2, "steps": ["middle-build"],
+                                        "questions": [4, 11], "rules": {"D12": 2}, "note": "PRIVATE MODEL TEXT"},
                                        {"code": "G51", "class": "reconciled", "count": 1, "steps": ["house-gates"], "questions": []}]}
 
         remote = FakeRemote()
@@ -304,8 +357,13 @@ class WorkerResultTests(unittest.TestCase):
         final = [call[2] for call in remote.calls if call[1] == "PATCH" and call[2].get("status") == "needs_review"]
         self.assertEqual(len(final), 1)
         result = final[0]["result"]
-        self.assertEqual(result["reviewFindings"], [{"code": "G61", "count": 2, "note": policy.NOTES["G61"], "questions": [4, 11]}])
-        self.assertEqual([check["status"] for check in result["checks"]], ["PASS", "REVIEW", "PASS"])
+        # The reconciled G51 row stays private; the note is the table's own sentence.
+        self.assertEqual(result["reviewFindings"], [{"code": "DIDACTIC_REVIEW", "count": 2, "note": policy.NOTES["DIDACTIC_REVIEW"],
+                                                     "questions": [4, 11]}])
+        self.assertEqual([(check["name"], check["status"]) for check in result["checks"]],
+                         [("trusted-adapter", "PASS"), ("middle-build", "REVIEW"), ("didactic-review-reconciliation", "PASS")])
+        self.assertNotIn("G51", json.dumps(result["reviewFindings"]))
+        self.assertNotIn("D12", json.dumps(result, ensure_ascii=False))
         self.assertNotIn("PRIVATE", json.dumps(result, ensure_ascii=False))
         self.assertLess(len(json.dumps(result, ensure_ascii=False).encode()), 32000)
 

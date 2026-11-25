@@ -6,7 +6,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from gate_policy import decide
-from skill_feedback import (FEEDBACK, blocking_feedback, gate_report, parse_adapter, parse_content_truth,
+from skill_feedback import (gate_report, parse_adapter, parse_content_truth,
                             parse_house_gates, parse_output_gates, parse_worksheet, read_gate_report,
                             read_skill_feedback)
 
@@ -222,8 +222,8 @@ class GateReportTests(unittest.TestCase):
         self.assertIn("רמת הקושי", high["note"])
         self.assertEqual(report["unnamed"], [])
         decision = decide(report, ["content-truth", "house-gates"])
-        self.assertEqual((decision["action"], decision["questions"]), ("replace", [4, 8, 12]))
-        self.assertEqual(decision["reviewSteps"], ["house-gates"])
+        self.assertEqual((decision["action"], decision["questions"]), ("replace", [2, 4, 8, 10, 12]))
+        self.assertEqual((decision["reviewSteps"], decision["reviewFindings"]), ([], []))
 
     def test_adapter_record_in_the_work_folder_names_the_refused_question(self):
         self.write("logs/trusted-adapter.txt", "general_source.GeneralSourceError: The exact answer disagrees with the printed task\n")
@@ -265,13 +265,14 @@ class GateReportTests(unittest.TestCase):
         self.assertEqual(bracket["evidence"], {"samples": 1, "pages": [9], "closedList": True, "productsOnly": True})
         self.assertEqual(decide(report, ["house-gates"])["action"], "fail")
         steps.append({"name": "bracket-order-reconciliation", "status": "PASS", "log": "logs/bracket-order-reconciliation.txt"})
-        for measured, action in (({"status": "RECONCILED", "matches": 1, "unbalanced": 0}, "deliver"),
+        # The two G61 rows (Q113, Q43) name questions 11 and 4 and block on their own.
+        for measured, action in (({"status": "RECONCILED", "matches": 1, "unbalanced": 0}, "replace"),
                                  ({"status": "UNBALANCED", "matches": 2, "unbalanced": 1}, "fail"),
                                  ({"status": "RECONCILED", "matches": 0, "unbalanced": 0}, "fail")):
             self.write("logs/bracket-order.json", json.dumps(measured))
             decision = decide(gate_report(self.base, "elementary", steps, 20), ["house-gates"])
             self.assertEqual(decision["action"], action, measured)
-        self.assertEqual([row["code"] for row in decision["blocking"]], ["G51"])
+        self.assertEqual([row["code"] for row in decision["blocking"]], ["G61", "G61", "G51"])
 
     def test_clone_groups_answer_order_and_adapter_refusal(self):
         self.content(3)
@@ -330,9 +331,10 @@ class GateReportTests(unittest.TestCase):
                 self.assertEqual((rows[0]["code"], rows[0]["class"], rows[0].get("question")), (code, kind, question))
                 self.assertEqual(complete, code != "UNREADABLE")
                 self.assertNotIn("private", json.dumps(rows, ensure_ascii=False))
+                # Every line blocks, editorial ones included: it is replaced when it names a question.
                 self.assertEqual(decide({"findings": [r for r in rows if "question" in r],
                                          "unnamed": [r for r in rows if "question" not in r], "complete": complete},
-                                        ["house-gates"])["action"] == "deliver", kind == "editorial")
+                                        ["house-gates"])["action"], "replace" if question is not None else "fail")
         # More findings than the gate printed: the remainder is an unnamed finding.
         rows, _ = parse_house_gates("FAIL — G60-numbers: Q23: מכנה 0; Q31: מכנה 0 …(+3)\nHOUSE GATES: FAIL (1)\n", None)
         self.assertEqual([r.get("question") for r in rows], [2, 3, None])
@@ -341,13 +343,18 @@ class GateReportTests(unittest.TestCase):
                      "FAIL — G61-level: פער קושי 5 > 4 — הדף מערבב רמות (Q23=3 מול Q101=8)\n"):
             self.assertFalse(parse_house_gates(text, None)[1])
 
-    def test_worksheet_page_fill_is_editorial_and_everything_else_blocks(self):
+    def test_worksheet_page_fill_is_editorial_and_blocks_like_everything_else(self):
         fill = "FAIL — page-3.png: near-empty page (ink reaches 12% of height); page-04.png: giant interior gap (52mm of blank rows)\n"
         tail = "=" * 50 + "\nGATE: FAIL — fix and regenerate, DO NOT deliver\n"
         rows, complete = parse_worksheet("PASS — text OK (1977 Hebrew chars, 0 U+FFFD)\n" + fill + tail)
         self.assertEqual([(r["code"], r["class"], r["evidence"]) for r in rows],
                          [("PAGE_FILL", "editorial", {"page": 3}), ("PAGE_GAP", "editorial", {"page": 4})])
         self.assertTrue(complete)
+        # A page finding names no question, so nothing can be replaced: alone or together they fail the render.
+        for found in (rows, rows[:1], rows[1:]):
+            decision = decide({"findings": [], "unnamed": found, "complete": complete}, ["worksheet"])
+            self.assertEqual((decision["action"], [b["code"] for b in decision["blocking"]], decision["reviewFindings"]),
+                             ("fail", [r["code"] for r in found], []))
         cases = {"brand line missing on page(s) [2] — every page must carry 'x'": "WS_BRAND",
                  "3 U+FFFD replacement chars found": "WS_TEXT", "page-1.png: page appears EMPTY": "PAGE_EMPTY",
                  "reversed-Hebrew tokens (broken RTL in SVG?): ['x']": "WS_REVERSED_HEBREW",
@@ -455,39 +462,18 @@ class GateReportTests(unittest.TestCase):
         (self.base / "out/v72-report.json").unlink()
         self.assertEqual(read_gate_report(self.base, 20)["unnamed"][0]["code"], "UNREADABLE")
 
-    def test_blocking_feedback_asks_only_for_the_questions_that_block(self):
+    def test_closed_correction_view_of_recorded_truth_and_house_output(self):
+        # The read_skill_feedback checks of the removed blocking_feedback test, unchanged.
         self.content(3, 12)
-        steps = {"content-truth": "FAIL", "house-gates": "FAIL"}
-        manifest = {"status": "failed", "skill": {"name": "elementary"}, "steps": self.steps(**steps)}
+        manifest = {"status": "failed", "skill": {"name": "elementary"},
+                    "steps": self.steps(**{"content-truth": "FAIL", "house-gates": "FAIL"})}
         self.write("manifest.json", json.dumps(manifest))
         self.write("logs/content-truth.txt", TRUTH_G32)
         self.write("logs/house-gates.txt", HOUSE_G61)
-        rows = blocking_feedback(self.base, 12)
-        # The closed correction view also asks about the two difficulty endpoints; this one does not.
         self.assertEqual([(r["question"], r["codes"]) for r in read_skill_feedback(self.base, 12)],
                          [(2, ["G61"]), (4, ["G32"]), (8, ["G32"]), (10, ["G61"]), (12, ["G32"])])
-        self.assertEqual([(r["question"], r["codes"], r["feedback"]) for r in rows],
-                         [(n, ["G32"], [FEEDBACK["G32"]]) for n in (4, 8, 12)])
-        # Clone and difficulty findings no longer exhaust the six-question budget.
         self.write("logs/house-gates.txt", HOUSE_G61_G62)
         self.assertEqual(read_skill_feedback(self.base, 12), [])
-        self.assertEqual([r["question"] for r in blocking_feedback(self.base, 12)], [4, 8, 12])
-        self.write("logs/content-truth.txt", TRUTH_G32_G33.replace("#16]", "#6]").replace("#20]", "#9]"))
-        self.assertEqual([(r["question"], r["codes"]) for r in blocking_feedback(self.base, 12)],
-                         [(4, ["G32"]), (6, ["G32"]), (9, ["G32", "G33"])])
-        # Nothing is asked when a blocking finding names no question, has no fixed instruction,
-        # or when the sheet is not failed.
-        self.write("logs/house-gates.txt", HOUSE_G51_G61)
-        self.assertEqual(blocking_feedback(self.base, 12), [])
-        self.write("logs/house-gates.txt", "FAIL — G60-numbers: Q23: מכנה 0\nHOUSE GATES: FAIL (1)\n")
-        self.assertEqual(blocking_feedback(self.base, 12), [])
-        self.write("logs/house-gates.txt", HOUSE_G61)
-        self.write("manifest.json", json.dumps({**manifest, "status": "needs_review"}))
-        self.assertEqual(blocking_feedback(self.base, 12), [])
-        self.assertEqual(blocking_feedback(self.base / "missing", 12), [])
-        self.write("manifest.json", json.dumps(manifest))
-        self.write("logs/content-truth.txt", TRUTH_G32.replace("3 blocking", "9 blocking"))
-        self.assertEqual(blocking_feedback(self.base, 12), [])
 
     def test_reconciled_didactic_review_rows_become_teacher_notes(self):
         self.write("logs/didactic-review.json", json.dumps({"status": "REVIEW", "code": "DIDACTIC_REVIEW", "count": 3, "findings": [

@@ -267,7 +267,7 @@ not in `gate_policy.GATES` is truth.
 |---|---|---|
 | truth | the mathematics, the key or its print may be wrong, unverified or unreadable | blocks; replaces the named question, else fails |
 | policy | correct but not allowed here: chronology (G66, G84), drawings outside geometry, signs by grade, niqqud, brand | blocks; same as truth |
-| editorial | G50, G61, G62, page fill, page gap, didactic review, shorter sheet | never blocks; a fixed Hebrew note (`gate_policy.NOTES`) |
+| editorial | G50, G61, G62, page fill, page gap, didactic review, shorter sheet | blocks; same as truth. Only the middle didactic review (already reconciled, `didactic_review.py`) and the shorter sheet (added by the worker) reach the teacher, as a fixed Hebrew note (`gate_policy.NOTES`) |
 
 - `gate_policy.decide` returns `deliver`, `replace` (every blocking finding
   names a question) or `fail`. A timeout, a crash, an unreadable line or an
@@ -283,7 +283,8 @@ not in `gate_policy.GATES` is truth.
 **What the teacher gets** (`remote_worker.process_job`):
 
 - **Delivered:** status `needs_review`, the PDF and the DOCX, and in the result
-  `reviewFindings` (editorial codes, counts, question numbers, the fixed note;
+  `reviewFindings` (the didactic review and shorter-sheet codes, counts,
+  question numbers, the fixed note;
   `gate_policy.public_review_findings`), `teacherNotes` (labels, open items,
   story-typed verdicts and review answers by question and item;
   `gate_policy.public_teacher_notes`), `unverifiedAnswers` counts, and
@@ -309,8 +310,11 @@ runs only when the one before left a deficit.
 3. **A shorter sheet** (`Draft.shorten`, `lesson_select.Selection.shorten`): at
    least `max(6, ⌈3N/4⌉)` questions and two real challenges. The manifest keeps
    the requested count (`salvaged_from`).
-4. **Pre-pass** (elementary, `runner.precheck_job`): named questions are
-   swapped and the ladder settles again; at most `PRECHECK_PASSES` = 2 rounds.
+4. **Pre-pass** (elementary, `runner.precheck_job`, status `clean`, `replace`
+   or `failed`): named questions are swapped and the ladder settles again; at
+   most `PRECHECK_PASSES` = 2 rounds. Questions named by an editorial finding
+   (G61, G62) take the same path, so they may be replaced, corrected or
+   dropped into a shorter sheet (step 3).
 5. **Render** (`runner.render_job`), then `manifest.gate`: `deliver` ends;
    `replace` swaps the named questions and renders once more
    (`FULL_RENDERS` = 2); `fail` goes to step 6.

@@ -8,10 +8,12 @@ Three classes:
   policy     Correct content that the owner's rules do not allow for this
              pupil or lesson: chronology, drawings outside geometry, signs
              by grade, brand lines. Blocks. Acts on one question when named.
-  editorial  Level, variety and page-fill findings a teacher can judge and
-             change in the Word file. Never blocks. Becomes a teacher note
-             on a needs_review sheet.
+  editorial  Level, variety and page-fill findings. Blocks like the other
+             two classes. Acts on one question when the gate output names it.
 
+Every finding blocks, with two exceptions (blocks()): a G51 that
+paren_order.py measured again and reconciled, and a DIDACTIC_REVIEW row of
+the middle-build step that didactic_review.py already reconciled.
 A code that is not in the table is truth, so an unknown outcome blocks.
 The table was read from the two pinned skills (file names below are relative
 to each skill root) and from this engine's own steps.
@@ -26,7 +28,9 @@ MAX_REVIEW_QUESTIONS = 30
 MAX_REVIEW_COUNT = 2000
 
 # Hebrew teacher notes. Only editorial codes have one, and only these fixed
-# sentences ever reach the teacher: gate output is never forwarded.
+# sentences ever reach the teacher: gate output is never forwarded. A delivered
+# sheet can carry only the notes of the codes that do not block a render:
+# DIDACTIC_REVIEW (middle-build) and SHORTER_SHEET (added by the worker).
 NOTES = {
     "G50": "מספר שאלות האתגר (★) בדף אינו בטווח הרגיל של 2 עד 4.",
     "G61": "רמת הקושי בדף אינה אחידה: הפער בין השאלות הקלות לשאלות הקשות גדול מהרגיל, "
@@ -205,10 +209,18 @@ def finding(code, step, question=None, item=None, **evidence):
 
 
 def blocks(row):
-    """Editorial findings and reconciled findings do not block. All else does."""
+    """Every finding blocks, editorial ones included, with two exceptions.
+
+    A reconciled G51 (paren_order.py measured it again). A DIDACTIC_REVIEW row
+    of middle-build: it exists only after didactic_review.py reconciled the
+    pinned driver's REVIEW-only exit and the runner set that step to REVIEW;
+    its delivery follows the runner's own result, and this keeps its
+    per-question teacher note.
+    """
     if row.get("reconciled") is True and row.get("code") in RECONCILABLE:
         return False
-    return not (row.get("class") == EDITORIAL and gate_class(row.get("code")) == EDITORIAL)
+    return not (row.get("code") == "DIDACTIC_REVIEW" and row.get("step") == "middle-build"
+                and row.get("class") == EDITORIAL)
 
 
 def review_findings(rows):
@@ -248,9 +260,9 @@ def decide(report, failed_steps=()):
     names of the steps that did not pass.
 
     action:
-      deliver  nothing blocks. Failed steps carry only editorial or
-               reconciled findings; they become REVIEW and the notes go to
-               the teacher.
+      deliver  nothing blocks. A failed step may carry only a reconciled
+               finding (blocks()); it becomes REVIEW and the note stays in
+               reviewFindings.
       replace  something blocks and every blocking finding names a question.
                ``questions`` lists them; the caller may replace those
                questions and render again.

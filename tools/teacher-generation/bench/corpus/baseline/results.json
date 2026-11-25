@@ -1556,16 +1556,25 @@
        {
         "action": "missing",
         "codes": [
-         "ANSWER_ORDER"
+         "G61"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "precheck"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G61"
         ],
         "group": "practice",
         "question": 11,
-        "stage": "render"
+        "stage": "precheck"
        }
       ],
-      "missing": 1,
+      "missing": 2,
       "planned": 20,
-      "printed": 14,
+      "printed": 13,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -1573,10 +1582,9 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gate": "replace",
-    "gateCode": "ANSWER_ORDER",
-    "question": 9,
-    "stage": "render"
+    "gateCode": "G61",
+    "question": 1,
+    "stage": "precheck"
    },
    "lesson": {
     "domain": "operations",
@@ -1597,9 +1605,14 @@
    "origin": "bench/qwen-fresh-01 (round B)",
    "prechecks": [
     {
-     "codes": [],
-     "questions": [],
-     "status": "review"
+     "codes": [
+      "G61"
+     ],
+     "questions": [
+      1,
+      9
+     ],
+     "status": "replace"
     }
    ],
    "provider": "qwen",
@@ -1659,74 +1672,7 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [
-      {
-       "gate": null,
-       "questions": [],
-       "step": "output-gates",
-       "text": "PDF-answer-LTR FAIL GENERAL_ANSWER_VISUAL_ORDER: 9."
-      },
-      {
-       "gate": "G51",
-       "questions": [],
-       "step": "house-gates",
-       "text": "FAIL — G51-bidi: סוגריים הפוכים סביב תוכן מספרי: p7:') x 4 − (', p8:') x (' — החליפו למספור באותיות עבריות (טיפוס חזק)"
-      },
-      {
-       "gate": "G61",
-       "questions": [
-        1,
-        9
-       ],
-       "step": "house-gates",
-       "text": "FAIL — G61-level: פער קושי 5 > 4 — הדף מערבב רמות (Q12=2 מול Q92=7)"
-      }
-     ],
-     "reviewFindings": [],
-     "skippedChecks": [
-      "worksheet: PASS — pdffonts missing — skipped (warn)",
-      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
-     ],
-     "status": "failed",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "content-truth",
-       "status": "PASS"
-      },
-      {
-       "name": "pdf",
-       "status": "PASS"
-      },
-      {
-       "name": "word",
-       "status": "PASS"
-      },
-      {
-       "name": "worksheet",
-       "status": "PASS"
-      },
-      {
-       "name": "output-gates",
-       "status": "FAIL"
-      },
-      {
-       "name": "house-gates",
-       "status": "FAIL"
-      },
-      {
-       "name": "bracket-order-reconciliation",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -3730,15 +3676,18 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": null,
+     "answered": false,
      "questions": [],
-     "requested": false,
-     "requiredKeys": null
+     "requested": true,
+     "requiredKeys": [
+      "q13",
+      "q17"
+     ]
     },
     "firstPass": {
      "ok": true
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
    "delivered": true,
@@ -3780,24 +3729,22 @@
     ],
     "reviewFindings": [
      {
-      "code": "G62",
-      "count": 4,
-      "note": "כמה סעיפים בדף חוזרים על אותו מבנה תרגיל. אפשר לגוון אותם או להשאיר כתרגול חוזר.",
-      "questions": [
-       13,
-       17
-      ]
+      "code": "SHORTER_SHEET",
+      "count": 2,
+      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
      }
     ],
     "salvage": {
      "attempts": 1,
-     "corrections": 0,
+     "corrections": 1,
      "dropped": {
-      "codes": {},
-      "count": 0
+      "codes": {
+       "G62": 2
+      },
+      "count": 2
      },
      "gate": "deliver",
-     "printedQuestions": 20,
+     "printedQuestions": 18,
      "replaced": {
       "codes": {},
       "count": 0
@@ -3815,11 +3762,30 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 0,
-      "events": [],
+      "dropped": 2,
+      "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "G62"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "precheck"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "G62"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "precheck"
+       }
+      ],
       "missing": 0,
       "planned": 20,
-      "printed": 20,
+      "printed": 18,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -3827,11 +3793,13 @@
     "attempts": 1,
     "byCorrection": 0,
     "byReserve": 0,
-    "correctionFailed": false,
-    "corrections": 0,
-    "dropped": 0,
+    "correctionFailed": true,
+    "corrections": 1,
+    "dropped": 2,
     "gate": "deliver",
-    "printed": 20,
+    "gateCode": "G62",
+    "printed": 18,
+    "question": 13,
     "replaced": 0,
     "stage": "render"
    },
@@ -3854,9 +3822,19 @@
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
    "prechecks": [
     {
+     "codes": [
+      "G62"
+     ],
+     "questions": [
+      13,
+      17
+     ],
+     "status": "replace"
+    },
+    {
      "codes": [],
      "questions": [],
-     "status": "review"
+     "status": "clean"
     }
    ],
    "provider": "gemini",
@@ -3871,19 +3849,6 @@
      "attempt": 1,
      "gateFindings": [],
      "reviewFindings": [
-      {
-       "class": "editorial",
-       "code": "G62",
-       "count": 4,
-       "note": "כמה סעיפים בדף חוזרים על אותו מבנה תרגיל. אפשר לגוון אותם או להשאיר כתרגול חוזר.",
-       "questions": [
-        13,
-        17
-       ],
-       "steps": [
-        "house-gates"
-       ]
-      },
       {
        "class": "reconciled",
        "code": "G51",
@@ -3926,7 +3891,7 @@
       },
       {
        "name": "house-gates",
-       "reason": "EDITORIAL_FINDINGS_ONLY",
+       "reason": "RECONCILED_FINDINGS_ONLY",
        "status": "REVIEW"
       },
       {
@@ -9262,10 +9227,10 @@
    }
   },
   "cases": 35,
-  "correctionsNotRecorded": 26,
+  "correctionsNotRecorded": 27,
   "delivered": 18,
   "deliveredRate": 0.5143,
-  "deliveredShorter": 11,
+  "deliveredShorter": 12,
   "failureClasses": {
    "DELIVERED": 18,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 1,
@@ -9283,11 +9248,8 @@
   },
   "firstRenderGateFindings": {
    "BLOCKING_BUILD_FAILURE": 2,
-   "G51": 1,
-   "G61": 1,
    "G75": 1,
-   "middle-build/selfcheck_noam_package.py": 1,
-   "output-gates": 1
+   "middle-build/selfcheck_noam_package.py": 1
   },
   "modelCalls": 0,
   "outboundConnectionsRefused": 0,

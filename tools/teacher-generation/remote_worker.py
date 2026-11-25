@@ -792,7 +792,8 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
                 findings=(findings if isinstance(findings,list) else [])+[
                     {'code':'SHORTER_SHEET','class':'editorial','count':salvage['dropped']['count']}]
             unverified=unverified_rows(manifest.get('unverifiedAnswers',[])) or []
-            # Editorial findings only: fixed codes, counts, question numbers and
+            # Notes of the editorial codes that do not block (the middle didactic
+            # REVIEW, a shorter sheet): fixed codes, counts, question numbers and
             # this engine's own Hebrew notes. No gate or model text is forwarded.
             result.update(authoringProfile='general-skill-source/v1',renderingChecksPassed=True,
                           reviewFindings=public_review_findings(findings),

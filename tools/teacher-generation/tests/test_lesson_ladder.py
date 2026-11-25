@@ -175,17 +175,20 @@ class LadderTests(unittest.TestCase):
         transport = Scripted(reply)
         outcome, sheets = self.run_job(transport)
         self.assertTrue(outcome['delivered'], outcome.get('code'))
-        # The pinned house gate named question 3 in the pre-pass; a reserve took its place; the second pass is clean.
-        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [3], 'codes': ['G60']},
+        # The pinned house gates named question 3 (G60) and the two ends of the difficulty spread, questions 3 and 4
+        # (G61, which blocks like any other finding) in the pre-pass; reserves took their places; the second pass is clean.
+        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [3, 4], 'codes': ['G60', 'G61']},
                                                 {'status': 'clean', 'questions': [], 'codes': []}])
         self.assertEqual((len(transport.calls), len(sheets)), (1, 1))                   # no model call, one render
         questions = self.printed(sheets[0])
         self.assertEqual(len(questions), 12)
         self.assertNotIn('999999', json.dumps(questions, ensure_ascii=False))
         salvage = outcome['result']['salvage']
-        self.assertEqual((salvage['replaced'], salvage['corrections'], salvage['gate']),
-                         ({'count': 1, 'codes': {'G60': 1}}, 0, 'deliver'))
-        self.assertEqual(outcome['ladder']['attemptRecords'][0]['events'][0]['stage'], 'precheck')
+        self.assertEqual((salvage['replaced'], salvage['dropped'], salvage['corrections'], salvage['gate']),
+                         ({'count': 2, 'codes': {'G60': 1, 'G61': 2}}, {'count': 0, 'codes': {}}, 0, 'deliver'))
+        self.assertEqual([(e['question'], e['codes'], e['stage'], e['action']) for e in outcome['ladder']['attemptRecords'][0]['events']],
+                         [(3, ['G60', 'G61'], 'precheck', 'reserve'), (4, ['G61'], 'precheck', 'reserve')])
+        self.assertEqual(outcome['result']['reviewFindings'], [])
 
     # ------------------------------------------------------------------ one correction
 
