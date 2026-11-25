@@ -3,7 +3,8 @@
 provider.request_author_json is replaced by a scripted fake: it records every request and plays replies, HTTP
 errors or unusable replies in order. Nothing calls a model, nothing deploys. The provider golden
 (golden/provider-golden.json) was recorded by fixtures/v5/make_provider_golden.py at 515ebd5a, before the route
-existed.
+existed. It was re-recorded from the strict base without v5 (local strict-base commit 1db817e0: the elementary
+author prompt no longer allows "לכל"), which changes only the request of v3-d10-unreviewed-listed.
 
 Stage-4 follow-up (2026-11-25): the trusted-flag provenance assertions moved here from test_v5_stage3_hardening
 (restored byte for byte to its 515ebd5a form) and were made stricter; the route needs TEACHER_V5_SITE_READY=1 too;

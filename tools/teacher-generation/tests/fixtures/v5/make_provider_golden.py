@@ -2,7 +2,9 @@
 
 A script, not a test. It was run once against the unmodified code (515ebd5a, before structured_author.py and the
 routing hook existed) and recorded again, twice and byte-equal, against a clean copy of b5577690 (the base after
-#635, which changed the old path's requests); that output is committed as golden/provider-golden.json. test_v5_structured_author.py
+#635, which changed the old path's requests), and once more against the local strict base without v5 (strict-base
+1db817e0, whose elementary author prompt no longer allows "לכל"); that output is committed as
+golden/provider-golden.json. test_v5_structured_author.py
 runs it again against the working tree and requires byte-equal JSON: with the route off (the variable unset or
 empty, or naming other topics) and wherever the route must not apply (an unreviewed overlay, a level the overlay
 does not enable, a version 2 lesson), the provider request and the metadata are exactly the baseline ones.
