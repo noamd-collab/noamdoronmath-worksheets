@@ -10,6 +10,9 @@ call for the missing questions, a shorter sheet, ONE second full author call.
 Per job: at most AUTHOR_CALLS author calls and CORRECTION_CALLS correction
 calls, and no model call starts later than MODEL_CALL_WINDOW seconds after
 the claim. A sheet may fail; it never prints a question that a check refused.
+A worksheet-wire/5 job (the provider's opt-in v5 route) takes no step of this
+ladder: structured_author selects and repairs within its own call budget, and
+the worker renders it with runner.render_structured and uploads its PDF only.
 """
 from __future__ import annotations
 import argparse
@@ -29,7 +32,7 @@ from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPSHand
 from urllib.error import HTTPError
 from provider import author_lesson, safe_transport_measurements, safe_usage
 from gate_policy import public_review_findings, public_teacher_notes, unverified_rows
-from runner import precheck_job, render_job
+from runner import V5_NOT_RUN_ALLOWED, precheck_job, render_job, render_structured
 from skill_feedback import gate_report
 from validation import GenerationError, capabilities, validate_lesson
 from preflight import check as check_readiness
@@ -144,6 +147,131 @@ def safe_validation_detail(value):
     return None
 
 
+STRUCTURED_CONTRACT = 'worksheet-wire/5'
+# D22 (V5-DESIGN §5, §14): Noam approved the SKIP allowlist runner.V5_NOT_RUN_ALLOWED on 2026-11-25 (emit_docx,
+# catalog/landing and gate_sections G85–G92 may stay SKIP on the PDF-only middle render). Such a step is accepted
+# only when it is also listed in notRun; it is never reported as passed, and automatedChecksPassed stays false
+# while anything did not run. Set this back to False to refuse every SKIP. The elementary path never accepts one.
+D22_APPROVED = True
+D22_APPROVAL = {'approvedBy': 'Noam', 'approvedAt': '2026-11-25'}
+STRUCTURED_STAGES = ('author', 'compile', 'repair', 'render', 'acceptance', 'upload')
+_SLOT = re.compile(r'[QR][1-9][0-9]?')
+_CODE = re.compile(r'[A-Z_]{1,60}')
+_HEX64 = re.compile(r'[0-9a-f]{64}')
+_CALL_PURPOSES = ('author', 'reauthor', 'repair_targeted', 'repair_fresh')
+_HTTP_CLASSES = ('bad_request', 'credential_rejected', 'model_not_found', 'rate_limited', 'unavailable',
+                 'server_error', 'http_error')
+
+
+def _bounded_int(value, high):
+    return value if type(value) is int and 0 <= value <= high else None
+
+
+def _safe_codes(values):
+    return sorted({v for v in values if isinstance(v, str) and _CODE.fullmatch(v)})[:16] if isinstance(values, list) else []
+
+
+def safe_structured_record(value):
+    """The worksheet-wire/5 author record (structured_author), allowlisted again field by field: counts, codes,
+    slots, hashes and fixed labels only. No teacher text, model text, prompt or provider body can pass."""
+    value = value if isinstance(value, dict) else {}
+    out = {'version': 1, 'authorContract': STRUCTURED_CONTRACT}
+    for key in ('cardSha256', 'schemaSha256'):
+        if isinstance(value.get(key), str) and _HEX64.fullmatch(value[key]): out[key] = value[key]
+    for key, high in (('repairRounds', 2), ('refusalsTotal', 100000), ('deadlineSeconds', 86400)):
+        if _bounded_int(value.get(key), high) is not None: out[key] = value[key]
+    if type(value.get('reauthored')) is bool: out['reauthored'] = value['reauthored']
+    for key, labels in (('outcome', ('delivered', 'failed')), ('stage', STRUCTURED_STAGES),
+                        ('repairSkipped', ('deadline', 'calls'))):
+        if value.get(key) in labels: out[key] = value[key]
+    if isinstance(value.get('code'), str) and _CODE.fullmatch(value['code']): out['code'] = value['code']
+    calls = []
+    for call in value.get('calls')[:3] if isinstance(value.get('calls'), list) else ():
+        if not isinstance(call, dict) or call.get('purpose') not in _CALL_PURPOSES: continue
+        entry = {'purpose': call['purpose'], 'usage': safe_usage(call.get('usage'))}
+        for key, high in (('ms', 86400000), ('timeoutSeconds', 86400), ('slots', 99)):
+            if _bounded_int(call.get(key), high) is not None: entry[key] = call[key]
+        if call.get('finishReason') in ('stop', 'incomplete'): entry['finishReason'] = call['finishReason']
+        if isinstance(call.get('code'), str) and _CODE.fullmatch(call['code']): entry['code'] = call['code']
+        if type(call.get('httpStatus')) is int and 100 <= call['httpStatus'] <= 599: entry['httpStatus'] = call['httpStatus']
+        if call.get('httpClass') in _HTTP_CLASSES: entry['httpClass'] = call['httpClass']
+        calls.append(entry)
+    out['calls'] = calls
+    questions = value.get('questions')
+    out['questions'] = [q for q in questions if isinstance(q, str) and _SLOT.fullmatch(q)][:32] if isinstance(questions, list) else []
+    refusals = []
+    for row in value.get('refusals')[:64] if isinstance(value.get('refusals'), list) else ():
+        if (isinstance(row, dict) and isinstance(row.get('code'), str) and _CODE.fullmatch(row['code'])
+                and isinstance(row.get('slot'), str) and (row['slot'] == '' or _SLOT.fullmatch(row['slot']))
+                and _bounded_int(row.get('item'), 99) is not None and isinstance(row.get('field'), str)
+                and re.fullmatch(r'(?:[a-z][A-Za-z0-9]{0,23})?', row['field'])):
+            refusals.append({'slot': row['slot'], 'item': row['item'], 'field': row['field'], 'code': row['code']})
+    out['refusals'] = refusals
+    selection = value.get('selection')
+    if isinstance(selection, dict):
+        checked = {key: selection[key] for key in ('requested', 'delivered') if _bounded_int(selection.get(key), 99) is not None}
+        for key in ('replaced', 'dropped'):
+            rows = []
+            for row in selection.get(key)[:32] if isinstance(selection.get(key), list) else ():
+                if not isinstance(row, dict) or not (isinstance(row.get('slot'), str) and _SLOT.fullmatch(row['slot'])): continue
+                entry = {'slot': row['slot'], 'codes': _safe_codes(row.get('codes'))}
+                if key == 'replaced':
+                    if not (isinstance(row.get('by'), str) and (row['by'] == 'REPAIR' or _SLOT.fullmatch(row['by']))): continue
+                    entry['by'] = row['by']
+                rows.append(entry)
+            checked[key] = rows
+        out['selection'] = checked
+    return out
+
+
+def shrink_structured(record):
+    """Halve the first non-empty detail list (refusals, then replaced, then dropped) of a structured record so the
+    8 KB diagnostics file fits; False when nothing is left to drop. Counts (refusalsTotal, requested, delivered)
+    stay, and the record says truncated."""
+    for holder, key in ((record, 'refusals'), (record.get('selection') or {}, 'replaced'),
+                        (record.get('selection') or {}, 'dropped')):
+        rows = holder.get(key)
+        if isinstance(rows, list) and rows:
+            del rows[len(rows) // 2:]
+            record['truncated'] = True
+            return True
+    return False
+
+
+def safe_failure_detail(value):
+    """{stage, questions[, httpStatus]} for the generation_failed log line of a worksheet-wire/5 job, else None."""
+    if not isinstance(value, dict) or value.get('stage') not in STRUCTURED_STAGES:
+        return None
+    questions = value.get('questions')
+    out = {'stage': value['stage'],
+           'questions': [q for q in questions if isinstance(q, str) and _SLOT.fullmatch(q)][:32] if isinstance(questions, list) else []}
+    if type(value.get('httpStatus')) is int and 100 <= value['httpStatus'] <= 599:
+        out['httpStatus'] = value['httpStatus']
+    return out
+
+
+def mark_failure(exc, stage, questions=()):
+    """Give a worksheet-wire/5 failure its stage for the log line, unless the author already named one."""
+    if not isinstance(getattr(exc, 'failure_detail', None), dict):
+        try:
+            exc.failure_detail = {'stage': stage, 'questions': list(questions)}
+        except AttributeError:
+            pass
+    return exc
+
+
+def structured_payload(payload, metadata):
+    """The trusted worksheet-wire/5 result of structured_author, or None on every other author path.
+
+    Only structured_author records authorContract worksheet-wire/5, so a v4 job imports no v5 module here."""
+    if metadata.get('authorContract') != STRUCTURED_CONTRACT:
+        return None
+    from structured_author import StructuredAuthored
+    if not isinstance(payload, StructuredAuthored):
+        raise RuntimeError('AUTHOR_ROUTE_MISMATCH')
+    return payload
+
+
 def save_author_diagnostics(root, job_id, metadata, failure=None):
     """Bounded private operator evidence, kept outside render/upload directories.
 
@@ -182,9 +310,11 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
             'worksheet-parameters/2', 'worksheet-parameters/3', 'worksheet-source/4', 'no-carry-addition/1',
             'triangle-parameters/1', 'division-facts/1', 'square-parameters/1', 'counting-words/1',
             'pythagoras-parameters/1', 'unlike-fractions/1', 'square-introduction/1',
-            'intro-algebra/1', 'intro-arithmetic/1',
+            'intro-algebra/1', 'intro-arithmetic/1', STRUCTURED_CONTRACT,
         ):
             record['authorContract'] = metadata['authorContract']
+        if metadata.get('authorContract') == STRUCTURED_CONTRACT:
+            record['structured'] = safe_structured_record(metadata.get('structured'))
         derivation = metadata.get('derivation')
         if isinstance(derivation, dict) and type(derivation.get('performed')) is bool:
             record['derivationPerformed'] = derivation['performed']
@@ -196,6 +326,8 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         if detail is None and isinstance(failure, GenerationError): detail = safe_validation_detail(str(failure))
         if detail is not None: record['validationDetail'] = detail
         data = (json.dumps(record, ensure_ascii=False, indent=2) + '\n').encode()
+        while len(data) > 8192 and isinstance(record.get('structured'), dict) and shrink_structured(record['structured']):
+            data = (json.dumps(record, ensure_ascii=False, indent=2) + '\n').encode()
         if len(data) > 8192: return False
         folder = root / 'author-diagnostics'
         if folder.is_symlink(): return False
@@ -274,8 +406,10 @@ def failure_detail(error, summary, stage=None):
 
 
 def author_and_render(remote, job, target, lost, enable_skill_revision, *, claimed_at=None, summary=None):
-    """Author and render one job. Returns (manifest, folder that holds the artifacts).
+    """Author and render one job. Returns (manifest, folder that holds the artifacts, structured).
 
+    ``structured`` is the StructuredAuthored result of a worksheet-wire/5 job
+    (rendered with runner.render_structured, no ladder step), else None.
     ``summary``, when a dict, is filled as the job advances: the stage, the
     calls used and what was replaced. ``claimed_at`` is the monotonic time of
     the claim, for MODEL_CALL_WINDOW.
@@ -303,6 +437,17 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
         if lost.is_set():
             raise RuntimeError('JOB_LEASE_LOST')
 
+    def structured_render(structured, render_target):
+        # worksheet-wire/5: runner.render_structured takes the trusted render contract from the
+        # StructuredAuthored result itself; the worker passes none. No correction call follows a v5 render
+        # (its repairs ran inside the author's call budget).
+        try:
+            set_phase('rendering')
+            manifest = render_structured(lesson, structured, render_target)
+        except Exception as exc:
+            raise mark_failure(exc, 'render')
+        return manifest, render_target, structured
+
     if not (lesson.get('version') == 3 and enable_skill_revision):
         # Legacy intake, or the ladder switched off: one author call, one render.
         options = {'timeout': 300} if lesson.get('version') == 3 else {}
@@ -311,16 +456,22 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
                 payload = author_lesson(lesson, metadata=metadata, **options)
             except Exception as exc:
                 author_failure = exc
+                if metadata.get('authorContract') == STRUCTURED_CONTRACT:
+                    mark_failure(exc, 'author')
                 raise
         finally:
             save_diagnostics()
+        structured = structured_payload(payload, metadata)
+        if structured is not None:
+            return structured_render(structured, target)
         set_phase('rendering')
         state['stage'] = 'render'
-        return render_job(lesson, payload, target), target
+        return render_job(lesson, payload, target), target, None
 
     claimed = time.monotonic() if claimed_at is None else claimed_at
     state.update(attempts=0, corrections=0)
     closed = False  # a model call failed without a reply: no further call for this job
+    diagnostics_due = True  # a worksheet-wire/5 job saves its diagnostics before the render
 
     def may_call(kind):
         if closed or time.monotonic() - claimed >= MODEL_CALL_WINDOW:
@@ -363,8 +514,8 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
         return payload
 
     def attempt(number):
-        """One author call and everything that follows it. Returns (manifest, folder) or raises."""
-        nonlocal author_failure
+        """One author call and everything that follows it. Returns (manifest, folder, structured) or raises."""
+        nonlocal author_failure, diagnostics_due
         session = {}
         state['stage'] = 'author'
         try:
@@ -372,6 +523,9 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
             author_failure = None
         except GenerationError as exc:
             author_failure = exc
+            if metadata.get('authorContract') == STRUCTURED_CONTRACT:
+                # worksheet-wire/5 selects and repairs inside structured_author: no ladder step follows.
+                raise mark_failure(exc, 'author')
             draft = session.get('draft')
             if draft is None:
                 exc.session = session
@@ -383,6 +537,17 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
                 failure.session = session
                 raise
             author_failure = None
+        except Exception as exc:
+            if metadata.get('authorContract') == STRUCTURED_CONTRACT:
+                author_failure = exc
+                mark_failure(exc, 'author')
+            raise
+        structured = structured_payload(payload, metadata)
+        if structured is not None:
+            # Persist completed author diagnostics before the potentially long render.
+            save_diagnostics()
+            diagnostics_due = False
+            return structured_render(structured, target)
         draft = session.get('draft')
         requested = lesson['questionCount']
 
@@ -438,7 +603,7 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
                         state.update({key: value for key, value in draft.report().items()
                                       if key in ('replaced', 'dropped', 'printed', 'replacedCodes', 'droppedCodes',
                                                  'byReserve', 'byCorrection')})
-                    return manifest, folder
+                    return manifest, folder, None
                 state['gate'] = gate.get('action') if gate.get('action') in ('replace', 'fail') else 'fail'
                 steps = manifest.get('steps') if isinstance(manifest.get('steps'), list) else []
                 skill = (manifest.get('skill') or {}).get('name') if isinstance(manifest.get('skill'), dict) else None
@@ -471,6 +636,8 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
             try:
                 return attempt(state['attempts'])
             except GenerationError as failure:
+                if metadata.get('authorContract') == STRUCTURED_CONTRACT:
+                    raise  # worksheet-wire/5: structured_author spent its own call budget; no second attempt
                 session = getattr(failure, 'session', {})
                 # A second full attempt: the reply is unusable as a whole, or the ladder ended below the minimum.
                 usable = session.get('replyReceived') is True or (
@@ -483,9 +650,69 @@ def author_and_render(remote, job, target, lost, enable_skill_revision, *, claim
                 metadata.clear()
                 set_phase('authoring')
     finally:
-        calls = {'authorCalls': state.get('attempts'), 'correctionCalls': state.get('corrections')}
-        metadata.update({key: value for key, value in calls.items() if type(value) is int})
-        save_diagnostics()
+        if diagnostics_due:
+            if metadata.get('authorContract') != STRUCTURED_CONTRACT:
+                # A worksheet-wire/5 record lists its own model calls (record['structured']), not the ladder's.
+                calls = {'authorCalls': state.get('attempts'), 'correctionCalls': state.get('corrections')}
+                metadata.update({key: value for key, value in calls.items() if type(value) is int})
+            save_diagnostics()
+
+
+def accepted_step(step, skill, not_run):
+    """The worker's own rule for one step of a worksheet-wire/5 render, independent of the runner's verdict.
+
+    PASS is accepted. A SKIP is accepted only on the middle path, only for a step named in runner.V5_NOT_RUN_ALLOWED
+    and listed in the manifest's notRun, and only once Noam has approved D22 (D22_APPROVED). REVIEW, FAIL, any
+    other status, and every SKIP on the elementary path are refused."""
+    if not isinstance(step, dict) or not isinstance(step.get('name'), str):
+        return False
+    if step.get('status') == 'PASS':
+        return True
+    return (step.get('status') == 'SKIP' and D22_APPROVED is True and skill == 'middle'
+            and step['name'] in V5_NOT_RUN_ALLOWED and step['name'] in not_run)
+
+
+def structured_result(remote, job, manifest, artifact_root, structured):
+    """Accept, upload and describe a worksheet-wire/5 render: the artifacts are exactly [pdf], the render passed
+    every executed step, the manifest names the lesson's own skill, and every step passes accepted_step (PASS, or
+    an approved middle-path SKIP: none while D22 is pending). REVIEW is never accepted. Only sheet.pdf is uploaded.
+    The result carries counts, codes and step names only."""
+    steps = manifest.get('steps')
+    not_run = manifest.get('notRun') if isinstance(manifest.get('notRun'), list) else []
+    artifacts = manifest.get('artifacts')
+    skill = validate_lesson(job['lesson'], allow_legacy=False)['skill']
+    rendered = manifest.get('status') == 'needs_review' and manifest.get('executedChecksPassed') is True
+    executed = (isinstance(steps, list) and bool(steps) and all(accepted_step(s, skill, not_run) for s in steps))
+    if not (rendered and executed and isinstance(manifest.get('skill'), dict)
+            and manifest['skill'].get('name') == skill and isinstance(artifacts, list)
+            and len(artifacts) == 1 and isinstance(artifacts[0], dict) and artifacts[0].get('kind') == 'pdf'
+            and isinstance(artifacts[0].get('path'), str) and isinstance(artifacts[0].get('sha256'), str)):
+        stage = 'render' if manifest.get('status') != 'needs_review' else 'acceptance'
+        raise mark_failure(GenerationError('QUALITY_GATE_FAILED', 'A required output gate failed'), stage)
+    item = artifacts[0]
+    selection = structured.source.get('selection') if isinstance(structured.source.get('selection'), dict) else {}
+    replaced = [{'slot': r['slot'], 'by': r['by'], 'codes': _safe_codes(r.get('codes'))}
+                for r in (selection.get('replaced') or [])[:32]
+                if isinstance(r, dict) and isinstance(r.get('slot'), str) and _SLOT.fullmatch(r['slot'])
+                and isinstance(r.get('by'), str) and (r['by'] == 'REPAIR' or _SLOT.fullmatch(r['by']))]
+    result = {'version': 1, 'automatedChecksPassed': manifest.get('automatedChecksPassed') is True,
+              'humanReviewRequired': True, 'skill': manifest['skill'], 'artifacts': [],
+              'checks': [{'name': s['name'], 'status': s['status']} for s in steps],
+              'authoringProfile': 'general-skill-source/v1', 'authorContract': STRUCTURED_CONTRACT,
+              'renderingChecksPassed': manifest.get('renderingChecksPassed') is True,
+              'notRun': [name for name in not_run if isinstance(name, str)][:64],
+              'questionsRequested': _bounded_int(selection.get('requested'), 99),
+              'questionsDelivered': _bounded_int(selection.get('delivered'), 99), 'replaced': replaced}
+    check_transport(remote)
+    update_job(remote, job, {'phase': 'checking'})
+    if (artifact_root/item['path']).is_symlink(): raise RuntimeError('ARTIFACT_PATH_DENIED')
+    path = (artifact_root/item['path']).resolve()
+    if not path.is_relative_to(artifact_root) or path.is_symlink(): raise RuntimeError('ARTIFACT_PATH_DENIED')
+    blob = path.read_bytes()
+    if not 0 < len(blob) <= ARTIFACT_LIMIT or hashlib.sha256(blob).hexdigest() != item['sha256']: raise RuntimeError('ARTIFACT_HASH_MISMATCH')
+    remote.call('/storage/v1/object/'+BUCKET+'/'+job['owner_id']+'/'+job['id']+'/sheet.pdf', 'POST', raw=blob, mime='application/pdf')
+    result['artifacts'] = [{'kind': 'pdf', 'sha256': item['sha256'], 'bytes': len(blob)}]
+    return result
 
 
 def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISION):
@@ -516,8 +743,20 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
                 lost.set();return
     thread=threading.Thread(target=renew,daemon=True);thread.start()
     try:
-        manifest, artifact_root = author_and_render(remote, job, target, lost, enable_skill_revision,
-                                                    claimed_at=claimed, summary=summary)
+        manifest, artifact_root, structured = author_and_render(remote, job, target, lost, enable_skill_revision,
+                                                                claimed_at=claimed, summary=summary)
+        if structured is not None:
+            # worksheet-wire/5: structured_result alone accepts the render (PDF only, D22, notRun); none of the
+            # acceptance below applies to it.
+            try:
+                if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
+                result = structured_result(remote, job, manifest, artifact_root, structured)
+                if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
+                stop.set();thread.join(timeout=3)
+                update_job(remote,job,{'status':'needs_review','phase':'needs_review','result':result,'lease_token':None,'lease_until':None})
+            except Exception as exc:
+                raise mark_failure(exc, 'upload')
+            return
         stage='acceptance'
         if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
         artifacts=manifest.get('artifacts',[])
@@ -578,7 +817,7 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
     finally: stop.set();thread.join(timeout=3)
 
 def load_env(path):
-    allowed={'QWEN_API_KEY','DASHSCOPE_API_KEY','QWEN_BASE_URL','QWEN_MODEL','TEACHER_GENERATION_SERVICE_KEY','ELEMENTARY_SKILL_PATH','MIDDLE_SKILL_PATH',
+    allowed={'QWEN_API_KEY','DASHSCOPE_API_KEY','QWEN_BASE_URL','QWEN_MODEL','TEACHER_GENERATION_SERVICE_KEY','ELEMENTARY_SKILL_PATH','MIDDLE_SKILL_PATH','TEACHER_V5_TOPICS','TEACHER_V5_SITE_READY',
              # The author switch and the selected provider's own credential and model (provider.author_config).
              'TEACHER_AUTHOR_PROVIDER','GEMINI_API_KEY','GEMINI_MODEL'}
     for line in Path(path).read_text().splitlines():
@@ -641,8 +880,10 @@ def run_worker(args, shutdown):
                     if not re.fullmatch('[A-Z_]{1,60}',code):code='WORKER_FAILED'
                     try:update_job(remote,job,{'status':'failed','phase':'failed','error_code':code,'lease_token':None,'lease_until':None})
                     except Exception:pass
-                    # One line with where it failed: the stage, the question and the gate, when known.
-                    detail=getattr(e,'job_failure',None) or failure_detail(e,None)
+                    # worksheet-wire/5 failures add {stage, questions[, httpStatus]}: codes and slots, never text.
+                    # Any other job: one line with where it failed: the stage, the question and the gate, when known.
+                    detail=(safe_failure_detail(getattr(e,'failure_detail',None))
+                            or getattr(e,'job_failure',None) or failure_detail(e,None))
                     print(json.dumps({'event':'generation_failed','jobId':job.get('id'),'code':code,**detail}),flush=True)
                 else:print(json.dumps({'event':'generation_needs_review','jobId':job['id']}),flush=True)
             if args.once:return

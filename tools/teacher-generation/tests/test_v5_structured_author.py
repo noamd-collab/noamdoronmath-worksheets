@@ -1099,17 +1099,30 @@ class TrustedFlagProvenance(unittest.TestCase):
                           if (isinstance(node, ast.Name) and node.id == "contract")
                           or (isinstance(node, ast.arg) and node.arg == "contract")
                           or (isinstance(node, ast.Attribute) and node.attr == "contract")], [])
-        # The one **splat goes to the author, with the worker's own timeout/revision options only.
-        self.assertEqual([ast.unparse(node) for node in ast.walk(tree) if isinstance(node, ast.Call)
-                          and any(keyword.arg is None for keyword in node.keywords)],
-                         ["author_lesson(lesson, metadata=metadata, **options)"])
-        self.assertEqual(sorted(ast.unparse(node.slice) for node in ast.walk(tree) if isinstance(node, ast.Subscript)
-                                and isinstance(node.ctx, ast.Store) and ast.unparse(node.value) == "options"),
-                         ["'revision'", "'timeout'"])
+        # Three **splats since the rebase onto #635: the author's options, and the salvaged-sheet count that
+        # #635's ladder passes to precheck_job and render_job. Both dicts are literals with fixed keys built in
+        # the worker itself (the author's timeout; salvaged_from from the requested count), so neither can carry
+        # a contract.
+        self.assertEqual(sorted(ast.unparse(node) for node in ast.walk(tree) if isinstance(node, ast.Call)
+                                and any(keyword.arg is None for keyword in node.keywords)),
+                         ["author_lesson(lesson, metadata=metadata, **options)",
+                          "precheck_job(current, payload, folder, **salvage)",
+                          "render_job(current, payload, folder, **salvage)"])
+        self.assertEqual([ast.unparse(node) for node in ast.walk(tree) if isinstance(node, ast.Assign)
+                          and any(isinstance(target, ast.Name) and target.id == "options" for target in node.targets)],
+                         ["options = {'timeout': 300} if lesson.get('version') == 3 else {}"])
+        self.assertEqual([ast.unparse(node) for node in ast.walk(tree) if isinstance(node, ast.Subscript)
+                          and isinstance(node.ctx, ast.Store) and ast.unparse(node.value) in ("options", "salvage")], [])
+        self.assertEqual([ast.unparse(node.value) for node in ast.walk(tree) if isinstance(node, ast.Assign)
+                          and any(isinstance(target, ast.Tuple) and "salvage" in ast.unparse(target)
+                                  for target in node.targets)], ["sheet()", "sheet()"])
+        self.assertEqual([ast.unparse(node) for node in ast.walk(tree) if isinstance(node, ast.Dict)
+                          and any(isinstance(key, ast.Constant) and key.value == "salvaged_from" for key in node.keys)],
+                         ["{'salvaged_from': requested}"])
         renders = sorted(ast.unparse(node) for node in ast.walk(tree) if isinstance(node, ast.Call)
                          and isinstance(node.func, ast.Name) and node.func.id.startswith("render"))
-        self.assertEqual(renders, ["render_job(lesson, payload, render_target)",
-                                   "render_job(lesson, payload, render_target)",
+        self.assertEqual(renders, ["render_job(current, payload, folder, **salvage)",
+                                   "render_job(lesson, payload, target)",
                                    "render_structured(lesson, structured, render_target)"])
 
     def test_render_structured_binds_the_flag_from_the_result_only(self):
@@ -1127,7 +1140,7 @@ class TrustedFlagProvenance(unittest.TestCase):
                           and any(keyword.arg == "contract" for keyword in node.keywords)],
                          ["render_job(lesson, structured.source, workdir, contract=contract)"])
         self.assertEqual(sorted(node.arg for node in ast.walk(tree) if isinstance(node, ast.arg)
-                                and node.arg == "contract"), ["contract", "contract"])   # render_job, _is_v5
+                                and node.arg == "contract"), ["contract"] * 3)   # render_job, _open_job, _is_v5
 
     def test_render_structured_refuses_anything_but_the_structured_result(self):
         structured = sa.StructuredAuthored({"contract": "worksheet-wire/5"}, "worksheet-wire/5")

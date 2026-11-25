@@ -1618,7 +1618,7 @@ def validate_selection(selection, *, lesson, scope, questions) -> None:
     Codes: 1..16 unique registered codes per entry. Every planned position is printed exactly once or
     dropped; the question printed at a position is the last replacement there (or the planned one when
     there is none); star = the group of the row the question was written for; printed order is ordinary
-    questions, then challenges, each by planned position (lesson_select layout)."""
+    questions, then challenges, each by planned position (structured_select layout)."""
     def fail(reason, code="SOURCE_SELECTION"):
         raise SelectionError(code, reason)
 

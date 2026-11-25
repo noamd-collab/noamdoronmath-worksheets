@@ -53,7 +53,7 @@ Four engineers (E1–E4). Each file has exactly one owner. Tests are owned by th
 | `school_math.py` | E1 | new | School grammar, CST, scope rules, kernel conversion, house printer, key builder | stdlib, `math_tasks` |
 | `mistake_models.py` | E1 | new | M1, M2, M3 for `find_error_collect` | `school_math` |
 | `item_kinds.py` | E3 | new | The 4 kinds: compile_item, the IR binding verifiers, templates and layouts | `school_math`, `mistake_models`, `structured_contract`, `math_tasks` |
-| `lesson_select.py` | E3 | new (port) | Port of `B:lesson_select.py` without `soft`/`restore`, with a floor-based minimum and the v5 reserve formula | stdlib |
+| `structured_select.py` | E3 | new (port) | Port of `B:lesson_select.py` without `soft`/`restore`, with a floor-based minimum and the v5 reserve formula. Named `lesson_select.py` until the rebase onto #635, which brought its own `lesson_select.py` for the pre-v5 path | stdlib |
 | `structured_source.py` | E3 | new | Plan → parse wire → compile each question → select → sheet checks → repairs → IR → `validate_source` | everything above, `general_source`, `skill_authoring.question_plan`, `runtime_catalog` |
 | `atom_order.py` | E4 | new | PyMuPDF glyph-run check of every atom on every page, plus the producer check (CLI) | stdlib, `pymupdf` |
 | `v5_offline_render.py` | E4 | new | Offline end-to-end: compile → select → validate → `render_job` → PNG pages | all |
@@ -151,7 +151,7 @@ class PlanRow:
 
 - **Practice rows Q1..Q(N−3).** Their concepts come from `skill_authoring.question_plan(lesson, scope)` rows 1..N−3, the unchanged rotation [V skill_authoring.py:12-28]. For N = 20 that is Q1–Q6 → #0, Q7–Q12 → #1, Q13–Q17 → #2 [V ran `question_plan` on the fixture]. `kinds` = the union of `overlay.conceptKinds[c]` over the row's concepts.
 - **Challenge rows Q(N−2)..QN.** `kinds` = every overlay challenge kind; `concepts` = the concepts those kinds exercise. Stage 2: `("find_error_collect",)`, (#2). This is a deliberate difference from `question_plan`, which rotates challenges over the concepts [V skill_authoring.py:19-21] [I].
-- **Reserves.** `lesson_select.reserve_groups(N)`:
+- **Reserves.** `structured_select.reserve_groups(N)`:
   - practice = max(3, ⌈0.2·(N−3)⌉);
   - challenges = 1 if N < 20, else 2.
   - N=20 → R1–R4 practice (concepts rotate in catalog order: #0, #1, #2, #0), R5–R6 `find_error_collect`.
@@ -562,7 +562,7 @@ def check_display_span(span: dict, overlay) -> None:
     """exact keys; symbols are distinct overlay letters (≤4); notation parses (allow_relation) with letters ⊆ symbols;
     to_kernel of each side passes math_tasks.inspect_ast. Raises BindingError('DISPLAY_INVALID' | 'MATH_SYMBOL_UNDECLARED')."""
 
-# ---------------- lesson_select.py (E3, port of B:lesson_select.py minus soft/restore) ----------------
+# ---------------- structured_select.py (E3, port of B:lesson_select.py minus soft/restore) ----------------
 PRACTICE, CHALLENGES = "practice", "challenges"; MINIMUM_CHALLENGES = 2; NO_QUESTION = "QUESTION_MISSING"
 def reserve_groups(planned: int) -> list[str]:
     """Practice ×max(3, ceil(0.2·(planned−3))), then challenges ×(1 if planned < 20 else 2)."""
@@ -613,7 +613,7 @@ def repair_targets(diagnostics: dict) -> list[dict]:
 
 ## 4. Refusal codes, the per-question pipeline and the exact delivery rule
 
-**Codes.** All match `^[A-Z_]{1,60}$`. Owners: E1 = school_math/mistake_models, E2 = text_lint/leak_checks/contract, E3 = item_kinds/structured_source/lesson_select.
+**Codes.** All match `^[A-Z_]{1,60}$`. Owners: E1 = school_math/mistake_models, E2 = text_lint/leak_checks/contract, E3 = item_kinds/structured_source/structured_select.
 
 | Stage | Codes |
 |---|---|
@@ -674,7 +674,7 @@ Numeric chance matches between questions are allowed by design (the plan §c2).
 
 **Exact delivery rule.** A sheet is delivered if and only if ALL of these hold:
 1. floor ≤ M ≤ N, with floor = `question_floor(grade)` (grades 1–2 → 8, 3–4 → 12, 5–6 → 14, 7–9 → 20) and N = `questionCount`. For this sheet, M = 20, so every slot must be filled. Otherwise SHEET_BELOW_MINIMUM. A shorter sheet arises only when N > floor (D2).
-2. 2 ≤ stars ≤ 4, and stars count only challenge-kind questions (D5 stand-ins print unstarred). Otherwise SHEET_STARS. With N = floor this cannot fire, because lesson_select lets a practice reserve stand in only while 2 real challenges remain; it stays as a defensive check.
+2. 2 ≤ stars ≤ 4, and stars count only challenge-kind questions (D5 stand-ins print unstarred). Otherwise SHEET_STARS. With N = floor this cannot fire, because structured_select lets a practice reserve stand in only while 2 real challenges remain; it stays as a defensive check.
 3. Every selected concept has ≥1 printed question, counted by the row it was written for. Otherwise SHEET_COVERAGE (kept strict; unreachable at N = floor = 20 [I]).
 4. No sheet-level leak or duplicate remains.
 5. `validate_source` (v5) passes.
@@ -785,7 +785,7 @@ Baseline: 389 OK, 1 skip (Tesseract). Every new file below must pass, and the ba
 | `test_v5_mistake_models.py` | E1 | M1/M2/M3 on the §2.7 examples; each precondition failure → MISTAKE_NOT_APPLICABLE; MISTAKE_UNKNOWN |
 | `test_v5_leak_checks.py` | E2 | `pinned_module` hash check (a temp copy with one byte changed → SKILL_HASH_MISMATCH; no sys.path change; no `__pycache__` in the skill dir); `d12_mirror` equals the pinned `f_hit` on the §2.1 probes (refusals and passes, including a later-item hit); the mirror's result is unchanged when `given` lists differ (no exemption); every LEAK_* / DUPLICATE_* rule of §4, with positive and negative cases; the monotonicity property |
 | `test_v5_item_kinds.py` | E3 | Per kind: the §2.1 inputs → the exact §2.6 prompt, task and key; every I1–I6 code (§7 adversarial table); verify_item accepts compile output and refuses tampering (display changed, key off by one, template text changed, wrong result changed, layout reordered); verify_question cases; every template's canonical instance passes `d12_mirror`; code-written strings against the pinned not-yet keywords (subprocess `python3 -I -B` calling the pinned `didactic.curriculum_block`) |
-| `test_v5_lesson_select.py` | E3 | Port of the 17 tests in B:tests/test_lesson_select.py (all except :137 soft-restore and :151 restore), with :36/:43/:158/:176 rewritten for `reserve_groups` and the floor; a table N=8→3+1, 12→3+1, 20→4+2, 30→6+2 |
+| `test_v5_structured_select.py` | E3 | Port of the 17 tests in B:tests/test_lesson_select.py (all except :137 soft-restore and :151 restore), with :36/:43/:158/:176 rewritten for `reserve_groups` and the floor; a table N=8→3+1, 12→3+1, 20→4+2, 30→6+2 |
 | `test_v5_structured_source.py` | E3 | plan_slots for the fixture (§2.3); parse_wire errors; the good reply → 20/20 with replacements exactly Q4→R1, Q9→R2, Q14→R3, Q19→R5, and Q12 trimmed to 3 items; the IR passes validate_source; each adversarial case gives its exact code set; repairs fill a missing slot, while without them → SHEET_BELOW_MINIMUM; SHEET_STARS and SHEET_COVERAGE via crafted Selections; determinism (byte-identical IR twice); diagnostics contain no Hebrew letter and no fixture expression string |
 | `test_v5_general_source.py` | E4 | The compiled IR validates; each v5 addition without the marker → today's codes; v5 refusals: review answer, printTask true, unit ≠ "", key off, binding tamper, selection errors, elementary topic, a topic with no overlay, table present, 7 items, math/formula span, adjacent displays, leak tamper, each with the code in §4 |
 | `test_v5_adapter.py` | E4 | With the pinned middle skill: levels.json grade "כיתה ז׳"; item texts exactly `$3x + 5 + 2x − 1$`, `$4y − y$ עבור $y = −2$`, `מספר הגדול פי $4$ מ־$x$`; answers `$5x + 4$`, `$−6$`; `given == [body]`; to_prove value == answer; no task text; content.py byte-equal to today's constant plus `PACKAGE = "G7-T90"`; `lint_levels(levels) == []`; rich_text raises on an unknown kind |
@@ -901,7 +901,7 @@ Before any container build, the new runtime modules must also be added to the ex
 **Merge order:**
 1. E2: `structured_contract.py`. It is the leaf every module needs.
 2. E4: golden fixtures generated at `bafa36f0`.
-3. In parallel: E1 school_math and mistake_models; E2 text_lint and leak_checks; E3 lesson_select, item_kinds, structured_source and fixtures; E4 atom_order and the hooks.
+3. In parallel: E1 school_math and mistake_models; E2 text_lint and leak_checks; E3 structured_select, item_kinds, structured_source and fixtures; E4 atom_order and the hooks.
 4. Integration: `v5_offline_render.py` on the fixtures. Each step is one commit, ending with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 
 ---
@@ -949,7 +949,7 @@ Tests: `tests/test_v5_stage3_hardening.py` (new). Branch tests touched by this s
    - With the flag, the source must carry the marker (`SOURCE_SHAPE`), and the lesson must be version 3 (`WIRE_SCOPE_UNSUPPORTED`).
    - Any other flag value, or the flag together with `provider=True`, raises `ValueError`. That is a trusted-caller bug, not a refusal.
    - The runner CLI takes no such flag, so it renders no v5 source.
-3. **Container packaging.** The ten v5 modules are in the exact Docker-context allowlist: `atom_order`, `item_kinds`, `leak_checks`, `lesson_select`, `mistake_models`, `school_math`, `structured_contract`, `structured_source`, `text_lint` and `v5_offline_render`.
+3. **Container packaging.** The ten v5 modules are in the exact Docker-context allowlist: `atom_order`, `item_kinds`, `leak_checks`, `structured_select`, `mistake_models`, `school_math`, `structured_contract`, `structured_source`, `text_lint` and `v5_offline_render`.
    - They are listed in `cloud/container/context-files.json` and `cloud/container/Dockerfile.dockerignore`. `cloud/render/Dockerfile.dockerignore` is kept equal to the container list plus its three render lines, as `test_http_supervisor` requires.
    - No data file is needed at runtime beyond what was already shipped (`skill-lock.json`, `generation-curriculum.json`). The pinned skill archives are unchanged.
    - v5 tests and fixtures are not shipped: the image's `unittest discover` runs the shipped baseline tests only.
@@ -1066,7 +1066,7 @@ Tests: `tests/test_v5_structured_author.py` (new, fake `provider.request_author_
 
 1. **`structured_author.author_structured_lesson`.** The system message is `authoring_card`; the user message is a fixed task line plus the teacher's `lastLesson` and `alreadyLearned` as data. The wire schema goes only in `response_format` (strict); `max_tokens` 16000, temperature 0.25, thinking off. The call is the unchanged `provider.request_author_json`. `structured_source.compile_sheet` decides.
    - **Repairs** (plan §b3), at most 2 rounds and 3 model calls per job: round 1 targeted (card, plan rows of the empty slots, one fixed instruction per code from `structured_contract.REPAIR_INSTRUCTIONS`, and as `refused` the question last taken out of the slot), round 2 fresh (card, plan rows, codes; the codes include those of a refused round-1 candidate). Temperature 0.15, `max_tokens = min(6000, 600+450n)`, reply schema `{"Qk": question}` with slot and kind fixed per row. Empty slots are the missing ones of a failed compile and the dropped ones of a shorter sheet; the delivered sheet is the compile with the most questions.
-   - **`refused`** is the reply's own wire question for the slot's last removed occupant, from `lesson_select.Slot.correction_input` via the new `compile_sheet` diagnostics entry `occupants` ({planned slot: {slot, codes}}, slot names and codes only): the planned question, or the reserve that stood in and was then taken out (for example R1 refused by a sheet check for DUPLICATE_TASK is sent as R1 with DUPLICATE_TASK, never as the planned Q4 with a code that was not its own). It is sent only when those codes are exactly the slot's codes and it fits in 2 KB; a slot that never held a question, or whose occupant came from a repair, gets no `refused`.
+   - **`refused`** is the reply's own wire question for the slot's last removed occupant, from `structured_select.Slot.correction_input` via the new `compile_sheet` diagnostics entry `occupants` ({planned slot: {slot, codes}}, slot names and codes only): the planned question, or the reserve that stood in and was then taken out (for example R1 refused by a sheet check for DUPLICATE_TASK is sent as R1 with DUPLICATE_TASK, never as the planned Q4 with a code that was not its own). It is sent only when those codes are exactly the slot's codes and it fits in 2 KB; a slot that never held a question, or whose occupant came from a repair, gets no `refused`.
    - **Unusable first reply** (`PROVIDER_INVALID_RESPONSE`, `PROVIDER_INCOMPLETE`, `PROVIDER_OUTPUT_TOO_LARGE`, `INVALID_MODEL_OUTPUT`, `WIRE_JSON`, `WIRE_SHAPE`, or no slot parsed): round 1 is a full re-author with the same request; a second unusable reply fails the job. An unusable repair reply spends its round.
    - **Provider failures.** HTTP, TLS, network and `http.client` errors (`IncompleteRead`, `RemoteDisconnected`, ...; the last two map to `PROVIDER_UNAVAILABLE`) end the calls. Any other exception the provider function lets through is recorded on its call as `AUTHOR_INTERNAL` and also ends the calls. After any of these in a repair round a sheet that already compiled is delivered; without one the job fails (stage `author` or `repair`).
    - **Internal failures** (an unexpected exception anywhere) are recorded as `AUTHOR_INTERNAL` with the stage they happened in (`author` for setup and the author calls, `compile`, `repair`), and the exception carries the same `{stage, questions}` to the worker's log line (job code `WORKER_FAILED`; `AUTHOR_INTERNAL` stays in metadata).

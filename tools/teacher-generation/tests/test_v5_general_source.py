@@ -71,7 +71,7 @@ class LazyImports(unittest.TestCase):
             "    payload = json.loads((root / name / 'model-output.json').read_text())\n"
             "    validate_model(lesson, payload)\n"
             "    assert not runner._is_v5(payload)\n"
-            "v5 = ('structured_contract', 'school_math', 'item_kinds', 'text_lint', 'leak_checks', 'lesson_select',\n"
+            "v5 = ('structured_contract', 'school_math', 'item_kinds', 'text_lint', 'leak_checks', 'structured_select',\n"
             "      'mistake_models', 'structured_source', 'atom_order')\n"
             "print(json.dumps(sorted(name for name in v5 if name in sys.modules)))\n")
         done = subprocess.run([sys.executable, "-B", "-c", script, str(S.APP)], capture_output=True, text=True,

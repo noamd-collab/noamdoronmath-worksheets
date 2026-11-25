@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 import sys
 
-from general_source import GeneralSourceError, validate_source
+from general_source import V5_CONTRACT, GeneralSourceError, validate_source
 from math_tasks import to_house_math, validate_and_solve_task
 from general_geometry import solve_figure_task, measure_elementary_svg
 from no_carry_addition import needs_printed_task, states_entire_task
@@ -214,6 +214,14 @@ def rich_text(spans, grade, H=None):
             result.append(_formula(span["notation"],grade,H))
         elif span["kind"] == "geometry":
             result.append(_middle_math(_notation(span)))
+        elif span["kind"] == "display":
+            # worksheet-wire/5 only: one display span is exactly one island, printed by the house printer.
+            if H:
+                raise GeneralSourceError("SOURCE_WIRE_SCOPE", "Display spans are printed by the middle skill only")
+            from school_math import display_island
+            result.append(display_island(span))
+        else:
+            raise GeneralSourceError("SOURCE_RICH_TEXT", "Unsupported text span")
     return "".join(result)
 
 
@@ -493,21 +501,51 @@ def _figure(fig, elementary, index, work):
     return svg, path.relative_to(work).as_posix()
 
 
-def compile_source(lesson, validated, scope, skill_path, work, *, printed_answers=None, printed_fractions=False):
+def compile_source(lesson, validated, scope, skill_path, work, *, printed_answers=None, printed_fractions=False,
+                   contract=None):
     """Write skill build inputs. A caller must still run every applicable gate.
 
     ``validated`` is revalidated rather than trusting deserialized evidence.
     Elementary unsupported prose/proof answers require a real Ledger proof and
     are refused before build inputs. Middle-school prose remains explicitly
     unverified; all unchanged proof/didactic gates must still run.
+    ``contract`` is the trusted runner's flag (--contract), passed through to
+    validate_source: a worksheet-wire/5 source compiles only with it.
     """
-    checked = validate_source(lesson, validated["source"], scope)
+    checked = validate_source(lesson, validated["source"], scope, contract=contract)
     source, evidence = checked["source"], checked["evidence"]
     work = Path(work); skill = Path(skill_path)
     work.mkdir(parents=True, exist_ok=True)
     dump(work / "general-source.json", source)
     dump(work / "general-evidence.json", evidence)
     elementary = scope["topic"]["skillId"] == "elementary"
+    v5 = source.get("contract") == V5_CONTRACT
+    if elementary and v5:
+        # validate_source accepted an elementary overlay. With the trusted skill path known here, the final check
+        # also runs the source-side mirror of the pinned G62 clone gate on the exact content.json item strings.
+        import division_kinds
+        from structured_contract import overlay_for
+        overlay = overlay_for(lesson["topicId"], lesson["level"])
+        if not division_kinds.is_elementary(overlay):
+            raise GeneralSourceError("SOURCE_WIRE_SCOPE", "This topic has no elementary worksheet-wire/5 overlay")
+        questions = [q for section in source["sections"] for q in section["questions"]]
+        if division_kinds.clone_hits(questions, skill_path=str(skill), grade_number=lesson["gradeNumber"],
+                                     level=lesson["level"]):
+            raise GeneralSourceError("SOURCE_STRUCTURE", "An item structure repeats beyond the pinned G62 limit")
+    elif v5:
+        # The trusted skill path is known here, so the final check also runs the D12 mirror (pinned f_atoms /
+        # f_hit, no stated-given exemption) that validate_source cannot run without it.
+        import leak_checks
+        from structured_contract import overlay_for
+        overlay = overlay_for(lesson["topicId"], lesson["level"])
+        # A probability overlay has its own leak checks (its D12 mirror reads the question's table cells too).
+        checker = leak_checks.question_leaks
+        if overlay is not None and overlay.get("family") == "probability":
+            import probability_kinds
+            checker = probability_kinds.question_leaks
+        for n, question in enumerate((q for section in source["sections"] for q in section["questions"]), 1):
+            if checker(question, overlay, skill_path=str(skill)):
+                raise GeneralSourceError("SOURCE_LEAK", f"Answer leak at q{n} (pinned D12 mirror)")
     refused = [row for row in evidence["unverifiedAnswers"] if row.get("kind") not in ("label", "open", "decision")]
     if refused and elementary:
         where = re.fullmatch(r"q([1-9][0-9]?)-i([1-9])", refused[0]["itemId"])
@@ -525,7 +563,9 @@ def compile_source(lesson, validated, scope, skill_path, work, *, printed_answer
     # a position the raiser already recorded (question and item) is kept.
     cursor = {"question": None}
     try:
-        if elementary:
+        if elementary and v5:
+            _compile_elementary_v5(lesson, source, evidence, scope, skill, work)
+        elif elementary:
             _compile_elementary(lesson, source, evidence, scope, skill, work, printed_answers=printed_answers, printed_fractions=printed_fractions, cursor=cursor)
         else:
             _compile_middle(lesson, source, evidence, scope, skill, work, cursor=cursor)
@@ -714,8 +754,129 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
     (work / "sheet.html").write_text(head+'\n'.join(body), encoding="utf-8")
 
 
+V5_ELEMENTARY_STYLE = (
+    '<style>.answers span.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block;white-space:nowrap}'
+    'table.drill.v5-drill td{vertical-align:top;text-align:right;width:33%;height:3.2cm}'
+    'table.v5-story{width:100%;border-collapse:separate;border-spacing:0;margin:4px 0 2px}'
+    'table.v5-story td{vertical-align:top;padding:0}td.v5-asks{width:72%}'
+    'td.v5-work{width:28%;height:3.2cm;border:1px dashed #9cb5c8;border-radius:6px}'
+    '.v5-rule{margin:6px 0 10px}</style></head>')
+
+
+def _compile_elementary_v5(lesson, source, evidence, scope, skill, work):
+    """worksheet-wire/5 elementary build inputs: sheet.html through the pinned elementary template, plus
+    content.json, worksheet-source.json and verified.json for the pinned gates. No Word file is written.
+
+    Every number or expression is exactly one LTR atom (the pinned ws_html H.ltr convention), printed with the
+    grade's sign table (school_math.to_elementary: Latin x, a spaced ':', U+2212); Hebrew is escaped prose between
+    atoms. A drill item prints "347 : 5 = ___" (blank inside the atom); a story prints its code-written template and
+    asks. The answer key prints "(n)" markers and the house form "69 שארית 2" (two atoms around the Hebrew word,
+    the order pinned G66 requires) or the plain quotient. Each printed answer is claimed in the Ledger against the
+    pinned div_qr helper, independent of the kernel. The content.json item strings must equal what the G62 mirror
+    read (division_kinds.content_item_text), else SOURCE_STRUCTURE. No vertical long-division drawing (no figure)."""
+    import ws_html as H
+    from content_truth import Ledger, div_qr
+    import division_kinds
+    from school_math import parse, to_elementary
+    from structured_contract import overlay_for
+    overlay = overlay_for(lesson["topicId"], lesson["level"])
+    grade = LETTERS[lesson["gradeNumber"] - 1]
+    ab = lesson["gradeNumber"] <= 2
+    level_letter = {"a": "א", "b": "ב", "e": "מצוינות"}[lesson["level"]]
+    solved = {row["itemId"]: row["computed"] for row in evidence["computations"]}
+    ledger = Ledger(str(work / "verified.json"))
+
+    def atom(text):
+        return H.ltr(html.escape(text))
+
+    def spans_html(spans):
+        out = []
+        for span in spans:
+            if span["kind"] == "text":
+                out.append(html.escape(span["text"]))
+            else:
+                out.append(atom(to_elementary(parse(span["notation"], letters=(), allow_relation=True), grade)))
+        return "".join(out)
+
+    qs, canon, n = [], [], 0
+    for section in source["sections"]:
+        for question in section["questions"]:
+            n += 1
+            kind = question["items"][0]["answer"]["key"]["binding"]["kind"]
+            intro = spans_html(question["intro"])
+            pieces, items, answers, source_items, cells = [], [], [], [], []
+            for j, item in enumerate(question["items"], 1):
+                item_id = f"q{n}-i{j}"
+                computed = solved[item_id]
+                if kind == division_kinds.DRILL:
+                    body = H.ltr(html.escape(division_kinds.drill_atom(item, grade)) + " = " + H.blank("2.6cm"))
+                    cells.append('<td><b>' + LETTERS[j - 1] + '.</b> ' + body + '</td>')
+                else:
+                    # The ask and its answer blank on one line; the story's long division goes in the work area.
+                    body = spans_html(item["prompt"]) + " " + H.blank("1.6cm")
+                    pieces.append('<div class="sub">' + LETTERS[j - 1] + '. ' + body + '</div>')
+                plain = H.plain(body)
+                if plain != division_kinds.content_item_text(item, grade):
+                    raise GeneralSourceError("SOURCE_STRUCTURE", "A printed item differs from its mirrored text")
+                dividend, divisor = division_kinds.task_pair(item["answer"]["task"])
+                quotient, remainder = div_qr(dividend, divisor)
+                kernel = computed["result"]
+                agrees = (quotient, remainder) == (kernel["quotient"]["numerator"], kernel["remainder"]["numerator"])
+                ledger.claim(f"{n}.{j}", division_kinds.LEDGER_STATEMENT,
+                             (agrees, {"dividend": dividend, "divisor": divisor, "quotient": quotient,
+                                       "remainder": remainder}), method="closed_form")
+                parts = division_kinds.key_parts(item, grade, overlay)
+                answer = (html.escape(parts[0][1]) if len(parts) == 1 else
+                          "".join(atom(value) if part == "atom" else html.escape(value) for part, value in parts))
+                answers.append(answer)
+                items.append(plain)
+                source_items.append({"id": item_id, "label": LETTERS[j - 1], "text": plain,
+                                     "answer": "".join(value for _, value in parts), "task": computed["question"],
+                                     "verificationId": f"{n}.{j}"})
+            if cells:
+                pieces = ['<table class="drill v5-drill"><tr>' + "".join(cells) + '</tr></table>']
+            else:
+                # An empty work area beside the asks (a dashed frame, no drawing: not a geometry page).
+                pieces = ['<table class="v5-story"><tr><td class="v5-asks">' + "".join(pieces)
+                          + '</td><td class="v5-work"></td></tr></table>']
+            q = {"n": str(n), "intro": H.plain(intro), "items": items, "answer": H.plain(H.keyed(answers)),
+                 "star": question["star"]}
+            qs.append((q, intro, "".join(pieces), H.keyed(answers)))
+            canon.append({"id": f"q{n}", "n": n, "section": section["title"], "conceptIds": section["conceptIds"],
+                          "intro": question["intro"], "items": source_items})
+    ledger.save()
+    meta = {"band": "elementary-ab" if ab else "elementary", "grade": grade, "level": level_letter,
+            "topic": source["title"], "topic_id": scope["topic"]["sourceTopicId"], "domain": scope["topic"]["domain"]}
+    dump(work / "content.json", {"meta": meta, "questions": [q[0] for q in qs]})
+    source_meta = {**meta, "gradeNumber": lesson["gradeNumber"], "levelCode": {"a": "A", "b": "B", "e": "E"}[lesson["level"]],
+                   "topicId": lesson["topicId"], "contract": V5_CONTRACT}
+    dump(work / "worksheet-source.json", {"version": 4, "meta": source_meta, "questions": canon, "reviewRequired": True})
+    template = (skill / "assets/worksheet_template_elementary.html").read_text(encoding="utf-8")
+    head = template.split("<body", 1)[0].replace('</head>', V5_ELEMENTARY_STYLE, 1)
+    body = ['<body class="' + ('band-ab' if ab else 'band-gd' if lesson["gradeNumber"] <= 4 else 'band-hv') + '">',
+            '<div class="unit">' + html.escape(source["title"]) + '</div><hr class="unit-rule">',
+            '<div class="subtitle">' + LEVELS[lesson["level"]] + ' · כיתה ' + grade + '׳</div>',
+            '<div class="details"><span>שם: ____________________</span><span>כיתה: ________</span>'
+            '<span>תאריך: __________</span></div>',
+            '<div class="reminder v5-rule">' + spans_html(source["rule"]) + '</div>', '<ol class="questions">']
+    for index, (q, intro, rendered, _) in enumerate(qs):
+        # Four questions to a page (as the closed elementary adapter balances its pages): no question page is
+        # near-empty for the pinned page-fill check, and no page overflows.
+        page_break = ' style="break-before:page"' if index and index % 4 == 0 else ''
+        body.append('<li' + (' class="starred"' if q["star"] else '') + page_break + '>'
+                    + ('<span class="star"></span> ' if q["star"] else '') + intro + rendered + '</li>')
+    body += ['</ol><div class="goodluck">' + ('בְּהַצְלָחָה!' if ab else 'בהצלחה!') + '</div>',
+             '<div class="answers"><h2>' + ('תְּשׁוּבוֹת סוֹפִיּוֹת' if ab else 'תשובות סופיות') + '</h2><table class="ans">']
+    for q, _, _, answer in qs:
+        # worksheet-wire/5 only: the key column prints the house marker "(n)" as one LTR atom (D10).
+        body.append('<tr><td class="qn">' + H.ltr("(" + q["n"] + ")") + '</td><td>' + answer + '</td></tr>')
+    body.append('</table></div></body></html>')
+    (work / "sheet.html").write_text(head + '\n'.join(body), encoding="utf-8")
+
+
 def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None):
     cursor = {} if cursor is None else cursor  # compile_source reads the question being compiled
+    v5 = source.get("contract") == V5_CONTRACT
     solved = {row["itemId"]: row["computed"] for row in evidence["computations"]}
     qs, answers, canon, n = [], [], [], 0
     words_share={}
@@ -728,7 +889,7 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
             intro = rich_text(question["intro"], lesson["gradeNumber"])
             q = {"n": n, "intro": intro, "star": question["star"], "items": items, "to_prove": []}
             solutions = [solved.get(f"q{n}-i{j}") for j in range(1, len(question["items"]) + 1)]
-            bank = matching_solution_choices(question, solutions, lesson["gradeNumber"])
+            bank = None if v5 else matching_solution_choices(question, solutions, lesson["gradeNumber"])
             if bank:
                 options, reused = bank
                 q["given"] = [rich_text([option], lesson["gradeNumber"]) for option in options]
@@ -754,17 +915,21 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
             for j, item in enumerate(question["items"], 1):
                 item_id = f"q{n}-i{j}"; computed = solved.get(item_id)
                 prompt = rich_text(item["prompt"], lesson["gradeNumber"])
-                try:
-                    printed = (percentage_evidence(lesson, question["intro"], item, computed)
-                               or printed_table_row(question, item, computed))
-                    bound = match_printed_task(item, computed, lesson["gradeNumber"])
-                    label = printed_solve(item["prompt"], computed["question"], lesson["gradeNumber"]) if computed else None
-                    sign = comparison_blank(item, computed, lesson["gradeNumber"]) if computed else None
-                    calculation = printed_calculation(question, item, computed, lesson["gradeNumber"]) if computed else None
-                    decision = bind_decision(question, item, computed, lesson["gradeNumber"]) if computed else None
-                except GeneralSourceError as error:
-                    # A later stage replaces exactly this question.
-                    raise error.at(n, j)
+                if v5:
+                    # No legacy prose binders: the display is the task (item_kinds.verify_item proved it).
+                    printed = bound = label = sign = calculation = decision = None
+                else:
+                    try:
+                        printed = (percentage_evidence(lesson, question["intro"], item, computed)
+                                   or printed_table_row(question, item, computed))
+                        bound = match_printed_task(item, computed, lesson["gradeNumber"])
+                        label = printed_solve(item["prompt"], computed["question"], lesson["gradeNumber"]) if computed else None
+                        sign = comparison_blank(item, computed, lesson["gradeNumber"]) if computed else None
+                        calculation = printed_calculation(question, item, computed, lesson["gradeNumber"]) if computed else None
+                        decision = bind_decision(question, item, computed, lesson["gradeNumber"]) if computed else None
+                    except GeneralSourceError as error:
+                        # A later stage replaces exactly this question.
+                        raise error.at(n, j)
                 if isinstance(label, str) and label != computed["question"]["variable"]:
                     # Use the original, verified variable in the answer, its conditions and the skill targets.
                     computed = deepcopy(computed)
@@ -788,19 +953,24 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
                     printed = decision.proof
                 if printed:
                     printed_checks[item_id] = printed
-                show_task = (computed and not printed and not _prints_calculation(item, computed, lesson["gradeNumber"])
-                             and shows_task(question, item, computed))
-                body = prompt+(" "+_task_text(computed, lesson["gradeNumber"], notation=item["answer"].get("notation")) if show_task else "")
-                # The key prints only the solutions that the item's words ask for.
-                keyed = narrowed(computed, chosen_solutions(question, item, computed)) if computed and not decision else computed
-                answer = _answer_text(keyed, item["answer"]["unit"], lesson["gradeNumber"], original_variable=label, notation=item["answer"].get("notation"),
-                                      forms=answer_form(question, item, computed), sides=sign["sides"] if sign else None) if computed and not decision else rich_text(item["answer"]["text"], lesson["gradeNumber"]) if not computed else _decision_text(decision, lesson["gradeNumber"])
+                if v5:
+                    # printTask is false: the prompt alone prints; the key comes from the house key printer.
+                    from school_math import key_island
+                    body, answer = prompt, key_island(item["answer"]["key"])
+                else:
+                    show_task = (computed and not printed and not _prints_calculation(item, computed, lesson["gradeNumber"])
+                                 and shows_task(question, item, computed))
+                    body = prompt+(" "+_task_text(computed, lesson["gradeNumber"], notation=item["answer"].get("notation")) if show_task else "")
+                    # The key prints only the solutions that the item's words ask for.
+                    keyed = narrowed(computed, chosen_solutions(question, item, computed)) if computed and not decision else computed
+                    answer = _answer_text(keyed, item["answer"]["unit"], lesson["gradeNumber"], original_variable=label, notation=item["answer"].get("notation"),
+                                          forms=answer_form(question, item, computed), sides=sign["sides"] if sign else None) if computed and not decision else rich_text(item["answer"]["text"], lesson["gradeNumber"]) if not computed else _decision_text(decision, lesson["gradeNumber"])
                 if bound and bound.label:
                     answer = bound.label + " (" + answer + ")"
                 space=280 if question.get("drawingFromWords") and j==len(question["items"]) else 46 if question["star"] else 32
                 # The item's stated givens. Without a printed task, the numbers of a
                 # shared story live in the intro, and the pinned checks must see them there.
-                given = [body] if show_task or not computed or not carries_data(question["intro"]) else [body, intro]
+                given = [body] if v5 or show_task or not computed or not carries_data(question["intro"]) else [body, intro]
                 row = {"label": LETTERS[j-1], "text": body, "space": space, "answer": answer, "given": given, "to_prove": []}
                 result = computed["result"] if computed else {}
                 if result.get("classification") == "finite" and result.get("variable"):
@@ -823,12 +993,18 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
     from general_source import geometry_topic
     figure_topic = True if geometry_topic(scope) else [False, "הנושא אינו גיאומטריה; הוראת נועם אוסרת שרטוטים בנושא זה"]
     level = {"level": LEVELS[lesson["level"]], "key": {"a":"a", "b":"b", "e":"c"}[lesson["level"]], "grade": str(lesson["gradeNumber"]), "keep_questions": True, "figure_topic": figure_topic, "title": source["title"], "rule": rich_text(source["rule"], lesson["gradeNumber"]), "questions": qs, "answers": answers, "curriculum": {"topic":scope["topic"]["sourceTopicId"], "track":scope["topic"]["sourceTrack"]}}
+    if v5:
+        from structured_contract import GRADE_LINE
+        level["grade"] = GRADE_LINE[lesson["gradeNumber"]]
     if words_share:
         # JSON object keys are strings; trusted bridge restores integer ids
         # expected by the pinned skill. Model text is never Python source.
         level["words_share"]={str(k):v for k,v in words_share.items()}
     dump(work / "levels.json", [level])
-    dump(work / "worksheet-source.json", {"version":4, "meta":{"gradeNumber":lesson["gradeNumber"], "levelCode":lesson["level"], "topicId":lesson["topicId"]}, "questions":canon, "reviewRequired":True})
+    meta = {"gradeNumber":lesson["gradeNumber"], "levelCode":lesson["level"], "topicId":lesson["topicId"]}
+    if v5:
+        meta["contract"] = V5_CONTRACT
+    dump(work / "worksheet-source.json", {"version":4, "meta":meta, "questions":canon, "reviewRequired":True})
     verification = {"version":1, "scope":"typed tasks only", "computations":evidence["computations"], "proseReviewRequired":True}
     if printed_checks:
         verification.update(scope="typed tasks and checked printed givens", printedChecks=printed_checks)
@@ -849,7 +1025,10 @@ def _main(args, wd):
     import fraction_lesson
     import counting_lesson
     from triangle_lesson import VERSION, compile_triangle
-    if payload.get("version") == fraction_lesson.VERSION:
+    if args.contract is not None:
+        result = compile_source(lesson, validate_source(lesson, payload, scope, contract=args.contract), scope,
+                                args.skill, wd, contract=args.contract)
+    elif payload.get("version") == fraction_lesson.VERSION:
         result = fraction_lesson.compile_fractions(lesson, payload, scope, args.skill, wd)
     elif payload.get("version") == counting_lesson.VERSION:
         result = counting_lesson.compile_counting(lesson, payload, scope, args.skill, wd)
@@ -868,6 +1047,9 @@ def _main(args, wd):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); ap.add_argument("--skill", required=True); ap.add_argument("--work", required=True)
+    # Trusted runner flag only (runner.render_job(contract=...)): model-output.json's own root marker never
+    # selects worksheet-wire/5; without the flag such a payload stays SOURCE_SHAPE, as before v5.
+    ap.add_argument("--contract", choices=(V5_CONTRACT,))
     args = ap.parse_args(); wd = Path(args.work)
     try:
         _main(args, wd)

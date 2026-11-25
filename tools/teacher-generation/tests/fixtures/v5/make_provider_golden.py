@@ -1,7 +1,8 @@
 """Record what provider.author_lesson sends and returns on every path the TEACHER_V5_TOPICS route must leave alone.
 
 A script, not a test. It was run once against the unmodified code (515ebd5a, before structured_author.py and the
-routing hook existed) and its output is committed as golden/provider-golden.json. test_v5_structured_author.py
+routing hook existed) and recorded again, twice and byte-equal, against a clean copy of b5577690 (the base after
+#635, which changed the old path's requests); that output is committed as golden/provider-golden.json. test_v5_structured_author.py
 runs it again against the working tree and requires byte-equal JSON: with the route off (the variable unset or
 empty, or naming other topics) and wherever the route must not apply (an unreviewed overlay, a level the overlay
 does not enable, a version 2 lesson), the provider request and the metadata are exactly the baseline ones.

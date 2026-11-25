@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import v5_support as S  # noqa: E402
-import lesson_select  # noqa: E402
+import structured_select as lesson_select  # noqa: E402
 import structured_source as ss  # noqa: E402
 from structured_contract import PlanRow  # noqa: E402
 

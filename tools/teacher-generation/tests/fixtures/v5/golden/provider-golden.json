@@ -31,8 +31,8 @@
     "v3-d10-unreviewed-listed": {
       "calls": [
         {
-          "bodyBytes": 150896,
-          "bodySha256": "ae0e223857d5c100a5a550631890c0fce737ab128a0286e57eb4f3f2460aaaf1",
+          "bodyBytes": 159842,
+          "bodySha256": "1876d209b4a49ed878c133d35a2fbca6c58f0a0ef63a529dffb2c79b9658b9ab",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -45,8 +45,8 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "ae0e223857d5c100a5a550631890c0fce737ab128a0286e57eb4f3f2460aaaf1",
-        "requestSchemaSha256": "ca12482f37faee0bf158fa7710546e83b139ab8b88675979a16342d49e707098",
+        "requestBodySha256": "1876d209b4a49ed878c133d35a2fbca6c58f0a0ef63a529dffb2c79b9658b9ab",
+        "requestSchemaSha256": "2b7cb1b388a17e645e4cbd83a38b3d66694703b32c507f4fb85d5ced0e7a433e",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
         "validated": false
@@ -56,8 +56,8 @@
     "v3-g7-empty": {
       "calls": [
         {
-          "bodyBytes": 245210,
-          "bodySha256": "2f337553feaccdb9e72fe8ccdca6ef09dfa2132712fc61f6f5c57b4684b58185",
+          "bodyBytes": 252896,
+          "bodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -70,8 +70,8 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "2f337553feaccdb9e72fe8ccdca6ef09dfa2132712fc61f6f5c57b4684b58185",
-        "requestSchemaSha256": "7c7a9c1e387307096dfc8e3535353b34ace4a02c8680282719474b4669518aeb",
+        "requestBodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
+        "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
         "validated": false
@@ -81,8 +81,8 @@
     "v3-g7-level-not-enabled": {
       "calls": [
         {
-          "bodyBytes": 245210,
-          "bodySha256": "9d762715554ac119c512e428db8934bae20e44b8ef7f435f6bc9bcd2553b068f",
+          "bodyBytes": 252896,
+          "bodySha256": "47cf366c1d23e98ab12d5ed56eebbb9f19b41316dfe8afd734b5bbfb652d5e63",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -95,8 +95,8 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "9d762715554ac119c512e428db8934bae20e44b8ef7f435f6bc9bcd2553b068f",
-        "requestSchemaSha256": "7c7a9c1e387307096dfc8e3535353b34ace4a02c8680282719474b4669518aeb",
+        "requestBodySha256": "47cf366c1d23e98ab12d5ed56eebbb9f19b41316dfe8afd734b5bbfb652d5e63",
+        "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
         "validated": false
@@ -106,8 +106,8 @@
     "v3-g7-other-topics": {
       "calls": [
         {
-          "bodyBytes": 245210,
-          "bodySha256": "2f337553feaccdb9e72fe8ccdca6ef09dfa2132712fc61f6f5c57b4684b58185",
+          "bodyBytes": 252896,
+          "bodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -120,8 +120,8 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "2f337553feaccdb9e72fe8ccdca6ef09dfa2132712fc61f6f5c57b4684b58185",
-        "requestSchemaSha256": "7c7a9c1e387307096dfc8e3535353b34ace4a02c8680282719474b4669518aeb",
+        "requestBodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
+        "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
         "validated": false
@@ -131,8 +131,8 @@
     "v3-g7-unset": {
       "calls": [
         {
-          "bodyBytes": 245210,
-          "bodySha256": "2f337553feaccdb9e72fe8ccdca6ef09dfa2132712fc61f6f5c57b4684b58185",
+          "bodyBytes": 252896,
+          "bodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -145,8 +145,8 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "2f337553feaccdb9e72fe8ccdca6ef09dfa2132712fc61f6f5c57b4684b58185",
-        "requestSchemaSha256": "7c7a9c1e387307096dfc8e3535353b34ace4a02c8680282719474b4669518aeb",
+        "requestBodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
+        "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
         "validated": false
@@ -156,8 +156,8 @@
     "v3-g9r-unreviewed-listed": {
       "calls": [
         {
-          "bodyBytes": 221306,
-          "bodySha256": "b006345ff2fcce898ad48a11be69e4b2678566624733af1cf669d4fe5887c19c",
+          "bodyBytes": 228945,
+          "bodySha256": "6e18ff8aad8ffea20b9f4e3e054c68e2feba9922dfd6549a049d17f805888333",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -170,8 +170,8 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "b006345ff2fcce898ad48a11be69e4b2678566624733af1cf669d4fe5887c19c",
-        "requestSchemaSha256": "6ba950fe871727d0811b3e73919f84a7605f0e9d9d64b7cd768202711136565c",
+        "requestBodySha256": "6e18ff8aad8ffea20b9f4e3e054c68e2feba9922dfd6549a049d17f805888333",
+        "requestSchemaSha256": "46ce44a9a058891140da6e6c9f4c53570162927c40c53b3af396c774753c0dbf",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
         "validated": false

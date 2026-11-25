@@ -170,7 +170,7 @@ class CodeRegistryTests(unittest.TestCase):
         for code in ("EXAMPLE_COPY", "SKILL_HASH_MISMATCH", "SKILL_MODULE_NOT_STDLIB", "QUESTION_MISSING",
                      "MISTAKE_UNMODELED", "MISTAKE_NOT_APPLICABLE", "MISTAKE_UNKNOWN"):
             self.assertIn(code, sc.CODES)
-        # lesson_select falls back to REJECTED only when a caller passes no codes: a record carrying it is a
+        # structured_select falls back to REJECTED only when a caller passes no codes: a record carrying it is a
         # caller bug, so it stays unregistered and validate_selection refuses it.
         self.assertNotIn("REJECTED", sc.CODES)
 
@@ -326,9 +326,9 @@ class PlanTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 sc.reserve_groups(bad)
 
-    def test_reserve_groups_agree_with_lesson_select(self):
+    def test_reserve_groups_agree_with_structured_select(self):
         # One formula in two modules (the contract's plan rows and the selection port) must never drift.
-        import lesson_select
+        import structured_select as lesson_select
         self.assertEqual((sc.PRACTICE, sc.CHALLENGES), (lesson_select.PRACTICE, lesson_select.CHALLENGES))
         self.assertIn(lesson_select.NO_QUESTION, sc.CODES)
         for planned in range(4, 100):

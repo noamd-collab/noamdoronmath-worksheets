@@ -793,6 +793,32 @@ def _decide_task(task):
                       "exact comparison, integer division or list membership of closed numeric expressions")
 
 
+def _divide_remainder_task(task):
+    """Whole-number division with remainder: {dividend, divisor} → {quotient, remainder}.
+
+    Both operands are positive integer number literals (bounded by inspect_ast) and the divisor is at least 2.
+    The result is re-checked against the defining identity dividend = quotient · divisor + remainder with
+    0 ≤ remainder < divisor before it is returned (UNVERIFIED_SOLUTION otherwise). Only worksheet-wire/5
+    elementary sources use this kind; general_source keeps refusing it on the v4 path exactly as before."""
+    exact(task, ("kind", "dividend", "divisor"), "division with remainder")
+    operands = []
+    for key in ("dividend", "divisor"):
+        value = task[key]
+        inspect_ast(value)
+        if value["type"] != "number" or value["denominator"] != 1 or value["numerator"] <= 0:
+            fail("INVALID_TASK", "Division with remainder needs two positive integers")
+        operands.append(value["numerator"])
+    dividend, divisor = operands
+    if divisor < 2:
+        fail("INVALID_TASK", "Division with remainder needs a divisor of at least two")
+    quotient, remainder = divmod(dividend, divisor)
+    if quotient * divisor + remainder != dividend or not 0 <= remainder < divisor or quotient < 0:
+        fail("UNVERIFIED_SOLUTION", "Division with remainder failed its identity check")
+    return _pack_task(task, f"{dividend}:{divisor}", set(), [],
+                      {"type": "quotient_remainder", "quotient": number(quotient), "remainder": number(remainder)},
+                      "whole-number division: dividend = quotient · divisor + remainder, 0 ≤ remainder < divisor")
+
+
 def validate_and_solve_task(task) -> dict:
     """Validate a closed task and compute its exact answer; no provider/IO calls.
 
@@ -804,6 +830,8 @@ def validate_and_solve_task(task) -> dict:
     ``statistics`` with 1..64 literal rationals and mean/median/mode/range/sort.
     ``decide`` a closed claim ``relation/left/right`` (or ``values`` for a
     list); its result is ``holds``, never an authored yes or no.
+    ``divide_remainder`` with positive integer ``dividend``/``divisor`` (divisor ≥ 2) returns
+    {"type": "quotient_remainder", "quotient", "remainder"} (worksheet-wire/5 elementary only).
     Returned ``domain`` restrictions always apply to the original task.
     """
     if type(task) is not dict or type(task.get("kind")) is not str:
@@ -823,6 +851,8 @@ def validate_and_solve_task(task) -> dict:
         integer(answer,MAX_RESULT_INTEGER,"integer pair result")
         return _pack_task(task,f"{kind}({a},{b})",set(),[],
                           {"type":"expression","value":number(answer)},"Euclidean algorithm")
+    if kind == "divide_remainder":
+        return _divide_remainder_task(task)
     if kind in ("solve_system", "inequality", "statistics", "decide"):
         return {"solve_system": _solve_system_task, "inequality": _inequality_task, "statistics": _statistics_task,
                 "decide": _decide_task}[kind](task)

@@ -373,6 +373,7 @@
      }
     ],
     "topicId": "ד12",
+    "unverifiedAnswers": [],
     "version": 1
    }
   },
@@ -455,6 +456,20 @@
     "artifacts": [],
     "authoringProfile": "general-skill-source/v1",
     "automatedChecksPassed": false,
+    "gate": {
+     "action": "fail",
+     "blocking": [
+      {
+       "class": "truth",
+       "code": "UNREADABLE",
+       "step": "house-gates"
+      }
+     ],
+     "complete": false,
+     "questions": [],
+     "review": [],
+     "version": 1
+    },
     "gradeNumber": 4,
     "legacyIntakeOffline": false,
     "lessonBoundary": {
@@ -522,6 +537,7 @@
      }
     ],
     "topicId": "ד12",
+    "unverifiedAnswers": [],
     "version": 1
    }
   },
@@ -597,6 +613,7 @@
      }
     ],
     "topicId": "g9r:quad_func_and_eq",
+    "unverifiedAnswers": [],
     "version": 1
    }
   },
@@ -634,6 +651,20 @@
     "artifacts": [],
     "authoringProfile": "general-skill-source/v1",
     "automatedChecksPassed": false,
+    "gate": {
+     "action": "fail",
+     "blocking": [
+      {
+       "class": "truth",
+       "code": "UNREADABLE",
+       "step": "middle-build"
+      }
+     ],
+     "complete": false,
+     "questions": [],
+     "review": [],
+     "version": 1
+    },
     "gradeNumber": 9,
     "legacyIntakeOffline": false,
     "lessonBoundary": {
@@ -678,6 +709,7 @@
      }
     ],
     "topicId": "g9r:quad_func_and_eq",
+    "unverifiedAnswers": [],
     "version": 1
    }
   },
@@ -726,6 +758,14 @@
     ],
     "authoringProfile": "general-skill-source/v1",
     "automatedChecksPassed": false,
+    "gate": {
+     "action": "deliver",
+     "blocking": [],
+     "complete": false,
+     "questions": [],
+     "review": [],
+     "version": 1
+    },
     "gradeNumber": 9,
     "legacyIntakeOffline": false,
     "lessonBoundary": {
@@ -776,6 +816,7 @@
      }
     ],
     "topicId": "g9r:quad_func_and_eq",
+    "unverifiedAnswers": [],
     "version": 1
    }
   }

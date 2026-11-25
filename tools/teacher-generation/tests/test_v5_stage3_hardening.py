@@ -40,7 +40,7 @@ CONTAINER = S.APP / "cloud/container"
 RENDER = S.APP / "cloud/render"
 # validate_source / validate_model / render_job of a `git archive bafa36f0` copy, on the unflagged payloads below.
 BASELINE_REFUSAL = ("SOURCE_SHAPE", "Unexpected or missing source fields")
-V5_MODULES = ("atom_order.py", "item_kinds.py", "leak_checks.py", "lesson_select.py", "mistake_models.py",
+V5_MODULES = ("atom_order.py", "item_kinds.py", "leak_checks.py", "structured_select.py", "mistake_models.py",
               "school_math.py", "structured_contract.py", "structured_source.py", "text_lint.py",
               "v5_offline_render.py")
 

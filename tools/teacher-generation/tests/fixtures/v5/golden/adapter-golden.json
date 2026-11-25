@@ -5,8 +5,8 @@
    "exitCode": 0,
    "files": {
     "content.json": {
-     "bytes": 5714,
-     "sha256": "48a7220650fffa620ab6be2518ebdaf7a45452df88e74fc783e1a5a359bd194e"
+     "bytes": 5549,
+     "sha256": "d853177c6ee1d22de6d60671bbab45249ccada91614bc5f4f2dcf00b05f069de"
     },
     "general-evidence.json": {
      "bytes": 30820,
@@ -17,8 +17,8 @@
      "sha256": "430c7b2d00dcc50c00cc1515f7a1e8126f26e9c021c4b44fbbabedb7a86d6733"
     },
     "sheet.html": {
-     "bytes": 25565,
-     "sha256": "c6c7808b5e5c68275928705adf1eeac402faa69899006bc7e72055976372d423"
+     "bytes": 25748,
+     "sha256": "db56068cc01327e87a0d426b3022bca9173f8deecf4d0c095527395b57ac177b"
     },
     "verified.json": {
      "bytes": 39468,
@@ -29,7 +29,7 @@
      "sha256": "33f7edd622de5174381a9d14a93856c74ef82d5bf5608694b637026842ca3019"
     }
    },
-   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"reviewRequired\": true}\n"
+   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
   },
   "closed:division_facts": {
    "error": null,
@@ -63,8 +63,8 @@
    "exitCode": 0,
    "files": {
     "content.json": {
-     "bytes": 7628,
-     "sha256": "deca1a2481c40f3946f0ef11d128a5ba161286627480fe1208ffc582777f68c2"
+     "bytes": 7337,
+     "sha256": "78a12810deb3291d0da8a62caf6a8a15d2cc789b0defe96447e841ce545e5799"
     },
     "general-evidence.json": {
      "bytes": 45836,
@@ -75,8 +75,8 @@
      "sha256": "08f1179c3e99a43de0e610207b14c8e317680cf1b0a964798fae0faa8a4628ca"
     },
     "sheet.html": {
-     "bytes": 40189,
-     "sha256": "1310ff64fb1aa8b5d007c782050409b3435233312229c58da4cb19b9aaaf94e9"
+     "bytes": 40372,
+     "sha256": "90cc29c7d9462541b3a0f05c72add0f807d51a04812ce639f38cfbf15832cf1d"
     },
     "verified.json": {
      "bytes": 51031,
@@ -87,7 +87,7 @@
      "sha256": "5e1e94ca45211238b9c0de931658c1a9c5c7e0b2342c535ed632009315785901"
     }
    },
-   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"reviewRequired\": true}\n"
+   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
   },
   "closed:pythagoras": {
    "error": null,
@@ -591,8 +591,8 @@
    "exitCode": 0,
    "files": {
     "content.json": {
-     "bytes": 8542,
-     "sha256": "a5912adcf44a0aae169fd50152c617c82ca9862c40b72584c7963084089d7e0f"
+     "bytes": 8376,
+     "sha256": "3caf24b0505d364b0331fc65ede4803d2d8f802312c62db01d01e2ce1e88f149"
     },
     "general-evidence.json": {
      "bytes": 41974,
@@ -603,8 +603,8 @@
      "sha256": "7a893c36b677d21986084c455989aed10fa8d1f7d19b9ed1bfdbf1bfc61c77a7"
     },
     "sheet.html": {
-     "bytes": 29872,
-     "sha256": "2b387b02f1e50399d30383709b2b5457deedf25143300fd7857a8c58baaa9fca"
+     "bytes": 30055,
+     "sha256": "e2bbd45fb1a052cfe68d5e35b313099788e78f711806fab90cccd56dd1ed1913"
     },
     "verified.json": {
      "bytes": 36178,
@@ -615,15 +615,15 @@
      "sha256": "637f5827290914680af2530f62b3cb2b506a141bcb36b528da8cdb636e940ad1"
     }
    },
-   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"reviewRequired\": true}\n"
+   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
   },
   "v4:grade4-fractions": {
    "error": null,
    "exitCode": 0,
    "files": {
     "content.json": {
-     "bytes": 5406,
-     "sha256": "9c94e544eb135b7ff247320e0cc7d457a3d079979c851e5fe5f675f43cf87a44"
+     "bytes": 5156,
+     "sha256": "b6b111864eef0be3bc2ee386eec3cbf77442406da99251a286931d41538c6347"
     },
     "general-evidence.json": {
      "bytes": 29966,
@@ -634,8 +634,8 @@
      "sha256": "3333f24bbb3f0e2f4bd176c77ac163caddf4aacb70230bee07f8e2ca9c98586a"
     },
     "sheet.html": {
-     "bytes": 36573,
-     "sha256": "b102415272550721b1ace941fa82aa98ef4b412e5fc6b73dc10f67c8ab956658"
+     "bytes": 36756,
+     "sha256": "47684adc96c60116273fdf8ad9215cfec239dd6cb90fa1c08671552c3b2bfc99"
     },
     "verified.json": {
      "bytes": 27310,
@@ -646,15 +646,15 @@
      "sha256": "b973e1f77dfa2b005edc28ec5cddadc568cbfe9fd4ef3dbf751383e623a32787"
     }
    },
-   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"reviewRequired\": true}\n"
+   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
   },
   "v4:grade4-skill-calculation": {
    "error": null,
    "exitCode": 0,
    "files": {
     "content.json": {
-     "bytes": 6429,
-     "sha256": "517929fc2506f568e4b0110f30ab3b1026b53e1dd281e5264afd27dd6d63b0c3"
+     "bytes": 6047,
+     "sha256": "a8232fb1bd07c29d96f7d7730c7358f6d396fc972c98c1e9f88943e8b5fcc060"
     },
     "general-evidence.json": {
      "bytes": 50560,
@@ -665,19 +665,19 @@
      "sha256": "2109f37873f81b89d67109585f2eec849ba748f6dce922dd71a64a929b756dd4"
     },
     "sheet.html": {
-     "bytes": 27805,
-     "sha256": "dd6b9cf9d730a59208d18842589e239d1133067bb85bb449c82e3935a48adcfa"
+     "bytes": 27639,
+     "sha256": "e24e689c362ac41fb9e67f9f89827e9b0d6e8d5150d8a95b6174d47387770589"
     },
     "verified.json": {
-     "bytes": 56344,
-     "sha256": "f5b2ddd056e53d55bbeafb5b956a85881a09e92e95cb25e9676368183453d74d"
+     "bytes": 57600,
+     "sha256": "f137a74b8748da2ecf5c83e4c752d0b833448d3da6181b6e9118609bf45fc55b"
     },
     "worksheet-source.json": {
-     "bytes": 46366,
-     "sha256": "07abaf68e3f1bf8d666543e35dc50edcad2b8fa027d60f1e88a2af4b10d6fa94"
+     "bytes": 46233,
+     "sha256": "4ef6ef4f6e12a96bdebaa9e11c31bdbb11b6f336f7ef2e19f14985b62cb20fee"
     }
    },
-   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"reviewRequired\": true}\n"
+   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
   },
   "v4:grade7-equation-skill": {
    "error": null,
@@ -688,27 +688,27 @@
      "sha256": "1ed12fed723ac17c1cdd4a964c850322a279bdde26170e03a13f7013fd88a9ef"
     },
     "general-evidence.json": {
-     "bytes": 41681,
-     "sha256": "4aa67b1415bf84f6868990f8b17e4b8984df60cca19ff6f1047e05730448aa4e"
+     "bytes": 43619,
+     "sha256": "3a7c21c98477b6baf0cd35215f53e44842415d6d15982012fb35fc388a4ebf44"
     },
     "general-source.json": {
      "bytes": 91860,
      "sha256": "59d3c2a5beb8b224b85ffc9d6a31af7759bb3bff259219deef95da1dd8e4dad1"
     },
     "levels.json": {
-     "bytes": 47534,
-     "sha256": "d6ea9a81d532156d9a0bda94bfd526f749863d614b919a8dc175f83ef3aadab0"
+     "bytes": 48138,
+     "sha256": "e283d048f0054fff171899a39d0874908f443127145430159a1824219a40a929"
     },
     "verified.json": {
      "bytes": 39695,
      "sha256": "24020bcbd87e52572f17eeadb7dab1159b789b0fd0934254295b01ba0efd7645"
     },
     "worksheet-source.json": {
-     "bytes": 45272,
-     "sha256": "d15153da4a709afb8187d88678e4cd36c71ceb8f025b26c7a746c4ee1ad99e3b"
+     "bytes": 45094,
+     "sha256": "b4166261748dc8b5814d39717f99b9c36a8bcb0e67d6b59c3535f3e9f3971d77"
     }
    },
-   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 31, \"reviewRequired\": true}\n"
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 31, \"unverifiedAnswers\": [{\"question\": 1, \"item\": 1, \"kind\": \"review\"}, {\"question\": 1, \"item\": 2, \"kind\": \"review\"}, {\"question\": 1, \"item\": 3, \"kind\": \"review\"}, {\"question\": 2, \"item\": 1, \"kind\": \"review\"}, {\"question\": 2, \"item\": 2, \"kind\": \"review\"}, {\"question\": 2, \"item\": 3, \"kind\": \"review\"}, {\"question\": 4, \"item\": 1, \"kind\": \"review\"}, {\"question\": 4, \"item\": 2, \"kind\": \"review\"}, {\"question\": 4, \"item\": 3, \"kind\": \"review\"}, {\"question\": 5, \"item\": 1, \"kind\": \"review\"}, {\"question\": 5, \"item\": 2, \"kind\": \"review\"}, {\"question\": 5, \"item\": 3, \"kind\": \"review\"}, {\"question\": 8, \"item\": 1, \"kind\": \"review\"}, {\"question\": 8, \"item\": 2, \"kind\": \"review\"}, {\"question\": 8, \"item\": 3, \"kind\": \"review\"}, {\"question\": 10, \"item\": 1, \"kind\": \"review\"}, {\"question\": 10, \"item\": 2, \"kind\": \"review\"}, {\"question\": 11, \"item\": 1, \"kind\": \"review\"}, {\"question\": 11, \"item\": 2, \"kind\": \"review\"}, {\"question\": 11, \"item\": 3, \"kind\": \"review\"}, {\"question\": 12, \"item\": 1, \"kind\": \"review\"}, {\"question\": 12, \"item\": 2, \"kind\": \"review\"}, {\"question\": 12, \"item\": 3, \"kind\": \"review\"}, {\"question\": 13, \"item\": 1, \"kind\": \"review\"}, {\"question\": 13, \"item\": 2, \"kind\": \"review\"}, {\"question\": 13, \"item\": 3, \"kind\": \"review\"}, {\"question\": 19, \"item\": 1, \"kind\": \"review\"}, {\"question\": 19, \"item\": 2, \"kind\": \"review\"}, {\"question\": 19, \"item\": 3, \"kind\": \"review\"}, {\"question\": 20, \"item\": 1, \"kind\": \"review\"}, {\"question\": 20, \"item\": 3, \"kind\": \"review\"}], \"reviewRequired\": true}\n"
   },
   "v4:grade9-coordinate-triangles": {
    "error": null,
@@ -847,8 +847,8 @@
      "sha256": "19b267d129828865092e1ca3842cba882c4755cd158b937fd33213843b9f6873"
     },
     "general-evidence.json": {
-     "bytes": 83030,
-     "sha256": "0d6734f9c563f14385f7b407e6247b5d61ec199da9a367a7044a6f8b440720bd"
+     "bytes": 83786,
+     "sha256": "3a5ad7582c826830a61477577587906e31dd84378abbeefb56d431d2185c1139"
     },
     "general-source.json": {
      "bytes": 49224,
@@ -867,7 +867,7 @@
      "sha256": "c44dc6e57d136593f7e109fe15bacb27f09cccac604236d95041ea78385945a6"
     }
    },
-   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 12, \"reviewRequired\": true}\n"
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 12, \"unverifiedAnswers\": [{\"question\": 17, \"item\": 1, \"kind\": \"review\"}, {\"question\": 17, \"item\": 2, \"kind\": \"review\"}, {\"question\": 17, \"item\": 3, \"kind\": \"review\"}, {\"question\": 18, \"item\": 1, \"kind\": \"review\"}, {\"question\": 18, \"item\": 2, \"kind\": \"review\"}, {\"question\": 18, \"item\": 3, \"kind\": \"review\"}, {\"question\": 19, \"item\": 1, \"kind\": \"review\"}, {\"question\": 19, \"item\": 2, \"kind\": \"review\"}, {\"question\": 19, \"item\": 3, \"kind\": \"review\"}, {\"question\": 20, \"item\": 1, \"kind\": \"review\"}, {\"question\": 20, \"item\": 2, \"kind\": \"review\"}, {\"question\": 20, \"item\": 3, \"kind\": \"review\"}], \"reviewRequired\": true}\n"
   },
   "v4:grade9-quadratic": {
    "error": null,
@@ -886,19 +886,19 @@
      "sha256": "381006eec27791a9ba86533a35117617a329592784a14a2ba9a1dfd16a90d358"
     },
     "levels.json": {
-     "bytes": 52185,
-     "sha256": "3fb4b6fe4b360ec30d8c8dbb7e5d3f7b2caf5d0edac566e1442918fa654c2366"
+     "bytes": 51753,
+     "sha256": "89ae7a079fac61aff66e68c4f8a39eeadda9fdd9dd17420e08a0868bd5b6b46c"
     },
     "verified.json": {
      "bytes": 164748,
      "sha256": "1e973908e0ac312186517ae76475d6198002539c55fa17fecbca21a28dca8ade"
     },
     "worksheet-source.json": {
-     "bytes": 97692,
-     "sha256": "a6e465f256b54db13b8eee6ba5533287e48b88fb399bafdbc38087c09ad59a0a"
+     "bytes": 97476,
+     "sha256": "5064cd7cbbb6208308d792de82893e99fb6f11f42a7c5754b2015667aa95b8ac"
     }
    },
-   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"reviewRequired\": true}\n"
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
   },
   "v4:test_general_source:g9r": {
    "error": null,
@@ -929,15 +929,15 @@
      "sha256": "a97d60a864848eb86e9d68d87c1d0b3dc66857d5a2034ece4ab49c061ef640d7"
     }
    },
-   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"reviewRequired\": true}\n"
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
   },
   "v4:test_general_source:ד11": {
    "error": null,
    "exitCode": 0,
    "files": {
     "content.json": {
-     "bytes": 1454,
-     "sha256": "7d533407fa7c1ce37fa2bc4f7d2d43bd0c17a059826a0841e13f1d76542e8858"
+     "bytes": 1372,
+     "sha256": "485db8cb38be0341a68c86d49d76f5ba2b233fc2a85fcc616112b3b780bef8ad"
     },
     "general-evidence.json": {
      "bytes": 12958,
@@ -948,8 +948,8 @@
      "sha256": "59a6b448f3fd41069c8ee6ef41868422f378d9e3c51e6b79d8e05fe43213eeb9"
     },
     "sheet.html": {
-     "bytes": 21624,
-     "sha256": "1bfda98f8b6bd8066db55cc3b96c8066f45e69795e790bcc7aad5b71aca1d923"
+     "bytes": 21807,
+     "sha256": "7c4cc0d60db561a97f7c23385579cf1720bb1a3f1909593ebc3c99734870ed0c"
     },
     "verified.json": {
      "bytes": 10998,
@@ -960,7 +960,7 @@
      "sha256": "442e0ea06e67419a781a00838a928e122d9dc056b72ec434f20ada3bd5fdb617"
     }
    },
-   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"reviewRequired\": true}\n"
+   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
   }
  },
  "skillLock": {
@@ -969,7 +969,7 @@
    "version": "1.0.5-noam"
   },
   "middle": {
-   "sha256": "cbd46b144421db5260b3cb1142bc0e126c01335ce6fee8c32a24baf50e98a7bd",
+   "sha256": "89697b363762936aa2bd7352427e99f39b740ca6c24d28a08c3bd6cb480bb944",
    "version": "7.2.0-noam"
   }
  }

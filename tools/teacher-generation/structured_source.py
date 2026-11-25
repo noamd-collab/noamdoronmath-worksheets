@@ -6,7 +6,7 @@ Order (compile_sheet, also exported as compile_reply):
 2. parse the wire: {slot: question}, first occurrence wins; Q_SHAPE / Q_SLOT_UNKNOWN / Q_SLOT_DUPLICATE;
 3. compile every question once against its own row (compile_question: Q1-Q3, items I1-I6, Q4 leaks and
    reordered repeats inside the question, Q5 trim);
-4. lesson_select.Selection(...).screen(): a refused planned question takes a reserve of its group;
+4. structured_select.Selection(...).screen(): a refused planned question takes a reserve of its group;
 5. sheet loop: leak_checks.sheet_leaks over the printed order → Selection.reject, until nothing new;
 6. at most two repair rounds ({slot: wire question}), each followed by the sheet loop;
 7. the exact delivery rule: floor ≤ M ≤ N (a shorter sheet only when the grade floor allows it), 2-4 stars
@@ -26,7 +26,7 @@ import json
 import re
 
 import leak_checks
-import lesson_select
+import structured_select
 import structured_contract
 from item_kinds import CompiledItem, Context, compile_item, intro_spans
 from structured_contract import (CHALLENGES, CONTRACT, LIMITS, QUESTION_FIELDS, SLOT_RE, ContractError, PlanRow,
@@ -552,13 +552,13 @@ def _missing_targets(selection, planned) -> list:
     for number in selection.missing():
         row, slot = planned[number - 1], selection.slot(number)
         out.append({"slot": row.slot, "group": row.group, "concepts": list(row.concepts), "kinds": list(row.kinds),
-                    "codes": _registered(slot.codes or (lesson_select.NO_QUESTION,))})
+                    "codes": _registered(slot.codes or (structured_select.NO_QUESTION,))})
     return out
 
 
 def _occupants(selection, planned, compiled) -> dict:
     """{planned slot: {"slot": wire slot, "codes": [...]}} for every empty (missing or dropped) planned slot whose last
-    removed question (lesson_select.Slot.correction_input) is a question of the reply itself: the planned question,
+    removed question (structured_select.Slot.correction_input) is a question of the reply itself: the planned question,
     or a reserve that stood in for it. The codes are exactly the ones that took that question out, so a repair prompt
     can send the question with its own codes. A slot that never held a question, or whose last refused question came
     from a repair, has no entry. Slot names and codes only (G11)."""
@@ -634,7 +634,7 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
             compiled[row.slot] = compile_question(wires[row.slot], row, ctx)
             questions.append(compiled[row.slot])
             refusals.extend(compiled[row.slot].refusals)
-    selection = lesson_select.Selection(
+    selection = structured_select.Selection(
         [{"group": row.group, "question": compiled.get(row.slot), "concepts": row.concepts} for row in planned],
         [{"group": row.group, "question": compiled.get(row.slot), "concepts": row.concepts} for row in reserves],
         lambda question, challenge, number: question.codes, minimum=floor)
@@ -673,7 +673,7 @@ def compile_sheet(lesson, scope, reply, *, skill_path, repairs=(), overlay=None)
     if not floor <= len(layout) <= lesson["questionCount"]:
         raise failure("SHEET_BELOW_MINIMUM")
     stars = sum(1 for slot in layout if slot.question.ir["star"])
-    if not 2 <= stars <= 4 or selection.real_challenges() < lesson_select.MINIMUM_CHALLENGES:
+    if not 2 <= stars <= 4 or selection.real_challenges() < structured_select.MINIMUM_CHALLENGES:
         raise failure("SHEET_STARS")
     selected = [concept["id"] for concept in scope["selectedConcepts"]]
     printed = {concept for slot in layout for concept in slot.question.row.concepts}

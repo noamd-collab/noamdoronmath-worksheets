@@ -145,8 +145,27 @@ def validate_lesson(lesson, *, allow_legacy=False, salvaged_from=None):
     return cap
 
 
-def validate_model(lesson, payload, *, allow_legacy=False, salvaged_from=None):
+def _validate_trusted_contract(lesson, payload, contract):
+    """A compiled worksheet-wire/5 source, flagged by its trusted caller (runner.render_job(contract=...), set
+    only by structured_source / v5_offline_render). The payload's own root marker never selects this path:
+    without contract= such a payload takes the general branch below and stays SOURCE_SHAPE, as at bafa36f0."""
+    from general_source import V5_CONTRACT, GeneralSourceError, validate_source
+    from runtime_catalog import scope_for_lesson
+    if contract != V5_CONTRACT:
+        raise ValueError('Unsupported trusted source contract')
+    if lesson['version'] != 3:
+        reject('WIRE_SCOPE_UNSUPPORTED', 'worksheet-wire/5 sources need a version 3 lesson')
+    try:
+        validate_source(lesson, payload, scope_for_lesson(lesson), contract=contract)
+    except GeneralSourceError as exc:
+        reject(exc.code, str(exc))
+
+
+def validate_model(lesson, payload, *, allow_legacy=False, salvaged_from=None, contract=None):
     cap = validate_lesson(lesson, allow_legacy=allow_legacy, salvaged_from=salvaged_from)
+    if contract is not None:
+        _validate_trusted_contract(lesson, payload, contract)
+        return cap
     if lesson['version'] == 3:
         from general_source import validate_source, GeneralSourceError
         from runtime_catalog import scope_for_lesson

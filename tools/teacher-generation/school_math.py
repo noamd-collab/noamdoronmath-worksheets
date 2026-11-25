@@ -39,6 +39,9 @@ KERNEL_SYMBOLS = tuple(SYMBOLS)        # ("x", "y", "a", "b"): the only kernel s
 MAX_LETTERS = len(KERNEL_SYMBOLS)      # a question declares at most 4 letters, each mapped to one kernel symbol
 MAX_LENGTH = 120                       # the wire limit of an `expr` field
 MAX_NESTING = 32                       # bracket depth (the kernel's own depth limit is 12)
+# power True in a scope profile: exponents up to 4, the kernel's bound when v5 was specified. #635 raised the
+# kernel's own bound (math_tasks.MAX_POWER) to 12; a v5 sheet keeps 4 unless an overlay names a larger maximum.
+SCHOOL_MAX_POWER = min(4, MAX_POWER)
 MINUS = "\u2212"                          # the only minus a house island prints
 TIMES = "\u00b7"                          # middle-school explicit multiplication (to_house_math, emit_html BRAND)
 ROLES = ("task", "result", "value")
@@ -576,7 +579,7 @@ def _scope_profile(profile):
     if power is None or power is False or (type(power) is int and power == 0):
         out["power"] = None
     elif power is True:
-        out["power"] = MAX_POWER
+        out["power"] = SCHOOL_MAX_POWER
     elif type(power) is int and 1 <= power <= 9:
         out["power"] = power
     else:
