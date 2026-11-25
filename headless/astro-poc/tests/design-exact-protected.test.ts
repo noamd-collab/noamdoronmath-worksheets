@@ -174,8 +174,24 @@ function beforeLearningNavRainbow(file: string, content: string): string {
   }
   return content;
 }
+function beforeAddonsNav(file: string, content: string): string {
+  if (file !== 'public/learning.html') return content;
+  const pairs: Array<[string, string]> = [
+    ['noam-learning.css?v=20261125-addons-1', 'noam-learning.css?v=20261118-nav-rainbow-1'],
+    [
+      '      <a class="exact-nav-games" href="/games" aria-label="משחקים"><span class="exact-nav-rainbow" aria-hidden="true"><span>מ</span><span>ש</span><span>ח</span><span>ק</span><span>י</span><span>ם</span></span></a>\n      <div class="exact-nav-tools">\n        <button type="button" class="exact-nav-tools__btn" data-tools-toggle aria-expanded="false" aria-controls="addons-menu" aria-haspopup="true">תוספים</button>\n        <div id="addons-menu" class="exact-nav-drop">\n          <a href="/math-tools">מחשבון מדעי</a>\n          <a href="/math-tools#practice-tools">כלי תרגול</a>\n        </div>\n      </div>',
+      '      <div class="exact-nav-tools">\n        <button type="button" class="exact-nav-tools__btn" data-tools-toggle aria-expanded="false" aria-controls="extras-menu" aria-haspopup="true" aria-label="משחקים"><span class="exact-nav-rainbow" aria-hidden="true"><span>מ</span><span>ש</span><span>ח</span><span>ק</span><span>י</span><span>ם</span></span></button>\n        <div id="extras-menu" class="exact-nav-drop">\n          <a href="/math-tools">משחקים וכלים</a>\n          <a class="exact-nav-game exact-nav-game--pink" href="/games">פינת המשחקים של אליהו</a>\n        </div>\n      </div>',
+    ],
+  ];
+  for (const [after, before] of pairs) {
+    assert.equal(content.split(after).length, 2, 'one exact addons nav hunk');
+    content = content.replace(after, before);
+  }
+  return content;
+}
 function beforeWhatsappRemoval(file: string, content: string): string {
   content = beforeGrowLegalLinks(file, content);
+  content = beforeAddonsNav(file, content);
   content = beforeLearningNavRainbow(file, content);
   const delta = whatsappRemovalDeltas.find((entry: any) => entry.file === file);
   if (!delta) return content;

@@ -18,6 +18,7 @@ export type ActiveNavKey =
   | 'learning'
   | 'about'
   | 'blog'
+  | 'games'
   | 'tools'
   | 'highschool'
   | 'teachers'
@@ -54,8 +55,9 @@ export function resolveActiveNav(pathname: string): ActiveNavKey | null {
 
   if (path === '/') return 'home';
   if (path === '/aboutus') return 'about';
-  // /math-tools and the whole games corner share the "משחקים" nav item.
-  if (path === '/math-tools' || path === '/games' || path.startsWith('/games/')) return 'tools';
+  // Eliyahu's games corner is the משחקים item. /math-tools is תוספים.
+  if (path === '/games' || path.startsWith('/games/')) return 'games';
+  if (path === '/math-tools') return 'tools';
   if (path === '/search') return 'search';
   if (path === '/high-school-math' || path === '/high-school-math-1') {
     return 'highschool';

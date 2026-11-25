@@ -65,7 +65,9 @@ describe('public lesson menu page', () => {
     assert.equal(home.includes('נסו את המשחק החדש!'), false);
     assert.equal(header.includes('PUBLIC_LESSON_PATH'), false);
     assert.equal(header.includes('/games/kefel-mekutsar-2'), false);
-    assert.ok(header.includes('פינת המשחקים של אליהו'));
+    assert.ok(header.includes('GAMES_INDEX_PATH'));
+    assert.ok(header.includes('aria-label="משחקים"'));
+    assert.equal(header.includes('aria-haspopup="true" aria-label="משחקים"'), false);
     assert.ok(corner.includes("slug: 'kefel-mekutsar-2'"));
     assert.ok(corner.includes("badge: '(beta)'"));
     assert.ok(gamesPage.includes('game.badge'));

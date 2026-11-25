@@ -152,7 +152,10 @@ const marketingLoop = marketingLandingLoop(page.slug);
             const id = block.id ?? (block.text === 'מדיניות פרטיות' ? 'privacy-policy' : undefined);
             return <h2 id={id}>{block.text}</h2>;
           }
-          if (block.type === 'h3') return <h3>{block.text}</h3>;
+          if (block.type === 'h3') {
+            const id = block.text === 'כלי תרגול אינטראקטיביים' ? 'practice-tools' : undefined;
+            return <h3 id={id}>{block.text}</h3>;
+          }
           if (block.type === 'h4') return <h4>{block.text}</h4>;
           if (block.type === 'p') {
             if (block.segments && block.segments.length > 0) {
