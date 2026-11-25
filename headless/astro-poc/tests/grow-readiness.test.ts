@@ -120,7 +120,15 @@ describe('Grow readiness — required legal sections', () => {
 });
 
 describe('Grow readiness — checkout page', () => {
-  const page = readFileSync('src/pages/checkout.astro', 'utf8');
+  const page = readFileSync('src/pages/payment.astro', 'utf8');
+
+  it('is served from /payment, because a Wix page owns /checkout on the live domain', () => {
+    assert.ok(existsSync('src/pages/payment.astro'), 'the payment page must live at src/pages/payment.astro');
+    assert.ok(
+      !existsSync('src/pages/checkout.astro'),
+      'noamdoronmath.co.il answers /checkout with a Wix page, so the form must not live there'
+    );
+  });
 
   it('collects the five fields Grow requires', () => {
     for (const field of ['firstName', 'lastName', 'phone', 'country', 'email']) {
