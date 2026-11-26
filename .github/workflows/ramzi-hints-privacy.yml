@@ -8,6 +8,7 @@ on:
       - 'tools/security/**'
       - 'supabase/migrations/*teacher_generation*.sql'
       - 'headless/astro-poc/src/lib/teacherGenerationContract.ts'
+      - 'tools/teacher-generation/runner.py'
       - 'tests/ramzi-hints-build.test.cjs'
       - 'tests/ramzi-three-digit-editions.test.cjs'
       - 'noam-curated-hints.js'
@@ -23,6 +24,7 @@ on:
       - 'tools/security/**'
       - 'supabase/migrations/*teacher_generation*.sql'
       - 'headless/astro-poc/src/lib/teacherGenerationContract.ts'
+      - 'tools/teacher-generation/runner.py'
       - 'tests/ramzi-hints-build.test.cjs'
       - 'tests/ramzi-three-digit-editions.test.cjs'
       - 'noam-curated-hints.js'
@@ -60,3 +62,5 @@ jobs:
         run: |
           node tools/security/verify-teacher-generation-postgres.mjs
           node --experimental-strip-types tools/security/verify-teacher-generation-storage-postgres.mjs
+          node tools/security/verify-teacher-generation-pdf-only-postgres.mjs
+          node tools/security/verify-teacher-generation-queue-postgres.mjs
