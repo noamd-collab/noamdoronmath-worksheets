@@ -142,11 +142,11 @@ test('the 5ג correction replaces only the excellence PDF in place and keeps eve
   assert.equal(receipt.corrections.length, 1);
   const fix = receipt.corrections[0];
   assert.deepEqual([fix.editionId, fix.levelKey, fix.correctedOn, fix.grade, fix.topicId], ['ms-20261118-ang-02-r1', 'c', '2026-11-26', 7, 12]);
-  assert.deepEqual(fix.fields.map((f: any) => f.field), ['pdfId', 'pdfSha256', 'sourceSha256', 'revision']);
+  assert.deepEqual(fix.fields.map((f: any) => f.field), ['pdfId', 'pdfSha256', 'sourceSha256', 'nativeExportSha256', 'revision']);
   const [pdf, pdfSha] = fix.fields;
   const original = reviewed.additions[0].edition.levels.find(l => l.key === 'c')!;
   assert.ok(fix.fields.every((f: any) => (original as any)[f.field] === f.before && f.before !== f.after));
-  assert.equal(fix.fields[3].after, original.revision + 1);
+  assert.equal(fix.fields[4].after, original.revision + 1);
   const current = registry.editions.find((e: any) => e.editionId === fix.editionId);
   assert.deepEqual(current, editionAfterPdfCorrections(reviewed.additions[0].edition));
   const level: any = current.levels.find((l: any) => l.key === 'c');
@@ -168,7 +168,9 @@ test('the 5ג correction replaces only the excellence PDF in place and keeps eve
   assert.equal(Math.max(...index.items.map((i: any) => i.pin.page)), fix.ramzi.highestPinPage);
   assert.ok(fix.ramzi.highestPinPage < fix.pages, 'every pin is on a page the correction left identical');
   assert.deepEqual(fix.ramzi.readerRedirect, { from: '/ramzi-partial?pdf=' + pdf.before, to: '/ramzi-partial?pdf=' + pdf.after, status: 301 });
-  assert.match(fix.buildGates.result, /not all gates passed/);
+  assert.match(fix.buildGates.verifyExport, /^0 errors\b/);
+  assert.equal(fix.buildGates.selfcheckNoamPackage, '0 errors');
+  assert.equal(fix.buildGates.checkPlainMath, '0');
 });
 
 test('one landing route adds only reviewed PDF copy and preserves its complete earlier data', () => {
