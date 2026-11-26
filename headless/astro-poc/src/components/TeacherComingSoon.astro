@@ -2,8 +2,8 @@
 import { TEACHER_FAQ, TEACHER_LANDING_H1 } from '../lib/teacherLandingContent';
 import '../styles/teacher-landing.css';
 import type { PublicGenerationTrial } from '../lib/teacherGenerationStore';
-interface Props { trial: PublicGenerationTrial; paymentOpen?: boolean }
-const { trial, paymentOpen = false } = Astro.props;
+interface Props { trial: PublicGenerationTrial }
+const { trial } = Astro.props;
 const deadline = trial.endsAt ? new Intl.DateTimeFormat('he-IL', {dateStyle:'long', timeStyle:'short', timeZone:'Asia/Jerusalem'}).format(new Date(trial.endsAt)) : '';
 ---
 <main class="teacher-landing teacher-coming-soon" id="teacher-coming-soon">
@@ -43,7 +43,7 @@ const deadline = trial.endsAt ? new Intl.DateTimeFormat('he-IL', {dateStyle:'lon
     </figure>
   </section>
 
-  {paymentOpen && <section class="coming-soon-context wrap" id="teacher-plans" aria-labelledby="teacher-plans-title">
+  <section class="coming-soon-context wrap" id="teacher-plans" aria-labelledby="teacher-plans-title">
     <div class="section-heading">
       <p class="eyebrow">מסלולי גישה</p>
       <h2 id="teacher-plans-title">גישה לאזור המורים ל־30 יום או ל־365 יום</h2>
@@ -66,7 +66,7 @@ const deadline = trial.endsAt ? new Intl.DateTimeFormat('he-IL', {dateStyle:'lon
       אפשר לשלם בכרטיס אשראי, בביט, בפייבוקס, ב־Apple Pay או ב־Google Pay, בדף התשלום של Grow.
       <a href="/purchase-terms">תנאי הרכישה</a> · <a href="/cancellation">ביטול עסקה והחזר</a>
     </p>
-  </section>}
+  </section>
 
   <section class="coming-soon-context wrap" aria-labelledby="coming-soon-context-title">
     <div class="section-heading">

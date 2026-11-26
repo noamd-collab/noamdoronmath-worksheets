@@ -73,7 +73,6 @@ describe('site sitemaps /sitemap-pages.xml + /sitemap-index.xml', () => {
     assert.ok(paths.length >= 50, `expected many pages, got ${paths.length}`);
 
     assert.equal(paths.includes('/workflow'), false);
-    assert.equal(paths.includes('/payment'), false);
     for (const rule of REDIRECT_RULES) {
       assert.equal(paths.includes(rule.from), false, `redirect alias must not be listed: ${rule.from}`);
     }

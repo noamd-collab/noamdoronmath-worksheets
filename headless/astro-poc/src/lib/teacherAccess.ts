@@ -18,14 +18,7 @@ export type TeacherAccessFailure = {
   code: 'TEACHER_SIGN_IN_REQUIRED' | 'TEACHER_ACCESS_DENIED' | 'TEACHER_AUTH_UNAVAILABLE';
 };
 export type TeacherAccessResult =
-  | {
-      ok: true;
-      userId: string;
-      /** Unix epoch seconds, matching the validated JWT exp. */
-      expiresAt: number;
-      /** Confirmed address from Auth /user. Never a client claim, query, or form field. */
-      email: string;
-    }
+  | { ok: true; userId: string; /** Unix epoch seconds, matching the validated JWT exp. */ expiresAt: number }
   | TeacherAccessFailure;
 
 export interface TeacherAccessOptions {
@@ -123,7 +116,7 @@ export async function verifyGoogleTeacherToken(token: unknown, options: TeacherA
         claims.aud !== 'authenticated' || !Number.isSafeInteger(claims.exp) ||
         !Number.isFinite(now) || (claims.exp as number) * 1000 <= now ||
         (claims.nbf !== undefined && (!Number.isSafeInteger(claims.nbf) || (claims.nbf as number) * 1000 > now))) return required();
-      return { ok: true, userId: user.id, expiresAt: claims.exp as number, email: user.email };
+      return { ok: true, userId: user.id, expiresAt: claims.exp as number };
     })();
     return await Promise.race([
       operation,
