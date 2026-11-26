@@ -255,7 +255,7 @@ class GateReportTests(unittest.TestCase):
         # An ambiguous label names nothing, and the finding stays (editorial, unnamed).
         self.assertEqual([row["code"] for row in report["unnamed"]], ["G51", "G61", "G61"])
 
-    def test_bracket_sample_blocks_until_the_engine_measures_it_again(self):
+    def test_bracket_sample_always_blocks_and_names_no_question(self):
         self.content(3)
         self.write("logs/house-gates.txt", HOUSE_G51_G61)
         steps = self.steps(**{"house-gates": "FAIL"})
@@ -264,15 +264,22 @@ class GateReportTests(unittest.TestCase):
         self.assertEqual((bracket["code"], bracket["class"]), ("G51", "truth"))
         self.assertEqual(bracket["evidence"], {"samples": 1, "pages": [9], "closedList": True, "productsOnly": True})
         self.assertEqual(decide(report, ["house-gates"])["action"], "fail")
+        # The bracket is never measured again. A forged second measurement, as the removed
+        # paren_order.py wrote it, with a PASS step, changes nothing: G51 stays unnamed truth and fails.
         steps.append({"name": "bracket-order-reconciliation", "status": "PASS", "log": "logs/bracket-order-reconciliation.txt"})
-        # The two G61 rows (Q113, Q43) name questions 11 and 4 and block on their own.
-        for measured, action in (({"status": "RECONCILED", "matches": 1, "unbalanced": 0}, "replace"),
-                                 ({"status": "UNBALANCED", "matches": 2, "unbalanced": 1}, "fail"),
-                                 ({"status": "RECONCILED", "matches": 0, "unbalanced": 0}, "fail")):
+        for measured in ({"status": "RECONCILED", "matches": 1, "unbalanced": 0},
+                         {"status": "UNBALANCED", "matches": 2, "unbalanced": 1},
+                         {"status": "RECONCILED", "matches": 0, "unbalanced": 0}):
             self.write("logs/bracket-order.json", json.dumps(measured))
-            decision = decide(gate_report(self.base, "elementary", steps, 20), ["house-gates"])
-            self.assertEqual(decision["action"], action, measured)
-        self.assertEqual([row["code"] for row in decision["blocking"]], ["G61", "G61", "G51"])
+            forged = gate_report(self.base, "elementary", steps, 20)
+            self.assertEqual(forged, report, measured)
+            self.assertNotIn("reconciled", json.dumps(forged))
+            decision = decide(forged, ["house-gates"])
+            # The two G61 rows (Q113, Q43) name questions 11 and 4; the unnamed G51 makes it fail.
+            self.assertEqual((decision["action"], decision["questions"]), ("fail", [4, 11]), measured)
+            self.assertEqual([(row["code"], row.get("question")) for row in decision["blocking"]],
+                             [("G61", 11), ("G61", 4), ("G51", None)], measured)
+            self.assertEqual((decision["reviewFindings"], decision["reviewSteps"]), ([], []), measured)
 
     def test_clone_groups_answer_order_and_adapter_refusal(self):
         self.content(3)

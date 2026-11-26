@@ -11,9 +11,8 @@ Three classes:
   editorial  Level, variety and page-fill findings. Blocks like the other
              two classes. Acts on one question when the gate output names it.
 
-Every finding blocks, with two exceptions (blocks()): a G51 that
-paren_order.py measured again and reconciled, and a DIDACTIC_REVIEW row of
-the middle-build step that didactic_review.py already reconciled.
+Every finding blocks, with one exception (blocks()): a DIDACTIC_REVIEW row
+of the middle-build step that didactic_review.py already reconciled.
 A code that is not in the table is truth, so an unknown outcome blocks.
 The table was read from the two pinned skills (file names below are relative
 to each skill root) and from this engine's own steps.
@@ -176,11 +175,10 @@ STEP_CODES = {
 }
 
 
-# Fixed second measurements of one documented false positive each. Their own
-# refusal is not a finding: the gate they could not reconcile still blocks.
-RECONCILIATION_STEPS = frozenset({"didactic-review-reconciliation", "bracket-order-reconciliation"})
-# The only code a second measurement may clear (paren_order.py).
-RECONCILABLE = frozenset({"G51"})
+# The fixed second check of the middle driver's documented REVIEW-only exit
+# (didactic_review.py). Its own refusal is not a finding: the middle-build
+# step it could not reconcile still fails and blocks.
+RECONCILIATION_STEPS = frozenset({"didactic-review-reconciliation"})
 
 
 def gate_class(code):
@@ -209,16 +207,14 @@ def finding(code, step, question=None, item=None, **evidence):
 
 
 def blocks(row):
-    """Every finding blocks, editorial ones included, with two exceptions.
+    """Every finding blocks, editorial ones included, with one exception.
 
-    A reconciled G51 (paren_order.py measured it again). A DIDACTIC_REVIEW row
-    of middle-build: it exists only after didactic_review.py reconciled the
-    pinned driver's REVIEW-only exit and the runner set that step to REVIEW;
-    its delivery follows the runner's own result, and this keeps its
-    per-question teacher note.
+    A DIDACTIC_REVIEW row of middle-build: it exists only after
+    didactic_review.py reconciled the pinned driver's REVIEW-only exit and
+    the runner set that step to REVIEW; its delivery follows the runner's own
+    result, and this keeps its per-question teacher note. A G51 always
+    blocks, whatever a row says about it.
     """
-    if row.get("reconciled") is True and row.get("code") in RECONCILABLE:
-        return False
     return not (row.get("code") == "DIDACTIC_REVIEW" and row.get("step") == "middle-build"
                 and row.get("class") == EDITORIAL)
 
@@ -233,8 +229,6 @@ def review_findings(rows):
         entry = grouped.setdefault(code, {"code": code, "class": row["class"], "count": 0,
                                           "steps": [], "questions": []})
         entry["count"] += 1
-        if row["class"] != EDITORIAL:
-            entry["class"] = "reconciled"
         if row["step"] not in entry["steps"]:
             entry["steps"].append(row["step"])
         question = row.get("question")
@@ -260,9 +254,9 @@ def decide(report, failed_steps=()):
     names of the steps that did not pass.
 
     action:
-      deliver  nothing blocks. A failed step may carry only a reconciled
-               finding (blocks()); it becomes REVIEW and the note stays in
-               reviewFindings.
+      deliver  nothing blocks. The only rows that do not block are
+               middle-build DIDACTIC_REVIEW rows (blocks()); their notes
+               stay in reviewFindings.
       replace  something blocks and every blocking finding names a question.
                ``questions`` lists them; the caller may replace those
                questions and render again.
@@ -298,7 +292,8 @@ def public_review_findings(rows):
     """The part of manifest reviewFindings that may leave the worker.
 
     Codes are checked against the table and notes are taken from it, so no
-    manifest text reaches the job result. Reconciled findings stay private.
+    manifest text reaches the job result. A row whose class says reconciled
+    stays private.
     """
     result = []
     if not isinstance(rows, list):

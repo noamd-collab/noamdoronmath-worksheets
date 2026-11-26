@@ -729,15 +729,6 @@ def gate_report(workdir, skill, steps, question_count):
                 found.append(_finding("UNREADABLE", name))
             rows += found
             complete = complete and good
-        if any(step.get("name") == "bracket-order-reconciliation" and step.get("status") == "PASS" for step in steps):
-            # paren_order.py measured every G51 sample again and found each
-            # closing bracket to the right of its opening one.
-            measured = json.loads(read("logs/bracket-order.json"))
-            if (measured.get("status") == "RECONCILED" and type(measured.get("matches")) is int
-                    and measured["matches"] > 0 and measured.get("unbalanced") == 0):
-                for row in rows:
-                    if row["code"] == "G51":
-                        row["reconciled"] = True
     except (OSError, UnicodeError, ValueError, TypeError, KeyError, AttributeError, RecursionError):
         rows.append(_finding("UNREADABLE", "report")); complete = False
     if len(rows) > MAX_FINDINGS:

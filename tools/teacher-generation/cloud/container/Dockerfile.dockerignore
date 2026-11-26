@@ -95,7 +95,6 @@
 !tools/teacher-generation/no_carry_addition.py
 !tools/teacher-generation/numeric_literals.py
 !tools/teacher-generation/output_gates.py
-!tools/teacher-generation/paren_order.py
 !tools/teacher-generation/pdf_weasyprint_only.py
 !tools/teacher-generation/preflight.py
 !tools/teacher-generation/printed_elementary.py
@@ -151,7 +150,6 @@
 !tools/teacher-generation/tests/test_lesson_select.py
 !tools/teacher-generation/tests/test_math_tasks.py
 !tools/teacher-generation/tests/test_numeric_literals.py
-!tools/teacher-generation/tests/test_paren_order.py
 !tools/teacher-generation/tests/test_printed_elementary_intent.py
 !tools/teacher-generation/tests/test_printed_prose.py
 !tools/teacher-generation/tests/test_printed_tasks.py

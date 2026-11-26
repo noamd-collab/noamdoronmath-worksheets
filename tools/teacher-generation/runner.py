@@ -355,19 +355,12 @@ def lesson_gate(job, lesson):
     """Read every finding of a version 3 lesson and decide (gate_policy.decide).
 
     Truth, policy and editorial findings block; when each names a question the
-    caller can replace those questions and render again. Only a reconciled
-    finding does not block (gate_policy.blocks). An unknown finding, a timeout
-    or a crashed step blocks.
+    caller can replace those questions and render again. Only the middle-build
+    DIDACTIC_REVIEW row does not block (gate_policy.blocks). An unknown
+    finding, a timeout or a crashed step blocks.
     """
     count=lesson['questionCount']
     report=gate_report(job.work,job.cap['skill'],job.steps,count)
-    if (job.cap['skill']=='elementary' and (job.work/'sheet.pdf').is_file()
-            and any(row['code']=='G51' for row in report['unnamed'])
-            and not any(step['name']=='bracket-order-reconciliation' for step in job.steps)):
-        # Fixed second measurement of the one documented G51 false positive.
-        job.run('bracket-order-reconciliation',[HERE/'paren_order.py','--pdf',job.work/'sheet.pdf',
-                                                 '--json',job.work/'logs/bracket-order.json'])
-        report=gate_report(job.work,job.cap['skill'],job.steps,count)
     failed=[step['name'] for step in job.steps if step['status']=='FAIL' and step['name'] not in RECONCILIATION_STEPS]
     return report,decide(report,failed)
 
@@ -433,9 +426,9 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
 
     Version 3 lessons follow the delivery policy in gate_policy: every
     finding blocks, editorial ones included, and a render that fails stays
-    failed; manifest['gate'] says which questions are named. Only a failed
-    step whose findings are all reconciled (a G51 that paren_order.py measured
-    again) becomes REVIEW, reason RECONCILED_FINDINGS_ONLY.
+    failed; manifest['gate'] says which questions are named. No gate step is
+    turned from FAIL into REVIEW here; only the middle driver's REVIEW-only
+    exit, checked again by didactic_review.py, is recorded as REVIEW.
 
     ``salvaged_from`` is the question count the teacher asked for when the
     worker renders a shorter, salvaged sheet; the manifest records it.
@@ -530,12 +523,6 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
     report=decision=None
     if general and any(step['status']!='PASS' for step in steps):
         report,decision=lesson_gate(job,lesson)
-        if not ok and decision['action']=='deliver':
-            # Nothing blocks, so every failed step holds only reconciled findings (gate_policy.blocks).
-            for step in steps:
-                if step['status']=='FAIL' and step['name'] in decision['reviewSteps']:
-                    step['status']='REVIEW';step['reason']='RECONCILED_FINDINGS_ONLY'
-            ok=all(step['status'] in ('PASS','REVIEW') for step in steps)
         if ok:
             for row in decision['reviewFindings']:
                 known=next((r for r in review_findings if r['code']==row['code']),None)

@@ -152,10 +152,9 @@ A result is always `needs_review` or `failed`, never publication approval:
   `skill_feedback.gate_report` reads every finding of a work folder. When the
   trusted adapter refuses a question it leaves `adapter-failure.json`
   (`code`, `question`, `item`), and the report names that question from it.
-- `paren_order.py` measures again the one documented false positive of the
-  pinned bracket gate G51 (a correctly printed product of two bracketed
-  groups). A reversed pair still fails. A step whose only finding is a
-  reconciled G51 is recorded as REVIEW (`RECONCILED_FINDINGS_ONLY`).
+- The pinned bracket gate G51 is never measured again. It names no question,
+  so a G51 finding fails the sheet, also on a correctly printed product of two
+  bracketed groups (a known false refusal, accepted).
 - `claim_words.py` names, before rendering, the claims among the words that
   the pinned truth gates G32/G33 search for (`claim_lint`). Nothing is
   recorded in the ledger, so the gates judge every listed word: a per-unit

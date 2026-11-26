@@ -276,10 +276,10 @@ not in `gate_policy.GATES` is truth.
 - `runner.lesson_gate` builds the report (`skill_feedback.gate_report`) and
   decides; `runner.precheck_job` runs the adapter, content-truth and house gates
   before any PDF exists (elementary only).
-- Two documented false positives are measured a second time. G51 brackets are
-  re-read on the PDF (`paren_order.py`): a correct pair is cleared, a reversed
-  pair still fails. The middle driver's REVIEW-only exit is reconciled by
-  `didactic_review.py`, which never turns a FAIL finding into REVIEW.
+- One documented false positive is measured a second time: the middle
+  driver's REVIEW-only exit is reconciled by `didactic_review.py`, which never
+  turns a FAIL finding into REVIEW. A G51 bracket finding is not measured
+  again; it names no question, so the sheet fails.
 
 **What the teacher gets** (`remote_worker.process_job`):
 
