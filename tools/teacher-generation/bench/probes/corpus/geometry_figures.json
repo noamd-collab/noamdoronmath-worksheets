@@ -210,9 +210,9 @@
     "unit": "מעלות"
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "במשולש $\\tri ABC$ נתון $\\angle{ABC} = 50°$ ו־$\\angle{BCA} = 60°$. חשבו את $\\angle{CAB}$.",
-    "key": "$70$ מעלות"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -269,9 +269,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "זוויות צמודות: $\\angle{ABC} = 2x + 10$° ו־$\\angle{CBD} = 3x$°. מצאו את $x$.",
-    "key": "$x = 34$"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -358,9 +358,9 @@
     "unit": "ס״מ"
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "במקבילית $ABCD$ נתון $AB = 8$ ס״מ ו־$BC = 5$ ס״מ. חשבו את ההיקף.",
-    "key": "$26$ ס״מ"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_PLAIN_MATH"
    }
   }
  ]

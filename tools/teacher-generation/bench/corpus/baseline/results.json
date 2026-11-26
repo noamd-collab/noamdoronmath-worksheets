@@ -457,14 +457,13 @@
      "substring": "האם התוצאה של [[(5+5)*5]] גדולה מ-50?"
     },
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"15/3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
-     "field": "item.1",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 13,
      "question": 13,
-     "substring": "ידוע כי [[(x + 2) * 3 = 15]]. מהו הערך של x+2?"
+     "substring": "[[(x + 2) * 3 = 15]]"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"15\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -1035,6 +1034,7 @@
     "correction": {
      "answered": false,
      "questions": [
+      1,
       9,
       14,
       15,
@@ -1044,6 +1044,7 @@
      ],
      "requested": true,
      "requiredKeys": [
+      "q1",
       "q14",
       "q15",
       "q16",
@@ -1053,8 +1054,8 @@
      ]
     },
     "firstPass": {
-     "code": "SOURCE_RICH_TEXT",
-     "detail": "A text block needs one to thirty typed spans at q9.table.row.1.2",
+     "code": "SOURCE_NOTATION",
+     "detail": "Wrong number of distinct points",
      "ok": false
     },
     "requests": 2,
@@ -1062,8 +1063,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:SOURCE_RICH_TEXT",
-   "finalCode": "SOURCE_RICH_TEXT",
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "A-square",
@@ -1073,6 +1074,15 @@
       "draft": true,
       "dropped": 0,
       "events": [
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
        {
         "action": "missing",
         "codes": [
@@ -1128,9 +1138,9 @@
         "stage": "source"
        }
       ],
-      "missing": 6,
+      "missing": 7,
       "planned": 20,
-      "printed": 14,
+      "printed": 13,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -1160,6 +1170,15 @@
    "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Wrong number of distinct points",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "[[angle:A]]"
+    },
     {
      "code": "SOURCE_RICH_TEXT",
      "detail": "A text block needs one to thirty typed spans at q1.table.row.1.2",
@@ -1216,7 +1235,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 6,
+    "failingAlone": 7,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -1472,24 +1491,31 @@
     "correction": {
      "answered": false,
      "questions": [
+      3,
       5,
+      6,
       8,
       12,
       14,
-      15
+      15,
+      18,
+      20
      ],
      "requested": true,
      "requiredKeys": [
       "q12",
       "q14",
-      "q15",
+      "q18",
+      "q20",
+      "q3",
       "q5",
+      "q6",
       "q8"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q5.item.1",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "ok": false
     },
     "requests": 2,
@@ -1497,8 +1523,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
-   "finalCode": "QUALITY_GATE_FAILED",
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "B-order",
@@ -1506,10 +1532,19 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 5,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -1518,7 +1553,16 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -1527,7 +1571,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_EXPRESSION_SCOPE"
         ],
@@ -1536,7 +1580,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -1545,7 +1589,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "SOURCE_NOTATION"
         ],
@@ -1556,41 +1600,23 @@
        {
         "action": "missing",
         "codes": [
-         "G61"
+         "SOURCE_NOTATION"
         ],
-        "group": "practice",
-        "question": 1,
-        "stage": "precheck"
+        "group": "challenges",
+        "question": 18,
+        "stage": "source"
        },
        {
         "action": "missing",
         "codes": [
-         "G32"
-        ],
-        "group": "practice",
-        "question": 4,
-        "stage": "precheck"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "G32"
-        ],
-        "group": "practice",
-        "question": 16,
-        "stage": "precheck"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "G61"
+         "SOURCE_NOTATION"
         ],
         "group": "challenges",
         "question": 20,
-        "stage": "precheck"
+        "stage": "source"
        }
       ],
-      "missing": 4,
+      "missing": 9,
       "planned": 20,
       "printed": 11,
       "reservesOffered": 0,
@@ -1600,9 +1626,7 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gateCode": "G32",
-    "question": 1,
-    "stage": "precheck"
+    "stage": "source"
    },
    "lesson": {
     "domain": "operations",
@@ -1621,23 +1645,18 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen-fresh-01 (round B)",
-   "prechecks": [
-    {
-     "codes": [
-      "G32",
-      "G61"
-     ],
-     "questions": [
-      1,
-      4,
-      11,
-      15
-     ],
-     "status": "replace"
-    }
-   ],
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "[[x]]"
+    },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(2+3)*4-(2+3*4)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
@@ -1647,6 +1666,16 @@
      "index": 5,
      "question": 5,
      "substring": "האם התוצאה של [[(2 + 3) * 4]] גדולה, קטנה או שווה לתוצאה של [[2 + 3 * 4]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"21/3-4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.3",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "בחישוב [[(___) + 4] * 3 = 21]], מהו המספר החסר?"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"7+2*3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -1685,11 +1714,30 @@
      "group": "practice",
      "index": 15,
      "question": 15,
-     "substring": "[[x + 2]]"
+     "substring": "[[(x + 2) * 3 = 15]]"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "[[x]]"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(4+2)*3-(4+(2*3))\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "מצב א': [[(4 + 2) * 3]]. מצב ב': [[4 + (2 * 3)]. מה ההפרש בין התוצאות?"
     }
    ],
    "questions": {
-    "failingAlone": 5,
+    "failingAlone": 9,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
@@ -2322,8 +2370,8 @@
      "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(4,4)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}"
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.item.1.answer",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
      "field": "item.1.answer",
      "group": "challenges",
      "index": 3,
@@ -2360,10 +2408,12 @@
       3,
       4,
       5,
+      6,
       7,
       8,
       9,
       10,
+      12,
       13,
       15,
       17,
@@ -2380,7 +2430,7 @@
       "q3",
       "q4",
       "q5",
-      "q7"
+      "q6"
      ]
     },
     "firstPass": {
@@ -2416,7 +2466,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_PLAIN_MATH"
         ],
         "group": "practice",
         "question": 3,
@@ -2425,7 +2475,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_PLAIN_MATH"
         ],
         "group": "practice",
         "question": 4,
@@ -2434,10 +2484,19 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_PLAIN_MATH"
+        ],
+        "group": "practice",
+        "question": 6,
         "stage": "source"
        },
        {
@@ -2470,7 +2529,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 10,
@@ -2479,7 +2538,16 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_PLAIN_MATH"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_PLAIN_MATH"
         ],
         "group": "practice",
         "question": 13,
@@ -2488,7 +2556,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_PLAIN_MATH"
         ],
         "group": "practice",
         "question": 15,
@@ -2497,7 +2565,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_PLAIN_MATH"
         ],
         "group": "practice",
         "question": 17,
@@ -2524,16 +2592,16 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_PLAIN_MATH"
         ],
         "group": "challenges",
         "question": 20,
         "stage": "source"
        }
       ],
-      "missing": 14,
+      "missing": 16,
       "planned": 20,
-      "printed": 6,
+      "printed": 4,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -2573,31 +2641,40 @@
      "substring": "{\"base\": 10, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 8, \"names\": \"ABCD\", \"right\": 7, \"rotate\": 0}"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "The pinned skill cannot draw this figure at q1.figure",
-     "field": "figure",
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
      "group": "practice",
      "index": 3,
      "question": 3,
-     "substring": "{\"kind\": \"shape\", \"names\": \"ABC\", \"parameters\": {\"a\": 9, \"b\": 9, \"c\": 6}, \"rotate\": 0, \"shape\": \"triangle\"}"
+     "substring": "prose: ABC (AB=AC). (+1 more)"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "The pinned skill cannot draw this figure at q1.figure",
-     "field": "figure",
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
      "group": "practice",
      "index": 4,
      "question": 4,
-     "substring": "{\"kind\": \"shape\", \"names\": \"ABC\", \"parameters\": {\"a\": 5, \"b\": 5, \"c\": 3}, \"rotate\": 0, \"shape\": \"triangle\"}"
+     "substring": "prose: ABC (AB=AC). (+1 more)"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "The pinned skill cannot draw this figure at q1.figure",
-     "field": "figure",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.2.answer",
      "group": "practice",
      "index": 5,
      "question": 5,
-     "substring": "{\"kind\": \"shape\", \"names\": \"ABC\", \"parameters\": {\"a\": 5, \"b\": 5, \"c\": 8}, \"rotate\": 0, \"shape\": \"triangle\"}"
+     "substring": "{\"kind\": \"review\", \"text\": \"לא ייתכן, כי 4+6 < 9.\"}"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "prose: ABC (+1 more)"
     },
     {
      "code": "SOURCE_PLAIN_MATH",
@@ -2627,71 +2704,80 @@
      "substring": "∡A"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "The pinned skill cannot draw this figure at q1.figure",
-     "field": "figure",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "intro",
      "group": "practice",
      "index": 10,
      "question": 10,
-     "substring": "{\"kind\": \"shape\", \"names\": \"ABC\", \"parameters\": {\"a\": 7, \"b\": 7, \"c\": 7}, \"rotate\": 0, \"shape\": \"triangle\"}"
-    },
-    {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
-     "group": "practice",
-     "index": 13,
-     "question": 13,
-     "substring": "{\"base\": 8, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 6, \"names\": \"ABCD\", \"right\": 6, \"rotate\": 0}"
-    },
-    {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
-     "group": "practice",
-     "index": 15,
-     "question": 15,
-     "substring": "{\"base\": 10, \"construction\": \"altitude\", \"kind\": \"triangle_part\", \"left\": 8, \"names\": \"ABCD\", \"right\": 8, \"rotate\": 0}"
-    },
-    {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
-     "group": "practice",
-     "index": 17,
-     "question": 17,
-     "substring": "{\"base\": 10, \"construction\": \"angle_bisector\", \"kind\": \"triangle_part\", \"left\": 7, \"names\": \"ABCE\", \"right\": 7, \"rotate\"…"
+     "substring": "prose: ABC = 60 (+1 more)"
     },
     {
      "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.item.2.answer",
-     "field": "item.2.answer",
-     "group": "challenges",
-     "index": 1,
-     "question": 18,
-     "substring": "{\"kind\": \"review\", \"text\": \"צ.צ.צ: AB=AC (נתון), BD=DC (AD תיכון), AD=AD (צלע משותפת).\"}"
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "prose: ABC (AB=AC) (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "prose: ABC (AB=AC). AD (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "prose: ABC (AB=AC) (+2 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "prose: ABC (AB=AC). AE (+1 more)"
     },
     {
      "code": "SOURCE_PLAIN_MATH",
      "detail": "Middle-school numbers and Latin names require typed spans at q1.item.2.prompt",
      "field": "item.2.prompt",
      "group": "challenges",
-     "index": 2,
-     "question": 19,
-     "substring": "prose: Ext(C)= (+1 more)"
+     "index": 1,
+     "question": 18,
+     "substring": "prose: ABD (+1 more)"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "prose: ABC (+1 more)"
+    },
+    {
+     "code": "SOURCE_PLAIN_MATH",
+     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
+     "field": "intro",
      "group": "challenges",
      "index": 3,
      "question": 20,
-     "substring": "{\"base\": 10, \"construction\": \"altitude\", \"kind\": \"triangle_part\", \"left\": 6, \"names\": \"ABCD\", \"right\": 6, \"rotate\": 0}"
+     "substring": "prose: ABC, AD (+3 more)"
     }
    ],
    "questions": {
-    "failingAlone": 14,
+    "failingAlone": 16,
     "total": 20
    },
    "recorded": "2026-11-22 15:45Z",
@@ -2720,12 +2806,17 @@
       3,
       4,
       5,
+      6,
       7,
       8,
+      9,
       10,
       11,
+      12,
       13,
+      14,
       15,
+      16,
       17,
       18,
       19,
@@ -2744,8 +2835,8 @@
      ]
     },
     "firstPass": {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
      "ok": false
     },
     "requests": 2,
@@ -2753,8 +2844,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:SOURCE_FIGURE",
-   "finalCode": "SOURCE_FIGURE",
+   "failureClass": "SOURCE:SOURCE_TEXT",
+   "finalCode": "SOURCE_TEXT",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "T2-triangle",
@@ -2767,7 +2858,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 1,
@@ -2776,7 +2867,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE_TASK"
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 2,
@@ -2785,7 +2876,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 3,
@@ -2794,7 +2885,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 4,
@@ -2803,7 +2894,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 5,
@@ -2812,7 +2903,16 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE_TASK"
+         "SOURCE_TEXT"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 7,
@@ -2821,7 +2921,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_NOTATION"
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 8,
@@ -2830,7 +2930,16 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_TEXT"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 10,
@@ -2839,7 +2948,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE_TASK"
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 11,
@@ -2848,7 +2957,16 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_TEXT"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 13,
@@ -2857,7 +2975,16 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_TEXT"
+        ],
+        "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 15,
@@ -2866,7 +2993,16 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_TEXT"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_TEXT"
         ],
         "group": "practice",
         "question": 17,
@@ -2875,7 +3011,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_TEXT"
         ],
         "group": "challenges",
         "question": 18,
@@ -2893,16 +3029,16 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_TEXT"
         ],
         "group": "challenges",
         "question": 20,
         "stage": "source"
        }
       ],
-      "missing": 15,
+      "missing": 20,
       "planned": 20,
-      "printed": 5,
+      "printed": 0,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -2933,121 +3069,166 @@
    "provider": "qwen",
    "questionFailures": [
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "practice",
      "index": 1,
      "question": 1,
-     "substring": "{\"base\": 12, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 10, \"names\": \"ABCM\", \"right\": 10, \"rotate\": 0}"
+     "substring": "prose: $ABC$. (+4 more)"
     },
     {
-     "code": "SOURCE_FIGURE_TASK",
-     "detail": "Figure answers must bind to the question's actual figure",
-     "field": "item.1.answer",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 2,
      "question": 2,
-     "substring": "{\"kind\": \"figure\", \"operation\": \"coordinate_pair\", \"point\": \"M\", \"unit\": \"יחידות אורך\"}"
+     "substring": "prose: $M$"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "practice",
      "index": 3,
      "question": 3,
-     "substring": "{\"base\": 10, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 13, \"names\": \"ABCD\", \"right\": 13, \"rotate\": 0}"
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "practice",
      "index": 4,
      "question": 4,
-     "substring": "{\"base\": 8, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 5, \"names\": \"ABCD\", \"right\": 5, \"rotate\": 0}"
+     "substring": "prose: $ABC$ ($AB=AC$). (+5 more)"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "practice",
      "index": 5,
      "question": 5,
-     "substring": "{\"base\": 10, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 13, \"names\": \"ABCM\", \"right\": 13, \"rotate\": 0}"
+     "substring": "prose: $ABC$ (+7 more)"
     },
     {
-     "code": "SOURCE_FIGURE_TASK",
-     "detail": "Figure answers must bind to the question's actual figure",
-     "field": "item.1.answer",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.2.prompt",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "prose: $60 (+1 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 7,
      "question": 7,
-     "substring": "{\"kind\": \"figure\", \"operation\": \"coordinate_pair\", \"point\": \"M\", \"unit\": \"יחידות אורך\"}"
+     "substring": "prose: $M$"
     },
     {
-     "code": "SOURCE_NOTATION",
-     "detail": "Invalid or unsupported compact mathematical notation",
-     "field": "item.3.answer",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "practice",
      "index": 8,
      "question": 8,
-     "substring": "{\"kind\": \"review\", \"text\": \"הזווית החיצונית גדולה יותר ($120° > 60°$).\"}"
+     "substring": "prose: $ABC$. (+5 more)"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "prose: $40 (+3 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "practice",
      "index": 10,
      "question": 10,
-     "substring": "{\"base\": 10, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 12, \"names\": \"ABCD\", \"right\": 12, \"rotate\": 0}"
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
     },
     {
-     "code": "SOURCE_FIGURE_TASK",
-     "detail": "Figure answers must bind to the question's actual figure",
-     "field": "item.1.answer",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 11,
      "question": 11,
-     "substring": "{\"kind\": \"figure\", \"operation\": \"coordinate_pair\", \"point\": \"M\", \"unit\": \"יחידות אורך\"}"
+     "substring": "prose: $M$"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.2.prompt",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "prose: $\\angle (+1 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "practice",
      "index": 13,
      "question": 13,
-     "substring": "{\"base\": 16, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 10, \"names\": \"ABCD\", \"right\": 10, \"rotate\": 0}"
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "prose: $AM$"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "practice",
      "index": 15,
      "question": 15,
-     "substring": "{\"base\": 10, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 12, \"names\": \"ABCD\", \"right\": 12, \"rotate\": 0}"
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "item.3.prompt",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "prose: $\\angle (+2 more)"
+    },
+    {
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "practice",
      "index": 17,
      "question": 17,
-     "substring": "{\"base\": 10, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 12, \"names\": \"ABCD\", \"right\": 12, \"rotate\": 0}"
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "challenges",
      "index": 1,
      "question": 18,
-     "substring": "{\"base\": 12, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 10, \"names\": \"ABCD\", \"right\": 10, \"rotate\": 0}"
+     "substring": "prose: $ABC$. (+4 more)"
     },
     {
      "code": "SOURCE_NOTATION",
@@ -3059,17 +3240,17 @@
      "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"180 - (180 - 2*atan(3/4)*180/pi)\", \"kind\": \"evaluate\"}, \"unit\": \"°\"}"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "code": "SOURCE_TEXT",
+     "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+     "field": "intro",
      "group": "challenges",
      "index": 3,
      "question": 20,
-     "substring": "{\"base\": 10, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 12, \"names\": \"ABCD\", \"right\": 12, \"rotate\": 0}"
+     "substring": "prose: $ABC$ ($AB=AC$). (+4 more)"
     }
    ],
    "questions": {
-    "failingAlone": 15,
+    "failingAlone": 20,
     "total": 20
    },
    "recorded": "2026-11-22 15:59Z",
@@ -4387,6 +4568,7 @@
      "answered": false,
      "questions": [
       2,
+      7,
       12,
       13,
       14,
@@ -4398,7 +4580,8 @@
       "q13",
       "q14",
       "q17",
-      "q2"
+      "q2",
+      "q7"
      ]
     },
     "firstPass": {
@@ -4412,7 +4595,7 @@
    "delivered": false,
    "delivery": null,
    "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
-   "finalCode": "QUALITY_GATE_FAILED",
+   "finalCode": "PRINTED_ANSWER_LEAK",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "G-square",
@@ -4420,10 +4603,10 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 5,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -4432,7 +4615,16 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 7,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -4441,7 +4633,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -4450,7 +4642,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -4459,7 +4651,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -4468,9 +4660,9 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 6,
       "planned": 20,
-      "printed": 15,
+      "printed": 14,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -4478,10 +4670,7 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gate": "fail",
-    "gateCode": "G75",
-    "question": null,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "גיאומטרי",
@@ -4500,13 +4689,7 @@
    "localAuthor": "square-parameters/1",
    "model": "gemini-3.8-flash",
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -4517,6 +4700,15 @@
      "index": 2,
      "question": 2,
      "substring": "במערכת הצירים שלפניכם נתונים קודקודי הריבוע [[A(1,1)]], [[B(1,5)]], [[C(5,5)]] ו־[[D(5,1)]]. כל משבצת היא יחידת אורך אחת…"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Wrong number of distinct points",
+     "field": "item.3.answer",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "{\"kind\": \"review\", \"text\": \"במשולש [[polygon:ABC]] הזווית [[angle:B]] שווה [[90°]] והצלעות [[segment:AB]] ו־[[segment:BC…"
     },
     {
      "code": "PRINTED_ANSWER_LEAK",
@@ -4556,46 +4748,11 @@
     }
    ],
    "questions": {
-    "failingAlone": 5,
+    "failingAlone": 6,
     "total": 20
    },
    "recorded": "2026-11-23 14:10Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [
-      {
-       "gate": "G75",
-       "questions": [],
-       "step": "middle-build/build_plus (PDF + gates)",
-       "text": "AssertionError: G75 (figure variety, level b): the same drawing serves questions 1, 3, 4, 6, 8, 9, 12, 15 (cap is 2): draw what each of those questions adds — a diagonal, an altitude, a midpoint, a new point"
-      },
-      {
-       "gate": "BLOCKING_BUILD_FAILURE",
-       "questions": [],
-       "step": "didactic-review-reconciliation",
-       "text": "ValueError: BLOCKING_BUILD_FAILURE"
-      }
-     ],
-     "reviewFindings": [],
-     "skippedChecks": [],
-     "status": "failed",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "status": "FAIL"
-      },
-      {
-       "name": "didactic-review-reconciliation",
-       "status": "FAIL"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -4616,12 +4773,16 @@
      "answered": false,
      "questions": [
       2,
+      3,
       4,
       5,
       6,
+      8,
       9,
+      10,
       11,
       12,
+      13,
       14,
       15,
       16,
@@ -4629,13 +4790,13 @@
      ],
      "requested": true,
      "requiredKeys": [
-      "q11",
-      "q12",
-      "q14",
+      "q10",
       "q2",
+      "q3",
       "q4",
       "q5",
       "q6",
+      "q8",
       "q9"
      ]
     },
@@ -4672,6 +4833,15 @@
        {
         "action": "missing",
         "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
         "group": "practice",
@@ -4699,10 +4869,28 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_SHAPE"
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NUMBER"
+        ],
+        "group": "practice",
+        "question": 10,
         "stage": "source"
        },
        {
@@ -4717,10 +4905,19 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 13,
         "stage": "source"
        },
        {
@@ -4760,9 +4957,9 @@
         "stage": "source"
        }
       ],
-      "missing": 11,
+      "missing": 15,
       "planned": 20,
-      "printed": 9,
+      "printed": 5,
       "reservesOffered": 4,
       "reservesRefused": 3
      }
@@ -4802,6 +4999,15 @@
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}, \"unit\": \"\"}"
     },
     {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "intro",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "[[angle:DAB = 70]]"
+    },
+    {
      "code": "PRINTED_ANSWER_LEAK",
      "detail": "An item prints the answer of an earlier item of the same question",
      "field": "intro",
@@ -4829,13 +5035,31 @@
      "substring": "נתונה מקבילית [[ABCD]] שבה שתי צלעות סמוכות מובעות באמצעות [[x]]: [[AB = 3*x + 2]], [[BC = x + 10]]."
     },
     {
-     "code": "SOURCE_SHAPE",
-     "detail": "Unexpected or missing source fields",
-     "field": "table",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.2.prompt",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "[[angle:BCD = 120]]"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.2.prompt",
      "group": "practice",
      "index": 9,
      "question": 9,
-     "substring": "{\"figure\": {\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"d1\": 8, \"d2\": 6}, \"rotate\": 0, \"shape\": \"rhombus\"}, \"head\"…"
+     "substring": "[[angle:DAB = 70]]"
+    },
+    {
+     "code": "SOURCE_NUMBER",
+     "detail": "Integer outside supported bounds",
+     "field": "figure",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "{\"kind\": \"coordinate_plane\", \"placement\": \"wide\", \"points\": [{\"name\": \"M\", \"x\": 2, \"y\": 3}, {\"name\": \"A\", \"x\": 2, \"y\": 6…"
     },
     {
      "code": "PRINTED_ANSWER_LEAK",
@@ -4847,13 +5071,22 @@
      "substring": "סרטטו מעוין [[ABCD]] שאלכסוניו הם [[AC = 16]] ס״מ ו־[[BD = 12]] ס״מ. שני תלמידים הציעו דרכים שונות לחשב את צלע המעוין בע…"
     },
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "field": "intro",
      "group": "practice",
      "index": 12,
      "question": 12,
-     "substring": "בסרטוט נתונה מקבילית [[ABCD]]. האלכסונים נחתכים בנקודה [[O]]. נתון כי [[angle:AOB = 90]] מעלות. כמו כן נתון [[AB = 3*x -…"
+     "substring": "[[angle:AOB = 90]]"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.2.prompt",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "[[angle:BAC = 35]]"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"20\", \"relation\": \"eq\", \"right\": \"20\"}, \"unit\": \"\"}",
@@ -4930,7 +5163,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 15,
+    "failingAlone": 19,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -5007,7 +5240,7 @@
        {
         "action": "reserve",
         "codes": [
-         "PRINTED_TASK_MISMATCH"
+         "SOURCE_SHAPE"
         ],
         "group": "practice",
         "question": 1,
@@ -5025,7 +5258,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_KIND"
+         "SOURCE_SHAPE"
         ],
         "group": "practice",
         "question": 5,
@@ -5043,7 +5276,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_KIND"
+         "SOURCE_SHAPE"
         ],
         "group": "practice",
         "question": 7,
@@ -5088,7 +5321,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_KIND"
+         "SOURCE_SHAPE"
         ],
         "group": "practice",
         "question": 13,
@@ -5183,8 +5416,8 @@
    "questionFailures": [
     {
      "answer": "{\"kind\": \"decide\", \"left\": \"7\", \"relation\": \"eq\", \"right\": \"7\"}",
-     "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The typed claim uses a number that the question does not print",
+     "code": "SOURCE_SHAPE",
+     "detail": "Unexpected or missing source fields",
      "field": "item.2",
      "group": "practice",
      "index": 1,
@@ -5201,13 +5434,14 @@
      "substring": "במערכת הצירים שלפניכם (כל משבצת היא יחידת אורך אחת) נתונים קודקודי המעוין [[ABCD]]: הקודקודים הם [[A(0,3)]], [[B(4,0)]],…"
     },
     {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The question does not ask about one relation that can be decided",
-     "field": "item.1.answer",
+     "answer": "{\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}",
+     "code": "SOURCE_SHAPE",
+     "detail": "Unexpected or missing source fields",
+     "field": "item.1",
      "group": "practice",
      "index": 5,
      "question": 5,
-     "substring": "{\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}"
+     "substring": "האם מקבילית שאלכסוניה מאונכים היא בהכרח מעוין?"
     },
     {
      "code": "PRINTED_ANSWER_LEAK",
@@ -5219,13 +5453,14 @@
      "substring": "נתונה מקבילית [[ABCD]] שבה שתי צלעות סמוכות הן [[AB = 2*x + 1]] ו־[[BC = x + 7]]. ידוע כי המקבילית היא מעוין."
     },
     {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The question does not ask about one relation that can be decided",
-     "field": "item.1.answer",
+     "answer": "{\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}",
+     "code": "SOURCE_SHAPE",
+     "detail": "Unexpected or missing source fields",
+     "field": "item.1",
      "group": "practice",
      "index": 7,
      "question": 7,
-     "substring": "{\"kind\": \"decide\", \"left\": \"90\", \"relation\": \"eq\", \"right\": \"90\"}"
+     "substring": "האם האלכסונים [[AC]] ו־[[BD]] מאונכים זה לזה?"
     },
     {
      "code": "PRINTED_ANSWER_LEAK",
@@ -5264,13 +5499,14 @@
      "substring": "null"
     },
     {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The question does not ask about one relation that can be decided",
-     "field": "item.1.answer",
+     "answer": "{\"kind\": \"decide\", \"left\": \"1\", \"relation\": \"eq\", \"right\": \"1\"}",
+     "code": "SOURCE_SHAPE",
+     "detail": "Unexpected or missing source fields",
+     "field": "item.1",
      "group": "practice",
      "index": 13,
      "question": 13,
-     "substring": "{\"kind\": \"decide\", \"left\": \"1\", \"relation\": \"eq\", \"right\": \"1\"}"
+     "substring": "במקבילית נתון כי אלכסון חוצה את אחת מזוויות המקבילית. האם המקבילית היא מעוין?"
     },
     {
      "code": "NOT_AN_OBJECT",
@@ -5331,8 +5567,8 @@
     },
     {
      "answer": "{\"kind\": \"decide\", \"left\": \"1\", \"relation\": \"eq\", \"right\": \"1\"}",
-     "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The typed claim uses a number that the question does not print",
+     "code": "SOURCE_SHAPE",
+     "detail": "Unexpected or missing source fields",
      "field": "item.2",
      "group": "reserves",
      "index": 2,
@@ -5374,12 +5610,14 @@
     "correction": {
      "answered": false,
      "questions": [
+      10,
       14,
       16,
       17
      ],
      "requested": true,
      "requiredKeys": [
+      "q10",
       "q14",
       "q16",
       "q17"
@@ -5409,7 +5647,7 @@
     "reviewFindings": [
      {
       "code": "SHORTER_SHEET",
-      "count": 4,
+      "count": 5,
       "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
      }
     ],
@@ -5419,24 +5657,22 @@
      "dropped": {
       "codes": {
        "K6": 1,
-       "PRINTED_ANSWER_LEAK": 3
+       "PRINTED_ANSWER_LEAK": 4
       },
-      "count": 4
+      "count": 5
      },
      "gate": "deliver",
-     "printedQuestions": 16,
+     "printedQuestions": 15,
      "replaced": {
       "codes": {
        "PRINTED_ANSWER_KIND": 2,
-       "PRINTED_ANSWER_LEAK": 2
+       "PRINTED_ANSWER_LEAK": 1
       },
-      "count": 4
+      "count": 3
      },
      "requestedQuestions": 20
     },
-    "unverifiedAnswers": {
-     "decision": 1
-    }
+    "unverifiedAnswers": {}
    },
    "failureClass": "DELIVERED",
    "finalCode": null,
@@ -5447,7 +5683,7 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 4,
+      "dropped": 5,
       "events": [
        {
         "action": "reserve",
@@ -5468,7 +5704,7 @@
         "stage": "source"
        },
        {
-        "action": "reserve",
+        "action": "dropped",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -5524,22 +5760,22 @@
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 16,
+      "printed": 15,
       "reservesOffered": 4,
-      "reservesRefused": 0
+      "reservesRefused": 1
      }
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 4,
+    "byReserve": 3,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 4,
+    "dropped": 5,
     "gate": "deliver",
     "gateCode": "K6",
-    "printed": 16,
-    "question": 16,
-    "replaced": 4,
+    "printed": 15,
+    "question": 15,
+    "replaced": 3,
     "stage": "render"
    },
    "lesson": {
@@ -5630,10 +5866,19 @@
      "index": 2,
      "question": 19,
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0\", \"relation\": \"ne\", \"right\": \"0\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "reserves",
+     "index": 2,
+     "question": null,
+     "substring": "[[a=1, b=-6, c=9]]"
     }
    ],
    "questions": {
-    "failingAlone": 7,
+    "failingAlone": 8,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -5973,6 +6218,8 @@
     "correction": {
      "answered": false,
      "questions": [
+      5,
+      7,
       9,
       12,
       13,
@@ -5987,14 +6234,15 @@
       "q13",
       "q14",
       "q16",
-      "q17",
       "q20",
+      "q5",
+      "q7",
       "q9"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The question does not ask about one relation that can be decided",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "ok": false
     },
     "requests": 2,
@@ -6002,8 +6250,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
-   "finalCode": "PRINTED_ANSWER_KIND",
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-p3",
@@ -6016,14 +6264,32 @@
        {
         "action": "reserve",
         "codes": [
-         "PRINTED_ANSWER_KIND"
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 5,
         "stage": "source"
        },
        {
-        "action": "reserve",
+        "action": "missing",
         "codes": [
          "PRINTED_TASK_MISMATCH"
         ],
@@ -6104,9 +6370,9 @@
         "stage": "source"
        }
       ],
-      "missing": 7,
+      "missing": 9,
       "planned": 20,
-      "printed": 13,
+      "printed": 11,
       "reservesOffered": 4,
       "reservesRefused": 1
      }
@@ -6137,13 +6403,31 @@
    "provider": "gemini",
    "questionFailures": [
     {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "A printed relation with a blank or a letter cannot be decided",
-     "field": "item.1.answer",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "[[angle:D = 70°]]"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "[[angle:C]]"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 5,
      "question": 5,
-     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"100 + 80\", \"relation\": \"eq\", \"right\": \"180\"}, \"unit\": \"\"}"
+     "substring": "[[angle:A = 100°]]"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"45\", \"relation\": \"eq\", \"right\": \"45\"}, \"unit\": \"\"}",
@@ -6239,7 +6523,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 11,
+    "failingAlone": 13,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -6265,12 +6549,15 @@
      "answered": false,
      "questions": [
       1,
+      3,
+      4,
       5,
       6,
       7,
       9,
       12,
       13,
+      14,
       15,
       16,
       17,
@@ -6280,13 +6567,13 @@
      "requested": true,
      "requiredKeys": [
       "q1",
-      "q12",
       "q18",
       "q20",
+      "q3",
+      "q4",
       "q5",
       "q6",
-      "q7",
-      "q9"
+      "q7"
      ]
     },
     "firstPass": {
@@ -6322,7 +6609,25 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_KIND"
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 5,
@@ -6358,7 +6663,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 12,
@@ -6371,6 +6676,15 @@
         ],
         "group": "practice",
         "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NUMBER"
+        ],
+        "group": "practice",
+        "question": 14,
         "stage": "source"
        },
        {
@@ -6394,7 +6708,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 17,
@@ -6403,7 +6717,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_TASK_MISMATCH"
+         "SOURCE_NOTATION"
         ],
         "group": "challenges",
         "question": 18,
@@ -6412,16 +6726,16 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "SOURCE_NOTATION"
         ],
         "group": "challenges",
         "question": 20,
         "stage": "source"
        }
       ],
-      "missing": 12,
+      "missing": 15,
       "planned": 20,
-      "printed": 8,
+      "printed": 5,
       "reservesOffered": 4,
       "reservesRefused": 4
      }
@@ -6461,13 +6775,31 @@
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"1\", \"relation\": \"ne\", \"right\": \"1\"}, \"unit\": \"\"}"
     },
     {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The question does not ask about one relation that can be decided",
-     "field": "item.1.answer",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "[[angle:D = 65°]]"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.2.prompt",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "[[angle:D]]"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.3.prompt",
      "group": "practice",
      "index": 5,
      "question": 5,
-     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"1\", \"relation\": \"eq\", \"right\": \"1\"}, \"unit\": \"\"}"
+     "substring": "[[AB || CD]]"
     },
     {
      "code": "SOURCE_NOTATION",
@@ -6498,13 +6830,13 @@
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"75\", \"relation\": \"eq\", \"right\": \"85\"}, \"unit\": \"\"}"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "The pinned skill cannot draw this figure at q1.figure",
-     "field": "figure",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 12,
      "question": 12,
-     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 7, \"b\": 13, \"dx\": 4, \"h\": 6}, \"rotate\": 0, \"shape\": \"trapezoid\"}"
+     "substring": "[[angle:A = 3*x]]"
     },
     {
      "code": "PRINTED_ANSWER_LEAK",
@@ -6514,6 +6846,15 @@
      "index": 13,
      "question": 13,
      "substring": "בסרטוט שלפניכם נתון טרפז שבו הגובה הוא [[6]] ס\"מ. נתבונן במקרים שונים של אורכי הבסיסים."
+    },
+    {
+     "code": "SOURCE_NUMBER",
+     "detail": "Integer outside supported bounds",
+     "field": "figure",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "{\"kind\": \"coordinate_plane\", \"placement\": \"wide\", \"points\": [{\"name\": \"A\", \"x\": 2, \"y\": 5}, {\"name\": \"B\", \"x\": 7, \"y\": 5…"
     },
     {
      "code": "PRINTED_ANSWER_KIND",
@@ -6534,32 +6875,31 @@
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"50\", \"relation\": \"eq\", \"right\": \"50\"}, \"unit\": \"\"}"
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "The pinned skill cannot draw this figure at q1.figure",
-     "field": "figure",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "intro",
      "group": "practice",
      "index": 17,
      "question": 17,
-     "substring": "{\"kind\": \"shape\", \"names\": \"ABCD\", \"parameters\": {\"a\": 6, \"b\": 12, \"dx\": 3, \"h\": 5}, \"rotate\": 0, \"shape\": \"trapezoid\"}"
+     "substring": "[[AB || CD]]"
     },
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"12 * 9 / 2\", \"relation\": \"eq\", \"right\": \"54\"}, \"unit\": \"\"}",
-     "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The typed claim uses a number that the question does not print",
-     "field": "item.3",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "intro",
      "group": "challenges",
      "index": 1,
      "question": 18,
-     "substring": "האם שטח המשולש [[ACD]] שווה בדיוק ל־[[54]] סמ\"ר?"
+     "substring": "[[AB || CD]]"
     },
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "field": "intro",
      "group": "challenges",
      "index": 3,
      "question": 20,
-     "substring": "בסרטוט נתון טרפז ישר־זווית [[ABCD]] שבו [[angle:A = angle:D = 90°]]. הבסיסים הם [[AB = 5]] ס\"מ ו־[[CD = 9]] ס\"מ, והגובה …"
+     "substring": "[[angle:A = angle:D = 90°]]"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"7\", \"kind\": \"evaluate\"}, \"unit\": \"ס\\\"מ\"}",
@@ -6601,7 +6941,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 16,
+    "failingAlone": 19,
     "total": 24
    },
    "recorded": "2026-11-23 19:40Z",
@@ -9138,13 +9478,13 @@
    "gemini": {
     "cases": 21,
     "delivered": 11,
-    "failingAlone": 153,
+    "failingAlone": 164,
     "questions": 484
    },
    "qwen": {
     "cases": 14,
     "delivered": 5,
-    "failingAlone": 81,
+    "failingAlone": 93,
     "questions": 272
    }
   },
@@ -9157,12 +9497,13 @@
    "DELIVERED": 16,
    "OTHER:QUALITY_GATE_FAILED": 1,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 1,
-   "SOURCE:PRINTED_ANSWER_KIND": 5,
+   "SOURCE:PRINTED_ANSWER_KIND": 3,
    "SOURCE:PRINTED_ANSWER_LEAK": 6,
    "SOURCE:PRINTED_TASK_MISMATCH": 1,
    "SOURCE:QUALITY_GATE_FAILED": 1,
-   "SOURCE:SOURCE_FIGURE": 3,
-   "SOURCE:SOURCE_RICH_TEXT": 1
+   "SOURCE:SOURCE_FIGURE": 2,
+   "SOURCE:SOURCE_NOTATION": 3,
+   "SOURCE:SOURCE_TEXT": 1
   },
   "finalStatus": {
    "delivered": 16,
@@ -9170,8 +9511,7 @@
    "needs_unrecorded_reply": 2
   },
   "firstRenderGateFindings": {
-   "BLOCKING_BUILD_FAILURE": 2,
-   "G75": 1,
+   "BLOCKING_BUILD_FAILURE": 1,
    "middle-build/selfcheck_noam_package.py": 1
   },
   "modelCalls": 0,
@@ -9179,22 +9519,23 @@
   "questions": {
    "byCode": {
     "NOT_AN_OBJECT": 8,
-    "PRINTED_ANSWER_KIND": 66,
-    "PRINTED_ANSWER_LEAK": 61,
+    "PRINTED_ANSWER_KIND": 61,
+    "PRINTED_ANSWER_LEAK": 59,
     "PRINTED_EXPRESSION_SCOPE": 4,
-    "PRINTED_TASK_MISMATCH": 30,
+    "PRINTED_TASK_MISMATCH": 27,
     "QUALITY_GATE_FAILED": 3,
-    "SOURCE_FIGURE": 26,
-    "SOURCE_FIGURE_TASK": 3,
-    "SOURCE_NOTATION": 14,
-    "SOURCE_PLAIN_MATH": 10,
+    "SOURCE_FIGURE": 6,
+    "SOURCE_NOTATION": 37,
+    "SOURCE_NUMBER": 2,
+    "SOURCE_PLAIN_MATH": 17,
     "SOURCE_RICH_TEXT": 1,
-    "SOURCE_SHAPE": 2,
+    "SOURCE_SHAPE": 6,
     "SOURCE_TABLE": 4,
+    "SOURCE_TEXT": 20,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 234,
-   "failingShare": 0.3095,
+   "failingAlone": 257,
+   "failingShare": 0.3399,
    "total": 756
   },
   "secondAttemptsNotRecorded": 2

@@ -148,9 +148,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "$x^{2} − 9$",
-    "key": "$\\g{x − 3}\\g{x + 3}$"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

@@ -541,7 +541,7 @@ def examine_frame(title, rule, lesson, scope):
     try:
         text(title, 160)
         expanded = compact_authoring.expand_source({"version": 4, "title": title, "rule": rule, "sections": []},
-            lesson["gradeNumber"], topic=scope["topic"], fraction_notation=scope["topic"]["domain"] == "fractions")
+            lesson["gradeNumber"], fraction_notation=scope["topic"]["domain"] == "fractions")
         rich(expanded["rule"], lesson["gradeNumber"], provider=True, location="rule")
     except (GeneralSourceError, MathTaskError) as exc:
         return exc
@@ -587,7 +587,7 @@ def examine_question(wire, index, lesson, scope, *, challenge):
             raise GeneralSourceError("SOURCE_SHAPE", "A question is an object that leaves the challenge flag to the compiler")
         question = {**deepcopy(wire), "star": challenge}
         expanded = compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]},
-            lesson["gradeNumber"], topic=scope["topic"], fraction_notation=scope["topic"]["domain"] == "fractions")
+            lesson["gradeNumber"], fraction_notation=scope["topic"]["domain"] == "fractions")
         validated = expanded["sections"][0]["questions"][0]
         validate_question(validated, lesson["gradeNumber"], scope,
                           provider=True, qcount=index, evidence=[], pending=[])

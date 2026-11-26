@@ -77,14 +77,10 @@ the worker logs one `generation_failed` line with the code, the stage, the quest
 request states that this is an opening sheet and the plan marks its first questions as guided
 entry questions. Each local author keeps its own eligibility rule; `assessment` stays unsupported.
 
-`source_normalize.py` runs once on the reply when it arrives
-(`general_provider.author_general_lesson`), so the compile, the notation correction
-and the per-question predicate read the same text, and again inside `expand_source`,
-where it is a no-op on text that is already normal. It rewrites spellings that
-have exactly one reading into the contract's notation (an unspaced school operator,
-`$...$` math, a letter for the single missing number of an elementary formula, a label
-after the Hebrew noun that names it). It never computes and never chooses between two
-readings; such a spelling is left for validation to reject. Its module docstring lists every rule.
+The reply is compiled exactly as the model wrote it; nothing rewrites it. A spelling
+outside the contract's notation is refused, and a reserve or the one correction call
+replaces the question; unmarked mathematics alone goes to the notation correction,
+where the model inserts the marks and no word may change.
 
 `general_source.py` checks closed shapes, size, volume, niqqud, allowed concepts
 and expression bounds. `math_tasks.py` verifies typed arithmetic, symbolic

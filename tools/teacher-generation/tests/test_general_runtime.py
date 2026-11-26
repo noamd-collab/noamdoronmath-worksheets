@@ -189,9 +189,7 @@ class GeneralRuntimeTests(unittest.TestCase):
             if body["response_format"]["json_schema"]["name"] != "mark_skill_math":
                 return content
             fragments = json.loads(body["messages"][1]["content"])["fragments"]
-            # The reply is normalised on arrival: the rule and every string field were
-            # marked locally. Only the historical typed span list still needs the model.
-            self.assertCountEqual(fragments.values(), [question_text])
+            self.assertCountEqual(fragments.values(), [rule, question_text])
             self.assertNotIn("lastLesson", body["messages"][1]["content"])
             self.assertNotIn("items", body["messages"][1]["content"])
             measured["usage"] = {"total_tokens":48}
@@ -201,8 +199,7 @@ class GeneralRuntimeTests(unittest.TestCase):
                 provider.author_lesson(self.lesson,metadata=metadata,revision=revision,**self.config)
             self.assertEqual(first.exception.code,"SOURCE_PLAIN_MATH")
             self.assertNotIn(question_text, str(revision["sourceFindings"]))
-            # A count only: the rewrite notes quote worksheet text.
-            self.assertEqual(metadata["sourceRewrites"], 1 + len(rows) + 2 + 1)
+            self.assertNotIn("sourceRewrites", metadata)
             fixed = revision["revise"](revision["sourceFindings"])
             self.assertEqual(network.call_count,2)
             with self.assertRaises(GenerationError) as limit:
@@ -256,8 +253,7 @@ class GeneralRuntimeTests(unittest.TestCase):
             calls.assert_called_once()
 
     def test_retained_grade_seven_equation_recovery_recreates_the_same_verified_worksheet(self):
-        from compact_authoring import expand_source, spans as tokenize
-        from general_source import rich
+        from compact_authoring import expand_source
         from skill_authoring import notation_correction
         fixture = HERE / "cloud/container/fixtures/general/grade7-equation-skill"
         lesson = json.loads((fixture / "lesson.json").read_bytes())
@@ -270,12 +266,10 @@ class GeneralRuntimeTests(unittest.TestCase):
         plain = "".join(s["text"] if s["kind"]=="text" else s["notation"] for s in spans)
         marked = "".join(s["text"] if s["kind"]=="text" else "[["+s["notation"]+"]]" for s in spans)
         item["prompt"] = plain
-        # The tokenizer alone still rejects the unmarked equation ...
+        # The unmarked equation is refused as written; only the model's notation correction can mark it.
         with self.assertRaises(GeneralSourceError) as before:
-            rich(tokenize(plain,7),7,provider=True)
+            validate_source(lesson, expand_source(reply,7), scope, provider=True)
         self.assertEqual(before.exception.code,"SOURCE_PLAIN_MATH")
-        # ... and the local normaliser now recreates the worksheet without a model call.
-        self.assertEqual(validate_source(lesson, expand_source(reply,7), scope, provider=True), expected)
         correction = notation_correction(reply,lesson,scope)
         self.assertEqual(correction.fragments,{"f1":plain})
         repaired = correction.apply(reply,{"f1":marked})

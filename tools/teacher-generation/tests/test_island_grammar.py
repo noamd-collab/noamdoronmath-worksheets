@@ -1,13 +1,15 @@
+from copy import deepcopy
 from pathlib import Path
 import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from compact_authoring import display_parts, expression, spans
+from compact_authoring import display_parts, expand_source, expression, spans
 from general_adapters import _answer_text, _elementary_math, _formula, rich_text
-from general_source import GeneralSourceError, rich
+from general_source import GeneralSourceError, rich, validate_question
 from math_tasks import MAX_POWER, MathTaskError, number, operation, to_house_math, validate_and_solve_task
 from printed_tasks import printed_solve
+from runtime_catalog import CURRICULUM_SHA256, catalog, question_floor, scope_for_lesson
 
 PI = {"type": "constant", "name": "pi"}
 X = {"type": "symbol", "name": "x"}
@@ -176,6 +178,170 @@ class ElementaryLiteralTests(unittest.TestCase):
         self.assertEqual(expression("25% x 80", 6), expression("25% * 80", 6))
         self.assertEqual(solved("evaluate", 6, expression="25% x 80")["result"]["value"], number(20))
         self.assertEqual(code(spans, "[[25%x80]]", 6), "SOURCE_NOTATION")
+
+
+# The model's reply is never rewritten: each spelling below is judged exactly as written.
+# These engine checks used to live beside the removed normaliser (tests/test_source_normalize.py).
+
+TOPICS = {topic["topicId"]: topic for topic in catalog().topics}
+
+
+def accepted(value, grade, fractions=False):
+    """The engine's own verdict on one rich wire string: its spans, or the refusal code."""
+    try:
+        return rich(spans(value, grade, fraction_notation=fractions), grade, provider=True)
+    except (GeneralSourceError, MathTaskError) as error:
+        return error.code
+
+
+def scope(topic_id):
+    topic = TOPICS[topic_id]
+    return scope_for_lesson({
+        "version": 3, "gradeNumber": topic["gradeNumber"], "topicId": topic_id, "level": topic["levels"][0],
+        "lessonGoal": "practice", "questionCount": question_floor(topic["gradeNumber"]), "minutes": 40,
+        "lastLesson": "למדנו את המושג הראשון בנושא ותרגלנו בכיתה", "alreadyLearned": [],
+        "explicitShortSheet": False,
+        "lessonBoundary": {"version": 1, "kind": "curriculum_scope", "curriculumSha256": CURRICULUM_SHA256,
+                           "conceptIds": [topic["concepts"][0]["id"]]}})
+
+
+def compiled_code(question, topic_id):
+    """The refusal code of one wire question expanded and validated as written, or None."""
+    bounds = scope(topic_id)
+    grade = bounds["topic"]["gradeNumber"]
+    try:
+        expanded = expand_source({"version": 4, "sections": [{"questions": [{**deepcopy(question), "star": False}]}]},
+                                 grade, fraction_notation=bounds["topic"]["domain"] == "fractions")
+        validate_question(expanded["sections"][0]["questions"][0], grade, bounds, provider=True, qcount=1,
+                          evidence=[], pending=[])
+    except (GeneralSourceError, MathTaskError) as error:
+        return error.code
+    return None
+
+
+def evaluate(expression_text, unit=""):
+    return {"kind": "computed", "task": {"kind": "evaluate", "expression": expression_text}, "unit": unit}
+
+
+class WrittenAsSentTests(unittest.TestCase):
+    def test_contract_spellings_are_accepted_as_written(self):
+        for grade, value in [
+            (4, "[[324 x 15]]"), (4, "[[1,845 : 15]]"), (6, "[[25% x 80]]"), (4, "[[3 x 4]]"), (4, "חשבו: [[48 : 6 = ___]]"),
+            (4, "[[12 : 4]]"), (8, "[[sqrt(49)]]"), (8, "[[sqrt(x+1)]]"), (9, "חשבו [[2sqrt(3)]]"), (8, "[[2^3]]"),
+            (8, "[[x^2]]"), (8, "[[10^(-2)]]"), (4, "[[frac(1,2)]]"), (4, "חצי הוא [[frac(1,2)]] מהשלם"),
+            (8, "[[5 - 10 + 2]]"), (8, "[[2*3]]"), (4, "[[6+3]]"), (8, "[[0.5]]"), (6, "[[25%]]"), (6, "[[25%]] מהכיתה"),
+            (6, "25% מהכיתה"), (8, "[[90°]]"), (4, "[[5 + ___ = 9]]"), (4, "[[5 + 3 = ___]]"),
+            (4, "השלימו: ___ + [[5]] = [[9]]"), (4, "[[5 + 3 = 8]]?"), (7, "[[x = 5]]."), (4, "[[12.50]] ₪"),
+            (3, "[[5]] ס״מ"), (3, '[[5]] ס"מ'), (4, "[[5 + 3 = ___]] שקלים"),
+            (8, "[[segment:AD]] הוא תיכון לצלע [[segment:BC]]."), (5, "[[90°]]"), (4, "[[5 + 3]]"),
+            (4, "מצב ב': [[4 + (2 * 3)]]. מה ההפרש"), (4, "בחישוב [[((___) + 4) * 3 = 21]], מהו המספר החסר?"),
+            (8, "[[frac(1,2)]]"), (8, "[[2 * 3]]"), (8, "[[sqrt(16)]]"), (8, "חשבו [[x+1]] עכשיו"), (8, "ולכן [[AM ⊥ BC]]."),
+            (8, "הקודקודים [[A(0, 4)]], [[B(-3, 0)]] ו־[[C(3, 0)]]."), (8, "חשבו את x"), (8, "מהו גודל הזווית [[∠ACB]]?"),
+            (8, "נתון [[△ABC]]."), (8, "ידוע כי [[AB ∥ CD]]."), (8, "אם [[∠ABC = 50°]] ו-[[∠BAC = 60°]]"),
+            (8, "הזוויות [[40°]], [[60°]] ו-[[80°]]"), (8, "המספרים [[2]], [[4]], [[6]] הם זוגיים"),
+            (8, "לא ייתכן, כי [[4+6 < 9]]."), (9, "היקף הריבוע גדול יותר כי [[4a > 2a+2b]]."),
+            (9, "מכיוון ש-[[b<a]], השטח גדול יותר."), (8, "[[3 < x < 17]]."), (8, "[[∠ABC]] = [[50°]]"),
+        ]:
+            with self.subTest(value=value, grade=grade):
+                self.assertIsInstance(accepted(value, grade), list, accepted(value, grade))
+        for value in ("נתון כי [[∠DAB = 70°]].", "נתון כי [[∠BCD = 120°]]. חשבו", "אם [[∠DAB = 70°]].",
+                      "נתון כי [[∠AOB = 90°]].", "נתון כי [[∠BAC = 35°]].", "נתון כי [[∠D = 70°]].",
+                      "שתי זוויות הבסיס העליון, [[∠A + ∠B]].", "נתון כי [[∠A = 100°]] ו־[[∠D = 80°]].",
+                      "נתון כי [[∠D = 65°]].", "נתון כי [[∠A = 3*x]] ו־[[∠D = 2*x]].",
+                      "טרפז ישר־זווית שבו [[∠A = ∠D = 90°]].", "[[∠ABC]] = [[50°]]"):
+            with self.subTest(value=value):
+                self.assertIsInstance(accepted(value, 9), list, accepted(value, 9))
+        for grade, task in [(4, "324 x 15"), (4, "48 : 6 + 2"), (4, "48 : 6"), (4, "12 : 4"), (8, "sqrt(49)"), (8, "2^3"),
+                            (8, "frac(3,4)+frac(1,2)"), (8, "2*x+3"), (8, "5^2"), (8, "5 - 3 + 1"), (6, "25%*80")]:
+            with self.subTest(task=task):
+                self.assertIsNone(code(expression, task, grade))
+
+    def test_typed_labels_print_with_their_names(self):
+        for written, shown in [
+            ("במשולש [[triangle:ABC]], הגובה [[segment:AD]] מאונך לצלע [[segment:BC]].",
+             r"במשולש $\tri ABC$, הגובה $AD$ מאונך לצלע $BC$."),
+            ("משולש שווה שוקיים [[triangle:ABC]] (AB=AC).", r"משולש שווה שוקיים $\tri ABC$ ($AB = AC$)."),
+            ("הוכיחו כי המשולשים [[triangle:ABD]] ו-[[triangle:ACD]] חופפים.",
+             r"הוכיחו כי המשולשים $\tri ABD$ ו-$\tri ACD$ חופפים."),
+            ("מהו גודל הזווית [[angle:ABC]]?", r"מהו גודל הזווית $\angle{ABC}$?"),
+            ("הנקודה [[point:M]] היא אמצע השוק [[segment:AB]].", "הנקודה $M$ היא אמצע השוק $AB$."),
+            ("מרובע [[polygon:ABCD]] הוא ריבוע.", "מרובע $ABCD$ הוא ריבוע."),
+            ("[[segment:AE]] הוא חוצה הזווית [[∠BAC]].", r"$AE$ הוא חוצה הזווית $\angle{BAC}$."),
+            ("משולש [[triangle:ABC]]. הנקודה [[point:M]] היא אמצע הצלע [[segment:BC]]. נתון: [[BM=6]] ס\"מ.",
+             "משולש $\\tri ABC$. הנקודה $M$ היא אמצע הצלע $BC$. נתון: $BM = 6$ ס\"מ."),
+        ]:
+            with self.subTest(written=written):
+                self.assertEqual(rich_text(accepted(written, 8), 8), shown)
+        self.assertEqual(rich_text(accepted("נתון כי [[∠ADC = 70°]]. חשבו את [[∠BAD + ∠ABC]].", 9), 9),
+                         r"נתון כי $\angle{ADC} = 70°$. חשבו את $\angle{BAD} + \angle{ABC}$.")
+        self.assertEqual(rich_text(accepted("[[∠BAD = 3*x]]", 9), 9), r"$\angle{BAD} = 3x$")
+
+    def test_subscripted_names_print_with_their_subscript(self):
+        for before, printed_text in (("[[d1 = 14]]", r"$d_{1} = 14$"), ("[[d1 = 3*x]]", r"$d_{1} = 3x$"),
+                                     ("[[(d1 * d2) / 2]]", r"$\f{d_{1} · d_{2}}{2}$")):
+            with self.subTest(before=before):
+                self.assertEqual(rich_text(accepted(before, 9), 9), printed_text)
+        # x2 next to a bare x could be a product: not a name.
+        self.assertEqual(accepted("[[x2 + x = 5]]", 9), "SOURCE_NOTATION")
+
+    def test_a_letter_with_a_percent_sign_is_one_operand(self):
+        for value in ("[[p%]] מתוך", "המהוות [[x%]] מסך הנקודות"):
+            with self.subTest(value=value):
+                self.assertNotIsInstance(accepted(value, 8), str)
+        self.assertEqual(rich_text(accepted("[[p%]] מתוך", 8), 8), "$p%$ מתוך")
+
+    def test_a_fraction_topic_reads_the_school_colon_as_division(self):
+        self.assertEqual(accepted("[[12 : 4]]", 4, fractions=True), [{"kind": "formula", "notation": "12 / 4"}])
+
+    def test_spellings_with_two_readings_are_refused(self):
+        for grade, value in [(8, "[[3,5]]"), (8, "[[5\u201310]]"), (4, "[[2½]]"), (4, "[[3_8]]"), (4, "[[3x = 12]]"),
+                             (8, "[[√25x]]"), (4, "[[5 + ... = 9]]"), (4, "[[1 000]]")]:
+            with self.subTest(value=value):
+                self.assertEqual(accepted(value, grade), "SOURCE_NOTATION")
+
+    def test_recorded_replies_are_refused_as_written(self):
+        # A recorded grade-four reply: every field of the question named the unknown x.
+        question = {
+            "intro": "השלימו את המספר החסר כדי שהמשוואה תהיה נכונה.",
+            "table": {"head": ["משוואה", "ערך x"],
+                      "rows": [["[[2 * x + 3 = 9]]", "___"], ["[[10 - x * 2 = 4]]", "___"], ["[[x / 3 + 2 = 5]]", "___"]]},
+            "items": [
+                {"prompt": "מצאו את [[x]] במשוואה [[2 * x + 3 = 9]].", "answer": evaluate("(9 - 3) / 2")},
+                {"prompt": "מצאו את [[x]] במשוואה [[10 - x * 2 = 4]].", "answer": evaluate("(10 - 4) / 2")},
+                {"prompt": "מצאו את [[x]] במשוואה [[x / 3 + 2 = 5]].", "answer": evaluate("(5 - 2) * 3")},
+            ]}
+        original = deepcopy(question)
+        with self.assertRaises(GeneralSourceError) as rejected:
+            validate_question({**deepcopy(question), "star": False, "intro": spans(question["intro"], 4),
+                               "table": {"head": [spans(c, 4) for c in question["table"]["head"]],
+                                         "rows": [[spans(c, 4) for c in row] for row in question["table"]["rows"]]}},
+                              4, scope("ד07"), provider=True, qcount=1, evidence=[], pending=[])
+        self.assertEqual(rejected.exception.code, "SOURCE_NOTATION")
+        self.assertEqual(compiled_code(question, "ד07"), "SOURCE_NOTATION")
+        self.assertEqual(question, original)
+        # A recorded geometry reply written with $...$ math.
+        geometry = {
+            "intro": "בסרטוט שלפניכם משולש שווה־שוקיים $ABC$ ($AB=AC$). התיכון $AD$ לבסיס $BC$ הוא גם גובה. נתון: $\\angle{ABC}=70°$.",
+            "items": [
+                {"prompt": "מהו גודל הזווית $\\angle{ACB}$?", "answer": evaluate("70", "מעלות")},
+                {"prompt": "מהו גודל זווית הראש $\\angle{BAC}$?", "answer": evaluate("180-70-70", "מעלות")},
+                {"prompt": "מהו גודל הזווית $\\angle{BAD}$?", "answer": evaluate("(180-70-70)/2", "מעלות")},
+            ]}
+        self.assertEqual(compiled_code(geometry, "g8:triangle_parts"), "SOURCE_TEXT")
+        # Recorded bracket typos and an unspaced school operator.
+        typos = {"intro": "השוו בין שני מצבים המשלבים סוגריים ופעולות מעורבות.", "items": [
+            {"prompt": "מצב א': [[(4 + 2) * 3]]. מצב ב': [[4 + (2 * 3)]. מה ההפרש בין התוצאות?",
+             "answer": evaluate("(4 + 2) * 3 - (4 + 2 * 3)")},
+            {"prompt": "בחישוב [[(___) + 4] * 3 = 21]], מהו המספר החסר?", "answer": evaluate("21 / 3 - 4")},
+            {"prompt": "חשבו: [[324x15]]", "answer": evaluate("324x15")},
+        ]}
+        self.assertEqual(compiled_code(typos, "ד07"), "SOURCE_NOTATION")
+        # A one-letter angle is refused even beside a figure that would name it (the pinned gate G81).
+        square = {"kind": "shape", "shape": "square", "parameters": {"a": 5}, "names": "ABCD", "rotate": 0}
+        one_letter = {"intro": "התבוננו בריבוע [[polygon:ABCD]] המצויר בתמונה.", "figure": square,
+                      "items": [{"prompt": "מהי הזווית [[angle:A]]?", "answer": evaluate("90", "מעלות")}] * 3}
+        self.assertEqual(compiled_code(one_letter, "g9m:square"), "SOURCE_NOTATION")
+        self.assertEqual(accepted("מהי הזווית [[angle:A]]?", 9), "SOURCE_NOTATION")
 
 
 if __name__ == "__main__":

@@ -422,9 +422,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "1 2 ___ 1 4",
-    "key": "1 2 > 1 4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

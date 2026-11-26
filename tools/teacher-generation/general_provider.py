@@ -19,7 +19,6 @@ from skill_authoring import (MAX_CORRECTED, bind_content, correction_instruction
                              notation_correction, question_codes, question_plan, refers_to_another_question,
                              refusal_feedback, reserve_plan, revision_request, split_reserves, trim_rule,
                              worksheet_schema)
-from source_normalize import normalize_question, normalize_rich, normalize_source
 from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
 from runtime_catalog import catalog, scope_for_lesson
 from validation import reject
@@ -145,20 +144,6 @@ class Draft:
     def _judge(self, question, challenge, number):
         return question_codes(question, self.requested, self.scope, challenge=challenge, index=number,
                               refusals=self._refusals)
-
-    def _normalise_rule(self, rule):
-        try:
-            return normalize_rich(rule, self.requested['gradeNumber'], topic_id=self.scope['topic'].get('topicId'),
-                                  domain=self.scope['topic'].get('domain'), path='rule')[0]
-        except Exception:  # noqa: BLE001 - the normaliser never decides; examine_frame does
-            return rule
-
-    def _normalise(self, question):
-        try:
-            return normalize_question(question, self.requested['gradeNumber'], topic_id=self.scope['topic'].get('topicId'),
-                                      domain=self.scope['topic'].get('domain'))[0]
-        except Exception:  # noqa: BLE001 - the normaliser never decides; the predicate does
-            return question
 
     # ------------------------------------------------------------------ state
 
@@ -321,9 +306,9 @@ class Draft:
                     raise GeneralSourceError('REVISION_SCOPE', 'The correction reply is not an object of questions')
                 for slot, key in zip(slots, keys):
                     row = reply.get(key)
-                    self.selection.fill(slot.number, self._normalise(row) if isinstance(row, dict) else None)
+                    self.selection.fill(slot.number, row if isinstance(row, dict) else None)
                 if fix_rule is not None and isinstance(reply.get('rule'), str):
-                    rule = self._normalise_rule(reply['rule'])
+                    rule = reply['rule']
                     if examine_frame(self.title, rule, self.requested, self.scope) is None:
                         self.rule, self.rule_refusal, self.sheet_error = rule, None, None
             # A restored challenge may now let a practice reserve stand in for another one.
@@ -647,12 +632,6 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
     response = request_content(system, user, schema, schema_name, 'worksheet-source/4', 40000)
     if session is not None:
         session['replyReceived'] = True
-    # Single-reading spellings become contract notation once, on arrival, so the
-    # compile, the notation correction and the per-question replay read one text.
-    # Only the number of rewrites is measured: the notes quote worksheet text.
-    rewrites = []
-    response = normalize_source(response, lesson['gradeNumber'], topic=scope['topic'], notes=rewrites)
-    measured['sourceRewrites'] = len(rewrites)
 
     def compile_content(payload, sheet_lesson=lesson, stars=3):
         """The whole-sheet validation. ``sheet_lesson`` and ``stars`` differ only for a salvaged sheet."""
@@ -661,7 +640,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             payload = no_carry_addition.build_source(lesson, payload, addition_plan)
         payload = bind_content(payload, scope)
         payload = assemble_sections(payload, sheet_lesson['questionCount'], stars)
-        payload = compact_authoring.expand_source(payload, lesson['gradeNumber'], topic=scope['topic'],
+        payload = compact_authoring.expand_source(payload, lesson['gradeNumber'],
                                                   fraction_notation=scope['topic']['domain'] == 'fractions')
         payload = validate_source(sheet_lesson, payload, scope, provider=True)["source"]
         if len(payload['sections'])!=1:
@@ -684,12 +663,6 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             and isinstance(flat["practice"], list) and isinstance(flat["challenges"], list)):
         # The planned questions and the reserves, each examined alone. A bad
         # question has taken a reserve before anything else happens.
-        for row in reserve_rows:
-            try:
-                row['question'] = normalize_question(row['question'], lesson['gradeNumber'],
-                    topic_id=scope['topic'].get('topicId'), domain=scope['topic'].get('domain'))[0]
-            except Exception:  # noqa: BLE001 - the predicate decides, never the normaliser
-                pass
         draft = Draft(flat, reserve_rows, lesson, scope, plan, compile_sheet=compile_content,
                       ask=lambda body, observed: request_author_json(target, key, body, observed, timeout),
                       context=context, model=chosen, measured=measured)

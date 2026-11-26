@@ -109,10 +109,13 @@ class LiveCauses(unittest.TestCase):
         failure = self.check('L1-p2', wire)
         self.assertEqual(failure['code'], 'PRINTED_ANSWER_LEAK')
         # Also when the earlier result is printed as a given of a later item, or as its printed calculation.
-        for case_id, group, number in (('L1-p1', 'practice', 12), ('L1-p1', 'practice', 17),
-                                       ('L1-p3-a2', 'challenges', 3), ('L1-p3', 'challenges', 1)):
+        for case_id, group, number in (('L1-p1', 'practice', 17), ('L1-p3', 'challenges', 1)):
             with self.subTest(case=case_id, group=group, number=number):
                 self.assertEqual(self.code(case_id, question(case_id, group, number)), 'PRINTED_ANSWER_LEAK')
+        # Read as written, these two recorded leaks are refused for their notation first.
+        for case_id, group, number in (('L1-p1', 'practice', 12), ('L1-p3-a2', 'challenges', 3)):
+            with self.subTest(case=case_id, group=group, number=number):
+                self.assertEqual(self.code(case_id, question(case_id, group, number)), 'SOURCE_NOTATION')
 
     def test_independent_drill_items_may_share_a_number_by_chance(self):
         from compact_authoring import expression
@@ -137,23 +140,36 @@ class LiveCauses(unittest.TestCase):
     # F11: a figure the pinned constructors refuse is refused with its question, before the render.
 
     def test_a_figure_the_skill_cannot_draw_is_refused_at_selection(self):
+        from figure_probe import figure_refusal
         # A label on an axis number, even in the window two units wider; two sides that print as equal.
-        for case_id, group, number in (('L1-square', 'practice', 6), ('L1-p3', 'practice', 13),
-                                       ('L1-p3-a2', 'practice', 17)):
+        for case_id, group, number in (('L1-square', 'practice', 6), ('L1-p3', 'practice', 13)):
             with self.subTest(case=case_id, group=group, number=number):
                 failure = self.check(case_id, question(case_id, group, number))
                 self.assertEqual(failure['code'], 'SOURCE_FIGURE')
                 self.assertIn('figure', failure['detail'])
+        # Read as written, these recorded questions are refused for their notation before the figure
+        # is drawn, so their figures are drawn here alone: the pinned constructors refuse both
+        # (two sides that print as equal).
+        for case_id, group, number in (('L1-p3-a2', 'practice', 17), ('L1-p3-a2', 'challenges', 3)):
+            with self.subTest(case=case_id, group=group, number=number):
+                wire = question(case_id, group, number)
+                self.assertEqual(self.code(case_id, wire), 'SOURCE_NOTATION')
+                refusal = figure_refusal(wire['figure'], skill_path=str(self.skills['middle']))
+                self.assertEqual(refusal.code, 'SOURCE_FIGURE')
+                self.assertIn('figure', str(refusal))
 
     def test_a_figure_with_one_reading_is_drawn_as_that_shape(self):
+        from figure_probe import figure_refusal
         # A parallelogram with equal sides is a rhombus; a trapezoid with offset 0 is a right trapezoid;
         # a label on an axis number moves off it in a window two units wider.
-        for case_id, group, number in (('L1-p1-a2', 'practice', 5), ('L1-p3-a2', 'challenges', 3),
-                                       ('L1-p3', 'practice', 3), ('L1-p1', 'challenges', 2)):
+        for case_id, group, number in (('L1-p1-a2', 'practice', 5), ('L1-p3', 'practice', 3),
+                                       ('L1-p1', 'challenges', 2)):
             with self.subTest(case=case_id, group=group, number=number):
                 wire = (salvaged(case_id)['practice'][number - 1] if case_id == 'L1-p1-a2'
                         else question(case_id, group, number))
                 self.assertNotEqual(self.code(case_id, wire), 'SOURCE_FIGURE')
+                # The figure itself, drawn alone: the check above stops early when the question is refused.
+                self.assertIsNone(figure_refusal(wire['figure'], skill_path=str(self.skills['middle'])))
 
     def test_the_render_names_the_question_whose_figure_it_cannot_draw(self):
         import general_adapters
@@ -186,11 +202,14 @@ class LiveCauses(unittest.TestCase):
         self.assertIsNone(examine_frame('אחוזים', trimmed, lesson, scope))
         # Nothing stands when every sentence is refused.
         self.assertIsNone(trim_rule('אחוזים', '[[p % q]]. [[...]].', lesson, scope))
-        # The recorded rules of round one pass as written now ([[p%]], [[%]], d1 and d2).
-        for case_id in ('L1-g8', 'L1-g8-a2', 'L1-p1'):
+        # The recorded rules of round one as written: [[p%]], d1 and d2 pass; a bare [[%]] is refused.
+        for case_id in ('L1-g8', 'L1-p1'):
             with self.subTest(case=case_id):
                 lesson = lesson_of(case_id)
                 self.assertIsNone(examine_frame('t', reply_of(case_id)['rule'], lesson, scope_for_lesson(lesson)))
+        lesson = lesson_of('L1-g8-a2')
+        self.assertEqual(examine_frame('t', reply_of('L1-g8-a2')['rule'], lesson, scope_for_lesson(lesson)).code,
+                         'SOURCE_NOTATION')
 
     def test_a_rule_that_cannot_be_trimmed_is_asked_for_again_in_the_one_correction(self):
         from general_provider import Draft
@@ -276,15 +295,27 @@ class LiveCauses(unittest.TestCase):
 
     # F5: an angle named inside a larger formula.
 
-    def test_angles_inside_a_formula_compile_with_three_letter_names(self):
+    def test_recorded_angles_inside_a_formula_are_refused_as_written(self):
+        # Typed or one-letter angles inside a formula ([[angle:D = 70°]], [[angle:A + angle:B]]): nothing
+        # renames them from the figure, so each recorded question is refused.
         for case_id, group, number in (('L1-p3', 'practice', 1), ('L1-p3', 'practice', 4), ('L1-p1', 'practice', 3),
                                        ('L1-p1', 'practice', 8), ('L1-p1', 'practice', 13), ('L1-p3-a2', 'practice', 3)):
             with self.subTest(case=case_id, group=group, number=number):
-                self.assertIsNone(self.check(case_id, question(case_id, group, number)))
-        rows = self.printed('L1-p3', question('L1-p3', 'practice', 1))
+                self.assertEqual(self.code(case_id, question(case_id, group, number)), 'SOURCE_NOTATION')
+        # The same questions written by this test in contract notation, with three-letter angles, compile and print.
+        wire = question('L1-p3', 'practice', 1)
+        wire['items'][0]['prompt'] = 'נתון כי [[∠ADC = 70°]]. חשבו את גודל הזווית החד־צדדית [[angle:BAD]].'
+        wire['items'][1]['prompt'] = 'נתון כי [[∠ABC = 120°]]. חשבו את גודל הזווית החד־צדדית [[angle:BCD]].'
+        self.assertIsNone(self.check('L1-p3', wire))
+        rows = self.printed('L1-p3', wire)
         self.assertIn(r'$\angle{ADC} = 70°$', rows[0][0])
         self.assertEqual(rows[0][1], '$110$ מעלות')
-        rows = self.printed('L1-p3', question('L1-p3', 'practice', 4))
+        wire = question('L1-p3', 'practice', 4)
+        for item, prompt in zip(wire['items'], ('חשבו את גודל הזווית [[angle:BCD]].', 'חשבו את גודל הזווית הקהה [[angle:BAD]].',
+                                                'חשבו את סכום שתי זוויות הבסיס העליון, [[∠BAD + ∠ABC]].')):
+            item['prompt'] = prompt
+        self.assertIsNone(self.check('L1-p3', wire))
+        rows = self.printed('L1-p3', wire)
         self.assertIn(r'$\angle{BAD} + \angle{ABC}$', rows[2][0])
 
     # F8: a task letter outside x, y, a and b.
@@ -329,20 +360,18 @@ class LiveCauses(unittest.TestCase):
         wire['items'][0]['prompt'] = wire['items'][0]['prompt'].replace('הוא פתרון', 'אינו פתרון')
         self.assertEqual(self.code('L1-g7', wire), 'PRINTED_ANSWER_KIND')
 
-    # F4, F6, F7, F9, F10: notation with one reading.
+    # F4, F6, F7, F9, F10: recorded notation, judged exactly as written.
 
-    def test_recorded_notation_with_one_reading_compiles(self):
-        for case_id, group, number, correction in (
-                ('L1-g8-a2', 'q13', None, 1),          # F4 a printed frac shows its numerator and denominator
-                ('L1-p1', 'challenges', 3, None),       # F6 d1, d2
-                ('L1-g8', 'practice', 17, None),        # F7 [[x%]]
-                ('L1-p2', 'reserves', 2, None),         # F9 [[a=1, b=-6, c=9]]
-                ('L1-p1', 'practice', 10, None),        # F10 a window that leaves out a point
-                ('L1-p3-a2', 'practice', 14, None)):    # F10 a window past 10
+    def test_recorded_notation_compiles_only_where_the_contract_reads_it(self):
+        for case_id, group, number, correction, code in (
+                ('L1-g8-a2', 'q13', None, 1, None),                   # F4 a printed frac shows its numerator and denominator
+                ('L1-p1', 'challenges', 3, None, None),               # F6 d1, d2
+                ('L1-g8', 'practice', 17, None, None),                # F7 [[x%]]
+                ('L1-p2', 'reserves', 2, None, 'SOURCE_NOTATION'),    # F9 [[a=1, b=-6, c=9]] is one island of three values
+                ('L1-p1', 'practice', 10, None, 'SOURCE_NUMBER'),     # F10 a window that leaves out a point
+                ('L1-p3-a2', 'practice', 14, None, 'SOURCE_NUMBER')):  # F10 a window past 10
             with self.subTest(case=case_id, group=group, number=number):
-                self.assertIsNone(self.check(case_id, question(case_id, group, number, correction)))
-        rows = self.printed('L1-p2', question('L1-p2', 'reserves', 2))
-        self.assertIn('$a = 1$, $b = −6$, $c = 9$', rows[0][0])
+                self.assertEqual(self.code(case_id, question(case_id, group, number, correction)), code)
 
     # G76: the questions over the dominance cap are named.
 
@@ -400,19 +429,18 @@ class LiveCauses(unittest.TestCase):
                 provider.parse_author_reply(envelope, {})
             self.assertEqual(raised.exception.code, 'PROVIDER_INVALID_RESPONSE')
 
-    def test_a_decide_answer_without_its_task_wrapper_is_read_as_the_decide_task(self):
-        from source_normalize import normalize_question
+    def test_a_decide_answer_without_its_task_wrapper_is_refused_as_written(self):
         reply = salvaged('L1-p1-a2')
-        flat = [q for q in reply['practice'] if q is not None
-                and any(isinstance(i.get('answer'), dict) and i['answer'].get('kind') == 'decide' for i in q['items'])]
-        self.assertTrue(flat)
-        for wire in flat:
-            fixed, notes = normalize_question(wire, 9)
-            self.assertIn('DECIDE_WRAPPER', {n['code'] for n in notes})
-            for item in fixed['items']:
-                self.assertEqual(set(item), {'prompt', 'answer'})
-                if 'task' in item['answer']:
-                    self.assertEqual(item['answer']['kind'], 'computed')
+
+        def flat_decide(wire):
+            return wire is not None and any(isinstance(i.get('answer'), dict) and i['answer'].get('kind') == 'decide'
+                                            for i in wire['items'])
+        practice = {number: wire for number, wire in enumerate(reply['practice'], 1) if flat_decide(wire)}
+        reserves = {number: row['question'] for number, row in enumerate(reply['reserves'], 1)
+                    if isinstance(row, dict) and flat_decide(row.get('question'))}
+        self.assertEqual((sorted(practice), sorted(reserves)), ([1, 5, 7, 13], [2]))
+        for wire in list(practice.values()) + list(reserves.values()):
+            self.assertEqual(self.code('L1-p1-a2', wire), 'SOURCE_SHAPE')
 
 
 if __name__ == '__main__':

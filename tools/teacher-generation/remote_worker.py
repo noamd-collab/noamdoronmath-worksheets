@@ -294,8 +294,6 @@ def save_author_diagnostics(root, job_id, metadata, failure=None):
         # took: fixed labels and small numbers only (provider.py vocabularies).
         record.update(safe_transport_measurements(metadata))
         if metadata.get('correctionRequested') is True: record['correctionRequested'] = True
-        rewrites = metadata.get('sourceRewrites')
-        if type(rewrites) is int and 0 <= rewrites <= 100_000: record['sourceRewrites'] = rewrites
         # The repair ladder's model calls for this job.
         for key, top in (('authorCalls', AUTHOR_CALLS), ('correctionCalls', CORRECTION_CALLS)):
             if type(metadata.get(key)) is int and 0 <= metadata[key] <= top: record[key] = metadata[key]

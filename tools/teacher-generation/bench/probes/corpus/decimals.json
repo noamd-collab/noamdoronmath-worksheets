@@ -183,9 +183,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "0.5 + 1.25",
-    "key": "1.75"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

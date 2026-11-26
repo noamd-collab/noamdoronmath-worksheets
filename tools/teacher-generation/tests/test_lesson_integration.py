@@ -1,4 +1,4 @@
-"""The seams between the lesson tracks: arrival normalisation, the per-question
+"""The seams between the lesson tracks: the reply read as written, the per-question
 predicate, teacher notes for unverified answers, the author prompt and the
 provider switch. No network, no model call, no real skill.
 """
@@ -68,39 +68,32 @@ def environment(values):
         yield
 
 
-class ArrivalNormalisationTests(unittest.TestCase):
+class ReplyAsWrittenTests(unittest.TestCase):
     def setUp(self):
         self.lesson = intake('g8:percentages')
 
-    def test_the_correction_request_and_the_replay_read_the_normalised_reply(self):
+    def test_the_correction_request_carries_each_refused_question_as_the_model_wrote_it(self):
         content = flat_reply(self.lesson, plain_question)
-        # One spelling with a single reading (repaired locally) beside one that has none.
+        # Unmarked mathematics beside notation with no reading: the reply is never rewritten, so both are refused.
         content['practice'][3]['intro'] = 'חשבו [[4 @ 2]] כאשר $x=5$.'
         content['practice'][1]['intro'] = 'חשבו כי 4+6 < 12.'
         before = copy.deepcopy(content)
         revision, measured = {}, {}
         with patch('provider.build_authoring_context', return_value={}), \
-                patch('provider.request_author_json', side_effect=[content, {'q4': plain_question(3)}]) as network:
+                patch('provider.request_author_json',
+                      side_effect=[content, {'q2': plain_question(1), 'q4': plain_question(3)}]) as network:
             with self.assertRaises(GenerationError) as first:
                 provider.author_lesson(self.lesson, revision=revision, metadata=measured, **CONFIG)
             self.assertEqual(first.exception.code, 'SOURCE_NOTATION')
-            # Question 2 was repaired on arrival; only question 4 is a bad question.
-            self.assertEqual([row['question'] for row in revision['sourceFindings']], [4])
+            self.assertEqual([row['question'] for row in revision['sourceFindings']], [2, 4])
             revision['revise'](revision['sourceFindings'])
         self.assertEqual(content, before)  # the recorded reply itself is never mutated
         sent = json.loads(network.call_args.args[2]['messages'][1]['content'])
-        self.assertEqual(sent['questionsToCorrect'][0]['original']['intro'], 'חשבו [[4 @ 2]] כאשר [[x=5]].')
-        # A number only: the rewrite notes quote worksheet text and stay out of measurements.
-        self.assertEqual(measured['sourceRewrites'], 2)
+        self.assertEqual([row['original']['intro'] for row in sent['questionsToCorrect']],
+                         ['חשבו כי 4+6 < 12.', 'חשבו [[4 @ 2]] כאשר $x=5$.'])
+        self.assertNotIn('sourceRewrites', measured)
         self.assertTrue(measured['validated'])
         self.assertNotIn('x=5', json.dumps(measured, ensure_ascii=False))
-
-    def test_a_compact_parameter_reply_passes_through_unchanged(self):
-        from source_normalize import normalize_source
-        compact = {'version': 1, 'questions': [{'theme': 1, 'choices': [2, 4, 1, 3, 2]}]}
-        self.assertEqual(normalize_source(compact, 2, topic={'topicId': 'ב05', 'domain': 'operations'}, notes=[]), compact)
-        for odd in (None, 'text', [1, 2], 7):
-            self.assertEqual(normalize_source(odd, 2), odd)
 
 
 class QuestionPredicateTests(unittest.TestCase):
@@ -385,10 +378,12 @@ class ProviderWiringTests(unittest.TestCase):
         record = json.loads(text)
         self.assertNotIn('PRIVATE_', text)
         self.assertEqual({key: record[key] for key in ('provider', 'attempts', 'httpStatus', 'providerError', 'timeoutPhase',
-                                                      'finishReason', 'replyDefect', 'sourceRewrites', 'correctionRequested')},
+                                                      'finishReason', 'replyDefect', 'correctionRequested')},
                          {'provider': 'gemini', 'attempts': 2, 'httpStatus': 503, 'providerError': 'unavailable',
                           'timeoutPhase': 'reply', 'finishReason': 'stop', 'replyDefect': 'content_not_json',
-                          'sourceRewrites': 7, 'correctionRequested': True})
+                          'correctionRequested': True})
+        # Nothing rewrites the reply any more, so a rewrite count is not a measurement the worker keeps.
+        self.assertNotIn('sourceRewrites', record)
         self.assertEqual(record['httpDiagnostic'], {'body': 'parsed', 'statuses': ['UNAVAILABLE'],
                                                     'fields': ['response_format'], 'categories': ['quota']})
         forged = {'provider': 'PRIVATE_SECRET', 'attempts': 99, 'httpStatus': 'PRIVATE_SECRET', 'providerError': 'PRIVATE_SECRET',

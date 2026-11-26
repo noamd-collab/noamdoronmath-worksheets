@@ -244,7 +244,7 @@ class WirePathTests(unittest.TestCase):
                 wire(topic, intro, prompt, answer)
             return (caught.exception.code, caught.exception.question, caught.exception.item)
 
-        # The normaliser moves the unit out of the island; what is left asks for nothing.
+        # The unit stands outside the island; what is left asks for nothing.
         self.assertEqual(refused("ג25", "חשבו.", "מחיר: [[12.50]] ₪", evaluate("12.50")), ("PRINTED_TASK_MISMATCH", 1, 1))
         self.assertEqual(refused("ג02", "כתבו את המספר.", "המספר הוא [[350]].", evaluate("350")), ("PRINTED_TASK_MISMATCH", 1, 1))
         self.assertEqual(refused("ה28", "כתבו.", "[[0.25]]", evaluate("0.25")), ("PRINTED_TASK_MISMATCH", 1, 1))

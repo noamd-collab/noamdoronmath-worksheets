@@ -30,7 +30,7 @@ teacher form (site) ──► job row (Supabase) ──► worker (Cloudflare co
                      │                          division_facts, pythagoras_lesson,
                      │                          square_lesson, triangle_lesson (no model call)
                      ▼
-   general_provider.author_general_lesson   ◄── THE LESSON SKILL (model call, normaliser,
+   general_provider.author_general_lesson   ◄── THE LESSON SKILL (model call,
                      │                            per-question predicate, reserves, Draft)
                      ▼
    runner.precheck_job / runner.render_job  ◄── trusted adapter + the locked skills' own
@@ -206,29 +206,19 @@ original fragments with `[[...]]` marks inserted, keeping every word.
 
 ---
 
-## 3. The normaliser
+## 3. The reply is read as written
 
-`source_normalize.py`; the full rule table is its module docstring.
-
-- **When:** once on arrival (`source_normalize.normalize_source` in
-  `general_provider.author_general_lesson`), again inside
-  `compact_authoring.expand_source` (a no-op on normal text), and on every
-  reserve and correction reply (`Draft._normalise`, `normalize_rich` for the rule).
-- **Contract:** pure, idempotent, never raises, never computes, never chooses
-  between two readings. Only the number of rewrites is measured
-  (`sourceRewrites`); the notes quote worksheet text and are never logged.
-- **Rule families:** invisible and bidi characters; `$…$` and LaTeX to islands;
-  sign variants, `√`, superscripts, `½`; placeholders to `___`; punctuation and
-  units out of islands; school operators in grades 1–6 (`324x15`, `12÷4`); the
-  elementary unknown letter to `___` (whole question or nothing); geometry signs,
-  bare formulas, number lists and label nouns (`משולש ABC` →
-  `משולש [[triangle:ABC]]`) in grades 7–9; one-letter angles to three letters when
-  the figure fixes them; `name=value` lists; a coordinate window that hides a
-  point; a flat `decide` answer wrapped as `computed` (`DECIDE_WRAPPER`).
-- **Never rewritten:** `3,5`, `7:30` and colons in ratio or time topics, `2½`,
-  `3x = 12` in grades 1–6, an unknown used twice, a one-letter angle without a
-  figure, bare mathematics in elementary prose. These stay for validation to
-  refuse, so a reserve can replace the question.
+Nothing rewrites the model's reply. `compact_authoring.expand_source` parses a
+copy of the reply exactly as it arrived, and every check reads that text. A
+spelling outside the notation of section 2.3 is refused with its code: `$...$`
+or LaTeX, `324x15` or a letter for the missing number in grades 1–6, `2³`,
+`½`, `☐`, a typed or one-letter angle inside a formula (`[[angle:D = 70°]]`),
+`[[a=1, b=-6, c=9]]`, a coordinate window that leaves out a point, a `decide`
+answer without its task wrapper. A reserve takes the place of the refused
+question, or the one correction call asks for it again. When unmarked
+mathematics is the only fault, `skill_authoring.notation_correction` asks the
+model to insert the `[[...]]` marks, and its `apply` checks that no word
+changed.
 
 ---
 
@@ -400,13 +390,13 @@ Run from the repository root. Full guide: `bench/README.md`.
 | `bench/probes/run.py [--family F] [--show] [--update]` | 285 synthetic question forms: pass, rejected or wrong print; exit 1 on a regression | none |
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
-- **Recorded state:** replay delivers 18 of 35 cases with no further model
-  call, and 234 of 756 questions are refused alone
+- **Recorded state:** replay delivers 16 of 35 cases with no further model
+  call, and 257 of 756 questions are refused alone
   (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
   count as failed, so this under-states the live ladder. The key-print checks
   of section 2.4 cost three ג10 replays (A-, B- and G-division) whose
   fact-family items print their own answer; live, those questions go to the
-  correction call. Probes: 209 pass, 62 rejected, 14 wrong print.
+  correction call. Probes: 192 pass, 79 rejected, 14 wrong print.
 - **Sweep flags:** `--dry-run`, `--topics`, `--grades`, `--levels`, `--limit`,
   `--one-level-per-topic`, `--only-failed`, `--question-count`, `--minutes`
   (default 30), `--calls-per-case` (4), `--concurrency` (4), `--case-timeout`

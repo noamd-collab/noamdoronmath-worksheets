@@ -77,7 +77,7 @@
    },
    "recorded": {
     "outcome": "pass",
-    "printed": "345 ___ 354",
+    "printed": "345 ☐ 354",
     "key": "345 < 354"
    }
   },

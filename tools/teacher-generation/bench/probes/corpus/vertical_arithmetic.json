@@ -171,9 +171,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "324 x 15",
-    "key": "4,860"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -209,9 +209,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "1,845 : 15",
-    "key": "123"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
