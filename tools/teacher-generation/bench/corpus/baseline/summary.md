@@ -1,6 +1,6 @@
 # Replay of recorded model replies
 
-Delivered with no further model call: **16 of 35 (46%)**. Questions rejected when standing alone: 257 of 756 (34%). Model calls: 0; outbound connections attempted: 0.
+Delivered with no further model call: **14 of 35 (40%)**. Questions rejected when standing alone: 257 of 756 (34%). Model calls: 0; outbound connections attempted: 0.
 
 | Case | Provider | Topic | Q | Route | First pass | Fail alone | Correction asked | Ladder | First render | Final |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -15,7 +15,7 @@ Delivered with no further model call: **16 of 35 (46%)**. Questions rejected whe
 | B-percent | qwen | g8:percentages | 20 | worker | SOURCE_TABLE | 2 of 20 | 2 q (not recorded) | dropped 2, prints 18 | pass | delivered |
 | B-square | qwen | g9m:square | 20 | general | AUTHOR_PLAN_MISMATCH | 8 of 20 | — | 2nd attempt after AUTHOR_PLAN_MISMATCH | — | needs_unrecorded_reply |
 | T1-triangle | qwen | g8:triangle_parts | 20 | worker | SOURCE_FIGURE | 16 of 20 | 8 q (not recorded) | — | — | failed |
-| T2-triangle | qwen | g8:triangle_parts | 20 | worker | SOURCE_TEXT | 20 of 20 | 8 q (not recorded) | — | — | failed |
+| T2-triangle | qwen | g8:triangle_parts | 20 | worker | SOURCE_TEXT | 20 of 20 | 9 q (not recorded) | — | — | failed |
 | S-g4calc | qwen | ד07 | 12 | worker | pass | 0 of 12 | 4 q (not recorded) | — | — | failed |
 | S-g7eq | qwen | g7:equations | 20 | worker | pass | 0 of 20 | — | — | pass | delivered |
 | G-division | gemini | ג10 | 20 | worker | QUALITY_GATE_FAILED | 7 of 20 | 7 q (not recorded) | — | — | failed |
@@ -33,20 +33,20 @@ Delivered with no further model call: **16 of 35 (46%)**. Questions rejected whe
 | L1-g4 | gemini | ד07 | 20 | worker | pass | 2 of 24 | — | replaced 2 | pass | delivered |
 | L1-g7 | gemini | g7:equations | 20 | worker | PRINTED_ANSWER_KIND | 5 of 24 | 1 q (not recorded) | replaced 3; dropped 1, prints 19 | pass | delivered |
 | L1-g8 | gemini | g8:percentages | 20 | worker | PRINTED_TASK_MISMATCH | 9 of 24 | 5 q (not recorded) | — | — | failed |
-| L1-g8-a2 | gemini | g8:percentages | 20 | worker | pass | 4 of 24 | — | replaced 3 | pass | delivered |
+| L1-g8-a2 | gemini | g8:percentages | 20 | worker | SOURCE_NOTATION | 4 of 24 | 1 q (not recorded) | — | — | failed |
 | L1-square | gemini | g9m:square | 20 | general | SOURCE_FIGURE | 12 of 24 | 8 q (not recorded) | — | — | failed |
 | L1-square-a2 | gemini | g9m:square | 20 | general | PRINTED_ANSWER_KIND | 13 of 24 | 9 q | 2nd attempt after PRINTED_ANSWER_KIND | — | needs_unrecorded_reply |
 | L2-g3 | gemini | ג10 | 20 | worker | PRINTED_ANSWER_LEAK | 6 of 24 | 2 q (not recorded) | replaced 2; dropped 2, prints 18 | pass | delivered |
 | L2-g7 | gemini | g7:equations | 20 | worker | pass | 3 of 24 | — | replaced 2 | pass | delivered |
-| L2-g8 | gemini | g8:percentages | 20 | worker | pass | 2 of 24 | — | replaced 2 | pass | delivered |
+| L2-g8 | gemini | g8:percentages | 20 | worker | SOURCE_NOTATION | 2 of 24 | 1 q (not recorded) | — | — | failed |
 
-Delivered with fewer questions than requested: 11. Corrections the engine asked for that were never recorded: 28. Second author replies it asked for that were never recorded: 2.
+Delivered with fewer questions than requested: 11. Corrections the engine asked for that were never recorded: 30. Second author replies it asked for that were never recorded: 2.
 
 ## By provider
 
 | Provider | Cases | Delivered | Questions | Fail alone |
 | --- | --- | --- | --- | --- |
-| gemini | 21 | 11 | 484 | 164 |
+| gemini | 21 | 9 | 484 | 164 |
 | qwen | 14 | 5 | 272 | 93 |
 
 Recorded as text that is not JSON: G-equations. The replay sends the text as recorded; the question counts of such a case come from its declared hand repair.
@@ -55,7 +55,7 @@ Recorded as text that is not JSON: G-equations. The replay sends the text as rec
 
 | Class | Cases |
 | --- | --- |
-| DELIVERED | 16 |
+| DELIVERED | 14 |
 | OTHER:QUALITY_GATE_FAILED | 1 |
 | SOURCE:AUTHOR_PLAN_MISMATCH | 1 |
 | SOURCE:PRINTED_ANSWER_KIND | 3 |
@@ -63,7 +63,7 @@ Recorded as text that is not JSON: G-equations. The replay sends the text as rec
 | SOURCE:PRINTED_TASK_MISMATCH | 1 |
 | SOURCE:QUALITY_GATE_FAILED | 1 |
 | SOURCE:SOURCE_FIGURE | 2 |
-| SOURCE:SOURCE_NOTATION | 3 |
+| SOURCE:SOURCE_NOTATION | 5 |
 | SOURCE:SOURCE_TEXT | 1 |
 
 ## Questions rejected alone, by code

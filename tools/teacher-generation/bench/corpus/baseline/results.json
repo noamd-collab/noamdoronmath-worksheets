@@ -2831,7 +2831,8 @@
       "q20",
       "q3",
       "q4",
-      "q5"
+      "q5",
+      "rule"
      ]
     },
     "firstPass": {
@@ -2847,7 +2848,12 @@
    "failureClass": "SOURCE:SOURCE_TEXT",
    "finalCode": "SOURCE_TEXT",
    "finalStatus": "failed",
-   "frameFailure": null,
+   "frameFailure": {
+    "code": "SOURCE_TEXT",
+    "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
+    "field": "title or rule",
+    "substring": "במשולש שווה־שוקיים ($AB=AC$) מתלכדים התיכון לבסיס $BC$, הגובה לבסיס וחוצה זווית הראש. זוויות הבסיס שוות. הזווית החיצונית…"
+   },
    "id": "T2-triangle",
    "ladder": {
     "attemptRecords": [
@@ -7984,55 +7990,32 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": null,
+     "answered": false,
      "questions": [],
-     "requested": false,
-     "requiredKeys": null
+     "requested": true,
+     "requiredKeys": [
+      "rule"
+     ]
     },
     "firstPass": {
-     "ok": true
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "ok": false
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": true,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 0,
-     "dropped": {
-      "codes": {},
-      "count": 0
-     },
-     "gate": "deliver",
-     "printedQuestions": 20,
-     "replaced": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 1,
-       "SOURCE_NOTATION": 2
-      },
-      "count": 3
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {}
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
+   "finalStatus": "failed",
+   "frameFailure": {
+    "code": "SOURCE_NOTATION",
+    "detail": "Invalid or unsupported compact mathematical notation",
+    "field": "title or rule",
+    "substring": "אחוז הוא דרך נוחה לתאר חלק מתוך שלם שחולק ל־[[100]] חלקים שווים. הסימן [[%]] מייצג מאית, כלומר [[1% = frac(1,100)]] או […"
    },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
-   "frameFailure": null,
    "id": "L1-g8-a2",
    "ladder": {
     "attemptRecords": [
@@ -8076,15 +8059,9 @@
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 3,
-    "correctionFailed": false,
-    "corrections": 0,
-    "dropped": 0,
-    "gate": "deliver",
-    "printed": 20,
-    "replaced": 3,
-    "stage": "render"
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
    },
    "lesson": {
     "domain": "מספרי",
@@ -8103,13 +8080,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "live round 1 (milestone 2), b-g8-percentages, call 3, corrections: calls [4]",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -8155,25 +8126,7 @@
     "total": 24
    },
    "recorded": "2026-11-23 19:40Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -9295,55 +9248,32 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": null,
+     "answered": false,
      "questions": [],
-     "requested": false,
-     "requiredKeys": null
+     "requested": true,
+     "requiredKeys": [
+      "rule"
+     ]
     },
     "firstPass": {
-     "ok": true
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "ok": false
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": true,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 0,
-     "dropped": {
-      "codes": {},
-      "count": 0
-     },
-     "gate": "deliver",
-     "printedQuestions": 20,
-     "replaced": {
-      "codes": {
-       "PRINTED_ANSWER_LEAK": 1,
-       "SOURCE_PLAIN_MATH": 1
-      },
-      "count": 2
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {}
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
+   "finalStatus": "failed",
+   "frameFailure": {
+    "code": "SOURCE_NOTATION",
+    "detail": "Invalid or unsupported compact mathematical notation",
+    "field": "title or rule",
+    "substring": "אחוז הוא דרך נוחה לתאר חלק מתוך שלם שחולק ל־[[100]] חלקים שווים. הסימן [[%]] פירושו ״מתוך מאה״, כלומר שבר שמכנהו [[100]]…"
    },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
-   "frameFailure": null,
    "id": "L2-g8",
    "ladder": {
     "attemptRecords": [
@@ -9378,15 +9308,9 @@
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 2,
-    "correctionFailed": false,
-    "corrections": 0,
-    "dropped": 0,
-    "gate": "deliver",
-    "printed": 20,
-    "replaced": 2,
-    "stage": "render"
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
    },
    "lesson": {
     "domain": "מספרי",
@@ -9405,13 +9329,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "live round 2 (milestone 2, engine a50bcb91), b-g8-percentages, call 1; the delivered sheet",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -9438,25 +9356,7 @@
     "total": 24
    },
    "recorded": "2026-11-23 21:04Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -9477,7 +9377,7 @@
   "byProvider": {
    "gemini": {
     "cases": 21,
-    "delivered": 11,
+    "delivered": 9,
     "failingAlone": 164,
     "questions": 484
    },
@@ -9489,12 +9389,12 @@
    }
   },
   "cases": 35,
-  "correctionsNotRecorded": 28,
-  "delivered": 16,
-  "deliveredRate": 0.4571,
+  "correctionsNotRecorded": 30,
+  "delivered": 14,
+  "deliveredRate": 0.4,
   "deliveredShorter": 11,
   "failureClasses": {
-   "DELIVERED": 16,
+   "DELIVERED": 14,
    "OTHER:QUALITY_GATE_FAILED": 1,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 1,
    "SOURCE:PRINTED_ANSWER_KIND": 3,
@@ -9502,12 +9402,12 @@
    "SOURCE:PRINTED_TASK_MISMATCH": 1,
    "SOURCE:QUALITY_GATE_FAILED": 1,
    "SOURCE:SOURCE_FIGURE": 2,
-   "SOURCE:SOURCE_NOTATION": 3,
+   "SOURCE:SOURCE_NOTATION": 5,
    "SOURCE:SOURCE_TEXT": 1
   },
   "finalStatus": {
-   "delivered": 16,
-   "failed": 17,
+   "delivered": 14,
+   "failed": 19,
    "needs_unrecorded_reply": 2
   },
   "firstRenderGateFindings": {

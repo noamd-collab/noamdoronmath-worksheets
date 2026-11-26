@@ -187,21 +187,28 @@ class LiveCauses(unittest.TestCase):
             general_adapters._compile_middle(lesson, source, {'computations': []}, {'topic': {}}, None, folder)
         self.assertEqual((raised.exception.code, raised.exception.question), ('SOURCE_FIGURE', 1))
 
-    # F17: a refused rule loses its refused sentences instead of ending the attempt.
+    # F17: a refused rule is kept as written and refused; only the one correction call can replace it.
 
-    def test_a_rule_keeps_every_sentence_that_passes_alone(self):
+    def test_a_refused_rule_is_kept_as_written(self):
+        from general_provider import Draft
         from runtime_catalog import scope_for_lesson
-        from skill_authoring import examine_frame, trim_rule
+        from skill_authoring import examine_frame, question_plan
         lesson = lesson_of('L1-g8')
         scope = scope_for_lesson(lesson)
-        rule = reply_of('L1-g8')['rule'].replace('[[p%]]', '[[p % q]]')
+        reply = reply_of('L1-g8')
+        rule = reply['rule'].replace('[[p%]]', '[[p % q]]')
         self.assertEqual(examine_frame('אחוזים', rule, lesson, scope).code, 'SOURCE_NOTATION')
-        trimmed = trim_rule('אחוזים', rule, lesson, scope)
-        self.assertNotIn('[[p % q]]', trimmed)
-        self.assertTrue(trimmed.startswith('אחוז אחד הוא מאית מתוך שלם') and trimmed.endswith('= 17]].'))
-        self.assertIsNone(examine_frame('אחוזים', trimmed, lesson, scope))
-        # Nothing stands when every sentence is refused.
-        self.assertIsNone(trim_rule('אחוזים', '[[p % q]]. [[...]].', lesson, scope))
+        # Its other sentences pass alone, but none is dropped: the rule stays whole and refused.
+        asked = []
+        flat = {key: reply[key] for key in ('title', 'practice', 'challenges')}
+        flat['rule'] = rule
+        draft = Draft(flat, [], lesson, scope, question_plan(lesson, scope), compile_sheet=lambda *a: None,
+                      ask=lambda body, observed: asked.append(body), context={}, model='m', measured={})
+        self.assertEqual(draft.rule, rule)
+        self.assertEqual(draft.rule_refusal.code, 'SOURCE_NOTATION')
+        self.assertTrue(draft.needs_model())
+        self.assertNotIn('ruleTrimmed', draft.report())
+        self.assertEqual(asked, [])
         # The recorded rules of round one as written: [[p%]], d1 and d2 pass; a bare [[%]] is refused.
         for case_id in ('L1-g8', 'L1-p1'):
             with self.subTest(case=case_id):
@@ -211,7 +218,7 @@ class LiveCauses(unittest.TestCase):
         self.assertEqual(examine_frame('t', reply_of('L1-g8-a2')['rule'], lesson, scope_for_lesson(lesson)).code,
                          'SOURCE_NOTATION')
 
-    def test_a_rule_that_cannot_be_trimmed_is_asked_for_again_in_the_one_correction(self):
+    def test_a_refused_rule_is_asked_for_again_in_the_one_correction(self):
         from general_provider import Draft
         from runtime_catalog import scope_for_lesson
         from skill_authoring import question_plan
@@ -233,25 +240,33 @@ class LiveCauses(unittest.TestCase):
         draft.correct()
         schema = asked[0]['response_format']['json_schema']['schema']
         self.assertIn('rule', schema['required'])
+        # The correction carries the refused rule exactly as the model wrote it.
+        self.assertEqual(json.loads(asked[0]['messages'][1]['content'])['ruleToCorrect']['rule'], '[[p % q]].')
         self.assertIsNone(draft.rule_refusal)
         self.assertEqual(draft.rule, 'אחוז אחד הוא מאית מתוך שלם: [[1% = frac(1,100)]].')
 
-    def test_the_recorded_percent_sheets_reach_a_sheet_with_no_further_author_call(self):
+    def test_the_recorded_percent_sheets_with_no_further_author_call(self):
         from bench import replay
         # The engine now asks for fewer questions than were recorded: each recorded correction answers
         # the ones it holds (corrections='subset'). Live, both attempts ended on their rule.
         results = replay.run(CORPUS, only=('L1-g8', 'L1-g8-a2'), work=Path(tempfile.mkdtemp(dir=self.scratch)),
                              skills=self.skills, render=False, corrections='subset')
-        printed = {}
+        printed, status = {}, {}
         for case in results['cases']:
             with self.subTest(case=case['id']):
-                self.assertEqual(case['finalStatus'], 'authored')
                 self.assertEqual((case['ladder']['attempts'], case['author']['requests']),
                                  (1, 1 + case['ladder']['corrections']))
+                status[case['id']] = (case['finalStatus'], case['finalCode'])
                 printed[case['id']] = case['ladder']['attemptRecords'][0]['printed']
         # Attempt 1: four reserves for six refused questions, one correction for the five still missing.
-        # Attempt 2: reserves only.
+        # Attempt 2: reserves fill every question, but its rule (a bare [[%]]) is refused and kept as written.
+        # The one correction asks for the rule alone; no such reply was recorded, so the sheet fails on its rule.
         self.assertEqual(printed, {'L1-g8': 20, 'L1-g8-a2': 20})
+        self.assertEqual(status, {'L1-g8': ('authored', None), 'L1-g8-a2': ('failed', 'SOURCE_NOTATION')})
+        second = next(case for case in results['cases'] if case['id'] == 'L1-g8-a2')
+        self.assertEqual((second['author']['correction']['questions'], second['author']['correction']['requiredKeys'],
+                          second['ladder']['correctionFailed']), ([], ['rule'], True))
+        self.assertEqual(second['frameFailure']['field'], 'title or rule')
 
     # F1: a decide task only for a relation of printed quantities.
 

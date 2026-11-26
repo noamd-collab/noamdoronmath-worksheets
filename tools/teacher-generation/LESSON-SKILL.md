@@ -239,9 +239,9 @@ changed.
 - `general_provider.Draft` drops a reserve that repeats a planned question word
   for word. When the sheet changed, a question that points at another by number
   is refused (`skill_authoring.refers_to_another_question`, `QUESTION_REFERENCE`).
-- **The rule** is examined alone (`skill_authoring.examine_frame`); refused
-  sentences are dropped (`skill_authoring.trim_rule`), else the correction asks
-  for the rule again.
+- **The rule** is examined alone (`skill_authoring.examine_frame`). A refused
+  rule is not shortened or rewritten; the one correction call asks for the rule
+  again.
 - **A reply that is not JSON** is read question by question
   (`reply_salvage.salvage`, called from `provider.parse_author_reply`); a
   question that does not decode counts as refused. Nothing is repaired there.
@@ -389,7 +389,7 @@ Run from the repository root. Full guide: `bench/README.md`.
 | `bench/probes/run.py [--family F] [--show] [--update]` | 285 synthetic question forms: pass, rejected or wrong print; exit 1 on a regression | none |
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
-- **Recorded state:** replay delivers 16 of 35 cases with no further model
+- **Recorded state:** replay delivers 14 of 35 cases with no further model
   call, and 257 of 756 questions are refused alone
   (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
   count as failed, so this under-states the live ladder. The key-print checks

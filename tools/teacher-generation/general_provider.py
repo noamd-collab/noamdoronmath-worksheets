@@ -17,8 +17,7 @@ from general_source import validate_source, GeneralSourceError, geometry_topic
 from lesson_select import CHALLENGES, NO_QUESTION, PRACTICE, Selection
 from skill_authoring import (MAX_CORRECTED, bind_content, correction_instructions, examine_frame, instruction_for,
                              notation_correction, question_codes, question_plan, refers_to_another_question,
-                             refusal_feedback, reserve_plan, revision_request, split_reserves, trim_rule,
-                             worksheet_schema)
+                             refusal_feedback, reserve_plan, revision_request, split_reserves, worksheet_schema)
 from answer_kinds import DECISION_GUIDE
 from runtime_catalog import catalog, scope_for_lesson
 from validation import reject
@@ -100,17 +99,13 @@ class Draft:
         self._printed = []
         self.corrections = 0
         self.sheet_error = None
-        # The rule is examined alone, as each question is. A refused rule loses each
-        # sentence that is refused on its own; when that is not enough, the one
-        # correction call asks for the rule again. Unmarked mathematics keeps its own
-        # repair (the notation correction), so it is left to the whole-sheet check.
-        self.rule_refusal, self.rule_trimmed = examine_frame(self.title, self.rule, lesson, scope), False
+        # The rule is examined alone, as each question is. A refused rule stays as
+        # the model wrote it; the one correction call asks for the rule again.
+        # Unmarked mathematics keeps its own repair (the notation correction), so it
+        # is left to the whole-sheet check.
+        self.rule_refusal = examine_frame(self.title, self.rule, lesson, scope)
         if self.rule_refusal is not None and self.rule_refusal.code == 'SOURCE_PLAIN_MATH':
             self.rule_refusal = None
-        elif self.rule_refusal is not None and self.rule_refusal.code.startswith('SOURCE_'):
-            trimmed = trim_rule(self.title, self.rule, lesson, scope)
-            if trimmed is not None:
-                self.rule, self.rule_refusal, self.rule_trimmed = trimmed, None, True
         authored = {PRACTICE: list(flat['practice']), CHALLENGES: list(flat['challenges'])}
         taken = {PRACTICE: 0, CHALLENGES: 0}
         planned = []
@@ -168,7 +163,7 @@ class Draft:
 
     def report(self):
         """Counts and codes only (lesson_select.Selection.summary) plus the corrections used."""
-        return {**self.selection.summary(), 'corrections': self.corrections, 'ruleTrimmed': self.rule_trimmed}
+        return {**self.selection.summary(), 'corrections': self.corrections}
 
     # ------------------------------------------------------------------ the sheet
 

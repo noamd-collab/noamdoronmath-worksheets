@@ -549,31 +549,6 @@ def examine_frame(title, rule, lesson, scope):
     return None
 
 
-def _sentences(value):
-    """The sentences of a rule, split after . ! or ? outside [[...]]."""
-    masked = re.sub(r"\[\[[^\[\]]*\]\]", lambda m: "#" * len(m[0]), value)
-    cuts = [m.end() for m in re.finditer(r"[.!?](?=\s)", masked)]
-    pieces = [value[a:b].strip() for a, b in zip([0] + cuts, cuts + [len(value)])]
-    return [piece for piece in pieces if piece]
-
-
-def trim_rule(title, rule, lesson, scope):
-    """The rule without each whole sentence that is refused on its own, or None.
-
-    A refused rule used to end the whole author attempt. When at least one
-    sentence stands, the rule keeps the sentences that pass, in their order,
-    and the result is examined again as a whole. Nothing is rewritten.
-    """
-    if not isinstance(rule, str):
-        return None
-    sentences = _sentences(rule)
-    kept = [sentence for sentence in sentences if examine_frame(title, sentence, lesson, scope) is None]
-    if not kept or len(kept) == len(sentences):
-        return None
-    trimmed = " ".join(kept)
-    return trimmed if examine_frame(title, trimmed, lesson, scope) is None else None
-
-
 def examine_question(wire, index, lesson, scope, *, challenge):
     """One wire question examined alone: (its refusal or None, the validated question or None).
 
