@@ -8,6 +8,7 @@
  * attached to a catalog topic, which were not and why, and the search-terms decisions.
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { gzipSync } from 'node:zlib';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog';
@@ -67,13 +68,21 @@ export function buildFromRepo() {
 }
 
 const INDEX_PATH = 'src/data/search-index.v1.json';
+const PACKED_PATH = 'src/data/search-index.v1.json.gz.b64';
+
+/** Gzip of the exact committed JSON text. The worker inflates this back. */
+export function packSearchIndex(text: string): string {
+  return gzipSync(Buffer.from(text)).toString('base64') + '\n';
+}
 
 function main() {
   const { index, report } = buildFromRepo();
   const text = JSON.stringify(index) + '\n';
+  const packed = packSearchIndex(text);
   if (process.argv.includes('--check')) {
     const current = readFileSync(join(root, INDEX_PATH), 'utf8');
-    if (current !== text) {
+    const currentPacked = readFileSync(join(root, PACKED_PATH), 'utf8');
+    if (current !== text || currentPacked !== packed) {
       console.error(`${INDEX_PATH} is stale: run npm run refresh:search-index`);
       process.exit(1);
     }
@@ -81,6 +90,7 @@ function main() {
     return;
   }
   writeFileSync(join(root, INDEX_PATH), text);
+  writeFileSync(join(root, PACKED_PATH), packed);
   mkdirSync(join(root, 'docs/search'), { recursive: true });
   writeFileSync(join(root, 'docs/search/index-build.json'), JSON.stringify(report, null, 2) + '\n');
   const att = report.associations;
