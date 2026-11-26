@@ -106,6 +106,24 @@ def clean_sheet(base, pool, extra=0):
     return reply
 
 
+def with_reserves(lesson, reply, pool, refused=()):
+    """``reply`` with exactly the reserves of reserve_plan beside its questions, taken in order from ``pool``.
+
+    The reserves at the positions in ``refused`` get the intro BAD_NOTATION, which the source refuses."""
+    from runtime_catalog import scope_for_lesson
+    from skill_authoring import reserve_plan
+    planned = {**lesson, 'questionCount': len(reply['practice']) + len(reply['challenges'])}
+    taken = {'practice': 0, 'challenges': 0}
+    reply['reserves'] = []
+    for index, row in enumerate(reserve_plan(planned, scope_for_lesson(lesson))):
+        question = copy.deepcopy(pool[row['group']][taken[row['group']]])
+        taken[row['group']] += 1
+        if index in refused:
+            question['intro'] = BAD_NOTATION
+        reply['reserves'].append({'group': row['group'], 'conceptId': row['conceptId'], 'question': question})
+    return reply
+
+
 class Scripted:
     """A model transport that answers from a script and keeps every request it was sent.
 
@@ -152,21 +170,13 @@ class LadderTests(unittest.TestCase):
     def tearDownClass(cls):
         shutil.rmtree(cls.scratch, ignore_errors=True)
 
-    def reply(self, *, practice=2, challenges=1, base=None):
-        """A sheet (the recorded S-g4calc of twelve questions unless ``base`` is given) with reserves from another
-        recorded sheet. Two practice and one challenge reserve are what the author schema asks for beside twelve
-        to fifteen questions; the recorded replies themselves carry none."""
-        from lesson_select import reserve_groups
-        reply = copy.deepcopy(self.base if base is None else base)
-        groups = reserve_groups(len(reply['practice']) + len(reply['challenges']))
-        if practice > groups.count('practice') or challenges > groups.count('challenges'):
-            raise AssertionError('More reserves than the author schema asks for')
-        concept = self.lesson['lessonBoundary']['conceptIds'][0]
-        reply['reserves'] = ([{'group': 'practice', 'conceptId': concept, 'question': copy.deepcopy(q)}
-                              for q in self.spare['practice'][:practice]]
-                             + [{'group': 'challenges', 'conceptId': concept, 'question': copy.deepcopy(q)}
-                                for q in self.spare['challenges'][:challenges]])
-        return reply
+    def reply(self, *, base=None, refused=()):
+        """A sheet (the recorded S-g4calc of twelve questions unless ``base`` is given) with exactly the reserves the
+        author schema and reservePlan ask for beside it (two practice and one challenge beside twelve to fifteen
+        questions), in the plan's order, group and concept, from another recorded sheet; the recorded replies
+        themselves carry none. The reserves at the positions in ``refused`` are written with a notation the source
+        refuses: each is examined and never placed, so a test can run out of reserves within the schema."""
+        return with_reserves(self.lesson, copy.deepcopy(self.base if base is None else base), self.spare, refused)
 
     def clean(self, extra=0):
         """clean_sheet with the three reserves the author schema asks for."""
@@ -390,6 +400,24 @@ class LadderTests(unittest.TestCase):
         self.assertEqual(len(sheets), 1)
         printed = json.dumps(self.printed(sheets[0]), ensure_ascii=False)
         self.assertEqual((len(self.printed(sheets[0])), printed.count('לכל')), (12, 0))
+        # The same clean sheet with question 8's recorded intro ("התאימו לכל ביטוי ...") back: the locked G32 names it,
+        # a reserve takes its place beside the two G61 questions, and the sheet is delivered with no "לכל" printed.
+        rows.clear()
+        restored = self.clean()
+        restored['practice'][7]['intro'] = self.base['practice'][7]['intro']
+        self.assertEqual([(row['word'], row['reading']) for row in scan(restored['practice'][7]['intro'])], [('לכל', 'instruction')])
+        with patch.object(remote_worker, 'precheck_job', recording):
+            outcome, sheets = self.run_job(Scripted(restored))
+        self.assertEqual(rows, [[('G32', 8), ('G61', 4), ('G61', 10)], []])
+        self.assertTrue(outcome['delivered'], outcome.get('code'))
+        self.assertEqual(outcome['prechecks'], [{'status': 'replace', 'questions': [4, 8, 10], 'codes': ['G32', 'G61']},
+                                                {'status': 'clean', 'questions': [], 'codes': []}])
+        self.assertEqual([(e['question'], e['codes'], e['action']) for e in outcome['ladder']['attemptRecords'][0]['events']],
+                         [(4, ['G61'], 'reserve'), (8, ['G32'], 'reserve'), (10, ['G61'], 'reserve')])
+        self.assertEqual(len(sheets), 1)
+        printed = json.dumps(self.printed(sheets[0]), ensure_ascii=False)
+        self.assertEqual((len(self.printed(sheets[0])), printed.count('לכל')), (12, 0))
+        self.assertNotIn(self.base['practice'][7]['intro'], printed)
 
     def test_a_question_named_by_a_truth_gate_is_swapped_before_any_render(self):
         reply = self.reply()
@@ -437,7 +465,7 @@ class LadderTests(unittest.TestCase):
     # ------------------------------------------------------------------ one correction
 
     def test_reserves_exhausted_asks_a_correction_for_the_deficit_only(self):
-        reply = self.reply(practice=1, challenges=0)
+        reply = self.reply(refused=(1, 2))                                             # one usable reserve, within the schema
         for index in (1, 4):
             reply['practice'][index]['intro'] = BAD_NOTATION
         fixed = copy.deepcopy(self.spare['practice'][5])
@@ -805,12 +833,19 @@ class DraftTests(unittest.TestCase):
         cls.pool = json.loads((CORPUS / 'replies/G-order.json').read_text(encoding='utf-8'))
 
     def author(self, reply, *, session=None):
-        """The general author on one reply, with no skill documents and no network."""
+        """The general author on one reply, with no skill documents and no network. A string reply is the model's
+        content text and goes through the engine's own reply reader (provider.parse_author_reply)."""
         import general_provider
         from runtime_catalog import scope_for_lesson
         measured = {}
         session = {} if session is None else session
-        with patch('provider.request_author_json', return_value=copy.deepcopy(reply)):
+
+        def answer(target, key, body, observed, timeout):
+            if isinstance(reply, str):
+                envelope = json.dumps({'choices': [{'finish_reason': 'stop', 'message': {'content': reply}}]}).encode()
+                return provider.parse_author_reply(envelope, observed)
+            return copy.deepcopy(reply)
+        with patch('provider.request_author_json', side_effect=answer):
             try:
                 payload = general_provider.author_general_lesson(
                     self.lesson, metadata=measured, revision=session, api_key='k', model='m',
@@ -819,9 +854,6 @@ class DraftTests(unittest.TestCase):
             except GenerationError as error:
                 return None, error, session, measured
         return payload, None, session, measured
-
-    def reserve(self, group, index=0):
-        return {'group': group, 'conceptId': 'ד07#0', 'question': copy.deepcopy(self.pool[group][index])}
 
     def test_plan_and_schema_ask_for_reserves_by_sheet_size_and_goal(self):
         from runtime_catalog import scope_for_lesson
@@ -846,31 +878,91 @@ class DraftTests(unittest.TestCase):
         # A salvaged sheet that lost a challenge plans two.
         self.assertEqual([row['group'] for row in question_plan(self.lesson, scope, challenges=2)], ['practice'] * 10 + ['challenges'] * 2)
 
-    def test_reserves_are_optional_and_a_malformed_reserve_costs_only_itself(self):
-        from skill_authoring import split_reserves
-        self.assertEqual(split_reserves(self.base), (self.base, [], 0))
-        good = self.reserve('practice')
-        reply = {**copy.deepcopy(self.base), 'reserves': [
-            good, {'group': 'bonus', 'question': good['question']}, 'text', {'group': 'practice'},
-            {'group': 'challenge', 'question': copy.deepcopy(self.pool['challenges'][0]), 'note': 'extra field'}]}
-        flat, usable, dropped = split_reserves(reply)
-        self.assertEqual((set(flat), dropped), ({'title', 'rule', 'practice', 'challenges'}, 3))
-        self.assertEqual([(row['group'], row['concepts']) for row in usable], [('practice', ('ד07#0',)), ('challenges', ())])
+    def planned_reserves(self, reply, refused=()):
+        """``reply`` with exactly the reserves reservePlan asks for beside the lesson (with_reserves)."""
+        return with_reserves(self.lesson, reply, self.pool, refused)
+
+    def test_a_reply_without_reserves_is_read_and_any_other_reserve_list_refuses_the_whole_reply(self):
+        from general_source import GeneralSourceError
+        from runtime_catalog import scope_for_lesson
+        from skill_authoring import reserve_plan, split_reserves
+        scope = scope_for_lesson(self.lesson)
+        plan = reserve_plan(self.lesson, scope)
+        self.assertEqual([(row['group'], row['conceptId']) for row in plan],
+                         [('practice', 'ד07#0'), ('practice', 'ד07#0'), ('challenges', 'ד07#1')])
+        # A reply without the field (every recorded reply) has no reserves.
+        self.assertEqual(split_reserves(self.base, self.lesson, scope), (self.base, [], 0))
+        # Exactly the plan: in its order, group and concept, a question object and no other field.
+        reply = self.planned_reserves(copy.deepcopy(self.base))
+        flat, usable, dropped = split_reserves(reply, self.lesson, scope)
+        self.assertEqual((set(flat), dropped), ({'title', 'rule', 'practice', 'challenges'}, 0))
+        self.assertEqual([(row['group'], row['concepts']) for row in usable],
+                         [('practice', ('ד07#0',)), ('practice', ('ד07#0',)), ('challenges', ('ד07#1',))])
         payload, error, session, measured = self.author(reply)
         self.assertIsNone(error)
-        self.assertEqual(measured['reserves'], {'offered': 2, 'dropped': 3})
+        self.assertEqual(measured['reserves'], {'offered': 3, 'dropped': 0})
         self.assertEqual(len(payload['sections'][0]['questions']), 12)
-        # Reserves that are not a list at all cost nothing either.
-        self.assertIsNone(self.author({**copy.deepcopy(self.base), 'reserves': 'none'})[1])
+        # Any other list refuses the whole reply: no entry is dropped and the rest kept (round 3: the engine took up
+        # to eight reserves and the alias group "challenge" while the schema asks for exactly three).
+        good = reply['reserves']
+        practice = copy.deepcopy(self.pool['practice'][3])
+        malformed = [good[0], {'group': 'bonus', 'question': good[0]['question']}, 'text', {'group': 'practice'},
+                     {'group': 'challenge', 'question': copy.deepcopy(self.pool['challenges'][0]), 'note': 'extra field'}]
+        refused = {
+            'the earlier malformed list': malformed,
+            'not a list': 'none',
+            'an empty list': [],
+            'one reserve': good[:1],
+            'two practice reserves': good[:2],
+            'a fourth reserve': good + [{'group': 'practice', 'conceptId': 'ד07#0', 'question': practice}],
+            'eight reserves': (good * 3)[:8],
+            'the alias challenge': good[:2] + [{**good[2], 'group': 'challenge'}],
+            'a challenge first': [good[2], good[0], good[1]],
+            'another concept': good[:2] + [{**good[2], 'conceptId': 'ד07#0'}],
+            'a concept outside the lesson': [{**good[0], 'conceptId': 'ז01#0'}] + good[1:],
+            'no concept': [{key: value for key, value in good[0].items() if key != 'conceptId'}] + good[1:],
+            'an extra field': [{**good[0], 'note': 'extra field'}] + good[1:],
+            'a question that is not an object': [{**good[0], 'question': 'text'}] + good[1:],
+            'a null entry in a reply read as JSON': [None] + good[1:],
+            'an entry that is not an object': ['text'] + good[1:],
+        }
+        for name, rows in refused.items():
+            with self.subTest(case=name):
+                changed = {**copy.deepcopy(self.base), 'reserves': copy.deepcopy(rows)}
+                with self.assertRaises(GeneralSourceError) as caught:
+                    split_reserves(changed, self.lesson, scope)
+                self.assertEqual(caught.exception.code, 'SOURCE_SHAPE')
+                payload, error, session, measured = self.author(changed)
+                self.assertEqual((payload, error.code, 'draft' in session, session.get('replyReceived')),
+                                 (None, 'SOURCE_SHAPE', False, True))
+        # Only a reply read question by question (reply_salvage) may lose an entry: it counts as a refused reserve in
+        # its place, and the count and every decoded entry must still be the plan's.
+        lost = {**copy.deepcopy(self.base), 'reserves': [None] + copy.deepcopy(good[1:])}
+        flat, usable, dropped = split_reserves(lost, self.lesson, scope, salvaged=True)
+        self.assertEqual(([(row['group'], row['concepts']) for row in usable], dropped),
+                         ([('practice', ('ד07#0',)), ('challenges', ('ד07#1',))], 1))
+        for name, rows in (('one entry fewer', [None] + good[1:2]), ('a decoded entry off the plan', [None, good[2], good[1]]),
+                           ('the alias challenge', [None, good[1], {**good[2], 'group': 'challenge'}]),
+                           ('an entry that is not an object', [None, 'text', good[2]])):
+            with self.subTest(salvaged=name), self.assertRaises(GeneralSourceError) as caught:
+                split_reserves({**copy.deepcopy(self.base), 'reserves': copy.deepcopy(rows)}, self.lesson, scope, salvaged=True)
+            self.assertEqual(caught.exception.code, 'SOURCE_SHAPE')
+        text = json.dumps(self.planned_reserves(copy.deepcopy(self.base)), ensure_ascii=False)
+        cut = text.index('"reserves"')
+        cut = text.index('{"group"', cut)
+        broken = text[:cut] + '{"group": "practice", "conceptId": "ד07#0", "question": {"intro": ]}, ' + text[text.index('{"group"', cut + 1):]
+        payload, error, session, measured = self.author(broken)
+        self.assertEqual((error, measured['replySalvaged'], measured['reserves']), (None, {'questionsLost': 1}, {'offered': 2, 'dropped': 1}))
+        self.assertEqual(len(payload['sections'][0]['questions']), 12)
         # A reserve that repeats a planned question word for word is never offered: it would print that question twice.
-        repeated = copy.deepcopy(self.base)
-        repeated['reserves'] = [{'group': 'practice', 'conceptId': 'ד07#0', 'question': copy.deepcopy(repeated['practice'][0])}]
+        repeated = self.planned_reserves(copy.deepcopy(self.base), refused=(1,))
+        repeated['reserves'][0]['question'] = copy.deepcopy(repeated['practice'][0])
         repeated['practice'][3]['intro'] = BAD_NOTATION
         payload, error, session, measured = self.author(repeated)
-        self.assertEqual((error.code, session['draft'].missing(), measured['reserves']), ('SOURCE_NOTATION', [4], {'offered': 1, 'dropped': 1}))
+        self.assertEqual((error.code, session['draft'].missing(), measured['reserves']), ('SOURCE_NOTATION', [4], {'offered': 3, 'dropped': 1}))
 
     def test_a_practice_reserve_stands_in_for_one_challenge_and_the_sheet_prints_two_stars(self):
-        reply = {**copy.deepcopy(self.base), 'reserves': [self.reserve('practice')]}
+        reply = self.planned_reserves(copy.deepcopy(self.base), refused=(2,))          # the challenge reserve is refused
         reply['challenges'][0]['intro'] = BAD_NOTATION
         payload, error, session, _ = self.author(reply)
         self.assertIsNone(error)
@@ -895,8 +987,7 @@ class DraftTests(unittest.TestCase):
             session['draft'].source()
         self.assertEqual((refused.exception.code, refused.exception.question), ('AUTHOR_PLAN_MISMATCH', 9))
         self.assertEqual(session['draft'].lesson['questionCount'], 12)
-        reply['reserves'] = [self.reserve('practice')]
-        payload, error, _, _ = self.author(reply)
+        payload, error, _, _ = self.author(self.planned_reserves(reply))
         self.assertIsNone(error)
         self.assertEqual(len(payload['sections'][0]['questions']), 12)
         # One practice question too many: it stands by and replaces a bad one.
@@ -914,14 +1005,14 @@ class DraftTests(unittest.TestCase):
         self.assertIsNone(error)                                                        # the sheet as authored keeps its numbers
         changed = copy.deepcopy(pointing)
         changed['practice'][1]['intro'] = BAD_NOTATION
-        changed['reserves'] = [self.reserve('practice', 0), self.reserve('practice', 1)]
+        changed = self.planned_reserves(changed)
         payload, error, session, _ = self.author(changed)
         self.assertIsNone(error)
         events = [(e['question'], e['codes'], e['action']) for e in session['draft'].selection.record]
         self.assertEqual(events, [(2, ['SOURCE_NOTATION'], 'reserve'), (7, ['QUESTION_REFERENCE'], 'reserve')])
         self.assertNotIn('שאלה', json.dumps([q['intro'] for q in payload['sections'][0]['questions']], ensure_ascii=False))
-        # Without a second reserve the pointing question is missing and the job reports the gate failure.
-        changed['reserves'] = changed['reserves'][:1]
+        # When the second practice reserve is refused the pointing question is missing and the job reports the gate failure.
+        changed = self.planned_reserves(changed, refused=(1,))
         payload, error, session, _ = self.author(changed)
         self.assertEqual((error.code, session['draft'].missing()), ('QUALITY_GATE_FAILED', [7]))
 

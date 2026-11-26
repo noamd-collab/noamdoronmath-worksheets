@@ -111,8 +111,18 @@ Q    = {"intro": rich, "items": [{"prompt": rich, "answer": A}, ...], "table"?, 
 - No `star` and no numbering: the compiler owns both
   (`skill_authoring.bind_content`, `general_provider.assemble_sections`).
 - Reserves: 3 beside fewer than 16 planned questions, 4 beside fewer than 24,
-  else 5; the last one is a challenge (`lesson_select.reserve_groups`). They are
-  optional on arrival (`skill_authoring.split_reserves`).
+  else 5; the last one is a challenge (`lesson_select.reserve_groups`), each
+  written for the concept `reserve_plan` names. A reply without the `reserves`
+  field has no reserves. A reply that carries it must carry exactly that plan,
+  in order: the count, each entry's `group` and `conceptId`, a question object
+  and no other field. Anything else (more or fewer entries, the alias
+  `"challenge"`, another order or concept, an entry that is not an object)
+  refuses the whole reply with `SOURCE_SHAPE` (`skill_authoring.split_reserves`);
+  no entry is dropped and the rest kept. The one exception is a reply that was
+  not JSON as a whole and was read question by question (`reply_salvage`): an
+  entry the reader could not decode counts as a refused reserve in its place,
+  as a lost planned question counts as a refused question; the count and every
+  decoded entry must still be the plan's.
 
 ### 2.3 Notation
 
@@ -460,8 +470,9 @@ marks, and its `apply` checks that no word changed.
   locked G32/G33 accept that id for every listed word of the question, so a
   benign reading there is printed (a claim is still named by `claim_lint`). Any
   code makes it a bad question, never a failed sheet.
-- **Selection** is `lesson_select.Selection`, which knows no wire format, topic
-  or grade. A bad question takes an unused reserve of its own group, same
+- **Selection** is `lesson_select.Selection`, which knows no wire format or
+  topic; of the grades it knows only their minimums, the one value it accepts
+  as a floor (`runtime_catalog.question_floor`). A bad question takes an unused reserve of its own group, same
   concept first. A practice reserve may fill a challenge slot only while two real
   challenges remain, and then prints as an ordinary question. A challenge
   reserve never fills a practice slot.
@@ -504,17 +515,27 @@ not in `gate_policy.GATES` is truth.
 
 **What the teacher gets** (`remote_worker.process_job`):
 
-- **Accepted:** every step PASS, or the one middle-build REVIEW of the
-  reconciled driver exit (reason `PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY`, then
-  `didactic-review-reconciliation` PASS, with its `DIDACTIC_REVIEW` note;
-  `remote_worker.accepted_review`). Any other REVIEW, an `unverifiedAnswers`
-  list that cannot be read, and any listed answer on an elementary sheet are
-  refused before anything is uploaded.
+- **Accepted** (`remote_worker.general_verdict`, by allowlist; the image smoke
+  calls the same function): the manifest names the lesson's own skill, its
+  `unverifiedAnswers` list is present and every row reads, an elementary lesson
+  or a manifest that names the elementary skill lists no answer (D6), and there
+  are exactly one PDF and one Word file. Then one of two forms: every step PASS
+  with `reviewFindings` exactly `[]`; or, on a middle-school lesson, the one
+  middle-build REVIEW of the reconciled driver exit (reason
+  `PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY`, then `didactic-review-reconciliation`
+  PASS; `remote_worker.accepted_review`) whose `reviewFindings` are
+  `DIDACTIC_REVIEW` rows of middle-build and nothing else. Everything else is
+  refused before anything is uploaded: any other REVIEW, any review row that
+  `gate_policy.blocks` blocks (G61, G62, G50, PAGE_*, any truth or policy
+  code), a G51 row whatever class it claims, a review row of another step, a
+  review row on an all-PASS manifest, a manifest that names another skill, and
+  a missing or unreadable `unverifiedAnswers` list. No row is dropped and the
+  sheet delivered without it.
 - **Delivered:** status `needs_review`, the PDF and the DOCX, and in the result
   `reviewFindings` (codes, counts, question numbers and the fixed note of the
-  rows that `gate_policy.blocks` lets through, the middle-build didactic
-  review, by `gate_policy.public_review_findings`, and the worker's own
-  shorter-sheet note), `teacherNotes` (middle-school review
+  middle-build didactic review rows of an accepted REVIEW, by
+  `gate_policy.public_review_findings`, and the worker's own shorter-sheet
+  note), `teacherNotes` (middle-school review
   answers and story-typed verdicts by question and item;
   `gate_policy.public_teacher_notes`), `unverifiedAnswers` counts, and
   `salvage` (attempts, corrections, replaced and dropped questions by code). A

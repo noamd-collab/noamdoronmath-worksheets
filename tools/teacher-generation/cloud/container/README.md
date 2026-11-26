@@ -141,28 +141,53 @@ An installed Mac development Python cannot qualify this Linux image. Inspect
 requesting release; host tests alone do not prove OCR or image readiness.
 
 General fixtures report `PASS`, `REVIEW` or `REFUSED` separately; any other
-outcome fails the qualification. `PASS` means every step passed. `REVIEW`
-qualifies only as the worker accepts it (`remote_worker.accepted_review`): the
-middle driver's `middle-build` step with reason
-`PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY`, directly followed by a passing
-`didactic-review-reconciliation`, on a middle-school lesson whose manifest names
-the same skill, with its `DIDACTIC_REVIEW` note. Any other REVIEW step, or an
-elementary fixture that lists an unverified answer, fails the qualification. A
-REVIEW never becomes `automatedChecksPassed: true`. Review findings remain in
-the qualification report; representative fixtures do not approve all 232 topics.
+outcome fails the qualification. A delivered fixture qualifies only by the
+worker's own rule (`remote_worker.general_verdict`, which `process_job` applies
+to every version 3 render; `offline_smoke.delivered_case` calls it). Both forms
+need status `needs_review`, a manifest that names the lesson's own skill, an
+`unverifiedAnswers` list that is present and readable (and empty for an
+elementary lesson or a manifest that names the elementary skill), and exactly
+one PDF and one Word file. `PASS` means every step passed and `reviewFindings`
+is exactly `[]`. `REVIEW` is only the middle driver's `middle-build` step with
+reason `PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY`, directly followed by a passing
+`didactic-review-reconciliation` (`remote_worker.accepted_review`), on a
+middle-school lesson, whose `reviewFindings` are `DIDACTIC_REVIEW` rows of
+`middle-build` and nothing else. Any other REVIEW step, any other review row (a
+G61, G62, G50 or PAGE_* row, a G51 row whatever class it claims, a row of
+another step), or an elementary fixture that lists an unverified answer, fails
+the qualification. A REVIEW never becomes `automatedChecksPassed: true`. Review
+findings remain in the qualification report; representative fixtures do not
+approve all 232 topics.
 
 The strict engine refuses three reviewed fixtures. Each prints a typed task
-after a prompt that is not a bare instruction (`PRINTED_TASK_MISMATCH`):
-`grade2-vocalized` (question 1, item 1), `grade4-fractions` (question 1, item 1)
-and `grade4-skill-calculation` (question 9, item 1). Their `model-output.json`
-is a recorded model reply and is never edited to pass, and they stay in the
-manifest. `offline_smoke.REFUSED` lists them; the smoke runs each one and
-requires exactly its refusal: status `failed`, no artifacts, the one
-`trusted-adapter` step `FAIL` with exit code 1, gate action `replace` naming
-that question with one `TRUSTED_ADAPTER` row (class `truth`) at that question
-and item, no review finding or unverified answer, `adapter-failure.json` with
-`PRINTED_TASK_MISMATCH` at that question and item, and no `content.json`,
-`sheet.html`, `sheet.pdf` or `sheet.docx`. They are reported as `REFUSED`,
-never `PASS`; a delivery or any other outcome fails the qualification.
-`tests/test_gate_policy.py` (`OfflineSmokeTests`) runs the same refusals and
-acceptance rules on the host.
+after a prompt that is not a bare instruction (`PRINTED_TASK_MISMATCH`). Their
+`model-output.json` is a recorded model reply and is never edited to pass, and
+they stay in the manifest. The smoke runs each one and requires exactly its
+refusal, never a delivery; they are reported as `REFUSED`, never `PASS`, and a
+delivery or any other outcome fails the qualification.
+
+- `offline_smoke.REFUSED`: `grade2-vocalized` (question 1, item 1) and
+  `grade4-fractions` (question 1, item 1) are refused by the trusted adapter
+  (`refused_case`): status `failed`, no artifacts, the one `trusted-adapter`
+  step `FAIL` with exit code 1, gate action `replace` naming that question with
+  one `TRUSTED_ADAPTER` row (class `truth`) at that question and item, no review
+  finding or unverified answer, `adapter-failure.json` with
+  `PRINTED_TASK_MISMATCH` at that question and item, and no `content.json`,
+  `sheet.html`, `sheet.pdf` or `sheet.docx`.
+- `offline_smoke.REFUSED_AT_SOURCE`: `grade4-skill-calculation` is refused when
+  its reply is read, before any render (`source_refused_case`):
+  `validation.validate_model` refuses it with `PRINTED_TASK_MISMATCH`, and
+  `general_source.validate_source` names that code at question 9, item 1 (a
+  blank beside its table that no binder fills from the print).
+
+These three are the only model-authored elementary `worksheet-source/4`
+fixtures, so no model-authored elementary v4 sheet is delivered in the image
+any more. Elementary delivery in the image is covered only by the parameter
+contracts `counting-words/1` (`grade1-counting`) and `unlike-fractions/1`
+(`grade5-unlike-fractions`), which compile their own source, and by
+`division-facts/1` (`grade3-division-curriculum`) through the legacy elementary
+adapter. Replacing these three fixtures with ones that deliver needs new
+recorded model replies; that is an owner decision, and nothing here edits a
+recorded reply to make it pass. `tests/test_gate_policy.py`
+(`OfflineSmokeTests`, `WorkerResultTests`) runs the same refusals and the same
+acceptance rule on the host.

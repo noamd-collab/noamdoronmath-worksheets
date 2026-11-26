@@ -250,11 +250,27 @@ def _question_object(schema):
     raise BenchError('The author request no longer asks for a flat worksheet with a practice group')
 
 
+def _reserve_plan(body):
+    """The reservePlan rows of an author request (its user message), or BenchError."""
+    try:
+        plan = json.loads(body['messages'][1]['content'])['reservePlan']
+    except (KeyError, IndexError, TypeError, ValueError):
+        plan = None
+    if not (isinstance(plan, list) and all(isinstance(row, dict) and {'group', 'conceptId'} <= set(row) for row in plan)):
+        raise BenchError('The author request asks for reserves without a readable reservePlan')
+    return plan
+
+
 class ReplyFromSchema:
     """Answer an author request with one question repeated in every slot it asks for.
 
-    The reply is built from the request's own schema, so a new group (for
-    example reserve questions) is filled without a change here.
+    The reply is built from the request's own schema, so a new group of
+    questions is filled without a change here. The reserves are the one
+    group whose entries are not bare questions: they are written exactly as
+    the request's reservePlan lists them (group and concept, in its order),
+    each with the same question, because the engine refuses a reply with any
+    other reserve list (skill_authoring.split_reserves). Each such reserve
+    repeats a planned question word for word, so it is never offered.
     """
 
     def __init__(self, question, title, rule):
@@ -268,7 +284,10 @@ class ReplyFromSchema:
         reply = {}
         for name in flat.get('required', list(flat['properties'])):
             spec = resolve(flat['properties'][name])
-            if isinstance(spec, dict) and spec.get('type') == 'array':
+            if name == 'reserves':
+                reply[name] = [{'group': row['group'], 'conceptId': row['conceptId'], 'question': deepcopy(self.question)}
+                               for row in _reserve_plan(body)]
+            elif isinstance(spec, dict) and spec.get('type') == 'array':
                 reply[name] = [deepcopy(self.question) for _ in range(spec.get('minItems', 1))]
             elif name == 'title':
                 reply[name] = self.title

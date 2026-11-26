@@ -155,39 +155,25 @@ def source_refused_case(case, lesson, source):
 
 
 def delivered_case(case, lesson, rendered):
-    """The report row of a fixture delivered as PASS, or as the one REVIEW the worker delivers.
+    """The report row of a fixture that the worker would deliver, as PASS or as REVIEW.
 
-    REVIEW qualifies only as remote_worker accepts it: the middle driver's
-    reconciled step (accepted_review) on the lesson's own skill, with its
-    DIDACTIC_REVIEW note. An elementary sheet lists no unverified answer.
+    The verdict is the worker's own (remote_worker.general_verdict, the rule
+    process_job applies to every version 3 render), so the smoke qualifies
+    exactly what the worker delivers: the manifest names the lesson's skill;
+    PASS needs every step PASS and reviewFindings == []; REVIEW is only the
+    middle driver's reconciled step (accepted_review) on a middle lesson with
+    DIDACTIC_REVIEW rows of middle-build and no other row; the unverifiedAnswers
+    list is present and readable, and empty when the lesson or the manifest
+    names the elementary skill; exactly one PDF and one Word file.
     Anything else raises RuntimeError."""
-    from gate_policy import public_review_findings, unverified_rows
-    from remote_worker import accepted_review
-    skill = validate_lesson(lesson)['skill']
-    steps = rendered['steps']
-    automated = (rendered['automatedChecksPassed'] is True
-                 and all(step['status'] == 'PASS' for step in steps))
-    review_only = (rendered.get('renderingChecksPassed') is True
-                   and isinstance(rendered.get('skill'), dict) and rendered['skill'].get('name') == skill
-                   and any(step['status'] == 'REVIEW' for step in steps)
-                   and all(step['status'] == 'PASS' or accepted_review(steps, i, skill)
-                           for i, step in enumerate(steps))
-                   and any(row['code'] == 'DIDACTIC_REVIEW'
-                           for row in public_review_findings(rendered.get('reviewFindings'))))
-    unverified = unverified_rows(rendered.get('unverifiedAnswers', []))
-    qualified = ((automated or review_only)
-              and rendered['status'] == 'needs_review'
-              and rendered.get('authoringProfile') == 'general-skill-source/v1'
-              and all(step['status'] in ('PASS', 'REVIEW') for step in steps)
-              and unverified is not None and not (unverified and skill == 'elementary')
-              and len(rendered['artifacts']) == 2
-              and {a['kind'] for a in rendered['artifacts']} == {'pdf', 'docx'})
-    if not qualified:
+    from remote_worker import general_verdict
+    verdict = general_verdict(rendered, validate_lesson(lesson)['skill'])
+    if verdict is None:
         raise RuntimeError('General skill pipeline failed: ' + case)
     return {'case': case, 'topicId': lesson['topicId'],
-            'status': 'PASS' if automated else 'REVIEW',
-            'automatedChecksPassed': automated,
-            'reviewFindings': rendered.get('reviewFindings', []),
+            'status': verdict,
+            'automatedChecksPassed': verdict == 'PASS',
+            'reviewFindings': rendered['reviewFindings'],
             'manifest': 'general/' + case + '/manifest.json'}
 
 

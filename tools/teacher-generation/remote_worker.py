@@ -6,7 +6,9 @@ logged, or copied to job artifacts. A process exit does not install a daemon.
 
 A version 3 job is repaired in this order, each step only when the one before
 left a deficit: reserve questions (no model call), ONE targeted correction
-call for the missing questions, a shorter sheet, ONE second full author call.
+call (general_provider.Draft.correct: the notation-only fix, or the missing
+questions and a refused rule, or the refused rule alone when no question is
+missing), a shorter sheet, ONE second full author call.
 Per job: at most AUTHOR_CALLS author calls and CORRECTION_CALLS correction
 calls, and no model call starts later than MODEL_CALL_WINDOW seconds after
 the claim. A sheet may fail; it never prints a question that a check refused.
@@ -42,7 +44,7 @@ BUCKET = 'teacher-generation-private'
 ENABLE_SKILL_REVISION = True
 # The repair ladder's hard limits for one job.
 AUTHOR_CALLS = 2          # the first reply and at most one second full attempt
-CORRECTION_CALLS = 2      # targeted corrections, for missing questions only
+CORRECTION_CALLS = 2      # targeted corrections (Draft.correct): missing questions, a refused rule, or the notation-only fix
 MODEL_CALL_WINDOW = 150   # seconds after the claim in which a model call may still start
 PRECHECK_PASSES = 2       # rounds of replacing what the pre-pass names, before any PDF or Word file
 FULL_RENDERS = 2          # the render, and one more after a gate named questions
@@ -687,6 +689,56 @@ def accepted_review(steps, index, skill):
             and after.get('name') == 'didactic-review-reconciliation' and after.get('status') == 'PASS')
 
 
+GENERAL_PROFILE = 'general-skill-source/v1'
+
+
+def general_verdict(manifest, skill):
+    """'PASS', 'REVIEW' or None: the worker's acceptance of a version 3 render, by allowlist.
+
+    ``skill`` is the lesson's own skill (validation.validate_lesson). Two forms are delivered and
+    nothing else:
+      PASS    every step PASS, automatedChecksPassed and renderingChecksPassed true, reviewFindings
+              exactly [] (no note of any code, a DIDACTIC_REVIEW row included).
+      REVIEW  a middle-school lesson only: every step PASS except one middle-build REVIEW that
+              accepted_review accepts, automatedChecksPassed false, renderingChecksPassed true, and
+              one or more reviewFindings rows, each a DIDACTIC_REVIEW row of middle-build alone that
+              public_review_findings reads in full.
+    Both also need status needs_review, the profile general-skill-source/v1, a manifest that names
+    the lesson's own skill, an unverifiedAnswers list that is present and whose every row reads, no
+    unverified answer when the lesson or the manifest names the elementary skill (D6), and exactly two
+    artifacts, one PDF and one Word file. A review row that blocks (gate_policy.blocks: G61, G62,
+    G50, PAGE_*, any truth or policy code), a G51 row whatever class it claims, an unknown code or a
+    row of another step refuses the render: it is never dropped and the sheet delivered without it.
+    """
+    if not isinstance(manifest, dict):
+        return None
+    steps, artifacts, rows = manifest.get('steps'), manifest.get('artifacts'), manifest.get('reviewFindings')
+    named = manifest['skill'].get('name') if isinstance(manifest.get('skill'), dict) else None
+    unverified = unverified_rows(manifest['unverifiedAnswers']) if 'unverifiedAnswers' in manifest else None
+    if not (manifest.get('status') == 'needs_review' and manifest.get('authoringProfile') == GENERAL_PROFILE
+            and skill in ('elementary', 'middle') and named == skill
+            and isinstance(steps, list) and bool(steps) and all(isinstance(s, dict) for s in steps)
+            and isinstance(artifacts, list) and len(artifacts) == 2 and all(isinstance(a, dict) for a in artifacts)
+            and {a.get('kind') for a in artifacts} == {'pdf', 'docx'}
+            and unverified is not None and not (unverified and 'elementary' in (skill, named))
+            and isinstance(rows, list)):
+        return None
+    if (manifest.get('automatedChecksPassed') is True and manifest.get('renderingChecksPassed') is True
+            and all(s.get('status') == 'PASS' for s in steps) and rows == []):
+        return 'PASS'
+    reviewed = [i for i, s in enumerate(steps) if s.get('status') == 'REVIEW']
+    if (skill == 'middle' and manifest.get('automatedChecksPassed') is False
+            and manifest.get('renderingChecksPassed') is True and len(reviewed) == 1
+            and accepted_review(steps, reviewed[0], skill)
+            and all(s.get('status') == 'PASS' for i, s in enumerate(steps) if i != reviewed[0])
+            and 0 < len(rows) <= 40
+            and all(isinstance(r, dict) and r.get('code') == 'DIDACTIC_REVIEW' and r.get('steps') == ['middle-build']
+                    for r in rows)
+            and len(public_review_findings(rows)) == len(rows)):
+        return 'REVIEW'
+    return None
+
+
 def structured_result(remote, job, manifest, artifact_root, structured):
     """Accept, upload and describe a worksheet-wire/5 render: the artifacts are exactly [pdf], the render passed
     every executed step, the manifest names the lesson's own skill, and every step passes accepted_step (PASS, or
@@ -774,29 +826,26 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
             return
         stage='acceptance'
         if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
-        artifacts=manifest.get('artifacts',[])
-        general=lesson.get('version')==3 and manifest.get('authoringProfile')=='general-skill-source/v1'
-        passed=manifest.get('status')=='needs_review' and (manifest.get('automatedChecksPassed') is True
-            or (general and manifest.get('renderingChecksPassed') is True))
-        steps=manifest.get('steps')
-        passed=passed and isinstance(steps,list) and bool(steps) and all(isinstance(s,dict) for s in steps)
-        named=manifest['skill'].get('name') if isinstance(manifest.get('skill'),dict) else None
-        # The lesson's own skill, when the manifest names the same one.
-        skill=cap['skill'] if named==cap['skill'] else None
-        # PASS, or on a version 3 render the one REVIEW of the middle driver's reconciled exit (accepted_review).
-        reviewed=passed and any(s.get('status')=='REVIEW' for s in steps)
-        passed=passed and all(s.get('status')=='PASS' or (general and accepted_review(steps,i,skill))
-                              for i,s in enumerate(steps))
-        unverified=unverified_rows(manifest.get('unverifiedAnswers',[])) if general else []
-        # A list of unverified answers that cannot be read is never dropped, and an elementary sheet never
-        # prints an answer without a proven key (D6): either one refuses the sheet before anything is uploaded.
-        passed=passed and unverified is not None and not (unverified and 'elementary' in (cap['skill'],named))
-        findings=[]
-        if passed and general:
-            findings=public_review_findings(manifest.get('reviewFindings',[]))
-            # A delivered REVIEW always carries its own note for the teacher.
-            passed=not reviewed or any(row['code']=='DIDACTIC_REVIEW' for row in findings)
-        if not passed or {a.get('kind') for a in artifacts}!={'pdf','docx'} or len(artifacts)!=2:
+        artifacts=manifest.get('artifacts')
+        # Every version 3 render is a general one (runner.render_job); it is accepted only by general_verdict.
+        general=lesson.get('version')==3
+        findings=[];unverified=[]
+        if general:
+            verdict=general_verdict(manifest,cap['skill'])
+            passed=verdict is not None
+            if passed:
+                unverified=unverified_rows(manifest['unverifiedAnswers'])
+                # Only a REVIEW carries notes: the DIDACTIC_REVIEW rows general_verdict read in full.
+                findings=public_review_findings(manifest['reviewFindings']) if verdict=='REVIEW' else []
+        else:
+            steps=manifest.get('steps')
+            named=manifest['skill'].get('name') if isinstance(manifest.get('skill'),dict) else None
+            passed=(manifest.get('status')=='needs_review' and manifest.get('automatedChecksPassed') is True
+                    and named==cap['skill'] and isinstance(steps,list) and bool(steps)
+                    and all(isinstance(s,dict) and s.get('status')=='PASS' for s in steps)
+                    and isinstance(artifacts,list) and len(artifacts)==2 and all(isinstance(a,dict) for a in artifacts)
+                    and {a.get('kind') for a in artifacts}=={'pdf','docx'})
+        if not passed:
             raise GenerationError('QUALITY_GATE_FAILED','A required output gate failed')
         stage='upload'
         check_transport(remote)
@@ -829,7 +878,7 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
                           reviewFindings=findings,
                           # Which printed answers no exact kernel verified (middle school only):
                           # review answers and story-typed decisions, by question and item.
-                          teacherNotes=public_teacher_notes(manifest.get('unverifiedAnswers',[])),
+                          teacherNotes=public_teacher_notes(manifest['unverifiedAnswers']),
                           unverifiedAnswers={kind:sum(row['kind']==kind for row in unverified)
                                              for kind in sorted({row['kind'] for row in unverified})})
             if salvage:

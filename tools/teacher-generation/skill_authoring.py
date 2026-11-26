@@ -18,7 +18,6 @@ import compact_authoring
 # The questions one correction call may rewrite. More missing questions than
 # this are a failed reply, not a correction.
 MAX_CORRECTED = 8
-MAX_RESERVES = 8
 
 
 def entry_questions(lesson, challenges=3):
@@ -98,7 +97,8 @@ def worksheet_schema(lesson, scope):
         content[group] = {"type": "array", "items": {"$ref": "#/$defs/question"},
                           "minItems": count, "maxItems": count}
     # Reserve questions, each tagged with its group and concept. The author is
-    # asked for all of them; a reply without them is still accepted (split_reserves).
+    # asked for exactly these; a reply that carries other reserves is refused,
+    # and a reply without the field has none (split_reserves).
     reserves = len(reserve_groups(lesson["questionCount"]))
     content["reserves"] = {"type": "array", "minItems": reserves, "maxItems": reserves, "items": {
         "type": "object", "additionalProperties": False, "required": ["group", "conceptId", "question"],
@@ -129,31 +129,46 @@ def bind_content(payload, scope):
     }]}
 
 
-def split_reserves(reply):
-    """Separate the optional reserve questions from a flat reply.
+def split_reserves(reply, lesson, scope, *, salvaged=False):
+    """Separate the reserve questions from a flat reply, exactly as the request asked for them.
 
-    Returns (the reply without ``reserves``, the usable reserves as
-    [{"group", "concepts", "question"}], how many entries were dropped).
-    Reserves are optional: a reply without the field, or with an entry that
-    is not {"group", "question"}, loses only that reserve. The question
-    inside is examined like any other before it may be printed.
+    Returns (the reply without ``reserves``, the reserves as
+    [{"group", "concepts", "question"}], how many entries the reader lost). A
+    reply without the field (every reply recorded before reserves were asked
+    for) has no reserves; each of its planned questions is still examined. A
+    reply that carries the field must carry exactly the reserves of
+    reserve_plan(lesson, scope), which the author schema (worksheet_schema:
+    minItems = maxItems) and the request's reservePlan ask for: one entry per
+    planned reserve, in that order, each exactly {"group", "conceptId",
+    "question"} with the plan's group and concept and a question object.
+    Anything else refuses the whole reply (SOURCE_SHAPE): another count, the
+    alias "challenge", another group, concept or order, an extra field, an
+    entry that is not an object. No such entry is dropped and the rest kept.
+
+    One exception, ``salvaged``: the reply was not JSON as a whole and the
+    reader (reply_salvage, provider.parse_author_reply: measured
+    replySalvaged) decoded it question by question. An entry it could not
+    decode is None in its place and counts as a refused reserve, exactly as a
+    lost planned question counts as a refused question; it is never used.
+    The count and every decoded entry must still be exactly the plan's. In a
+    reply that was read as JSON a null entry refuses the reply like any other.
+    The question inside a reserve is examined like any other before it may be
+    printed.
     """
     if not isinstance(reply, dict) or "reserves" not in reply:
         return reply, [], 0
     flat = {key: value for key, value in reply.items() if key != "reserves"}
-    rows = reply["reserves"]
-    if not isinstance(rows, list):
-        return flat, [], 1
-    usable = []
-    for row in rows[:MAX_RESERVES]:
-        group = row.get("group") if isinstance(row, dict) else None
-        group = CHALLENGES if group == "challenge" else group
-        if group not in (PRACTICE, CHALLENGES) or not isinstance(row.get("question"), dict):
-            continue
-        concept = row.get("conceptId")
-        usable.append({"group": group, "question": row["question"],
-                       "concepts": (concept,) if isinstance(concept, str) else ()})
-    return flat, usable, len(rows) - len(usable)
+    rows, plan = reply["reserves"], reserve_plan(lesson, scope)
+    if not (isinstance(rows, list) and len(rows) == len(plan) and all(
+            (row is None and salvaged is True)
+            or (isinstance(row, dict) and set(row) == {"group", "conceptId", "question"}
+                and isinstance(row["group"], str) and row["group"] == asked["group"]
+                and isinstance(row["conceptId"], str) and row["conceptId"] == asked["conceptId"]
+                and isinstance(row["question"], dict))
+            for row, asked in zip(rows, plan))):
+        raise GeneralSourceError("SOURCE_SHAPE", "Expected exactly the reserve questions of reservePlan, in its order")
+    return flat, [{"group": row["group"], "question": row["question"], "concepts": (row["conceptId"],)}
+                  for row in rows if row is not None], sum(row is None for row in rows)
 
 
 # A notation correction returns only the original prose fragments with marks

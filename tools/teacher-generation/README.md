@@ -26,8 +26,13 @@ source. Adding a subject from the curriculum does not require a subject-specific
 
 The general author supplies a title, one rule, two groups of questions and a few
 reserve questions (three beside fewer than 16 planned questions, four beside fewer
-than 24, otherwise five), each tagged with its group and concept. Reserves are
-optional on arrival: a reply without them still compiles. Mathematical
+than 24, otherwise five), each tagged with its group and concept. A reply without
+the reserves field still compiles, with no reserves. A reply that carries the field
+must carry exactly the reserves the request asked for (`skill_authoring.split_reserves`:
+the count, and in order each reserve's group and concept from `reserve_plan`, with no
+other field); any other reserve list refuses the whole reply (`SOURCE_SHAPE`). Only in a reply
+read question by question (`reply_salvage`) does an entry the reader could not decode count as a
+refused reserve in its place. Mathematical
 tasks are parsed into bounded, verified expressions. Printed literals preserve significant
 decimal zeros, thousands separators, and percent signs. A completed source-v4 document
 remains a supported input. Basic grade-two no-regrouping addition also accepts its existing
@@ -205,8 +210,9 @@ result carries them as `teacherNotes`: one entry per kind with a fixed Hebrew
 sentence (`gate_policy.UNVERIFIED_NOTES`) and the question and item numbers.
 Evidence that is present but unreadable, or that lists an elementary answer,
 fails the render before anything is built. The worker checks the manifest
-again before anything is uploaded: a list it cannot read, or any listed answer
-on an elementary sheet, refuses the sheet.
+again before anything is uploaded (`remote_worker.general_verdict`): a missing
+list or one it cannot read, or any listed answer on an elementary sheet,
+refuses the sheet.
 Prose, reasoning and pedagogical correspondence still require human review.
 
 `general_adapters.py` compiles only trusted templates. Typed figures are
@@ -266,10 +272,17 @@ A result is always `needs_review` or `failed`, never publication approval:
   hash, and reruns the pinned checker. It never converts a FAIL finding to
   REVIEW. This is the only REVIEW the worker accepts: `middle-build` with reason
   `PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY`, followed by
-  `didactic-review-reconciliation` PASS, on a middle-school lesson, with its
-  `DIDACTIC_REVIEW` note; every other REVIEW is refused. A render that fails
-  after the reconciliation (a missing PDF or Word file) puts the step back to
-  FAIL and keeps no review note.
+  `didactic-review-reconciliation` PASS, on a middle-school lesson, whose
+  review rows are its `DIDACTIC_REVIEW` rows of `middle-build` and nothing
+  else; every other REVIEW is refused. The worker accepts by allowlist
+  (`remote_worker.general_verdict`): a render whose steps all passed is
+  delivered only with `reviewFindings == []`, any review row that
+  `gate_policy.blocks` blocks (or a G51 row of any class, or a row of another
+  step) refuses the sheet instead of being dropped, and a manifest that names
+  another skill than the lesson's is refused. A render that fails after the
+  reconciliation (a missing PDF or Word file) puts the step back to FAIL,
+  keeps no review note, and lists that step in `gate.blocking` with every other
+  failed step.
 - API, UI and private-storage RLS use equivalent readiness rules. Only exact
   owner PDF/DOCX paths can be downloaded; source, logs and keys remain private.
 

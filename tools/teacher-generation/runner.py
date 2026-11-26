@@ -539,19 +539,6 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
             path=work/name
             if not path.is_file(): ok=False;steps.append({'name':'artifact-presence','status':'FAIL'});break
             artifacts.append({'path':name,'sha256':sha(path),'bytes':path.stat().st_size,'kind':'pdf' if name.endswith('.pdf') else 'docx'})
-    gate=None
-    if decision is not None:
-        # Built after the artifact check: a failed manifest never says 'deliver'.
-        action,blocking,questions='deliver',[],[]
-        if not ok and decision['action']!='deliver':
-            action,blocking,questions=decision['action'],decision['blocking'],decision['questions']
-        elif not ok:
-            # The gates found nothing that blocks, but a later step failed (artifact-presence).
-            action='fail'
-            blocking=[finding(STEP_CODES.get(step['name'],'STEP_FAILED'),step['name'])
-                      for step in steps if step['status']=='FAIL']
-        gate={'version':1,'action':action,'complete':report['complete'],'blocking':blocking,'questions':questions,
-              'review':decision['reviewFindings']}
     if general and not ok:
         # A failed manifest keeps no REVIEW step and no review note. The middle
         # driver's step goes back to the FAIL it exited with when a later check
@@ -561,8 +548,26 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
             if step['status']=='REVIEW':
                 step['status']='FAIL';step.pop('reason',None)
         review_findings=[]
-        if gate is not None:
-            gate['review']=[]
+    gate=None
+    if decision is not None:
+        # Built after the artifact check and the revert above: a failed manifest never says 'deliver', and its
+        # blocking rows name every failed step.
+        action,blocking,questions='deliver',[],[]
+        if not ok:
+            if decision['action']!='deliver':
+                action,blocking,questions=decision['action'],list(decision['blocking']),decision['questions']
+            else:
+                action='fail'
+            # A step that failed after the gates were read (artifact-presence), or the middle driver's step that
+            # went back to FAIL above, and that no blocking row names yet: it names no question, so the action is fail.
+            explained={row['step'] for row in blocking}
+            unnamed=[finding(STEP_CODES.get(step['name'],'STEP_FAILED'),step['name']) for step in steps
+                     if step['status']=='FAIL' and step['name'] not in explained
+                     and step['name'] not in RECONCILIATION_STEPS]
+            if unnamed:
+                action,blocking=('fail',blocking+unnamed)
+        gate={'version':1,'action':action,'complete':report['complete'],'blocking':blocking,'questions':questions,
+              'review':[] if not ok else decision['reviewFindings']}
     manifest={'version':1,'status':'needs_review' if ok else 'failed','automatedChecksPassed':bool(ok and len(artifacts)==2 and all(s['status']=='PASS' for s in steps)),'skill':{'name':cap['skill'],'version':pin['version'],'sha256':pin['sha256']},'topicId':lesson['topicId'],'gradeNumber':lesson['gradeNumber'],'modelInputSha256':sha(work/'model-output.json'),'adapterSha256':sha(HERE/'adapters.py'),'steps':steps,'artifacts':artifacts if ok else [],'review':{'mathematical':'exact typed arithmetic verified; prose/template review pending','visual':'pending; every final PDF page and actual Word rendering must be inspected','curriculum':'bounded topic allowlist; free-text progress is not independently verified','publication':'not approved; private owner preview only'}}
     manifest['lessonBoundary']=lesson.get('lessonBoundary')
     if salvaged_from is not None:

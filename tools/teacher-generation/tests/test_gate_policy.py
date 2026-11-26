@@ -347,8 +347,17 @@ class RunnerPolicyTests(unittest.TestCase):
             self.assertEqual((manifest["status"], manifest["artifacts"]), ("failed", []), name)
             self.assertEqual((manifest["automatedChecksPassed"], manifest["renderingChecksPassed"]), (False, False), name)
             self.assertEqual((manifest["gate"]["action"], manifest["gate"]["questions"]), ("fail", []), name)
-            self.assertEqual(manifest["gate"]["blocking"], [{"code": "ARTIFACT_MISSING", "class": "truth", "step": failed}], name)
-            self.assertEqual(json.loads((self.work / "manifest.json").read_text())["steps"][1]["status"], "FAIL", name)
+            # The gate agrees with the steps: every failed step but the reconciliation is a blocking row, the
+            # middle driver's step that went back to FAIL included.
+            missing = {"code": "ARTIFACT_MISSING", "class": "truth", "step": failed}
+            driver = {"code": "STEP_FAILED", "class": "truth", "step": "middle-build"}
+            self.assertEqual(manifest["gate"]["blocking"],
+                             [driver, missing] if failed == "artifact-presence" else [missing, driver], name)
+            self.assertEqual({row["step"] for row in manifest["gate"]["blocking"]},
+                             {step["name"] for step in manifest["steps"]
+                              if step["status"] == "FAIL" and step["name"] not in policy.RECONCILIATION_STEPS}, name)
+            written = json.loads((self.work / "manifest.json").read_text())
+            self.assertEqual((written["steps"][1]["status"], written["gate"]), ("FAIL", manifest["gate"]), name)
 
     def test_clean_render_has_no_gate_block_and_legacy_lessons_keep_the_old_rule(self):
         manifest = self.render({})
@@ -420,8 +429,7 @@ class WorkerResultTests(unittest.TestCase):
                           {"name": "middle-build", "status": "REVIEW", "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY"},
                           {"name": "didactic-review-reconciliation", "status": "PASS"}],
                 "reviewFindings": [{"code": "DIDACTIC_REVIEW", "class": "editorial", "count": 2, "steps": ["middle-build"],
-                                    "questions": [4, 11], "rules": {"D12": 2}, "note": "PRIVATE MODEL TEXT"},
-                                   {"code": "G51", "class": "reconciled", "count": 1, "steps": ["house-gates"], "questions": []}],
+                                    "questions": [4, 11], "rules": {"D12": 2}, "note": "PRIVATE MODEL TEXT"}],
                 "unverifiedAnswers": []}
 
     def deliver(self, change=None, lesson=MIDDLE):
@@ -462,12 +470,11 @@ class WorkerResultTests(unittest.TestCase):
     def test_job_result_carries_the_didactic_review_note_and_nothing_else_from_the_manifest(self):
         # The one REVIEW a render still delivers: the middle driver's reconciled didactic REVIEW.
         result, _ = self.deliver()
-        # A forged reconciled G51 row stays private; the note is the table's own sentence.
+        # The note is the table's own sentence; the row's own note, rules and class stay private.
         self.assertEqual(result["reviewFindings"], [{"code": "DIDACTIC_REVIEW", "count": 2, "note": policy.NOTES["DIDACTIC_REVIEW"],
                                                      "questions": [4, 11]}])
         self.assertEqual([(check["name"], check["status"]) for check in result["checks"]],
                          [("trusted-adapter", "PASS"), ("middle-build", "REVIEW"), ("didactic-review-reconciliation", "PASS")])
-        self.assertNotIn("G51", json.dumps(result["reviewFindings"]))
         self.assertNotIn("D12", json.dumps(result, ensure_ascii=False))
         self.assertNotIn("PRIVATE", json.dumps(result, ensure_ascii=False))
         self.assertLess(len(json.dumps(result, ensure_ascii=False).encode()), 32000)
@@ -481,6 +488,10 @@ class WorkerResultTests(unittest.TestCase):
             manifest["steps"].append({"name": "house-gates", "status": "REVIEW", "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY"})
             manifest["reviewFindings"].append({"code": "G61", "class": "editorial", "count": 2, "steps": ["house-gates"],
                                                "questions": [2, 10]})
+
+        def add(code, cls, steps, questions=(2, 10)):
+            return lambda manifest: manifest["reviewFindings"].append(
+                {"code": code, "class": cls, "count": 2, "steps": steps, "questions": list(questions)})
 
         cases = {
             "another step": step(0, status="REVIEW"),
@@ -497,6 +508,35 @@ class WorkerResultTests(unittest.TestCase):
             # The middle school's list of unverified answers is trusted only when every row reads.
             "an unreadable list": lambda manifest: manifest.update(unverifiedAnswers=[{"question": 2, "item": 1, "kind": "open"}]),
             "a list that is not one": lambda manifest: manifest.update(unverifiedAnswers="q2"),
+            "no list at all": lambda manifest: manifest.pop("unverifiedAnswers"),
+            # Beside the reconciled REVIEW, any other review row refuses the sheet: it is never dropped and the
+            # sheet delivered without it (round 3: a G61 row of house-gates or of middle-build, a forged G51 row).
+            "a G61 row of house-gates": add(code="G61", cls="editorial", steps=["house-gates"]),
+            "a G61 row of middle-build": add(code="G61", cls="editorial", steps=["middle-build"]),
+            "a reconciled G51 row": add(code="G51", cls="reconciled", steps=["house-gates"], questions=[]),
+            "a G51 row": add(code="G51", cls="truth", steps=["house-gates"], questions=[]),
+            "a G62 row": add(code="G62", cls="editorial", steps=["house-gates"]),
+            "a G50 row": add(code="G50", cls="editorial", steps=["house-gates"]),
+            "a PAGE_FILL row": add(code="PAGE_FILL", cls="editorial", steps=["worksheet"]),
+            "a PAGE_GAP row": add(code="PAGE_GAP", cls="editorial", steps=["worksheet"]),
+            "a SHORTER_SHEET row": add(code="SHORTER_SHEET", cls="editorial", steps=["house-gates"]),
+            "an unknown code": add(code="G99", cls="editorial", steps=["middle-build"]),
+            "a second DIDACTIC_REVIEW row of another step": add(code="DIDACTIC_REVIEW", cls="editorial", steps=["house-gates"]),
+            "a DIDACTIC_REVIEW row of two steps": add(code="DIDACTIC_REVIEW", cls="editorial",
+                                                      steps=["middle-build", "house-gates"]),
+            "a DIDACTIC_REVIEW row of another class": add(code="DIDACTIC_REVIEW", cls="truth", steps=["middle-build"]),
+            "a DIDACTIC_REVIEW row with no count": lambda manifest: manifest["reviewFindings"][0].pop("count"),
+            "a row that is not one": lambda manifest: manifest["reviewFindings"].append("G61"),
+            "no review rows": lambda manifest: manifest.pop("reviewFindings"),
+            "review rows that are not a list": lambda manifest: manifest.update(reviewFindings={"code": "DIDACTIC_REVIEW"}),
+            # The REVIEW form exactly as the runner writes it, and no other.
+            "two REVIEW steps": lambda manifest: manifest["steps"].extend(
+                [{"name": "middle-build", "status": "REVIEW", "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY"},
+                 {"name": "didactic-review-reconciliation", "status": "PASS"}]),
+            "automated checks passed beside a REVIEW": lambda manifest: manifest.update(automatedChecksPassed=True),
+            "no rendering checks": lambda manifest: manifest.update(renderingChecksPassed=False),
+            "no profile": lambda manifest: manifest.pop("authoringProfile"),
+            "no named skill": lambda manifest: manifest.pop("skill"),
         }
         for name, change in cases.items():
             with self.subTest(case=name):
@@ -518,6 +558,58 @@ class WorkerResultTests(unittest.TestCase):
         # A middle-school sheet with readable rows is delivered with their notes.
         result, _ = self.deliver(lambda manifest: manifest.update(unverifiedAnswers=[{"question": 3, "item": 1, "kind": "review"}]))
         self.assertEqual((result["unverifiedAnswers"], [note["kind"] for note in result["teacherNotes"]]), ({"review": 1}, ["review"]))
+
+    def test_a_render_where_every_step_passed_is_delivered_only_with_no_review_row_and_its_own_skill(self):
+        def passed(skill="middle", **values):
+            def change(manifest):
+                manifest["steps"] = manifest["steps"][:1]
+                manifest.update(skill={"name": skill}, reviewFindings=[], automatedChecksPassed=True)
+                manifest.update(values)
+            return change
+
+        result, _ = self.deliver(passed())
+        self.assertEqual((result["reviewFindings"], result["automatedChecksPassed"]), ([], True))
+        result, _ = self.deliver(passed("elementary"), lesson=self.ELEMENTARY)
+        self.assertEqual((result["reviewFindings"], result["automatedChecksPassed"]), ([], True))
+        didactic = [{"code": "DIDACTIC_REVIEW", "class": "editorial", "count": 1, "steps": ["middle-build"], "questions": [3]}]
+        g61 = [{"code": "G61", "class": "editorial", "count": 2, "steps": ["house-gates"], "questions": [2, 10]}]
+        g51 = [{"code": "G51", "class": "reconciled", "count": 1, "steps": ["house-gates"], "questions": []}]
+        refused = {
+            # Round 3, worker_and_coverage: an all-PASS manifest with a G61 or a forged G51 row.
+            ("middle", "a G61 row"): (self.MIDDLE, passed(reviewFindings=g61)),
+            ("middle", "a reconciled G51 row"): (self.MIDDLE, passed(reviewFindings=g51)),
+            ("elementary", "a G61 row"): (self.ELEMENTARY, passed("elementary", reviewFindings=g61)),
+            # Round 3: a DIDACTIC_REVIEW row of middle-build on an all-PASS manifest, also of an elementary lesson.
+            ("middle", "a DIDACTIC_REVIEW row"): (self.MIDDLE, passed(reviewFindings=didactic)),
+            ("elementary", "a DIDACTIC_REVIEW row"): (self.ELEMENTARY, passed("elementary", reviewFindings=didactic)),
+            # Round 3: the manifest names another skill than the lesson's.
+            ("elementary", "a manifest that names middle"): (self.ELEMENTARY, passed("middle")),
+            ("middle", "a manifest that names elementary"): (self.MIDDLE, passed("elementary")),
+            ("middle", "a manifest that names no skill"): (self.MIDDLE, lambda manifest: (passed()(manifest), manifest.pop("skill"))),
+            # Round 3: a missing unverifiedAnswers key is no list, never an empty one.
+            ("middle", "no unverified list"): (self.MIDDLE, lambda manifest: (passed()(manifest), manifest.pop("unverifiedAnswers"))),
+            ("elementary", "no unverified list"): (self.ELEMENTARY,
+                                                   lambda manifest: (passed("elementary")(manifest), manifest.pop("unverifiedAnswers"))),
+            ("middle", "no review rows"): (self.MIDDLE, lambda manifest: (passed()(manifest), manifest.pop("reviewFindings"))),
+            ("middle", "no rendering checks"): (self.MIDDLE, passed(renderingChecksPassed=False)),
+            ("middle", "no profile"): (self.MIDDLE, lambda manifest: (passed()(manifest), manifest.pop("authoringProfile"))),
+            ("middle", "a failed status"): (self.MIDDLE, passed(status="failed")),
+            ("middle", "one artifact"): (self.MIDDLE, lambda manifest: (passed()(manifest), manifest["artifacts"].pop())),
+        }
+        for (skill, name), (lesson, change) in refused.items():
+            with self.subTest(skill=skill, case=name):
+                self.assertEqual(self.deliver(change, lesson=lesson)[0], None)
+
+    def test_the_verdict_is_one_rule_for_the_worker_and_the_image_smoke(self):
+        from cloud.container import offline_smoke
+        import inspect
+        self.assertIn("general_verdict(", inspect.getsource(offline_smoke.delivered_case))
+        self.assertIn("general_verdict(", inspect.getsource(worker.process_job))
+        artifacts = [{"kind": "pdf"}, {"kind": "docx"}]
+        self.assertEqual(worker.general_verdict(self.manifest(artifacts), "middle"), "REVIEW")
+        self.assertIsNone(worker.general_verdict(self.manifest(artifacts), "elementary"))
+        for bad in (None, [], "manifest", {}):
+            self.assertIsNone(worker.general_verdict(bad, "middle"))
 
 
 class OfflineSmokeTests(unittest.TestCase):
@@ -624,6 +716,9 @@ class OfflineSmokeTests(unittest.TestCase):
                          {"case": "x", "topicId": middle["topicId"], "status": "REVIEW", "automatedChecksPassed": False,
                           "reviewFindings": manifest["reviewFindings"], "manifest": "general/x/manifest.json"})
         self.assertEqual(self.smoke.delivered_case("y", elementary, clean())["status"], "PASS")
+        self.assertEqual(self.smoke.delivered_case("x", middle, clean(lambda manifest: manifest.update(skill={"name": "middle"}))),
+                         {"case": "x", "topicId": middle["topicId"], "status": "PASS", "automatedChecksPassed": True,
+                          "reviewFindings": [], "manifest": "general/x/manifest.json"})
 
         def step(index, **values):
             return lambda manifest: manifest["steps"][index].update(values)
@@ -640,6 +735,28 @@ class OfflineSmokeTests(unittest.TestCase):
             "a failed render": reviewed(lambda manifest: manifest.update(status="failed")),
             "one artifact": reviewed(lambda manifest: manifest.update(artifacts=artifacts[:1])),
             "three artifacts": reviewed(lambda manifest: manifest.update(artifacts=artifacts + artifacts[1:])),
+            # Round 3: beside the reconciled REVIEW, a forged G51 row or a G61 row refuses the fixture.
+            "a reconciled G51 row": reviewed(lambda manifest: manifest["reviewFindings"].append(
+                {"code": "G51", "class": "reconciled", "count": 1, "steps": ["house-gates"], "questions": []})),
+            "a G61 row": reviewed(lambda manifest: manifest["reviewFindings"].append(
+                {"code": "G61", "class": "editorial", "count": 2, "steps": ["house-gates"], "questions": [2, 10]})),
+            "no unverified list": reviewed(lambda manifest: manifest.pop("unverifiedAnswers")),
+            # Round 3 (offline_smoke.py 131): every step PASS, but an editorial row is attached.
+            "a PASS with a G61 row": {"status": "needs_review", "authoringProfile": "general-skill-source/v1",
+                                      "steps": [{"name": "trusted-adapter", "status": "PASS"}], "automatedChecksPassed": True,
+                                      "renderingChecksPassed": True, "skill": {"name": "middle"},
+                                      "reviewFindings": [{"code": "G61", "count": 2}], "unverifiedAnswers": [],
+                                      "artifacts": artifacts},
+            "a PASS with a DIDACTIC_REVIEW row": clean(lambda manifest: manifest.update(
+                skill={"name": "middle"}, reviewFindings=reviewed()["reviewFindings"])),
+            # Round 3 (offline_smoke.py 149): every step PASS, the manifest names elementary and lists an answer.
+            "a PASS that names elementary": {"status": "needs_review", "authoringProfile": "general-skill-source/v1",
+                                             "steps": [{"name": "trusted-adapter", "status": "PASS"}],
+                                             "automatedChecksPassed": True, "renderingChecksPassed": True,
+                                             "skill": {"name": "elementary"}, "reviewFindings": [],
+                                             "unverifiedAnswers": [{"question": 2, "item": 1, "kind": "review"}],
+                                             "artifacts": artifacts},
+            "a clean PASS that names elementary": clean(),
         }
         for name, manifest in refused.items():
             with self.subTest(case=name), self.assertRaises(RuntimeError):
@@ -649,7 +766,11 @@ class OfflineSmokeTests(unittest.TestCase):
                 "a reconciled REVIEW": reviewed(lambda manifest: manifest.update(skill={"name": "elementary"})),
                 "a house-gates REVIEW": clean(lambda manifest: manifest["steps"].append({"name": "house-gates", "status": "REVIEW"})),
                 "an unverified answer": clean(lambda manifest: manifest.update(
-                    unverifiedAnswers=[{"question": 3, "item": 1, "kind": "review"}]))}.items():
+                    unverifiedAnswers=[{"question": 3, "item": 1, "kind": "review"}])),
+                "a manifest that names middle": clean(lambda manifest: manifest.update(skill={"name": "middle"})),
+                "a DIDACTIC_REVIEW row": clean(lambda manifest: manifest.update(reviewFindings=reviewed()["reviewFindings"])),
+                "a G61 row": clean(lambda manifest: manifest.update(reviewFindings=[{"code": "G61", "count": 2}])),
+                "no unverified list": clean(lambda manifest: manifest.pop("unverifiedAnswers"))}.items():
             with self.subTest(case=name), self.assertRaises(RuntimeError):
                 self.smoke.delivered_case("y", elementary, manifest)
 

@@ -1,11 +1,13 @@
 """Choose the questions of one sheet from planned questions and reserve questions.
 
-Nothing here knows the wire format, a topic or a grade. A question is an
-opaque value. The caller supplies one predicate that says whether a question
-may be printed: ``predicate(question, challenge, number)`` returns the refusal
-codes, an empty sequence for a usable question. ``challenge`` says whether
-the question would be printed as a challenge and ``number`` is the planned
-position it is examined for. Every code marks the question bad.
+Nothing here knows the wire format or a topic, and of the grades it knows only
+their minimums, the one value it accepts as a floor (_grade_floor, from
+runtime_catalog.question_floor). A question is an opaque value. The caller
+supplies one predicate that says whether a question may be printed:
+``predicate(question, challenge, number)`` returns the refusal codes, an
+empty sequence for a usable question. ``challenge`` says whether the question
+would be printed as a challenge and ``number`` is the planned position it is
+examined for. Every code marks the question bad.
 
 A bad planned question takes a reserve of its own group. A practice reserve
 may stand in for a challenge only while at least two real challenges remain,

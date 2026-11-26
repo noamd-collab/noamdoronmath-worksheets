@@ -568,8 +568,10 @@ class WorkerTests(unittest.TestCase):
 
     def test_ladder_does_not_reach_legacy_or_disabled_v3(self):
         for mode in ('legacy-enabled', 'general-disabled'):
+            # A version 3 render is accepted only in the form the runner writes it (rendered_general).
+            render = self.rendered_general if mode == 'general-disabled' else self.rendered
             with self.subTest(mode=mode), patch.object(worker, 'author_lesson', return_value={}) as author, \
-                 patch.object(worker, 'render_job', side_effect=self.rendered) as renderer, \
+                 patch.object(worker, 'render_job', side_effect=render) as renderer, \
                  patch.object(worker, 'precheck_job') as precheck:
                 case = self.root / mode
                 case.mkdir()
@@ -582,6 +584,29 @@ class WorkerTests(unittest.TestCase):
                 precheck.assert_not_called()
                 # One render, straight into the job folder.
                 self.assertEqual(renderer.call_args.args[2], case / JOB_ID)
+
+    def test_a_version_3_render_is_refused_unless_it_is_in_the_runners_general_form(self):
+        # The legacy stand-in (no profile, no review rows, no unverified list) and a version 2 render that names
+        # another skill are forms the runner never writes for these lessons: refused before any upload.
+        def legacy_other_skill(lesson, payload, target):
+            manifest = self.rendered(lesson, payload, target)
+            manifest['skill']['name'] = 'middle'
+            return manifest
+        for name, general, render in (('version 3 without the profile', True, self.rendered),
+                                      ('version 2 naming another skill', False, legacy_other_skill)):
+            with self.subTest(case=name):
+                if general:
+                    self.use_general_lesson()
+                remote = FakeRemote()
+                case = self.root / name.replace(' ', '-')
+                case.mkdir()
+                with patch.object(worker, 'author_lesson', return_value={}), \
+                     patch.object(worker, 'render_job', side_effect=render), \
+                     self.assertRaises(GenerationError) as refused:
+                    worker.process_job(remote, self.job, case, enable_skill_revision=False)
+                self.assertEqual((refused.exception.code, refused.exception.job_failure['stage']),
+                                 ('QUALITY_GATE_FAILED', 'acceptance'))
+                self.assertEqual(remote.uploads(), [])
 
     def test_a_gate_named_question_is_swapped_and_only_the_final_pair_is_uploaded(self):
         self.use_general_lesson()
@@ -819,7 +844,7 @@ class WorkerTests(unittest.TestCase):
                         'gate': {'action': 'replace', 'questions': [len(rounds)],
                                  'blocking': [{'code': 'G66', 'class': 'policy', 'step': 'house-gates', 'question': len(rounds)}]}}
             return self.clean_precheck(lesson, payload, target)
-        initial, renderer, checker = self.run_general(self.general_author([draft]), self.rendered, precheck=precheck)
+        initial, renderer, checker = self.run_general(self.general_author([draft]), self.rendered_general, precheck=precheck)
         self.assertEqual(draft.replaced, [{1: ['G66']}, {2: ['G66']}])
         self.assertEqual(checker.call_count, 2)       # at most two passes, then the render decides
         renderer.assert_called_once()
@@ -895,7 +920,7 @@ class WorkerTests(unittest.TestCase):
 
     def test_no_repair_on_an_unnamed_gate_a_render_fault_a_review_or_a_failure_without_a_draft(self):
         self.use_general_lesson()
-        for failure in ('unknown-gate', 'renderer', 'provider', 'review', 'success'):
+        for failure in ('unknown-gate', 'renderer', 'provider', 'review', 'unchecked', 'success'):
             with self.subTest(failure=failure):
                 root = self.root / failure
                 root.mkdir()
@@ -909,9 +934,11 @@ class WorkerTests(unittest.TestCase):
                 def render(lesson, payload, target, **kwargs):
                     if failure == 'renderer':
                         raise OSError('unavailable renderer')
-                    if failure in ('review', 'success'):
+                    if failure in ('review', 'unchecked', 'success'):
                         manifest = self.rendered_general(lesson, payload, target)
-                        manifest.update(automatedChecksPassed=False)
+                        if failure != 'success':
+                            # Every step PASS but automatedChecksPassed false: a form the runner never writes.
+                            manifest.update(automatedChecksPassed=False)
                         if failure == 'review':
                             # A REVIEW the runner never writes on this path: not the middle driver's reconciled exit.
                             manifest['steps'][0]['status'] = 'REVIEW'
@@ -929,7 +956,7 @@ class WorkerTests(unittest.TestCase):
                     if failure == 'unknown-gate':
                         self.assertEqual(caught.exception.job_failure, {'stage': 'render', 'question': None, 'gate': 'PDF_BUILD',
                                                                         'attempts': 1, 'corrections': 0})
-                    if failure == 'review':
+                    if failure in ('review', 'unchecked'):
                         self.assertEqual((caught.exception.code, caught.exception.job_failure),
                                          ('QUALITY_GATE_FAILED', {'stage': 'acceptance', 'question': None, 'gate': None,
                                                                   'attempts': 1, 'corrections': 0}))

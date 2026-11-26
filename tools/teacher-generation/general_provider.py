@@ -392,6 +392,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                              separators=(',',':'),ensure_ascii=False).encode()).hexdigest(),
                          'requestBodySha256':hashlib.sha256(json.dumps(body,sort_keys=True,
                              separators=(',',':'),ensure_ascii=False).encode()).hexdigest()})
+        # Set again by this call's reply reader only (provider.parse_author_reply): split_reserves reads it.
+        measured.pop('replySalvaged', None)
         return request_author_json(target, key, body, measured, timeout)
 
     import square_lesson
@@ -666,7 +668,13 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             measured['initialPlainMath'] = True
         reject(exc.code, str(exc))
 
-    flat, reserve_rows, dropped = split_reserves(response)
+    try:
+        # Reserves other than the ones reservePlan asked for refuse the whole reply (split_reserves). Only a reply
+        # read question by question (reply_salvage) may have a lost entry, which counts as a refused reserve.
+        flat, reserve_rows, dropped = split_reserves(response, lesson, scope,
+                                                     salvaged=isinstance(measured.get('replySalvaged'), dict))
+    except GeneralSourceError as exc:
+        failed(exc)
     if (isinstance(flat, dict) and set(flat) == {"title", "rule", "practice", "challenges"}
             and isinstance(flat["practice"], list) and isinstance(flat["challenges"], list)):
         # The planned questions and the reserves, each examined alone. A bad

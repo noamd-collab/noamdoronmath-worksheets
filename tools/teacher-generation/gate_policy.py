@@ -297,7 +297,9 @@ def public_review_findings(rows):
     whose class is not the table's, or whose code blocks on any listed step
     stays private. Codes are checked against the table and notes are taken
     from it, so no manifest text reaches the job result. The worker adds the
-    SHORTER_SHEET note of its own shorter sheet itself.
+    SHORTER_SHEET note of its own shorter sheet itself. The worker never
+    delivers on the strength of this filter: remote_worker.general_verdict
+    refuses a manifest with any row this function leaves out.
     """
     result = []
     if not isinstance(rows, list):
