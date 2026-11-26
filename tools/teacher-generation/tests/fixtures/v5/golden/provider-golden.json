@@ -31,8 +31,8 @@
     "v3-d10-unreviewed-listed": {
       "calls": [
         {
-          "bodyBytes": 158374,
-          "bodySha256": "6a8c36c99f53c572b219e9438b94f2e888f5d992765cd006329964cb15578099",
+          "bodyBytes": 158713,
+          "bodySha256": "145ea2df297806b1ac3d47a0dfde118d655cbafd0530d3cc5417ff72f95129b2",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -45,7 +45,7 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "6a8c36c99f53c572b219e9438b94f2e888f5d992765cd006329964cb15578099",
+        "requestBodySha256": "145ea2df297806b1ac3d47a0dfde118d655cbafd0530d3cc5417ff72f95129b2",
         "requestSchemaSha256": "9132d0ef0ac520f5516a073c3114c97fdd18e38f876b5807859d3d2f62d820b0",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
@@ -56,8 +56,8 @@
     "v3-g7-empty": {
       "calls": [
         {
-          "bodyBytes": 252896,
-          "bodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
+          "bodyBytes": 253235,
+          "bodySha256": "938a0116ca6bb09310ba988828a35dbfbff5dde8ca1263eefddc4fa083a979e4",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -70,7 +70,7 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
+        "requestBodySha256": "938a0116ca6bb09310ba988828a35dbfbff5dde8ca1263eefddc4fa083a979e4",
         "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
@@ -81,8 +81,8 @@
     "v3-g7-level-not-enabled": {
       "calls": [
         {
-          "bodyBytes": 252896,
-          "bodySha256": "47cf366c1d23e98ab12d5ed56eebbb9f19b41316dfe8afd734b5bbfb652d5e63",
+          "bodyBytes": 253235,
+          "bodySha256": "950f08477d047f2e551746a135629b2c4a7fb0c6cd00ae8910a534890c8f7d66",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -95,7 +95,7 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "47cf366c1d23e98ab12d5ed56eebbb9f19b41316dfe8afd734b5bbfb652d5e63",
+        "requestBodySha256": "950f08477d047f2e551746a135629b2c4a7fb0c6cd00ae8910a534890c8f7d66",
         "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
@@ -106,8 +106,8 @@
     "v3-g7-other-topics": {
       "calls": [
         {
-          "bodyBytes": 252896,
-          "bodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
+          "bodyBytes": 253235,
+          "bodySha256": "938a0116ca6bb09310ba988828a35dbfbff5dde8ca1263eefddc4fa083a979e4",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -120,7 +120,7 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
+        "requestBodySha256": "938a0116ca6bb09310ba988828a35dbfbff5dde8ca1263eefddc4fa083a979e4",
         "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
@@ -131,8 +131,8 @@
     "v3-g7-unset": {
       "calls": [
         {
-          "bodyBytes": 252896,
-          "bodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
+          "bodyBytes": 253235,
+          "bodySha256": "938a0116ca6bb09310ba988828a35dbfbff5dde8ca1263eefddc4fa083a979e4",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -145,7 +145,7 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "ac0a746615c5d17504ace4ff61fda63ca589b583a611c717deac919849bd2422",
+        "requestBodySha256": "938a0116ca6bb09310ba988828a35dbfbff5dde8ca1263eefddc4fa083a979e4",
         "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,
@@ -156,8 +156,8 @@
     "v3-g9r-unreviewed-listed": {
       "calls": [
         {
-          "bodyBytes": 228945,
-          "bodySha256": "6e18ff8aad8ffea20b9f4e3e054c68e2feba9922dfd6549a049d17f805888333",
+          "bodyBytes": 229284,
+          "bodySha256": "46c8b2587d23d1f89b2aa78b500563bdc74aa5507a38d15c3e9bb64c7de8316b",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -170,7 +170,7 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "6e18ff8aad8ffea20b9f4e3e054c68e2feba9922dfd6549a049d17f805888333",
+        "requestBodySha256": "46c8b2587d23d1f89b2aa78b500563bdc74aa5507a38d15c3e9bb64c7de8316b",
         "requestSchemaSha256": "46ce44a9a058891140da6e6c9f4c53570162927c40c53b3af396c774753c0dbf",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,

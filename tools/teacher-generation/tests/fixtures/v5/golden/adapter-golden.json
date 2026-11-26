@@ -587,12 +587,14 @@
    "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"reviewRequired\": true}\n"
   },
   "v4:grade2-vocalized": {
-   "error": null,
-   "exitCode": 0,
+   "error": [
+    "general_source.GeneralSourceError: The prompt does not print the exercise that its key answers; a typed task is printed only after a bare instruction"
+   ],
+   "exitCode": 1,
    "files": {
-    "content.json": {
-     "bytes": 8542,
-     "sha256": "a5912adcf44a0aae169fd50152c617c82ca9862c40b72584c7963084089d7e0f"
+    "adapter-failure.json": {
+     "bytes": 113,
+     "sha256": "91f33b0f5f6659800d99a68ae11aac89129138551ae5d16658f0e7112d057119"
     },
     "general-evidence.json": {
      "bytes": 41974,
@@ -601,29 +603,19 @@
     "general-source.json": {
      "bytes": 43529,
      "sha256": "7a893c36b677d21986084c455989aed10fa8d1f7d19b9ed1bfdbf1bfc61c77a7"
-    },
-    "sheet.html": {
-     "bytes": 29966,
-     "sha256": "d10bcd85048a2501691c41fa1c0d695ae731febb029a38946701608cf7495958"
-    },
-    "verified.json": {
-     "bytes": 36178,
-     "sha256": "00f3a5fe73ebd03e80848a58d6b1c25157a737d1c8bf61ac292bb9bb2b6849d6"
-    },
-    "worksheet-source.json": {
-     "bytes": 35405,
-     "sha256": "637f5827290914680af2530f62b3cb2b506a141bcb36b528da8cdb636e940ad1"
     }
    },
-   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
+   "stdout": ""
   },
   "v4:grade4-fractions": {
-   "error": null,
-   "exitCode": 0,
+   "error": [
+    "general_source.GeneralSourceError: The prompt does not print the exercise that its key answers; a typed task is printed only after a bare instruction"
+   ],
+   "exitCode": 1,
    "files": {
-    "content.json": {
-     "bytes": 5406,
-     "sha256": "9c94e544eb135b7ff247320e0cc7d457a3d079979c851e5fe5f675f43cf87a44"
+    "adapter-failure.json": {
+     "bytes": 113,
+     "sha256": "91f33b0f5f6659800d99a68ae11aac89129138551ae5d16658f0e7112d057119"
     },
     "general-evidence.json": {
      "bytes": 29966,
@@ -632,29 +624,19 @@
     "general-source.json": {
      "bytes": 29536,
      "sha256": "3333f24bbb3f0e2f4bd176c77ac163caddf4aacb70230bee07f8e2ca9c98586a"
-    },
-    "sheet.html": {
-     "bytes": 36667,
-     "sha256": "580ed671b257f34f8b7485726f2d9dd70c636dd03b915668e122b80bb16c6c24"
-    },
-    "verified.json": {
-     "bytes": 27310,
-     "sha256": "19423c4652065b9efe112e8e6be5cf8774cd838259306a424882108f5293f5de"
-    },
-    "worksheet-source.json": {
-     "bytes": 24801,
-     "sha256": "b973e1f77dfa2b005edc28ec5cddadc568cbfe9fd4ef3dbf751383e623a32787"
     }
    },
-   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
+   "stdout": ""
   },
   "v4:grade4-skill-calculation": {
-   "error": null,
-   "exitCode": 0,
+   "error": [
+    "general_source.GeneralSourceError: The prompt does not print the exercise that its key answers; a typed task is printed only after a bare instruction"
+   ],
+   "exitCode": 1,
    "files": {
-    "content.json": {
-     "bytes": 6296,
-     "sha256": "1882e7f67a0a52fc52ba9e808469f71bf7e9627868be45178014dc99a4e27aa8"
+    "adapter-failure.json": {
+     "bytes": 113,
+     "sha256": "53d5de6347ccb47f7948651a1cc7fe60366bb6ee5684aa4b9859fb5104c75338"
     },
     "general-evidence.json": {
      "bytes": 50560,
@@ -663,21 +645,9 @@
     "general-source.json": {
      "bytes": 68605,
      "sha256": "2109f37873f81b89d67109585f2eec849ba748f6dce922dd71a64a929b756dd4"
-    },
-    "sheet.html": {
-     "bytes": 27550,
-     "sha256": "cc10afc61e94450abde78d188b8559e5e52e5981066f2aceb827d7c6be1664d8"
-    },
-    "verified.json": {
-     "bytes": 57600,
-     "sha256": "f137a74b8748da2ecf5c83e4c752d0b833448d3da6181b6e9118609bf45fc55b"
-    },
-    "worksheet-source.json": {
-     "bytes": 46233,
-     "sha256": "4ef6ef4f6e12a96bdebaa9e11c31bdbb11b6f336f7ef2e19f14985b62cb20fee"
     }
    },
-   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
+   "stdout": ""
   },
   "v4:grade7-equation-skill": {
    "error": null,
