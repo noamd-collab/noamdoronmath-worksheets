@@ -304,7 +304,14 @@ class WrittenAsSentTests(unittest.TestCase):
         for value, grade in (("[[∠A]]", 7), ("[[∠D = 70°]]", 8), ("[[90°]] היא ∠C", 6),
                              # The word before one point name prints the same one-letter angle.
                              ("זווית A ישרה.", 9), ("מצאו את הזווית [[A]].", 8), ("זווית [[point:B]] ישרה.", 9),
-                             ("בזווית A1", 9)):
+                             ("בזווית A1", 9),
+                             # The other angle sign that G81 reads, the word with one vav, and a bidi mark between
+                             # the word and the name; any angle sign but ∠ is refused, also before three letters.
+                             ("מצאו את גודל ∡A.", 8), ("זוית A ישרה.", 9), ("הזוית [[point:B]] ישרה.", 8),
+                             ("זווית \u200eA ישרה.", 9), ("זווית \u200fA ישרה.", 9), ("∠\u200eA", 8),
+                             ("מצאו את גודל ∡ABC.", 8), ("[[∡ABC = 40°]]", 9), ("∢ABC", 8), ("⦟ABC", 8),
+                             # In every grade.
+                             ("זווית A ישרה.", 6)):
             with self.subTest(value=value, grade=grade):
                 self.assertEqual(accepted(value, grade), "SOURCE_NOTATION")
         for value in ("זווית [[angle:ABC]] ישרה.", "מהו גודל הזווית [[∠ACB]]?", "זווית ישרה היא [[90°]]."):

@@ -82,7 +82,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "PRINTED_TASK_MISMATCH"
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -120,7 +120,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "SOURCE_TEXT"
+    "code": "SOURCE_NOTATION"
    }
   }
  ]

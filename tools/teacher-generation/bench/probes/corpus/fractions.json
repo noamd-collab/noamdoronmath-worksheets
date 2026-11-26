@@ -301,9 +301,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "חֲצִי מִ־ 8 הוּא ___",
-    "key": "4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {

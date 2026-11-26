@@ -137,13 +137,24 @@ class PinnedSkillTests(unittest.TestCase):
         self.assertEqual(failed, ["G321", "G322", "G324", "G327", "G333", "G334"])
         self.assertEqual([e["id"] for e in ledger.entries], ["5"])
 
-    def precheck(self, extra, name, *, ninth_as_seventh=False):
+    def readable(self):
+        """The fixture with the two questions that are refused when the reply is read written another way.
+
+        Question 9 prints a blank beside its table and question 11 a blank after a printed calculation, and no
+        binder fills either from the print (PRINTED_TASK_MISMATCH). A copy of question 7 in place of question 9,
+        and question 11 asked as a question, let the adapter and the gates see the whole sheet.
+        """
         model = copy.deepcopy(self.model)
+        model["sections"][0]["questions"][8] = copy.deepcopy(model["sections"][0]["questions"][6])
+        for entry in model["sections"][0]["questions"][10]["items"]:
+            if entry["prompt"][-1] != {"kind": "text", "text": ". התוצאה הנכונה היא ___"}:
+                raise AssertionError("The recorded fixture changed")
+            entry["prompt"][-1] = {"kind": "text", "text": ". מהי התוצאה הנכונה?"}
+        return model
+
+    def precheck(self, extra, name, *, ninth_as_seventh=False):
+        model = self.readable() if ninth_as_seventh else copy.deepcopy(self.model)
         model["sections"][0]["questions"][3]["intro"][-1]["text"] += extra
-        if ninth_as_seventh:
-            # Question 9 refers to its table, and the trusted adapter refuses to print its typed task after it.
-            # A copy of question 7 in its place lets the gates see the whole sheet.
-            model["sections"][0]["questions"][8] = copy.deepcopy(model["sections"][0]["questions"][6])
         work = self.root / "runs" / name
         return runner.precheck_job(self.lesson, model, work, {"elementary": str(self.skill)}), work
 
@@ -172,15 +183,15 @@ class PinnedSkillTests(unittest.TestCase):
             self.assertFalse((work / "content.json").exists() or (work / "verified.json").exists())
         for name, (extra, blocking, statuses) in cases.items():
             with self.subTest(name=name):
-                # As recorded, the pre-pass stops at the trusted adapter: question 9 refers to its table, and its
-                # typed task is never printed after such a prompt. No gate runs and nothing is built.
-                result, work = self.precheck(extra, name + "-recorded")
-                self.assertEqual(result["status"], "replace")
-                self.assertEqual([(b["code"], b["question"], b["class"]) for b in result["gate"]["blocking"]],
-                                 [("TRUSTED_ADAPTER", 9, "truth")])
-                self.assertEqual([(step["name"], step["status"]) for step in result["steps"]], [("trusted-adapter", "FAIL")])
+                # As recorded, the reply is refused when it is read: question 9 prints a blank beside its table that no
+                # binder fills from the print. No adapter or gate runs and nothing is built.
+                with self.assertRaises(GenerationError) as refused:
+                    self.precheck(extra, name + "-recorded")
+                self.assertEqual(refused.exception.code, "PRINTED_TASK_MISMATCH")
+                work = self.root / "runs" / (name + "-recorded")
                 self.assertFalse((work / "content.json").exists() or (work / "verified.json").exists())
-                # With question 7 in place of question 9 the gates see the whole sheet.
+                # With question 7 in place of question 9 and question 11 asked as a question the gates see the
+                # whole sheet.
                 result, work = self.precheck(extra, name, ninth_as_seventh=True)
                 self.assertEqual(result["status"], "replace")
                 self.assertEqual([(b["code"], b["question"], b["class"]) for b in result["gate"]["blocking"]], blocking)
@@ -218,10 +229,13 @@ class PinnedSkillTests(unittest.TestCase):
         )
         import subprocess
         fixture = HERE / "cloud/container/fixtures/general/grade4-skill-calculation"
+        # The fixture as the adapter can read it: as recorded, the reply is refused when it is read (question 9).
+        model = self.root / "readable-model.json"
+        model.write_text(json.dumps(self.readable(), ensure_ascii=False))
         sizes = [len(q["items"]) for q in self.model["sections"][0]["questions"]]
         call = sizes[0] + sizes[1] + 2
         done = subprocess.run([sys.executable, "-B", "-c", script, str(HERE), str(fixture / "lesson.json"),
-                               str(fixture / "model-output.json"), str(self.skill), str(self.root / "runs/refusal"), str(call)],
+                               str(model), str(self.skill), str(self.root / "runs/refusal"), str(call)],
                               capture_output=True, text=True, timeout=120)
         self.assertEqual(json.loads(done.stdout), {"code": "PRINTED_TASK_MISMATCH", "question": 3, "item": 2}, done.stderr)
         # The same fields are what the adapter process leaves in its failure record.
@@ -233,11 +247,13 @@ class PinnedSkillTests(unittest.TestCase):
         self.assertTrue(complete)
 
     def test_gate_content_carries_the_printed_stars(self):
-        # As recorded, the trusted adapter refuses question 9 (its typed task after a prompt about the table) and
-        # nothing is built.
-        result, work = self.precheck("", "schema-recorded")
-        self.assertEqual((result["status"], [(b["code"], b["question"], b["item"]) for b in result["gate"]["blocking"]]),
-                         ("replace", [("TRUSTED_ADAPTER", 9, 1)]))
+        # As recorded, the reply is refused when it is read (question 9: a blank beside its table that no binder
+        # fills) and nothing is built.
+        from validation import GenerationError
+        with self.assertRaises(GenerationError) as refused:
+            self.precheck("", "schema-recorded")
+        self.assertEqual(refused.exception.code, "PRINTED_TASK_MISMATCH")
+        work = self.root / "runs" / "schema-recorded"
         self.assertFalse((work / "content.json").exists() or (work / "sheet.html").exists())
         result, work = self.precheck("", "schema", ninth_as_seventh=True)
         # The star the page prints is the star the pinned G61 proxy weighs: both ends of the spread are named.

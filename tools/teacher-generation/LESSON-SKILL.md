@@ -121,7 +121,9 @@ Q    = {"intro": rich, "items": [{"prompt": rich, "answer": A}, ...], "table"?, 
   units and punctuation stay outside. No HTML, LaTeX, `$`, `\` or links
   (`general_source.MARKUP`).
 - **Elementary:** every product with its sign; a missing number is `___`
-  inside one complete formula (`[[24 / ___ = 6]]`), never a letter.
+  inside one complete formula (`[[24 / ___ = 6]]`), never a letter. Outside the
+  islands only Hebrew words, punctuation, a number on its own and a blank that a
+  binder fills (section 3).
 - **Middle:** letters `x y a b`, `sqrt(...)`, `pi`, schoolbook implicit products
   (`3(x+2)`, `2ab`), typed names `[[point:A]]`, `[[segment:AB]]`,
   `[[angle:ABC]]`, `[[triangle:ABC]]`, `[[polygon:ABCD]]`, coordinates `[[A(2,3)]]`.
@@ -263,53 +265,128 @@ copy of the reply exactly as it arrived, and every check reads that text. A
 spelling outside the notation of section 2.3 is refused with its code. These
 are the refusals, by where the spelling stands:
 
-- **Anywhere in a rich field, in the sentence or in an island:**
-  - `$...$`, LaTeX or other markup (`SOURCE_TEXT`, `general_source.MARKUP`).
-  - An angle not named by three letters: `∠A`, `∠AB`, `[[∠D = 70°]]`,
-    `[[∠A + ∠B]]`, `[[∠A = 3*x]]`, `מצאו את גודל ∠A.`; in grades 7–9 also the
-    word זווית before one point name (`זווית A`, `הזווית [[point:B]]`). The
-    locked gate G81 would fail the whole sheet on it at render
-    (`compact_authoring.SHORT_ANGLE`, `ANGLE_WORD`; `SOURCE_NOTATION`).
-  - A percent sign outside the island that holds its number, in every grade:
-    `[[25]]%`, `[[25]] %`, `[[2,500]]%`, `[[1/2]]%`. The spelling is `[[25%]]`.
-  - An island that ends with its blank directly before a Hebrew word, in every
-    grade: `[[345 = ___]] מאות`, `[[47 : 5 = ___]] שארית ___`, `[[AB = ___]] ס״מ`.
-    Inside the left-to-right island the blank prints away from that word
+- **Every grade, anywhere in a rich field, in the sentence or in an island,
+  and in the title** (`compact_authoring.refuse_notation`, `SOURCE_NOTATION`).
+  A string field is read as written; a provider span array is read as the one
+  line it prints (`compact_authoring.marked_line`: text as written, every other
+  span one island, a relation-sign formula as that sign in the sentence), in
+  `compact_authoring.provider_span_array`, which `general_source.rich` runs on
+  every provider field; the sheet and section titles go through
+  `general_source.title` (also when `skill_authoring.examine_frame` examines the
+  frame). Invisible format marks (bidi marks, joiners) are read through
+  (`compact_authoring.printing_characters`).
+  - An angle sign other than `∠` (`∡`, `∢`, `⦟` and the rest), also before
+    three letters (`∡ABC`), and `∠` not before exactly three letters: `∠A`,
+    `∠AB`, `[[∠D = 70°]]`, `[[∠A + ∠B]]`, `[[∠A = 3*x]]`, `מצאו את גודל ∠A.`,
+    `∠` with a bidi mark before `A`, `∠` in text before a formula `A`. The word
+    זווית, or זוית with one vav, before one point name: `זווית A`, `זוית A`,
+    `הזווית [[point:B]]`, a text span `זווית ` before a geometry span or formula
+    `A`. The locked gate G81 would fail the whole sheet on it at render
+    (`compact_authoring.OTHER_ANGLE_SIGN`, `SHORT_ANGLE`, `ANGLE_WORD`).
+  - A percent sign that does not directly follow its number in the sentence:
+    `[[25]]%`, `[[25]] %`, a bidi mark between `[[25]]` and `%`, `25 %`,
+    `כמה % מהכיתה?`, a text span `% מהכיתה` after a math span; and any percent
+    glyph other than `%` (`٪`, `％`, `﹪`, `‰`, `‱`), anywhere. The spellings are
+    `[[25%]]` and, in the sentence of grades 1–6, `25%`
+    (`compact_authoring.percent_outside_island`).
+  - An island that ends with its blank directly before a Hebrew word:
+    `[[345 = ___]] מאות`, `[[47 : 5 = ___]] שארית ___`, `[[AB = ___]] ס״מ`, and a
+    formula `345 = ___` before the text ` מאות + ...` in a span array. Inside the
+    left-to-right island the blank prints away from that word
     (`compact_authoring.labelled_blank`). `[[47 : 5 = ___]] (שארית ___)` and
     `במספר [[345]] יש ___ מאות, ___ עשרות ו־___ אחדות` are read.
-  - An `=` with spaces between a word or blank and an island: `המחיר = [[5]]`,
-    `[[345]] = ___ מאות`, `[[47 : 5]] = ___`.
-  - Grades 1–6: an equation or inequality with a blank (`___` or `☐`) that is
-    not one complete island once adjacent islands are joined
-    (`compact_authoring.blank_equation_outside_island`). Partly marked:
-    `24 : ___ = [[6]]` (read as `24 : [[___ = 6]]`), `[[72]] : ___ = [[8]]`,
-    `7 + [[___]] = [[15]]`, `[[3.47]] = [[3]] + [[0.4]] + ___`. Unmarked, also
-    among words or before punctuation: `24 : 6 = ___`, `חשבו: 24 : 6 = ___`,
-    `24 : 6 = ___ .`, `5 + ☐ = 9`. And a relation in the sentence beside an
-    operand while the field has a blank and an unmarked number:
-    `___ מאות + ___ עשרות + ___ אחדות = 728`, `3 מטרים = ___ ס״מ`. A colon after
-    a word or touching a blank ends the sentence (`השלימו: [[24 : ___ = 6]]`,
-    `המספר החסר הוא ___: [[___ + 4 x 3 = 17]]`), and a sign listed as an option
-    (`(<, > או =)`) is no relation.
-- **Inside an island only** (the same spelling in the sentence is not refused
-  for its notation): `324x15`, a letter for the missing number in grades 1–6
-  (`[[x : 5 = 8]]`), `2³`, `½`, `☐` (`[[345]] ☐ [[354]]` is a comparison
-  blank), a typed angle inside a formula (`[[angle:D = 70°]]`) or with fewer
-  than three points (`[[angle:A]]`), `[[a=1, b=-6, c=9]]`.
+  - `$...$`, LaTeX or other markup in a text span, where no refusal of this
+    section comes first (`SOURCE_TEXT`, `general_source.MARKUP`), and an `=`
+    with spaces between a word or blank and an island in grades 7–9
+    (`המחיר = [[5]]`).
+- **Grades 1–6, the sentence outside every island, and the title** (the same
+  reading: `refuse_notation`, `SOURCE_NOTATION`; strings after adjacent islands
+  are joined, span arrays as they print). What may print there is closed (an
+  allowlist, `compact_authoring.sentence_math`): Hebrew words and punctuation,
+  a number on its own (it becomes a math span), the blank `___` and a box
+  (`☐ □ ▢`) that the binders read as a blank, and a sign in one of the
+  readings below. Everything else prints mathematics or a blank that no binder
+  ties to the key, and is refused:
+  - an equation or inequality with a blank that is not one complete island
+    (`compact_authoring.blank_equation_outside_island`): `24 : ___ = [[6]]`
+    (read as `24 : [[___ = 6]]`), `[[72]] : ___ = [[8]]`, `7 + [[___]] = [[15]]`,
+    `[[3.47]] = [[3]] + [[0.4]] + ___`, `24 : 6 = ___`, `5 + ☐ = 9`, and a
+    relation in the sentence beside an operand while the field has a blank and
+    an unmarked number (`___ מאות + ___ עשרות + ___ אחדות = 728`);
+  - a blank other than `___` or a box: `__`, `____`, `⬜`, `◻`, an empty bracket
+    `( )`, and `?` beside a sign (`24 : 6 = ?`, `24 : ? = 6`);
+  - a Latin letter: `x : [[5]] = [[8]]`, `x : 5 = 8`, `24 x 6`, `המספר x`;
+  - a digit that does not stand alone as a number: `חשבו: 24 : 6`, `7:30`,
+    `1/2`, `3-4`, `25 %`, `הציונים: 80, 90, 100`, `קנה המידה 1:50,000`; and any
+    other numeral (`½`, `²`);
+  - a mathematical symbol that has no reading in the sentence (`＝`, `≈`, `→`)
+    and another spelling of a sign (`：`, `／`, `－`);
+  - a relation sign (`= < > ≤ ≥ ≠`) with an operand beside it on either side,
+    also when every number is marked: `[[3]] מטרים = ___ ס״מ`,
+    `[[150]] דקות = ___ שעות ו־___ דקות`, `[[24 : 6]] = ?`. Only a sign listed
+    as an option, with no operand beside it, is read (`(<, > או =)`,
+    `כתבו < או > או =.`);
+  - a colon after an operand (a number, an island, a bracket, a percent or a
+    blank, spaced or touching): `[[24]] : [[6]]`, `___: [[4]] = [[6]]` (which
+    the joins would otherwise read as the false formula `[[4 = 6]]` beside a
+    separate blank), `המספר החסר הוא ___: [[___ + 4 x 3 = 17]]`. After a word
+    the colon ends the sentence (`השלימו: [[24 : ___ = 6]]`,
+    `המספר החסר הוא: [[___ + 4 x 3 = 17]]`);
+  - a dash, hyphen or minus between two operands (`5 - 3`), or at an end of the
+    line beside one (`[[5]] -`); with a word on one side it is punctuation
+    (`ו־[[5]]`, `[[345]] – ספרת המאות היא ___`), and a minus written onto the
+    number that opens the line is its sign (`-5`);
+  - a plus after an operand, or before one with no word before it (`[[5]] + עוד`);
+    only the place-value sum `___ מאות + ___ עשרות` is read;
+  - `× · * / ÷ ^` beside an operand (`[[3]] · [[4]]`, `24 ÷ 6`);
+  - the word שווה between two operands (`[[24]] : ___ שווה [[6]]`,
+    `[[24 : 6]] שווה [[4]]`).
+  An operand is an island, a number, a blank, a letter, `?` or `%`, and a
+  bracket around one of them. Adjacent islands joined across an operator are
+  read as the one formula they spell (`[[8]] + ___ = [[15]]` is `[[8 + ___ = 15]]`).
+- **Inside an island only**, in grades 7–9 (in grades 1–6 the sentence refuses
+  them too, as above; in grades 7–9 a digit or letter in the sentence is
+  `SOURCE_PLAIN_MATH`): `324x15`, `2³`, `½`, `☐`, a typed angle inside a formula
+  (`[[angle:D = 70°]]`) or with fewer than three points (`[[angle:A]]`),
+  `[[a=1, b=-6, c=9]]`; in grades 1–6 a letter for the missing number
+  (`[[x : 5 = 8]]`).
 - **Outside the rich text:** a coordinate window that leaves out a point, a
   `decide` answer without its task wrapper, a `solve` task for a letter other
   than `x y a b`.
-- **Not solved from the print** (grades 1–6, `printed_parts.refuse_unsolved_equation`,
-  `PRINTED_TASK_MISMATCH`, after every other check of the item): an item that
-  prints an equation with a blank, in one island or as a relation in the
-  sentence beside a blank (`[[3]] מטרים = ___ ס״מ`), is keyed only when a binder
-  solves that equation from the print. Either the missing-number binder
-  `printed_tasks.match_printed_task` (the island alone, or after השלימו,
-  השלימו את המספר החסר, מצאו את המספר החסר or המספר החסר הוא ___), or a parts
-  binder of section 2.4 (place value, quotient and remainder, sequence, two
-  units). Otherwise the item is refused, also with the right key:
-  `מהו המספר החסר? [[24 : ___ = 6]]`, a conversion into one unit. An equation
-  with a blank in the intro or in a table cell refuses its question.
+- **A blank no binder fills** (grades 1–6, `printed_parts.refuse_unsolved_equation`,
+  `PRINTED_TASK_MISMATCH`, after every other check of the item). An item whose
+  prompt prints a blank (`___` or a box, in the sentence or in an island) is
+  keyed only when one binder of a closed list recomputes its key from the print
+  (`printed_parts.solved_from_the_print`): a parts binder of section 2.4 (place
+  value, quotient and remainder, sequence, two units), the missing-number and
+  first-operation binder `printed_tasks.match_printed_task` (the island alone,
+  or after השלימו, השלימו את המספר החסר, מצאו את המספר החסר or המספר החסר
+  הוא), the comparison sign between two printed quantities
+  (`printed_parts.comparison_blank`), or the printed statement a yes/no item
+  decides (`answer_kinds.bind_decision`). Otherwise the item is refused, also
+  with the right key: `מהו המספר החסר? [[24 : ___ = 6]]`, a conversion into one
+  unit with words (`[[3]] מטרים הם ___ ס״מ`, `ב־[[3]] מטרים יש ___ ס״מ`,
+  `[[2]] שעות הן ___ דקות`), a sequence keyed with another term than the one
+  its printed terms fix (`[[1]], [[2]], [[4]], ___` keyed 7), a blank after a
+  story or after a printed
+  calculation (`... התוצאה הנכונה היא ___`), a blank beside a table
+  (`הערך החסר בטבלה הוא ___.`). A two-unit conversion is read when its numbers
+  fix both blanks: `[[150]] דקות הן ___ שעות ו־___ דקות`. No binder reads a
+  blank in the intro, so a question whose intro prints one is refused, and so
+  is one whose table cell prints an equation with a blank; a formula that is a
+  whole equation counts as one beside the field's blank
+  (`printed_parts.prints_blank_equation`).
+
+What is still not proven, also after every check above: a computed item
+without a blank keeps its typed key, and the old path cannot prove that a word
+problem's key answers what its prose asks (the typed task is checked, the
+reading of the story is not; in grades 7–9 a yes/no claim typed from a story is
+listed as `decision`, and in grades 1–6 it is refused). A figure answer is
+computed from the figure for the operation typed, not for the question its
+words ask. A typed source validated without the provider flag (a code-written
+lesson, a source handed straight to `runner.render_job`) gets the binder
+refusal above but not the sentence refusals, which run where the model's reply
+is read (`general_source.rich(provider=True)`), on every reply of the worker.
 
 A reserve takes the place of the refused question, or the one correction call
 asks for it again. When unmarked mathematics is the only fault,
@@ -507,7 +584,7 @@ Run from the repository root. Full guide: `bench/README.md`.
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
 - **Recorded state:** replay delivers 4 of 35 cases with no further model
-  call, and 308 of 756 questions are refused alone
+  call, and 315 of 756 questions are refused alone
   (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
   count as failed, so this under-states the live ladder. The key-print checks
   of section 2.4 cost three ג10 replays (A-, B- and G-division) whose
@@ -515,7 +592,12 @@ Run from the repository root. Full guide: `bench/README.md`.
   correction call. The missing-number binding of section 3 costs L1-g4: its
   "[[___ * 5 + 12 = 47]]" after "אלעד חישב לפי סדר הפעולות:" and its reserve
   "בתרגיל [[(14 - 6) * ___ = 24]], מהו המספר החסר?" are not solved from the
-  print. Probes: 168 pass, 117 rejected, no wrong print.
+  print, and its "[[6 + ___]]" (a blank no binder fills). The sentence
+  allowlist and the blank rule of section 3 cost S-g4calc five of its twelve
+  questions as recorded ("המספר החסר הוא ___: [[...]]" three times, a blank
+  beside its table, a blank after a printed calculation) and A-division the
+  question whose intro prints a blank. Probes: 163 pass, 122 rejected, no
+  wrong print.
 - **Sweep flags:** `--dry-run`, `--topics`, `--grades`, `--levels`, `--limit`,
   `--one-level-per-topic`, `--only-failed`, `--question-count`, `--minutes`
   (default 30), `--calls-per-case` (4), `--concurrency` (4), `--case-timeout`

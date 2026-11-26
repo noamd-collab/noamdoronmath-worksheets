@@ -47,6 +47,34 @@ OUT_OF_RANGE = {'intro': 'חשבו את התרגילים הבאים:', 'items': 
 EXTRA_PRACTICE = (7, 8, 13)
 
 
+# The five questions of the recorded S-g4calc that the source refuses as written (round 3, notation by
+# allowlist), and the spelling that the source reads, with the same numbers and typed tasks: a colon that
+# touches a blank is the division sign (questions 3, 6 and 10, SOURCE_NOTATION), and a blank that no binder fills
+# from the print is refused (questions 9 and 11, PRINTED_TASK_MISMATCH). Question 9 keeps its table and an
+# instruction about it, so the trusted adapter still refuses to print its typed task beside the table.
+STRICT_SPELLING = (
+    (('practice', 2), 'המספר החסר הוא ___: ', 'המספר החסר הוא: '),
+    (('practice', 5), 'המספר החסר הוא ___: ', 'המספר החסר הוא: '),
+    (('practice', 8), 'הערך החסר בטבלה הוא ___.', 'חשבו את הערך החסר בטבלה.'),
+    (('challenges', 0), 'המספר החסר הוא ___: ', 'המספר החסר הוא: '),
+    (('challenges', 1), '. התוצאה הנכונה היא ___', '. מהי התוצאה הנכונה?'),
+)
+
+
+def strict_spelling(recorded):
+    """A test-local copy of the recorded S-g4calc reply in the spelling that the source reads (STRICT_SPELLING).
+
+    Every other question, every number and every typed task is the recorded one. ``recorded`` is left as it is.
+    """
+    reply = copy.deepcopy(recorded)
+    for (group, index), written, read in STRICT_SPELLING:
+        for item in reply[group][index]['items']:
+            if written not in item['prompt']:
+                raise AssertionError('The recorded S-g4calc reply changed: ' + written)
+            item['prompt'] = item['prompt'].replace(written, read)
+    return reply
+
+
 def clean_sheet(base, pool, extra=0):
     """A test-local copy of the recorded S-g4calc reply that the locked gates accept as written, but for G61.
 
@@ -112,7 +140,8 @@ class LadderTests(unittest.TestCase):
         cls.scratch = tempfile.mkdtemp(prefix='ladder-test-')
         cls.skills = engine.skill_roots(cls.scratch)
         cls.lesson = json.loads((CORPUS / 'lessons/g4-order-practice.json').read_text(encoding='utf-8'))
-        cls.base = json.loads((CORPUS / 'replies/S-g4calc.json').read_text(encoding='utf-8'))
+        cls.recorded = json.loads((CORPUS / 'replies/S-g4calc.json').read_text(encoding='utf-8'))
+        cls.base = strict_spelling(cls.recorded)
         pool = json.loads((CORPUS / 'replies/G-order.json').read_text(encoding='utf-8'))
         cls.spare = {'practice': pool['practice'], 'challenges': pool['challenges']}
 
@@ -250,7 +279,7 @@ class LadderTests(unittest.TestCase):
                          [(2, 'reserve'), (11, 'reserve'), (4, 'reserve'), (10, 'missing')])
 
     def test_a_reply_without_reserves_still_compiles_and_one_correction_asks_for_every_named_question(self):
-        # The recorded S-g4calc as it arrived: no reserves, as every recorded reply.
+        # The recorded S-g4calc in the spelling the source reads (strict_spelling): no reserves, as every recorded reply.
         transport = Scripted(copy.deepcopy(self.base))
         outcome, sheets = self.run_job(transport)                                       # the correction gets no answer
         # The pre-pass stopped at question 9: its prompt refers to the table, so the trusted adapter refuses to print
@@ -272,6 +301,38 @@ class LadderTests(unittest.TestCase):
         self.assertEqual([(row['group'], row['conceptId']) for row in transport.sent(0)['reservePlan']],
                          [('practice', 'ד07#0'), ('practice', 'ד07#0'), ('challenges', 'ד07#1')])
 
+    def test_the_recorded_reply_as_it_arrived_loses_five_questions_when_it_is_read(self):
+        # As it arrived, S-g4calc writes "המספר החסר הוא ___: [[...]]" in questions 3, 6 and 10 (a colon that touches a
+        # blank is the division sign: SOURCE_NOTATION), and a blank that no binder fills from the print in questions
+        # 9 (beside its table) and 11 (after a printed calculation): PRINTED_TASK_MISMATCH. All five are refused when
+        # the reply is read, before any pre-pass; the one correction asks for them and gets no answer.
+        transport = Scripted(copy.deepcopy(self.recorded))
+        outcome, sheets = self.run_job(transport)
+        self.assertFalse(outcome['delivered'])
+        self.assertEqual((outcome['code'], sheets, outcome['uploads'], outcome['prechecks']), ('SOURCE_NOTATION', [], [], []))
+        self.assertEqual((transport.names(), transport.calls[1]['required']),
+                         (['skill_worksheet_content', 'revise_skill_questions'], ['q10', 'q11', 'q3', 'q6', 'q9']))
+        self.assertEqual([(e['question'], e['group'], e['codes'], e['stage'], e['action'])
+                          for e in outcome['ladder']['attemptRecords'][0]['events']],
+                         [(3, 'practice', ['SOURCE_NOTATION'], 'source', 'missing'),
+                          (6, 'practice', ['SOURCE_NOTATION'], 'source', 'missing'),
+                          (9, 'practice', ['PRINTED_TASK_MISMATCH'], 'source', 'missing'),
+                          (10, 'challenges', ['SOURCE_NOTATION'], 'source', 'missing'),
+                          (11, 'challenges', ['PRINTED_TASK_MISMATCH'], 'source', 'missing')])
+        self.assertTrue(outcome['ladder']['correctionFailed'])
+        # With the three reserves the schema asks for, they take 3, 6 and 10; 9 and 11 go to the correction.
+        transport = Scripted(self.reply(base=self.recorded))
+        outcome, sheets = self.run_job(transport)
+        self.assertFalse(outcome['delivered'])
+        self.assertEqual((outcome['code'], sheets, outcome['prechecks']), ('PRINTED_TASK_MISMATCH', [], []))
+        self.assertEqual(transport.calls[1]['required'], ['q11', 'q9'])
+        self.assertEqual([(e['question'], e['action']) for e in outcome['ladder']['attemptRecords'][0]['events']],
+                         [(3, 'reserve'), (6, 'reserve'), (9, 'missing'), (10, 'reserve'), (11, 'missing')])
+        # The test-local copy in the spelling the source reads changes only those five questions.
+        changed = [(group, index) for group in ('practice', 'challenges')
+                   for index, (a, b) in enumerate(zip(self.recorded[group], self.base[group])) if a != b]
+        self.assertEqual(changed, [('practice', 2), ('practice', 5), ('practice', 8), ('challenges', 0), ('challenges', 1)])
+
     def test_the_benign_each_of_the_recorded_reply_is_refused_by_the_locked_truth_gate_and_never_printed(self):
         from claim_words import claim_lint, scan
         # The recorded reply uses "לכל" in three questions, each in a per-unit or instruction reading: q4 (practice 4,
@@ -290,8 +351,9 @@ class LadderTests(unittest.TestCase):
             rows.append([(b['code'], b['question']) for b in result['gate']['blocking']])
             return result
 
-        # As recorded, with no reserve: the first pre-pass stops at question 9, whose prompt refers to the table: the
-        # trusted adapter refuses to print its typed task after it. Its correction gets no answer; nothing is rendered.
+        # In the spelling the source reads, with no reserve: the first pre-pass stops at question 9, whose prompt refers
+        # to the table: the trusted adapter refuses to print its typed task after it. Its correction gets no answer;
+        # nothing is rendered.
         with patch.object(remote_worker, 'precheck_job', recording):
             outcome, sheets = self.run_job(Scripted(copy.deepcopy(self.base)))
         self.assertEqual(rows, [[('TRUSTED_ADAPTER', 9)]])
@@ -736,7 +798,7 @@ class DraftTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.lesson = json.loads((CORPUS / 'lessons/g4-order-practice.json').read_text(encoding='utf-8'))
-        cls.base = json.loads((CORPUS / 'replies/S-g4calc.json').read_text(encoding='utf-8'))
+        cls.base = strict_spelling(json.loads((CORPUS / 'replies/S-g4calc.json').read_text(encoding='utf-8')))
         cls.pool = json.loads((CORPUS / 'replies/G-order.json').read_text(encoding='utf-8'))
 
     def author(self, reply, *, session=None):

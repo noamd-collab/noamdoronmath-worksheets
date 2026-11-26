@@ -92,10 +92,17 @@ class PupilAnswerTypeTests(unittest.TestCase):
         from printed_tasks import validate_computed_request
         def solved(text, grade):
             return validate_and_solve_task({"kind": "evaluate", "expression": expression(text, grade)})
+        # A clock time in digits is mathematics outside an island in grades 1-6, refused for its notation before
+        # the request is read; the readers below get the time in words.
+        for prompt in ("השעה עכשיו 7:30. מה תהיה השעה בעוד [[45]] דקות?", "השעה עכשיו 7:30. כמה דקות נשארו עד 8:00?",
+                       "השעה עכשיו [[7]]:[[30]]. בעוד [[45]] דקות השעה תהיה ___."):
+            with self.subTest(prompt=prompt), self.assertRaises(GeneralSourceError) as refused:
+                spans(prompt, 3)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
         for intro, prompt, task, grade in (
                 ("כתבו את היחס.", "בכיתה [[12]] בנים ו־[[18]] בנות. מהו היחס בין הבנים לבנות?", "12/18", 6),
                 ("צמצמו את היחס.", "[[12 : 18]]", "12/18", 6),                        # no words: the intro asks
-                ("ענו.", "השעה עכשיו 7:30. מה תהיה השעה בעוד [[45]] דקות?", "8", 3),
+                ("ענו.", "השעה עכשיו שבע וחצי. מה תהיה השעה בעוד [[45]] דקות?", "8", 3),
                 ("פתרו את הבעיה.", "לדני היו [[124]] גולות ולרון [[98]]. למי יש יותר גולות, ובכמה?", "124 - 98", 3),
                 # The question is its intro and its item together: an intro that asks for a ratio is not
                 # answered by the count that the item's words ask for.
@@ -109,7 +116,7 @@ class PupilAnswerTypeTests(unittest.TestCase):
         for intro, prompt, task, grade in (
                 ("השלימו יחס שקול.", "[[2 : 3 = ___ : 12]]", "2*12/3", 6),
                 ("חשבו.", "היחס בין הבנים לבנות הוא [[2]] ל־[[3]]. בכיתה [[30]] תלמידים. כמה בנים בכיתה?", "30*2/5", 6),
-                ("ענו.", "השעה עכשיו 7:30. כמה דקות נשארו עד 8:00?", "30", 3),
+                ("ענו.", "השעה עכשיו שבע וחצי. כמה דקות נשארו עד שמונה?", "30", 3),
                 ("ענו.", "איזה מספר גדול יותר: [[345]] או [[354]]?", "354", 3),
                 ("פתרו את הבעיה.", "לדני היו [[124]] גולות ולרון [[98]]. כמה גולות יש לשניהם?", "124 + 98", 3)):
             with self.subTest(prompt=prompt):
@@ -142,8 +149,8 @@ class PupilAnswerTypeTests(unittest.TestCase):
                 ("ענו.", "בכיתה [[12]] בנים ו־[[18]] בנות. היחס בין מספר הבנים למספר הבנות הוא ___.", number("12/18"), 6),
                 ("ענו.", "בכיתה [[12]] בנים ו־[[18]] בנות. איזה יחס יש בין הבנים לבנות?", number("12/18"), 6),
                 ("כתבו כיחס מצומצם.", "[[12 : 18]]", number("12/18"), 6),
-                ("ענו.", "השעה עכשיו 7:30. בעוד [[45]] דקות יצלצל הפעמון. מתי יצלצל הפעמון?", number("8"), 3),
-                ("ענו.", "השעה עכשיו 7:30. בעוד [[45]] דקות השעה תהיה ___.", number("8"), 3),
+                ("ענו.", "השעה עכשיו שבע וחצי. בעוד [[45]] דקות יצלצל הפעמון. מתי יצלצל הפעמון?", number("8"), 3),
+                ("ענו.", "השעה עכשיו שבע וחצי. בעוד [[45]] דקות השעה תהיה ___.", number("8"), 3),
                 ("כתבו את השעה.", "המחוג הקטן על [[7]] והגדול על [[12]].", number("7"), 3),
                 ("ענו.", "לדני [[124]] גולות ולרון [[98]]. לאיזה ילד יש יותר גולות, ובכמה?", number("124 - 98"), 3),
                 ("ענו.", "לדני [[124]] גולות ולרון [[98]]. כתבו מי מהם קיבל יותר גולות, ובכמה.", number("124 - 98"), 3)):

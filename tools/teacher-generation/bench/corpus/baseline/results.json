@@ -8,6 +8,7 @@
      "answered": false,
      "questions": [
       1,
+      3,
       5,
       7,
       8,
@@ -23,8 +24,8 @@
      "requiredKeys": [
       "q1",
       "q10",
-      "q11",
       "q19",
+      "q3",
       "q5",
       "q7",
       "q8",
@@ -59,6 +60,15 @@
         ],
         "group": "practice",
         "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 3,
         "stage": "source"
        },
        {
@@ -152,9 +162,9 @@
         "stage": "source"
        }
       ],
-      "missing": 11,
+      "missing": 12,
       "planned": 20,
-      "printed": 9,
+      "printed": 8,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -185,14 +195,22 @@
    "provider": "qwen",
    "questionFailures": [
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
-     "field": "item.1",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 1,
      "question": 1,
-     "substring": "24 : 6 = ___"
+     "substring": "prose: 24 : 6 ="
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "A blank in the intro or an equation with a blank in a table cell is not solved from the print",
+     "field": "intro",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "מצאו את המספר החסר במקום הסימן ___."
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"20/4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -295,7 +313,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 11,
+    "failingAlone": 12,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -537,7 +555,7 @@
     },
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.1.prompt",
      "group": "practice",
      "index": 4,
@@ -1718,24 +1736,22 @@
    "provider": "qwen",
    "questionFailures": [
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
-     "field": "item.1",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 1,
      "question": 1,
-     "substring": "24 : [[___]] = 6"
+     "substring": "prose: 24 :"
     },
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
-     "field": "item.1",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 3,
      "question": 3,
-     "substring": "30 : [[___]] = 5"
+     "substring": "prose: 30 :"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"12/2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -1799,7 +1815,7 @@
     },
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.1.prompt",
      "group": "practice",
      "index": 15,
@@ -2049,14 +2065,13 @@
      "substring": "האם התוצאה של [[(2 + 3) * 4]] גדולה, קטנה או שווה לתוצאה של [[2 + 3 * 4]]?"
     },
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"21/3-4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
-     "field": "item.3",
+     "field": "item.3.prompt",
      "group": "practice",
      "index": 6,
      "question": 6,
-     "substring": "בחישוב [[(___) + 4] * 3 = 21]], מהו המספר החסר?"
+     "substring": "prose: 3 = 21"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5-2+3\", \"kind\": \"evaluate\"}, \"unit\": \"סוכריות\"}",
@@ -2127,14 +2142,13 @@
      "substring": "[[x]]"
     },
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(4+2)*3-(4+(2*3))\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
-     "field": "item.1",
+     "field": "item.1.prompt",
      "group": "challenges",
      "index": 3,
      "question": 20,
-     "substring": "מצב א': [[(4 + 2) * 3]]. מצב ב': [[4 + (2 * 3)]. מה ההפרש בין התוצאות?"
+     "substring": "prose: 4 + (2 * 3)"
     }
    ],
    "questions": {
@@ -2660,7 +2674,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_PLAIN_MATH"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 3,
@@ -2669,7 +2683,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_PLAIN_MATH"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 4,
@@ -2696,7 +2710,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_PLAIN_MATH"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 7,
@@ -2705,7 +2719,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_FIGURE"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 8,
@@ -2714,7 +2728,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_PLAIN_MATH"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 9,
@@ -2732,7 +2746,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_PLAIN_MATH"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 12,
@@ -2741,7 +2755,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_PLAIN_MATH"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 13,
@@ -2759,7 +2773,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_PLAIN_MATH"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 17,
@@ -2768,7 +2782,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_PLAIN_MATH"
+         "SOURCE_NOTATION"
         ],
         "group": "challenges",
         "question": 18,
@@ -2777,7 +2791,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_PLAIN_MATH"
+         "SOURCE_NOTATION"
         ],
         "group": "challenges",
         "question": 19,
@@ -2786,7 +2800,7 @@
        {
         "action": "missing",
         "codes": [
-         "SOURCE_PLAIN_MATH"
+         "SOURCE_NOTATION"
         ],
         "group": "challenges",
         "question": 20,
@@ -2835,22 +2849,24 @@
      "substring": "{\"base\": 10, \"construction\": \"median\", \"kind\": \"triangle_part\", \"left\": 8, \"names\": \"ABCD\", \"right\": 7, \"rotate\": 0}"
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
-     "field": "intro",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"70\", \"kind\": \"evaluate\"}, \"unit\": \"מעלות\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
      "group": "practice",
      "index": 3,
      "question": 3,
-     "substring": "prose: ABC (AB=AC). (+1 more)"
+     "substring": "מהו גודל הזווית ∡ACB?"
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
-     "field": "intro",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(180-40)/2\", \"kind\": \"evaluate\"}, \"unit\": \"מעלות\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
      "group": "practice",
      "index": 4,
      "question": 4,
-     "substring": "prose: ABC (AB=AC). (+1 more)"
+     "substring": "מהו גודל כל אחת מזוויות הבסיס ∡ABC ו-∡ACB?"
     },
     {
      "code": "SOURCE_NOTATION",
@@ -2871,58 +2887,64 @@
      "substring": "prose: ABC (+1 more)"
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.item.2.answer",
-     "field": "item.2.answer",
+     "answer": "{\"kind\": \"review\", \"text\": \"יש לחשב באמצעות טריגונומטריה או חפיפה, אך ברמה זו מספיק להראות ש-AC=BC.\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.3",
      "group": "practice",
      "index": 7,
      "question": 7,
-     "substring": "{\"kind\": \"review\", \"text\": \"כן, כי לפי פיתגורס AC=sqrt(2^2+3^2) ו-BC=sqrt(2^2+3^2), ולכן AC=BC.\"}"
+     "substring": "מהו גודל הזווית ∡ACB? (השתמשו בתכונת המשולש שווה השוקיים או בחישוב זוויות)."
     },
     {
-     "code": "SOURCE_FIGURE",
-     "detail": "Figure constructor is not supported by this pinned skill",
-     "field": "figure",
+     "answer": "{\"kind\": \"review\", \"text\": \"זווית חיצונית למשולש ABC.\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
      "group": "practice",
      "index": 8,
      "question": 8,
-     "substring": "{\"base\": 8, \"construction\": \"side_extension\", \"kind\": \"triangle_part\", \"left\": 6, \"names\": \"ABCD\", \"right\": 7, \"rotate\":…"
+     "substring": "מהו השם של הזווית ∡ACD?"
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.table.head.1",
-     "field": "table.head.1",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"40+50\", \"kind\": \"evaluate\"}, \"unit\": \"מעלות\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
      "group": "practice",
      "index": 9,
      "question": 9,
-     "substring": "∡A"
+     "substring": "שורה 1: ∡A=40°, ∡B=50°. חשבו את הזווית החיצונית ל-∡C."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"180-60-60\", \"kind\": \"evaluate\"}, \"unit\": \"מעלות\"}",
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
-     "field": "intro",
+     "field": "item.1",
      "group": "practice",
      "index": 10,
      "question": 10,
-     "substring": "prose: ABC = 60 (+1 more)"
+     "substring": "מהו גודל הזווית ∡BAC?"
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
-     "field": "intro",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(180-100)/2\", \"kind\": \"evaluate\"}, \"unit\": \"מעלות\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
      "group": "practice",
      "index": 12,
      "question": 12,
-     "substring": "prose: ABC (AB=AC) (+1 more)"
+     "substring": "חשבו את גודל זווית הבסיס ∡ABC."
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
-     "field": "intro",
+     "answer": "{\"kind\": \"review\", \"text\": \"90 מעלות.\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
      "group": "practice",
      "index": 13,
      "question": 13,
-     "substring": "prose: ABC (AB=AC). AD (+1 more)"
+     "substring": "מהו גודל הזווית ∡ADB?"
     },
     {
      "code": "SOURCE_PLAIN_MATH",
@@ -2934,40 +2956,43 @@
      "substring": "prose: ABC (AB=AC) (+2 more)"
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
-     "field": "intro",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30\", \"kind\": \"evaluate\"}, \"unit\": \"מעלות\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.3",
      "group": "practice",
      "index": 17,
      "question": 17,
-     "substring": "prose: ABC (AB=AC). AE (+1 more)"
+     "substring": "אם ∡BAE=30 מעלות, מהו גודל ∡CAE?"
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.item.2.prompt",
-     "field": "item.2.prompt",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"180/2\", \"kind\": \"evaluate\"}, \"unit\": \"מעלות\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.3",
      "group": "challenges",
      "index": 1,
      "question": 18,
-     "substring": "prose: ABD (+1 more)"
+     "substring": "הסיקו מכך ש-∡ADB=∡ADC. מהו גודל כל אחת מהן?"
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
-     "field": "intro",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.answer",
      "group": "challenges",
      "index": 2,
      "question": 19,
-     "substring": "prose: ABC (+1 more)"
+     "substring": "{\"kind\": \"review\", \"text\": \"הזווית החיצונית שווה לסכום שתי הזוויות הפנימיות הרחוקות ממנה (∡A+∡B) בכל משולש, לא רק בשווה …"
     },
     {
-     "code": "SOURCE_PLAIN_MATH",
-     "detail": "Middle-school numbers and Latin names require typed spans at q1.intro",
-     "field": "intro",
+     "answer": "{\"kind\": \"review\", \"text\": \"90 מעלות, כי AD הוא גובה.\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
      "group": "challenges",
      "index": 3,
      "question": 20,
-     "substring": "prose: ABC, AD (+3 more)"
+     "substring": "מהו גודל הזווית ∡ADB?"
     }
    ],
    "questions": {
@@ -3473,22 +3498,34 @@
     "contract": "worksheet-source/4",
     "correction": {
      "answered": false,
-     "questions": [],
+     "questions": [
+      3,
+      6,
+      9,
+      10,
+      11
+     ],
      "requested": true,
      "requiredKeys": [
+      "q10",
+      "q11",
+      "q3",
+      "q6",
       "q9"
      ]
     },
     "firstPass": {
-     "ok": true
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "ok": false
     },
     "requests": 2,
     "timeoutSeconds": 300
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "OTHER:QUALITY_GATE_FAILED",
-   "finalCode": "QUALITY_GATE_FAILED",
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "S-g4calc",
@@ -3501,17 +3538,52 @@
        {
         "action": "missing",
         "codes": [
-         "TRUSTED_ADAPTER",
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_TASK_MISMATCH"
         ],
         "group": "practice",
         "question": 9,
-        "stage": "precheck"
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "challenges",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 11,
+        "stage": "source"
        }
       ],
-      "missing": 1,
+      "missing": 5,
       "planned": 12,
-      "printed": 11,
+      "printed": 7,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -3519,9 +3591,7 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gateCode": "TRUSTED_ADAPTER",
-    "question": 9,
-    "stage": "precheck"
+    "stage": "source"
    },
    "lesson": {
     "domain": "operations",
@@ -3540,21 +3610,61 @@
    "localAuthor": null,
    "model": "qwen (model id not recorded)",
    "origin": "shared-engine-qa",
-   "prechecks": [
+   "prechecks": [],
+   "provider": "qwen",
+   "questionFailures": [
     {
-     "codes": [
-      "TRUSTED_ADAPTER"
-     ],
-     "questions": [
-      9
-     ],
-     "status": "replace"
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"17-4*3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "המספר החסר הוא ___: [[___ + 4 x 3 = 17]]"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"18/2-5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "המספר החסר הוא ___: [[(___ + 5) x 2 = 18]]"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed blank is not filled from the print by any binder",
+     "field": "table",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "{\"head\": [\"ביטוי\", \"תוצאה\"], \"rows\": [[\"[[(10 + 2) x 3]]\", \"___\"], [\"[[10 + 2 x 3]]\", \"___\"], [\"[[(20 - 4) : 4]]\", \"___\"…"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(18+4)/2-6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "challenges",
+     "index": 1,
+     "question": 10,
+     "substring": "המספר החסר הוא ___: [[(___ + 6) x 2 - 4 = 18]]"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(5+3)*2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed blank is not filled from the print by any binder",
+     "field": "item.1",
+     "group": "challenges",
+     "index": 2,
+     "question": 11,
+     "substring": "יערה חישבה: [[(5 + 3) x 2 = 5 + 6 = 11]]. התוצאה הנכונה היא ___"
     }
    ],
-   "provider": "qwen",
-   "questionFailures": [],
    "questions": {
-    "failingAlone": 0,
+    "failingAlone": 5,
     "total": 12
    },
    "recorded": "2026-11-22 ~09:02Z",
@@ -3872,7 +3982,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 17,
@@ -3980,17 +4090,18 @@
      "substring": "בבדיקת תרגיל חילוק ב-[[3]] חושב [[5 * 3 = 15]]. מה היה המחולק בתוך [[___ / 3 = 5]]?"
     },
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
-     "field": "question",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24 / 3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
      "group": "practice",
      "index": 17,
      "question": 17,
-     "substring": "לפניכם שני חישובים שונים המתחילים מאותו מספר כולל. חשבו כל תוצאה בנפרד."
+     "substring": "התחילו מהמספר [[24]]: מהי התוצאה של [[24 / 3]]?"
     },
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.1.prompt",
      "group": "challenges",
      "index": 3,
@@ -7017,7 +7128,7 @@
     },
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.1.prompt",
      "group": "practice",
      "index": 3,
@@ -7036,7 +7147,7 @@
     },
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.1.prompt",
      "group": "practice",
      "index": 11,
@@ -7073,7 +7184,7 @@
     },
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.1.prompt",
      "group": "practice",
      "index": 17,
@@ -7082,8 +7193,8 @@
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"28 / 4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "field": "item.1",
      "group": "reserves",
      "index": 2,
@@ -7148,7 +7259,7 @@
     },
     "firstPass": {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "ok": false
     },
     "requests": 2,
@@ -7167,6 +7278,15 @@
       "draft": true,
       "dropped": 0,
       "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
        {
         "action": "reserve",
         "codes": [
@@ -7228,6 +7348,15 @@
    "provider": "gemini",
    "questionFailures": [
     {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed blank is not filled from the print by any binder",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "[[6 + ___]]"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"compare\", \"left\": \"3 * 4 + 3 * 6\", \"right\": \"3 * (4 + 6)\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The printed request needs a decision, not a comparison key at q1.item.3",
@@ -7239,7 +7368,7 @@
     },
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.3.prompt",
      "group": "challenges",
      "index": 1,
@@ -7257,7 +7386,7 @@
     },
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.1.prompt",
      "group": "reserves",
      "index": 3,
@@ -7276,7 +7405,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 5,
+    "failingAlone": 6,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -8728,7 +8857,7 @@
    "questionFailures": [
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.1.prompt",
      "group": "practice",
      "index": 1,
@@ -8737,7 +8866,7 @@
     },
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.1.prompt",
      "group": "practice",
      "index": 2,
@@ -8756,7 +8885,7 @@
     },
     {
      "code": "PRINTED_TASK_MISMATCH",
-     "detail": "The printed equation with a blank is not solved from the print",
+     "detail": "The printed blank is not filled from the print by any binder",
      "field": "item.1.prompt",
      "group": "practice",
      "index": 11,
@@ -9217,13 +9346,13 @@
    "gemini": {
     "cases": 21,
     "delivered": 3,
-    "failingAlone": 182,
+    "failingAlone": 183,
     "questions": 484
    },
    "qwen": {
     "cases": 14,
     "delivered": 1,
-    "failingAlone": 126,
+    "failingAlone": 132,
     "questions": 272
    }
   },
@@ -9234,14 +9363,13 @@
   "deliveredShorter": 2,
   "failureClasses": {
    "DELIVERED": 4,
-   "OTHER:QUALITY_GATE_FAILED": 1,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 2,
    "SOURCE:PRINTED_ANSWER_KIND": 5,
    "SOURCE:PRINTED_ANSWER_LEAK": 4,
    "SOURCE:PRINTED_TASK_MISMATCH": 2,
    "SOURCE:QUALITY_GATE_FAILED": 1,
    "SOURCE:SOURCE_FIGURE": 2,
-   "SOURCE:SOURCE_NOTATION": 9,
+   "SOURCE:SOURCE_NOTATION": 10,
    "SOURCE:SOURCE_PLAIN_MATH": 1,
    "SOURCE:SOURCE_TABLE": 3,
    "SOURCE:SOURCE_TEXT": 1
@@ -9257,23 +9385,23 @@
   "questions": {
    "byCode": {
     "NOT_AN_OBJECT": 8,
-    "PRINTED_ANSWER_KIND": 86,
-    "PRINTED_ANSWER_LEAK": 51,
+    "PRINTED_ANSWER_KIND": 85,
+    "PRINTED_ANSWER_LEAK": 50,
     "PRINTED_EXPRESSION_SCOPE": 4,
-    "PRINTED_TASK_MISMATCH": 38,
+    "PRINTED_TASK_MISMATCH": 42,
     "QUALITY_GATE_FAILED": 2,
-    "SOURCE_FIGURE": 6,
-    "SOURCE_NOTATION": 59,
+    "SOURCE_FIGURE": 5,
+    "SOURCE_NOTATION": 75,
     "SOURCE_NUMBER": 2,
-    "SOURCE_PLAIN_MATH": 17,
+    "SOURCE_PLAIN_MATH": 7,
     "SOURCE_RICH_TEXT": 1,
     "SOURCE_SHAPE": 6,
     "SOURCE_TABLE": 6,
     "SOURCE_TEXT": 20,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 308,
-   "failingShare": 0.4074,
+   "failingAlone": 315,
+   "failingShare": 0.4167,
    "total": 756
   },
   "secondAttemptsNotRecorded": 2

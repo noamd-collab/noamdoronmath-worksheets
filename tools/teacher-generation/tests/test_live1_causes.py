@@ -262,10 +262,13 @@ class LiveCauses(unittest.TestCase):
         from runtime_catalog import scope_for_lesson
         from skill_authoring import examine_frame
         from validation import GenerationError
-        # The recorded grade 4 sheet S-g4calc, whose questions all pass the source stage, with a refused rule.
+        # The recorded grade 4 sheet S-g4calc in the spelling the source reads (test_lesson_ladder.strict_spelling: as
+        # it arrived, five of its questions are refused when it is read), so that every question passes the source
+        # stage, with a refused rule.
+        from test_lesson_ladder import strict_spelling
         lesson = json.loads((CORPUS / 'lessons/g4-order-practice.json').read_text(encoding='utf-8'))
         scope = scope_for_lesson(lesson)
-        reply = json.loads((CORPUS / 'replies/S-g4calc.json').read_text(encoding='utf-8'))
+        reply = strict_spelling(json.loads((CORPUS / 'replies/S-g4calc.json').read_text(encoding='utf-8')))
         refused, still = 'מבצעים קודם כפל: [[4 @ 2]].', 'מבצעים קודם כפל וחילוק: [[3 @ 1]].'
         for rule in (refused, still):
             self.assertEqual(examine_frame(reply['title'], rule, lesson, scope).code, 'SOURCE_NOTATION')

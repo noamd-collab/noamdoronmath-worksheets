@@ -587,8 +587,13 @@ class GeneralRuntimeTests(unittest.TestCase):
         for extra in ({"kind":"math","expression":add(19,19)}, {"kind":"text","text":"כִּתְבוּ 19 + 19"}):
             item["prompt"].append(extra)
             with self.assertRaises(GeneralSourceError) as error:
-                validate_source(lesson,payload,scope,provider=True)
+                validate_source(lesson,payload,scope,provider=False)
             self.assertEqual(error.exception.code,"SOURCE_ADDITION_SCOPE")
+            with self.assertRaises(GeneralSourceError) as error:
+                validate_source(lesson,payload,scope,provider=True)
+            # From the provider, a calculation printed in a text span is mathematics outside an island:
+            # refused for its notation before the addition is read.
+            self.assertEqual(error.exception.code,"SOURCE_ADDITION_SCOPE" if extra["kind"] == "math" else "SOURCE_NOTATION")
             item["prompt"].pop()
 
     def test_bad_general_response_never_retries_or_becomes_approved(self):

@@ -5,10 +5,14 @@ answer (a quotient and its remainder, several terms of a sequence, hours and
 minutes), and it can already show the exercise that the task repeats. Each
 binder here recomputes the whole printed answer from the printed givens and
 checks the typed result against it. A prompt with several blanks that no
-binder recognizes is refused: one number never answers two blanks.
+binder recognizes is refused: one number never answers two blanks. In grades
+1-6 a prompt with any blank is keyed only when a binder of a closed list fills
+it from the print (``solved_from_the_print``, ``refuse_unsolved_equation``).
 
-Nothing here approves prose. Every refusal is a recoverable
-PRINTED_TASK_MISMATCH for one question.
+Nothing here approves prose: an item without a blank keeps its typed key, and
+nothing proves that a word problem's key answers what its words ask. Every
+refusal is recoverable for one question, as PRINTED_TASK_MISMATCH unless a
+check names its own code.
 """
 
 from fractions import Fraction
@@ -1128,7 +1132,7 @@ def bind_parts(question, item, solved, grade):
         blanks = max(blank_count(item["prompt"]), _row_blanks(question, item["prompt"]))
         if blanks >= 2 and _answers(solved) != blanks:
             from printed_tasks import match_printed_task
-            # "המספר החסר הוא ___: [[___ + 4 = 17]]" names one unknown twice,
+            # "המספר החסר הוא ___. [[___ + 4 = 17]]" names one unknown twice,
             # and its binder has already solved the printed equation for it.
             if kind != "computed" or not match_printed_task(item, solved, grade):
                 _reject("The prompt has several blanks and the typed task answers only one of them")
@@ -1141,14 +1145,15 @@ _RELATION = re.compile(r"!=|<=|>=|[=<>≤≥≠]")
 def prints_blank_equation(spans):
     """The field prints an equation or inequality with a blank.
 
-    Either one formula holds a relation and a blank ("24 : ___ = 6"), or a
-    relation sign stands in the sentence beside an operand while the field
-    has a blank ("[[3]] מטרים = ___ ס״מ"). A sign listed as an option
+    Either one formula holds a relation and a blank ("24 : ___ = 6"), or the
+    field has a blank and also a formula with a relation ("___: [[4 = 6]]"),
+    or a relation sign stands in the sentence beside an operand while the
+    field has a blank ("[[3]] מטרים = ___ ס״מ"). A sign listed as an option
     ("(<, > או =)") stands beside no operand.
     """
     if not isinstance(spans, list):
         return False
-    line, blank = "", False
+    line, blank, equation = "", False, False
     for span in spans:
         if not isinstance(span, dict):
             return False
@@ -1162,11 +1167,17 @@ def prints_blank_equation(spans):
                 if _RELATION.search(span["notation"]):
                     return True
                 blank = True
+            elif _RELATION.search(span["notation"]):
+                # A formula that is a whole equation is never read as one number: its "="
+                # stands beside the field's blank as much as one written in the sentence.
+                equation = True
             line += "0"
         else:
             line += "0"
     if not blank:
         return False
+    if equation:
+        return True
     for sign in _RELATION.finditer(line):
         left, right = line[:sign.start()].rstrip()[-1:], line[sign.end():].lstrip()[:1]
         if (left and (left.isdigit() or left in "_)%")) or (right and (right.isdigit() or right in "_(-−")):
@@ -1174,28 +1185,52 @@ def prints_blank_equation(spans):
     return False
 
 
-def refuse_unsolved_equation(question, item, solved, grade):
-    """Grades 1–6: a printed equation with a blank is keyed only by solving it from the print.
+def solved_from_the_print(question, item, solved, grade):
+    """The binder that recomputes this item's key from what it prints, or None.
 
-    The item's own equation must be bound by the missing-number binder
-    (``printed_tasks.match_printed_task``) or by a parts binder (place value,
-    remainder, sequence, two units). An equation with a blank in the intro or
-    in a table cell has no such binder, so its question is refused.
-    ``general_source.validate_question`` runs this after every other check of
-    the item, so a more specific refusal keeps its own code.
+    The closed list (an allowlist) of the forms whose blank a binder fills:
+    a parts binder (place value, quotient and remainder, sequence, two units;
+    ``bind_parts``), the missing-number and first-operation binder
+    (``printed_tasks.match_printed_task``), the comparison sign between two
+    printed quantities (``comparison_blank``) and the printed statement that a
+    yes/no item decides (``answer_kinds.bind_decision``).
+    """
+    binding = bind_parts(question, item, solved, grade)
+    if binding is not None or item["answer"].get("kind") != "computed":
+        return binding
+    from printed_tasks import match_printed_task
+    from answer_kinds import bind_decision
+    return (match_printed_task(item, solved, grade) or comparison_blank(item, solved, grade)
+            or bind_decision(question, item, solved, grade))
+
+
+def refuse_unsolved_equation(question, item, solved, grade):
+    """Grades 1–6: a printed blank is keyed only by a binder that fills it from the print.
+
+    An item whose prompt prints a blank (``___`` or a box, in the sentence or
+    in an island) is keyed only when ``solved_from_the_print`` names the
+    binder that recomputes its key from the print, also when the typed key is
+    right: a word problem with a blank ("[[3]] מטרים הם ___ ס״מ"), a blank
+    beside a closed formula ("___: [[4 = 6]]") and an equation that no binder
+    reads are refused. No binder reads a blank in the intro, so a question
+    whose intro prints one is refused, and so is one whose table cell prints
+    an equation with a blank. ``general_source.validate_question`` runs this
+    after every other check of the item, so a more specific refusal keeps its
+    own code.
     """
     if grade > 6:
         return
     table = question.get("table") or {}
     cells = list(table.get("head") or []) + [cell for row in table.get("rows") or [] if isinstance(row, list)
                                              for cell in row]
-    if prints_blank_equation(question.get("intro")) or any(prints_blank_equation(cell) for cell in cells):
-        _reject("An equation with a blank outside the item's prompt is not solved from the print")
-    if not prints_blank_equation(item["prompt"]) or bind_parts(question, item, solved, grade) is not None:
+    intro = question.get("intro")
+    if (isinstance(intro, list) and blank_count(intro)) or prints_blank_equation(intro) \
+            or any(prints_blank_equation(cell) for cell in cells):
+        _reject("A blank in the intro or an equation with a blank in a table cell is not solved from the print")
+    if not blank_count(item["prompt"]) and not prints_blank_equation(item["prompt"]):
         return
-    from printed_tasks import match_printed_task
-    if item["answer"].get("kind") != "computed" or not match_printed_task(item, solved, grade):
-        _reject("The printed equation with a blank is not solved from the print")
+    if solved_from_the_print(question, item, solved, grade) is None:
+        _reject("The printed blank is not filled from the print by any binder")
 
 
 def check_item(question, item, solved, grade, *, authored=False):

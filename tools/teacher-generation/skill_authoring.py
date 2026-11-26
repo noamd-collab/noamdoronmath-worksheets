@@ -5,7 +5,8 @@ from dataclasses import dataclass
 import json
 import re
 
-from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich, text, validate_question
+from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich, validate_question
+from general_source import title as sheet_title
 from math_tasks import MathTaskError
 from skill_feedback import FEEDBACK as GATE_FEEDBACK
 from answer_kinds import DECISION_GUIDE
@@ -514,7 +515,14 @@ def correction_instructions(lesson, scope):
             "Keep elementary arithmetic in the selected operations. Put the ENTIRE expression in one math span: "
             "a missing number is three underscores, e.g. [[24 / ___ = 6]], with the answer expression 24/6. "
             "Never use x or other letters for an unknown, and never mix Hebrew words with the formula. "
-            "Use ordinary Hebrew outside the formula. In task.expression use known numeric operands only.")
+            "Use ordinary Hebrew outside the formula. In task.expression use known numeric operands only. "
+            "Outside the brackets write no calculation, no relation sign beside a number, no colon after a number "
+            "or a blank, no letter and no blank other than ___; write a percent sign inside the brackets with its "
+            "number, [[25%]].")
+        instructions["PRINTED_TASK_MISMATCH"] += (
+            " A blank (___) is printed only where the printed numbers fix its answer (a place-value part, a "
+            "remainder, a sequence term, two units of one size, a comparison sign); after a story or beside a "
+            "closed formula ask the question in words instead.")
     if not geometry_topic(scope):
         instructions["SOURCE_TABLE"] += " Example of a real table: table.head and table.rows contain separate plain cells; a missing value uses ___ in its own cell. Use only meaningful columns and givens for the selected concept."
     # Gates of the built sheet that name a question (skill_feedback.FEEDBACK).
@@ -538,7 +546,7 @@ _BROKEN = (KeyError, TypeError, IndexError, AttributeError, ValueError, Recursio
 def examine_frame(title, rule, lesson, scope):
     """The refusal of a sheet's title or rule examined alone, as the whole sheet examines them; None when both pass."""
     try:
-        text(title, 160)
+        sheet_title(title, lesson["gradeNumber"])
         expanded = compact_authoring.expand_source({"version": 4, "title": title, "rule": rule, "sections": []},
             lesson["gradeNumber"], fraction_notation=scope["topic"]["domain"] == "fractions")
         rich(expanded["rule"], lesson["gradeNumber"], provider=True, location="rule")

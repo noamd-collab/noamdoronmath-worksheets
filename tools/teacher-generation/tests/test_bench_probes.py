@@ -239,16 +239,22 @@ REWORDED = (
      ('source', 'PRINTED_ANSWER_KIND')),
     ('ratio-03', 'ו21', 'כתבו כיחס מצומצם.', '[[12 : 18]]', _evaluate('12 / 18'), {},
      ('source', 'PRINTED_ANSWER_KIND')),
+    # A clock time in digits is mathematics outside an island: refused for its notation before the request is
+    # read. Written in words, the request for a time of day is refused by its form.
     ('time-02', 'ג19', 'ענו.', 'השעה עכשיו 7:30. בעוד [[45]] דקות יצלצל הפעמון. מתי יצלצל הפעמון?',
-     _evaluate('8'), {}, ('source', 'PRINTED_ANSWER_KIND')),
+     _evaluate('8'), {}, ('source', 'SOURCE_NOTATION')),
     ('time-02', 'ג19', 'ענו.', 'השעה עכשיו 7:30. בעוד [[45]] דקות השעה תהיה ___.', _evaluate('8'), {},
-     ('source', 'PRINTED_ANSWER_KIND')),
+     ('source', 'SOURCE_NOTATION')),
     ('time-02', 'ג19', 'ענו.', 'השעה עכשיו 7:30. האוטובוס ייסע [[45]] דקות. לאיזו שעה יגיע?', _evaluate('8'), {},
+     ('source', 'SOURCE_NOTATION')),
+    ('time-02', 'ג19', 'ענו.', 'השעה עכשיו שבע וחצי. בעוד [[45]] דקות יצלצל הפעמון. מתי יצלצל הפעמון?',
+     _evaluate('8'), {}, ('source', 'PRINTED_ANSWER_KIND')),
+    ('time-02', 'ג19', 'ענו.', 'השעה עכשיו שבע וחצי. האוטובוס ייסע [[45]] דקות. לאיזו שעה יגיע?', _evaluate('8'), {},
      ('source', 'PRINTED_ANSWER_KIND')),
     ('time-03', 'ג19', 'ענו.', 'השעה עכשיו [[7]]:[[30]]. השיעור יימשך [[45]] דקות. מתי יסתיים?', _evaluate('8'), {},
-     ('source', 'PRINTED_ANSWER_KIND')),
+     ('source', 'SOURCE_NOTATION')),
     ('time-03', 'ג19', 'ענו.', 'השעה עכשיו [[7]]:[[30]]. בעוד [[45]] דקות השעה תהיה ___.', _evaluate('8'), {},
-     ('source', 'PRINTED_ANSWER_KIND')),
+     ('source', 'SOURCE_NOTATION')),
     ('word_problems-04', 'ג08', 'פתרו את הבעיה.',
      'לדני היו [[124]] גולות ולרון [[98]]. לאיזה ילד יש יותר גולות, ובכמה?', _evaluate('124 - 98', 'גולות'), {},
      ('source', 'PRINTED_ANSWER_KIND')),
@@ -276,8 +282,9 @@ REWORDED = (
     # Beside a table whose rows leave their results blank.
     ('data_tables_charts-13', 'ד07', 'השלימו את הטבלה.', 'חשבו את הביטוי שבשורה הראשונה.', _evaluate('10 + 2 * 3'),
      {'table': _BLANK_ROWS}, ('adapter', 'PRINTED_TASK_MISMATCH')),
+    # A blank that no binder fills is refused when the reply is read, before the adapter.
     ('data_tables_charts-13', 'ד07', 'השלימו את הטבלה.', 'הערך החסר בטבלה הוא ___.', _evaluate('10 + 2 * 3'),
-     {'table': _BLANK_ROWS}, ('adapter', 'PRINTED_TASK_MISMATCH')),
+     {'table': _BLANK_ROWS}, ('source', 'PRINTED_TASK_MISMATCH')),
     ('data_tables_charts-13', 'ד07', 'השלימו את הטבלה.', 'חשבו את הביטוי שבשורה השנייה.', _evaluate('10 + 2 * 3'),
      {'table': _BLANK_ROWS}, ('adapter', 'PRINTED_TASK_MISMATCH')),
     # A story in one sentence.

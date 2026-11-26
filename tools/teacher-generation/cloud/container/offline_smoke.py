@@ -78,9 +78,13 @@ def native_preflight():
 # each one and requires exactly this refusal (refused_case), never a delivery.
 # Each prints a typed task after a prompt that is not a bare instruction
 # (PRINTED_TASK_MISMATCH): grade2-vocalized after a story, grade4-fractions
-# after a prompt about a table row with no table, grade4-skill-calculation
-# beside its table.
-REFUSED = {'grade2-vocalized': (1, 1), 'grade4-fractions': (1, 1), 'grade4-skill-calculation': (9, 1)}
+# after a prompt about a table row with no table.
+REFUSED = {'grade2-vocalized': (1, 1), 'grade4-fractions': (1, 1)}
+# Reviewed general fixtures that the strict engine refuses when the reply is
+# read, before any render (source_refused_case): the code, question and item
+# that general_source.validate_source names. grade4-skill-calculation prints a
+# blank beside its table that no binder fills from the print.
+REFUSED_AT_SOURCE = {'grade4-skill-calculation': ('PRINTED_TASK_MISMATCH', 9, 1)}
 
 
 def refused_case(case, rendered, work):
@@ -119,6 +123,35 @@ def refused_case(case, rendered, work):
             'refusal': {'step': 'trusted-adapter', 'code': 'PRINTED_TASK_MISMATCH', 'action': 'replace',
                         'question': question, 'item': item},
             'reviewFindings': [], 'manifest': 'general/' + case + '/manifest.json'}
+
+
+def source_refused_case(case, lesson, source):
+    """The report row of a REFUSED_AT_SOURCE fixture, refused when it is read exactly as recorded.
+
+    validate_model refuses it with the recorded code, and validate_source names
+    the recorded code, question and item. Nothing is rendered. Anything else
+    (a reply that is read, another code or another place) raises RuntimeError."""
+    from general_source import GeneralSourceError, validate_source
+    from runtime_catalog import scope_for_lesson
+    from validation import GenerationError
+    code, question, item = REFUSED_AT_SOURCE[case]
+    try:
+        validate_model(lesson, source)
+    except GenerationError as error:
+        read = error.code
+    else:
+        read = None
+    try:
+        validate_source(lesson, source, scope_for_lesson(lesson))
+    except GeneralSourceError as error:
+        named = (error.code, error.question, error.item)
+    else:
+        named = None
+    if read != code or named != (code, question, item):
+        raise RuntimeError('General fixture was not refused as recorded: ' + case)
+    return {'case': case, 'topicId': lesson['topicId'], 'status': 'REFUSED', 'automatedChecksPassed': False,
+            'refusal': {'step': 'source', 'code': code, 'action': 'replace', 'question': question, 'item': item},
+            'reviewFindings': [], 'manifest': None}
 
 
 def delivered_case(case, lesson, rendered):
@@ -167,7 +200,7 @@ def general_cases(output):
             or len(cases) != len(set(cases))
             or any(not isinstance(name, str) or not re.fullmatch(r'[a-z0-9-]{1,60}', name) for name in cases)):
         raise RuntimeError('Reviewed general fixtures are required')
-    if not set(REFUSED) <= set(cases):
+    if not set(REFUSED) | set(REFUSED_AT_SOURCE) <= set(cases):
         raise RuntimeError('Every expected refusal names a reviewed general fixture')
     expected = {name + '/' + kind + '.json' for name in cases for kind in ('lesson', 'model-output')}
     if set(manifest.get('files', {})) != expected:
@@ -193,6 +226,9 @@ def general_cases(output):
                                'grade3-division-curriculum':'division-facts/1'}.get(case, 4)
             if lesson.get('version') != 3 or source.get('version') != expected_source:
                 raise RuntimeError('General fixtures must exercise the new intake and source contracts')
+            if case in REFUSED_AT_SOURCE:
+                results.append(source_refused_case(case, lesson, source))
+                continue
             validate_model(lesson, source)
             rendered = render_job(lesson, source, output / case)
             if case == 'grade3-division-curriculum':

@@ -483,6 +483,12 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         system += (
             ' Elementary arithmetic uses numbers only. Put a missing number in one complete formula: '
             '[[24 / ___ = 6]] or [[___ + 5 = 9]]. Never use a letter for a missing number. '
+            'Outside [[...]] write only Hebrew words, punctuation and single numbers: never a calculation, a '
+            'relation sign beside a number, a colon after a number or a blank, a Latin letter, a question mark '
+            'as a blank or any blank other than ___. A ___ outside a formula is allowed only where the printed '
+            'numbers fix its answer: a place-value part, a remainder, a sequence term, two units of one size, '
+            'a comparison sign between two numbers. Write a percent sign inside the formula with its number: '
+            '[[25%]]. '
             'Use only taught operations. A construction or explanation cannot have a scalar answer key. '
             'Ask for the actual numerical result or a comparison. For a request to write and evaluate '
             'a two-operation expression, give its complete ordered description in words.')

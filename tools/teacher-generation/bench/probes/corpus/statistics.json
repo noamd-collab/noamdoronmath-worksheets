@@ -68,9 +68,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "הציונים: 80, 90, 100",
-    "key": "90"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

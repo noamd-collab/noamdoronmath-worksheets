@@ -108,10 +108,26 @@ never wrote (`printed_parts.refuse_unwritten_zero`, `SOURCE_NOTATION`).
 `printed_parts.py` and the other `printed_*` binders
 tie the key to an exercise that the prompt already shows. A prompt with several
 blanks gets one answer for each blank, or the question is refused. In grades 1–6
-an equation printed with a blank is keyed only when a binder solves it from the
-print, also with the right typed key; one written partly or wholly outside one
-island is refused for its notation (`printed_parts.refuse_unsolved_equation`,
-`compact_authoring.blank_equation_outside_island`; LESSON-SKILL.md section 3).
+an item that prints a blank is keyed only when a binder of a closed list
+recomputes its key from the print (place value, quotient and remainder,
+sequence, two units, the missing number in one complete formula, the comparison
+sign, the decided statement), also with the right typed key: a word problem
+with a blank, a one-unit conversion written with words and a blank in the intro
+are refused (`printed_parts.refuse_unsolved_equation`, `PRINTED_TASK_MISMATCH`).
+What may print outside the islands in grades 1–6 is closed as well: Hebrew
+words, punctuation, a number on its own, the blank `___` and a sign listed as an
+option or used as punctuation. A calculation, a relation sign beside an
+operand (also `=` between marked numbers and a blank), a colon after a number
+or a blank, a Latin letter, any other blank (`__`, `⬜`, `( )`, `?`) and any
+other numeral or symbol there is refused for its notation
+(`compact_authoring.sentence_math`, `SOURCE_NOTATION`). In every grade a
+one-letter angle (`∠A`, `∡A`, the word זווית or זוית before one letter) and a
+percent sign apart from its number (`[[25]]%`, `٪`, `％`, a bidi mark between)
+are refused. These refusals read a string field, a provider span array as the
+line it prints, and the sheet title, with invisible marks read through
+(`compact_authoring.refuse_notation`; LESSON-SKILL.md section 3). The old path
+still cannot prove that a word problem's key answers what its prose asks: a
+computed item without a blank keeps its typed key.
 
 A yes/no or true/false question carries a typed claim (task kind `decide`: an
 order or equality of two expressions, divisibility, membership in a short

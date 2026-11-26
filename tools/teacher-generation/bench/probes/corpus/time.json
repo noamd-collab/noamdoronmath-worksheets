@@ -48,7 +48,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "PRINTED_ANSWER_KIND"
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -73,7 +73,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "PRINTED_ANSWER_KIND"
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -121,7 +121,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "PRINTED_TASK_MISMATCH"
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -144,9 +144,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "135 דקות = ___ שעות ו־___ דקות",
-    "key": "2 שעות ו־ 15 דקות"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

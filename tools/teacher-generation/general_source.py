@@ -71,6 +71,23 @@ def text(value, maximum=1000, empty=False):
     return value
 
 
+def title(value, grade, *, v5=False):
+    """A sheet or section title: bounded plain text, refused for the notation that a rich field is refused for.
+
+    The title prints as written, so the refusals of
+    ``compact_authoring.refuse_notation`` apply to it as one line, in every
+    grade (``SOURCE_NOTATION``): a one-letter angle (``מציאת ∠A בטרפז``,
+    ``זווית A בטרפז``), a percent sign apart from its number, and in grades
+    1-6 mathematics or a blank. A worksheet-wire/5 title is code-written and
+    checked against its overlay instead.
+    """
+    text(value, 160)
+    if not v5:
+        from compact_authoring import refuse_notation
+        refuse_notation(value, grade)
+    return value
+
+
 def bounded_int(value, lo, hi):
     if type(value) is not int or not lo <= value <= hi:
         bad("SOURCE_NUMBER", "Integer outside supported bounds")
@@ -407,7 +424,7 @@ def _validate_source(lesson, payload, scope, *, provider, contract=None):
     overlay = _v5_overlay(lesson, scope) if v5 else None
     grade = lesson["gradeNumber"]
     normalized = deepcopy(payload)
-    text(payload["title"], 160)
+    title(payload["title"], grade, v5=v5)
     normalized["rule"] = rich(payload["rule"], grade, provider=provider, location="rule", v5=v5, overlay=overlay)
     if type(payload["sections"]) is not list or not 1 <= len(payload["sections"]) <= 8:
         bad("SOURCE_SECTIONS", "Need one to eight sections")
@@ -415,7 +432,7 @@ def _validate_source(lesson, payload, scope, *, provider, contract=None):
     seen, evidence, pending, qcount, item_count, stars = set(), [], [], 0, 0, 0
     for section in normalized["sections"]:
         exact(section, ("title", "conceptIds", "questions"))
-        text(section["title"], 160)
+        title(section["title"], grade, v5=v5)
         if type(section["conceptIds"]) is not list or not section["conceptIds"] or any(type(c) is not str or c not in allowed for c in section["conceptIds"]) or len(set(section["conceptIds"])) != len(section["conceptIds"]):
             bad("SOURCE_CONCEPT", "Sections must bind to selected source concepts")
         seen.update(section["conceptIds"])

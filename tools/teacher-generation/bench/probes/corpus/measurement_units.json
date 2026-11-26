@@ -17,7 +17,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "PRINTED_TASK_MISMATCH"
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -36,7 +36,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "PRINTED_TASK_MISMATCH"
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -59,9 +59,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "235 ס״מ = ___ מטרים ו־___ ס״מ",
-    "key": "2 מטרים ו־ 35 ס״מ"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -80,7 +80,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "PRINTED_TASK_MISMATCH"
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -118,7 +118,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "PRINTED_TASK_MISMATCH"
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -137,7 +137,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "PRINTED_TASK_MISMATCH"
+    "code": "SOURCE_NOTATION"
    }
   },
   {

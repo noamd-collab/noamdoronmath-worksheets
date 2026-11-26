@@ -542,11 +542,27 @@ class OfflineSmokeTests(unittest.TestCase):
         import shutil
         from validation import validate_model
         cases = json.loads((self.FIXTURES / "manifest.json").read_text())["cases"]
-        # No fixture is dropped: the smoke still runs all twelve, and these three must be refused.
+        # No fixture is dropped: the smoke still runs all twelve, and these three must be refused: two by the
+        # trusted adapter, and grade4-skill-calculation when its reply is read (its blank beside the table has no
+        # binder), at the same question and item the adapter named before.
         self.assertEqual(len(cases), 12)
-        self.assertEqual(self.smoke.REFUSED, {"grade2-vocalized": (1, 1), "grade4-fractions": (1, 1),
-                                              "grade4-skill-calculation": (9, 1)})
-        self.assertLessEqual(set(self.smoke.REFUSED), set(cases))
+        self.assertEqual(self.smoke.REFUSED, {"grade2-vocalized": (1, 1), "grade4-fractions": (1, 1)})
+        self.assertEqual(self.smoke.REFUSED_AT_SOURCE, {"grade4-skill-calculation": ("PRINTED_TASK_MISMATCH", 9, 1)})
+        self.assertLessEqual(set(self.smoke.REFUSED) | set(self.smoke.REFUSED_AT_SOURCE), set(cases))
+        case = "grade4-skill-calculation"
+        lesson = self.lesson(case)
+        model = json.loads((self.FIXTURES / case / "model-output.json").read_text())
+        self.assertEqual(self.smoke.source_refused_case(case, lesson, model),
+                         {"case": case, "topicId": lesson["topicId"], "status": "REFUSED", "automatedChecksPassed": False,
+                          "refusal": {"step": "source", "code": "PRINTED_TASK_MISMATCH", "action": "replace",
+                                      "question": 9, "item": 1},
+                          "reviewFindings": [], "manifest": None})
+        # A reply refused at another question never qualifies as that refusal.
+        moved = json.loads(json.dumps(model))
+        questions = moved["sections"][0]["questions"]
+        questions[7], questions[8] = questions[8], questions[7]
+        with self.assertRaises(RuntimeError):
+            self.smoke.source_refused_case(case, lesson, moved)
         for case, (question, item) in self.smoke.REFUSED.items():
             with self.subTest(case=case):
                 lesson = self.lesson(case)

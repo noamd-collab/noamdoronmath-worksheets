@@ -121,7 +121,18 @@ class WirePathTests(unittest.TestCase):
                 ("ב10", "הַשְׁלִימוּ.", "7 + [[___]] = [[15]]", "9"), ("ג10", "חשבו.", "חשבו: 24 : 6 = ___", "5"),
                 ("ג10", "חשבו.", "24 : 6 = ___ .", "5"), ("ג10", "חשבו.", "מהו 24 : 6 = ___ ?", "5"),
                 ("ג10", "חשבו.", "24 : 6 = [[___]]", "5"), ("ה28", "השלימו.", "[[3.47]] = [[3]] + [[0.4]] + ___", "0.07"),
-                ("ג22", "המירו.", "3 מטרים = ___ ס״מ", "300")):
+                ("ג22", "המירו.", "3 מטרים = ___ ס״מ", "300"),
+                # An "=" in the sentence is refused also when every number of the conversion is marked.
+                ("ג22", "המירו.", "[[3]] מטרים = ___ ס״מ", "300"), ("ג19", "המירו.", "[[150]] דקות = ___ שעות ו־___ דקות", "150"),
+                # Round 3: a letter, a word or a fullwidth sign as the relation, another blank, a calculation outside
+                # an island, and a colon that touches a blank. Each was delivered with the wrong key given here.
+                ("ג10", "השלימו.", "x : [[5]] = [[8]]", "45"), ("ג10", "השלימו.", "[[24]] : ___ שווה [[6]]", "5"),
+                ("ג10", "השלימו.", "[[24]] : ___ ＝ [[6]]", "5"), ("ג10", "חשבו.", "24 : 6 = ?", "5"),
+                ("ג10", "חשבו.", "24 : ? = 6", "5"), ("ג10", "חשבו.", "24 : __ = 6", "5"), ("ג10", "חשבו.", "24 : ⬜ = 6", "5"),
+                ("ג10", "חשבו.", "24 : ( ) = 6", "5"), ("ג10", "חשבו.", "x : 5 = 8", "45"), ("ג10", "חשבו.", "חשבו: 24 : 6", "5"),
+                ("ג10", "חשבו.", "חשבו: [[24]] : [[6]]", "5"), ("ג10", "השלימו.", "___: [[4]] = [[6]]", "20"),
+                ("ג10", "השלימו.", "___:[[4]]=[[6]]", "20"), ("ג10", "השלימו.", "מספר: ___: [[4]] = [[6]]", "20"),
+                ("ג10", "השלימו.", "[[24 : 6]] שווה ___", "4")):
             with self.subTest(prompt=prompt):
                 self.refused(topic_id, intro, prompt, evaluate(typed), code="SOURCE_NOTATION")
         # One complete island: bound by the missing-number binder, which refuses a wrong key.
@@ -132,7 +143,17 @@ class WirePathTests(unittest.TestCase):
         # or the equation in the intro or in a table cell. Refused even with the right key.
         for topic_id, intro, prompt, typed, extra in (
                 ("ג10", "השלימו.", "מהו המספר החסר? [[24 : ___ = 6]]", "4", {}),
-                ("ג22", "המירו.", "[[3]] מטרים = ___ ס״מ", "300", {}),
+                # A conversion into one unit written with words (round 3), with a wrong key and with the right one.
+                ("ג22", "המירו.", "[[3]] מטרים הם ___ ס״מ", "301", {}), ("ג22", "המירו.", "[[3]] מטרים הם ___ ס״מ", "300", {}),
+                ("ג22", "המירו.", "[[3]] מטרים שווים ___ ס״מ", "301", {}),
+                ("ג22", "המירו.", "ב־[[3]] מטרים יש ___ ס״מ", "301", {}), ("ג22", "המירו.", "ב־[[3]] מטרים יש ___ ס״מ", "300", {}),
+                ("ג19", "המירו.", "[[2]] שעות הן ___ דקות", "121", {}), ("ג19", "המירו.", "[[2]] שעות הן ___ דקות", "120", {}),
+                ("ג22", "המירו.", "[[3]] מטרים ו־[[20]] ס״מ הם ___ ס״מ", "321", {}),
+                # Any other blank that no binder fills: beside a closed formula, after a printed calculation, a blank
+                # in the intro.
+                ("ג10", "השלימו.", "התוצאה של [[24 : 6]] היא ___", "4", {}),
+                ("ד07", "מצאו את הטעות.", "יערה חישבה: [[(5 + 3) x 2 = 5 + 6 = 11]]. התוצאה הנכונה היא ___", "(5 + 3) * 2", {}),
+                ("ג10", "המספר החסר הוא ___.", "[[24 : ___ = 6]]", "4", {}),
                 ("ג10", "בתרגיל [[24 : ___ = 6]] חסר מספר.", "מהו המספר החסר?", "4", {}),
                 ("ג10", "השלימו את הטבלה.", "חשבו.", "4",
                  {"table": {"head": ["תרגיל", "תוצאה"], "rows": [["[[24 : ___ = 6]]", "___"]]}})):
@@ -140,8 +161,13 @@ class WirePathTests(unittest.TestCase):
                 error = self.refused(topic_id, intro, prompt, evaluate(typed), **extra)
                 self.assertEqual((error.question, error.item), (1, 1))
         # A binder that recomputes every blank from the printed givens keys a conversion into two units.
-        self.assertEqual(key(bound("ג19", "המירו.", "[[150]] דקות = ___ שעות ו־___ דקות", evaluate("150"))),
+        self.assertEqual(key(bound("ג19", "המירו.", "[[150]] דקות הן ___ שעות ו־___ דקות", evaluate("150"))),
                          "2 שעות ו־30 דקות")
+        # A formula that is a whole equation is not read as one number beside the field's blank.
+        self.assertTrue(printed_parts.prints_blank_equation([{"kind": "text", "text": "___: "},
+                                                             {"kind": "formula", "notation": "4 = 6"}]))
+        self.assertFalse(printed_parts.prints_blank_equation([{"kind": "text", "text": "___ "},
+                                                              {"kind": "formula", "notation": "4 + 6"}]))
         # A sign listed as an option is no equation: the comparison blank keeps its own binder.
         _, item, solved, grade = wire("ג10", "השלימו את הסימן (<, > או =).", "[[24 : 6 ___ 5]]", compare("24/6", "5"))
         self.assertEqual(printed_parts.comparison_blank(item, solved, grade)["rule"], "printed_sign")
@@ -201,11 +227,15 @@ class WirePathTests(unittest.TestCase):
         self.refused("g7:equations", "השלימו.", "[[x = ___]], [[x = ___]]", solve)
         # Before a Hebrew word, an island that ends with its blank is refused for its notation in every grade.
         self.refused("g7:equations", "השלימו.", "[[x = ___]] או [[x = ___]]", solve, code="SOURCE_NOTATION")
-        # The same unknown named twice is one answer, and its equation is solved from the print.
-        question, item, solved, grade = wire("ד07", "השלימו את המספר החסר.", "המספר החסר הוא ___: [[___ + 4 * 3 = 17]]",
+        # The same unknown named twice is one answer, and its equation is solved from the print. A colon touching
+        # the blank would be the division sign, so that spelling is refused for its notation.
+        question, item, solved, grade = wire("ד07", "השלימו את המספר החסר.", "המספר החסר הוא ___. [[___ + 4 * 3 = 17]]",
                                              evaluate("17 - 4 * 3"))
         self.assertIsNone(printed_parts.bind_parts(question, item, solved, grade))
-        self.refused("ד07", "השלימו.", "המספר החסר הוא ___: [[___ + 4 * 3 = 17]]", evaluate("6"))
+        self.refused("ד07", "השלימו.", "המספר החסר הוא ___. [[___ + 4 * 3 = 17]]", evaluate("6"))
+        for typed in ("17 - 4 * 3", "6"):
+            self.refused("ד07", "השלימו.", "המספר החסר הוא ___: [[___ + 4 * 3 = 17]]", evaluate(typed),
+                         code="SOURCE_NOTATION")
 
     def test_quotient_and_remainder_are_keyed_together(self):
         for typed in ("47 / 5", "9", "2"):
@@ -235,13 +265,15 @@ class WirePathTests(unittest.TestCase):
         self.assertEqual(key(bound("ג03", "השלימו את הסדרה.", "[[5]], [[10]], ___, ___, [[25]]", evaluate("15"))), "15, 20")
         self.assertEqual(key(bound("ג03", "השלימו את הסדרה.", "[[2]], [[4]], [[8]], ___, ___", evaluate("16"))), "16, 32")
         self.refused("ג03", "השלימו את הסדרה.", "[[5]], [[10]], ___, ___, [[25]]", evaluate("17"))
-        # One blank with another typed rule is left to the author; only an agreeing value is bound.
-        self.assertIsNone(bound("ג03", "השלימו את הסדרה.", "[[1]], [[2]], [[4]], ___", evaluate("7")))
-        time = bound("ג19", "המירו.", "[[150]] דקות = ___ שעות ו־___ דקות", evaluate("150"))
+        # One blank with another typed rule: no binder fills the blank from the print, so the item is refused;
+        # only an agreeing value is bound.
+        self.refused("ג03", "השלימו את הסדרה.", "[[1]], [[2]], [[4]], ___", evaluate("7"))
+        self.assertEqual(key(bound("ג03", "השלימו את הסדרה.", "[[2]], [[4]], [[6]], ___", evaluate("8"))), "8")
+        time = bound("ג19", "המירו.", "[[150]] דקות הן ___ שעות ו־___ דקות", evaluate("150"))
         self.assertEqual(key(time), "2 שעות ו־30 דקות")
         self.assertEqual(key(bound("ג22", "המירו.", "[[345]] ס״מ הם ___ מטרים ו־___ ס״מ", evaluate("345 / 100"))),
                          "3 מטרים ו־45 ס״מ")
-        self.refused("ג19", "המירו.", "[[150]] דקות = ___ שעות ו־___ דקות", evaluate("140"))
+        self.refused("ג19", "המירו.", "[[150]] דקות הן ___ שעות ו־___ דקות", evaluate("140"))
         # Without a printed size, only a typed unit says what the typed number measures.
         self.assertEqual(key(bound("ג19", "חשבו.", "הסרט נמשך ___ שעות ו־___ דקות", evaluate("150", "דקות"))), "2 שעות ו־30 דקות")
         self.assertEqual(key(bound("ג19", "הסרט נמשך [[150]] דקות.", "כתבו: ___ שעות ו־___ דקות", evaluate("150"))), "2 שעות ו־30 דקות")
@@ -318,9 +350,9 @@ class WirePathTests(unittest.TestCase):
         self.assertEqual(refusal("ד07", "השלימו את הטבלה.", "חשבו את הביטוי שבשורה הראשונה.", evaluate("10 + 2 * 3"),
                                  table=table), "PRINTED_TASK_MISMATCH")
         # Beside any table: the row's own calculation would be printed a second time, another row's
-        # calculation under the name of this row, and an operation on the table's data revealed.
-        self.assertEqual(refusal("ד07", "השלימו את הטבלה.", "הערך החסר בטבלה הוא ___.", evaluate("10 + 2 * 3"),
-                                 table=table), "PRINTED_TASK_MISMATCH")
+        # calculation under the name of this row, and an operation on the table's data revealed. A blank that no
+        # binder fills is refused before the print is even considered.
+        self.refused("ד07", "השלימו את הטבלה.", "הערך החסר בטבלה הוא ___.", evaluate("10 + 2 * 3"), table=table)
         self.assertEqual(refusal("ד07", "השלימו את הטבלה.", "חשבו את הביטוי שבשורה השנייה.", evaluate("10 + 2 * 3"),
                                  table=table), "PRINTED_TASK_MISMATCH")
         filled = {"head": ["ביטוי", "תוצאה"], "rows": [["[[10 + 2 x 3]]", "[[16]]"], ["[[5 x 4 - 2]]", "[[18]]"]]}
