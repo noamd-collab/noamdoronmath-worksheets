@@ -84,6 +84,18 @@ class ConfigurationTests(unittest.TestCase):
                              'GEMINI_MODEL': 'model', 'GEMINI_BASE_URL': 'https://example.invalid', 'GOOGLE_API_KEY': 'other'})
         self.assertEqual(r.env, {'TEACHER_AUTHOR_PROVIDER': 'gemini', 'GEMINI_API_KEY': 'fake', 'GEMINI_MODEL': 'model'})
 
+    def test_child_environment_forwards_only_the_two_v5_switches(self):
+        # Added for stage 4b: the worksheet-wire/5 operator switches reach the worker; look-alikes do not.
+        r = m.ProcessRunner({'WORKER_WAKE_SECRET': KEY, 'HOME': '/home/worker',
+                             'TEACHER_V5_TOPICS': 'g7:algebraic_expressions', 'TEACHER_V5_SITE_READY': '1',
+                             'TEACHER_V5_TOPICS_EXTRA': 'x', 'teacher_v5_topics': 'x', 'TEACHER_V5': '1',
+                             'TEACHER_V6_TOPICS': 'x', 'D22_APPROVED': 'True'})
+        self.assertEqual(r.env, {'HOME': '/home/worker', 'TEACHER_V5_TOPICS': 'g7:algebraic_expressions',
+                                 'TEACHER_V5_SITE_READY': '1'})
+        self.assertEqual(m.ProcessRunner({'HOME': '/home/worker'}).env, {'HOME': '/home/worker'})
+        # 16 names at bafa36f0, 3 author-switch names from #635, and the two v5 switches.
+        self.assertEqual(len(m.CHILD_ENV), 21)
+
     def test_preflight_requires_all_no_side_effect_flags(self):
         proof = {'event': 'worker_preflight_pass', 'claimVerified': False,
                  'providerCalled': False, 'heartbeatWritten': False}

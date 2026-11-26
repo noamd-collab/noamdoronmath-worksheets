@@ -39,6 +39,9 @@ CHILD_ENV = frozenset({
     'QWEN_BASE_URL', 'QWEN_MODEL', 'TEACHER_GENERATION_SERVICE_KEY',
     # The author switch and the Gemini author's own credential and model.
     'TEACHER_AUTHOR_PROVIDER', 'GEMINI_API_KEY', 'GEMINI_MODEL',
+    # Operator switches of the worksheet-wire/5 route (V5-DESIGN §14). Unset by default; the worker
+    # itself decides (provider.author_lesson), so forwarding them grants nothing on its own.
+    'TEACHER_V5_TOPICS', 'TEACHER_V5_SITE_READY',
 })
 
 

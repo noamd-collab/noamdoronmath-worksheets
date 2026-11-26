@@ -12,7 +12,13 @@ export interface RuntimeEnv {
   TEACHER_AUTHOR_PROVIDER?: string;
   GEMINI_API_KEY?: string;
   GEMINI_MODEL?: string;
+  /** Operator switches of the worksheet-wire/5 route (V5-DESIGN §14). Plain Worker vars, unset or empty by default. */
+  TEACHER_V5_TOPICS?: string;
+  TEACHER_V5_SITE_READY?: string;
 }
+// The worker's own topic-id grammar (teacherGenerationContract.ts), as a comma list without spaces.
+const V5_TOPIC = '(?:[א-ו]\\d{2}|g(?:7|8|9r|9m):[a-z][a-z0-9_]{0,80})';
+const V5_TOPIC_LIST = new RegExp(`^${V5_TOPIC}(?:,${V5_TOPIC}){0,39}$`, 'u');
 export interface ContainerPort {
   running: boolean;
   images: Record<string, string>;
@@ -53,12 +59,45 @@ interface SavedState {
 const EMPTY = (): SavedState => ({ mode: 'disabled', preflight: null, approved: null,
   lastCycle: null, failures: 0, nextAttemptAt: 0, lastStartMinute: -1 });
 export const INACTIVITY_MS = 30 * 60 * 1000;
+/** Longest wait for one container-API call. On 2026-11-25 one such call stayed pending for 5 h 36 min;
+ *  through the serial queue it took status, deactivate and every cron tick down with it. */
+export const PLATFORM_CALL_MS = 20 * 1000;
 const PROOF_AGE_MS = 15 * 60 * 1000;
 
 function same(a: Identity | null, b: Identity): boolean {
   return !!a && a.sourceSha === b.sourceSha && a.imageRef === b.imageRef && a.versionId === b.versionId;
 }
 function failure(): Error { return new Error('CLOUD_OPERATION_FAILED'); }
+
+/** Settles within `ms`. A late answer from the platform is dropped, never acted on. */
+export function within<T>(call: Promise<T>, ms: number, onLate?: () => void): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const late = new Promise<never>((_, reject) => { timer = setTimeout(() => { onLate?.(); reject(failure()); }, ms); });
+  return Promise.race([call, late]).finally(() => clearTimeout(timer));
+}
+/** After a rebuild the platform has forgotten the inactivity setting of a container that is still running.
+ *  Not under blockConcurrencyWhile: an unanswered call there would reset the object every 30 seconds.
+ *  One attempt; a busy tick of an active release repeats it every minute. */
+export function rearm(container: ContainerPort, waitUntil: (promise: Promise<unknown>) => void, ms = PLATFORM_CALL_MS,
+  log: (line: string) => void = console.error) {
+  if (container.running) waitUntil(within(container.setInactivityTimeout(INACTIVITY_MS), ms)
+    .catch(() => log(JSON.stringify({ event: 'teacher_cloud_rearm_unconfirmed' }))));
+}
+/** The two worksheet-wire/5 switches in the only form that is forwarded; anything else throws.
+ *  A test runs the values committed in wrangler.jsonc through it, so a bad one fails before a release. */
+export function v5Switches(topics: unknown, ready: unknown): Record<string, string> {
+  if (typeof topics !== 'string' || typeof ready !== 'string') throw failure();
+  const values: Record<string, string> = {};
+  if (topics !== '') {
+    if (topics.length > 2000 || !V5_TOPIC_LIST.test(topics)) throw failure();
+    values.TEACHER_V5_TOPICS = topics;
+  }
+  if (ready !== '') {
+    if (ready !== '1') throw failure();
+    values.TEACHER_V5_SITE_READY = ready;
+  }
+  return values;
+}
 
 async function boundedText(stream: ReadableStream<Uint8Array> | null | undefined): Promise<string> {
   if (!stream) throw failure();
@@ -86,7 +125,29 @@ export class Supervisor {
   constructor(private readonly container: ContainerPort, private readonly store: StateStore,
     private readonly env: RuntimeEnv, private readonly doId: string,
     private readonly waitUntil: (promise: Promise<unknown>) => void,
-    private readonly now = () => Date.now(), private readonly randomId = () => crypto.randomUUID()) {}
+    private readonly now = () => Date.now(), private readonly randomId = () => crypto.randomUUID(),
+    private readonly callMs = PLATFORM_CALL_MS) {}
+
+  // Every awaited container call goes through here, so the serial queue always moves on.
+  // The log line names the call that went unanswered and nothing else.
+  private bounded<T>(call: string, answer: Promise<T>, ms = this.callMs, onLate?: () => void) {
+    return within(answer, ms, () => {
+      console.error(JSON.stringify({ event: 'teacher_cloud_platform_timeout', call }));
+      onLate?.();
+    });
+  }
+  private inspect() { return this.bounded('inspect', this.container.inspect()); }
+  private keepAlive(ms: number) { return this.bounded('setInactivityTimeout', this.container.setInactivityTimeout(ms)); }
+  // The answer can be dropped, the call cannot be withdrawn: a destroy carried out late would stop
+  // whatever container runs then. Until it settles this instance starts no preflight container.
+  private unsettledDestroys = 0;
+  private destroy(reason: string) {
+    const answer = this.container.destroy(reason);
+    return this.bounded('destroy', answer, this.callMs, () => {
+      this.unsettledDestroys++;
+      void answer.catch(() => undefined).then(() => { this.unsettledDestroys--; });
+    });
+  }
 
   private locked<T>(operation: () => Promise<T>): Promise<T> {
     const result = this.serial.then(operation);
@@ -103,7 +164,7 @@ export class Supervisor {
     return result;
   }
   private runtimeEnv(): Record<string, string> {
-    const values = {
+    const values: Record<string, string> = {
       TEACHER_GENERATION_SERVICE_KEY: this.env.TEACHER_GENERATION_SERVICE_KEY,
       QWEN_API_KEY: this.env.QWEN_API_KEY,
       QWEN_BASE_URL: this.env.QWEN_BASE_URL,
@@ -124,22 +185,28 @@ export class Supervisor {
       if (typeof value !== 'string' || value.includes('\0')) throw failure();
       selected[name] = value;
     }
-    return { ...values, ...selected };
+    // Each v5 switch is forwarded only in its exact form; unset or empty forwards nothing (the old path runs).
+    // A malformed value fails closed here, so a preflight refuses the release instead of running half-switched.
+    return { ...values, ...selected, ...v5Switches(this.env.TEACHER_V5_TOPICS ?? '', this.env.TEACHER_V5_SITE_READY ?? '') };
   }
-  private async report() {
+  private async report(lenient = false, seen?: Awaited<ReturnType<ContainerPort['inspect']>>) {
     const state = await this.state();
-    const info = this.container.running ? await this.container.inspect() : null;
+    // Status still answers from stored state when the container cannot be inspected: running
+    // with observedImage null. Every other caller keeps failing closed.
+    const info = !this.container.running ? null : seen !== undefined ? seen
+      : lenient ? await this.inspect().catch(() => null) : await this.inspect();
     return { schemaVersion: 1, ...this.identity(), doId: this.doId, mode: state.mode,
       running: this.container.running, observedImage: info?.image || null,
       preflight: state.preflight, approved: state.approved, lastCycle: state.lastCycle,
       nextAttemptAt: state.nextAttemptAt };
   }
-  status() { return this.locked(() => this.report()); }
+  // Read-only, so not queued: it answers while a preflight or a slow tick holds the queue.
+  async status() { return this.report(true); }
 
   preflight() {
     return this.locked(async () => {
       const state = await this.state();
-      if (state.mode !== 'disabled' || this.container.running) throw failure();
+      if (state.mode !== 'disabled' || this.container.running || this.unsettledDestroys) throw failure();
       const identity = this.identity();
       const runtimeEnv = this.runtimeEnv();
       const runId = this.randomId();
@@ -155,9 +222,15 @@ export class Supervisor {
           env: {}, labels: { run: runId, source: identity.sourceSha, mode: 'preflight' },
           entrypoint: ['/usr/bin/tini', '--', '/usr/local/bin/python', '-c', 'import time; time.sleep(180)'] });
         owned = true;
-        await this.container.setInactivityTimeout(180000);
-        const process = await this.container.exec(['/usr/local/bin/python', '-B',
+        await this.keepAlive(180000);
+        // exec also waits for a container that is still starting, so it gets three times the limit.
+        const started = this.container.exec(['/usr/local/bin/python', '-B',
           '/opt/noam/app/remote_worker.py', '--check-only'], { env: runtimeEnv, stdout: 'pipe', stderr: 'ignore' });
+        // A check that starts after nobody waits for it is stopped, and its exit is nobody's error.
+        const process = await this.bounded('exec', started, 3 * this.callMs, () => void started.then(late => {
+          void late.exitCode.catch(() => undefined);
+          try { late.kill(15); } catch { /* never expose platform errors */ }
+        }, () => undefined));
         const exit = process.exitCode.then(code => { exited = true; return code; });
         const timeout = new Promise<never>((_, reject) => {
           timer = setTimeout(() => {
@@ -171,10 +244,10 @@ export class Supervisor {
         if (exitCode !== 0 || !result || Object.keys(result).sort().join(',') !== expected.join(',') ||
             result.event !== 'worker_preflight_pass' || result.claimVerified !== false ||
             result.providerCalled !== false || result.heartbeatWritten !== false) throw failure();
-        const info = await this.container.inspect();
+        const info = await this.inspect();
         if (info?.image !== identity.imageRef || info.labels.run !== runId) throw failure();
         // An explicit reason makes monitor reject, never masquerade as a successful worker cycle.
-        await this.container.destroy('PREFLIGHT_COMPLETE');
+        await this.destroy('PREFLIGHT_COMPLETE');
         owned = false;
         state.preflight = { ...identity, status: 'PASS', observedImage: info.image,
           checkedAt: new Date(this.now()).toISOString(), claimVerified: false,
@@ -182,9 +255,10 @@ export class Supervisor {
         await this.store.put('state', state);
         return this.report();
       } catch {
-        if (owned) {
-          const info = await this.container.inspect().catch(() => null);
-          if (info?.labels.run === runId) await this.container.destroy('PREFLIGHT_FAILED').catch(() => undefined);
+        // With a destroy already on its way a second one is not sent: neither can be withdrawn.
+        if (owned && !this.unsettledDestroys) {
+          const info = await this.inspect().catch(() => null);
+          if (info?.labels.run === runId) await this.destroy('PREFLIGHT_FAILED').catch(() => undefined);
         }
         throw failure();
       } finally { if (timer) clearTimeout(timer); }
@@ -195,6 +269,7 @@ export class Supervisor {
     return this.locked(async () => {
       const state = await this.state();
       const identity = this.identity();
+      this.runtimeEnv();
       const age = this.now() - Date.parse(state.preflight?.checkedAt ?? '');
       if (!same(requested, identity) || !same(state.preflight, identity) ||
           state.preflight?.status !== 'PASS' || state.preflight.observedImage !== identity.imageRef ||
@@ -212,7 +287,7 @@ export class Supervisor {
       state.mode = 'disabled'; state.approved = null;
       await this.store.put('state', state);
       // Do not interrupt an author request or a render already in progress.
-      return this.report();
+      return this.report(true);
     });
   }
 
@@ -222,9 +297,13 @@ export class Supervisor {
     const finish = (ok: boolean) => this.locked(async () => {
       const state = await this.state();
       if (state.lastCycle?.runId !== cycle.runId) return;
+      // A run recorded as failed when its start-up call went unanswered is one failure, not two.
+      // Its pause still runs from the moment it failed.
+      const counted = state.lastCycle.status === 'failed';
       state.lastCycle = { ...cycle, status: ok ? 'exited' : 'failed', completedAt: new Date(this.now()).toISOString() };
-      state.failures = ok ? 0 : Math.min(state.failures + 1, 5);
-      state.nextAttemptAt = ok ? 0 : this.now() + Math.min(15, 2 ** (state.failures - 1)) * 60000;
+      state.failures = ok ? 0 : counted ? state.failures : Math.min(state.failures + 1, 5);
+      state.nextAttemptAt = ok ? 0
+        : Math.max(state.nextAttemptAt, this.now() + Math.min(15, 2 ** (state.failures - 1)) * 60000);
       await this.store.put('state', state);
     });
     // A successful cycle is not a successful worksheet: only the existing DB result says that.
@@ -236,12 +315,14 @@ export class Supervisor {
       const identity = this.identity();
       if (state.mode !== 'active' || !same(state.approved, identity)) return this.report();
       if (this.container.running) {
-        const info = await this.container.inspect();
+        const info = await this.inspect();
         if (info?.image && info.image !== identity.imageRef) throw failure();
         if (!state.lastCycle || info?.labels.run !== state.lastCycle.runId) throw failure();
-        await this.container.setInactivityTimeout(INACTIVITY_MS);
+        // Watch first: monitor() reports the run's end and keeps the object with its container,
+        // also when the keep-alive below goes unanswered.
         this.watch(state.lastCycle);
-        return this.report();
+        await this.keepAlive(INACTIVITY_MS);
+        return this.report(false, info);
       }
       if (state.lastCycle?.status === 'running') {
         // Lost observation is not proof of a clean exit. Pause; the DB lease decides job fate.
@@ -261,8 +342,8 @@ export class Supervisor {
       try {
         this.container.start({ image: identity.imageRef, instance: 'standard-1', enableInternet: true,
           env: this.runtimeEnv(), labels: { run: cycle.runId, source: identity.sourceSha, mode: 'cycle' } });
-        await this.container.setInactivityTimeout(INACTIVITY_MS);
         this.watch(cycle);
+        await this.keepAlive(INACTIVITY_MS);
       } catch {
         // Never start another process here. A subsequent minute uses backoff/DB lease rules.
         state.lastCycle = { ...cycle, status: 'failed', completedAt: new Date(this.now()).toISOString() };
