@@ -14,6 +14,7 @@
       9,
       10,
       11,
+      13,
       14,
       15,
       19
@@ -63,7 +64,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 5,
@@ -99,7 +100,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 10,
@@ -112,6 +113,15 @@
         ],
         "group": "practice",
         "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 13,
         "stage": "source"
        },
        {
@@ -142,9 +152,9 @@
         "stage": "source"
        }
       ],
-      "missing": 10,
+      "missing": 11,
       "planned": 20,
-      "printed": 10,
+      "printed": 9,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -186,8 +196,8 @@
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"20/4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 5,
@@ -207,7 +217,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"8*4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 8,
@@ -225,8 +235,8 @@
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5*9\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 10,
@@ -236,7 +246,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6*2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 11,
@@ -244,9 +254,19 @@
      "substring": "עבור [[12 : 2 = 6]], דרך א' היא [[6 x 2]]. דרך ב' היא [[2 x 6]]. האם שתיהן נכונות?"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"10/2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs an order of numbers, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "מהי המנה של [[10 : 2]]?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"56/8\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 14,
@@ -266,7 +286,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "challenges",
      "index": 2,
@@ -275,7 +295,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 10,
+    "failingAlone": 11,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -301,23 +321,27 @@
      "questions": [
       1,
       5,
+      6,
       8,
       10,
+      11,
       12,
       13,
+      14,
       15,
       16,
-      17
+      17,
+      19
      ],
      "requested": true,
      "requiredKeys": [
       "q1",
       "q10",
+      "q11",
       "q12",
-      "q13",
-      "q15",
-      "q16",
+      "q19",
       "q5",
+      "q6",
       "q8"
      ]
     },
@@ -363,6 +387,15 @@
        {
         "action": "missing",
         "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_EXPRESSION_SCOPE"
         ],
         "group": "practice",
@@ -376,6 +409,15 @@
         ],
         "group": "practice",
         "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 11,
         "stage": "source"
        },
        {
@@ -402,6 +444,15 @@
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
+        "question": 14,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
         "question": 15,
         "stage": "source"
        },
@@ -417,16 +468,25 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 17,
         "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
        }
       ],
-      "missing": 9,
+      "missing": 13,
       "planned": 20,
-      "printed": 11,
+      "printed": 7,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -476,6 +536,16 @@
      "substring": "כתבו ביטוי מתמטי עבור המשפט: 'כפולת של 3 ו-4, פחות 2'."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"2*5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "בחידוש [[7 + 2 * 5]], איזו פעולה ראשונה?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"2*5-3\", \"kind\": \"evaluate\"}, \"unit\": \"עוגיות\"}",
      "code": "PRINTED_EXPRESSION_SCOPE",
      "detail": "Unverified pupil exercise or mismatched expression at q1.item.1",
@@ -496,9 +566,19 @@
      "substring": "כתבו ביטוי עם סוגריים שתוצאתו היא 12."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(1+2)*3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs an order of numbers, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "חשבו את [[(1+2)*3]]."
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"50\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 12,
@@ -515,9 +595,19 @@
      "substring": "[[(x + 2) * 3 = 15]]"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"2*10+2*20\", \"kind\": \"evaluate\"}, \"unit\": \"שקלים\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.2",
+     "field": "item.2",
+     "group": "practice",
+     "index": 14,
+     "question": 14,
+     "substring": "אילו הייתה הזמנה של 2 מנות ראשונות ו-2 מנות עיקריות, מה הייתה העלות?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/20\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a ratio, a time of day or who or which, not a scalar at q1.item.3",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.3",
      "field": "item.3",
      "group": "practice",
      "index": 15,
@@ -527,7 +617,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"15\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.3",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.3",
      "field": "item.3",
      "group": "practice",
      "index": 16,
@@ -535,18 +625,28 @@
      "substring": "האם התוצאות שוות? (כן/לא)"
     },
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(10+2)*3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
-     "field": "item.3",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"10+2*3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
+     "field": "item.1",
      "group": "practice",
      "index": 17,
      "question": 17,
-     "substring": "איזה סוגריים היו יכולים לתת את התוצאה 36?"
+     "substring": "תלמיד חישב [[10 + 2 * 3]] וקיבל 36. איזו שגיאה עשה?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(20+4*3)/4\", \"kind\": \"evaluate\"}, \"unit\": \"עפרונות\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.2",
+     "field": "item.2",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "אילו המורה הייתה מחלקת את העפרונות לאחר הוספת 3 עפרונות לכל תלמיד, מה היה הביטוי?"
     }
    ],
    "questions": {
-    "failingAlone": 9,
+    "failingAlone": 13,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -696,7 +796,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(9 - 1) / 2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 8,
@@ -715,7 +815,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"25 - 10\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a comparison sign, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 14,
@@ -1387,6 +1487,7 @@
       7,
       8,
       11,
+      13,
       14,
       18,
       19
@@ -1445,7 +1546,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 5,
@@ -1484,6 +1585,15 @@
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
         "question": 14,
         "stage": "source"
        },
@@ -1499,16 +1609,16 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "PRINTED_ANSWER_KIND"
         ],
         "group": "challenges",
         "question": 19,
         "stage": "source"
        }
       ],
-      "missing": 9,
+      "missing": 10,
       "planned": 20,
-      "printed": 11,
+      "printed": 10,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -1559,14 +1669,14 @@
      "substring": "30 : [[___]] = 5"
     },
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
-     "field": "item.2",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"12/2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
+     "field": "item.1",
      "group": "practice",
      "index": 5,
      "question": 5,
-     "substring": "איזה תרגיל נותן תוצאה קטנה יותר: [[24 : 4]] או [[24 : 6]]?"
+     "substring": "איזה תרגיל נותן תוצאה גדולה יותר: [[12 : 2]] או [[12 : 3]]?"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -1581,7 +1691,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"16/4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 8,
@@ -1591,7 +1701,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"4*5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a ratio, a time of day or who or which, not a scalar at q1.item.1",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 11,
@@ -1599,9 +1709,19 @@
      "substring": "מי מהשיטות הבאות בודקת נכון את התרגיל [[20 : 4 = 5]]? א. [[4 x 5 = 20]]. ב. [[20 + 4 = 24]]."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"12/3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs an order of numbers, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "מהי התוצאה של [[12 : 3]]?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"50/10\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 14,
@@ -1611,7 +1731,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6*7\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "challenges",
      "index": 1,
@@ -1619,18 +1739,18 @@
      "substring": "מספר חולק ב-6 והתקבל 7. האם המספר המקורי גדול מ-40?"
     },
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6*9\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
-     "field": "item.3",
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"4*7\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
+     "field": "item.1",
      "group": "challenges",
      "index": 2,
      "question": 19,
-     "substring": "יוסי כתב ש-[[54 : 6 = 9]]. בדקו באמצעות כפל האם התשובה נכונה."
+     "substring": "דני כתב ש-[[32 : 4 = 7]]. בדקו באמצעות כפל האם התשובה נכונה."
     }
    ],
    "questions": {
-    "failingAlone": 9,
+    "failingAlone": 10,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
@@ -1657,8 +1777,10 @@
       3,
       5,
       6,
+      7,
       8,
       12,
+      13,
       14,
       15,
       18,
@@ -1667,12 +1789,12 @@
      "requested": true,
      "requiredKeys": [
       "q12",
-      "q14",
       "q18",
       "q20",
       "q3",
       "q5",
       "q6",
+      "q7",
       "q8"
      ]
     },
@@ -1730,6 +1852,15 @@
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
+        "question": 7,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
         "question": 8,
         "stage": "source"
        },
@@ -1740,6 +1871,15 @@
         ],
         "group": "practice",
         "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 13,
         "stage": "source"
        },
        {
@@ -1779,9 +1919,9 @@
         "stage": "source"
        }
       ],
-      "missing": 9,
+      "missing": 11,
       "planned": 20,
-      "printed": 11,
+      "printed": 9,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -1823,7 +1963,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(2+3)*4-(2+3*4)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 5,
@@ -1841,9 +1981,19 @@
      "substring": "בחישוב [[(___) + 4] * 3 = 21]], מהו המספר החסר?"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5-2+3\", \"kind\": \"evaluate\"}, \"unit\": \"סוכריות\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "סיפור: 'לקחתי 5 סוכריות, אכלתי 2, ואז קיבלתי עוד 3.' איזה ביטוי מתאים? [[5 - 2 + 3]] או [[5 - (2 + 3)]]?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"7+2*3\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 8,
@@ -1861,9 +2011,19 @@
      "substring": "כתבו ביטוי עם סוגריים שתוצאתו היא [[10]]. השתמשו במספרים [[2]] ו[[3]]."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"4+2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs an order of numbers, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "מהו השלב הראשון בחישוב [[(4 + 2) * 3]]?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(5+5)*2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 14,
@@ -1900,7 +2060,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 9,
+    "failingAlone": 11,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
@@ -1925,10 +2085,12 @@
      "answered": false,
      "questions": [
       6,
+      13,
       18
      ],
      "requested": true,
      "requiredKeys": [
+      "q13",
       "q18",
       "q6"
      ]
@@ -1968,14 +2130,23 @@
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
         "group": "challenges",
         "question": 18,
         "stage": "source"
        }
       ],
-      "missing": 2,
+      "missing": 3,
       "planned": 20,
-      "printed": 18,
+      "printed": 17,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -2015,6 +2186,16 @@
      "substring": "מצאו את הערך החסר בטבלה המתארת משוואות פשוטות."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5 - 1\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs an order of numbers, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "פתרו את [[x + 1 = 5]]."
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"10 + 5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.2",
@@ -2026,7 +2207,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 2,
+    "failingAlone": 3,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
@@ -2143,7 +2324,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(15/100)*100\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a comparison sign, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 14,
@@ -2297,7 +2478,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(4*3)/(3*3)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a ratio, a time of day or who or which, not a scalar at q1.item.1",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 17,
@@ -3217,10 +3398,7 @@
      "questions": [],
      "requested": true,
      "requiredKeys": [
-      "q10",
-      "q12",
-      "q4",
-      "q8"
+      "q9"
      ]
     },
     "firstPass": {
@@ -3245,44 +3423,17 @@
        {
         "action": "missing",
         "codes": [
-         "G32",
-         "G61"
+         "TRUSTED_ADAPTER",
+         "PRINTED_TASK_MISMATCH"
         ],
         "group": "practice",
-        "question": 4,
-        "stage": "precheck"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "G32"
-        ],
-        "group": "practice",
-        "question": 8,
-        "stage": "precheck"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "G61"
-        ],
-        "group": "challenges",
-        "question": 10,
-        "stage": "precheck"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "G32"
-        ],
-        "group": "challenges",
-        "question": 12,
+        "question": 9,
         "stage": "precheck"
        }
       ],
-      "missing": 4,
+      "missing": 1,
       "planned": 12,
-      "printed": 8,
+      "printed": 11,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -3290,8 +3441,8 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gateCode": "G32",
-    "question": 4,
+    "gateCode": "TRUSTED_ADAPTER",
+    "question": 9,
     "stage": "precheck"
    },
    "lesson": {
@@ -3314,14 +3465,10 @@
    "prechecks": [
     {
      "codes": [
-      "G32",
-      "G61"
+      "TRUSTED_ADAPTER"
      ],
      "questions": [
-      4,
-      8,
-      10,
-      12
+      9
      ],
      "status": "replace"
     }
@@ -3618,7 +3765,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 11,
@@ -3715,8 +3862,8 @@
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6 * 4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 11,
@@ -5549,13 +5696,14 @@
      "substring": "נתון מספר חיובי שאם נעלה אותו בריבוע ונחסר ממנו [[12]], נקבל מספר השווה לפי [[4]] מהמספר המקורי."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"0\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The question does not ask about one relation that can be decided",
-     "field": "item.2.answer",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
+     "field": "item.1",
      "group": "challenges",
      "index": 2,
      "question": 19,
-     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0\", \"relation\": \"ne\", \"right\": \"0\"}, \"unit\": \"\"}"
+     "substring": "תלמיד פתר את המשוואה [[x^2 = 5*x]] על ידי חלוקה ב־[[x]] וקיבל רק את הפתרון [[x = 5]]. איזה פתרון חוקי נוסף של המשוואה אב…"
     },
     {
      "code": "SOURCE_NOTATION",
@@ -5596,13 +5744,15 @@
       8,
       12,
       14,
-      15
+      15,
+      20
      ],
      "requested": true,
      "requiredKeys": [
       "q12",
       "q14",
       "q15",
+      "q20",
       "q8"
      ]
     },
@@ -5684,6 +5834,15 @@
        {
         "action": "reserve",
         "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_TASK_MISMATCH"
         ],
         "group": "challenges",
@@ -5691,9 +5850,9 @@
         "stage": "source"
        }
       ],
-      "missing": 4,
+      "missing": 5,
       "planned": 20,
-      "printed": 16,
+      "printed": 15,
       "reservesOffered": 4,
       "reservesRefused": 1
      }
@@ -5780,6 +5939,16 @@
      "substring": "תלמיד הביא משוואה לצורה [[(x - 5)*(x + 1) = 0]]. מה הייתה המשוואה המקורית בצורה סטנדרטית לפני הפירוק לגורמים? מצאו את הא…"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"0\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.2",
+     "field": "item.2",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "תלמיד פתר את המשוואה [[x^2 = 9*x]] על ידי חלוקה ב־[[x]] ומצא רק את הפתרון [[x = 9]]. איזה פתרון נוסף הושמט?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"x*(x + 5)\", \"rhs\": \"24\", \"variable\": \"x\"}, \"unit\": \"\"}",
      "code": "PRINTED_TASK_MISMATCH",
      "detail": "The typed equation uses the numerator and the denominator of the printed fraction as two separate numbers, not the fraction",
@@ -5800,7 +5969,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 8,
+    "failingAlone": 9,
     "total": 24
    },
    "recorded": "2026-11-23 19:40Z",
@@ -6573,6 +6742,7 @@
     "correction": {
      "answered": false,
      "questions": [
+      2,
       5,
       12,
       13,
@@ -6585,6 +6755,7 @@
       "q13",
       "q14",
       "q17",
+      "q2",
       "q5"
      ]
     },
@@ -6599,7 +6770,7 @@
    "delivered": false,
    "delivery": null,
    "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
-   "finalCode": "QUALITY_GATE_FAILED",
+   "finalCode": "PRINTED_ANSWER_LEAK",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-g3",
@@ -6607,7 +6778,7 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 5,
+      "dropped": 0,
       "events": [
        {
         "action": "reserve",
@@ -6619,7 +6790,7 @@
         "stage": "source"
        },
        {
-        "action": "reserve",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -6628,7 +6799,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -6637,16 +6808,16 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 12,
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -6655,7 +6826,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "SOURCE_SHAPE"
         ],
@@ -6664,37 +6835,26 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "G33"
         ],
         "group": "practice",
         "question": 17,
         "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "G32"
-        ],
-        "group": "practice",
-        "question": 15,
-        "stage": "precheck"
        }
       ],
-      "missing": 1,
+      "missing": 6,
       "planned": 20,
       "printed": 14,
       "reservesOffered": 4,
-      "reservesRefused": 1
+      "reservesRefused": 2
      }
     ],
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gateCode": "G32",
-    "question": 11,
-    "stage": "precheck"
+    "stage": "source"
    },
    "lesson": {
     "domain": "operations",
@@ -6713,17 +6873,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "live round 1 (milestone 2), b-g3-division, call 1, corrections: calls [2]",
-   "prechecks": [
-    {
-     "codes": [
-      "G32"
-     ],
-     "questions": [
-      11
-     ],
-     "status": "replace"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -6758,8 +6908,8 @@
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"9 * 8\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 12,
@@ -6794,6 +6944,16 @@
      "substring": "שחזרו את המספר החסר המקיים את האילוץ הנתון."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"28 / 4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "reserves",
+     "index": 2,
+     "question": null,
+     "substring": "ידוע כי [[20 / 4 = 5]] וכי [[32 / 4 = 8]]. חשבו את התוצאה של [[28 / 4]]:"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6 * 7\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_LEAK",
      "detail": "An item prints its own answer beside its question",
@@ -6802,10 +6962,20 @@
      "index": 3,
      "question": null,
      "substring": "אם הבדיקה הראתה כי [[6 * 7 = 42]], מה היה המחולק בתרגיל [[___ / 7 = 6]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"7 * 8\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "reserves",
+     "index": 4,
+     "question": null,
+     "substring": "כדי לבדוק את [[56 / 8]], אפשר לחשב [[7 * 8]] או [[8 * 7]]. חשבו את המכפלה: [[7 * 8]]"
     }
    ],
    "questions": {
-    "failingAlone": 8,
+    "failingAlone": 10,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -7500,9 +7670,12 @@
     "contract": "worksheet-source/4",
     "correction": {
      "answered": false,
-     "questions": [],
+     "questions": [
+      11
+     ],
      "requested": true,
      "requiredKeys": [
+      "q11",
       "rule"
      ]
     },
@@ -7551,7 +7724,7 @@
         "stage": "source"
        },
        {
-        "action": "reserve",
+        "action": "missing",
         "codes": [
          "SOURCE_NOTATION"
         ],
@@ -7560,11 +7733,11 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 1,
       "planned": 20,
-      "printed": 20,
+      "printed": 19,
       "reservesOffered": 4,
-      "reservesRefused": 0
+      "reservesRefused": 1
      }
     ],
     "attempts": 1,
@@ -7620,9 +7793,19 @@
      "substring": "[[frac(x,100) = 0.54]]"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"1 * 20\", \"kind\": \"evaluate\"}, \"unit\": \"%\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs an order of numbers, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "reserves",
+     "index": 1,
+     "question": null,
+     "substring": "המירו את השבר [[frac(1,5)]] לאחוזים."
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"17 * 2\", \"kind\": \"evaluate\"}, \"unit\": \"%\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "reserves",
      "index": 4,
@@ -7631,7 +7814,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 4,
+    "failingAlone": 5,
     "total": 24
    },
    "recorded": "2026-11-23 19:40Z",
@@ -7659,6 +7842,7 @@
       6,
       10,
       11,
+      13,
       14,
       16,
       17,
@@ -7669,9 +7853,9 @@
      "requiredKeys": [
       "q10",
       "q11",
+      "q13",
       "q14",
       "q16",
-      "q17",
       "q19",
       "q20",
       "q6"
@@ -7737,6 +7921,15 @@
        {
         "action": "missing",
         "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_TASK_MISMATCH"
         ],
         "group": "practice",
@@ -7780,9 +7973,9 @@
         "stage": "source"
        }
       ],
-      "missing": 8,
+      "missing": 9,
       "planned": 20,
-      "printed": 12,
+      "printed": 11,
       "reservesOffered": 4,
       "reservesRefused": 3
      }
@@ -7847,6 +8040,16 @@
      "index": 11,
      "question": 11,
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"3\", \"relation\": \"eq\", \"right\": \"3\"}, \"unit\": \"\"}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"90\", \"kind\": \"evaluate\"}, \"unit\": \"מעלות\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "סרטטו מלבן שאלכסוניו מאונכים זה לזה. מהו גודל הזווית שבין אלכסוניו במעלות?"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"25\", \"relation\": \"gt\", \"right\": \"2 * 9\"}, \"unit\": \"\"}",
@@ -7926,7 +8129,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 12,
+    "failingAlone": 13,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -8802,6 +9005,15 @@
        {
         "action": "reserve",
         "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
          "SOURCE_PLAIN_MATH"
         ],
         "group": "challenges",
@@ -8851,6 +9063,16 @@
      "substring": "השלימו את החלק החסר להשלמת השלם ([[100%]])."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"compare\", \"left\": \"100 * (20 / 100)\", \"right\": \"200 * (10 / 100)\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a comparison key at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "השוו בין [[20%]] מתוך [[100]] לבין [[10%]] מתוך [[200]]."
+    },
+    {
      "code": "SOURCE_PLAIN_MATH",
      "detail": "Middle-school numbers and Latin names require typed spans at q1.item.1.prompt",
      "field": "item.1.prompt",
@@ -8861,7 +9083,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 2,
+    "failingAlone": 3,
     "total": 24
    },
    "recorded": "2026-11-23 21:04Z",
@@ -8887,13 +9109,13 @@
    "gemini": {
     "cases": 21,
     "delivered": 4,
-    "failingAlone": 168,
+    "failingAlone": 174,
     "questions": 484
    },
    "qwen": {
     "cases": 14,
     "delivered": 1,
-    "failingAlone": 113,
+    "failingAlone": 122,
     "questions": 272
    }
   },
@@ -8927,8 +9149,8 @@
   "questions": {
    "byCode": {
     "NOT_AN_OBJECT": 8,
-    "PRINTED_ANSWER_KIND": 64,
-    "PRINTED_ANSWER_LEAK": 58,
+    "PRINTED_ANSWER_KIND": 86,
+    "PRINTED_ANSWER_LEAK": 51,
     "PRINTED_EXPRESSION_SCOPE": 4,
     "PRINTED_TASK_MISMATCH": 27,
     "QUALITY_GATE_FAILED": 3,
@@ -8942,8 +9164,8 @@
     "SOURCE_TEXT": 20,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 281,
-   "failingShare": 0.3717,
+   "failingAlone": 296,
+   "failingShare": 0.3915,
    "total": 756
   },
   "secondAttemptsNotRecorded": 2

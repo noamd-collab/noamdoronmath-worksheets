@@ -89,10 +89,15 @@ operations, bounded equations/systems, inequalities and descriptive statistics.
 No model string is passed to eval, exec or a symbolic expression parser.
 Computed answers are derived from the typed task. The task is printed after
 a prompt only when the prompt carries no numbers of its own and is a bare
-instruction or question, and never when the print would be the answer; after a
-story of more than one sentence, an intro with numbers or a figure the item is
-refused instead, and beside a table the task is printed only when it is the
-calculation of a row whose result the pupil fills in.
+instruction or question, and never when the print would be the answer. A bare
+instruction is one clause whose every word is on a closed list of words about
+the exercise itself ("חשבו.", "מה הסכום?", "פתרו את המשוואה.",
+`printed_parts.bare_instruction`); after any other prompt (a story, also in one
+sentence), an intro with numbers, a table (also beside a row whose result is
+blank) or a figure the item is refused instead (`PRINTED_TASK_MISMATCH`). A task
+printed from its tree whose minus stands before anything but a number (`-2^4`,
+`-x + 3`) is refused: the tree would print it as `0 − 2^4`, with a zero the task
+never wrote (`printed_parts.refuse_unwritten_zero`, `SOURCE_NOTATION`).
 `printed_parts.py` and the other `printed_*` binders
 tie the key to an exercise that the prompt already shows. A prompt with several
 blanks gets one answer for each blank, or the question is refused.
@@ -100,8 +105,24 @@ blanks gets one answer for each blank, or the question is refused.
 A yes/no or true/false question carries a typed claim (task kind `decide`: an
 order or equality of two expressions, divisibility, membership in a short
 list), and any other typed task for it is refused. The kernel decides it; no
-field holds an authored yes or no. A number is never the key of a requested
-ratio, time of day, or who or which.
+field holds an authored yes or no. What a question asks for is read from its
+intro and its item prompt together, clause by clause, whatever the verb
+(`printed_tasks.requested`, `PRINTED_ANSWER_KIND`): a yes/no or true/false
+question takes only a decision (an item with a blank of its own is not asked
+the intro's yes/no, nor beside a printed relation the intro's sign); "whether" ("בדקו אם [[32 : 4 = 8]].", "[[32 : 4 = 8]],
+נכון?") takes a decision, and a comparison sign answers it only when no relation
+is printed and the relation is asked in words ("בדקו אם השברים שווים."); a
+comparison sign ("השלימו את הסימן", a relation sign in the words, or a yes/no
+question that offers "קטן או גדול") takes only a `compare` task; an order
+("סדרו", "מהקטן לגדול") takes only a list. A ratio, a time of day, who, or which
+thing other than a number is never keyed: the kernel has no ratio, clock time or
+name to print. A sign, a ratio, who or which is asked for in a clause that is a
+question, holds a blank or tells the pupil to write, state, find, complete,
+reduce or calculate it (a closed list of verbs); a time of day by "איזו שעה",
+by "מתי" or the hour or clock in a question or beside a blank, or by an
+instruction to write the hour in a clause that states none. A ratio stated with its value is
+data, a comparison sign may answer "the relation between", and a printed
+proportion with one missing term (`[[2 : 3 = ___ : 12]]`) keys that term.
 `answer_kinds.py` ties the claim to the printed question, by the one printed
 statement whose correctness is asked about or by the relation word, its order
 and the printed quantities, and refuses a true claim that is not that

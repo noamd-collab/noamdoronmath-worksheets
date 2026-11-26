@@ -165,14 +165,21 @@ Schema in `general_source.authoring_schema`; checks in
   Explicit `parts`, `list` and `set` answers come with wire v2 (section 8).
 - **Print rule.** The typed task is printed after the prompt only when the
   prompt shows no number (`printed_parts.shows_task`), and only after a bare
-  instruction or question: after a story of more than one sentence, an intro
-  that states numbers, or a figure the item is refused, and beside a table the
-  task is printed only when it is the calculation of a row whose result the
-  pupil fills in (`printed_parts.refuse_shown_task`, `PRINTED_TASK_MISMATCH`). A later item
-  may not print an earlier item's answer (`printed_parts.answer_leak`,
-  `PRINTED_ANSWER_LEAK`). A minus before anything but a number (`-2^4`, `-x`)
-  is refused in printed math unless it is printed as written: the tree would
-  print it as `0 − 2^4` (`SOURCE_NOTATION`).
+  instruction or question: one clause, every word on the closed list
+  `printed_parts._BARE_WORDS` (what to do with the exercise and what it is:
+  "חשבו.", "מה הסכום?", "פתרו את המשוואה.", "כנסו איברים דומים.";
+  `printed_parts.bare_instruction`). After any other prompt (a story, also in
+  one sentence, or a unit to convert to), an intro that states numbers, a table
+  (also a row whose result is blank beside the same calculation) or a figure
+  the item is refused (`printed_parts.refuse_shown_task`,
+  `PRINTED_TASK_MISMATCH`). A later item may not print an earlier item's answer
+  (`printed_parts.answer_leak`, `PRINTED_ANSWER_LEAK`). A minus before anything
+  but a number (`-2^4`, `-x`) is refused in printed math unless it is printed as
+  written: the tree would print it as `0 − 2^4` (`SOURCE_NOTATION`). This holds
+  for the prompt's notation (`compact_authoring.expression`) and for a typed task
+  printed from its tree after a bare instruction: any subtraction from zero in
+  it is refused, also one the task wrote (`printed_parts.refuse_unwritten_zero`,
+  `SOURCE_NOTATION`).
 - **The key beside its own item** (`printed_parts.check_key_print`, run in
   `validate_question`, so selection, the whole sheet and the adapter agree):
   - an item may not print its own answer, in a complete numeric fact that
@@ -188,13 +195,39 @@ Schema in `general_source.authoring_schema`; checks in
   - a printed fraction read by the task as two numbers ("5/24" typed as
     `x(x+5) = 24`) is `PRINTED_TASK_MISMATCH`; an item that asks for an
     equation and for a number gets no single-number key.
-- **The answer kind the item asks for** (`printed_tasks.validate_computed_request`,
-  `PRINTED_ANSWER_KIND`): a yes/no or true/false question in the item takes only
-  a `decide` task, never a number or a `compare` sign (a question that offers
-  its outcomes, "קטן או גדול מ...", is a comparison); a number is never the key
-  of a requested equation, ratio, time of day, or who or which ("מהו היחס",
-  "מה תהיה השעה", "למי"), and an item without words of its own asks what its
-  intro asks.
+- **The answer kind the question asks for** (`printed_tasks.validate_computed_request`,
+  `PRINTED_ANSWER_KIND`). `printed_tasks.requested` reads the intro and the item
+  prompt, unpointed and clause by clause, by form and not by one verb; a request
+  of the intro applies to every item.
+  - A yes/no or true/false question (`האם ...?`, "נכון או לא נכון") takes only a
+    `decide` task, never a number or a `compare` sign; a yes/no question that
+    offers comparison outcomes ("קטן או גדול מ...") asks for a sign. An item with
+    a blank of its own is not asked the intro's yes/no or "whether", nor, when
+    the blank stands beside a printed relation ("[[3.47 = ___]] שלמים"), the
+    intro's sign.
+  - "Whether" (`בדקו/קבעו/החליטו/בררו ... אם`, any word ending in ו directly
+    before `אם`/`האם`, or a question ending in "נכון?", "שגוי?" without another
+    question word) takes a `decide` task. A `compare` sign
+    answers it only when the item and the intro print no relation and the words
+    ask for it ("בדקו אם השברים שווים."); "בדקו אם [[32 : 4 = 8]]." is refused.
+  - A comparison sign ("סימן", or a relation sign in the words, in a clause
+    that asks for it as below) takes only a `compare` task; an order ("סדרו",
+    "מהקטן לגדול", "בסדר עולה") only a list.
+  - A ratio (any inflection of יחס, or קנה המידה), who (מי) or which thing
+    (איזה/איזו/אילו before a noun that is not a number word such as מספר, אחוז,
+    אורך, מחיר) is never keyed when its clause asks for it: it is a question,
+    holds a blank, or tells the pupil to write, state, find, complete, reduce or
+    calculate it (a closed list of verbs). A time of day is never keyed either:
+    "איזו שעה" anywhere, "מתי" in a question or beside a blank, השעה or השעון in
+    a question or beside a blank, or told to be written in a clause that states
+    no time, and "בשעה" beside a blank. The earlier wording-specific readers
+    ("מהו היחס", "מה תהיה השעה", "למי ...?") still apply anywhere. A ratio
+    stated with its value ("היחס ... הוא [[2:3]]", "ביחס [[2:3]]", "היחס
+    הנתון") and a time stated in a clause that asks nothing are data. A `compare` sign may answer "the relation between" two
+    printed quantities; a printed proportion with one missing term
+    (`[[2 : 3 = ___ : 12]]`) keys that term; "איזו פעולה מבצעים ראשונה" is keyed
+    by the operation's name (`match_printed_task`) or refused.
+  - A number is never the key of a requested equation.
   A prompt that only lists numbers is not keyed by one of them
   (`printed_parts.echoed_given`). A printed inequality binds a typed
   inequality: a chain such as `-3 < 2x + 1 ≤ 7` is refused, and one printed
@@ -415,7 +448,7 @@ Run from the repository root. Full guide: `bench/README.md`.
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
 - **Recorded state:** replay delivers 5 of 35 cases with no further model
-  call, and 281 of 756 questions are refused alone
+  call, and 296 of 756 questions are refused alone
   (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
   count as failed, so this under-states the live ladder. The key-print checks
   of section 2.4 cost three ג10 replays (A-, B- and G-division) whose

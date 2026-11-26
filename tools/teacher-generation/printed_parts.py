@@ -652,40 +652,81 @@ def shows_task(question, item, solved, *, intro=None):
     return True
 
 
-def _row_exercise(question, solved, grade):
-    """The typed task is the calculation of a table row whose result the pupil fills in."""
-    task = solved["question"]
-    if task.get("kind") != "evaluate":
+# The only words of a bare instruction or question about the exercise that
+# follows it: what to do with it and what it is. Any other word (a die, a
+# class, a unit to convert to) tells a story, and the printed task would show
+# its operation. Unpointed, each word may carry a leading ו.
+_BARE_WORDS = frozenset((
+    "חשבו", "פתרו", "פשטו", "כנסו", "מצאו", "השלימו", "כתבו", "רשמו", "פרקו", "פתחו", "חברו", "חסרו", "כפלו",
+    "חלקו", "צמצמו", "הציבו", "הרחיבו", "המירו", "סדרו",
+    "את", "של", "כל", "הבא", "הבאה", "הבאים", "הבאות", "בטור", "במאונך", "לגורמים",
+    "התוצאה", "תוצאת", "התוצאות", "הביטוי", "ביטוי", "הביטויים", "ערך", "הערך", "התרגיל", "התרגילים", "המשוואה",
+    "המשוואות", "אי", "השוויון", "הפתרון", "הפתרונות", "הסכום", "ההפרש", "המכפלה", "המנה", "הסימן", "המתאים",
+    "איברים", "דומים", "הסוגריים", "החבור", "החיבור", "החיסור", "הכפל", "החילוק", "המספר", "המספרים", "השבר",
+    "השברים", "שני", "הממשיים", "ממשיים", "השלמים", "שלמים", "החיוביים", "חיוביים", "השליליים", "שליליים",
+    "מה", "מהו", "מהי", "כמה", "זה", "יש", "ביחד", "מקבלים", "כשמחברים", "כשמחסרים", "כשכופלים", "כשמחלקים",
+))
+
+
+def bare_instruction(spans):
+    """True when the prompt is one instruction or question that names only the exercise.
+
+    One clause, no number, and only the words of ``_BARE_WORDS``: "חשבו.",
+    "מה הסכום?", "פתרו את המשוואה.". A story in one sentence ("מה ההסתברות
+    לקבל מספר זוגי בהטלת קובייה?") is not bare.
+    """
+    words = " ".join(_words(spans).split())
+    clauses = [part for part in re.split(r"[.!?;,]+", words) if part.strip()]
+    if len(clauses) > 1 or carries_data(spans):
         return False
-    for row in question["table"]["rows"]:
-        if any(len(cell) == 1 and _closed(cell[0], grade) == task["expression"] for cell in row) \
-                and any(blank_count(cell) for cell in row):
-            return True
-    return False
+    return all(word in _BARE_WORDS or (word.startswith("ו") and word[1:] in _BARE_WORDS)
+               for word in re.findall(r"[א-ת]+", words))
 
 
-def refuse_shown_task(question, item, solved, grade, *, intro=None):
+def refuse_shown_task(question, item, *, intro=None):
     """Refuse an item whose typed task would be printed after anything but a bare instruction.
 
     The adapter prints the typed task after a prompt without mathematics of
     its own (``shows_task``). After a bare instruction or question ("חשבו.",
-    "מה הסכום?") that task is the exercise. After a story of more than one
-    sentence, an intro that states numbers, or a figure, the printed
-    calculation would reveal the operation that the pupil should find, so the
-    item is refused instead. Beside a table the task is printed only when it is
-    the calculation of a row whose result the pupil fills in ("הערך החסר
-    בטבלה הוא ___." for the row "(10 + 2) x 3 | ___"); any other calculation
-    would show an operation on the table's data, or a row that already prints
-    its result.
+    "מה הסכום?", ``bare_instruction``) that task is the exercise. After a story,
+    in one sentence or more, an intro that states numbers, or a table or
+    figure, the printed calculation would reveal the operation that the pupil
+    should find or print again an exercise shown elsewhere, so the item is
+    refused instead. A table row with a blank beside the same calculation is
+    no exception: the print would show that row's exercise a second time.
     """
     shared = question["intro"] if intro is None else intro
-    words = " ".join(_words(item["prompt"]).split())
-    sentences = [part for part in re.split(r"[.!?;]+", words) if part.strip()]
-    if ("figure" in question or carries_data(shared) or len(sentences) > 1
-            or ("table" in question and not _row_exercise(question, solved, grade))):
+    if "table" in question or "figure" in question or carries_data(shared) or not bare_instruction(item["prompt"]):
         raise GeneralSourceError("PRINTED_TASK_MISMATCH",
                                  "The prompt does not print the exercise that its key answers; a typed task is "
                                  "printed only after a bare instruction")
+
+
+def _subtracts_from_zero(tree):
+    if not isinstance(tree, dict) or tree.get("type") != "operation":
+        return False
+    if tree["op"] == "subtract" and tree["args"][0] == {"type": "number", "numerator": 0, "denominator": 1}:
+        return True
+    return any(_subtracts_from_zero(arg) for arg in tree["args"])
+
+
+def refuse_unwritten_zero(solved):
+    """Refuse a typed task whose print would show a zero that the task never wrote.
+
+    The exact tree has no negation sign: a minus before anything but a number
+    (-2^4, -x + 3, -(x + 2)) is the subtraction 0 − 2^4, and the house printer
+    would print that zero. A typed task printed from its tree after a bare
+    instruction is refused instead, wherever such a subtraction stands. A zero
+    that the task did write is refused too: the tree cannot tell them apart.
+    """
+    task = solved["question"]
+    trees = [task[field] for field in ("expression", "left", "right", "lhs", "rhs") if field in task]
+    values = task.get("values")
+    trees += list(values.values()) if isinstance(values, dict) else list(values or [])
+    trees += [eq[side] for eq in task.get("equations", []) for side in ("lhs", "rhs")]
+    if any(_subtracts_from_zero(tree) for tree in trees):
+        raise GeneralSourceError("SOURCE_NOTATION",
+                                 "A minus before anything but a number would print as a subtraction from zero")
 
 
 # --------------------------------------------------------------- one exercise

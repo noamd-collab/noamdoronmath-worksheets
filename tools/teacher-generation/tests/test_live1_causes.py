@@ -259,13 +259,17 @@ class LiveCauses(unittest.TestCase):
                 status[case['id']] = (case['finalStatus'], case['finalCode'])
                 printed[case['id']] = case['ladder']['attemptRecords'][0]['printed']
         # Attempt 1: four reserves for six refused questions, one correction for the five still missing.
-        # Attempt 2: reserves fill every question, but its rule (a bare [[%]]) is refused and kept as written.
-        # The one correction asks for the rule alone; no such reply was recorded, so the sheet fails on its rule.
-        self.assertEqual(printed, {'L1-g8': 20, 'L1-g8-a2': 20})
+        # Attempt 2: its rule (a bare [[%]]) is refused and kept as written, and question 4 is refused too: its
+        # intro asks to order the percents ("סדרו ... בסדר עולה"), and no item's single number is that order
+        # (PRINTED_ANSWER_KIND). It takes a reserve, so question 11 (SOURCE_NOTATION) is left without one.
+        # The one correction asks for question 11 and the rule; no such reply was recorded, so the sheet fails.
+        self.assertEqual(printed, {'L1-g8': 20, 'L1-g8-a2': 19})
         self.assertEqual(status, {'L1-g8': ('authored', None), 'L1-g8-a2': ('failed', 'SOURCE_NOTATION')})
         second = next(case for case in results['cases'] if case['id'] == 'L1-g8-a2')
+        self.assertEqual([(event['question'], event['codes']) for event in second['ladder']['attemptRecords'][0]['events']],
+                         [(3, ['SOURCE_NOTATION']), (4, ['PRINTED_ANSWER_KIND']), (11, ['SOURCE_NOTATION'])])
         self.assertEqual((second['author']['correction']['questions'], second['author']['correction']['requiredKeys'],
-                          second['ladder']['correctionFailed']), ([], ['rule'], True))
+                          second['ladder']['correctionFailed']), ([11], ['q11', 'rule'], True))
         self.assertEqual(second['frameFailure']['field'], 'title or rule')
 
     # F1: a decide task only for a relation of printed quantities.

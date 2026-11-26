@@ -202,7 +202,7 @@
    "recorded": {
     "outcome": "rejected",
     "stage": "source",
-    "code": "QUALITY_GATE_FAILED"
+    "code": "PRINTED_ANSWER_KIND"
    }
   }
  ]

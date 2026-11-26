@@ -179,6 +179,136 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(offenders, [])
 
 
+def _computed(task, unit=''):
+    return {'kind': 'computed', 'task': task, 'unit': unit}
+
+
+def _evaluate(expression, unit=''):
+    return _computed({'kind': 'evaluate', 'expression': expression}, unit)
+
+
+def _compare(left, right):
+    return _computed({'kind': 'compare', 'left': left, 'right': right})
+
+
+def _inequality(lhs, rhs, relation):
+    return _computed({'kind': 'inequality', 'variable': 'x', 'lhs': lhs, 'rhs': rhs, 'relation': relation})
+
+
+_BLANK_ROWS = {'head': ['ביטוי', 'תוצאה'],
+               'rows': [['[[10 + 2 * 3]]', '___'], ['[[5 * 4 - 2]]', '___'], ['[[8 + 12 / 4]]', '___']]}
+
+# Rewordings of the 14 forms that once printed a wrong key or a revealed operation (comparison-10, 11, 14, 15, 16,
+# ratio-01, 03, time-02, 03, word_problems-04, inequalities-03, powers_roots-08, data_tables_charts-13,
+# probability-04): (form, topic, intro, prompt, answer, extra, (stage, code)). Every one must be refused.
+REWORDED = (
+    ('comparison-10', 'ג02', 'האם הטענה נכונה?', '[[345 < 354]]', _compare('345', '354'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-10', 'ג02', 'בדקו.', 'האם [[345 < 354]] או לא?', _compare('345', '354'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-10', 'ג02', 'ענו.', 'בדקו אם [[345 < 354]].', _compare('345', '354'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-10', 'ג02', 'ענו.', '[[345 < 354]], נכון?', _compare('345', '354'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-11', 'ג02', 'סדרו מהקטן לגדול.', 'סדרו: [[354]], [[345]], [[435]]', _evaluate('345'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-11', 'ג02', 'ענו.', 'סדרו את המספרים [[354]], [[345]], [[435]] מהקטן לגדול.', _evaluate('345'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-14', 'ג10', 'בדקו.', 'בדקו אם [[32 : 4 = 8]].', _compare('32 / 4', '8'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-14', 'ג10', 'האם התרגילים נכונים?', '[[32 : 4 = 8]]', _compare('32 / 4', '8'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-14', 'ג10', 'בדקו.', 'התרגיל [[32 : 4 = 8]] נכון?', _compare('32 / 4', '8'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-15', 'ג10', 'קבעו נכון או לא נכון.', '[[32 : 4 = 8]]', _compare('32 / 4', '8'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-15', 'ג10', 'בדקו.', 'קבעו אם התרגיל נכון: [[32 : 4 = 8]]', _compare('32 / 4', '8'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-16', 'ג10', 'קבעו נכון או לא נכון.', '[[32 : 4 = 9]]', _compare('32 / 4', '9'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('comparison-16', 'ג10', 'בדקו.', 'בדקו אם [[32 : 4 = 9]].', _compare('32 / 4', '9'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('ratio-01', 'ו21', 'כתבו את היחס.',
+     'בכיתה [[12]] בנים ו־[[18]] בנות. היחס בין מספר הבנים למספר הבנות הוא ___.', _evaluate('12 / 18'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('ratio-01', 'ו21', 'ענו.', 'בכיתה [[12]] בנים ו־[[18]] בנות. איזה יחס יש בין הבנים לבנות?',
+     _evaluate('12 / 18'), {}, ('source', 'PRINTED_ANSWER_KIND')),
+    ('ratio-01', 'ו21', 'ענו.', 'בכיתה [[12]] בנים ו־[[18]] בנות. רשמו בצורה מצומצמת את יחס הבנים לבנות.',
+     _evaluate('12 / 18'), {}, ('source', 'PRINTED_ANSWER_KIND')),
+    ('ratio-03', 'ו21', 'רשמו בצורה מצומצמת את היחס.', '[[12 : 18]]', _evaluate('12 / 18'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('ratio-03', 'ו21', 'כתבו כיחס מצומצם.', '[[12 : 18]]', _evaluate('12 / 18'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('time-02', 'ג19', 'ענו.', 'השעה עכשיו 7:30. בעוד [[45]] דקות יצלצל הפעמון. מתי יצלצל הפעמון?',
+     _evaluate('8'), {}, ('source', 'PRINTED_ANSWER_KIND')),
+    ('time-02', 'ג19', 'ענו.', 'השעה עכשיו 7:30. בעוד [[45]] דקות השעה תהיה ___.', _evaluate('8'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('time-02', 'ג19', 'ענו.', 'השעה עכשיו 7:30. האוטובוס ייסע [[45]] דקות. לאיזו שעה יגיע?', _evaluate('8'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('time-03', 'ג19', 'ענו.', 'השעה עכשיו [[7]]:[[30]]. השיעור יימשך [[45]] דקות. מתי יסתיים?', _evaluate('8'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('time-03', 'ג19', 'ענו.', 'השעה עכשיו [[7]]:[[30]]. בעוד [[45]] דקות השעה תהיה ___.', _evaluate('8'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('word_problems-04', 'ג08', 'פתרו את הבעיה.',
+     'לדני היו [[124]] גולות ולרון [[98]]. לאיזה ילד יש יותר גולות, ובכמה?', _evaluate('124 - 98', 'גולות'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('word_problems-04', 'ג08', 'פתרו את הבעיה.',
+     'לדני היו [[124]] גולות ולרון [[98]]. כתבו מי מהם קיבל יותר גולות, ובכמה.', _evaluate('124 - 98', 'גולות'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('word_problems-04', 'ג08', 'פתרו את הבעיה.',
+     'לדני היו [[124]] גולות ולרון [[98]]. אצל איזה ילד יש יותר גולות, ובכמה?', _evaluate('124 - 98', 'גולות'), {},
+     ('source', 'PRINTED_ANSWER_KIND')),
+    ('inequalities-03', 'g8:inequalities', 'פתרו את אי־השוויון.', '[[-3 < 2x + 1 ≤ 7]]',
+     _inequality('2x + 1', '7', 'le'), {}, ('source', 'PRINTED_TASK_MISMATCH')),
+    ('inequalities-03', 'g8:inequalities', 'פתרו את אי־השוויון.', '[[7 >= 2x + 1 > -3]]',
+     _inequality('2x + 1', '7', 'le'), {}, ('source', 'PRINTED_TASK_MISMATCH')),
+    ('inequalities-03', 'g8:inequalities', 'פתרו את אי־השוויון.', '[[-3 < 2x + 1]] וגם [[2x + 1 <= 7]]',
+     _inequality('2x + 1', '7', 'le'), {}, ('source', 'PRINTED_TASK_MISMATCH')),
+    # A typed task printed after a bare instruction: its tree would print a zero that was never written.
+    ('powers_roots-08', 'g7:powers_roots', 'חשבו.', 'חשבו את הביטוי.', _evaluate('-2^4'), {},
+     ('adapter', 'SOURCE_NOTATION')),
+    ('powers_roots-08', 'g7:powers_roots', 'חשבו.', 'מה התוצאה?', _evaluate('-2^4 + 20'), {},
+     ('adapter', 'SOURCE_NOTATION')),
+    ('powers_roots-08', 'g7:equations', 'פתרו.', 'פתרו את המשוואה.',
+     _computed({'kind': 'solve', 'variable': 'x', 'lhs': '-x + 3', 'rhs': '5'}), {}, ('adapter', 'SOURCE_NOTATION')),
+    ('powers_roots-08', 'g7:algebraic_expressions', 'פשטו.', 'פשטו את הביטוי.',
+     _computed({'kind': 'simplify', 'expression': '-(x + 2) + 3*x'}), {}, ('adapter', 'SOURCE_NOTATION')),
+    # Beside a table whose rows leave their results blank.
+    ('data_tables_charts-13', 'ד07', 'השלימו את הטבלה.', 'חשבו את הביטוי שבשורה הראשונה.', _evaluate('10 + 2 * 3'),
+     {'table': _BLANK_ROWS}, ('adapter', 'PRINTED_TASK_MISMATCH')),
+    ('data_tables_charts-13', 'ד07', 'השלימו את הטבלה.', 'הערך החסר בטבלה הוא ___.', _evaluate('10 + 2 * 3'),
+     {'table': _BLANK_ROWS}, ('adapter', 'PRINTED_TASK_MISMATCH')),
+    ('data_tables_charts-13', 'ד07', 'השלימו את הטבלה.', 'חשבו את הביטוי שבשורה השנייה.', _evaluate('10 + 2 * 3'),
+     {'table': _BLANK_ROWS}, ('adapter', 'PRINTED_TASK_MISMATCH')),
+    # A story in one sentence.
+    ('probability-04', 'g8:probability', 'חשבו את ההסתברות.', 'מה ההסתברות לקבל מספר זוגי בהטלת קובייה הוגנת, כאחוז?',
+     _evaluate('3/6*100', '%'), {}, ('adapter', 'PRINTED_TASK_MISMATCH')),
+    ('probability-04', 'g8:probability', 'חשבו את ההסתברות.', 'בהטלת קובייה הוגנת מה הסיכוי באחוזים לקבל מספר זוגי?',
+     _evaluate('3/6*100', '%'), {}, ('adapter', 'PRINTED_TASK_MISMATCH')),
+    ('probability-04', 'g8:probability', 'חשבו.', 'מהי ההסתברות לקבל מספר זוגי כשמטילים קובייה הוגנת אחת?',
+     _evaluate('3/6'), {}, ('adapter', 'PRINTED_TASK_MISMATCH')),
+)
+
+
+@unittest.skipUnless(ADAPTER_READY, 'The trusted adapter needs the engine runtime packages')
+class RewordedFormTests(unittest.TestCase):
+    """Each refused probe form is refused by its form, not by the corpus wording: rewordings are refused too."""
+
+    def test_every_rewording_of_a_refused_form_is_refused(self):
+        forms = {row[0] for row in REWORDED}
+        self.assertEqual(len(forms), 14)
+        self.assertTrue(all(sum(row[0] == form for row in REWORDED) >= 2 for form in forms))
+        probes = [{'id': f'reworded-{n:02d}', 'topic': topic, 'intro': intro, 'prompt': prompt, 'answer': answer, **extra}
+                  for n, (_, topic, intro, prompt, answer, extra, _) in enumerate(REWORDED, 1)]
+        scratch = tempfile.mkdtemp(prefix='bench-probes-reworded-')
+        self.addCleanup(shutil.rmtree, scratch, ignore_errors=True)
+        outcomes = run.run_probes(probes, Path(scratch) / 'work', skills=engine.skill_roots(scratch))
+        for probe, row in zip(probes, REWORDED):
+            with self.subTest(form=row[0], prompt=row[3]):
+                self.assertEqual(outcomes[probe['id']],
+                                 {'outcome': 'rejected', 'stage': row[6][0], 'code': row[6][1]})
+
+
 class UpdateTests(unittest.TestCase):
     """The runner on a synthetic engine outcome: a wrong print is never recorded and always blocks."""
 

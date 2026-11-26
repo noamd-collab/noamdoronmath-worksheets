@@ -22,7 +22,7 @@ from no_carry_addition import needs_printed_task, states_entire_task
 from printed_percentages import percentage_evidence
 from printed_tasks import match_printed_task, matching_solution_choices, printed_solve, printed_table_row
 from printed_elementary import guard_counting_input, place_intro, printed_intent, validate_counting_values
-from printed_parts import answer_form, bind_parts, carries_data, chosen_solutions, comparison_blank, narrowed, printed_calculation, refuse_shown_task, shows_task
+from printed_parts import answer_form, bind_parts, carries_data, chosen_solutions, comparison_blank, narrowed, printed_calculation, refuse_shown_task, refuse_unwritten_zero, shows_task
 from answer_kinds import bind_decision
 
 LETTERS = "אבגדהוזחטי"
@@ -663,7 +663,10 @@ def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *
     show = not bound and (shows_task(seen, item, computed) or own_task)
     if show and not own_task and computed["question"].get("kind") != "figure_measure":
         # The typed task is printed only after a bare instruction.
-        refuse_shown_task(seen, item, computed, number_grade)
+        refuse_shown_task(seen, item)
+    if show and notation is None:
+        # Printed from its tree: never a zero that the task did not write.
+        refuse_unwritten_zero(computed)
     task_text = _task_text(computed, grade, H, notation=notation) if show else ""
     # A fresh calculation, not a model-provided answer or boolean.
     repeated = solve_figure_task(question["figure"],item["answer"]["operation"],item["answer"].get("point")) if figure_task else validate_and_solve_task(item["answer"]["task"])
@@ -945,12 +948,15 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
                 else:
                     show_task = (computed and not printed and not _prints_calculation(item, computed, lesson["gradeNumber"])
                                  and shows_task(question, item, computed))
-                    if show_task and computed["question"].get("kind") != "figure_measure":
-                        try:
+                    try:
+                        if show_task and computed["question"].get("kind") != "figure_measure":
                             # The typed task is printed only after a bare instruction.
-                            refuse_shown_task(question, item, computed, lesson["gradeNumber"])
-                        except GeneralSourceError as error:
-                            raise error.at(n, j)
+                            refuse_shown_task(question, item)
+                        if show_task and item["answer"].get("notation") is None:
+                            # Printed from its tree: never a zero that the task did not write.
+                            refuse_unwritten_zero(computed)
+                    except GeneralSourceError as error:
+                        raise error.at(n, j)
                     body = prompt+(" "+_task_text(computed, lesson["gradeNumber"], notation=item["answer"].get("notation")) if show_task else "")
                     # The key prints only the solutions that the item's words ask for.
                     keyed = narrowed(computed, chosen_solutions(question, item, computed)) if computed and not decision else computed

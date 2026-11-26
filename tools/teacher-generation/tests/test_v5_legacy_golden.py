@@ -42,7 +42,22 @@ class LegacyGolden(unittest.TestCase):
         names = set(adapter["cases"])
         self.assertTrue(set(CLOSED) <= names)
         self.assertGreaterEqual(len([name for name in names if name.startswith("v4:")]), 8)
-        self.assertTrue(all(case["exitCode"] == 0 and case["files"] for case in adapter["cases"].values()))
+        # Every case compiles, except the v4 fixtures that the strict engine refuses. Each stays recorded with its
+        # exact refusal: the adapter's exit code, its last error line, and its failure record, which holds the error
+        # code with the question and item. Each would print its typed task after a prompt that is not a bare
+        # instruction: a story ("כמה ספרים יש יחד בשתי קופסאות?"), a row named without a table ("השוו את השברים
+        # בשורה הראשונה."), and "הערך החסר בטבלה הוא ___." beside the table row "(10 + 2) x 3 | ___".
+        import hashlib
+        error = ["general_source.GeneralSourceError: The prompt does not print the exercise that its key answers; "
+                 "a typed task is printed only after a bare instruction"]
+        record = lambda question, item: hashlib.sha256((json.dumps(
+            {"version": 1, "step": "trusted-adapter", "code": "PRINTED_TASK_MISMATCH", "question": question,
+             "item": item}, ensure_ascii=False, indent=2) + "\n").encode("utf-8")).hexdigest()
+        refused = {"v4:grade2-vocalized": (1, 1), "v4:grade4-fractions": (1, 1), "v4:grade4-skill-calculation": (9, 1)}
+        self.assertEqual({name: (case["exitCode"], case["error"], case["files"]["adapter-failure.json"]["sha256"])
+                          for name, case in adapter["cases"].items() if case["exitCode"] != 0},
+                         {name: (1, error, record(*where)) for name, where in refused.items()})
+        self.assertTrue(all(case["files"] for name, case in adapter["cases"].items() if name not in refused))
         runner = json.loads((GOLDEN / "runner-golden.json").read_text(encoding="utf-8"))
         self.assertTrue({"v3-middle-general", "v3-elementary-general", "v2-grade7-pilot"} <= set(runner["cases"]))
 

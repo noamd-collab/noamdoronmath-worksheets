@@ -137,9 +137,13 @@ class PinnedSkillTests(unittest.TestCase):
         self.assertEqual(failed, ["G321", "G322", "G324", "G327", "G333", "G334"])
         self.assertEqual([e["id"] for e in ledger.entries], ["5"])
 
-    def precheck(self, extra, name):
+    def precheck(self, extra, name, *, ninth_as_seventh=False):
         model = copy.deepcopy(self.model)
         model["sections"][0]["questions"][3]["intro"][-1]["text"] += extra
+        if ninth_as_seventh:
+            # Question 9 refers to its table, and the trusted adapter refuses to print its typed task after it.
+            # A copy of question 7 in its place lets the gates see the whole sheet.
+            model["sections"][0]["questions"][8] = copy.deepcopy(model["sections"][0]["questions"][6])
         work = self.root / "runs" / name
         return runner.precheck_job(self.lesson, model, work, {"elementary": str(self.skill)}), work
 
@@ -153,11 +157,31 @@ class PinnedSkillTests(unittest.TestCase):
                  "if": (" אילו המורה הייתה מוסיפה עוד מחברת, התוצאה הייתה גדלה.", [("G33", 4, "truth")] + spread,
                         ["PASS", "FAIL", "FAIL"]),
                  "always": (" זכרו: מכפלה תמיד גדולה מכל אחד מהגורמים.", [("G32", 4, "truth")], ["PASS", "FAIL", "PASS"]),
-                 "every": (" לכל מספר זוגי יש מחלק 2.", [("G32", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"]),
-                 "which": (" אילו מהתרגילים קלים?", [("G33", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"])}
+                 "every": (" לכל מספר זוגי יש מחלק 2.", [("G32", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"])}
+        # "Which" asked in the intro is a question that no number of the items answers: the reply is refused
+        # when it is read (PRINTED_ANSWER_KIND), before the trusted adapter or any gate, also with question 7 in
+        # place of question 9.
+        from validation import GenerationError
+        for ninth_as_seventh in (False, True):
+            with self.subTest(name="which", ninth_as_seventh=ninth_as_seventh), \
+                    self.assertRaises(GenerationError) as refused:
+                self.precheck(" אילו מהתרגילים קלים?", "which" + ("" if ninth_as_seventh else "-recorded"),
+                              ninth_as_seventh=ninth_as_seventh)
+            self.assertEqual(refused.exception.code, "PRINTED_ANSWER_KIND")
+            work = self.root / "runs" / ("which" + ("" if ninth_as_seventh else "-recorded"))
+            self.assertFalse((work / "content.json").exists() or (work / "verified.json").exists())
         for name, (extra, blocking, statuses) in cases.items():
             with self.subTest(name=name):
-                result, work = self.precheck(extra, name)
+                # As recorded, the pre-pass stops at the trusted adapter: question 9 refers to its table, and its
+                # typed task is never printed after such a prompt. No gate runs and nothing is built.
+                result, work = self.precheck(extra, name + "-recorded")
+                self.assertEqual(result["status"], "replace")
+                self.assertEqual([(b["code"], b["question"], b["class"]) for b in result["gate"]["blocking"]],
+                                 [("TRUSTED_ADAPTER", 9, "truth")])
+                self.assertEqual([(step["name"], step["status"]) for step in result["steps"]], [("trusted-adapter", "FAIL")])
+                self.assertFalse((work / "content.json").exists() or (work / "verified.json").exists())
+                # With question 7 in place of question 9 the gates see the whole sheet.
+                result, work = self.precheck(extra, name, ninth_as_seventh=True)
                 self.assertEqual(result["status"], "replace")
                 self.assertEqual([(b["code"], b["question"], b["class"]) for b in result["gate"]["blocking"]], blocking)
                 self.assertEqual(result["gate"]["review"], [])
@@ -209,7 +233,13 @@ class PinnedSkillTests(unittest.TestCase):
         self.assertTrue(complete)
 
     def test_gate_content_carries_the_printed_stars(self):
-        result, work = self.precheck("", "schema")
+        # As recorded, the trusted adapter refuses question 9 (its typed task after a prompt about the table) and
+        # nothing is built.
+        result, work = self.precheck("", "schema-recorded")
+        self.assertEqual((result["status"], [(b["code"], b["question"], b["item"]) for b in result["gate"]["blocking"]]),
+                         ("replace", [("TRUSTED_ADAPTER", 9, 1)]))
+        self.assertFalse((work / "content.json").exists() or (work / "sheet.html").exists())
+        result, work = self.precheck("", "schema", ninth_as_seventh=True)
         # The star the page prints is the star the pinned G61 proxy weighs: both ends of the spread are named.
         self.assertEqual(result["status"], "replace")
         self.assertEqual([(b["code"], b["question"], b["item"]) for b in result["gate"]["blocking"]], [("G61", 4, 1), ("G61", 10, 2)])

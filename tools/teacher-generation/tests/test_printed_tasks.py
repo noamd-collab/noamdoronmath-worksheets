@@ -96,19 +96,72 @@ class PupilAnswerTypeTests(unittest.TestCase):
                 ("כתבו את היחס.", "בכיתה [[12]] בנים ו־[[18]] בנות. מהו היחס בין הבנים לבנות?", "12/18", 6),
                 ("צמצמו את היחס.", "[[12 : 18]]", "12/18", 6),                        # no words: the intro asks
                 ("ענו.", "השעה עכשיו 7:30. מה תהיה השעה בעוד [[45]] דקות?", "8", 3),
-                ("פתרו את הבעיה.", "לדני היו [[124]] גולות ולרון [[98]]. למי יש יותר גולות, ובכמה?", "124 - 98", 3)):
+                ("פתרו את הבעיה.", "לדני היו [[124]] גולות ולרון [[98]]. למי יש יותר גולות, ובכמה?", "124 - 98", 3),
+                # The question is its intro and its item together: an intro that asks for a ratio is not
+                # answered by the count that the item's words ask for.
+                ("צמצמו את היחס.", "כמה בנים יש בכיתה של [[30]] תלמידים?", "12", 6)):
             with self.subTest(prompt=prompt), self.assertRaises(GeneralSourceError) as refused:
                 validate_computed_request({"intro": spans(intro, grade)}, {"prompt": spans(prompt, grade)},
                                           solved(task, grade), grade, "q1.item.1")
             self.assertEqual(refused.exception.code, "PRINTED_ANSWER_KIND")
-        # A number that the words ask for is a key, whatever the intro says about ratios.
+        # A number that the words ask for is a key: the missing term of a printed proportion, a ratio
+        # stated as data, a count.
         for intro, prompt, task, grade in (
                 ("השלימו יחס שקול.", "[[2 : 3 = ___ : 12]]", "2*12/3", 6),
-                ("צמצמו את היחס.", "כמה בנים יש בכיתה של [[30]] תלמידים?", "12", 6),
+                ("חשבו.", "היחס בין הבנים לבנות הוא [[2]] ל־[[3]]. בכיתה [[30]] תלמידים. כמה בנים בכיתה?", "30*2/5", 6),
+                ("ענו.", "השעה עכשיו 7:30. כמה דקות נשארו עד 8:00?", "30", 3),
+                ("ענו.", "איזה מספר גדול יותר: [[345]] או [[354]]?", "354", 3),
                 ("פתרו את הבעיה.", "לדני היו [[124]] גולות ולרון [[98]]. כמה גולות יש לשניהם?", "124 + 98", 3)):
             with self.subTest(prompt=prompt):
                 validate_computed_request({"intro": spans(intro, grade)}, {"prompt": spans(prompt, grade)},
                                           solved(task, grade), grade, "q1.item.1")
+
+
+    def test_a_request_is_read_from_its_form_whatever_the_verb(self):
+        from printed_tasks import validate_computed_request
+        def solved(task, grade):
+            return validate_and_solve_task({key: expression(value, grade) if key in ("expression", "left", "right") else value
+                                            for key, value in task.items()})
+        number = lambda text: {"kind": "evaluate", "expression": text}
+        sign = lambda left, right: {"kind": "compare", "left": left, "right": right}
+
+        def check(intro, prompt, task, grade):
+            validate_computed_request({"intro": spans(intro, grade)}, {"prompt": spans(prompt, grade)},
+                                      solved(task, grade), grade, "q1.item.1")
+
+        # Rewordings of the refused probe forms, in the intro or in the item, with any verb.
+        for intro, prompt, task, grade in (
+                ("האם הטענה נכונה?", "[[345 < 354]]", sign("345", "354"), 3),
+                ("בדקו.", "האם [[345 < 354]] או לא?", sign("345", "354"), 3),
+                ("ענו.", "בדקו אם [[32 : 4 = 8]].", sign("32 / 4", "8"), 3),
+                ("ענו.", "[[32 : 4 = 8]], נכון?", sign("32 / 4", "8"), 3),
+                ("קבעו נכון או לא נכון.", "[[32 : 4 = 9]]", sign("32 / 4", "9"), 3),
+                ("ענו.", "בדקו אם השברים שווים.", number("1/2"), 4),
+                ("השלימו את הסימן.", "[[345]] ___ [[354]]", number("354"), 3),
+                ("ענו.", "סדרו את המספרים [[354]], [[345]], [[435]] מהקטן לגדול.", number("345"), 3),
+                ("ענו.", "בכיתה [[12]] בנים ו־[[18]] בנות. היחס בין מספר הבנים למספר הבנות הוא ___.", number("12/18"), 6),
+                ("ענו.", "בכיתה [[12]] בנים ו־[[18]] בנות. איזה יחס יש בין הבנים לבנות?", number("12/18"), 6),
+                ("כתבו כיחס מצומצם.", "[[12 : 18]]", number("12/18"), 6),
+                ("ענו.", "השעה עכשיו 7:30. בעוד [[45]] דקות יצלצל הפעמון. מתי יצלצל הפעמון?", number("8"), 3),
+                ("ענו.", "השעה עכשיו 7:30. בעוד [[45]] דקות השעה תהיה ___.", number("8"), 3),
+                ("כתבו את השעה.", "המחוג הקטן על [[7]] והגדול על [[12]].", number("7"), 3),
+                ("ענו.", "לדני [[124]] גולות ולרון [[98]]. לאיזה ילד יש יותר גולות, ובכמה?", number("124 - 98"), 3),
+                ("ענו.", "לדני [[124]] גולות ולרון [[98]]. כתבו מי מהם קיבל יותר גולות, ובכמה.", number("124 - 98"), 3)):
+            with self.subTest(intro=intro, prompt=prompt), self.assertRaises(GeneralSourceError) as refused:
+                check(intro, prompt, task, grade)
+            self.assertEqual(refused.exception.code, "PRINTED_ANSWER_KIND")
+        # The same words where they ask for the kind that is keyed, or ask for nothing.
+        for intro, prompt, task, grade in (
+                ("כתבו סימן השוואה מתאים.", "בדקו אם השברים שווים.", sign("1/2", "2/4"), 4),
+                ("כתבו סימן השוואה מתאים.", "בדקו את היחס בין שני השברים.", sign("1/2", "2/4"), 4),
+                ("השתמשו ביחס הנתון לכל מאה פריטים.", "במאגר [[200]] בקבוקים. כמה מהם מיועדים לתצוגה?", number("200*30/100"), 6),
+                ("ענו.", "איזה אחוז מהתלמידים לומדים נגינה?", number("30"), 6),
+                ("שימו לב מתי יש לחשב תחילה את הביטוי שבסוגריים.", "[[(10 + 2) x 3]]", number("(10 + 2) * 3"), 4),
+                ("קראו אילו פריטים מבקשים לספור, וחברו.", "בסל [[44]] צדפים ו־[[3]] גולות. כמה צדפים בסל ובמגירה?",
+                 number("44 + 25"), 4),
+                ("נכון או לא נכון?", "[[45 : 9 = ___]]", number("45/9"), 3)):
+            with self.subTest(intro=intro, prompt=prompt):
+                check(intro, prompt, task, grade)
 
 
 class PrintedInequalityTests(unittest.TestCase):
