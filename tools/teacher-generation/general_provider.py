@@ -19,7 +19,7 @@ from skill_authoring import (MAX_CORRECTED, bind_content, correction_instruction
                              notation_correction, question_codes, question_plan, refers_to_another_question,
                              refusal_feedback, reserve_plan, revision_request, split_reserves, worksheet_schema)
 from answer_kinds import DECISION_GUIDE
-from runtime_catalog import catalog, scope_for_lesson
+from runtime_catalog import catalog, question_floor, scope_for_lesson
 from validation import reject
 import no_carry_addition
 import compact_authoring
@@ -82,7 +82,7 @@ class Draft:
       missing()   planned positions that still have no usable question
       replace()   take out printed questions a gate named; reserves fill in
       correct()   ONE model call, for the missing questions only
-      shorten()   drop what is still missing, within lesson_select's limits
+      shorten()   drop what is still missing, never below lesson_select.minimum_count
       source()    the unchanged whole-sheet validation of the current sheet
 
     ``lesson`` is the lesson of the sheet last returned by source(): the
@@ -126,7 +126,8 @@ class Draft:
                 written.add(text)
                 spare.append(row)
         self.repeated_reserves = len(reserves) + len(extra) - len(spare)
-        self.selection = Selection(planned, spare, self._judge)
+        # A shorter sheet keeps the grade minimum of every request (validation.validate_lesson).
+        self.selection = Selection(planned, spare, self._judge, floor=question_floor(lesson['gradeNumber']))
         self.selection.screen()
 
     @staticmethod
@@ -215,7 +216,8 @@ class Draft:
         return len(named)
 
     def shorten(self):
-        """Drop the positions that are still missing. False when the sheet would be too short."""
+        """Drop the positions that are still missing. False when the sheet would be too short:
+        under three quarters of the request, under six, or under the grade minimum."""
         return self.selection.shorten()
 
     # ------------------------------------------------------------------ one correction call

@@ -79,14 +79,17 @@ def calculate(left, op, right):
     reject("INVALID_MODEL_OUTPUT", "Unknown operation or division by zero")
 
 
-def salvaged_count(requested, printed):
-    """Whether ``printed`` questions may be delivered for a sheet of ``requested`` questions.
+def salvaged_count(requested, printed, grade):
+    """Whether ``printed`` questions may be delivered for a sheet of ``requested`` questions in ``grade``.
 
     Only the worker's salvage shortens a sheet (lesson_select): never below
-    three quarters of the request, never below six questions.
+    three quarters of the request, never below six questions, and never below
+    the grade minimum that validate_lesson enforces on every request.
     """
     from lesson_select import minimum_count
-    return (type(requested) is int and type(printed) is int and minimum_count(requested) <= printed < requested)
+    from runtime_catalog import question_floor
+    return (type(requested) is int and type(printed) is int and type(grade) is int
+            and minimum_count(requested, question_floor(grade)) <= printed < requested)
 
 
 def validate_lesson(lesson, *, allow_legacy=False, salvaged_from=None):
@@ -94,8 +97,10 @@ def validate_lesson(lesson, *, allow_legacy=False, salvaged_from=None):
     worker delivers a shorter, salvaged sheet. It is trusted worker state and
     is never read from a job: the request itself must pass every check."""
     if salvaged_from is not None:
-        if not isinstance(lesson, dict) or lesson.get('version') != 3 or not salvaged_count(salvaged_from, lesson.get('questionCount')):
-            reject("UNSUPPORTED_SHORT_SHEET", "A salvaged sheet keeps at least three quarters of the requested questions")
+        if (not isinstance(lesson, dict) or lesson.get('version') != 3
+                or not salvaged_count(salvaged_from, lesson.get('questionCount'), lesson.get('gradeNumber'))):
+            reject("UNSUPPORTED_SHORT_SHEET",
+                   "A salvaged sheet keeps at least three quarters of the requested questions and the grade minimum")
         cap = validate_lesson({**lesson, 'questionCount': salvaged_from}, allow_legacy=allow_legacy)
         integer(lesson.get("questionCount"), 4, 40, "questionCount")
         return cap
@@ -138,7 +143,8 @@ def validate_lesson(lesson, *, allow_legacy=False, salvaged_from=None):
     # Free-text progress is context for authoring, never an authorization to add tools.
     if lesson.get("taughtThroughTopicId") not in (None, lesson["topicId"]):
         reject("UNSUPPORTED_PROGRESS", "This pilot requires the selected topic as the taught-through boundary")
-    minimum = 8 if lesson["gradeNumber"] <= 2 else 12 if lesson["gradeNumber"] <= 4 else 14 if lesson["gradeNumber"] <= 6 else 20
+    from runtime_catalog import question_floor
+    minimum = question_floor(lesson["gradeNumber"])
     if lesson["questionCount"] < minimum:
         # No hidden relaxation of the installed engine's volume gates.
         reject("UNSUPPORTED_SHORT_SHEET", f"This adapter requires at least {minimum} questions; explicit short-sheet support is pending")

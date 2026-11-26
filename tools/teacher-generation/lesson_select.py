@@ -11,8 +11,8 @@ A bad planned question takes a reserve of its own group. A practice reserve
 may stand in for a challenge only while at least two real challenges remain,
 and it is then printed as an ordinary question; a challenge reserve never
 fills a practice slot. What no reserve can fill stays missing: the caller may
-fill it later (a correction) or drop it (a shorter sheet). The record says
-what was removed, why, and what took its place.
+fill it later (a correction) or drop it (a shorter sheet, never below
+minimum_count). The record says what was removed, why, and what took its place.
 
 No input, no output, no model call.
 """
@@ -38,9 +38,21 @@ def reserve_groups(planned):
     return [PRACTICE] * (count - 1) + [CHALLENGES]
 
 
-def minimum_count(planned):
-    """The shortest sheet that may be delivered for ``planned`` questions: three quarters, never under six."""
-    return max(MINIMUM_SHEET, -(-3 * planned // 4))
+def minimum_count(planned, floor):
+    """The shortest sheet that may be delivered for ``planned`` questions.
+
+    Three quarters, never under six, and never under ``floor``: the grade
+    minimum the caller supplies (runtime_catalog.question_floor, the same
+    minimum validation.validate_lesson enforces on every request). A sheet
+    planned at its floor is never shortened.
+    """
+    return max(MINIMUM_SHEET, -(-3 * planned // 4), _grade_floor(floor))
+
+
+def _grade_floor(floor):
+    if type(floor) is not int or floor < 1:
+        raise ValueError("floor must be a positive integer (the grade minimum)")
+    return floor
 
 
 @dataclass
@@ -85,11 +97,13 @@ class Selection:
 
     ``planned`` and ``reserves`` are sequences of {"group", "question",
     "concepts"}; a planned row whose question is None is a position the
-    author left empty. Call screen() once, then reject(), fill() and
-    shorten() as later checks require.
+    author left empty. ``floor`` (keyword-only, required) is the grade
+    minimum of the sheet (minimum_count). Call screen() once, then reject(),
+    fill() and shorten() as later checks require.
     """
 
-    def __init__(self, planned, reserves, predicate):
+    def __init__(self, planned, reserves, predicate, *, floor):
+        self.floor = _grade_floor(floor)
         self.predicate = predicate
         self.slots = []
         for number, row in enumerate(planned, 1):
@@ -210,7 +224,7 @@ class Selection:
     def can_shorten(self):
         """Whether the sheet may be printed without its missing questions."""
         present = sum(1 for slot in self.slots if slot.question is not None)
-        return (bool(self.missing()) and present >= minimum_count(self.planned)
+        return (bool(self.missing()) and present >= minimum_count(self.planned, self.floor)
                 and self.real_challenges() >= MINIMUM_CHALLENGES)
 
     def shorten(self):
@@ -248,12 +262,13 @@ class Selection:
                 "droppedCodes": dict(sorted(dropped.items()))}
 
 
-def select(planned, reserves, predicate):
+def select(planned, reserves, predicate, *, floor):
     """One pass over a reply: the final sheet and the record of what was replaced and why.
 
     Returns the Selection after screen(): ``layout()`` is the sheet,
     ``missing()`` the positions no reserve could fill, ``record`` the events.
+    ``floor`` is the grade minimum (minimum_count).
     """
-    selection = Selection(planned, reserves, predicate)
+    selection = Selection(planned, reserves, predicate, floor=floor)
     selection.screen()
     return selection

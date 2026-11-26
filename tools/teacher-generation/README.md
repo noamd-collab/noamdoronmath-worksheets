@@ -55,7 +55,9 @@ before left a deficit (`remote_worker.author_and_render`, through `general_provi
 1. reserve questions, with no model call;
 2. ONE targeted correction call for the missing questions only (at most eight), each with
    the fixed instruction of its code and the exact field and substring that carries the fault;
-3. a shorter sheet: at least three quarters of the requested questions, never fewer than six,
+3. a shorter sheet: at least three quarters of the requested questions, never fewer than six
+   and never fewer than the grade minimum that every request must meet (8 / 12 / 14 / 20 for
+   grades 1–2 / 3–4 / 5–6 / 7–9), so only a sheet requested above that minimum is shortened;
    with at least two real challenges. The lesson of that sheet carries the rewritten count
    and the request travels beside it (`salvaged_from`); the result holds a `SHORTER_SHEET` note;
 4. ONE second full author call, when the first reply is unusable as a whole (not JSON, wrong

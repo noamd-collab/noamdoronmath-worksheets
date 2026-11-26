@@ -573,80 +573,21 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": false,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "REVIEW"
-     },
-     {
-      "name": "didactic-review-reconciliation",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "DIDACTIC_REVIEW",
-      "count": 41,
-      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-      "questions": [
-       1,
-       2,
-       4,
-       5,
-       9,
-       10,
-       14,
-       15
-      ]
-     },
-     {
-      "code": "SHORTER_SHEET",
-      "count": 5,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 3,
-       "SOURCE_TABLE": 2
-      },
-      "count": 5
-     },
-     "gate": "deliver",
-     "printedQuestions": 15,
-     "replaced": {
-      "codes": {},
-      "count": 0
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {
-     "review": 20
-    }
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_TABLE",
+   "finalCode": "SOURCE_TABLE",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "A-equations",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 5,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "SOURCE_TABLE"
         ],
@@ -655,7 +596,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -664,7 +605,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "SOURCE_TABLE"
         ],
@@ -673,7 +614,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -682,7 +623,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -691,7 +632,7 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 5,
       "planned": 20,
       "printed": 15,
       "reservesOffered": 0,
@@ -699,15 +640,9 @@
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 5,
-    "gate": "deliver",
-    "printed": 15,
-    "replaced": 0,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "אלגברי",
@@ -726,13 +661,7 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen2 (round A)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -789,54 +718,7 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [
-      {
-       "class": "editorial",
-       "code": "DIDACTIC_REVIEW",
-       "count": 41,
-       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-       "questions": [
-        1,
-        2,
-        4,
-        5,
-        9,
-        10,
-        14,
-        15
-       ],
-       "rules": {
-        "D12": 20,
-        "D5": 20
-       },
-       "steps": [
-        "middle-build"
-       ]
-      }
-     ],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
-       "status": "REVIEW"
-      },
-      {
-       "name": "didactic-review-reconciliation",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -2039,82 +1921,21 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": false,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "REVIEW"
-     },
-     {
-      "name": "didactic-review-reconciliation",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "DIDACTIC_REVIEW",
-      "count": 42,
-      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-      "questions": [
-       1,
-       2,
-       5,
-       7,
-       8,
-       10,
-       13,
-       14,
-       17,
-       18
-      ]
-     },
-     {
-      "code": "SHORTER_SHEET",
-      "count": 2,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 1,
-       "SOURCE_TABLE": 1
-      },
-      "count": 2
-     },
-     "gate": "deliver",
-     "printedQuestions": 18,
-     "replaced": {
-      "codes": {},
-      "count": 0
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {
-     "review": 21
-    }
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_TABLE",
+   "finalCode": "SOURCE_TABLE",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "B-equations",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 2,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "SOURCE_TABLE"
         ],
@@ -2123,7 +1944,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -2132,7 +1953,7 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 2,
       "planned": 20,
       "printed": 18,
       "reservesOffered": 0,
@@ -2140,15 +1961,9 @@
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 2,
-    "gate": "deliver",
-    "printed": 18,
-    "replaced": 0,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "אלגברי",
@@ -2167,13 +1982,7 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen-fresh-01 (round B)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -2201,56 +2010,7 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [
-      {
-       "class": "editorial",
-       "code": "DIDACTIC_REVIEW",
-       "count": 42,
-       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-       "questions": [
-        1,
-        2,
-        5,
-        7,
-        8,
-        10,
-        13,
-        14,
-        17,
-        18
-       ],
-       "rules": {
-        "D12": 21,
-        "D5": 21
-       },
-       "steps": [
-        "middle-build"
-       ]
-      }
-     ],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
-       "status": "REVIEW"
-      },
-      {
-       "name": "didactic-review-reconciliation",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -2287,79 +2047,21 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": false,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "REVIEW"
-     },
-     {
-      "name": "didactic-review-reconciliation",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "DIDACTIC_REVIEW",
-      "count": 42,
-      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-      "questions": [
-       5,
-       8,
-       10,
-       11,
-       12,
-       17,
-       18
-      ]
-     },
-     {
-      "code": "SHORTER_SHEET",
-      "count": 2,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 1,
-       "SOURCE_TABLE": 1
-      },
-      "count": 2
-     },
-     "gate": "deliver",
-     "printedQuestions": 18,
-     "replaced": {
-      "codes": {},
-      "count": 0
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {
-     "review": 21
-    }
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_TABLE",
+   "finalCode": "SOURCE_TABLE",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "B-percent",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 2,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "SOURCE_TABLE"
         ],
@@ -2368,7 +2070,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -2377,7 +2079,7 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 2,
       "planned": 20,
       "printed": 18,
       "reservesOffered": 0,
@@ -2385,15 +2087,9 @@
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 2,
-    "gate": "deliver",
-    "printed": 18,
-    "replaced": 0,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "מספרי",
@@ -2412,13 +2108,7 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen-fresh-01 (round B)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
     {
@@ -2446,53 +2136,7 @@
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [
-      {
-       "class": "editorial",
-       "code": "DIDACTIC_REVIEW",
-       "count": 42,
-       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-       "questions": [
-        5,
-        8,
-        10,
-        11,
-        12,
-        17,
-        18
-       ],
-       "rules": {
-        "D12": 21,
-        "D5": 21
-       },
-       "steps": [
-        "middle-build"
-       ]
-      }
-     ],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
-       "status": "REVIEW"
-      },
-      {
-       "name": "didactic-review-reconciliation",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -4384,70 +4028,21 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": false,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "REVIEW"
-     },
-     {
-      "name": "didactic-review-reconciliation",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "DIDACTIC_REVIEW",
-      "count": 1,
-      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-      "questions": [
-       13
-      ]
-     },
-     {
-      "code": "SHORTER_SHEET",
-      "count": 3,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "QUESTION_MISSING": 3
-      },
-      "count": 3
-     },
-     "gate": "deliver",
-     "printedQuestions": 17,
-     "replaced": {
-      "codes": {},
-      "count": 0
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {}
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:AUTHOR_PLAN_MISMATCH",
+   "finalCode": "AUTHOR_PLAN_MISMATCH",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "G-equations",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 3,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "QUESTION_MISSING"
         ],
@@ -4456,7 +4051,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "QUESTION_MISSING"
         ],
@@ -4465,7 +4060,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "QUESTION_MISSING"
         ],
@@ -4474,7 +4069,7 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 3,
       "planned": 20,
       "printed": 17,
       "reservesOffered": 0,
@@ -4482,15 +4077,9 @@
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 3,
-    "gate": "deliver",
-    "printed": 17,
-    "replaced": 0,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "אלגברי",
@@ -4509,13 +4098,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [],
    "questions": {
@@ -4523,46 +4106,7 @@
     "total": 20
    },
    "recorded": "2026-11-23 14:09Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [
-      {
-       "class": "editorial",
-       "code": "DIDACTIC_REVIEW",
-       "count": 1,
-       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-       "questions": [
-        13
-       ],
-       "rules": {
-        "D9": 1
-       },
-       "steps": [
-        "middle-build"
-       ]
-      }
-     ],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
-       "status": "REVIEW"
-      },
-      {
-       "name": "didactic-review-reconciliation",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "text",
     "questionsFrom": "repairedReply"
@@ -4601,75 +4145,21 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": false,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "REVIEW"
-     },
-     {
-      "name": "didactic-review-reconciliation",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "DIDACTIC_REVIEW",
-      "count": 4,
-      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-      "questions": [
-       10,
-       17
-      ]
-     },
-     {
-      "code": "SHORTER_SHEET",
-      "count": 3,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_LEAK": 1,
-       "SOURCE_NOTATION": 1,
-       "SOURCE_PLAIN_MATH": 1
-      },
-      "count": 3
-     },
-     "gate": "deliver",
-     "printedQuestions": 17,
-     "replaced": {
-      "codes": {},
-      "count": 0
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {
-     "review": 2
-    }
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_PLAIN_MATH",
+   "finalCode": "SOURCE_PLAIN_MATH",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "G-percent",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 3,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "SOURCE_PLAIN_MATH"
         ],
@@ -4678,7 +4168,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "SOURCE_NOTATION"
         ],
@@ -4687,7 +4177,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -4696,7 +4186,7 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 3,
       "planned": 20,
       "printed": 17,
       "reservesOffered": 0,
@@ -4704,15 +4194,9 @@
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 3,
-    "gate": "deliver",
-    "printed": 17,
-    "replaced": 0,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "מספרי",
@@ -4731,13 +4215,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "stage-1 provider capture (engine 4f902f9c9)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -4773,48 +4251,7 @@
     "total": 20
    },
    "recorded": "2026-11-23 14:10Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [
-      {
-       "class": "editorial",
-       "code": "DIDACTIC_REVIEW",
-       "count": 4,
-       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-       "questions": [
-        10,
-        17
-       ],
-       "rules": {
-        "D12": 2,
-        "D5": 2
-       },
-       "steps": [
-        "middle-build"
-       ]
-      }
-     ],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
-       "status": "REVIEW"
-      },
-      {
-       "name": "didactic-review-reconciliation",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -5903,7 +5340,7 @@
    "delivered": false,
    "delivery": null,
    "failureClass": "SOURCE:SOURCE_NOTATION",
-   "finalCode": "QUALITY_GATE_FAILED",
+   "finalCode": "SOURCE_NOTATION",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-p2",
@@ -5911,7 +5348,7 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 5,
+      "dropped": 0,
       "events": [
        {
         "action": "reserve",
@@ -5932,7 +5369,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "SOURCE_NOTATION"
         ],
@@ -5941,7 +5378,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -5950,7 +5387,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -5959,7 +5396,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -5968,7 +5405,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -5984,20 +5421,11 @@
         "group": "challenges",
         "question": 19,
         "stage": "source"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "K6"
-        ],
-        "group": "challenges",
-        "question": 19,
-        "stage": "render"
        }
       ],
-      "missing": 1,
+      "missing": 5,
       "planned": 20,
-      "printed": 14,
+      "printed": 15,
       "reservesOffered": 4,
       "reservesRefused": 1
      }
@@ -6005,10 +5433,7 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gate": "replace",
-    "gateCode": "K6",
-    "question": 14,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "אלגברי",
@@ -6027,13 +5452,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "live round 1 (milestone 2), p2-g9r-quad-eq-applications-a, call 1",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -6123,42 +5542,7 @@
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [
-      {
-       "gate": null,
-       "questions": [],
-       "step": "middle-build/selfcheck_noam_package.py",
-       "text": "FAIL (no line found)"
-      },
-      {
-       "gate": "BLOCKING_BUILD_FAILURE",
-       "questions": [],
-       "step": "didactic-review-reconciliation",
-       "text": "ValueError: BLOCKING_BUILD_FAILURE"
-      }
-     ],
-     "reviewFindings": [],
-     "skippedChecks": [],
-     "status": "failed",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "status": "FAIL"
-      },
-      {
-       "name": "didactic-review-reconciliation",
-       "status": "FAIL"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -6200,61 +5584,18 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": true,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "SHORTER_SHEET",
-      "count": 4,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 2,
-       "PRINTED_ANSWER_LEAK": 1,
-       "SOURCE_NOTATION": 1
-      },
-      "count": 4
-     },
-     "gate": "deliver",
-     "printedQuestions": 16,
-     "replaced": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 1,
-       "PRINTED_TASK_MISMATCH": 1,
-       "SOURCE_NOTATION": 1
-      },
-      "count": 3
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {}
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
+   "finalCode": "PRINTED_ANSWER_KIND",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-p2-a2",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 4,
+      "dropped": 0,
       "events": [
        {
         "action": "reserve",
@@ -6275,7 +5616,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -6284,7 +5625,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "SOURCE_NOTATION"
         ],
@@ -6293,7 +5634,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -6302,7 +5643,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -6320,7 +5661,7 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 4,
       "planned": 20,
       "printed": 16,
       "reservesOffered": 4,
@@ -6328,15 +5669,9 @@
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 3,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 4,
-    "gate": "deliver",
-    "printed": 16,
-    "replaced": 3,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "אלגברי",
@@ -6355,13 +5690,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "live round 1 (milestone 2), p2-g9r-quad-eq-applications-a, call 2, corrections: calls [3]",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -6445,25 +5774,7 @@
     "total": 24
    },
    "recorded": "2026-11-23 19:40Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -7738,75 +7049,18 @@
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": false,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "REVIEW"
-     },
-     {
-      "name": "didactic-review-reconciliation",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "DIDACTIC_REVIEW",
-      "count": 12,
-      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-      "questions": [
-       13,
-       15,
-       16,
-       18
-      ]
-     },
-     {
-      "code": "SHORTER_SHEET",
-      "count": 1,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 1
-      },
-      "count": 1
-     },
-     "gate": "deliver",
-     "printedQuestions": 19,
-     "replaced": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 2,
-       "PRINTED_TASK_MISMATCH": 1
-      },
-      "count": 3
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {
-     "review": 6
-    }
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_ANSWER_KIND",
+   "finalCode": "PRINTED_ANSWER_KIND",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-g7",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 1,
+      "dropped": 0,
       "events": [
        {
         "action": "reserve",
@@ -7836,7 +7090,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
@@ -7845,7 +7099,7 @@
         "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 1,
       "planned": 20,
       "printed": 19,
       "reservesOffered": 4,
@@ -7853,15 +7107,9 @@
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 3,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 1,
-    "gate": "deliver",
-    "printed": 19,
-    "replaced": 3,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "אלגברי",
@@ -7880,13 +7128,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "live round 1 (milestone 2), b-g7-equations, call 1, corrections: calls [2]",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -7942,50 +7184,7 @@
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [
-      {
-       "class": "editorial",
-       "code": "DIDACTIC_REVIEW",
-       "count": 12,
-       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-       "questions": [
-        13,
-        15,
-        16,
-        18
-       ],
-       "rules": {
-        "D12": 6,
-        "D5": 6
-       },
-       "steps": [
-        "middle-build"
-       ]
-      }
-     ],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
-       "status": "REVIEW"
-      },
-      {
-       "name": "didactic-review-reconciliation",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -9637,43 +8836,42 @@
   "byProvider": {
    "gemini": {
     "cases": 21,
-    "delivered": 8,
+    "delivered": 4,
     "failingAlone": 167,
     "questions": 484
    },
    "qwen": {
     "cases": 14,
-    "delivered": 4,
+    "delivered": 1,
     "failingAlone": 111,
     "questions": 272
    }
   },
   "cases": 35,
   "correctionsNotRecorded": 30,
-  "delivered": 12,
-  "deliveredRate": 0.3429,
-  "deliveredShorter": 9,
+  "delivered": 5,
+  "deliveredRate": 0.1429,
+  "deliveredShorter": 2,
   "failureClasses": {
-   "DELIVERED": 12,
+   "DELIVERED": 5,
    "OTHER:QUALITY_GATE_FAILED": 1,
-   "SOURCE:AUTHOR_PLAN_MISMATCH": 1,
-   "SOURCE:PRINTED_ANSWER_KIND": 3,
+   "SOURCE:AUTHOR_PLAN_MISMATCH": 2,
+   "SOURCE:PRINTED_ANSWER_KIND": 5,
    "SOURCE:PRINTED_ANSWER_LEAK": 4,
    "SOURCE:PRINTED_TASK_MISMATCH": 1,
    "SOURCE:QUALITY_GATE_FAILED": 1,
    "SOURCE:SOURCE_FIGURE": 2,
    "SOURCE:SOURCE_NOTATION": 9,
+   "SOURCE:SOURCE_PLAIN_MATH": 1,
+   "SOURCE:SOURCE_TABLE": 3,
    "SOURCE:SOURCE_TEXT": 1
   },
   "finalStatus": {
-   "delivered": 12,
-   "failed": 21,
+   "delivered": 5,
+   "failed": 28,
    "needs_unrecorded_reply": 2
   },
-  "firstRenderGateFindings": {
-   "BLOCKING_BUILD_FAILURE": 1,
-   "middle-build/selfcheck_noam_package.py": 1
-  },
+  "firstRenderGateFindings": {},
   "modelCalls": 0,
   "outboundConnectionsRefused": 0,
   "questions": {

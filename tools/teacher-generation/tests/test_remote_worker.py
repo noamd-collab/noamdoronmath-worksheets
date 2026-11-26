@@ -718,25 +718,34 @@ class WorkerTests(unittest.TestCase):
         self.assertNotIn('PRIVATE_', str(record))
 
     def test_a_shorter_sheet_is_delivered_with_its_note_and_the_requested_count(self):
+        from validation import validate_lesson
         self.use_general_lesson()
+        # Sixteen requested in grade 4: fourteen is above three quarters and the grade minimum of twelve.
+        self.job['lesson'] = {**self.job['lesson'], 'questionCount': 16}
         draft = FakeDraft(self.job['lesson'], missing=[3, 7], code='SOURCE_ANSWER', can_shorten=True)
         draft.on_correct = Mock(side_effect=GenerationError('INVALID_MODEL_OUTPUT', 'private'))
         seen = {}
         def render(lesson, payload, target, **kwargs):
+            validate_lesson(lesson, **kwargs)   # as the render's own validation reads the sheet
             seen.update(count=lesson['questionCount'], kwargs=kwargs)
             return self.rendered_general(lesson, payload, target)
         def precheck(lesson, payload, target, **kwargs):
+            validate_lesson(lesson, **kwargs)
             seen['precheck'] = (lesson['questionCount'], kwargs)
             return self.clean_precheck(lesson, payload, target)
         author = self.general_author([draft], fail=[GenerationError('SOURCE_ANSWER', 'private')])
         self.run_general(author, render, precheck=precheck)
         # The sheet's own lesson carries the rewritten count; the request travels beside it.
-        self.assertEqual((seen['count'], seen['kwargs']), (10, {'salvaged_from': 12}))
-        self.assertEqual(seen['precheck'], (10, {'salvaged_from': 12}))
-        self.assertEqual(self.job['lesson']['questionCount'], 12)
+        self.assertEqual((seen['count'], seen['kwargs']), (14, {'salvaged_from': 16}))
+        self.assertEqual(seen['precheck'], (14, {'salvaged_from': 16}))
+        self.assertEqual(self.job['lesson']['questionCount'], 16)
+        # Twelve requested, the grade 4 minimum, is never shortened: the same ten of twelve is refused.
+        with self.assertRaises(GenerationError) as refused:
+            validate_lesson({**self.job['lesson'], 'questionCount': 10}, salvaged_from=12)
+        self.assertEqual(refused.exception.code, 'UNSUPPORTED_SHORT_SHEET')
         result = self.final_result()
         self.assertEqual(result['salvage']['dropped'], {'count': 2, 'codes': {'SOURCE_ANSWER': 2}})
-        self.assertEqual((result['salvage']['requestedQuestions'], result['salvage']['printedQuestions']), (12, 10))
+        self.assertEqual((result['salvage']['requestedQuestions'], result['salvage']['printedQuestions']), (16, 14))
         note = [row for row in result['reviewFindings'] if row['code'] == 'SHORTER_SHEET']
         self.assertEqual(len(note), 1)
         self.assertEqual(note[0]['count'], 2)

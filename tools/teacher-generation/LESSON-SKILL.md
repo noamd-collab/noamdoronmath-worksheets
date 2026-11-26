@@ -301,7 +301,11 @@ runs only when the one before left a deficit.
 2. **One correction call** for the missing questions only (`Draft.correct`):
    the notation-only fix, or a rewrite of at most 8 questions and the rule.
 3. **A shorter sheet** (`Draft.shorten`, `lesson_select.Selection.shorten`): at
-   least `max(6, ⌈3N/4⌉)` questions and two real challenges. The manifest keeps
+   least `max(6, ⌈3N/4⌉, floor)` questions and two real challenges, where floor
+   is the grade minimum every request must meet (`runtime_catalog.question_floor`:
+   8 / 12 / 14 / 20 for grades 1–2 / 3–4 / 5–6 / 7–9). A sheet requested at its
+   minimum is never shortened. `validation.salvaged_count` checks the same
+   rule again when the sheet is pre-checked and rendered. The manifest keeps
    the requested count (`salvaged_from`).
 4. **Pre-pass** (elementary, `runner.precheck_job`, status `clean`, `replace`
    or `failed`): named questions are swapped and the ladder settles again; at
@@ -392,7 +396,7 @@ Run from the repository root. Full guide: `bench/README.md`.
 | `bench/probes/run.py [--family F] [--show] [--update]` | 285 synthetic question forms: pass, rejected or wrong print; exit 1 on a regression | none |
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
-- **Recorded state:** replay delivers 12 of 35 cases with no further model
+- **Recorded state:** replay delivers 5 of 35 cases with no further model
   call, and 278 of 756 questions are refused alone
   (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
   count as failed, so this under-states the live ladder. The key-print checks

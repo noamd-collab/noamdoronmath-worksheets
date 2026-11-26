@@ -254,8 +254,11 @@ class ReplayTests(unittest.TestCase):
         # three whose brackets a stray character replaced are lost and count as refused.
         self.assertEqual(text['author']['firstPass']['code'], 'AUTHOR_PLAN_MISMATCH')
         # The reply predates reserves: one correction is asked for the three positions. It was
-        # never recorded, so it counts as a failed correction and the sheet is shorter.
-        self.assertEqual(text['finalStatus'], 'authored')
+        # never recorded, so it counts as a failed correction. Seventeen of twenty is below the
+        # grade 7 minimum of twenty: no sheet is shortened and the case fails.
+        self.assertEqual((text['finalStatus'], text['failureClass']), ('failed', 'SOURCE:AUTHOR_PLAN_MISMATCH'))
+        self.assertEqual({key: text['ladder']['attemptRecords'][0][key] for key in ('planned', 'printed', 'missing', 'dropped')},
+                         {'planned': 20, 'printed': 17, 'missing': 3, 'dropped': 0})
         self.assertEqual((text['author']['requests'], text['author']['answeredFromRecording']), (2, 1))
         self.assertEqual((text['ladder']['attempts'], text['ladder']['corrections'], text['ladder']['correctionFailed']),
                          (1, 1, True))
