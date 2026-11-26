@@ -1,0 +1,680 @@
+{
+  "title": "משוואות ממעלה ראשונה",
+  "rule": "משוואה היא שוויון בין שני ביטויים אלגבריים. משוואה ממעלה ראשונה היא משוואה שבה הנעלם מופיע בחזקה הראשונה בלבד, כלומר ללא חזקות גבוהות יותר וללא מכנה המכיל את הנעלם. פתרון של משוואה הוא הערך של הנעלם שמקיים את השוויון.",
+  "practice": [
+    {
+      "intro": "זהו אילו מהביטויים הבאים הם משוואות.",
+      "items": [
+        {
+          "prompt": "האם [[2*x + 5]] היא משוואה?",
+          "answer": {
+            "kind": "review",
+            "text": "לא, זהו ביטוי אלגברי ולא משוואה כי אין סימן שוויון."
+          }
+        },
+        {
+          "prompt": "האם [[3 + 4 = 7]] היא משוואה?",
+          "answer": {
+            "kind": "review",
+            "text": "כן, זהו שוויון נכון, אך לרוב מתמקדים במשוואות עם נעלם."
+          }
+        },
+        {
+          "prompt": "האם [[x - 2 = 8]] היא משוואה?",
+          "answer": {
+            "kind": "review",
+            "text": "כן, זהו שוויון בין שני ביטויים הכולל נעלם."
+          }
+        }
+      ]
+    },
+    {
+      "intro": "בדקו האם הערך הנתון הוא פתרון של המשוואה.",
+      "items": [
+        {
+          "prompt": "האם [[x=5]] מקיים את המשוואה [[x + 3 = 8]]?",
+          "answer": {
+            "kind": "review",
+            "text": "כן, כי [[5 + 3 = 8]]."
+          }
+        },
+        {
+          "prompt": "האם [[x=2]] מקיים את המשוואה [[x + 3 = 8]]?",
+          "answer": {
+            "kind": "review",
+            "text": "לא, כי [[2 + 3 = 5]] ו-[[5]] אינו שווה ל-[[8]]."
+          }
+        },
+        {
+          "prompt": "האם [[x=10]] מקיים את המשוואה [[x - 4 = 6]]?",
+          "answer": {
+            "kind": "review",
+            "text": "כן, כי [[10 - 4 = 6]]."
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השלימו את הנעלם החסר כך שהמשוואה תהיה נכונה.",
+      "items": [
+        {
+          "prompt": "מצאו את [[x]] במשוואה [[x + 4 = 9]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "9 - 4"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מצאו את [[y]] במשוואה [[y - 3 = 7]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "7 + 3"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מצאו את [[a]] במשוואה [[2 * a = 10]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "10 / 2"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "פתרו את המשוואות הבאות.",
+      "items": [
+        {
+          "prompt": "פתרו את המשוואה [[x + 5 = 12]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12 - 5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "פתרו את המשוואה [[x - 6 = 4]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "4 + 6"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "פתרו את המשוואה [[3 * x = 15]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "15 / 3"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השוו בין שתי משוואות דומות.",
+      "items": [
+        {
+          "prompt": "מה ההבדל בין המשוואה [[x + 2 = 5]] לבין הביטוי [[x + 2]]?",
+          "answer": {
+            "kind": "review",
+            "text": "המשוואה כוללת סימן שוויון ומבקשת ערך ספציפי, בעוד הביטוי הוא רק תיאור של פעולה."
+          }
+        },
+        {
+          "prompt": "האם [[x = 3]] ו-[[x + 1 = 4]] הן אותה משוואה?",
+          "answer": {
+            "kind": "review",
+            "text": "הן משוואות שונות בכתיבתן, אך יש להן אותו פתרון."
+          }
+        },
+        {
+          "prompt": "איזו משוואה קלה יותר לפתרון: [[x + 100 = 105]] או [[x/2 = 2.5]]?",
+          "answer": {
+            "kind": "review",
+            "text": "המשוואה הראשונה קלה יותר לחישוב ישיר בתוספת וחיסור."
+          }
+        }
+      ]
+    },
+    {
+      "intro": "מצאו את הערך החסר בטבלה המתארת משוואות פשוטות.",
+      "items": [
+        {
+          "prompt": "אם [[x + 3 = 10]], מהו הערך של [[x]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "10 - 3"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "אם [[x - 5 = 2]], מהו הערך של [[x]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "2 + 5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "אם [[4 * x = 20]], מהו הערך של [[x]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "20 / 4"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "חברו בין משוואה לבין הפתרון שלה.",
+      "items": [
+        {
+          "prompt": "פתרו את המשוואה [[x + 7 = 15]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "15 - 7"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "פתרו את המשוואה [[x - 8 = 12]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12 + 8"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "פתרו את המשוואה [[5 * x = 35]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "35 / 5"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "זהו אם המשוואה היא ממעלה ראשונה.",
+      "items": [
+        {
+          "prompt": "האם המשוואה [[x^2 = 9]] היא ממעלה ראשונה?",
+          "answer": {
+            "kind": "review",
+            "text": "לא, כי הנעלם מופיע בחזקה שנייה."
+          }
+        },
+        {
+          "prompt": "האם המשוואה [[2x + 1 = 7]] היא ממעלה ראשונה?",
+          "answer": {
+            "kind": "review",
+            "text": "כן, כי הנעלם מופיע בחזקה הראשונה."
+          }
+        },
+        {
+          "prompt": "האם המשוואה [[x/3 = 4]] היא ממעלה ראשונה?",
+          "answer": {
+            "kind": "review",
+            "text": "כן, כי הנעלם מופיע בחזקה הראשונה ואינו במכנה."
+          }
+        }
+      ]
+    },
+    {
+      "intro": "פתרו את המשוואות הבאות והשוו את הגודל של הפתרונות.",
+      "items": [
+        {
+          "prompt": "פתרו את [[x + 2 = 10]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "10 - 2"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "פתרו את [[y + 5 = 10]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "10 - 5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מי גדול יותר, [[x]] או [[y]]?",
+          "answer": {
+            "kind": "review",
+            "text": "[[x]] גדול יותר כי [[8 > 5]]."
+          }
+        }
+      ]
+    },
+    {
+      "intro": "בחרו את הנתונים הנדרשים לפתרון המשוואה.",
+      "items": [
+        {
+          "prompt": "נתון: [[x + 3 = 10]]. מהו הערך של [[x]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "10 - 3"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "נתון: [[x - 4 = 6]]. מהו הערך של [[x]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "6 + 4"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "נתון: [[2x = 14]]. מהו הערך של [[x]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "14 / 2"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השוו בין שתי שיטות לפתרון המשוואה [[x + 5 = 12]].",
+      "items": [
+        {
+          "prompt": "שיטה א': חסר 5 משני הצדדים. מה התוצאה?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12 - 5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "שיטה ב': מצא מספר שמוסיפים לו 5 ומקבלים 12. מה המספר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12 - 5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "האם שתי השיטות מובילות לאותו פתרון?",
+          "answer": {
+            "kind": "review",
+            "text": "כן, שתיהן נותנות [[7]]."
+          }
+        }
+      ]
+    },
+    {
+      "intro": "כתבו משוואה ממעלה ראשונה שהפתרון שלה הוא [[5]].",
+      "items": [
+        {
+          "prompt": "משוואה בצורת חיבור: [[x + ___ = 10]]. מה חסר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "10 - 5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "משוואה בצורת חיסור: [[x - ___ = 2]]. מה חסר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "5 - 2"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "משוואה בצורת כפל: [[___ * x = 15]]. מה חסר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "15 / 5"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "סדרו את המשוואות לפי גודל הפתרון.",
+      "items": [
+        {
+          "prompt": "פתרו את [[x + 1 = 5]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "5 - 1"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "פתרו את [[y + 2 = 5]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "5 - 2"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "פתרו את [[z + 3 = 5]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "5 - 3"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "נחשו את טווח הפתרון ואז חשבו בדיוק.",
+      "items": [
+        {
+          "prompt": "האם הפתרון של [[x + 10 = 25]] קרוב ל-[[10]] או ל-[[20]]?",
+          "answer": {
+            "kind": "review",
+            "text": "קרוב ל-[[15]], כלומר באמצע בין [[10]] ל-[[20]]."
+          }
+        },
+        {
+          "prompt": "חשבו את הפתרון המדויק של [[x + 10 = 25]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "25 - 10"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "האם הפתרון של [[2x = 18]] הוא זוגי או אי-זוגי?",
+          "answer": {
+            "kind": "review",
+            "text": "הפתרון הוא [[9]], שהוא אי-זוגי."
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השלימו את השלב החסר בפתרון המשוואה [[x + 4 = 9]].",
+      "items": [
+        {
+          "prompt": "שלב 1: [[x + 4 - 4 = 9 - 4]].",
+          "answer": {
+            "kind": "review",
+            "text": "זהו שלב תקין."
+          }
+        },
+        {
+          "prompt": "שלב 2: [[x = ___]]. מה חסר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "9 - 4"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "בדיקה: [[___ + 4 = 9]]. מה חסר?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "9 - 4"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "פתרו את המשוואות הבאות.",
+      "items": [
+        {
+          "prompt": "פתרו את [[x + 6 = 14]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "14 - 6"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "פתרו את [[x - 7 = 8]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "8 + 7"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "פתרו את [[4x = 24]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "24 / 4"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השתמשו בערך אחד כדי למצוא שני פתרונות.",
+      "items": [
+        {
+          "prompt": "אם [[x = 5]], מהו הערך של [[x + 2]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "5 + 2"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "אם [[x = 5]], מהו הערך של [[x - 2]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "5 - 2"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "מה ההפרש בין שני הערכים?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "7 - 3"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    }
+  ],
+  "challenges": [
+    {
+      "intro": "חשבו לאחור: מצאו את המשוואה המקורית.",
+      "items": [
+        {
+          "prompt": "הפתרון הסופי הוא [[x = 4]]. המשך המשוואה היה [[x + 2 = 6]]. מה הייתה המשוואה לפני שהוספנו 2 לשני הצדדים?",
+          "answer": {
+            "kind": "review",
+            "text": "המשוואה הייתה [[x = 4]] או צורה שקולה כמו [[x - 1 = 3]]."
+          }
+        },
+        {
+          "prompt": "אם [[x = 10]] הוא הפתרון, כתבו משוואה מהצורה [[x + a = b]] כאשר [[a=5]].",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "10 + 5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "המשוואה היא [[x + 5 = 15]]. מהו [[x]]?",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "15 - 5"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    },
+    {
+      "intro": "מצאו את הטעות ותקנו אותה.",
+      "items": [
+        {
+          "prompt": "תלמיד כתב: [[x + 3 = 10]] ולכן [[x = 13]]. האם זה נכון?",
+          "answer": {
+            "kind": "review",
+            "text": "לא, הטעות היא בחיבור במקום חיסור. הפתרון הנכון הוא [[x = 7]]."
+          }
+        },
+        {
+          "prompt": "תלמיד כתב: [[x - 4 = 6]] ולכן [[x = 2]]. האם זה נכון?",
+          "answer": {
+            "kind": "review",
+            "text": "לא, הטעות היא בחיסור במקום חיבור. הפתרון הנכון הוא [[x = 10]]."
+          }
+        },
+        {
+          "prompt": "תלמיד כתב: [[2x = 8]] ולכן [[x = 16]]. האם זה נכון?",
+          "answer": {
+            "kind": "review",
+            "text": "לא, הטעות היא בכפל במקום חילוק. הפתרון הנכון הוא [[x = 4]]."
+          }
+        }
+      ]
+    },
+    {
+      "intro": "השוו בין שני מצבים.",
+      "items": [
+        {
+          "prompt": "מצב א': [[x + 5 = 12]]. מצב ב': [[y + 3 = 12]]. מי גדול יותר, [[x]] או [[y]]?",
+          "answer": {
+            "kind": "review",
+            "text": "[[y]] גדול יותר כי [[9 > 7]]."
+          }
+        },
+        {
+          "prompt": "חשבו את [[x]] במצב א'.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12 - 5"
+            },
+            "unit": ""
+          }
+        },
+        {
+          "prompt": "חשבו את [[y]] במצב ב'.",
+          "answer": {
+            "kind": "computed",
+            "task": {
+              "kind": "evaluate",
+              "expression": "12 - 3"
+            },
+            "unit": ""
+          }
+        }
+      ]
+    }
+  ]
+}

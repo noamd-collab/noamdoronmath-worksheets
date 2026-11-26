@@ -1,0 +1,208 @@
+{
+ "family": "time",
+ "probes": [
+  {
+   "id": "time-01",
+   "topic": "ג19",
+   "intro": "ענו.",
+   "prompt": "השעה עכשיו [[7:30]]. מה תהיה השעה בעוד [[45]] דקות?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "8"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "8",
+     "15"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "time-02",
+   "topic": "ג19",
+   "intro": "ענו.",
+   "prompt": "השעה עכשיו 7:30. מה תהיה השעה בעוד [[45]] דקות?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "8"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "8",
+     "15"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch"
+    ],
+    "notes": [
+     "key numbers ['8'] != expected ['8', '15']"
+    ],
+    "printed": "השעה עכשיו 7:30. מה תהיה השעה בעוד 45 דקות?",
+    "key": "8"
+   }
+  },
+  {
+   "id": "time-03",
+   "topic": "ג19",
+   "intro": "ענו.",
+   "prompt": "השעה עכשיו [[7]]:[[30]]. מה תהיה השעה בעוד [[45]] דקות?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "8"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "8",
+     "15"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch"
+    ],
+    "notes": [
+     "key numbers ['8'] != expected ['8', '15']"
+    ],
+    "printed": "השעה עכשיו 7 : 30 . מה תהיה השעה בעוד 45 דקות?",
+    "key": "8"
+   }
+  },
+  {
+   "id": "time-04",
+   "topic": "ג19",
+   "intro": "ענו.",
+   "prompt": "כמה דקות עברו מ־[[7:30]] עד [[8:15]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "45"
+    },
+    "unit": "דקות"
+   },
+   "expect": {
+    "key": [
+     "45"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "time-05",
+   "topic": "ד24",
+   "intro": "המירו.",
+   "prompt": "[[2]] שעות ו־[[15]] דקות = ___ דקות",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2 * 60 + 15"
+    },
+    "unit": "דקות"
+   },
+   "expect": {
+    "key": [
+     "135"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "2 שעות ו־ 15 דקות = ___ דקות",
+    "key": "135 דקות"
+   }
+  },
+  {
+   "id": "time-06",
+   "topic": "ד24",
+   "intro": "המירו.",
+   "prompt": "[[135]] דקות = ___ שעות ו־___ דקות",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "135"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "2",
+     "15"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "135 דקות = ___ שעות ו־___ דקות",
+    "key": "2 שעות ו־ 15 דקות"
+   }
+  },
+  {
+   "id": "time-07",
+   "topic": "א20",
+   "intro": "כִּתְבוּ אֶת הַשָּׁעָה.",
+   "prompt": "הַמָּחוֹג הַקָּטָן מַצְבִּיעַ עַל [[7]] וְהַמָּחוֹג הַגָּדוֹל עַל [[12]]. מָה הַשָּׁעָה?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "7"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "הַמָּחוֹג הַקָּטָן מַצְבִּיעַ עַל 7 וְהַמָּחוֹג הַגָּדוֹל עַל 12 . מָה הַשָּׁעָה?",
+    "key": "7"
+   }
+  },
+  {
+   "id": "time-08",
+   "topic": "ב25",
+   "intro": "כִּתְבוּ אֶת הַשָּׁעָה.",
+   "prompt": "הַשָּׁעָה [[7:30]]. כַּמָּה דַּקּוֹת עַד [[8:00]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "60 - 30"
+    },
+    "unit": "דַּקּוֹת"
+   },
+   "expect": {
+    "key": [
+     "30"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  }
+ ]
+}

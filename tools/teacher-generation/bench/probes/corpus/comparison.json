@@ -1,0 +1,420 @@
+{
+ "family": "comparison",
+ "probes": [
+  {
+   "id": "comparison-01",
+   "topic": "א03",
+   "intro": "הַשְׁלִימוּ אֶת הַסִּימָן הַמַּתְאִים.",
+   "prompt": "[[7]] ___ [[9]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "7",
+     "right": "9"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "7 ___ 9",
+    "key": "7 < 9"
+   }
+  },
+  {
+   "id": "comparison-02",
+   "topic": "ג02",
+   "intro": "השלימו <, > או =.",
+   "prompt": "[[345]] ___ [[354]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "345",
+     "right": "354"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "345 ___ 354",
+    "key": "345 < 354"
+   }
+  },
+  {
+   "id": "comparison-03",
+   "topic": "ג02",
+   "intro": "השלימו את הסימן המתאים (<, >, =).",
+   "prompt": "[[345 ___ 354]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "345",
+     "right": "354"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "345 ___ 354",
+    "key": "345 < 354"
+   }
+  },
+  {
+   "id": "comparison-04",
+   "topic": "ג02",
+   "intro": "כתבו < או > או =.",
+   "prompt": "[[345]] ☐ [[354]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "345",
+     "right": "354"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "345 ___ 354",
+    "key": "345 < 354"
+   }
+  },
+  {
+   "id": "comparison-05",
+   "topic": "ג02",
+   "intro": "השוו בין המספרים.",
+   "prompt": "השוו: [[345]] לבין [[354]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "345",
+     "right": "354"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "השוו: 345 לבין 354",
+    "key": "345 < 354"
+   }
+  },
+  {
+   "id": "comparison-06",
+   "topic": "ג02",
+   "intro": "איזה מספר גדול יותר?",
+   "prompt": "[[345]] או [[354]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "354"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "354"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "345 או 354 ?",
+    "key": "354"
+   }
+  },
+  {
+   "id": "comparison-07",
+   "topic": "א10",
+   "intro": "הַשְׁלִימוּ אֶת הַסִּימָן הַמַּתְאִים.",
+   "prompt": "[[3 + 4]] ___ [[9 - 1]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "3 + 4",
+     "right": "9 - 1"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "3 + 4 ___ 9 − 1",
+    "key": "3 + 4 < 9 − 1"
+   }
+  },
+  {
+   "id": "comparison-08",
+   "topic": "ד12",
+   "intro": "השלימו את הסימן המתאים.",
+   "prompt": "[[frac(2,5)]] ___ [[frac(3,5)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "frac(2,5)",
+     "right": "frac(3,5)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "2 5 ___ 3 5",
+    "key": "2 5 < 3 5"
+   }
+  },
+  {
+   "id": "comparison-09",
+   "topic": "ה29",
+   "intro": "השלימו את הסימן המתאים.",
+   "prompt": "[[0.5]] ___ [[0.45]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "0.5",
+     "right": "0.45"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "0.5",
+     "0.45"
+    ],
+    "keyContains": [
+     ">"
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "0.5 ___ 0.45",
+    "key": "0.5 > 0.45"
+   }
+  },
+  {
+   "id": "comparison-10",
+   "topic": "ג02",
+   "intro": "האם הטענה נכונה?",
+   "prompt": "האם [[345 < 354]]?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "345",
+     "right": "354"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "keyContains": [
+     "כן"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch"
+    ],
+    "notes": [
+     "key lacks 'כן'"
+    ],
+    "printed": "האם 345 < 354 ?",
+    "key": "345 < 354"
+   }
+  },
+  {
+   "id": "comparison-11",
+   "topic": "ג02",
+   "intro": "סדרו מהקטן לגדול.",
+   "prompt": "[[354]], [[345]], [[435]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "345"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "345",
+     "354",
+     "435"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch"
+    ],
+    "notes": [
+     "key numbers ['345'] != expected ['345', '354', '435']"
+    ],
+    "printed": "354 , 345 , 435",
+    "key": "345"
+   }
+  },
+  {
+   "id": "comparison-12",
+   "topic": "ג02",
+   "intro": "השלימו את הסימן המתאים.",
+   "prompt": "השלימו את הסימן.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "345",
+     "right": "354"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "השלימו את הסימן. 345 ___ 354",
+    "key": "345 < 354"
+   }
+  },
+  {
+   "id": "comparison-13",
+   "topic": "ג10",
+   "intro": "בדקו.",
+   "prompt": "האם [[32 : 4 = 8]] נכון?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "8*4"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "keyContains": [
+     "כן"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_ANSWER_KIND"
+   }
+  },
+  {
+   "id": "comparison-14",
+   "topic": "ג10",
+   "intro": "בדקו.",
+   "prompt": "האם [[32 : 4 = 8]] נכון?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "32 / 4",
+     "right": "8"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "keyContains": [
+     "כן"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch"
+    ],
+    "notes": [
+     "key lacks 'כן'"
+    ],
+    "printed": "האם 32 : 4 = 8 נכון?",
+    "key": "32 : 4 = 8"
+   }
+  },
+  {
+   "id": "comparison-15",
+   "topic": "ג10",
+   "intro": "בדקו.",
+   "prompt": "נכון או לא נכון: [[32 : 4 = 8]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "32 / 4",
+     "right": "8"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "keyContains": [
+     "נכון"
+    ],
+    "keyExcludes": [
+     "לא נכון"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch"
+    ],
+    "notes": [
+     "key lacks 'נכון'"
+    ],
+    "printed": "נכון או לא נכון: 32 : 4 = 8",
+    "key": "32 : 4 = 8"
+   }
+  },
+  {
+   "id": "comparison-16",
+   "topic": "ג10",
+   "intro": "בדקו.",
+   "prompt": "נכון או לא נכון: [[32 : 4 = 9]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "compare",
+     "left": "32 / 4",
+     "right": "9"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "keyContains": [
+     "לא נכון"
+    ]
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "key_mismatch"
+    ],
+    "notes": [
+     "key lacks 'לא נכון'"
+    ],
+    "printed": "נכון או לא נכון: 32 : 4 = 9",
+    "key": "32 : 4 < 9"
+   }
+  },
+  {
+   "id": "comparison-17",
+   "topic": "ג10",
+   "intro": "ענו.",
+   "prompt": "מספר חולק ב-6 והתקבל 7. מהו המספר?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "6*7"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "מספר חולק ב- 6 והתקבל 7 . מהו המספר?",
+    "key": "42"
+   }
+  }
+ ]
+}

@@ -62,7 +62,7 @@ class NumericLiteralTests(unittest.TestCase):
         self.assertEqual(value["result"]["values"], [number(5)])
         self.assertEqual(self.result("12 + 3 x 4", 4), number(24))
         self.assertEqual(self.result("20 : 4 - 2", 4), number(3))
-        for raw, grade in [("2xy", 7), ("3name", 7), ("2x", 4), ("x + 2", 4), ("4 : 2", 8)]:
+        for raw, grade in [("2xx", 7), ("3name", 7), ("2x", 4), ("x + 2", 4), ("4 : 2", 8)]:
             with self.subTest(raw=raw, grade=grade), self.assertRaises(GeneralSourceError):
                 expression(raw, grade)
 

@@ -75,7 +75,7 @@ test('twelve reviewed topics retain their previous catalog and offer all 36 stud
       assert.ok(edition.levels.every(level => !Object.hasOwn(level, 'nativeExportSha256')));
     }
     const groups = topicWorksheetEditionLinks(catalog, pack.grade, pack.topicId, '/' + pack.slug);
-    assert.deepEqual(groups.map(group => group.editionId), ['legacy', ...pack.priorEditionIds, edition.editionId]);
+    assert.deepEqual(groups.map(group => group.editionId), [...pack.priorEditionIds, edition.editionId]);
     const added = groups.at(-1)!;
     assert.equal(added.pdfOnly, true);
     const parts = topicPagePdfParts(catalog, pack.grade, [pack.topicId]).parts;
@@ -94,7 +94,12 @@ test('twelve reviewed topics retain their previous catalog and offer all 36 stud
         assert.ok(new URL(download.url).pathname.endsWith('_' + level.pdfId + '.pdf'));
       }
       assert.equal(added.levels[i].href, file.downloads[0].url);
-      assert.equal(added.levels[i].partialHints, undefined);
+      if (pack.number === 111) {
+        assert.equal(added.levels[i].partialHints?.href, '/ramzi-partial?pdf=' + level.pdfId);
+        assert.equal(added.levels[i].partialHints?.label, 'רמזי ל־60 סעיפים');
+      } else {
+        assert.equal(added.levels[i].partialHints, undefined);
+      }
       assert.ok(parts.some(part => part.contentUrl === file.downloads[0].url));
       media.add(level.pdfId);
     }

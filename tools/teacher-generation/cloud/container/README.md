@@ -100,7 +100,10 @@ build to OCI using the same source SHA, label, Dockerfile, context, platform and
 its revision/platform before the separately guarded push. This script never
 pushes, provisions or starts the production worker.
 
-To rebuild skill archives, pass the two explicit trusted source paths to
+To rebuild from the original middle 7.2.0-noam source, apply
+`skills/middle-print-closing.patch` to a private copy with `patch -p1`. This
+keeps the closing with the final question in the PDF and editable Word file.
+Pass the two explicit trusted source paths to
 `skill_bundle.py --elementary ... --middle ... --output NEW_DIRECTORY` and
 compare with `skills/skill-archives.json`. It refuses to overwrite an existing
 archive. Do not install or alter the user's skill trees to make the image pass.

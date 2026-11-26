@@ -18,6 +18,7 @@ import { beforeBatch05Registry } from './fixtures/batch05-pdf';
 import { beforeBatch08Copy } from './fixtures/batch08-pdf';
 import { beforeLandingCorrections } from './fixtures/landing-corrections-20261118';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { catalogBeforeCorrections } from './fixtures/middle-090-091-094';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -28,6 +29,7 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
 const catalog = beforeReviewedRamziActivation(loadCatalog());
+const corrected = catalogBeforeCorrections(catalog);
 const previous = beforeBatch04Catalog(raw) as ReturnType<typeof loadCatalog>;
 // Same SSR normalization as loadCatalog (Wix media CDN) so direct-PDF links compare like for like.
 const previousSsr = { ...previous, config: { ...previous.config, pdfBase: 'https://static.wixstatic.com/ugd/d8e7ad_' } };
@@ -143,13 +145,16 @@ test('all twelve additions open their own reviewed PDF directly while every prev
     });
     const back = `/worksheets?grade=${addition.grade}&topic=${addition.topicId}`;
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, back);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', addition.editionId]);
-    assert.deepEqual(groups.slice(0, 1), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
+    assert.deepEqual(groups.map(g => g.editionId), [addition.editionId]);
+    assert.deepEqual(
+      topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back).map(g => g.editionId),
+      ['legacy'],
+    );
     const group = groups.find(g => g.editionId === addition.editionId)!;
     assert.deepEqual(group.levels.map(l => [l.key, l.label]), [['a', 'רמה א׳'], ['b', 'רמה ב׳'], ['c', 'מצוינות']]);
     assert.equal(group.note, 'קובצי PDF להדפסה');
     assert.deepEqual(topic.levels.map(l => l.key), legacyKeys(addition));
-    assert.deepEqual(groups[0].levels.map(l => l.key), legacyKeys(addition));
+    assert.deepEqual(groups[0].levels.map(l => l.key), ['a', 'b', 'c']);
     assert.deepEqual(edition.levels.map(l => l.key), ['a', 'b', 'c']);
     const proof = receipt.packages.find((p: any) => p.editionId === addition.editionId);
     assert.ok(proof, `${addition.editionId}: public frozen evidence`);
@@ -230,15 +235,15 @@ test('no producer report is PASS: every non-PASS gate carries a recorded waiver 
 });
 
 test('new PDFs cannot enter teacher, learning, viewer or Ramzi banks', () => {
-  assert.deepEqual(buildTeacherCatalog(catalog), buildTeacherCatalog(previous));
-  const teacher = buildTeacherLandingCatalog(catalog);
+  assert.deepEqual(buildTeacherCatalog(corrected), buildTeacherCatalog(previous));
+  const teacher = buildTeacherLandingCatalog(corrected);
   assert.deepEqual(teacher, buildTeacherLandingCatalog(previous));
   for (const addition of reviewed.additions) {
     assert.equal(getTeacherLandingScope({ grade: addition.grade, topic: addition.topicId, edition: addition.editionId }, teacher), null);
     assert.ok(getTeacherLandingScope({ grade: addition.grade, topic: addition.topicId }, teacher));
   }
-  assert.deepEqual(collectViewerPdfIds(catalog), collectViewerPdfIds(previous));
-  for (const id of reviewed.additions.flatMap(a => a.pdfIds)) assert.ok(!collectViewerPdfIds(catalog).includes(id));
+  assert.deepEqual(collectViewerPdfIds(corrected), collectViewerPdfIds(previous));
+  for (const id of reviewed.additions.flatMap(a => a.pdfIds)) assert.ok(!collectViewerPdfIds(corrected).includes(id));
   const activation = loadRamziActivationEvidence(new URL('headless/catalog/', root).pathname, new URL('headless/astro-poc/public/', root).pathname);
   assert.deepEqual(buildLearningCatalog(loadIndexCatalog(), registry, activation), buildLearningCatalog(loadIndexCatalog(), priorRegistry, activation));
   assert.deepEqual(raw.ramziActivation, (previous as any).ramziActivation);

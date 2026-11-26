@@ -17,7 +17,7 @@ import { searchHref } from '../lib/siteSearch/url';
 import { countRenderedTopicCards } from '../lib/catalog/renderedCards';
 import { topicWorksheetEditionLinks, type TopicWorksheetEditionLinks } from '../lib/topicWorksheetEditions';
 import { isDirectWorksheetPdf, worksheetActionLabel } from '../lib/worksheetActions';
-import { worksheetTopicHintLabel } from '../lib/catalog/editions';
+import { studentWorksheetHintLabel } from '../lib/catalog/editions';
 import {
   buildWorksheetsHref,
   parseWorksheetsUrlState,
@@ -395,8 +395,8 @@ export function WorksheetsClient(props: WorksheetsClientProps) {
         </div>
         {topic.description ? <p className="exact-card-description">{topic.description}</p> : null}
         {topic.note ? <p className="note">{topic.note}</p> : null}
-        {worksheetTopicHintLabel(topic) ? (
-          <span className="aihint">{worksheetTopicHintLabel(topic)}</span>
+        {studentWorksheetHintLabel(topic, gEntry.grade) ? (
+          <span className="aihint">{studentWorksheetHintLabel(topic, gEntry.grade)}</span>
         ) : null}
         <div className={`levels${children.length ? ' levels--bundle' : ''}`}>
           {children.length ? (

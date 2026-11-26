@@ -5,13 +5,12 @@ import importlib
 from importlib.metadata import version
 import json
 import os
-import re
 import shutil
 import sys
 from pathlib import Path
 from validation import GenerationError
 from runner import verify_skill
-from provider import qwen_chat_url, verified_tls_context
+from provider import author_config, author_provider, verified_tls_context
 
 PACKAGES={'weasyprint':'weasyprint','PyMuPDF':'pymupdf','matplotlib':'matplotlib','fonttools':'fontTools','python-docx':'docx','beautifulsoup4':'bs4','lxml':'lxml','numpy':'numpy','certifi':'certifi'}
 PACKAGES.update({'sympy':'sympy','mpmath':'mpmath'})
@@ -52,16 +51,15 @@ def check(require_provider=False):
             raise RuntimeError('Tesseract is required for the geometry reader')
     except Exception:
         result['ready']=False;result['authoring']={'status':'FAIL','reason':'GENERAL_AUTHORING_RUNTIME_MISSING'}
-    key=os.environ.get('QWEN_API_KEY') or os.environ.get('DASHSCOPE_API_KEY')
-    base=os.environ.get('QWEN_BASE_URL');model=os.environ.get('QWEN_MODEL')
-    if key and base and model:
-        try:
-            qwen_chat_url(base)
-            if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,63}',model):raise GenerationError('PROVIDER_CONFIG_INVALID','Invalid model')
-            result['provider']['configured']=True
-        except GenerationError as e:
-            result['provider']['reason']=e.code
-    else: result['provider']['reason']='PROVIDER_NOT_CONFIGURED'
+    # The selected provider's own configuration, checked by the function the
+    # author call uses. Nothing is sent, and no value is kept: only the closed
+    # provider name and a fixed reason code.
+    try:
+        result['provider']['name']=author_provider()
+        author_config()
+        result['provider']['configured']=True
+    except GenerationError as e:
+        result['provider']['reason']=e.code
     if require_provider and not result['provider']['configured']:result['ready']=False
     return result
 

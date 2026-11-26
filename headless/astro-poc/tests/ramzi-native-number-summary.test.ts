@@ -73,6 +73,8 @@ it('412 legacy manifests retain all762 summaries; the12 measured additions stay 
   assert.equal(addedQuestions,135);assert.equal(addedParts,567);assert.equal(addedSummaries,0);
   // scan still visits ALL424, checking native hashes, both mirrors and regeneration safety.
   const r=scan(fileURLToPath(root));assert.equal(r.nativeManifests,412+seen.length);assert.equal(r.nativeManifests-seen.length,412);
+  // The corrected scale revision is scanned as a replacement, not as a new sheet.
+  assert.equal(r.revisionManifests,1);assert.equal(r.revisionQuestions,20);assert.equal(r.revisionSummaryEntries,20);
   assert.equal(r.mainQuestions-addedQuestions,8178);assert.equal(r.strictSummaryEntries-addedSummaries,762);
   assert.equal(r.strictSummaryEntries,762);assert.equal(r.affectedManifests,0);assert.equal(r.removedLineOccurrences,0);
 });

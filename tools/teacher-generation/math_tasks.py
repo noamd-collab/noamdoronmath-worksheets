@@ -24,7 +24,11 @@ MAX_NODES = 128
 MAX_DEPTH = 12
 MAX_INPUT_INTEGER = 1_000_000
 MAX_RESULT_INTEGER = 1_000_000_000_000
-MAX_POWER = 4
+# An input exponent. The value it produces is bounded separately: a symbolic
+# power by MAX_DEGREE, a numeric one by MAX_COEFFICIENT_BITS while it is
+# computed and by MAX_RESULT_INTEGER when it is printed (10^12 is the largest
+# power of ten that fits).
+MAX_POWER = 12
 MAX_DEGREE = 8
 MAX_COEFFICIENT_BITS = 160
 MAX_RESULT_NODES = 512
@@ -34,6 +38,9 @@ MAX_RESULT_DEPTH = 24
 MAX_EXPANDED_TERMS = 64
 MAX_RADICAL_ATOMS = 4
 SYMBOLS = {name: S.Symbol(name, real=True) for name in ("x", "y", "a", "b")}
+# An exact real constant is a leaf of its own: it is neither a variable to
+# solve or substitute, nor a rational coefficient.
+CONSTANTS = {"pi": S.pi}
 BINARY = frozenset(("add", "subtract", "multiply", "divide", "power"))
 
 
@@ -100,6 +107,10 @@ def inspect_ast(ast, budget=None, depth=0):
         exact(ast, ("type", "name"), "symbol")
         if type(ast["name"]) is not str or ast["name"] not in SYMBOLS:
             fail("INVALID_AST", "Unknown symbol")
+    elif kind == "constant":
+        exact(ast, ("type", "name"), "constant")
+        if type(ast["name"]) is not str or ast["name"] not in CONSTANTS:
+            fail("INVALID_AST", "Unknown constant")
     elif kind == "operation":
         exact(ast, ("type", "op", "args"), "operation")
         op = ast["op"]
@@ -113,7 +124,8 @@ def inspect_ast(ast, budget=None, depth=0):
             inspect_ast(arg, budget, depth + 1)
         if op == "power":
             exponent = ast["args"][1]
-            limit = MAX_DEGREE if budget.result else MAX_POWER
+            # Printing re-inspects an authored expression with the result budget.
+            limit = max(MAX_DEGREE, MAX_POWER) if budget.result else MAX_POWER
             if exponent["type"] != "number" or exponent["denominator"] != 1 or abs(exponent["numerator"]) > limit:
                 fail("UNSUPPORTED_POWER", "Power requires a bounded integer literal exponent")
     else:
@@ -131,8 +143,8 @@ class AlgebraCost:
 def _fingerprint(ast):
     if ast["type"] == "number":
         return ("number", ast["numerator"], ast["denominator"])
-    if ast["type"] == "symbol":
-        return ("symbol", ast["name"])
+    if ast["type"] in ("symbol", "constant"):
+        return (ast["type"], ast["name"])
     return (ast["op"], tuple(_fingerprint(arg) for arg in ast["args"]))
 
 
@@ -162,7 +174,7 @@ def _algebra_cost(ast):
     repeated monomials. Distinct sqrt syntax is a conservative radical-rank
     bound; no factorization or symbolic equality is needed to enforce it.
     """
-    if ast["type"] in ("number", "symbol"):
+    if ast["type"] in ("number", "symbol", "constant"):
         return AlgebraCost()
     op, args = ast["op"], ast["args"]
     if op in ("add", "multiply") and len(args) > 2:
@@ -204,6 +216,8 @@ class Compiler:
             return Compiled(S.Rational(n, d), 0, 0, max(abs(n).bit_length(), d.bit_length(), 1))
         if kind == "symbol":
             return Compiled(SYMBOLS[ast["name"]], 1, 0, 1)
+        if kind == "constant":
+            return Compiled(CONSTANTS[ast["name"]], 0, 0, 2)
         op, args = ast["op"], ast["args"]
         if op in ("add", "multiply") and len(args) > 2:
             return self.compile(_fold(op, args))
@@ -283,6 +297,8 @@ def _ast(expression):
         return number(n, d)
     if expression.is_Symbol and expression in SYMBOLS.values():
         return {"type": "symbol", "name": str(expression)}
+    if expression is S.pi:
+        return {"type": "constant", "name": "pi"}
     if expression.is_Add:
         return _fold("add", [_ast(x) for x in expression.as_ordered_terms()])
     if expression.is_Mul:
@@ -305,12 +321,16 @@ def _result_ast(expression):
     return ast
 
 
-def to_house_math(ast, *, number_spellings=None) -> str:
+def to_house_math(ast, *, number_spellings=None, schoolbook=False) -> str:
     r"""Compile a bounded AST to the skill's math-island *contents*, without $.
 
     Uses stacked \f{}, \sqrt{}, stretched \g{} parentheses, and middle-school
     multiplication ·. Elementary callers must use their grade's sign renderer.
     Never pass model-authored markup in place of an AST.
+
+    ``schoolbook`` writes a coefficient next to what it multiplies, as a key
+    is written by hand: 5x, 2\g{x + 1}, xy. A product of two numbers and a
+    number that follows a letter keep the dot, so no two digits ever fuse.
     """
     inspect_ast(ast, Budget(result=True))
 
@@ -330,6 +350,8 @@ def to_house_math(ast, *, number_spellings=None) -> str:
             return sign + (str(abs(n)) if d == 1 else r"\f{" + str(abs(n)) + "}{" + str(d) + "}")
         if kind == "symbol":
             return node["name"]
+        if kind == "constant":
+            return r"\pi"
         op, args = node["op"], node["args"]
         parts = [emit(arg) for arg in args]
         group = lambda text: r"\g{" + text + "}"
@@ -339,6 +361,38 @@ def to_house_math(ast, *, number_spellings=None) -> str:
             return (child['type']=='number' and child['numerator']<0) or (
                 child['type']=='operation' and child['op']=='multiply'
                 and child['args'][0]['type']=='number' and child['args'][0]['numerator']<0)
+        def letter_led(child):
+            # What a reader sees first: a letter, a bracket or a root sign.
+            if child['type']=='symbol':
+                return True
+            if child['type']!='operation':
+                return False
+            if child['op'] in ('add','subtract','sqrt'):
+                return True
+            return child['op'] in ('power','multiply') and letter_led(child['args'][0])
+        def base(child):
+            # The letter of x or of x^n; a product ends with its last factor.
+            if child['type']=='symbol':
+                return child['name']
+            if child['type']=='operation' and child['op']=='power':
+                return base(child['args'][0])
+            if child['type']=='operation' and child['op']=='multiply':
+                return base(child['args'][-1])
+            return None
+        def juxtaposed(first, second):
+            if not letter_led(second) or (second['type']=='operation' and second['op']=='power'
+                                          and second['args'][0]['type']!='symbol' and not additive(second['args'][0])):
+                return False
+            if base(first) is not None and base(first)==base(second):
+                return False  # x · x^3 keeps its sign; xx^3 would hide the law being used
+            if first['type']=='number':
+                return first['denominator']==1
+            if first['type']=='symbol':
+                return True
+            return first['type']=='operation' and (
+                first['op']=='power' and first['args'][0]['type']=='symbol'
+                or first['op']=='multiply' and juxtaposed(*first['args'][:2])
+                or additive(first) and additive(second))
         if op == "sqrt":
             return r"\sqrt{" + parts[0] + "}"
         if op == "divide":
@@ -351,7 +405,8 @@ def to_house_math(ast, *, number_spellings=None) -> str:
         if op in ("add", "subtract"):
             right=parts[1]
             operator=" + " if op=='add' else " − "
-            if negative(args[1]) and right.startswith('−'):
+            if (negative(args[1]) or (schoolbook and op=='add')) and right.startswith('−'):
+                # a + (−b + c) is written a − b + c; the sign belongs to the first term.
                 operator=" − " if op=='add' else " + "
                 right=right[1:]
             elif op=='subtract' and additive(args[1]):
@@ -362,9 +417,21 @@ def to_house_math(ast, *, number_spellings=None) -> str:
         # Unary negation is printed as a sign rather than (-1)·(expression).
         if args[0]=={'type':'number','numerator':-1,'denominator':1} and not (number_spellings and id(args[0]) in number_spellings):
             return '−'+right
+        if schoolbook and juxtaposed(args[0], args[1]) and not right.startswith('−'):
+            return left+right
+        # A numerical coefficient is written against the constant: 25π.
+        if args[0]["type"] == "number" and args[0]["numerator"] >= 0 and _pi_factor(args[1]):
+            return left + right
         return left+" · "+right
 
     return emit(ast)
+
+
+def _pi_factor(node):
+    """π or a positive integer power of π, the right factor of a printed coefficient."""
+    if node["type"] == "operation" and node["op"] == "power":
+        node = node["args"][0]
+    return node == {"type": "constant", "name": "pi"}
 
 
 def _original_symbols(ast):
@@ -468,6 +535,8 @@ def _rational_shape(ast):
         return 0, 0, max(abs(ast["numerator"]).bit_length(), ast["denominator"].bit_length(), 1)
     if ast["type"] == "symbol":
         return 1, 0, 1
+    if ast["type"] == "constant":
+        fail("UNSUPPORTED_EQUATION", "Solver input requires rational coefficients")
     op, args = ast["op"], ast["args"]
     if op in ("add", "multiply") and len(args) > 2:
         return _rational_shape(_fold(op, args))
@@ -665,6 +734,65 @@ def _statistics_task(task):
                       "exact rational descriptive statistics; all tied repeated modes returned")
 
 
+DECISION_RELATIONS = ("eq", "ne", "lt", "le", "gt", "ge", "divisible", "not_divisible", "in", "not_in")
+MAX_DECISION_VALUES = 12
+
+
+def _decide_task(task):
+    """Decide one closed claim exactly; the author never supplies its truth value.
+
+    The claim is an order or equality of two numeric expressions, divisibility
+    of one natural number by another, or membership of a value in a short
+    list. ``holds`` says whether the claim as typed is true. The exact values
+    are returned with it, so a key can show why.
+    """
+    relation = task.get("relation")
+    if type(relation) is not str or relation not in DECISION_RELATIONS:
+        fail("INVALID_TASK", "Unknown decision relation")
+    listed = relation in ("in", "not_in")
+    exact(task, ("kind", "relation", "left", "values" if listed else "right"), "decision")
+    others = task["values"] if listed else [task["right"]]
+    if type(others) is not list or (listed and not 2 <= len(others) <= MAX_DECISION_VALUES):
+        fail("INVALID_TASK", "A membership decision needs two to twelve listed values")
+    expressions = [task["left"], *others]
+    budget = Budget()
+    for expression in expressions:
+        inspect_ast(expression, budget)
+    _check_canonical_budget(expressions)
+    costs = [_algebra_cost(expression) for expression in expressions]
+    for cost in costs[1:]:
+        _combine_cost(costs[0], cost, "subtract")
+    if any(_original_symbols(expression) for expression in expressions):
+        fail("UNSUPPORTED_TASK", "A decision requires numeric expressions")
+    compiler = Compiler()
+    values = [compiler.compile(expression).expr for expression in expressions]
+    if any(value.has(S.zoo, S.oo, -S.oo, S.nan) or value.is_real is not True for value in values):
+        fail("UNDEFINED_TASK", "A decided value is not finite and real")
+    left, rest = values[0], values[1:]
+    result = {"type": "decision", "relation": relation, "left": _result_ast(left)}
+    if listed:
+        member = any(_compare_exact(left, value) == 0 for value in rest)
+        holds = member == (relation == "in")
+        result["values"] = [_result_ast(value) for value in rest]
+    elif relation in ("divisible", "not_divisible"):
+        if not (left.is_Integer and rest[0].is_Integer) or left < 0 or rest[0] <= 0:
+            fail("INVALID_TASK", "Divisibility needs a natural number and a positive whole divisor")
+        quotient, remainder = divmod(int(left), int(rest[0]))
+        holds = (remainder == 0) == (relation == "divisible")
+        result.update(right=_result_ast(rest[0]), quotient=number(quotient), remainder=number(remainder))
+    else:
+        sign = _compare_exact(left, rest[0])
+        holds = {"eq": sign == 0, "ne": sign != 0, "lt": sign < 0, "le": sign <= 0,
+                 "gt": sign > 0, "ge": sign >= 0}[relation]
+        result.update(right=_result_ast(rest[0]), order={-1: "less", 0: "equal", 1: "greater"}[sign])
+    result["holds"] = holds
+    question_math = {"left": to_house_math(task["left"])}
+    question_math["values" if listed else "right"] = (
+        [to_house_math(value) for value in others] if listed else to_house_math(task["right"]))
+    return _pack_task(task, question_math, [], [], result,
+                      "exact comparison, integer division or list membership of closed numeric expressions")
+
+
 def validate_and_solve_task(task) -> dict:
     """Validate a closed task and compute its exact answer; no provider/IO calls.
 
@@ -674,6 +802,8 @@ def validate_and_solve_task(task) -> dict:
     Also finite degree-two ``solve_system`` with two variables/equations;
     one-variable rational quadratic ``inequality`` with lt/le/gt/ge relation;
     ``statistics`` with 1..64 literal rationals and mean/median/mode/range/sort.
+    ``decide`` a closed claim ``relation/left/right`` (or ``values`` for a
+    list); its result is ``holds``, never an authored yes or no.
     Returned ``domain`` restrictions always apply to the original task.
     """
     if type(task) is not dict or type(task.get("kind")) is not str:
@@ -693,8 +823,9 @@ def validate_and_solve_task(task) -> dict:
         integer(answer,MAX_RESULT_INTEGER,"integer pair result")
         return _pack_task(task,f"{kind}({a},{b})",set(),[],
                           {"type":"expression","value":number(answer)},"Euclidean algorithm")
-    if kind in ("solve_system", "inequality", "statistics"):
-        return {"solve_system": _solve_system_task, "inequality": _inequality_task, "statistics": _statistics_task}[kind](task)
+    if kind in ("solve_system", "inequality", "statistics", "decide"):
+        return {"solve_system": _solve_system_task, "inequality": _inequality_task, "statistics": _statistics_task,
+                "decide": _decide_task}[kind](task)
     keys = {
         "evaluate": ("kind", "expression"), "simplify": ("kind", "expression"),
         "factor": ("kind", "expression"), "expand": ("kind", "expression"),

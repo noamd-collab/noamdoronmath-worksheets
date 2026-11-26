@@ -17,6 +17,7 @@ import { beforeExtSmlAfrCatalog, beforeExtSmlAfrRegistry, beforeExtSmlAfrCopy,
 import { beforeBatch05Copy, reviewedBatch05 } from './fixtures/batch05-pdf';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
+import { catalogBeforeCorrections } from './fixtures/middle-090-091-094';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -27,6 +28,7 @@ const read = (p: string) => JSON.parse(readFileSync(new URL(p, root), 'utf8'));
 const digest = (v: unknown) => createHash('sha256').update(JSON.stringify(v, null, 2) + '\n').digest('hex');
 const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
 const catalog = beforeReviewedRamziActivation(loadCatalog());
+const corrected = catalogBeforeCorrections(catalog);
 const previous = beforeExtra15Catalog(raw) as ReturnType<typeof loadCatalog>;
 const registry = read('headless/catalog/worksheet-editions.v1.json');
 const priorRegistry = beforeExtra15Registry(registry);
@@ -47,10 +49,10 @@ test('three exact editions add nine verified PDFs and preserve the complete prec
     const groups = topicWorksheetEditionLinks(catalog, a.grade, a.topicId, '/');
     const laterIds = reviewedBatch05.additions
       .filter(later => later.grade === a.grade && later.topicId === a.topicId).map(later => later.editionId);
-    const previousIds = topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').map(g => g.editionId);
+    const previousIds = topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').map(g => g.editionId).filter(id => id !== 'legacy');
     assert.deepEqual(groups.map(g => g.editionId), [...previousIds, a.editionId, ...laterIds]);
     assert.deepEqual(groups.filter(g => g.editionId !== a.editionId).map(g => g.editionId), [...previousIds, ...laterIds]);
-    for (const [index, group] of topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').entries()) {
+    for (const [index, group] of topicWorksheetEditionLinks(previous, a.grade, a.topicId, '/').filter(g => g.editionId !== 'legacy').entries()) {
       assert.deepEqual(groups[index], group);
     }
     assert.equal(topic.defaultEditionId, 'legacy'); assert.equal(edition.routing.usesViewer, false);
@@ -71,14 +73,14 @@ test('three exact editions add nine verified PDFs and preserve the complete prec
 });
 
 test('all old teacher/learning/viewer sources stay identical and no additional PDF enters those banks', () => {
-  assert.deepEqual(buildTeacherCatalog(catalog), buildTeacherCatalog(previous));
-  const teacher = buildTeacherLandingCatalog(catalog);
+  assert.deepEqual(buildTeacherCatalog(corrected), buildTeacherCatalog(previous));
+  const teacher = buildTeacherLandingCatalog(corrected);
   assert.deepEqual(teacher, buildTeacherLandingCatalog(previous));
   for (const a of reviewed.additions) {
     assert.equal(getTeacherLandingScope({ grade: a.grade, topic: a.topicId, edition: a.editionId }, teacher), null);
     assert.ok(getTeacherLandingScope({ grade: a.grade, topic: a.topicId }, teacher));
   }
-  assert.deepEqual(collectViewerPdfIds(catalog), collectViewerPdfIds(previous));
+  assert.deepEqual(collectViewerPdfIds(corrected), collectViewerPdfIds(previous));
   const activation = loadRamziActivationEvidence(new URL('headless/catalog/', root).pathname, new URL('headless/astro-poc/public/', root).pathname);
   assert.deepEqual(buildLearningCatalog(loadIndexCatalog(), registry, activation), buildLearningCatalog(loadIndexCatalog(), priorRegistry, activation));
 });

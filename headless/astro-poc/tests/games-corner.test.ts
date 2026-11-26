@@ -261,14 +261,18 @@ describe('game routes', () => {
 
 describe('games corner in nav, sitemap and link resolver', () => {
   it('marks the whole corner as the games nav item', () => {
-    assert.equal(resolveActiveNav(GAMES_INDEX_PATH), 'tools');
-    assert.equal(resolveActiveNav(`${GAMES_INDEX_PATH}/`), 'tools');
-    assert.equal(resolveActiveNav(PYTHAGORAS_GAME_PATH), 'tools');
-    assert.equal(resolveActiveNav(PUBLIC_LESSON_PATH), 'tools');
-    for (const game of ENGINE_GAMES) assert.equal(resolveActiveNav(gamePath(game)), 'tools');
+    assert.equal(resolveActiveNav(GAMES_INDEX_PATH), 'games');
+    assert.equal(resolveActiveNav(`${GAMES_INDEX_PATH}/`), 'games');
+    assert.equal(resolveActiveNav(PYTHAGORAS_GAME_PATH), 'games');
+    assert.equal(resolveActiveNav(PUBLIC_LESSON_PATH), 'games');
+    assert.equal(resolveActiveNav('/math-tools'), 'tools');
+    for (const game of ENGINE_GAMES) assert.equal(resolveActiveNav(gamePath(game)), 'games');
     assert.ok(header.includes('GAMES_INDEX_PATH'));
-    assert.ok(header.includes('פינת המשחקים'));
-    assert.ok(header.includes('משחקים וכלים'));
+    assert.ok(header.includes('aria-label="משחקים"'));
+    assert.ok(header.includes('תוספים'));
+    assert.ok(header.includes('מחשבון מדעי'));
+    assert.equal(header.includes('משחקים וכלים'), false);
+    assert.equal(header.includes('aria-haspopup="true" aria-label="משחקים"'), false);
     assert.equal(header.includes('PUBLIC_LESSON_PATH'), false);
     assert.equal(header.includes('PYTHAGORAS_GAME_PATH'), false);
     assert.equal(header.includes('/games/kefel-mekutsar-2'), false);

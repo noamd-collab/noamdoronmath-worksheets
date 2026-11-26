@@ -1,0 +1,25 @@
+{
+  "release": "middle-scale-feedback-20261124",
+  "note": "The scale feedback release replaced the level-c PDF of G8-T25 (scale) in place, in the legacy levels row and in the routing query, without adding a release package. The intake fixtures restore the earlier PDF id through catalogBeforeCorrections so every baseline recorded before this correction still hashes to its recorded value.",
+  "corrections": [
+    {
+      "slug": "scale-grade-8-level-c-revision",
+      "grade": 8,
+      "topicId": 5,
+      "edits": [
+        {
+          "path": ["levels", 2, "pdfId"],
+          "from": "6009d89d81484f1aac92da7febec2905",
+          "to": "e7b11e96954b4935951214f8a9035814"
+        },
+        {
+          "path": ["routing", "siblingPdfQuery", "pc"],
+          "from": "6009d89d81484f1aac92da7febec2905",
+          "to": "e7b11e96954b4935951214f8a9035814"
+        }
+      ],
+      "currentTopicSha256": "6a2607fef8d316cd39d30b0d456f6cc73822abbc3a869aeb2a1a0343615cc404",
+      "priorTopicSha256": "92c98841a11739c0b795a0ca19aafa7a77f3b37aa1dadf3884c930bc88313eba"
+    }
+  ]
+}

@@ -1,3 +1,7 @@
+## 2026-11-25 — old junior-high sheets removed from the public site
+
+Noam approved deleting old junior-high worksheets and keeping sheets created from generator/skill version 7 and up. Public lists for grades 7–9 (including the reduced grade-9 track) no longer show the pre-generator "דפים קודמים" set when a later edition exists. Editions without a recorded skill version stay. Four grade-9 topics that have no later edition keep their only sheets. Grades 1–6, the teacher area, games, and Noam AI / Ramzi stay as they were. Removed viewer and `/_files/ugd/` URLs 301 to the topic landing.
+
 ## 2026-11-22 — Grade 7 composite polygon area (092)
 
 The three G7-T138 worksheets each have 21 reviewed Ramzi markers on the printed subsections. Each marker opens three text hints referring to the original geometry worksheet. The shared landing keeps the original worksheet links for topics 46 and 45.
@@ -715,7 +719,7 @@ Columns: grade, topic, levels present, author, reviewed, live, PR.
 | כיתה ח׳ | משוואות ליניאריות (G8-T02) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | a yes (#99); b unknown; c yes (#99) | unknown | #99 (a,c) |
 | כיתה ח׳ | מכנים מספריים (G8-T03) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | יחס ופרופורציה (G8-T24) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
-| כיתה ח׳ | קנה מידה (G8-T25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
+| כיתה ח׳ | קנה מידה (G8-T25) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99. 24.11.2026: נוסח שאלה 1ד במצוינות מבהיר שהיחס הוא ממפה למציאות. |
 | כיתה ח׳ | אחוזים — ייצוגים (G8-T20) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | בעיות אחוזים (G8-T21) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
 | כיתה ח׳ | שינוי באחוזים (G8-T22) | רמה א׳, רמה ב׳, רמת מצוינות | unknown | yes (#99) | unknown | #99 |
@@ -1023,3 +1027,7 @@ Package 119 adds three printable review worksheets for students preparing for fo
 ### Final twelve middle-school renewal packages, 23 November 2026
 
 Packages 103, 104, 107, 108, 109 and 111–117 contribute 36 printable worksheets in three levels, with 1,647 subitems and final answers. The new Grade 9 prism and transformations pages identify prerequisite knowledge. Grade 8 assessment task 1 is labelled as practice. The renewal spans allocations 040–119. The [per-edition record](middle-renewal-final-20261123.json) binds each level to its reviewed PDF and both media readbacks. New-edition hints require a separate source-bound review.
+
+### Grade 8 non-routine problems with Ramzi, 23 November 2026
+
+Package 111 (G8-T157) pairs each of its three PDFs with a Ramzi reader. The 180 subsection markers were measured on the published student PDFs. Each marker binds three text hints written by ZCode to the matching edition, PDF and native subsection. At the owner's request, the intake check verifies all 540 strings against the original return and checks source identities and completeness. The six answer pages have no markers.

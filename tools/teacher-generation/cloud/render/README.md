@@ -121,8 +121,9 @@ source during the guarded provider build. The existing Cloudflare Dockerfile
 and its build context are not modified.
 
 The existing four runtime values (`QWEN_API_KEY`, `QWEN_BASE_URL`, `QWEN_MODEL`,
-`TEACHER_GENERATION_SERVICE_KEY`) and the new `WORKER_WAKE_SECRET` belong only in
-private server environment configuration. No real values belong in a Docker
+`TEACHER_GENERATION_SERVICE_KEY`), the optional author switch with its own
+credential (`TEACHER_AUTHOR_PROVIDER`, `GEMINI_API_KEY`, `GEMINI_MODEL`) and the
+new `WORKER_WAKE_SECRET` belong only in private server environment configuration. No real values belong in a Docker
 layer, source checkout, workflow artifact, response or PR. The child environment
 forwards only the existing fixed runtime allowlist; it strips the wake key,
 activation setting, Python injection variables and unrelated platform secrets.

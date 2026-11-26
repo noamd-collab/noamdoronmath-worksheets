@@ -5,6 +5,9 @@ import terms from '../data/site-pages/terms.json';
 import privacy from '../data/site-pages/privacy.json';
 import conditionforfreeworksheets from '../data/site-pages/conditionforfreeworksheets.json';
 import highSchoolMath from '../data/site-pages/high-school-math.json';
+import purchaseTerms from '../data/site-pages/purchase-terms.json';
+import cancellation from '../data/site-pages/cancellation.json';
+import delivery from '../data/site-pages/delivery.json';
 
 /** Explicit fold id. Renderers must key off this, not visible copy. */
 export type SitePageRegion = 'calculator-preview';
@@ -71,6 +74,9 @@ export const SITE_PAGE_M24_SLUGS = [
   'conditionforfreeworksheets',
   'high-school-math',
   'privacy',
+  'purchase-terms',
+  'cancellation',
+  'delivery',
 ] as const;
 
 /** Production redirects, served by the middleware from src/data/redirects.json (OPEN-15). */
@@ -85,6 +91,9 @@ export const SITE_PAGE_POLICY_SLUGS = [
   'terms',
   'conditionforfreeworksheets',
   'privacy',
+  'purchase-terms',
+  'cancellation',
+  'delivery',
 ] as const;
 
 export const SITE_PAGE_M24_UNMIGRATED: readonly string[] = [];
@@ -97,11 +106,17 @@ const BY_SLUG: Record<string, SitePageContent> = {
   conditionforfreeworksheets: conditionforfreeworksheets as SitePageContent,
   'high-school-math': highSchoolMath as SitePageContent,
   privacy: privacy as SitePageContent,
+  'purchase-terms': purchaseTerms as SitePageContent,
+  cancellation: cancellation as SitePageContent,
+  delivery: delivery as SitePageContent,
 };
 
 export function loadSitePage(slug: string): SitePageContent {
   const page = BY_SLUG[slug];
   if (!page) throw new Error(`Unknown site page slug: ${slug}`);
+  // terms.json stores the legal body once: legalBlocks is omitted when it is
+  // byte-identical to blocks, and resolved here so callers always see both.
+  if (slug === 'terms' && !page.legalBlocks) return { ...page, legalBlocks: page.blocks };
   return page;
 }
 

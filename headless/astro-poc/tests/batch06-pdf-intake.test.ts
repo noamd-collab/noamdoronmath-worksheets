@@ -18,6 +18,7 @@ import { beforeBatch07Copy, beforeBatch07Registry } from './fixtures/batch07-pdf
 import { reviewedBatch10 } from './fixtures/batch10-pdf';
 import { reviewedBatch11 } from './fixtures/batch11-pdf';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
+import { catalogBeforeCorrections } from './fixtures/middle-090-091-094';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -29,6 +30,7 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
 const catalog = beforeReviewedRamziActivation(loadCatalog());
+const corrected = catalogBeforeCorrections(catalog);
 const previous = beforeBatch06Catalog(raw) as ReturnType<typeof loadCatalog>;
 const previousSsr: any = structuredClone(catalog);
 for (const addition of reviewed.additions) {
@@ -193,12 +195,12 @@ test('eleven additive editions recover the pinned baseline after batch 5 (4db6f5
     const selectedId = oldTopic.defaultEditionId ?? 'legacy';
     const topicAdditions = reviewed.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId);
     assert.deepEqual(groups.map(g => g.editionId),
-      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId),
+      [...[selectedId, ...oldIds.filter(id => id !== selectedId)].filter(id => id !== 'legacy'), ...topicAdditions.map(a => a.editionId),
         ...reviewedBatch10.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId),
         ...reviewedBatch11.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId).map(a => a.editionId),
         ...nextRenew.packages.filter(p => p.grade === addition.grade && p.topicId === addition.topicId).map(p => p.edition.editionId)]);
-    const oldGroupCount = oldIds.length + 1;
-    assert.deepEqual(groups.slice(0, oldGroupCount), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
+    const earlier = topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back).filter(group => group.editionId !== 'legacy');
+    assert.deepEqual(groups.slice(0, earlier.length), earlier);
     assert.deepEqual(groups.find(g => g.editionId === addition.editionId)!.levels.map(l => l.key), ['a', 'b', 'c']);
   }
 });
@@ -262,15 +264,15 @@ test('nine landing routes add only reviewed PDF copy and preserve their complete
 });
 
 test('new PDFs cannot enter teacher, learning, viewer or Ramzi banks', () => {
-  assert.deepEqual(buildTeacherCatalog(catalog), buildTeacherCatalog(previous));
-  const teacher = buildTeacherLandingCatalog(catalog);
+  assert.deepEqual(buildTeacherCatalog(corrected), buildTeacherCatalog(previous));
+  const teacher = buildTeacherLandingCatalog(corrected);
   assert.deepEqual(teacher, buildTeacherLandingCatalog(previous));
   for (const addition of reviewed.additions) {
     assert.equal(getTeacherLandingScope({ grade: addition.grade, topic: addition.topicId, edition: addition.editionId }, teacher), null);
     assert.ok(getTeacherLandingScope({ grade: addition.grade, topic: addition.topicId }, teacher));
   }
-  assert.deepEqual(collectViewerPdfIds(catalog), collectViewerPdfIds(previous));
-  for (const id of reviewed.additions.flatMap(a => a.pdfIds)) assert.ok(!collectViewerPdfIds(catalog).includes(id));
+  assert.deepEqual(collectViewerPdfIds(corrected), collectViewerPdfIds(previous));
+  for (const id of reviewed.additions.flatMap(a => a.pdfIds)) assert.ok(!collectViewerPdfIds(corrected).includes(id));
   const activation = loadRamziActivationEvidence(new URL('headless/catalog/', root).pathname, new URL('headless/astro-poc/public/', root).pathname);
   assert.deepEqual(buildLearningCatalog(loadIndexCatalog(), registry, activation),
     buildLearningCatalog(loadIndexCatalog(), priorRegistry, activation));

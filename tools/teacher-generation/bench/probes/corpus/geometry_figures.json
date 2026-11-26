@@ -1,0 +1,367 @@
+{
+ "family": "geometry_figures",
+ "probes": [
+  {
+   "id": "geometry_figures-01",
+   "topic": "ג14",
+   "intro": "ענו.",
+   "prompt": "כמה צלעות יש למשושה?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "6"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "כמה צלעות יש למשושה?",
+    "key": "6"
+   }
+  },
+  {
+   "id": "geometry_figures-02",
+   "topic": "ג16",
+   "intro": "מיינו את המשולש.",
+   "prompt": "משולש שכל צלעותיו שוות נקרא ___",
+   "answer": {
+    "kind": "review",
+    "text": "משולש שווה צלעות"
+   },
+   "expect": {
+    "keyContains": [
+     "שווה צלעות"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "adapter",
+    "code": "UNVERIFIED_ANSWERS"
+   }
+  },
+  {
+   "id": "geometry_figures-03",
+   "topic": "ג12",
+   "intro": "ענו.",
+   "prompt": "זווית בת [[90°]] נקראת ___",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "90"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [],
+    "keyContains": [
+     "ישרה"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "geometry_figures-04",
+   "topic": "ג12",
+   "intro": "ענו.",
+   "prompt": "זווית בת [[90]]° היא זווית ישרה. בכמה מעלות גדולה ממנה זווית בת [[120]]°?",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "120 - 90"
+    },
+    "unit": "מעלות"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "זווית בת 90 ° היא זווית ישרה. בכמה מעלות גדולה ממנה זווית בת 120 °?",
+    "key": "30 מעלות"
+   }
+  },
+  {
+   "id": "geometry_figures-05",
+   "topic": "ד22",
+   "intro": "חשבו את שטח המלבן.",
+   "prompt": "מלבן שאורכו [[6]] ס״מ ורוחבו [[4]] ס״מ.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "6 * 4"
+    },
+    "unit": "סמ״ר"
+   },
+   "figure": {
+    "kind": "grid_shape",
+    "cells": [
+     [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "DRAWING_POLICY"
+   }
+  },
+  {
+   "id": "geometry_figures-06",
+   "topic": "ג18",
+   "intro": "מצאו את שטח הצורה שעל הרשת.",
+   "prompt": "כמה משבצות בצורה?",
+   "answer": {
+    "kind": "figure",
+    "operation": "area",
+    "unit": "משבצות"
+   },
+   "figure": {
+    "kind": "grid_shape",
+    "cells": [
+     [
+      1,
+      1,
+      0
+     ],
+     [
+      1,
+      1,
+      1
+     ]
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "כמה משבצות בצורה?",
+    "key": "5 משבצות"
+   }
+  },
+  {
+   "id": "geometry_figures-07",
+   "topic": "ו11",
+   "intro": "ענו על הגוף שבשרטוט.",
+   "prompt": "כמה קודקודים יש לתיבה?",
+   "answer": {
+    "kind": "figure",
+    "operation": "vertex_count",
+    "unit": ""
+   },
+   "figure": {
+    "kind": "solid",
+    "shape": "box",
+    "dimensions": [
+     3,
+     2,
+     4
+    ]
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "כמה קודקודים יש לתיבה?",
+    "key": "8"
+   }
+  },
+  {
+   "id": "geometry_figures-08",
+   "topic": "g7:angles",
+   "intro": "חשבו את הזווית.",
+   "prompt": "במשולש [[triangle:ABC]] נתון [[angle:ABC]] = [[50°]] ו־[[angle:BCA]] = [[60°]]. חשבו את [[angle:CAB]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "180 - 50 - 60"
+    },
+    "unit": "מעלות"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "במשולש $\\tri ABC$ נתון $\\angle{ABC} = 50°$ ו־$\\angle{BCA} = 60°$. חשבו את $\\angle{CAB}$.",
+    "key": "$70$ מעלות"
+   }
+  },
+  {
+   "id": "geometry_figures-09",
+   "topic": "g7:angles",
+   "intro": "חשבו את הזווית.",
+   "prompt": "במשולש [[triangle:ABC]] נתון [[∠ABC = 50°]] ו־[[∠BCA = 60°]]. חשבו את [[angle:CAB]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "180 - 50 - 60"
+    },
+    "unit": "מעלות"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "במשולש $\\tri ABC$ נתון $\\angle{ABC} = 50°$ ו־$\\angle{BCA} = 60°$. חשבו את $\\angle{CAB}$.",
+    "key": "$70$ מעלות"
+   }
+  },
+  {
+   "id": "geometry_figures-10",
+   "topic": "g7:angles",
+   "intro": "חשבו את הזווית.",
+   "prompt": "נתון: [[∠A + ∠B + ∠C = 180°]]. מצאו את [[∠C]] אם [[∠A = 50°]] ו־[[∠B = 60°]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "180 - 50 - 60"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "נתון: $\\angle{A} + \\angle{B} + \\angle{C} = 180°$. מצאו את $\\angle{C}$ אם $\\angle{A} = 50°$ ו־$\\angle{B} = 60°$.",
+    "key": "$70$"
+   }
+  },
+  {
+   "id": "geometry_figures-11",
+   "topic": "g7:angles",
+   "intro": "חשבו את x.",
+   "prompt": "זוויות צמודות: [[angle:ABC]] = [[2*x + 10]]° ו־[[angle:CBD]] = [[3*x]]°. מצאו את [[x]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "2*x + 10 + 3*x",
+     "rhs": "180",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "זוויות צמודות: $\\angle{ABC} = 2x + 10$° ו־$\\angle{CBD} = 3x$°. מצאו את $x$.",
+    "key": "$x = 34$"
+   }
+  },
+  {
+   "id": "geometry_figures-12",
+   "topic": "g7:angles",
+   "intro": "חשבו את x.",
+   "prompt": "שתי זוויות צמודות הן [[2x + 10°]] ו־[[3x°]]. מצאו את [[x]].",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "solve",
+     "lhs": "2*x + 10 + 3*x",
+     "rhs": "180",
+     "variable": "x"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "geometry_figures-13",
+   "topic": "g7:angles",
+   "intro": "חשבו.",
+   "prompt": "נתון [[α = 40°]]. חשבו את הזווית הצמודה לה.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "180 - 40"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
+   }
+  },
+  {
+   "id": "geometry_figures-14",
+   "topic": "g9r:parallelogram",
+   "intro": "חשבו.",
+   "prompt": "במקבילית [[polygon:ABCD]] נתון [[AB = 8]] ס״מ ו־[[BC = 5]] ס״מ. חשבו את ההיקף.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2*(8+5)"
+    },
+    "unit": "ס״מ"
+   },
+   "figure": {
+    "kind": "shape",
+    "shape": "parallelogram",
+    "parameters": {
+     "a": 8,
+     "b": 5,
+     "angle": 60
+    },
+    "names": "ABCD",
+    "rotate": 0
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "במקבילית $ABCD$ נתון $AB = 8$ ס״מ ו־$BC = 5$ ס״מ. חשבו את ההיקף.",
+    "key": "$26$ ס״מ"
+   }
+  },
+  {
+   "id": "geometry_figures-15",
+   "topic": "g9r:parallelogram",
+   "intro": "חשבו.",
+   "prompt": "במקבילית ABCD נתון AB = 8 ס״מ ו־BC = 5 ס״מ. חשבו את ההיקף.",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2*(8+5)"
+    },
+    "unit": "ס״מ"
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "במקבילית $ABCD$ נתון $AB = 8$ ס״מ ו־$BC = 5$ ס״מ. חשבו את ההיקף.",
+    "key": "$26$ ס״מ"
+   }
+  }
+ ]
+}

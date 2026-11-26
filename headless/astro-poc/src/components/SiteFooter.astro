@@ -1,5 +1,6 @@
 ---
 import type { HomePageContent } from '../lib/homePage';
+import business from '../data/business.json';
 
 interface Props {
   footer: HomePageContent['footer'];
@@ -39,6 +40,9 @@ const socialLinks = [
    <h3 style="margin:0 0 10px;font-size:16px;color:#fff;">{footer.contactHeading}</h3>
    <p style="margin:0 0 6px;font-size:16px;color:#c3c9dc;">{footer.contactBody}</p>
    <a href={'mailto:'+footer.email} style="color:#f2c46b;font-size:16px;">{footer.email}</a>
+   <p style="margin:6px 0 0;font-size:16px;">
+    <a href={`tel:${business.phoneHref}`} style="color:#f2c46b;" data-footer-phone>{business.phone}</a>
+   </p>
    {/* Keep verified real social destinations. Supplied YouTube/LinkedIn are placeholders, not new URLs. */}
       <ul style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;list-style:none;padding:0;" aria-label="רשתות חברתיות">
         {
@@ -103,7 +107,18 @@ const socialLinks = [
    </div>
   </nav>
  </div>
- <div style="max-width:1200px;margin:0 auto;padding:18px 24px 28px;border-top:1px solid rgba(255,255,255,.15);font-size:13px;color:#a9b0c8;">{footer.copyright}
+ <div style="max-width:1200px;margin:0 auto;padding:18px 24px 28px;border-top:1px solid rgba(255,255,255,.15);font-size:13px;color:#a9b0c8;">
+  <p data-business-identity style="margin:0 0 8px;line-height:1.8;">
+   <span>{business.brand}</span>
+   <span aria-hidden="true"> · </span>
+   <span>מספר עוסק {business.businessId}</span>
+   {business.address && (<><span aria-hidden="true"> · </span><span data-business-address>כתובת: {business.address}</span></>)}
+   <span aria-hidden="true"> · </span>
+   <a href={`tel:${business.phoneHref}`} style="color:#f2c46b;">{business.phone}</a>
+   <span aria-hidden="true"> · </span>
+   <a href={`mailto:${business.email}`} style="color:#f2c46b;">{business.email}</a>
+  </p>
+  <p style="margin:0;">{footer.copyright}</p>
   {showPreviewNote && footer.previewNote && <p class="home-foot">{footer.previewNote}</p>}
  </div>
 </footer>

@@ -18,6 +18,7 @@ import { beforeLandingCorrections } from './fixtures/landing-corrections-2026111
 import { beforeBatch10Registry } from './fixtures/batch10-pdf';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 import { beforeRamziActivationCopy } from './fixtures/ramzi-activation-copy-20261119';
+import { catalogBeforeCorrections } from './fixtures/middle-090-091-094';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -29,6 +30,7 @@ const read = (path: string) => JSON.parse(readFileSync(new URL(path, root), 'utf
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value, null, 2) + '\n').digest('hex');
 const raw = beforeReviewedRamziActivation(read('headless/astro-poc/src/data/catalog.v1.json'));
 const catalog = beforeReviewedRamziActivation(loadCatalog());
+const corrected = catalogBeforeCorrections(catalog);
 const previous = beforeBatch09Catalog(raw) as ReturnType<typeof loadCatalog>;
 const previousSsr: any = structuredClone(catalog);
 for (const addition of reviewed.additions) {
@@ -158,9 +160,9 @@ test('six additive editions recover the pinned baseline after batch 8 (c45a033c)
     const selectedId = oldTopic.defaultEditionId ?? 'legacy';
     const topicAdditions = reviewed.additions.filter(a => a.grade === addition.grade && a.topicId === addition.topicId);
     assert.deepEqual(groups.map(g => g.editionId),
-      [selectedId, ...oldIds.filter(id => id !== selectedId), ...topicAdditions.map(a => a.editionId)]);
-    const oldGroupCount = oldIds.length + 1;
-    assert.deepEqual(groups.slice(0, oldGroupCount), topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
+      [...[selectedId, ...oldIds.filter(id => id !== selectedId)].filter(id => id !== 'legacy'), ...topicAdditions.map(a => a.editionId)]);
+    const earlier = topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back).filter(group => group.editionId !== 'legacy');
+    assert.deepEqual(groups.slice(0, earlier.length), earlier);
     assert.deepEqual(groups.find(g => g.editionId === addition.editionId)!.levels.map(l => l.key), ['a', 'b', 'c']);
   }
 });
@@ -225,15 +227,15 @@ test('six landing routes add only reviewed PDF copy and preserve their complete 
 });
 
 test('new PDFs cannot enter teacher, learning, viewer or Ramzi banks', () => {
-  assert.deepEqual(buildTeacherCatalog(catalog), buildTeacherCatalog(previous));
-  const teacher = buildTeacherLandingCatalog(catalog);
+  assert.deepEqual(buildTeacherCatalog(corrected), buildTeacherCatalog(previous));
+  const teacher = buildTeacherLandingCatalog(corrected);
   assert.deepEqual(teacher, buildTeacherLandingCatalog(previous));
   for (const addition of reviewed.additions) {
     assert.equal(getTeacherLandingScope({ grade: addition.grade, topic: addition.topicId, edition: addition.editionId }, teacher), null);
     assert.ok(getTeacherLandingScope({ grade: addition.grade, topic: addition.topicId }, teacher));
   }
-  assert.deepEqual(collectViewerPdfIds(catalog), collectViewerPdfIds(previous));
-  for (const id of reviewed.additions.flatMap(a => a.pdfIds)) assert.ok(!collectViewerPdfIds(catalog).includes(id));
+  assert.deepEqual(collectViewerPdfIds(corrected), collectViewerPdfIds(previous));
+  for (const id of reviewed.additions.flatMap(a => a.pdfIds)) assert.ok(!collectViewerPdfIds(corrected).includes(id));
   const activation = loadRamziActivationEvidence(new URL('headless/catalog/', root).pathname, new URL('headless/astro-poc/public/', root).pathname);
   assert.deepEqual(buildLearningCatalog(loadIndexCatalog(), registry, activation),
     buildLearningCatalog(loadIndexCatalog(), priorRegistry, activation));

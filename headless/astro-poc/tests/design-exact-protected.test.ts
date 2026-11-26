@@ -47,8 +47,29 @@ const legalPrivacyDeltaText = read('tests/fixtures/legal-privacy-reviewed-delta.
 assert.equal(sha256(legalPrivacyDeltaText), '3953c82c1b08b81cf1b2bf76d977f11d6457f0cdeed2c74c2de4cacbe0b38753');
 const legalPrivacyDeltas = JSON.parse(legalPrivacyDeltaText).files;
 
+// Retain the previous viewer fences after the scale PDF and its native text split into an immutable revision.
+function beforeScaleFeedback(content: string): string {
+  const revision = [
+    '  // Wording revisions keep their own native text and leave archived exports intact.',
+    '  if(manifest&&/^G[789]-T[0-9]+$/.test(manifest.prefix)&&/^[abc]$/.test(manifest.nativeLevel)&&',
+    '      /^[a-f0-9]{32}$/.test(manifest.pdfHash)&&',
+    "      url==='/noam-ai/native/'+manifest.prefix+'/'+manifest.nativeLevel+'/revisions/'+manifest.pdfHash+'/noam-ai.json'){return url;}",
+    '',
+  ].join('\n');
+  for (const [current, prior] of [
+    [revision, ''],
+    ['catalog-migrations.js?v=20261124-scale-feedback', 'catalog-migrations.js?v=20261027-native1'],
+    ['noam-curated-hints.js?v=20261124-scale-feedback', 'noam-curated-hints.js?v=20261120-three-digit-editions'],
+  ]) {
+    assert.equal(content.split(current).length, 2, 'one exact scale revision hunk');
+    content = content.replace(current, prior);
+  }
+  return content;
+}
+
 // Restore the single GET and its two stale-response guards from f25bd4798.
 function beforeManifestRecovery(content: string): string {
+  content = beforeScaleFeedback(content);
   const requests = content.match(/^  function isCurrentLoad\(\)\{\n[\s\S]*?^  return fetchManifest\(\)$/gm) || [];
   assert.equal(requests.length, 1, 'one manifest retry block');
   assert.equal(sha256(requests[0]), 'e78fbfb98a1dbcfebd00ce0a307dcc72f5b96dc5210bde4cca5258cdf6573838', 'exact manifest retry block');
@@ -153,7 +174,24 @@ function beforeLearningNavRainbow(file: string, content: string): string {
   }
   return content;
 }
+function beforeAddonsNav(file: string, content: string): string {
+  if (file !== 'public/learning.html') return content;
+  const pairs: Array<[string, string]> = [
+    ['noam-learning.css?v=20261125-addons-1', 'noam-learning.css?v=20261118-nav-rainbow-1'],
+    [
+      '      <a class="exact-nav-games" href="/games" aria-label="משחקים"><span class="exact-nav-rainbow" aria-hidden="true"><span>מ</span><span>ש</span><span>ח</span><span>ק</span><span>י</span><span>ם</span></span></a>\n      <div class="exact-nav-tools">\n        <button type="button" class="exact-nav-tools__btn" data-tools-toggle aria-expanded="false" aria-controls="addons-menu" aria-haspopup="true">תוספים</button>\n        <div id="addons-menu" class="exact-nav-drop">\n          <a href="/math-tools">מחשבון מדעי</a>\n          <a href="/math-tools#practice-tools">כלי תרגול</a>\n        </div>\n      </div>',
+      '      <div class="exact-nav-tools">\n        <button type="button" class="exact-nav-tools__btn" data-tools-toggle aria-expanded="false" aria-controls="extras-menu" aria-haspopup="true" aria-label="משחקים"><span class="exact-nav-rainbow" aria-hidden="true"><span>מ</span><span>ש</span><span>ח</span><span>ק</span><span>י</span><span>ם</span></span></button>\n        <div id="extras-menu" class="exact-nav-drop">\n          <a href="/math-tools">משחקים וכלים</a>\n          <a class="exact-nav-game exact-nav-game--pink" href="/games">פינת המשחקים של אליהו</a>\n        </div>\n      </div>',
+    ],
+  ];
+  for (const [after, before] of pairs) {
+    assert.equal(content.split(after).length, 2, 'one exact addons nav hunk');
+    content = content.replace(after, before);
+  }
+  return content;
+}
 function beforeWhatsappRemoval(file: string, content: string): string {
+  content = beforeGrowLegalLinks(file, content);
+  content = beforeAddonsNav(file, content);
   content = beforeLearningNavRainbow(file, content);
   const delta = whatsappRemovalDeltas.find((entry: any) => entry.file === file);
   if (!delta) return content;
@@ -164,6 +202,29 @@ function beforeWhatsappRemoval(file: string, content: string): string {
     content = parts.join(hunk.before);
   }
   assert.equal(sha256(content), delta.baselineSha256, file + ' unchanged bytes outside the WhatsApp removal hunks');
+  return content;
+}
+// Grow readiness, 2026-11-24: the footer gained the three payment-policy links
+// and the "everything on the site is free" disclaimer was corrected because the
+// teacher area now has a paid plan. Reverse only these two reviewed hunks, so
+// every historical hash below still describes the same bytes.
+function beforeGrowLegalLinks(file: string, content: string): string {
+  if (file !== 'src/data/home-page.json') return content;
+  const hunks: Array<[string, string]> = [
+    [
+      '\n      { "label": "תנאי רכישה — אזור המורים", "href": "/purchase-terms" },\n      { "label": "ביטול עסקה והחזר", "href": "/cancellation" },\n      { "label": "מדיניות אספקת השירות", "href": "/delivery" },',
+      '',
+    ],
+    [
+      '"disclaimer": "דפי העבודה באתר ניתנים להורדה ללא תשלום. אזור המורים כולל מסלול בתשלום, ותנאיו מופיעים בעמוד תנאי הרכישה ובעמוד ביטול עסקה והחזר.",',
+      '"disclaimer": "האתר נמצא כעת בשלבי הקמה ופיתוח, וכל השירותים והתכנים המוצגים בו ניתנים ללא תשלום. אין לראות באמור באתר משום התחייבות סופית מצד בעלי האתר, וייתכנו שינויים בתכנים בהמשך.",',
+    ],
+  ];
+  for (const [after, before] of hunks) {
+    const parts = content.split(after);
+    assert.equal(parts.length, 2, 'one exact Grow legal footer hunk');
+    content = parts.join(before);
+  }
   return content;
 }
 // First567 drawing policy changes exactly one allowlist line. Reverse only the
@@ -455,7 +516,9 @@ describe('exact-design protected live-baseline boundaries', () => {
         // Strip only that reviewed addition, then require the complete prior
         // snapshot hash below, including the already released grade-three edition.
         // Reverse the exact three additional PDF overlays before all older fences.
-        const publishedCatalog = JSON.parse(content);
+        const revisedScale = '6009d89d81484f1aac92da7febec2905';
+        assert.equal(content.split(revisedScale).length, 3, 'only the excellence level and sibling route use the revised PDF');
+        const publishedCatalog = JSON.parse(content.replaceAll(revisedScale, 'e7b11e96954b4935951214f8a9035814'));
         const activation = readFirst567Activation();
         assert.deepEqual(publishedCatalog.ramziHintCorrection, activation.hintCorrection,
           'current snapshot correction matches the verified receipt bundle');

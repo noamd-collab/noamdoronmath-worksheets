@@ -40,6 +40,7 @@ const NON_LANDING_PAGES = new Set([
   'teachers/start.astro',
   'teachers/login.astro',
   'teachers/generate.astro', // Authenticated owner form; not a topic landing.
+  'payment.astro', // Grow checkout form at /payment (Wix owns /checkout): one plan, one button, no marketing hero.
   'hero-loops/[variant].astro',
   'blog/index.astro',
   'blog/categories/[slug].astro',

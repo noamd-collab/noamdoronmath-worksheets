@@ -1,0 +1,278 @@
+{
+ "family": "powers_roots",
+ "probes": [
+  {
+   "id": "powers_roots-01",
+   "topic": "g7:powers_roots",
+   "intro": "חשבו.",
+   "prompt": "[[2^3]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2^3"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$2^{3}$",
+    "key": "$8$"
+   }
+  },
+  {
+   "id": "powers_roots-02",
+   "topic": "g7:powers_roots",
+   "intro": "חשבו.",
+   "prompt": "[[2³]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2^3"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$2^{3}$",
+    "key": "$8$"
+   }
+  },
+  {
+   "id": "powers_roots-03",
+   "topic": "g7:powers_roots",
+   "intro": "חשבו.",
+   "prompt": "[[sqrt(49)]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "sqrt(49)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$\\sqrt{49}$",
+    "key": "$7$"
+   }
+  },
+  {
+   "id": "powers_roots-04",
+   "topic": "g7:powers_roots",
+   "intro": "חשבו.",
+   "prompt": "[[√49]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "sqrt(49)"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$\\sqrt{49}$",
+    "key": "$7$"
+   }
+  },
+  {
+   "id": "powers_roots-05",
+   "topic": "g7:powers_roots",
+   "intro": "חשבו.",
+   "prompt": "[[2^5]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2^5"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$2^{5}$",
+    "key": "$32$"
+   }
+  },
+  {
+   "id": "powers_roots-06",
+   "topic": "g7:powers_roots",
+   "intro": "חשבו.",
+   "prompt": "[[10^6]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "10^6"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$10^{6}$",
+    "key": "$1000000$"
+   }
+  },
+  {
+   "id": "powers_roots-07",
+   "topic": "g7:powers_roots",
+   "intro": "חשבו.",
+   "prompt": "[[(-2)^4]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "(-2)^4"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$\\g{−2}^{4}$",
+    "key": "$16$"
+   }
+  },
+  {
+   "id": "powers_roots-08",
+   "topic": "g7:powers_roots",
+   "intro": "חשבו.",
+   "prompt": "[[-2^4]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "-2^4"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "wrong_print",
+    "flags": [
+     "print_adds_numbers"
+    ],
+    "printed": "$0 − 2^{4}$",
+    "key": "$−16$"
+   }
+  },
+  {
+   "id": "powers_roots-09",
+   "topic": "g9r:powers",
+   "intro": "פשטו.",
+   "prompt": "[[x^5 * x^3]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "simplify",
+     "expression": "x^5 * x^3"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$x^{5} · x^{3}$",
+    "key": "$x^{8}$"
+   }
+  },
+  {
+   "id": "powers_roots-10",
+   "topic": "g9r:powers",
+   "intro": "פשטו.",
+   "prompt": "[[x^2 * x^3]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "simplify",
+     "expression": "x^2 * x^3"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$x^{2} · x^{3}$",
+    "key": "$x^{5}$"
+   }
+  },
+  {
+   "id": "powers_roots-11",
+   "topic": "g9r:powers",
+   "intro": "פשטו.",
+   "prompt": "[[a^m * a^n]]",
+   "answer": {
+    "kind": "review",
+    "text": "[[a^(m+n)]]"
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "UNSUPPORTED_POWER"
+   }
+  },
+  {
+   "id": "powers_roots-12",
+   "topic": "g9r:powers",
+   "intro": "חשבו.",
+   "prompt": "[[2^-3]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2^-3"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "$2^{−3}$",
+    "key": "$\\f{1}{8}$"
+   }
+  },
+  {
+   "id": "powers_roots-13",
+   "topic": "ד15",
+   "intro": "חשבו.",
+   "prompt": "[[5^2]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "5^2"
+    },
+    "unit": ""
+   },
+   "recorded": {
+    "outcome": "pass",
+    "printed": "(5) 2",
+    "key": "25"
+   }
+  },
+  {
+   "id": "powers_roots-14",
+   "topic": "ה05",
+   "intro": "כתבו כמכפלת גורמים ראשוניים.",
+   "prompt": "[[60]]",
+   "answer": {
+    "kind": "computed",
+    "task": {
+     "kind": "evaluate",
+     "expression": "2 * 2 * 3 * 5"
+    },
+    "unit": ""
+   },
+   "expect": {
+    "key": [
+     "2",
+     "2",
+     "3",
+     "5"
+    ]
+   },
+   "recorded": {
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
+   }
+  }
+ ]
+}

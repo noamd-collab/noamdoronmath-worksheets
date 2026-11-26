@@ -36,7 +36,18 @@ ELEMENTARY_SKILL_PATH
 MIDDLE_SKILL_PATH
 ```
 
-Use the approved `qwen3.8-flash` author configuration. Keep the file outside the
+The author is Qwen unless `TEACHER_AUTHOR_PROVIDER=gemini` is set. The Gemini
+author reads only its own names, which the env file may also carry:
+
+```text
+TEACHER_AUTHOR_PROVIDER   (qwen when unset; gemini)
+GEMINI_API_KEY
+GEMINI_MODEL              (optional; a closed list in provider.py)
+```
+
+Preflight checks the selected provider with the same function the author call
+uses and reports its name and a reason code, never a value. Use the approved
+`qwen3.8-flash` author configuration unless the owner has switched the author. Keep the file outside the
 checkout, owned by the worker operator, mode `0600`, parent directory `0700`.
 Do not print, source, commit or pass its values on the command line. `--env-file`
 uses a literal allowlist parser. The render subprocess does not inherit these
