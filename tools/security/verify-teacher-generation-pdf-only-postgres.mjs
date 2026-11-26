@@ -31,122 +31,22 @@ const D22 = ['pinned:emit_docx', 'pinned:catalog/landing', 'pinned:gate_sections
   ...['G85-section-volume', 'G86-terms', 'G87-subtopic-chronology', 'G88-level-parity', 'G89-catalog',
     'G92-section-structure'].map(gate => `pinned-gate:${gate}:sheet`)];
 const pass = name => ({ name, status: 'PASS' });
-const base = { version: 1, humanReviewRequired: true, authoringProfile: 'general-skill-source/v1',
-  authorContract: 'worksheet-wire/5', artifacts: [{ kind: 'pdf', sha256: 'a'.repeat(64), bytes: 1000 }],
-  questionsRequested: 20, questionsDelivered: 20, replaced: [] };
-const middle = { ...base, automatedChecksPassed: false, renderingChecksPassed: false,
-  skill: { name: 'middle', version: '7.2.0-noam', sha256: 'b'.repeat(64) },
-  checks: [pass('levels-lint'), pass('middle-build'), ...D22.map(name => ({ name, status: 'SKIP' })), pass('atom-order')],
-  notRun: [...D22, 'pinned-log:build_plus:G83:c'] };
-const elementary = { ...base, automatedChecksPassed: true, renderingChecksPassed: true,
-  skill: { name: 'elementary', version: '1.0.5-noam', sha256: 'c'.repeat(64) },
-  checks: ['content-truth', 'pdf', 'worksheet', 'output-gates', 'house-gates', 'atom-order'].map(pass), notRun: [] };
-const without = (document, key) => Object.fromEntries(Object.entries(document).filter(([name]) => name !== key));
-const oneSkip = name => ({ ...middle, checks: [pass('middle-build'), { name, status: 'SKIP' }], notRun: [name] });
-// An accepted draft that claims nothing as fully checked, so an added step is judged by its status alone.
-const withStep = step => ({ ...elementary, automatedChecksPassed: false, renderingChecksPassed: false,
-  checks: [...elementary.checks, step] });
-
-const accepted = [
-  ['middle draft whose only SKIPs are the nine D22 steps, each listed in notRun', middle],
-  ['elementary draft, every step PASS, nothing left out', elementary],
-  ['elementary draft with an unrun sub-check: nothing counts as fully checked',
-    { ...elementary, automatedChecksPassed: false, renderingChecksPassed: false, notRun: ['pinned-log:check_worksheet:fonts'] }],
-  ['middle draft, every step PASS, nothing left out',
-    { ...middle, automatedChecksPassed: true, renderingChecksPassed: true, checks: [pass('middle-build'), pass('atom-order')], notRun: [] }],
-  ['unreviewed-overlay flags with nothing left out', { ...elementary, automatedChecksPassed: false, renderingChecksPassed: false }],
-  ...D22.map(name => [`single approved SKIP ${name}`, oneSkip(name)]),
-];
-const denied = [
-  ['REVIEW step', { ...middle, checks: [...middle.checks, { name: 'didactic', status: 'REVIEW' }] }],
-  ['FAIL step', { ...middle, checks: [...middle.checks, { name: 'atom-order', status: 'FAIL' }] }],
-  ['unknown status', { ...middle, checks: [...middle.checks, { name: 'x', status: 'OK' }] }],
-  ['lower-case status', { ...elementary, checks: [{ name: 'pdf', status: 'pass' }] }],
-  ['missing status', { ...elementary, checks: [{ name: 'pdf' }] }],
-  ['null status', { ...elementary, checks: [{ name: 'pdf', status: null }] }],
-  ['step without a name', { ...elementary, checks: [{ status: 'PASS' }] }],
-  ['step with a non-string name', { ...elementary, checks: [{ name: 7, status: 'PASS' }] }],
-  ['step that is not an object', { ...elementary, checks: [1] }],
-  ['null step', { ...elementary, checks: [null] }],
-  ['empty checks', { ...elementary, checks: [] }],
-  ['checks not an array', { ...elementary, checks: {} }],
-  ['checks missing', without(elementary, 'checks')],
-  ['SKIP on the elementary path', { ...oneSkip(D22[0]), skill: elementary.skill }],
-  ['SKIP of a step outside D22', oneSkip('atom-order')],
-  ['SKIP of a D22 look-alike (hyphen for the en dash)', oneSkip('pinned:gate_sections G85-G92')],
-  ['SKIP of a D22 look-alike (trailing space)', oneSkip('pinned:emit_docx ')],
-  ['SKIP of a D22 look-alike (case)', oneSkip('pinned:Emit_docx')],
-  ['approved SKIP that notRun does not list', { ...oneSkip(D22[0]), notRun: [] }],
-  ['approved SKIP listed under another name', { ...oneSkip(D22[0]), notRun: [D22[1]] }],
-  ['notRun missing', without(middle, 'notRun')],
-  ['notRun not an array', { ...middle, notRun: {} }],
-  ['notRun with a non-string entry', { ...middle, notRun: [...D22, 1] }],
-  ['no artifact', { ...middle, artifacts: [] }],
-  ['two PDFs', { ...middle, artifacts: [base.artifacts[0], base.artifacts[0]] }],
-  ['PDF and Word', { ...middle, artifacts: [base.artifacts[0], { kind: 'docx' }] }],
-  ['Word only', { ...middle, artifacts: [{ kind: 'docx' }] }],
-  ['artifact without a kind', { ...middle, artifacts: [{}] }],
-  ['artifacts not an array', { ...middle, artifacts: { kind: 'pdf' } }],
-  ['artifacts missing', without(middle, 'artifacts')],
-  ['humanReviewRequired false', { ...middle, humanReviewRequired: false }],
-  ['humanReviewRequired as text', { ...middle, humanReviewRequired: 'true' }],
-  ['humanReviewRequired missing', without(middle, 'humanReviewRequired')],
-  ['another authoring profile', { ...middle, authoringProfile: 'other' }],
-  ['authoring profile missing', without(middle, 'authoringProfile')],
-  ['unknown skill', { ...middle, skill: { name: 'high' } }],
-  ['skill missing', without(middle, 'skill')],
-  ['skill as text', { ...middle, skill: 'middle' }],
-  ['automatedChecksPassed as text', { ...middle, automatedChecksPassed: 'false' }],
-  ['automatedChecksPassed null', { ...middle, automatedChecksPassed: null }],
-  ['automatedChecksPassed missing', without(middle, 'automatedChecksPassed')],
-  ['renderingChecksPassed as text', { ...middle, renderingChecksPassed: 'false' }],
-  ['renderingChecksPassed missing', without(middle, 'renderingChecksPassed')],
-  ['fully checked claimed while steps were skipped', { ...middle, automatedChecksPassed: true, renderingChecksPassed: true }],
-  ['automated PASS claimed while steps were skipped', { ...middle, automatedChecksPassed: true }],
-  ['rendering PASS claimed while steps were skipped', { ...middle, renderingChecksPassed: true }],
-  ['fully checked claimed while a sub-check did not run', { ...elementary, notRun: ['pinned-log:check_worksheet:fonts'] }],
-  ['rendering PASS claimed while a sub-check did not run',
-    { ...elementary, automatedChecksPassed: false, notRun: ['pinned-log:check_worksheet:fonts'] }],
-  // From here each draft is one change away from an accepted one, and the clause it names is the
-  // only one that refuses it: with that clause deleted from the rule the draft is accepted.
-  ['no executed step: one approved SKIP listed in notRun and nothing else',
-    { ...middle, checks: [{ name: D22[0], status: 'SKIP' }], notRun: [D22[0]] }],
-  ['unknown skill, every step PASS', { ...elementary, skill: { name: 'high' } }],
-  ['skill missing, every step PASS', without(elementary, 'skill')],
-  ['skill as text, every step PASS', { ...elementary, skill: 'elementary' }],
-  ['automatedChecksPassed as text, every step PASS and nothing left out', { ...elementary, automatedChecksPassed: 'true' }],
-  ['automatedChecksPassed null, every step PASS and nothing left out', { ...elementary, automatedChecksPassed: null }],
-  ['automatedChecksPassed missing, every step PASS and nothing left out', without(elementary, 'automatedChecksPassed')],
-  ['renderingChecksPassed as text, every step PASS and nothing left out', { ...elementary, renderingChecksPassed: 'true' }],
-  ['renderingChecksPassed null, every step PASS and nothing left out', { ...elementary, renderingChecksPassed: null }],
-  ['renderingChecksPassed missing, every step PASS and nothing left out', without(elementary, 'renderingChecksPassed')],
-  ['missing status beside passed steps, nothing claimed as fully checked', withStep({ name: 'x' })],
-  ['null status beside passed steps, nothing claimed as fully checked', withStep({ name: 'x', status: null })],
-  ['lower-case status beside passed steps, nothing claimed as fully checked', withStep({ name: 'x', status: 'pass' })],
-  ['lower-case SKIP of an approved step listed in notRun',
-    { ...middle, checks: [pass('middle-build'), { name: D22[0], status: 'skip' }], notRun: [D22[0]] }],
-  // The same clauses, loosened instead of deleted: another case, a suffix, another JSON type, padding.
-  ['skill name in another case, every step PASS', { ...elementary, skill: { name: 'Elementary' } }],
-  ['skill name with a suffix, every step PASS', { ...elementary, skill: { name: 'middle2' } }],
-  ['automatedChecksPassed as a number, every step PASS and nothing left out', { ...elementary, automatedChecksPassed: 1 }],
-  ['renderingChecksPassed as a number, every step PASS and nothing left out', { ...elementary, renderingChecksPassed: 1 }],
-  ['status with a trailing space beside passed steps, nothing claimed as fully checked', withStep({ name: 'x', status: 'PASS ' })],
-  ...['REVIEW', 'FAIL'].map(status => [status + ' of an approved step listed in notRun',
-    { ...middle, checks: [pass('middle-build'), { name: D22[0], status }], notRun: [D22[0]] }]),
-];
-// Results the rule decided before M1: hostile values, legacy PASS records, REVIEW drafts and
-// look-alike contracts. M1 must not change a single answer for them.
-const review = { authoringProfile: 'general-skill-source/v1', automatedChecksPassed: false,
-  renderingChecksPassed: true, humanReviewRequired: true, checks: [pass('render'), { name: 'didactic', status: 'REVIEW' }] };
-const legacy = [null, [], {}, true, 'true', 0, { automatedChecksPassed: true }, { automatedChecksPassed: true, checks: [] },
-  { automatedChecksPassed: true, checks: [{ status: 'PASS' }] }, { automatedChecksPassed: true, checks: [{ status: 'FAIL' }] },
-  { automatedChecksPassed: true, checks: [{ status: 'REVIEW' }] }, { automatedChecksPassed: true, checks: null },
-  { automatedChecksPassed: true, checks: [{}] }, { automatedChecksPassed: 'true' }, review,
-  { ...review, checks: [] }, { ...review, checks: [{ status: 'PASS' }, { status: 'FAIL' }] }, { ...review, checks: {} },
-  { ...review, authoringProfile: 'other' }, { ...review, renderingChecksPassed: false }, { ...review, humanReviewRequired: false },
-  { ...review, automatedChecksPassed: null },
-  ...['worksheet-wire/6', 'worksheet-wire/5 ', 'worksheet-source/4', '', 5, null, ['worksheet-wire/5']].flatMap(authorContract =>
-    [{ ...review, authorContract }, { ...middle, authorContract }, { ...elementary, authorContract }])];
+// The draft cases are shared with the site's copies of the rule (isTeacherGenerationDraftReady and
+// generation-v3.js). Each case is {name, document, ready}. accepted and denied are worksheet-wire/5
+// drafts; the denied list ends with drafts one change away from an accepted one, each refused only
+// by the clause its name gives. legacy are results the rule decided before M1: hostile values,
+// legacy PASS records, REVIEW drafts and look-alike contracts. M1 must not change a single answer for them.
+const cases = JSON.parse(await readFile(path.join(root, 'tools/security/fixtures/teacher-draft-readiness-cases.json'), 'utf8'));
+const named = (list, name) => {
+  const found = list.filter(entry => entry.name === name);
+  assert.equal(found.length, 1, name);
+  return found[0].document;
+};
+const accepted = cases.accepted.map(({ name, document }) => [name, document]);
+const denied = cases.denied.map(({ name, document }) => [name, document]);
+const legacy = cases.legacy.map(({ document }) => document);
+const middle = named(cases.accepted, 'middle draft whose only SKIPs are the nine D22 steps, each listed in notRun');
+const review = named(cases.legacy, 'REVIEW draft');
 
 try {
   await db.exec(`
@@ -194,6 +94,14 @@ try {
   });
   await test('every other worksheet-wire/5 draft is refused, with false and never null or an error', async () => {
     for (const [name, document] of denied) assert.strictEqual(await ready(document), false, name);
+  });
+  await test('the shared fixture states the answer the rule gives for every case', async () => {
+    const all = [...cases.accepted, ...cases.denied, ...cases.legacy];
+    assert.deepEqual([cases.accepted.length, cases.denied.length, cases.legacy.length], [14, 69, 43]);
+    assert.equal(new Set(all.map(entry => entry.name)).size, all.length);
+    assert.ok(cases.accepted.every(entry => entry.ready === true) && cases.denied.every(entry => entry.ready === false));
+    for (let i = 0; i < cases.legacy.length; i++) assert.strictEqual(before[i], cases.legacy[i].ready, cases.legacy[i].name);
+    for (const { name, document, ready: expected } of all) assert.strictEqual(await ready(document), expected, name);
   });
   await test('the SQL list of approved SKIPs is exactly runner.V5_NOT_RUN_ALLOWED', async () => {
     const quoted = text => [...text.matchAll(/'([^']*)'/g)].map(match => match[1]);
@@ -267,8 +175,8 @@ try {
     for (const [name, document, files] of [
       ['worksheet-wire/5 without a PDF', middle, []],
       ['worksheet-wire/5 with a Word file only', middle, ['docx']],
-      ['worksheet-wire/5 with a REVIEW step', denied[0][1], ['pdf']],
-      ['worksheet-wire/5 with an unapproved SKIP', oneSkip('atom-order'), ['pdf']],
+      ['worksheet-wire/5 with a REVIEW step', named(cases.denied, 'REVIEW step'), ['pdf']],
+      ['worksheet-wire/5 with an unapproved SKIP', named(cases.denied, 'SKIP of a step outside D22'), ['pdf']],
       ['REVIEW draft with a PDF only (still a pair)', review, ['pdf']],
       ['REVIEW draft with a Word file only', review, ['docx']],
       ['PASS draft with a PDF only (still a pair)', { automatedChecksPassed: true, checks: [pass('render')] }, ['pdf']],

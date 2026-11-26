@@ -700,3 +700,47 @@ test('a saved job outside recent activity recovers by its owner-scoped ID; 404 a
   assert.equal(Boolean(app.element('generation-history').open),false);
  }
 });
+
+// The shared readiness cases (tools/security/fixtures), with the answers of the database rule (M1).
+const readinessCases=JSON.parse(readFileSync(new URL('../../../tools/security/fixtures/teacher-draft-readiness-cases.json',import.meta.url),'utf8')) as
+ Record<'accepted'|'denied'|'legacy',{name:string;document:any;ready:boolean}[]>;
+const v5Job={id:'30000000-0000-4000-8000-000000000001',status:'needs_review',phase:'needs_review',created_at:'2026-11-26T00:00:00Z',lesson:{topicId:'g8:congruence'}};
+const v5Links=(app:ReturnType<typeof harness>)=>Array.from(app.document.querySelectorAll('#generation-jobs a'),(link:any)=>link.getAttribute('href'));
+
+test('a ready worksheet-wire/5 draft shows exactly one link, its PDF, and no explanatory sentence',async()=>{
+ const middleDraft=readinessCases.accepted.find(entry=>entry.name==='middle draft whose only SKIPs are the nine D22 steps, each listed in notRun')!;
+ const app=harness({general:true,history:[{...v5Job,formats:['pdf'],result:middleDraft.document}]});await app.flush();
+ assert.deepEqual(v5Links(app),['/api/teacherGeneration?id='+v5Job.id+'&file=pdf']);
+ assert.equal(app.element('generation-jobs').children.length,1);assert.equal(app.element('history-empty').hidden,true);
+ assert.equal(app.element('generation-jobs').querySelectorAll('article p').length,1,'only the date and status line');
+ assert.doesNotMatch(app.element('generation-jobs').textContent,/הבדיקות האוטומטיות עברו|טיוטה לבדיקה/);
+ for(const {name,document} of readinessCases.accepted) for(const formats of [['pdf'],['pdf','docx']]) {
+  app.setHistory([{...v5Job,formats,result:document}]);await app.visible();
+  assert.deepEqual(v5Links(app),['/api/teacherGeneration?id='+v5Job.id+'&file=pdf'],name);
+  assert.equal(app.element('generation-jobs').querySelectorAll('article p').length,1,name);
+  assert.doesNotMatch(app.element('generation-jobs').textContent,/הבדיקות האוטומטיות עברו|טיוטה לבדיקה/,name);
+ }
+ app.setHistory([{...v5Job,formats:['docx'],result:middleDraft.document}]);await app.visible();
+ assert.equal(app.element('generation-jobs').children.length,0,'a worksheet-wire/5 draft never offers Word');
+ assert.equal(app.posts.length,0);
+});
+
+test('every refused worksheet-wire/5 draft shows nothing, whatever files exist',async()=>{
+ const app=harness({general:true});await app.flush();
+ assert.ok(readinessCases.denied.length>0);
+ for(const {name,document} of readinessCases.denied) for(const formats of [['pdf'],['pdf','docx'],['docx']]) {
+  app.setHistory([{...v5Job,formats,result:document}]);await app.visible();
+  assert.equal(app.element('generation-jobs').children.length,0,name);
+  assert.deepEqual(v5Links(app),[],name);
+  assert.equal(app.element('history-empty').hidden,false,name);
+ }
+ assert.equal(app.posts.length,0);
+});
+
+test('the browser shows a result that is not worksheet-wire/5 exactly when the database rule accepts it',async()=>{
+ const app=harness({general:true});await app.flush();
+ for(const {name,document,ready} of readinessCases.legacy) {
+  app.setHistory([{...v5Job,formats:['pdf','docx'],result:document}]);await app.visible();
+  assert.equal(v5Links(app).length,ready?2:0,name);
+ }
+});

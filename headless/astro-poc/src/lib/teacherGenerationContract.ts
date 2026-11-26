@@ -2,10 +2,40 @@ export type TeacherGenerationLevel = 'b' | 'a' | 'e';
 export type TeacherGenerationGoal = 'practice' | 'review' | 'introduce' | 'assessment';
 export const GENERATION_CURRICULUM_SHA256 = '57adca1891cbc2ef333709a6adee18045da23035f9e981f091673d2f8547527b';
 export const GENERAL_GENERATION_PROFILE = 'general-skill-source/v1';
+export const WORKSHEET_WIRE_5 = 'worksheet-wire/5';
+/** D22, approved by Noam on 2026-11-25 (runner.V5_NOT_RUN_ALLOWED): the only steps a middle-path
+ * worksheet-wire/5 draft may leave as SKIP. The database rule (M1) and generation-v3.js hold the same list. */
+export const WORKSHEET_WIRE_5_SKIP_ALLOWED: readonly string[] = Object.freeze([
+  'pinned:emit_docx', 'pinned:catalog/landing', 'pinned:gate_sections G85–G92',
+  'pinned-gate:G85-section-volume:sheet', 'pinned-gate:G86-terms:sheet', 'pinned-gate:G87-subtopic-chronology:sheet',
+  'pinned-gate:G88-level-parity:sheet', 'pinned-gate:G89-catalog:sheet', 'pinned-gate:G92-section-structure:sheet']);
+/** The worksheet-wire/5 arm of public.noam_teacher_generation_draft_downloadable (M1), clause for clause:
+ * exactly one PDF, at least one step that ran and passed, every step named and PASS, a SKIP only on the
+ * middle path for a D22 step that notRun also lists, and nothing reported as fully checked while anything
+ * did not run. REVIEW and FAIL always deny. */
+function isWorksheetWire5DraftReady(result: Record<string, any>): boolean {
+  const { artifacts, notRun, checks, skill } = result;
+  if (!Array.isArray(artifacts) || !Array.isArray(notRun) || !Array.isArray(checks)) return false;
+  const skillName = isRecord(skill) && typeof skill.name === 'string' ? skill.name : null;
+  return result.authoringProfile === GENERAL_GENERATION_PROFILE && result.humanReviewRequired === true &&
+    typeof result.automatedChecksPassed === 'boolean' && typeof result.renderingChecksPassed === 'boolean' &&
+    (skillName === 'elementary' || skillName === 'middle') &&
+    artifacts.length === 1 && isRecord(artifacts[0]) && artifacts[0].kind === 'pdf' &&
+    notRun.every(name => typeof name === 'string') &&
+    checks.length > 0 &&
+    checks.some(check => isRecord(check) && check.status === 'PASS') &&
+    checks.every(check => isRecord(check) && typeof check.name === 'string' && (check.status === 'PASS' ||
+      (check.status === 'SKIP' && skillName === 'middle' && WORKSHEET_WIRE_5_SKIP_ALLOWED.includes(check.name) &&
+        notRun.includes(check.name)))) &&
+    ((result.automatedChecksPassed === false && result.renderingChecksPassed === false) ||
+      (notRun.length === 0 && checks.every(check => isRecord(check) && check.status === 'PASS')));
+}
 /** Only worker-authored private drafts with successful rendering may download.
  * REVIEW is human work, never an automated PASS. A reported FAIL always denies. */
 export function isTeacherGenerationDraftReady(result: any): boolean {
   if (!result || typeof result !== 'object') return false;
+  // As in the SQL rule, a worksheet-wire/5 draft is decided by its own arm alone.
+  if (result.authorContract === WORKSHEET_WIRE_5) return isWorksheetWire5DraftReady(result);
   const checks = result.checks;
   if (result.automatedChecksPassed === true) {
     return checks === undefined || (Array.isArray(checks) && checks.every(check => check?.status === 'PASS'));
