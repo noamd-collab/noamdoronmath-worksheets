@@ -208,7 +208,7 @@ class LiveCauses(unittest.TestCase):
         reply = reply_of('L1-g8')
         rule = reply['rule'].replace('[[p%]]', '[[p % q]]')
         self.assertEqual(examine_frame('אחוזים', rule, lesson, scope).code, 'SOURCE_NOTATION')
-        # Its other sentences pass alone, but none is dropped: the rule stays whole and refused.
+        # No sentence of it is dropped: the rule stays whole and refused.
         asked = []
         flat = {key: reply[key] for key in ('title', 'practice', 'challenges')}
         flat['rule'] = rule
@@ -218,6 +218,7 @@ class LiveCauses(unittest.TestCase):
         self.assertEqual(draft.rule_refusal.code, 'SOURCE_NOTATION')
         self.assertTrue(draft.needs_model())
         self.assertNotIn('ruleTrimmed', draft.report())
+        # Building the draft asks nothing; only correct() asks for the rule again (the two tests below).
         self.assertEqual(asked, [])
         # The recorded rules of round one as written: [[p%]], d1 and d2 pass; a bare [[%]] is refused.
         for case_id in ('L1-g8', 'L1-p1'):

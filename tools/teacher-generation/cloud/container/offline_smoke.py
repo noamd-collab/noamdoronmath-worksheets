@@ -72,6 +72,92 @@ def native_preflight():
             'python': result['python'], 'skills': result['skills'], 'helpers': versions}
 
 
+# Reviewed general fixtures that the strict engine refuses, with the question
+# and item the trusted adapter names. Each model-output.json is a recorded model
+# reply and is never edited to pass, and no fixture is dropped: the smoke runs
+# each one and requires exactly this refusal (refused_case), never a delivery.
+# Each prints a typed task after a prompt that is not a bare instruction
+# (PRINTED_TASK_MISMATCH): grade2-vocalized after a story, grade4-fractions
+# after a prompt about a table row with no table, grade4-skill-calculation
+# beside its table.
+REFUSED = {'grade2-vocalized': (1, 1), 'grade4-fractions': (1, 1), 'grade4-skill-calculation': (9, 1)}
+
+
+def refused_case(case, rendered, work):
+    """The report row of a REFUSED fixture whose render is exactly its recorded refusal.
+
+    Status failed, no artifact, the one trusted-adapter step FAIL (exit code 1),
+    gate action replace naming that question with the one TRUSTED_ADAPTER row,
+    no review note or unverified answer, the adapter's failure record with
+    PRINTED_TASK_MISMATCH at that question and item, and nothing built.
+    Anything else raises RuntimeError."""
+    question, item = REFUSED[case]
+    blocking = [{'code': 'TRUSTED_ADAPTER', 'class': 'truth', 'step': 'trusted-adapter',
+                 'question': question, 'item': item}]
+    try:
+        record = json.loads((work / 'adapter-failure.json').read_text())
+    except (OSError, ValueError):
+        record = None
+    steps = rendered.get('steps')
+    exact = (rendered.get('status') == 'failed' and rendered.get('artifacts') == []
+             and rendered.get('automatedChecksPassed') is False
+             and rendered.get('renderingChecksPassed') is False
+             and isinstance(steps, list) and all(isinstance(step, dict) for step in steps)
+             and [(s.get('name'), s.get('status'), s.get('exitCode')) for s in steps]
+                 == [('trusted-adapter', 'FAIL', 1)]
+             and rendered.get('gate') == {'version': 1, 'action': 'replace', 'complete': True,
+                                          'blocking': blocking, 'questions': [question], 'review': []}
+             and rendered.get('reviewFindings') == [] and rendered.get('unverifiedAnswers') == []
+             and record == {'version': 1, 'step': 'trusted-adapter', 'code': 'PRINTED_TASK_MISMATCH',
+                            'question': question, 'item': item}
+             and not any((work / name).exists()
+                         for name in ('content.json', 'sheet.html', 'sheet.pdf', 'sheet.docx')))
+    if not exact:
+        raise RuntimeError('General fixture was not refused as recorded: ' + case)
+    return {'case': case, 'topicId': rendered['topicId'], 'status': 'REFUSED',
+            'automatedChecksPassed': False,
+            'refusal': {'step': 'trusted-adapter', 'code': 'PRINTED_TASK_MISMATCH', 'action': 'replace',
+                        'question': question, 'item': item},
+            'reviewFindings': [], 'manifest': 'general/' + case + '/manifest.json'}
+
+
+def delivered_case(case, lesson, rendered):
+    """The report row of a fixture delivered as PASS, or as the one REVIEW the worker delivers.
+
+    REVIEW qualifies only as remote_worker accepts it: the middle driver's
+    reconciled step (accepted_review) on the lesson's own skill, with its
+    DIDACTIC_REVIEW note. An elementary sheet lists no unverified answer.
+    Anything else raises RuntimeError."""
+    from gate_policy import public_review_findings, unverified_rows
+    from remote_worker import accepted_review
+    skill = validate_lesson(lesson)['skill']
+    steps = rendered['steps']
+    automated = (rendered['automatedChecksPassed'] is True
+                 and all(step['status'] == 'PASS' for step in steps))
+    review_only = (rendered.get('renderingChecksPassed') is True
+                   and isinstance(rendered.get('skill'), dict) and rendered['skill'].get('name') == skill
+                   and any(step['status'] == 'REVIEW' for step in steps)
+                   and all(step['status'] == 'PASS' or accepted_review(steps, i, skill)
+                           for i, step in enumerate(steps))
+                   and any(row['code'] == 'DIDACTIC_REVIEW'
+                           for row in public_review_findings(rendered.get('reviewFindings'))))
+    unverified = unverified_rows(rendered.get('unverifiedAnswers', []))
+    qualified = ((automated or review_only)
+              and rendered['status'] == 'needs_review'
+              and rendered.get('authoringProfile') == 'general-skill-source/v1'
+              and all(step['status'] in ('PASS', 'REVIEW') for step in steps)
+              and unverified is not None and not (unverified and skill == 'elementary')
+              and len(rendered['artifacts']) == 2
+              and {a['kind'] for a in rendered['artifacts']} == {'pdf', 'docx'})
+    if not qualified:
+        raise RuntimeError('General skill pipeline failed: ' + case)
+    return {'case': case, 'topicId': lesson['topicId'],
+            'status': 'PASS' if automated else 'REVIEW',
+            'automatedChecksPassed': automated,
+            'reviewFindings': rendered.get('reviewFindings', []),
+            'manifest': 'general/' + case + '/manifest.json'}
+
+
 def general_cases(output):
     """Real representative renders. Fixture coverage is not all-topic proof."""
     root = HERE / 'fixtures/general'
@@ -81,6 +167,8 @@ def general_cases(output):
             or len(cases) != len(set(cases))
             or any(not isinstance(name, str) or not re.fullmatch(r'[a-z0-9-]{1,60}', name) for name in cases)):
         raise RuntimeError('Reviewed general fixtures are required')
+    if not set(REFUSED) <= set(cases):
+        raise RuntimeError('Every expected refusal names a reviewed general fixture')
     expected = {name + '/' + kind + '.json' for name in cases for kind in ('lesson', 'model-output')}
     if set(manifest.get('files', {})) != expected:
         raise RuntimeError('General fixture manifest must cover exactly its inputs')
@@ -116,24 +204,10 @@ def general_cases(output):
                 if (any('כפל' in prompt for prompt in instructions)
                         or instructions[-3:] != list(CHALLENGES.values())):
                     raise RuntimeError('Division tasks do not match the selected curriculum concept')
-            automated = (rendered['automatedChecksPassed'] is True
-                         and all(step['status'] == 'PASS' for step in rendered['steps']))
-            review_only = (rendered.get('renderingChecksPassed') is True
-                           and isinstance(rendered.get('reviewFindings'), list)
-                           and bool(rendered['reviewFindings'])
-                           and any(step['status'] == 'REVIEW' for step in rendered['steps']))
-            qualified = ((automated or review_only)
-                      and rendered['status'] == 'needs_review'
-                      and rendered.get('authoringProfile') == 'general-skill-source/v1'
-                      and all(step['status'] in ('PASS', 'REVIEW') for step in rendered['steps'])
-                      and {a['kind'] for a in rendered['artifacts']} == {'pdf', 'docx'})
-            results.append({'case': case, 'topicId': lesson['topicId'],
-                            'status': 'PASS' if qualified and automated else 'REVIEW' if qualified else 'FAIL',
-                            'automatedChecksPassed': automated,
-                            'reviewFindings': rendered.get('reviewFindings', []),
-                            'manifest': 'general/' + case + '/manifest.json'})
-            if not qualified:
-                raise RuntimeError('General skill pipeline failed: ' + case)
+            if case in REFUSED:
+                results.append(refused_case(case, rendered, output / case))
+            else:
+                results.append(delivered_case(case, lesson, rendered))
     return {'cases': results, 'coverage': 'representative fixtures only; not 232-topic pedagogical approval',
             'providerCalled': False, 'humanVisualReview': 'PENDING'}
 

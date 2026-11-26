@@ -81,7 +81,9 @@ class Draft:
 
       missing()   planned positions that still have no usable question
       replace()   take out printed questions a gate named; reserves fill in
-      correct()   ONE model call, for the missing questions only
+      correct()   ONE model call: the notation-only fix, or the missing questions (at
+                  most MAX_CORRECTED) and a refused rule, the rule alone when no
+                  question is missing
       shorten()   drop what is still missing, never below lesson_select.minimum_count
       source()    the unchanged whole-sheet validation of the current sheet
 
@@ -100,9 +102,12 @@ class Draft:
         self.corrections = 0
         self.sheet_error = None
         # The rule is examined alone, as each question is. A refused rule stays as
-        # the model wrote it; the one correction call asks for the rule again.
-        # Unmarked mathematics keeps its own repair (the notation correction), so it
-        # is left to the whole-sheet check.
+        # the model wrote it; the one correction call asks for the rule again,
+        # unless that call is the notation-only fix. examine_frame reads the title
+        # too, and no call asks for a title: when the title is refused, no returned
+        # rule is taken and the draft yields no sheet. Unmarked mathematics keeps
+        # its own repair (the notation correction), so it is left to the
+        # whole-sheet check.
         self.rule_refusal = examine_frame(self.title, self.rule, lesson, scope)
         if self.rule_refusal is not None and self.rule_refusal.code == 'SOURCE_PLAIN_MATH':
             self.rule_refusal = None

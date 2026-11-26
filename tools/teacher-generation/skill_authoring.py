@@ -589,7 +589,7 @@ def question_codes(wire, lesson, scope, *, challenge, index=1, refusals=None):
     (claim_words.claim_lint): the gate would fail the built sheet on them, so
     the question is replaced first. A word with a benign reading (a per-unit
     לכל, a conditional אילו) is not named here; the gates refuse it in the
-    pre-pass.
+    pre-pass, except in a question with a measured figure (claim_words).
     ``refusals``, when a dict, keeps the refusal under id(wire) for a caller
     that builds a correction request.
     """

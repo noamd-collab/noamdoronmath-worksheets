@@ -250,7 +250,8 @@ class LadderTests(unittest.TestCase):
                          [(2, 'reserve'), (11, 'reserve'), (4, 'reserve'), (10, 'missing')])
 
     def test_a_reply_without_reserves_still_compiles_and_one_correction_asks_for_every_named_question(self):
-        transport = Scripted(copy.deepcopy(self.base))                                  # as every recorded reply
+        # The recorded S-g4calc as it arrived: no reserves, as every recorded reply.
+        transport = Scripted(copy.deepcopy(self.base))
         outcome, sheets = self.run_job(transport)                                       # the correction gets no answer
         # The pre-pass stopped at question 9: its prompt refers to the table, so the trusted adapter refuses to print
         # its typed task after it (PRINTED_TASK_MISMATCH). With no reserve it went to one correction, which got no

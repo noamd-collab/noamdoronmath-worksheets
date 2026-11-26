@@ -282,6 +282,16 @@ class ReplayTests(unittest.TestCase):
         self.assertEqual(lines, [f"S-g7eq: final {results['cases'][0]['finalStatus']} -> delivered"])
         self.assertIn('-> 1 of 1', head)
 
+    def test_the_summary_counts_the_questions_asked_again_and_names_the_rule_apart(self):
+        # L2-g8 asks for its refused rule alone; L1-g8-a2 for question 11 and the rule.
+        out = Path(tempfile.mkdtemp(prefix='out-', dir=self.scratch))
+        results = self.replay(only=('L2-g8', 'L1-g8-a2'), out=out, render=False)
+        self.assertEqual({case['id']: case['author']['correction']['requiredKeys'] for case in results['cases']},
+                         {'L1-g8-a2': ['q11', 'rule'], 'L2-g8': ['rule']})
+        rows = {line.split(' | ')[0].strip('| '): line.split(' | ')[7]
+                for line in (out / 'summary.md').read_text(encoding='utf-8').splitlines() if line.startswith('| L')}
+        self.assertEqual(rows, {'L1-g8-a2': '1 q + rule (not recorded)', 'L2-g8': 'rule (not recorded)'})
+
     def test_a_planted_fault_is_found_at_its_question_field_and_substring(self):
         lesson = json.loads((CORPUS / 'lessons/g7-equations-practice.json').read_text(encoding='utf-8'))
         reply = json.loads((CORPUS / 'replies/S-g7eq.json').read_text(encoding='utf-8'))

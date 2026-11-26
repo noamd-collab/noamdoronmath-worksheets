@@ -12,7 +12,11 @@ uses fail as well:
 
 Those refusals stand (D19). Nothing here writes to the ledger, so the pinned
 gates judge every listed word, whatever its reading, and the question is
-replaced.
+replaced. The one exception is a question with a figure: general_adapters
+records its measured figure under the bare question number (figure_assert),
+and G32/G33 accept that id for every listed word of the question, so a benign
+reading there is printed without a judgment (a claim is still named by
+claim_lint below).
 
 This module decides, by closed patterns only, whether a word occurrence has
 one of those two readings. Every other occurrence, and every other word on
@@ -136,7 +140,8 @@ def claim_lint(question):
     """Claims in one source question (rich spans), before anything is rendered.
 
     Advisory: the pinned gates still decide on the built content.json, and
-    they also refuse a word with a benign reading, which is not named here.
+    they also refuse a word with a benign reading, which is not named here
+    (but not in a question whose measured figure is in the ledger).
     A caller can use a non-empty result to replace the question first.
     """
     parts = []

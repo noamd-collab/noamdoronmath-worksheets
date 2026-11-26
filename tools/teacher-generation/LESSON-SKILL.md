@@ -327,7 +327,11 @@ marks, and its `apply` checks that no word changed.
   `SOURCE_FIGURE`); an elementary question is read for the claims among the
   truth gates' words (`claim_words.claim_lint`). A word with a benign reading (a
   per-unit `לכל`, a conditional `אילו`) is not named there; G32/G33 refuse it in
-  the pre-pass. Any code makes it a bad question, never a failed sheet.
+  the pre-pass. Not in a question with a figure: the adapter records its measured
+  figure in the ledger under the bare question number (`figure_assert`), and the
+  locked G32/G33 accept that id for every listed word of the question, so a
+  benign reading there is printed (a claim is still named by `claim_lint`). Any
+  code makes it a bad question, never a failed sheet.
 - **Selection** is `lesson_select.Selection`, which knows no wire format, topic
   or grade. A bad question takes an unused reserve of its own group, same
   concept first. A practice reserve may fill a challenge slot only while two real
@@ -338,7 +342,10 @@ marks, and its `apply` checks that no word changed.
   is refused (`skill_authoring.refers_to_another_question`, `QUESTION_REFERENCE`).
 - **The rule** is examined alone (`skill_authoring.examine_frame`). A refused
   rule is not shortened or rewritten; the one correction call asks for the rule
-  again.
+  again, also when no question is missing, unless that call is the notation-only
+  fix. `examine_frame` reads the title too, and no call asks for a title: when
+  the title is refused, no returned rule is taken and that draft yields no
+  sheet.
 - **A reply that is not JSON** is read question by question
   (`reply_salvage.salvage`, called from `provider.parse_author_reply`); a
   question that does not decode counts as refused. Nothing is repaired there.
@@ -354,7 +361,7 @@ not in `gate_policy.GATES` is truth.
 |---|---|---|
 | truth | the mathematics, the key or its print may be wrong, unverified or unreadable | blocks; replaces the named question, else fails |
 | policy | correct but not allowed here: chronology (G66, G84), drawings outside geometry, signs by grade, niqqud, brand | blocks; same as truth |
-| editorial | G50, G61, G62, page fill, page gap, didactic review, shorter sheet | blocks; same as truth. Only the middle didactic review (already reconciled, `didactic_review.py`) and the shorter sheet (added by the worker) reach the teacher, as a fixed Hebrew note (`gate_policy.NOTES`) |
+| editorial | G50, G61, G62, page fill, page gap, didactic review, shorter sheet | blocks; same as truth, except the middle-build didactic review that `didactic_review.py` already reconciled (`gate_policy.blocks`), which is delivered with its fixed Hebrew note (`gate_policy.NOTES`). A shorter-sheet finding of a gate blocks; the worker adds its own `SHORTER_SHEET` note to a sheet it shortened |
 
 - `gate_policy.decide` returns `deliver`, `replace` (every blocking finding
   names a question) or `fail`. A timeout, a crash, an unreadable line or an
@@ -399,15 +406,17 @@ not in `gate_policy.GATES` is truth.
 runs only when the one before left a deficit.
 
 1. **Reserves**, no model call (inside `Draft.__init__`).
-2. **One correction call** for the missing questions only (`Draft.correct`):
-   the notation-only fix, or a rewrite of at most 8 questions and the rule.
+2. **One correction call** (`Draft.correct`): the notation-only fix, or a
+   rewrite of the missing questions (at most 8) and of a refused rule; a
+   refused rule alone is asked for when no question is missing.
 3. **A shorter sheet** (`Draft.shorten`, `lesson_select.Selection.shorten`): at
-   least `max(6, ⌈3N/4⌉, floor)` questions and two real challenges, where floor
+   least `max(⌈3N/4⌉, floor)` questions and two real challenges, where floor
    is the grade minimum every request must meet (`runtime_catalog.question_floor`:
-   8 / 12 / 14 / 20 for grades 1–2 / 3–4 / 5–6 / 7–9). A sheet requested at its
-   minimum is never shortened. `validation.salvaged_count` checks the same
-   rule again when the sheet is pre-checked and rendered. The manifest keeps
-   the requested count (`salvaged_from`).
+   8 / 12 / 14 / 20 for grades 1–2 / 3–4 / 5–6 / 7–9; `lesson_select` refuses
+   any other floor). A sheet requested at its minimum is never shortened.
+   `validation.salvaged_count` checks the same rule again when the sheet is
+   pre-checked and rendered. The manifest keeps the requested count
+   (`salvaged_from`).
 4. **Pre-pass** (elementary, `runner.precheck_job`, status `clean`, `replace`
    or `failed`): named questions are swapped and the ladder settles again; at
    most `PRECHECK_PASSES` = 2 rounds. Questions named by an editorial finding

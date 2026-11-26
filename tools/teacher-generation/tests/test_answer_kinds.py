@@ -151,7 +151,7 @@ class DecisionWireTests(unittest.TestCase):
         self.assertEqual(found.proof["bound"], "story")
         return found
 
-    def test_recorded_grade_three_yes_no_items_are_decided(self):
+    def test_recorded_grade_three_yes_no_items_are_decided_and_story_claims_refused(self):
         # Prompts as the provider wrote them, in the two recorded ג10 replies.
         rows = [
             ("השוו בין שני תרגילים ובחרו את התשובה הנכונה.", "האם התוצאות של [[12 : 3]] ושל [[12 : 4]] זהות?",
@@ -386,7 +386,7 @@ class LabelAndOpenWireTests(unittest.TestCase):
         for name in ("מְשֻׁלָּשׁ", "מְרֻבָּע", "מְחֻמָּשׁ"):
             self.unsupported("ב28", "עֲנוּ.", "אֵיזוֹ צוּרָה הִיא בַּעֲלַת שָׁלוֹשׁ צְלָעוֹת?", label(name))
 
-    def test_a_label_never_replaces_an_answer_that_can_be_computed(self):
+    def test_a_label_is_refused_also_where_an_answer_could_be_computed(self):
         naming = "איזה מצולע הוא בעל שלוש צלעות?"
         self.unsupported("ג16", "ענו.", naming, label("3"))                       # a number
         self.unsupported("ג16", "ענו.", "כמה צלעות יש למשולש?", label("שלוש"))     # a number in words

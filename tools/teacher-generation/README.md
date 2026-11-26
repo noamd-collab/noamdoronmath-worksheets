@@ -42,8 +42,11 @@ In middle school its figure is also drawn with the pinned constructors
 (`figure_probe.py`), so a figure the skill refuses is a refused question
 (`SOURCE_FIGURE`) and not an unnamed render failure. The rule is examined alone
 too: a refused rule is kept as written and asked for again in the one correction
-call. A finished reply that is not JSON as a whole is read question by question
-(`reply_salvage.py`); a question that does not decode counts as refused.
+call, also when no question is missing, unless that call is the notation-only fix.
+The title is examined with it and is never asked for again: when the title is
+refused, no returned rule is taken and that draft yields no sheet. A finished reply that is
+not JSON as a whole is read question by question (`reply_salvage.py`); a question
+that does not decode counts as refused.
 `lesson_select.py` chooses the sheet: a bad question takes a reserve of its own group;
 a practice reserve may stand in for a challenge only while two real challenges remain,
 and is then printed as an ordinary question. It knows nothing about the wire format or
@@ -53,8 +56,10 @@ The production worker repairs a version 3 job in this order, each step only when
 before left a deficit (`remote_worker.author_and_render`, through `general_provider.Draft`):
 
 1. reserve questions, with no model call;
-2. ONE targeted correction call for the missing questions only (at most eight), each with
-   the fixed instruction of its code and the exact field and substring that carries the fault;
+2. ONE targeted correction call for the missing questions (at most eight) and a refused rule
+   (the rule alone when no question is missing), each with the fixed instruction of its code
+   and the exact field and substring that carries the fault; or, when unmarked mathematics is
+   the only fault, the notation-only fix;
 3. a shorter sheet: at least three quarters of the requested questions and never fewer than
    the grade minimum that every request must meet (8 / 12 / 14 / 20 for grades 1–2 / 3–4 /
    5–6 / 7–9; `lesson_select` takes no other floor), so only a sheet requested above that
@@ -188,10 +193,15 @@ A result is always `needs_review` or `failed`, never publication approval:
   so a G51 finding fails the sheet, also on a correctly printed product of two
   bracketed groups (a known false refusal, accepted).
 - `claim_words.py` names, before rendering, the claims among the words that
-  the pinned truth gates G32/G33 search for (`claim_lint`). Nothing is
-  recorded in the ledger, so the gates judge every listed word: a per-unit
-  "לכל" or a conditional "אילו" is refused in the pre-pass and the question is
-  replaced, like a universal claim or a request to enumerate.
+  the pinned truth gates G32/G33 search for (`claim_lint`). It records nothing
+  in the ledger, so the gates judge every listed word: a per-unit "לכל" or a
+  conditional "אילו" is refused in the pre-pass and the question is replaced,
+  like a universal claim or a request to enumerate. One exception: the adapter
+  records the measured figure of an elementary question in the ledger under the
+  bare question number (`figure_assert`), and the locked G32/G33 accept that id
+  for every listed word of the question. In a question with a figure, a benign
+  reading that `claim_lint` does not name is therefore printed, not judged; a
+  claim is still named by `claim_lint` and the question replaced.
 - `runner.precheck_job` builds `content.json` and runs only the content-truth
   and house gates that read it, before any PDF or Word file exists.
 - A narrowly verified middle-skill didactic REVIEW may produce a private draft
@@ -226,9 +236,10 @@ python3 tools/teacher-generation/cloud/container/test_packaging.py
 
 The hash-pinned Linux image includes SymPy/mpmath, fonts, Chromium, Poppler and
 a fixed Tesseract OCR bridge. The cloud qualification workflow runs without
-network or secrets: three legacy fixtures, four general fixtures (grade-2
-niqqud, grade-4 fractions, grade-9 quadratic equations and triangles in the coordinate plane), real
-raster OCR, and the existing Chromium fallback. Fixture coverage is not
+network or secrets: three legacy fixtures, twelve general fixtures (nine must
+deliver; grade-2 niqqud, grade-4 fractions and grade-4 calculation must be
+refused exactly as recorded, see `cloud/container/README.md`), real raster OCR,
+and the existing Chromium fallback. Fixture coverage is not
 232-topic pedagogical certification. Inspect the generated PDFs and Word files.
 
 Production runs in Cloudflare. A Mac development command is not a backup

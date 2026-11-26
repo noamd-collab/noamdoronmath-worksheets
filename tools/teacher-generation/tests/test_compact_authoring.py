@@ -328,7 +328,8 @@ class CompactAuthoringTests(unittest.TestCase):
         with self.assertRaises(GeneralSourceError):
             display_parts("-x^2 + 4 = 0", 8)
         # A negative number, a minus printed as written in a schoolbook polynomial, and a typed task that is never
-        # printed keep their meaning.
+        # printed keep their meaning. A typed task printed from its tree after a bare instruction is refused instead
+        # (printed_parts.refuse_unwritten_zero).
         self.assertEqual(spans("[[-2]]", 8), [{"kind": "math", "expression": {"type": "number", "numerator": -2, "denominator": 1}}])
         self.assertEqual(to_house_math(spans("[[(-2)^4]]", 8)[0]["expression"]), r"\g{−2}^{4}")
         self.assertEqual(display_parts("-3x + 5", 8), ["−3x + 5"])

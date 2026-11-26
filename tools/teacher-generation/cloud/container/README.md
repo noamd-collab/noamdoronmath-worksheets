@@ -77,7 +77,8 @@ as `noam-teacher-generation:test`, and sets/verifies the OCI revision label from
 attestations are disabled for this single-manifest export. It runs runtime unit tests in `--network none`, then
 runs the three legacy pipelines and the hash-pinned general-source fixtures without model keys or database credentials.
 It checks original parameter derivation, lesson bounds, quality policy, every
-renderer gate, original/final Word provenance and two delivered artifacts. It
+renderer gate, original/final Word provenance and two delivered artifacts, and
+for each general fixture the strict engine refuses, its exact refusal (below). It
 also exercises the installed Chromium fallback on the trusted elementary HTML.
 The image preflight asserts nonroot Linux/amd64, the Python patch, all direct
 native versions, required Poppler/browser commands and David Libre resolution.
@@ -139,9 +140,29 @@ An installed Mac development Python cannot qualify this Linux image. Inspect
 `qualification/ocr/qualification.json` and the full render artifacts before
 requesting release; host tests alone do not prove OCR or image readiness.
 
-General fixtures report `PASS`, `REVIEW`, or `FAIL` separately. A documented
-REVIEW-only didactic draft may qualify for private owner inspection only when
-the independent reconciliation verifies the original report and every output
-hash, preserves all findings, and no other step or gate fails. It never becomes
-`automatedChecksPassed: true`. Review findings remain in the qualification
-report; representative fixtures do not approve all 232 topics.
+General fixtures report `PASS`, `REVIEW` or `REFUSED` separately; any other
+outcome fails the qualification. `PASS` means every step passed. `REVIEW`
+qualifies only as the worker accepts it (`remote_worker.accepted_review`): the
+middle driver's `middle-build` step with reason
+`PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY`, directly followed by a passing
+`didactic-review-reconciliation`, on a middle-school lesson whose manifest names
+the same skill, with its `DIDACTIC_REVIEW` note. Any other REVIEW step, or an
+elementary fixture that lists an unverified answer, fails the qualification. A
+REVIEW never becomes `automatedChecksPassed: true`. Review findings remain in
+the qualification report; representative fixtures do not approve all 232 topics.
+
+The strict engine refuses three reviewed fixtures. Each prints a typed task
+after a prompt that is not a bare instruction (`PRINTED_TASK_MISMATCH`):
+`grade2-vocalized` (question 1, item 1), `grade4-fractions` (question 1, item 1)
+and `grade4-skill-calculation` (question 9, item 1). Their `model-output.json`
+is a recorded model reply and is never edited to pass, and they stay in the
+manifest. `offline_smoke.REFUSED` lists them; the smoke runs each one and
+requires exactly its refusal: status `failed`, no artifacts, the one
+`trusted-adapter` step `FAIL` with exit code 1, gate action `replace` naming
+that question with one `TRUSTED_ADAPTER` row (class `truth`) at that question
+and item, no review finding or unverified answer, `adapter-failure.json` with
+`PRINTED_TASK_MISMATCH` at that question and item, and no `content.json`,
+`sheet.html`, `sheet.pdf` or `sheet.docx`. They are reported as `REFUSED`,
+never `PASS`; a delivery or any other outcome fails the qualification.
+`tests/test_gate_policy.py` (`OfflineSmokeTests`) runs the same refusals and
+acceptance rules on the host.

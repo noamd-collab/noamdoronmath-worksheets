@@ -520,5 +520,123 @@ class WorkerResultTests(unittest.TestCase):
         self.assertEqual((result["unverifiedAnswers"], [note["kind"] for note in result["teacherNotes"]]), ({"review": 1}, ["review"]))
 
 
+class OfflineSmokeTests(unittest.TestCase):
+    """What the image smoke (cloud/container/offline_smoke.py) requires of each reviewed general fixture."""
+
+    FIXTURES = HERE / "cloud/container/fixtures/general"
+
+    @classmethod
+    def setUpClass(cls):
+        from cloud.container import offline_smoke
+        from cloud.container.skill_bundle import install
+        cls.smoke = offline_smoke
+        temp = tempfile.TemporaryDirectory()
+        cls.addClassCleanup(temp.cleanup)
+        cls.root = Path(temp.name)
+        install(HERE / "cloud/container/skills", cls.root / "skills", HERE / "skill-lock.json")
+
+    def lesson(self, case):
+        return json.loads((self.FIXTURES / case / "lesson.json").read_text())
+
+    def test_each_refused_fixture_is_refused_exactly_as_the_smoke_requires(self):
+        import shutil
+        from validation import validate_model
+        cases = json.loads((self.FIXTURES / "manifest.json").read_text())["cases"]
+        # No fixture is dropped: the smoke still runs all twelve, and these three must be refused.
+        self.assertEqual(len(cases), 12)
+        self.assertEqual(self.smoke.REFUSED, {"grade2-vocalized": (1, 1), "grade4-fractions": (1, 1),
+                                              "grade4-skill-calculation": (9, 1)})
+        self.assertLessEqual(set(self.smoke.REFUSED), set(cases))
+        for case, (question, item) in self.smoke.REFUSED.items():
+            with self.subTest(case=case):
+                lesson = self.lesson(case)
+                model = json.loads((self.FIXTURES / case / "model-output.json").read_text())
+                validate_model(lesson, model)
+                work = self.root / "runs" / case
+                rendered = runner.render_job(lesson, model, work, skill_paths={"elementary": self.root / "skills/elementary"})
+                row = self.smoke.refused_case(case, rendered, work)
+                self.assertEqual((row["status"], row["automatedChecksPassed"], row["refusal"]),
+                                 ("REFUSED", False, {"step": "trusted-adapter", "code": "PRINTED_TASK_MISMATCH",
+                                                     "action": "replace", "question": question, "item": item}))
+                # The refused render never qualifies as a delivery.
+                with self.assertRaises(RuntimeError):
+                    self.smoke.delivered_case(case, lesson, rendered)
+                gate = rendered["gate"]
+                forged = {
+                    "a delivery": {**rendered, "status": "needs_review", "artifacts": [{"kind": "pdf"}, {"kind": "docx"}]},
+                    "another question": {**rendered, "gate": {**gate, "questions": [question + 1]}},
+                    "another item": {**rendered, "gate": {**gate, "blocking": [{**gate["blocking"][0], "item": item + 1}]}},
+                    "a failed gate": {**rendered, "gate": {**gate, "action": "fail"}},
+                    "a step more": {**rendered, "steps": rendered["steps"] + [{"name": "content-truth", "status": "PASS"}]},
+                    "a review note": {**rendered, "reviewFindings": [{"code": "DIDACTIC_REVIEW", "count": 1}]},
+                    "an unverified answer": {**rendered, "unverifiedAnswers": [{"question": 2, "item": 1, "kind": "open"}]},
+                }
+                for name, manifest in forged.items():
+                    with self.subTest(case=case, forged=name), self.assertRaises(RuntimeError):
+                        self.smoke.refused_case(case, manifest, work)
+                # The adapter's own record must name the same refusal, and nothing may have been built.
+                record = json.loads((work / "adapter-failure.json").read_text())
+                for name, change in (("another code", lambda path: path.joinpath("adapter-failure.json").write_text(
+                                          json.dumps({**record, "code": "SOURCE_NOTATION"}))),
+                                     ("no record", lambda path: path.joinpath("adapter-failure.json").unlink()),
+                                     ("a built sheet", lambda path: path.joinpath("sheet.html").write_text("<html></html>"))):
+                    copy = self.root / "forged" / case / name.replace(" ", "-")
+                    shutil.copytree(work, copy)
+                    change(copy)
+                    with self.subTest(case=case, forged=name), self.assertRaises(RuntimeError):
+                        self.smoke.refused_case(case, rendered, copy)
+
+    def test_only_a_clean_render_or_the_reconciled_middle_review_qualifies(self):
+        middle, elementary = self.lesson("grade7-equation-skill"), self.lesson("grade1-counting")
+        artifacts = [{"kind": "pdf"}, {"kind": "docx"}]
+
+        def reviewed(change=None):
+            manifest = WorkerResultTests.manifest(self, artifacts)
+            if change is not None:
+                change(manifest)
+            return manifest
+
+        def clean(change=None):
+            manifest = {**reviewed(), "steps": [{"name": "trusted-adapter", "status": "PASS"}], "reviewFindings": [],
+                        "automatedChecksPassed": True, "skill": {"name": "elementary"}}
+            if change is not None:
+                change(manifest)
+            return manifest
+
+        manifest = reviewed()
+        self.assertEqual(self.smoke.delivered_case("x", middle, manifest),
+                         {"case": "x", "topicId": middle["topicId"], "status": "REVIEW", "automatedChecksPassed": False,
+                          "reviewFindings": manifest["reviewFindings"], "manifest": "general/x/manifest.json"})
+        self.assertEqual(self.smoke.delivered_case("y", elementary, clean())["status"], "PASS")
+
+        def step(index, **values):
+            return lambda manifest: manifest["steps"][index].update(values)
+        refused = {
+            "a REVIEW on another step": reviewed(step(1, name="house-gates")),
+            "a REVIEW with no reason": reviewed(lambda manifest: manifest["steps"][1].pop("reason")),
+            "a REVIEW with another reason": reviewed(step(1, reason="RECONCILED_FINDINGS_ONLY")),
+            "no reconciliation": reviewed(lambda manifest: manifest.update(steps=manifest["steps"][:2])),
+            "a failed reconciliation": reviewed(step(2, status="FAIL")),
+            "no note": reviewed(lambda manifest: manifest.update(reviewFindings=[])),
+            "a note of another step": reviewed(lambda manifest: manifest["reviewFindings"][0].update(steps=["house-gates"])),
+            "another skill": reviewed(lambda manifest: manifest.update(skill={"name": "elementary"})),
+            "an unreadable list": reviewed(lambda manifest: manifest.update(unverifiedAnswers="q2")),
+            "a failed render": reviewed(lambda manifest: manifest.update(status="failed")),
+            "one artifact": reviewed(lambda manifest: manifest.update(artifacts=artifacts[:1])),
+            "three artifacts": reviewed(lambda manifest: manifest.update(artifacts=artifacts + artifacts[1:])),
+        }
+        for name, manifest in refused.items():
+            with self.subTest(case=name), self.assertRaises(RuntimeError):
+                self.smoke.delivered_case("x", middle, manifest)
+        # An elementary sheet never qualifies with a REVIEW step or a listed unverified answer (D6).
+        for name, manifest in {
+                "a reconciled REVIEW": reviewed(lambda manifest: manifest.update(skill={"name": "elementary"})),
+                "a house-gates REVIEW": clean(lambda manifest: manifest["steps"].append({"name": "house-gates", "status": "REVIEW"})),
+                "an unverified answer": clean(lambda manifest: manifest.update(
+                    unverifiedAnswers=[{"question": 3, "item": 1, "kind": "review"}]))}.items():
+            with self.subTest(case=name), self.assertRaises(RuntimeError):
+                self.smoke.delivered_case("y", elementary, manifest)
+
+
 if __name__ == "__main__":
     unittest.main()
