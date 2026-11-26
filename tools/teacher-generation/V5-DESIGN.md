@@ -568,7 +568,7 @@ def reserve_groups(planned: int) -> list[str]:
     """Practice ×max(3, ceil(0.2·(planned−3))), then challenges ×(1 if planned < 20 else 2)."""
 class Selection:
     """As B:lesson_select.Selection (screen, reject, fill, layout, missing, real_challenges, reserves_left, summary,
-    record) with: __init__(planned, reserves, predicate, shared=None, *, minimum: int) (minimum required = the grade floor);
+    record) with: __init__(planned, reserves, predicate, shared=None, *, minimum: int) (minimum required = the grade floor, one of 8/12/14/20 = runtime_catalog.question_floor; any other value is a ValueError);
     no `soft`; no restore(); can_shorten() = missing and present ≥ minimum and real_challenges ≥ 2."""
 def select(planned, reserves, predicate, *, minimum: int) -> Selection:
     """Selection(...).screen() and return it."""

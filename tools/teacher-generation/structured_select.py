@@ -9,7 +9,9 @@ a95959bb) without its relaxations, as V5-DESIGN.md section 3 specifies:
   (runtime_catalog.question_floor: 8 / 12 / 14 / 20), not max(6, ceil(3N/4));
 - the reserves follow the v5 formula of reserve_groups().
 
-Nothing here knows the wire format, a topic or a grade. A question is an opaque
+Nothing here knows the wire format or a topic, and of the grades it knows only
+their minimums, the one value it accepts as ``minimum`` (runtime_catalog.question_floor,
+checked exactly as lesson_select._grade_floor). A question is an opaque
 value. The caller supplies one predicate that says whether a question may be
 printed: ``predicate(question, challenge, number)`` returns the refusal codes, an
 empty sequence for a usable question. ``challenge`` says whether the question
@@ -93,6 +95,16 @@ class Reserve:
     codes: tuple = ()
 
 
+def _grade_floor(minimum):
+    """``minimum`` when it is one of the grade minimums of runtime_catalog.question_floor (8, 12, 14, 20), else
+    ValueError, exactly as lesson_select._grade_floor. Any other number, a lower one in particular, would let a
+    sheet be shortened below the minimum of every grade."""
+    from runtime_catalog import question_floor
+    if type(minimum) is not int or minimum not in {question_floor(grade) for grade in range(1, 10)}:
+        raise ValueError("minimum must be a grade minimum (runtime_catalog.question_floor)")
+    return minimum
+
+
 def _entry(row):
     group, question = row["group"], row.get("question")
     if group not in GROUPS:
@@ -123,16 +135,15 @@ class Selection:
     "concepts"}; a planned row whose question is None is a position the
     author left empty. ``shared`` is an optional Shared limit over the whole
     sheet. ``minimum`` (keyword-only, required) is the grade floor: the fewest
-    questions a shorter sheet may keep. Call screen() once, then reject(),
-    fill() and shorten() as later checks require.
+    questions a shorter sheet may keep, one of the grade minimums 8 / 12 / 14 /
+    20 (runtime_catalog.question_floor; any other value is a ValueError). Call
+    screen() once, then reject(), fill() and shorten() as later checks require.
     """
 
     def __init__(self, planned, reserves, predicate, shared=None, *, minimum):
-        if type(minimum) is not int or minimum < 1:
-            raise ValueError("minimum must be a positive integer (the grade floor)")
+        self.minimum = _grade_floor(minimum)
         self.predicate = predicate
         self.shared = shared
-        self.minimum = minimum
         self.slots = []
         for number, row in enumerate(planned, 1):
             group, question, concepts = _entry(row)

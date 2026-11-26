@@ -73,10 +73,17 @@ class LimitTests(unittest.TestCase):
             Selection(sheet(), [], refuse({}))
         with self.assertRaises(TypeError):
             select(sheet(), [], refuse({}))
-        for bad in (0, -8, "8", True, 8.0, None):
-            with self.assertRaises(ValueError):
-                Selection(sheet(), [], refuse({}), minimum=bad)
-        self.assertEqual(Selection(sheet(), [], refuse({}), minimum=20).minimum, 20)
+        # Only a grade minimum is a minimum, exactly as lesson_select._grade_floor: a lower number would shorten a
+        # sheet below the minimum of every grade, and any other number is no grade's minimum.
+        for bad in (0, -8, "8", True, 8.0, None, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 13, 15, 16, 19, 21, 30):
+            with self.subTest(minimum=bad):
+                with self.assertRaises(ValueError):
+                    Selection(sheet(), [], refuse({}), minimum=bad)
+                with self.assertRaises(ValueError):
+                    select(sheet(), [], refuse({}), minimum=bad)
+        for floor in sorted({question_floor(g) for g in range(1, 10)}):
+            self.assertEqual(Selection(sheet(), [], refuse({}), minimum=floor).minimum, floor)
+        self.assertEqual(sorted({question_floor(g) for g in range(1, 10)}), [8, 12, 14, 20])
 
 
 class RelaxationRemovedTests(unittest.TestCase):
@@ -327,7 +334,7 @@ class StageTwoSheetTests(unittest.TestCase):
     def test_a_shared_limit_removes_the_later_repeat_and_refuses_a_reserve_over_it(self):
         drawing = Shared(key=lambda q: "drawing" if q.startswith("d") else None, cap=1, code="SHARED_DRAWING")
         planned = rows(PRACTICE, ["d1", "p2", "d3", "p4"]) + rows(CHALLENGES, ["c1", "c2"])
-        selection = Selection(planned, rows(PRACTICE, ["d-reserve", "r2"]), refuse({}), drawing, minimum=4)
+        selection = Selection(planned, rows(PRACTICE, ["d-reserve", "r2"]), refuse({}), drawing, minimum=FLOOR)
         self.assertEqual(selection.screen(), [])
         self.assertEqual(selection.slot(3).question, "r2")
         self.assertEqual(selection.record[0]["codes"], ["SHARED_DRAWING"])
