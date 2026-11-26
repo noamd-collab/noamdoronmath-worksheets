@@ -830,6 +830,17 @@ def v5_manifest(target, *, review=False, extra=False, status="needs_review", ski
 NO_DIRECT_RENDER = AssertionError("the worker renders a v5 result only through runner.render_structured")
 
 
+class StatusRemote(FakeRemote):
+    """The jobs table as the v5 final update reads it back: the row carries the status the database kept."""
+    kept = None  # None: the status the worker asked for; otherwise what the trial trigger left instead
+
+    def call(self, path, method="GET", value=None, **kwargs):
+        rows = super().call(path, method, value, **kwargs)
+        if method == "PATCH" and rows and "select=id,owner_id,status&" in path:
+            return [{**rows[0], "status": self.kept or value["status"]}]
+        return rows
+
+
 class WorkerPath(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -838,7 +849,7 @@ class WorkerPath(unittest.TestCase):
         self.job = {"id": JOB_ID, "owner_id": TEACHER_A, "lease_token": LEASE, "status": "running",
                     "lease_until": (datetime.now(timezone.utc) + timedelta(minutes=20)).isoformat(),
                     "lesson": S.lesson()}
-        self.remote = FakeRemote()
+        self.remote = StatusRemote()
         self.structured = sa.StructuredAuthored({"contract": "worksheet-wire/5", "selection": {
             "requested": 20, "floor": 20, "delivered": 20,
             "replaced": [{"slot": "Q4", "by": "R1", "codes": ["ITEM_COUNT"]}], "dropped": []}}, "worksheet-wire/5")
@@ -850,7 +861,7 @@ class WorkerPath(unittest.TestCase):
 
     def fresh(self):
         self.root = Path(tempfile.mkdtemp(dir=self.temp.name)).resolve()
-        self.remote = FakeRemote()
+        self.remote = StatusRemote()
 
     def test_v5_render_gets_the_trusted_flag_and_only_the_pdf_is_uploaded(self):
         seen = []
@@ -933,6 +944,85 @@ class WorkerPath(unittest.TestCase):
                 return exc
         self.assertEqual([call[0].rsplit("/", 1)[1] for call in self.remote.uploads()], ["sheet.pdf"])
         return None
+
+    def finished_line(self, remote):
+        """The one log line of a worker run whose v5 render is acceptable, against the given jobs table."""
+        self.fresh()
+        self.remote = remote
+        self.remote.claims = [self.job]
+        with patch.object(sys, "argv", ["worker", "--once", "--work-dir", str(self.root)]), \
+                patch.object(worker, "check_readiness", return_value={"ready": True}), \
+                patch.object(worker, "Remote", return_value=self.remote), \
+                patch.object(worker, "author_lesson", side_effect=self.author), \
+                patch.object(worker, "render_job", side_effect=NO_DIRECT_RENDER), \
+                patch.object(runner, "render_job", side_effect=lambda les, pay, target, **kw: v5_manifest(target)), \
+                patch.object(worker, "D22_APPROVED", True), redirect_stdout(io.StringIO()) as output:
+            worker.main()
+        return json.loads(output.getvalue())
+
+    def test_only_the_final_v5_update_reads_the_status_back(self):
+        self.assertIsNone(self.accept(d22=True))
+        patches = [call[0] for call in self.remote.calls if call[1] == "PATCH"]
+        self.assertGreater(len(patches), 1)
+        for path in patches[:-1]:
+            self.assertIn("?select=id,owner_id&id=eq.", path)
+        self.assertIn("?select=id,owner_id,status&id=eq.", patches[-1])
+        self.assertEqual(self.finished_line(StatusRemote()), {"event": "generation_needs_review", "jobId": JOB_ID})
+
+    def test_a_draft_the_database_did_not_keep_is_logged_failed_at_upload_never_needs_review(self):
+        # The trial trigger turns needs_review into failed inside the same update; the row still comes back.
+        for kept in ("failed", "running", "queued", "NEEDS_REVIEW", "needs_review "):
+            with self.subTest(kept):
+                remote = StatusRemote()
+                remote.kept = kept
+                self.assertEqual(self.finished_line(remote), {"event": "generation_failed", "jobId": JOB_ID,
+                                 "code": "DRAFT_NOT_AVAILABLE", "stage": "upload", "questions": []})
+                # Only that one update read the status back; the update that marks the job failed did not.
+                patches = [call for call in remote.calls if call[1] == "PATCH"]
+                self.assertEqual(sum(",status&" in call[0] for call in patches), 1)
+                failed = [call for call in patches if call[2].get("status") == "failed"]
+                self.assertEqual(len(failed), 1)
+                self.assertIn("?select=id,owner_id&id=eq.", failed[0][0])
+
+    def test_a_final_v5_update_whose_row_cannot_be_read_exactly_is_not_a_draft(self):
+        class Rows(StatusRemote):
+            shape = None
+
+            def call(self, path, method="GET", value=None, **kwargs):
+                rows = super().call(path, method, value, **kwargs)
+                final = method == "PATCH" and bool(rows) and "select=id,owner_id,status&" in path
+                return self.shape(rows) if final else rows
+        shapes = {"no status": lambda rows: [{k: v for k, v in rows[0].items() if k != "status"}],
+                  "status null": lambda rows: [{**rows[0], "status": None}],
+                  "status not text": lambda rows: [{**rows[0], "status": ["needs_review"]}],
+                  "another owner": lambda rows: [{**rows[0], "owner_id": "33333333-3333-4333-8333-333333333333"}],
+                  "another job": lambda rows: [{**rows[0], "id": "55555555-5555-4555-8555-555555555555"}],
+                  "extra field": lambda rows: [{**rows[0], "result": {}}],
+                  "two rows": lambda rows: rows * 2, "no row": lambda rows: [], "not a list": lambda rows: rows[0]}
+        for name, shape in shapes.items():
+            with self.subTest(name):
+                remote = Rows()
+                remote.shape = shape
+                self.assertEqual(self.finished_line(remote), {"event": "generation_failed", "jobId": JOB_ID,
+                                 "code": "WORKER_FAILED", "stage": "upload", "questions": []})
+        # The baseline fake answers without a status, as the database did before this check existed.
+        self.assertEqual(self.finished_line(FakeRemote())["code"], "WORKER_FAILED")
+
+    def test_every_other_update_sends_the_request_it_always_sent(self):
+        old = (r"^/rest/v1/noam_teacher_generation_jobs\?select=id,owner_id&id=eq\.%s&owner_id=eq\.%s"
+               r"&lease_token=eq\.%s&status=eq\.running&lease_until=gt\.[0-9T:.\-]+Z$" % (JOB_ID, TEACHER_A, LEASE))
+        for values in ({"lease_until": "2026-11-25T12:00:00+00:00"}, {"phase": "checking"},
+                       {"status": "failed", "phase": "failed", "error_code": "WORKER_FAILED",
+                        "lease_token": None, "lease_until": None}):
+            self.fresh()
+            worker.update_job(self.remote, self.job, values)
+            self.assertRegex(self.remote.calls[-1][0], old)
+        # One call site asks for the read-back: the final v5 update. The lease renewal, the phase
+        # updates, the v4 completion and the failure update are the other callers.
+        source = Path(worker.__file__).read_text(encoding="utf-8")
+        self.assertEqual(source.count("confirm="), 2)
+        self.assertEqual(source.count("confirm='needs_review')"), 1)
+        self.assertEqual(source.count("def update_job(remote, job, values, confirm=None):"), 1)
 
     def test_d22_approval_is_recorded_exactly(self):
         # Noam approved D22 on 2026-11-25; the constant and its record must say exactly that.

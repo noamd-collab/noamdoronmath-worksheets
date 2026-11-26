@@ -103,15 +103,24 @@ def heartbeat(remote):
     remote.call('/rest/v1/noam_teacher_generation_workers?on_conflict=id','POST',
                 {'id':'primary','updated_at':utc().isoformat(),'capabilities':{**capabilities(),'trialActorIsolation':1}},prefer='resolution=merge-duplicates')
 
-def update_job(remote, job, values):
+def update_job(remote, job, values, confirm=None):
     for key in ('id','owner_id','lease_token'):
         if not UUID.fullmatch(str(job.get(key,''))): raise RuntimeError('INVALID_JOB_ID')
     values={**values,'updated_at':utc().isoformat()}
-    path = ('/rest/v1/noam_teacher_generation_jobs?select=id,owner_id&id=eq.' + job['id']
+    path = ('/rest/v1/noam_teacher_generation_jobs?select=id,owner_id' + (',status' if confirm else '') + '&id=eq.' + job['id']
             + '&owner_id=eq.' + job['owner_id'] + '&lease_token=eq.' + job['lease_token']
             + '&status=eq.running&lease_until=gt.' + utc().isoformat().replace('+00:00','Z'))
     rows=remote.call(path,'PATCH',values,prefer='return=representation')
-    if rows != [{'id':job['id'], 'owner_id':job['owner_id']}]: raise RuntimeError('JOB_LEASE_LOST')
+    if confirm is None:
+        if rows != [{'id':job['id'], 'owner_id':job['owner_id']}]: raise RuntimeError('JOB_LEASE_LOST')
+        return
+    # worksheet-wire/5: the trial trigger can turn this very update into failed (DRAFT_NOT_AVAILABLE) and the
+    # row still comes back, so only the status the database kept says whether the draft exists. The trigger
+    # skips the owner account: for an owner job the kept status is always the one asked for.
+    if (not isinstance(rows,list) or len(rows)!=1 or not isinstance(rows[0],dict) or not isinstance(rows[0].get('status'),str)
+            or {k:v for k,v in rows[0].items() if k!='status'} != {'id':job['id'], 'owner_id':job['owner_id']}):
+        raise RuntimeError('JOB_LEASE_LOST')
+    if rows[0]['status'] != confirm: raise GenerationError('DRAFT_NOT_AVAILABLE', 'The database did not keep this draft')
 
 def safe_validation_detail(value):
     """Retain known local validation rules, never arbitrary exception/model text."""
@@ -820,7 +829,8 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
                 result = structured_result(remote, job, manifest, artifact_root, structured)
                 if lost.is_set(): raise RuntimeError('JOB_LEASE_LOST')
                 stop.set();thread.join(timeout=3)
-                update_job(remote,job,{'status':'needs_review','phase':'needs_review','result':result,'lease_token':None,'lease_until':None})
+                update_job(remote,job,{'status':'needs_review','phase':'needs_review','result':result,'lease_token':None,'lease_until':None},
+                           confirm='needs_review')
             except Exception as exc:
                 raise mark_failure(exc, 'upload')
             return
