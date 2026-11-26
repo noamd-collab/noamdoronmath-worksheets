@@ -157,14 +157,38 @@ def run_tesseract(binary: Path, raster: Path, timeout: float) -> str:
     finally:
         # Also clean up descendants if the parent has already exited but a
         # descendant holds a pipe. The group belongs to this invocation only.
-        import signal
         try:
-            os.killpg(process.pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
+            kill_group(process)
+            process.wait()
+        finally:
+            process.stdout.close()
+            process.stderr.close()
+
+
+def kill_group(process: subprocess.Popen) -> None:
+    """SIGKILL the whole process group of ``process`` (its own session), descendants included.
+
+    macOS refuses killpg with EPERM (PermissionError) while the group's leader
+    has exited and is not yet reaped. Then the leader is reaped (Popen.kill
+    only polls a leader that has exited, and kills one that has not, so the
+    wait is bounded) and the group is killed once more, so a descendant that
+    is still alive is killed too. ProcessLookupError (no process left in the
+    group) is the only outcome ignored; a second PermissionError propagates
+    and the batch fails closed.
+    """
+    import signal
+    try:
+        os.killpg(process.pid, signal.SIGKILL)
+        return
+    except ProcessLookupError:
+        return
+    except PermissionError:
+        process.kill()
         process.wait()
-        process.stdout.close()
-        process.stderr.close()
+    try:
+        os.killpg(process.pid, signal.SIGKILL)
+    except ProcessLookupError:
+        pass
 
 
 def parse_tsv(text: str) -> list[tuple[str, float]]:
