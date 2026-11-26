@@ -34,18 +34,24 @@ describe('site header learning link (HEADLESS-MIGRATION-15)', () => {
     assert.ok(html.includes('href="/math-tools"'));
   });
 
-  it('learning.html uses the same per-letter משחקים label as SiteHeader', () => {
+  it('learning.html uses the same per-letter משחקים link as SiteHeader', () => {
     const html = readFileSync(join(pub, 'learning.html'), 'utf8');
     const css = readFileSync(join(pub, 'noam-learning.css'), 'utf8');
-    const button = html.match(/<button\b([^>]*\bdata-tools-toggle\b[^>]*)>([\s\S]*?)<\/button>/);
-    assert.ok(button, 'learning games control is a button');
-    assert.match(button[1], /aria-label="משחקים"/);
-    assert.match(button[2], /<span class="exact-nav-rainbow" aria-hidden="true"><span>מ<\/span><span>ש<\/span><span>ח<\/span><span>ק<\/span><span>י<\/span><span>ם<\/span><\/span>/);
-    assert.match(html, /class="exact-nav-game exact-nav-game--pink"[^>]*>פינת המשחקים של אליהו</);
+    const games = html.match(/<a\b([^>]*\bclass="exact-nav-games"[^>]*)>([\s\S]*?)<\/a>/);
+    assert.ok(games, 'learning games control is a direct link');
+    assert.match(games[1], /href="\/games"/);
+    assert.match(games[1], /aria-label="משחקים"/);
+    assert.equal(games[1].includes('aria-haspopup'), false);
+    assert.match(games[2], /<span class="exact-nav-rainbow" aria-hidden="true"><span>מ<\/span><span>ש<\/span><span>ח<\/span><span>ק<\/span><span>י<\/span><span>ם<\/span><\/span>/);
+    assert.match(html, /data-tools-toggle[^>]*>תוספים</);
+    assert.match(html, /href="\/math-tools">מחשבון מדעי</);
+    assert.match(html, /href="\/math-tools#practice-tools">כלי תרגול</);
+    assert.equal(html.includes('פינת המשחקים של אליהו'), false);
+    assert.equal(html.includes('משחקים וכלים'), false);
     assert.equal(html.includes('/games/kefel-mekutsar-2'), false);
     assert.equal(html.includes('/games/eliyahu-pythagoras'), false);
     assert.equal(html.includes('>משחקים</button>'), false);
-    for (const rule of ['#c92f55', '#b85513', '#3f7f2a', '#2a60a7', 'exact-nav-game--orange', 'exact-nav-game--green']) {
+    for (const rule of ['#c92f55', '#b85513', '#3f7f2a', '#2a60a7', 'exact-nav-games .exact-nav-rainbow']) {
       assert.ok(css.includes(rule), rule);
     }
   });

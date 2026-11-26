@@ -37,7 +37,7 @@ test('seven middle-school editions serve their exact student PDFs and preserve t
     assert.ok(topicPageCatalogTopicIds(page).includes(p.topicId));
     const edition = p.edition;
     const links = topicWorksheetEditionLinks(catalog, p.grade, p.topicId, '/' + p.slug);
-    assert.deepEqual(links.map(row => row.editionId), ['legacy', edition.editionId], p.sheetId);
+    assert.deepEqual(links.map(row => row.editionId), [edition.editionId], p.sheetId);
     const structured = topicPagePdfParts(catalog, p.grade, [p.topicId]).parts;
     assert.deepEqual(edition.levels.map(l => [l.key, l.viewerLevel]), [['a', 'A'], ['b', 'B'], ['c', 'E']]);
     for (const [index, level] of edition.levels.entries()) {
@@ -46,7 +46,7 @@ test('seven middle-school editions serve their exact student PDFs and preserve t
       assert.equal(f.sha256, level.pdfSha256);
       assert.equal(f.downloads.length, 2);
       assert.ok(f.downloads.every(d => d.status === 200 && d.match && d.sha256 === f.sha256));
-      assert.equal(links[1].levels[index].href, f.downloads[0].url);
+      assert.equal(links[0].levels[index].href, f.downloads[0].url);
       assert.ok(structured.some(part => part.contentUrl === f.downloads[0].url));
       files.add(level.pdfId);
     }

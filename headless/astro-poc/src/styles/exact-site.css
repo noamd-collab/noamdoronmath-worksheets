@@ -37,6 +37,7 @@ body.exact-site {
 .exact-nav-drop a:hover {background:rgba(42,124,122,.1);}
 /* Games menu: Toys"R"Us-style colours (colour only), slightly larger type.
    Shades are deepened just enough to stay readable (>=4.5:1) on #fbfaf5. */
+.exact-nav-games .exact-nav-rainbow,
 .exact-nav-tools__btn .exact-nav-rainbow {font-size:1.2em;font-weight:800;letter-spacing:.01em;}
 .exact-nav-rainbow > span:nth-child(4n+1) {color:#c92f55;}
 .exact-nav-rainbow > span:nth-child(4n+2) {color:#b85513;}
@@ -128,13 +129,18 @@ body.exact-site {
   .exact-header nav[data-nav-panel] a.exact-nav-teachers {display:flex;align-items:center;gap:4px;}
   .exact-header nav[data-nav-panel] .exact-nav-learn-mobile,.exact-header nav[data-nav-panel] .exact-nav-search-mobile {display:block!important;}
   .exact-nav-tools {display:block;}
-  .exact-nav-tools__btn {display:none!important;}
-  .exact-nav-drop {
-    position:static;opacity:1;visibility:visible;pointer-events:auto;
-    min-width:0;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent;
+  .exact-nav-tools__btn {
+    display:inline-flex!important;width:100%;justify-content:flex-start;
+    min-height:44px;padding:10px 12px!important;border-radius:10px;text-align:start;
   }
-  .exact-nav-tools[data-shut] .exact-nav-drop {opacity:1;visibility:visible;pointer-events:auto;}
-  .exact-header nav[data-nav-panel] .exact-nav-drop a {white-space:normal;}
+  .exact-nav-drop {
+    position:static;display:none;min-width:0;padding:0;border:0;border-radius:0;
+    box-shadow:none;background:transparent;opacity:1;visibility:visible;
+  }
+  .exact-nav-tools[data-open]:not([data-shut]) .exact-nav-drop,
+  .exact-nav-tools:focus-within:not([data-shut]) .exact-nav-drop {display:flex;}
+  .exact-nav-tools[data-shut] .exact-nav-drop {display:none;}
+  .exact-header nav[data-nav-panel] .exact-nav-drop a {white-space:normal;padding-inline-start:28px!important;}
 }
 .exact-site [data-doodle] {visibility:visible;}
 .exact-site [data-doodle] img {max-width:none;}

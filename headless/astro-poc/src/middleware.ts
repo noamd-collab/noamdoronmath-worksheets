@@ -15,6 +15,7 @@ import { defineMiddleware } from 'astro:middleware';
 import { deduplicateSeoResponse } from './lib/serverSeo';
 import { OTTERLY_API_KEY } from 'astro:env/server';
 import { redirectTargetForSiteUgdPath } from './lib/wixMedia';
+import { retiredJuniorRequestTarget } from './lib/retiredJuniorWorksheets';
 import { resolveRedirect } from './lib/redirects';
 import { PUBLIC_HTML_SHELLS } from './lib/publicHtmlShells';
 import { secretFromEnv } from './lib/noamSecrets';
@@ -41,6 +42,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
     console.error('Otterly AI log skipped');
   }
   const path = context.url.pathname;
+  const retired = retiredJuniorRequestTarget(path, context.url.searchParams);
+  if (retired) {
+    return context.redirect(retired, 301);
+  }
   const target = redirectTargetForSiteUgdPath(path, context.url.search);
   if (target) {
     return context.redirect(target, 301);

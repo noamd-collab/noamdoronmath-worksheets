@@ -73,8 +73,9 @@ test('all twenty-one additions have direct PDF routing and exact media/source bi
     const groups = topicWorksheetEditionLinks(catalog, addition.grade, addition.topicId, '/');
     // Batch 03 appends its own series after this one on 9/39 (ITP-01) and 7/6 (POW-01).
     const later = [...reviewedBatch03.additions, ...reviewedBatch09.additions].filter(x => x.grade === addition.grade && x.topicId === addition.topicId).map(x => x.editionId);
-    assert.deepEqual(groups.map(g => g.editionId), ['legacy', addition.editionId, ...later]);
-    assert.deepEqual(groups[0], topicWorksheetEditionLinks(previous, addition.grade, addition.topicId, '/')[0]);
+    assert.deepEqual(groups.map(g => g.editionId), [addition.editionId, ...later]);
+    const earlier = topicWorksheetEditionLinks(previous, addition.grade, addition.topicId, '/').filter(g => g.editionId !== 'legacy');
+    assert.deepEqual(groups.slice(0, earlier.length), earlier);
     const proof = receipt.packages.find((p: any) => p.editionId === addition.editionId);
     assert.ok(proof, `${addition.editionId}: public frozen evidence`);
     for (const level of edition.levels) {

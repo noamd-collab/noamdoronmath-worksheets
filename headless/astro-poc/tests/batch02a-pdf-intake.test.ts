@@ -181,9 +181,9 @@ test('all forty-eight additions open their own reviewed PDF directly while every
       .filter(later => later.grade === addition.grade && later.topicId === addition.topicId)
       .map(later => later.editionId);
     assert.deepEqual(groups.map(g => g.editionId),
-      ['legacy', ...addition.baselineEditionIds, addition.editionId, ...laterIds]);
+      [...addition.baselineEditionIds, addition.editionId, ...laterIds]);
     assert.deepEqual(groups.filter(g => g.editionId !== addition.editionId && !laterIds.includes(g.editionId)),
-      topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back));
+      topicWorksheetEditionLinks(previousSsr, addition.grade, addition.topicId, back).filter(g => g.editionId !== 'legacy'));
     const ownGroup = groups.find(g => g.editionId === addition.editionId)!;
     assert.deepEqual(ownGroup.levels.map(l => [l.key, l.label]), [['a', 'רמה א׳'], ['b', 'רמה ב׳'], ['c', 'מצוינות']]);
     assert.equal(ownGroup.note, 'קובצי PDF להדפסה');

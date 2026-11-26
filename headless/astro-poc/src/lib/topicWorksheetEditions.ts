@@ -1,5 +1,5 @@
 import type { CatalogEdition, CatalogTopic, CatalogV1 } from './catalog/types';
-import { resolveEdition, topicEditions, worksheetEditionNote } from './catalog/editions';
+import { resolveEdition, studentFacingEditions, topicEditions, worksheetEditionNote } from './catalog/editions';
 import { buildWorksheetHref } from './worksheetLinks';
 import { partialHintCount } from './catalog/partialHints';
 
@@ -57,7 +57,7 @@ export function topicWorksheetEditionLinks(
 ): TopicWorksheetEditionLinks[] {
   const topic = findCatalogTopic(catalog, grade, topicId);
   if (!topic) return [];
-  const editions = topicEditionsSelectedFirst(topic).map(edition => ({
+  const editions = studentFacingEditions(topic, grade).map(edition => ({
     editionId: edition.editionId,
     label: edition.label,
     pdfOnly: edition.publicationMode === 'pdf-only',

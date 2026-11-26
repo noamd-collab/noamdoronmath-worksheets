@@ -87,7 +87,7 @@ describe('eliyahu pythagoras game page', () => {
   });
 
   it('is a local games route in the sitemap, nav, and link resolver', () => {
-    assert.equal(resolveActiveNav(PYTHAGORAS_GAME_PATH), 'tools');
+    assert.equal(resolveActiveNav(PYTHAGORAS_GAME_PATH), 'games');
     assert.equal(isLocallyServedPath(PYTHAGORAS_GAME_PATH), true);
     assert.equal(isLocallyServedPath(PYTHAGORAS_GAME_PLAY_PATH), true);
     assert.equal(resolveSiteHrefString(`${PROD_ORIGIN}${PYTHAGORAS_GAME_PATH}`), PYTHAGORAS_GAME_PATH);
@@ -96,7 +96,8 @@ describe('eliyahu pythagoras game page', () => {
     assert.equal(paths.includes(PYTHAGORAS_GAME_PLAY_PATH), false);
     assert.equal(header.includes('PYTHAGORAS_GAME_PATH'), false);
     assert.equal(header.includes('/games/eliyahu-pythagoras'), false);
-    assert.ok(header.includes('פינת המשחקים של אליהו'));
+    assert.ok(header.includes('GAMES_INDEX_PATH'));
+    assert.ok(header.includes('aria-label="משחקים"'));
     const corner = readFileSync(fromTest('../src/lib/eliyahuGames.ts'), 'utf8');
     assert.ok(corner.includes("slug: 'eliyahu-pythagoras'"));
   });
