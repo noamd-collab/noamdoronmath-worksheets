@@ -17,6 +17,7 @@ import { beforeBatch13Registry } from './fixtures/batch13-pdf';
 import { createRequire } from 'node:module';
 import { beforeReviewedRamziActivation } from './helpers/beforeReviewedRamziActivation';
 import { catalogBeforeCorrections } from './fixtures/middle-090-091-094';
+import { editionAfterPdfCorrections } from './fixtures/pdf-corrections';
 
 const require = createRequire(import.meta.url);
 const { loadIndexCatalog } = require('../../../scripts/lib/headless-catalog.cjs');
@@ -117,7 +118,8 @@ test('one additive edition recovers the pinned baseline after the Ramzi sources 
     assert.deepEqual(proof.levels.map((l: any) => [l.key, l.pdfId, l.pdfSha256]),
       addition.edition.levels.map(l => [l.key, l.pdfId, l.pdfSha256]));
     for (const level of edition.levels) {
-      const downloads = proof.levels.find((p: any) => p.key === level.key).downloadChecks;
+      const correction = receipt.corrections.find((c: any) => c.editionId === addition.editionId && c.levelKey === level.key);
+      const downloads = (correction ?? proof.levels.find((p: any) => p.key === level.key)).downloadChecks;
       assert.equal(downloads.length, 2);
       assert.ok(downloads.every((d: any) => d.status === 200 && d.matchesFrozenPdf && d.sha256 === level.pdfSha256));
       assert.equal(buildWorksheetHref({ catalog, grade: addition.grade, topic, editionId: addition.editionId, levelKey: level.key }),
@@ -134,6 +136,39 @@ test('one additive edition recovers the pinned baseline after the Ramzi sources 
     assert.deepEqual(groups.slice(0, earlier.length), earlier);
     assert.deepEqual(groups.find(g => g.editionId === addition.editionId)!.levels.map(l => l.key), ['a', 'b', 'c']);
   }
+});
+
+test('the 5ג correction replaces only the excellence PDF in place and keeps every id and Ramzi item', () => {
+  assert.equal(receipt.corrections.length, 1);
+  const fix = receipt.corrections[0];
+  assert.deepEqual([fix.editionId, fix.levelKey, fix.correctedOn, fix.grade, fix.topicId], ['ms-20261118-ang-02-r1', 'c', '2026-11-26', 7, 12]);
+  assert.deepEqual(fix.fields.map((f: any) => f.field), ['pdfId', 'pdfSha256', 'sourceSha256', 'revision']);
+  const [pdf, pdfSha] = fix.fields;
+  const original = reviewed.additions[0].edition.levels.find(l => l.key === 'c')!;
+  assert.ok(fix.fields.every((f: any) => (original as any)[f.field] === f.before && f.before !== f.after));
+  assert.equal(fix.fields[3].after, original.revision + 1);
+  const current = registry.editions.find((e: any) => e.editionId === fix.editionId);
+  assert.deepEqual(current, editionAfterPdfCorrections(reviewed.additions[0].edition));
+  const level: any = current.levels.find((l: any) => l.key === 'c');
+  for (const [key, value] of Object.entries(fix.unchanged)) if (key !== 'learningId') assert.equal(level[key], value);
+  const published = raw.grades.find((g: any) => g.grade === 7).topics.find((t: any) => t.id === 12).editions.find((e: any) => e.editionId === fix.editionId);
+  assert.equal(published.levels.find((l: any) => l.key === 'c').learningId, fix.unchanged.learningId);
+  assert.equal(createHash('sha256').update(JSON.stringify(published)).digest('hex'), fix.generatedEditionSha256.after);
+  assert.equal(published.routing.siblingPdfQuery.pc, pdf.after);
+  assert.ok(!JSON.stringify(read('headless/astro-poc/src/data/catalog.v1.json')).includes(pdf.before));
+  assert.equal(fix.downloadChecks.length, 2);
+  assert.ok(fix.downloadChecks.every((d: any) => d.status === 200 && d.matchesFrozenPdf && d.sha256 === pdfSha.after && d.url.endsWith(pdf.after + '.pdf')));
+  assert.equal(fix.frozenPackage.sheetPdfSha256, pdfSha.after);
+  assert.equal(fix.frozenPackage.sheetJsonSha256, fix.fields[2].after);
+  assert.equal(fix.frozenPackage.noamAiJsonSha256, level.nativeExportSha256);
+  const index = JSON.parse(readFileSync(new URL('headless/astro-poc/public/noam-ai/partial-hints/' + pdf.after + '.json', root), 'utf8'));
+  assert.equal(fix.ramzi.partialHintIndex, 'headless/astro-poc/public/noam-ai/partial-hints/' + pdf.after + '.json');
+  assert.deepEqual([index.pdfId, index.pdfSha256, index.canonicalSourceSha256], [pdf.after, pdfSha.after, fix.ramzi.canonicalSourceSha256.after]);
+  assert.equal(index.items.length, fix.ramzi.items);
+  assert.equal(Math.max(...index.items.map((i: any) => i.pin.page)), fix.ramzi.highestPinPage);
+  assert.ok(fix.ramzi.highestPinPage < fix.pages, 'every pin is on a page the correction left identical');
+  assert.deepEqual(fix.ramzi.readerRedirect, { from: '/ramzi-partial?pdf=' + pdf.before, to: '/ramzi-partial?pdf=' + pdf.after, status: 301 });
+  assert.match(fix.buildGates.result, /not all gates passed/);
 });
 
 test('one landing route adds only reviewed PDF copy and preserves its complete earlier data', () => {
