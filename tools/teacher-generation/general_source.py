@@ -247,22 +247,6 @@ def validate_prose(value, grade, scope, *, require_hebrew=False):
         bad("SOURCE_NIQQUD", "Grades one and two require vocalized prose in every Hebrew text field")
 
 
-def check_printed_variable(question, item, answer, solved):
-    """The letter that a solve task's key prints in place of its contract letter (compact_authoring.rename_unknown).
-
-    It is a single lowercase letter outside x, y, a and b that the question
-    itself prints, and the task solves for x.
-    """
-    name = answer["printedVariable"]
-    task = solved["question"]
-    printed = [span.get("notation", "") for span in question["intro"] + item["prompt"] if span.get("kind") == "formula"]
-    printed += [span.get("text", "") for span in question["intro"] + item["prompt"] if span.get("kind") == "text"]
-    if (type(name) is not str or not re.fullmatch(r"[a-z]", name) or name in "xyab"
-            or task.get("kind") != "solve" or task.get("variable") != "x"
-            or not any(re.search(r"(?<![A-Za-z])" + name + r"(?![A-Za-z])", text) for text in printed)):
-        bad("SOURCE_NOTATION", "A printed variable must be a letter that the question prints")
-
-
 def validate_question(question, grade, scope, *, provider, qcount, evidence, pending):
     """Validate and normalize one expanded question, preserving its printed position."""
     exact(question, ("intro", "star", "items"), ("table", "figure", "drawingFromWords"))
@@ -302,14 +286,12 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
             bad("SOURCE_ANSWER", "Expected typed answer")
         item_id = f"q{qcount}-i{j}"
         if answer.get("kind") == "computed":
-            exact(answer, ("kind", "task", "unit"), ("notation", "printedVariable")); text(answer["unit"], 50, empty=True)
+            exact(answer, ("kind", "task", "unit"), ("notation",)); text(answer["unit"], 50, empty=True)
             if type(answer["task"]) is dict and answer["task"].get("kind") == "divide_remainder":
                 # The kernel's worksheet-wire/5 elementary task kind stays outside the v4 contract:
                 # refused exactly as before the kernel learned it (G1).
                 raise MathTaskError("UNSUPPORTED_TASK", "No trusted solver for this task kind")
             solved = validate_and_solve_task(answer["task"])
-            if "printedVariable" in answer:
-                check_printed_variable(question, item, answer, solved)
             from printed_tasks import match_printed_task, printed_table_row, validate_computed_request
             validate_computed_request(question, item, solved, grade, location=f"q{qcount}.item.{j}")
             match_printed_task(item, solved, grade)

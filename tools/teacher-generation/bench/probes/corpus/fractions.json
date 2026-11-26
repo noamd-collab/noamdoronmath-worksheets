@@ -34,9 +34,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "1 2 + 1 4 = ___",
-    "key": "3 4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -53,9 +53,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "1 2 + 1 4 = ___",
-    "key": "3 4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

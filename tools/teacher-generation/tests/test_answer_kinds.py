@@ -230,12 +230,12 @@ class DecisionWireTests(unittest.TestCase):
     def test_named_quantities_bind_the_claim_by_value_and_a_story_is_refused_in_elementary(self):
         # The sentence names both quantities, so the verdict is that of the print:
         # every printed number is used here, and still the claim is not the question.
-        percent = "האם [[10]]% מ-[[50]] שווה ל-[[5]]?"
+        percent = "האם [[10%]] מ-[[50]] שווה ל-[[5]]?"
         self.refused("g8:percentages", "בדקו.", percent, decide("eq", "10/50", "100+5"))
         self.refused("g8:percentages", "בדקו.", percent, decide("eq", "(50/100)*5", "10+100"))
         self.assertEqual(decision("g8:percentages", "בדקו.", percent, decide("eq", "50/10", "5")).proof["bound"], "print")
         self.refused("g8:percentages", "בדקו.", "האם [[60%]] גדול מ[[50%]]?", decide("gt", "60", "50/100"))  # two readings mixed
-        self.refused("g8:percentages", "בדקו.", "האם [[10]]% מ-[[100]] גדול מ-[[5]]?", decide("gt", "10+100", "5-100"))
+        self.refused("g8:percentages", "בדקו.", "האם [[10%]] מ-[[100]] גדול מ-[[5]]?", decide("gt", "10+100", "5-100"))
         self.refused("ג10", "נחשו.", "האם המנה של [[56 : 8]] גדולה מ-5?", decide("gt", "56-8", "5"))
         statement = decision("ג10", "בדקו.", "האם [[32 : 4 = 8]] נכון?", decide("eq", "32/4", "8"))
         self.assertEqual(statement.proof["bound"], "print")
@@ -309,7 +309,7 @@ class DecisionWireTests(unittest.TestCase):
         self.refused("ג03", numbers, asked, decide("in", "36/6", values=["2", "4", "8"]))  # a list without its 6
 
     def test_recorded_grade_eight_percent_items(self):
-        rows = [
+        recorded = [
             ("נבאו טווח ואז חשבו ערך ספציפי.", "האם [[10]]% מ-[[100]] גדול מ-[[5]]? חשבו את הערך המדויק.",
              decide("gt", "(10/100)*100", "5")),
             ("נבאו טווח ואז חשבו ערך ספציפי.", "האם [[20]]% מ-[[50]] גדול מ-[[10]]? חשבו את הערך המדויק.",
@@ -325,8 +325,15 @@ class DecisionWireTests(unittest.TestCase):
              "במבחן א' נכשלו [[5]] מתוך [[25]] תלמידים. במבחן ב' נכשלו [[4]] מתוך [[20]] תלמידים. "
              "האם אחוז הנכשלים זהה בשני המבחנים?", decide("eq", "(5/25)*100", "(4/20)*100")),
         ]
+        # As recorded, a percent sign after its island is refused for its notation; nothing moves it inside.
+        for intro, prompt, answer in recorded:
+            if "]]%" in prompt:
+                with self.subTest(prompt=prompt):
+                    self.refused("g8:percentages", intro, prompt, answer, code="SOURCE_NOTATION")
+        # With the sign inside the island, as the author request asks ([[25%]]), each one is decided.
+        rows = [(intro, prompt.replace("]]%", "%]]"), answer) for intro, prompt, answer in recorded]
         self.assertEqual(self.verdicts("g8:percentages", rows), ["כן", "לא", "כן", "כן", "לא", "לא", "כן", "כן"])
-        self.refused("g8:percentages", "בדקו.", "האם [[10]]% מ-[[100]] גדול מ-[[5]]? חשבו את הערך המדויק.",
+        self.refused("g8:percentages", "בדקו.", "האם [[10%]] מ-[[100]] גדול מ-[[5]]? חשבו את הערך המדויק.",
                      evaluate("(10/100)*100"), code="PRINTED_ANSWER_KIND")
         # "קטן או גדול" offers two outcomes: a comparison, as before, and never a yes or a no.
         both = "האם [[15%]] מתוך [[100]] קטן או גדול מ[[20]]? חשבו את הערך המדויק."
@@ -336,8 +343,8 @@ class DecisionWireTests(unittest.TestCase):
     def test_middle_school_key_prints_the_verdict_and_its_calculation(self):
         lesson = lesson_for("g8:percentages")
         scope = scope_for_lesson(lesson)
-        rows = [("האם [[10]]% מ-[[100]] גדול מ-[[5]]?", decide("gt", "(10/100)*100", "5")),
-                ("האם [[25]]% מ-[[48]] שווה ל-[[15]]?", decide("eq", "(25/100)*48", "15")),
+        rows = [("האם [[10%]] מ-[[100]] גדול מ-[[5]]?", decide("gt", "(10/100)*100", "5")),
+                ("האם [[25%]] מ-[[48]] שווה ל-[[15]]?", decide("eq", "(25/100)*48", "15")),
                 ("האם [[40%]] גדול מ[[50%]]?", decide("gt", "40", "50"))]
         question = {"intro": "ענו.", "star": False, "items": [{"prompt": p, "answer": a} for p, a in rows]}
         question = compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]}, 8)["sections"][0]["questions"][0]
@@ -412,7 +419,8 @@ class LabelAndOpenWireTests(unittest.TestCase):
         self.unsupported("ג02", "ענו.", "תנו דוגמה למספר שנמצא בין [[340]] ל־[[360]].", OPEN)
         self.unsupported("ג02", "ענו.", "הסבירו מדוע [[345]] קטן מ־[[354]].", OPEN)
         self.unsupported("ג18", "ענו.", "כמה משבצות יש במלבן שאורכו [[4]] ורוחבו [[3]]?", OPEN)
-        self.unsupported("ג02", "ענו.", "[[345]] + [[10]] = ___", OPEN)
+        self.unsupported("ג02", "ענו.", "[[345 + 10 = ___]]", OPEN)
+        self.refused("ג02", "ענו.", "[[345]] + [[10]] = ___", OPEN, code="SOURCE_NOTATION")  # its blank outside the island
         self.unsupported("ד28", "בנו משולש.", "שרטטו משולש שצלעותיו [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ. מה היקפו?", OPEN)
         self.unsupported("ד18", "נמקו.", "האם כל ריבוע הוא מלבן? נמקו.", OPEN)
         self.unsupported("ד28", "בנו משולש.", "שרטטו משולש.", {"kind": "open", "text": "משולש"})
@@ -488,7 +496,7 @@ class AdapterTests(unittest.TestCase):
                         ("האם [[27]] מתחלק ב־[[4]]?", decide("divisible", "27", "4"))]),
             ("נכון או לא נכון?", [("[[36 : 6 > 5]]", decide("gt", "36/6", "5")),
                                   ("[[40 : 8 = 6]]", decide("eq", "40/8", "6")),
-                                  ("[[45 : 9]] = ___", evaluate("45/9"))]),
+                                  ("[[45 : 9 = ___]]", evaluate("45/9"))]),
         ])
         self.assertEqual(rows[1, 1], ("האם התוצאות של 12 : 3 ושל 12 : 4 זהות?", "לא. 12 : 3 = 4, 12 : 4 = 3"))
         self.assertEqual(rows[1, 2][1], "כן. 30 : 5 = 6, 30 : 6 = 5")
@@ -636,7 +644,7 @@ class AuthorContractTests(unittest.TestCase):
     def test_a_refused_yes_no_item_is_told_to_use_the_decide_task(self):
         lesson = lesson_for("ג10", 12)
         scope = scope_for_lesson(lesson)
-        plain = lambda k: {"intro": "חשבו.", "items": [{"prompt": f"[[{k * d} : {d}]] = ___", "answer": evaluate(f"{k * d}/{d}")}
+        plain = lambda k: {"intro": "חשבו.", "items": [{"prompt": f"[[{k * d} : {d} = ___]]", "answer": evaluate(f"{k * d}/{d}")}
                                                        for d in (2, 3, 4)]}
         questions = [plain(k) for k in range(2, 14)]
         # Question 5 of the recorded reply: a yes/no question keyed with one of its two quotients.

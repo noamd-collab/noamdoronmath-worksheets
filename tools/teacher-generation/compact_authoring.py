@@ -385,9 +385,6 @@ JOINED_ISLANDS = re.compile(
     ISLAND + r"\s*([+*/^−÷×<>!=≤≥≠-](?:___|[+*/^−÷×<>!=≤≥≠ -])*)\s*" + ISLAND
 )
 MATH_TRANSLATION = str.maketrans({"−": "-", "×": "*", "·": "*", "÷": "/"})
-_HEBREW_AHEAD = r"(?=\s*[\u0591-\u05c7]*[א-ת])"
-_LABELLED_BLANK = re.compile(r"\[\[([^\[\]=_]*[^\[\]=_\s])\s*=\s*___\]\]" + _HEBREW_AHEAD)
-_TRAILING_BLANK = re.compile(ISLAND + r"\s*([+*/−÷×=<>-])\s*___(?![\w\]])(?!\s*[\u0591-\u05c7]*[א-ת+*/−÷×=<>-])")
 
 
 def fraction_literals(value):
@@ -403,13 +400,8 @@ def join_islands(value):
     while True:
         joined = JOINED_ISLANDS.sub(r"[[\1 \2 \3]]", value)
         if joined == value:
-            break
+            return joined
         value = joined
-    # A blank that is completed by a Hebrew label ("= ___ מאות") belongs to the
-    # sentence. Inside the LTR island it would print away from its own label.
-    value = _LABELLED_BLANK.sub(r"[[\1]] = ___", value)
-    # The mirror of the first rule: "[[47 : 5]] = ___" is one printed exercise.
-    return _TRAILING_BLANK.sub(r"[[\1 \2 ___]]", value)
 
 
 # Comparison signs listed as separate options can be isolated without guessing.
@@ -574,25 +566,12 @@ def _safe_math_boundary(span):
     return span["kind"] == "text" and re.search(r"[א-ת]", span["text"]) is not None
 
 
-def _fold_prose_equals(result):
-    """A spaced "=" between Hebrew prose and one island is part of the sentence."""
-    def blank(span):
-        return span["kind"] == "text" and not span["text"].strip()
-
-    def prose(span):
-        return span["kind"] == "text" and bool(span["text"].strip())
-
-    def equals(span):
-        return span.get("kind") == "formula" and span.get("notation") == "="
-
-    index = 0
-    while index + 2 < len(result):
-        a, b, c = result[index:index + 3]
-        if equals(b) and ((prose(a) and blank(c)) or (blank(a) and prose(c))):
-            result[index:index + 3] = [{"kind": "text", "text": a["text"] + "=" + c["text"]}]
-        else:
-            index += 1
-    return result
+def unmarked_equation(value, grade):
+    """An elementary field that is one equation with one blank but is not one [[...]] formula."""
+    if value.count("___") != 1 or value.count("=") != 1 or re.search(r"[<>!≤≥≠]", value):
+        return False
+    bare = re.sub(r"\[\[(___|[-−]?[0-9]+)\]\]", r"\1", value.strip())
+    return schoolbook_tokens(elementary_operations(bare.translate(MATH_TRANSLATION)), grade) is not None
 
 
 def spans(value, grade, *, fraction_notation=False):
@@ -600,15 +579,17 @@ def spans(value, grade, *, fraction_notation=False):
         return provider_span_array(value, grade, fraction_notation=fraction_notation)
     if len(value) > 2400:
         invalid()
+    if re.search(r"\[\[[-−]?[0-9]+(?:\.[0-9]+)?\]\]%", value):
+        # The percent sign is written inside the island with its number, [[25%]];
+        # one written after the island is refused, never moved into it.
+        invalid()
+    joined = join_islands(value)
+    if grade <= 6 and unmarked_equation(joined, grade):
+        # A missing-number equation is one formula, [[24 : ___ = 6]]. Written outside
+        # one, the key is not bound to the print: it is refused, never wrapped.
+        invalid()
     result = []
-    if grade <= 6 and value.count("___") == 1 and value.count("=") == 1 and not re.search(r"[<>!≤≥≠]", value):
-        bare = re.sub(r"\[\[(___|[-−]?[0-9]+)\]\]", r"\1", value.strip())
-        formula = elementary_operations(bare.translate(MATH_TRANSLATION))
-        if schoolbook_tokens(formula, grade) is not None:
-            value = "[[" + formula + "]]"
-    # A percent sign on a numeric island belongs to the same printed LTR token.
-    value = re.sub(r"\[\[([-−]?[0-9]+(?:\.[0-9]+)?)\]\]%", r"[[\1%]]", value)
-    pieces = re.split(r"(\[\[|\]\])", join_islands(value))
+    pieces = re.split(r"(\[\[|\]\])", joined)
     i = 0
     while i < len(pieces):
         prose = pieces[i]
@@ -644,7 +625,6 @@ def spans(value, grade, *, fraction_notation=False):
         result.pop(0)
     if result and result[-1].get("kind") == "text" and not result[-1]["text"].strip():
         result.pop()
-    result = _fold_prose_equals(result)
     if any(span["kind"] == "text" and not span["text"].strip() for span in result):
         invalid()
     if grade >= 7:
@@ -677,30 +657,6 @@ def wire_schema(schema, statistics):
         stats["properties"]["values"]["items"] = {"$ref": "#/$defs/expression"}
     else:
         tasks.remove(stats)
-
-
-_TASK_LETTER = re.compile(r"(?<![A-Za-z])[a-z](?![A-Za-z])")
-
-
-def rename_unknown(task):
-    """Write the unknown of a solve task with a contract letter; return its printed letter, or None.
-
-    A model may solve for the letter that the question prints ("c", "h",
-    "m"). When that letter is the task's only letter and is not x, y, a or b,
-    it becomes the first contract letter the task does not use, and the key
-    prints the original letter again (printedVariable).
-    """
-    variable = task.get("variable")
-    sides = [task.get("lhs"), task.get("rhs")]
-    if (not isinstance(variable, str) or not re.fullmatch(r"[a-z]", variable) or variable in VARIABLES
-            or not all(isinstance(side, str) for side in sides)):
-        return None
-    letters = {letter for side in sides for letter in _TASK_LETTER.findall(side)}
-    if letters != {variable}:
-        return None
-    task["lhs"], task["rhs"] = (_TASK_LETTER.sub("x", side) for side in sides)
-    task["variable"] = "x"
-    return variable
 
 
 def expand_task(task, grade, fraction_notation):
@@ -834,14 +790,8 @@ def expand_source(source, grade, *, fraction_notation=False):
                     item["prompt"] = rich(item["prompt"])
                 answer = item.get("answer")
                 if isinstance(answer, dict):
-                    # Only the compiler names a printed variable (below); a reply cannot.
-                    answer.pop("printedVariable", None)
                     if isinstance(answer.get("task"), dict):
                         task = answer["task"]
-                        if grade >= 7 and task.get("kind") == "solve":
-                            renamed = rename_unknown(task)
-                            if renamed:
-                                answer["printedVariable"] = renamed
                         if task.get("kind") == "solve":
                             from printed_tasks import printed_solve
                             bound = printed_solve(item.get("prompt"), task, grade)

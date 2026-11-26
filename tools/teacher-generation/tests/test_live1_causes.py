@@ -335,22 +335,27 @@ class LiveCauses(unittest.TestCase):
 
     # F8: a task letter outside x, y, a and b.
 
-    def test_a_task_letter_of_the_question_is_solved_and_printed_with_its_own_name(self):
-        rows = self.printed('L1-p2-a2', question('L1-p2-a2', 'practice', 3))
-        self.assertEqual([key for _, key in rows], ['$c = 12$', '$b = 7$', '$a = 2$'])
+    def test_a_task_letter_outside_the_contract_is_refused_as_written(self):
+        # Solve tasks for c, m and h: nothing renames the letter to x, so each recorded question is refused.
+        for case_id, group, number, correction in (('L1-p2-a2', 'practice', 3, None), ('L1-p2-a2', 'practice', 12, None),
+                                                   ('L1-p3-a2', 'q6', None, 1)):
+            with self.subTest(case=case_id, group=group, number=number):
+                wire = question(case_id, group, number, correction=correction)
+                self.assertEqual(self.code(case_id, wire), 'SOURCE_NOTATION')
+        # The same question with only its contract letters (its third item in place of the first) compiles.
+        wire = question('L1-p2-a2', 'practice', 3)
+        wire['items'][0] = deepcopy(wire['items'][2])
+        rows = self.printed('L1-p2-a2', wire)
+        self.assertEqual([key for _, key in rows], ['$a = 2$', '$b = 7$', '$a = 2$'])
         # The display of a product of two letters keeps both names (it printed "yx" before).
         self.assertIn('$x^{2} + bx − 18 = 0$', rows[1][0])
         self.assertIn('$ax^{2} − 5x − 12 = 0$', rows[2][0])
-        rows = self.printed('L1-p2-a2', question('L1-p2-a2', 'practice', 12))
-        self.assertEqual(rows[0][1], '$m = 9$')
-        rows = self.printed('L1-p3-a2', question('L1-p3-a2', 'q6', None, correction=1))
-        self.assertEqual(rows[0][1], '$h = 6$ ס"מ')
 
     def test_a_reply_cannot_name_the_printed_letter_itself(self):
         wire = question('L1-p2-a2', 'practice', 3)
+        wire['items'][0] = deepcopy(wire['items'][2])
         wire['items'][1]['answer']['printedVariable'] = 'q'
-        rows = self.printed('L1-p2-a2', wire)
-        self.assertEqual(rows[1][1], '$b = 7$')
+        self.assertEqual(self.code('L1-p2-a2', wire), 'SOURCE_SHAPE')
 
     # F2: is a number a solution of a printed equation?
 

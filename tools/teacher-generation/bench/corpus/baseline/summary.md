@@ -1,15 +1,15 @@
 # Replay of recorded model replies
 
-Delivered with no further model call: **14 of 35 (40%)**. Questions rejected when standing alone: 259 of 756 (34%). Model calls: 0; outbound connections attempted: 0.
+Delivered with no further model call: **12 of 35 (34%)**. Questions rejected when standing alone: 278 of 756 (37%). Model calls: 0; outbound connections attempted: 0.
 
 | Case | Provider | Topic | Q | Route | First pass | Fail alone | Correction asked | Ladder | First render | Final |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| A-division | qwen | ג10 | 20 | worker | PRINTED_ANSWER_LEAK | 9 of 20 | 8 q (not recorded) | — | — | failed |
+| A-division | qwen | ג10 | 20 | worker | SOURCE_NOTATION | 10 of 20 | 8 q (not recorded) | — | — | failed |
 | A-order | qwen | ד07 | 20 | worker | PRINTED_ANSWER_LEAK | 8 of 20 | 8 q (not recorded) | — | — | failed |
 | A-equations | qwen | g7:equations | 20 | worker | SOURCE_TABLE | 5 of 20 | 5 q (not recorded) | dropped 5, prints 15 | pass | delivered |
-| A-percent | qwen | g8:percentages | 20 | worker | SOURCE_TABLE | 2 of 20 | 2 q (not recorded) | dropped 2, prints 18 | pass | delivered |
+| A-percent | qwen | g8:percentages | 20 | worker | SOURCE_NOTATION | 15 of 20 | 9 q (not recorded) | — | — | failed |
 | A-square | qwen | g9m:square | 20 | general | SOURCE_NOTATION | 7 of 20 | 7 q (not recorded) | — | — | failed |
-| B-division | qwen | ג10 | 20 | worker | PRINTED_ANSWER_LEAK | 7 of 20 | 7 q (not recorded) | — | — | failed |
+| B-division | qwen | ג10 | 20 | worker | SOURCE_NOTATION | 9 of 20 | 8 q (not recorded) | — | — | failed |
 | B-order | qwen | ד07 | 20 | worker | SOURCE_NOTATION | 9 of 20 | 8 q (not recorded) | — | — | failed |
 | B-equations | qwen | g7:equations | 20 | worker | SOURCE_TABLE | 2 of 20 | 2 q (not recorded) | dropped 2, prints 18 | pass | delivered |
 | B-percent | qwen | g8:percentages | 20 | worker | SOURCE_TABLE | 2 of 20 | 2 q (not recorded) | dropped 2, prints 18 | pass | delivered |
@@ -25,8 +25,8 @@ Delivered with no further model call: **14 of 35 (40%)**. Questions rejected whe
 | G-square | gemini | g9m:square | 20 | general | PRINTED_ANSWER_LEAK | 6 of 20 | 6 q (not recorded) | — | — | failed |
 | L1-p1 | gemini | g9r:rhombus | 20 | worker | PRINTED_ANSWER_KIND | 19 of 24 | 8 q (not recorded) | — | — | failed |
 | L1-p1-a2 | gemini | g9r:rhombus | 20 | worker | PRINTED_ANSWER_LEAK | 19 of 24 | 8 q (not recorded) | — | — | failed |
-| L1-p2 | gemini | g9r:quad_eq_applications | 20 | worker | PRINTED_ANSWER_LEAK | 8 of 24 | 4 q (not recorded) | replaced 3; dropped 5, prints 15 | fail: middle-build, didactic-review-reconciliation | delivered |
-| L1-p2-a2 | gemini | g9r:quad_eq_applications | 20 | worker | PRINTED_ANSWER_LEAK | 6 of 24 | 2 q (not recorded) | replaced 3; dropped 2, prints 18 | pass | delivered |
+| L1-p2 | gemini | g9r:quad_eq_applications | 20 | worker | SOURCE_NOTATION | 9 of 24 | 5 q (not recorded) | — | fail: middle-build, didactic-review-reconciliation | failed |
+| L1-p2-a2 | gemini | g9r:quad_eq_applications | 20 | worker | PRINTED_ANSWER_KIND | 8 of 24 | 4 q (not recorded) | replaced 3; dropped 4, prints 16 | pass | delivered |
 | L1-p3 | gemini | g9r:parallels_trapezoid | 20 | worker | SOURCE_NOTATION | 13 of 24 | 8 q (not recorded) | — | — | failed |
 | L1-p3-a2 | gemini | g9r:parallels_trapezoid | 20 | worker | PRINTED_ANSWER_KIND | 19 of 24 | 8 q (not recorded) | — | — | failed |
 | L1-g3 | gemini | ג10 | 20 | worker | PRINTED_ANSWER_LEAK | 8 of 24 | 5 q (not recorded) | — | — | failed |
@@ -40,14 +40,14 @@ Delivered with no further model call: **14 of 35 (40%)**. Questions rejected whe
 | L2-g7 | gemini | g7:equations | 20 | worker | pass | 3 of 24 | — | replaced 2 | pass | delivered |
 | L2-g8 | gemini | g8:percentages | 20 | worker | SOURCE_NOTATION | 2 of 24 | 1 q (not recorded) | — | — | failed |
 
-Delivered with fewer questions than requested: 11. Corrections the engine asked for that were never recorded: 30. Second author replies it asked for that were never recorded: 2.
+Delivered with fewer questions than requested: 9. Corrections the engine asked for that were never recorded: 30. Second author replies it asked for that were never recorded: 2.
 
 ## By provider
 
 | Provider | Cases | Delivered | Questions | Fail alone |
 | --- | --- | --- | --- | --- |
-| gemini | 21 | 9 | 484 | 164 |
-| qwen | 14 | 5 | 272 | 95 |
+| gemini | 21 | 8 | 484 | 167 |
+| qwen | 14 | 4 | 272 | 111 |
 
 Recorded as text that is not JSON: G-equations. The replay sends the text as recorded; the question counts of such a case come from its declared hand repair.
 
@@ -55,24 +55,24 @@ Recorded as text that is not JSON: G-equations. The replay sends the text as rec
 
 | Class | Cases |
 | --- | --- |
-| DELIVERED | 14 |
+| DELIVERED | 12 |
 | OTHER:QUALITY_GATE_FAILED | 1 |
 | SOURCE:AUTHOR_PLAN_MISMATCH | 1 |
 | SOURCE:PRINTED_ANSWER_KIND | 3 |
-| SOURCE:PRINTED_ANSWER_LEAK | 6 |
+| SOURCE:PRINTED_ANSWER_LEAK | 4 |
 | SOURCE:PRINTED_TASK_MISMATCH | 1 |
 | SOURCE:QUALITY_GATE_FAILED | 1 |
 | SOURCE:SOURCE_FIGURE | 2 |
-| SOURCE:SOURCE_NOTATION | 5 |
+| SOURCE:SOURCE_NOTATION | 9 |
 | SOURCE:SOURCE_TEXT | 1 |
 
 ## Questions rejected alone, by code
 
 | Code | Questions |
 | --- | --- |
-| PRINTED_ANSWER_KIND | 61 |
+| PRINTED_ANSWER_KIND | 60 |
 | PRINTED_ANSWER_LEAK | 59 |
-| SOURCE_NOTATION | 37 |
+| SOURCE_NOTATION | 57 |
 | PRINTED_TASK_MISMATCH | 27 |
 | SOURCE_TEXT | 20 |
 | SOURCE_PLAIN_MATH | 17 |

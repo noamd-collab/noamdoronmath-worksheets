@@ -170,9 +170,13 @@ class CompactAuthoringTests(unittest.TestCase):
             self.assertEqual(failure.exception.code, "DRAWING_POLICY")
 
     def test_numeric_islands_preserve_percent_spelling_and_explicit_lists(self):
-        atoms = spans("התוצאות הן 20, 40, 60. ההנחה היא [[10.50]]%.", 8)
+        atoms = spans("התוצאות הן 20, 40, 60. ההנחה היא [[10.50%]].", 8)
         self.assertEqual([s["expression"]["numerator"] for s in atoms if s["kind"] == "math"], [20, 40, 60])
         self.assertIn({"kind": "formula", "notation": "10.50%"}, atoms)
+        # A percent sign written after the island is refused, never moved into it.
+        with self.assertRaises(GeneralSourceError) as refused:
+            spans("התוצאות הן 20, 40, 60. ההנחה היא [[10.50]]%.", 8)
+        self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
         self.assertEqual(spans("[[point:A(-2,4)]]", 8), spans("[[A(-2,4)]]", 8))
         for token, grade in [("point:A(-2,4)", 4), ("point:A(x,4)", 8), ("point:AB(1,2)", 8)]:
             with self.subTest(token=token, grade=grade), self.assertRaises(GeneralSourceError):
@@ -237,11 +241,20 @@ class CompactAuthoringTests(unittest.TestCase):
         self.assertFalse(requires_existing_table({"intro": "השתמשו בלוח הכפל."}))
         self.assertTrue(requires_existing_table({"intro": "בנו טבלה.", "items": [{"prompt": "עיינו בטבלה הנתונה."}]}))
 
-    def test_missing_number_equation_survives_partial_numeric_islands(self):
+    def test_a_missing_number_equation_is_one_island_or_refused(self):
         from printed_tasks import match_printed_task
 
-        for visible, value in [("24 : [[___]] = 6", 4), ("[[35]] : 7 = [[___]]", 5),
-                               ("[[___]] : 9 = 8", 72), ("24 : 6 = ___", 4)]:
+        # Partly marked or unmarked, the equation is refused as written; nothing wraps it.
+        for visible in ("24 : [[___]] = 6", "[[35]] : 7 = [[___]]", "[[___]] : 9 = 8", "24 : 6 = ___",
+                        "[[24]] : [[6]] = ___", "7 + 5 = ___"):
+            with self.subTest(visible=visible):
+                with self.assertRaises(GeneralSourceError) as refused:
+                    spans(visible, 3)
+                self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        # Islands joined across their operators (as before) are read as the one formula they spell.
+        self.assertEqual(spans("[[8]] + ___ = [[15]]", 3), [{"kind": "formula", "notation": "8 +  ___ = 15"}])
+        for visible, value in [("[[24 : ___ = 6]]", 4), ("[[35 : 7 = ___]]", 5),
+                               ("[[___ : 9 = 8]]", 72), ("[[24 : 6 = ___]]", 4)]:
             with self.subTest(visible=visible):
                 item = {"prompt": spans(visible, 3), "answer": {"unit": ""}}
                 self.assertEqual([s["kind"] for s in item["prompt"]], ["formula"])
@@ -255,6 +268,31 @@ class CompactAuthoringTests(unittest.TestCase):
                     match_printed_task(item, solved, 3)
         with self.assertRaises(GeneralSourceError):
             spans("חשבו את הנעלם x בתרגיל: [[x : 5 = 8]]", 3)
+
+    def test_the_model_notation_is_never_rewritten(self):
+        # A blank after an island stays outside it, so the "=" between them is refused.
+        for value, grade in [("[[47 : 5]] = ___", 4), ("[[345]] = ___ מאות + ___ עשרות", 3)]:
+            with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
+                spans(value, grade)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        # A blank inside an island stays inside it, also before a Hebrew label.
+        self.assertEqual(spans("[[5 + 3 = ___]] מאות", 3),
+                         [{"kind": "formula", "notation": "5 + 3 = ___"}, {"kind": "text", "text": " מאות"}])
+        # An "=" between prose and an island is not folded into the sentence, and a
+        # percent sign after an island is not moved into it.
+        for value, grade in [("המחיר = [[5]]", 8), ("[[5]] = המחיר", 8), ("המחיר = [[5]] שקלים", 5),
+                             ("בדקו [[25]]%.", 8), ("בדקו [[2.5]]%.", 5)]:
+            with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
+                spans(value, grade)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        self.assertEqual(spans("בדקו [[25%]].", 8)[1], {"kind": "formula", "notation": "25%"})
+        # A solve task keeps its own letter: one outside x, y, a and b is refused, not renamed to x.
+        task = {"kind": "solve", "lhs": "3*c + 4", "rhs": "40", "variable": "c"}
+        source = {"version": 4, "sections": [{"questions": [{"intro": "פתרו.", "items": [
+            {"prompt": "פתרו [[3*x + 4 = 40]].", "answer": {"kind": "computed", "unit": "", "task": task}}]}]}]}
+        with self.assertRaises(GeneralSourceError) as refused:
+            expand_source(source, 8)
+        self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
 
     def test_compiler_prints_requested_division_equations_from_verified_quantities(self):
         from general_adapters import _compile_elementary, _load_skill

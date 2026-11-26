@@ -924,12 +924,6 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
                     computed["domain"]["variables"] = [label]
                 if isinstance(label, str):
                     printed = {"rule": "printed_equation", "variable": label}
-                elif computed and item["answer"].get("printedVariable"):
-                    # The question's own letter, which the compiler wrote as x (rename_unknown).
-                    label = item["answer"]["printedVariable"]
-                    computed = deepcopy(computed)
-                    computed["result"]["variable"] = label
-                    computed["domain"]["variables"] = [label]
                 if bound:
                     printed = bound.proof
                 if sign:

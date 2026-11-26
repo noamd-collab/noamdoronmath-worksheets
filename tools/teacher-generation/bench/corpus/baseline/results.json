@@ -7,6 +7,7 @@
     "correction": {
      "answered": false,
      "questions": [
+      1,
       5,
       7,
       8,
@@ -19,9 +20,9 @@
      ],
      "requested": true,
      "requiredKeys": [
+      "q1",
       "q10",
       "q11",
-      "q14",
       "q19",
       "q5",
       "q7",
@@ -30,8 +31,8 @@
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "ok": false
     },
     "requests": 2,
@@ -39,8 +40,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
-   "finalCode": "PRINTED_ANSWER_LEAK",
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "A-division",
@@ -50,6 +51,15 @@
       "draft": true,
       "dropped": 0,
       "events": [
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
        {
         "action": "missing",
         "codes": [
@@ -132,9 +142,9 @@
         "stage": "source"
        }
       ],
-      "missing": 9,
+      "missing": 10,
       "planned": 20,
-      "printed": 11,
+      "printed": 10,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -164,6 +174,16 @@
    "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "24 : 6 = ___"
+    },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"20/4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_LEAK",
@@ -255,7 +275,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 9,
+    "failingAlone": 10,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -836,94 +856,108 @@
     "correction": {
      "answered": false,
      "questions": [
+      2,
+      3,
+      4,
+      5,
+      8,
       9,
-      14
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      17,
+      19,
+      20
      ],
      "requested": true,
      "requiredKeys": [
-      "q14",
-      "q9"
+      "q19",
+      "q2",
+      "q20",
+      "q3",
+      "q4",
+      "q5",
+      "q8",
+      "q9",
+      "rule"
      ]
     },
     "firstPass": {
-     "code": "SOURCE_TABLE",
-     "detail": "The question refers to a table that was not supplied",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "ok": false
     },
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": false,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "REVIEW"
-     },
-     {
-      "name": "didactic-review-reconciliation",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "DIDACTIC_REVIEW",
-      "count": 30,
-      "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-      "questions": [
-       5,
-       8,
-       10,
-       12,
-       17
-      ]
-     },
-     {
-      "code": "SHORTER_SHEET",
-      "count": 2,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 1,
-       "SOURCE_TABLE": 1
-      },
-      "count": 2
-     },
-     "gate": "deliver",
-     "printedQuestions": 18,
-     "replaced": {
-      "codes": {},
-      "count": 0
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {
-     "review": 15
-    }
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
+   "finalStatus": "failed",
+   "frameFailure": {
+    "code": "SOURCE_NOTATION",
+    "detail": "Invalid or unsupported compact mathematical notation",
+    "field": "title or rule",
+    "substring": "אחוז אחד הוא חלק אחד מתוך מאה. כדי לחשב אחוז ממספר, נכפיל את המספר באחוז (כשבר עשרוני או כחלק מ-100). לדוגמה: [[50]]% מ-…"
    },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
-   "frameFailure": null,
    "id": "A-percent",
    "ladder": {
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 2,
+      "dropped": 0,
       "events": [
        {
-        "action": "dropped",
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 4,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "SOURCE_TABLE"
         ],
@@ -932,32 +966,98 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_KIND"
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 12,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 13,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 14,
         "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "challenges",
+        "question": 19,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
        }
       ],
-      "missing": 0,
+      "missing": 15,
       "planned": 20,
-      "printed": 18,
+      "printed": 5,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 2,
-    "gate": "deliver",
-    "printed": 18,
-    "replaced": 0,
-    "stage": "render"
+    "stage": "source"
    },
    "lesson": {
     "domain": "מספרי",
@@ -976,15 +1076,59 @@
    "localAuthor": null,
    "model": "qwen3.8-flash",
    "origin": "bench/qwen2 (round A)",
-   "prechecks": [
-    {
-     "codes": [],
-     "questions": [],
-     "status": "not_applicable"
-    }
-   ],
+   "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(10/100)*50\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 2,
+     "question": 2,
+     "substring": "חשבו [[10]]% מ-[[50]]."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(30/100)*100\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "אם [[30]]% מ-[[100]] הם [[x]], מהו הערך של [[x]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(20/100)*100\", \"kind\": \"evaluate\"}, \"unit\": \"ספרים\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "בחנות יש [[100]] ספרים. [[20]]% מהספרים הם סיפורים. כמה ספרי סיפורים יש בחנות?"
+    },
+    {
+     "answer": "{\"kind\": \"review\", \"text\": \"כן, שתיהן שוות ל-10.\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 5,
+     "question": 5,
+     "substring": "חשבו [[10]]% מ-[[100]] וחשבו [[20]]% מ-[[50]]. האם התוצאות שוות?"
+    },
+    {
+     "answer": "{\"kind\": \"review\", \"text\": \"כן, כי [[(10/100)*50 = 5]].\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 8,
+     "question": 8,
+     "substring": "האם [[10]]% מ-[[50]] שווה ל-[[5]]?"
+    },
     {
      "code": "SOURCE_TABLE",
      "detail": "The question refers to a table that was not supplied",
@@ -995,66 +1139,102 @@
      "substring": "קראו את הטבלה ומלאו את המשבצת החסרה בכל שורה."
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(10/100)*100\", \"kind\": \"evaluate\"}, \"unit\": \"תפוחים\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "יש [[100]] תפוחים. [[10]]% רקובים. [[5]] תפוחים אדומים. כמה תפוחים רקובים?"
+    },
+    {
+     "answer": "{\"kind\": \"review\", \"text\": \"כן, שתיהן נותנות 10.\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "שיטה א': [[10]]% מ-[[100]] = [[100/10]]. שיטה ב': [[10]]% מ-[[100]] = [[(10/100)*100]]. האם התוצאות זהות?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5/(10/100)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "מצאו מספר כך ש-[[10]]% ממנו יהיה [[5]]."
+    },
+    {
+     "answer": "{\"kind\": \"review\", \"text\": \"התוצאות הן 10, 20, 30. כל עלייה של 10% מוסיפה 10 לתוצאה.\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 13,
+     "question": 13,
+     "substring": "חשבו [[10]]% מ-[[100]], [[20]]% מ-[[100]], [[30]]% מ-[[100]]. מה הדפוס?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(10/100)*100\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "field": "item.1",
      "group": "practice",
      "index": 14,
      "question": 14,
      "substring": "האם [[10]]% מ-[[100]] גדול מ-[[5]]? חשבו את הערך המדויק."
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5/(10/100)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "ידוע ש-[[10]]% מ-[[x]] הם [[5]]. מהו [[x]]?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(20/100)*100 - (10/100)*100\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "חשבו [[10]]% מ-[[100]] ו-[[20]]% מ-[[100]]. מה ההפרש בין התוצאות?"
+    },
+    {
+     "answer": "{\"kind\": \"review\", \"text\": \"לא נכון. התשובה הנכונה היא [[(10/100)*200 = 20]].\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "תלמיד חישב [[10]]% מ-[[200]] וקיבל [[2]]. האם זה נכון? אם לא, מה התשובה הנכונה?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(10/100)*100 + (20/100)*50\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "חשבו [[10]]% מ-[[100]] ועוד [[20]]% מ-[[50]]. מה הסכום הכולל?"
     }
    ],
    "questions": {
-    "failingAlone": 2,
+    "failingAlone": 15,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [
-      {
-       "class": "editorial",
-       "code": "DIDACTIC_REVIEW",
-       "count": 30,
-       "note": "בחלק מהסעיפים נדרשת בדיקת מורה: התאמה בין ניסוח השאלה, הנתונים והתשובה.",
-       "questions": [
-        5,
-        8,
-        10,
-        12,
-        17
-       ],
-       "rules": {
-        "D12": 15,
-        "D5": 15
-       },
-       "steps": [
-        "middle-build"
-       ]
-      }
-     ],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY",
-       "status": "REVIEW"
-      },
-      {
-       "name": "didactic-review-reconciliation",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -1299,6 +1479,8 @@
     "correction": {
      "answered": false,
      "questions": [
+      1,
+      3,
       5,
       7,
       8,
@@ -1309,18 +1491,19 @@
      ],
      "requested": true,
      "requiredKeys": [
+      "q1",
       "q11",
-      "q14",
       "q18",
       "q19",
+      "q3",
       "q5",
       "q7",
       "q8"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "ok": false
     },
     "requests": 2,
@@ -1328,8 +1511,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
-   "finalCode": "PRINTED_ANSWER_LEAK",
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "SOURCE_NOTATION",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "B-division",
@@ -1339,6 +1522,24 @@
       "draft": true,
       "dropped": 0,
       "events": [
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
        {
         "action": "missing",
         "codes": [
@@ -1403,9 +1604,9 @@
         "stage": "source"
        }
       ],
-      "missing": 7,
+      "missing": 9,
       "planned": 20,
-      "printed": 13,
+      "printed": 11,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -1435,6 +1636,26 @@
    "prechecks": [],
    "provider": "qwen",
    "questionFailures": [
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "24 : [[___]] = 6"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "30 : [[___]] = 5"
+    },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24/6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_LEAK",
@@ -1507,7 +1728,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 7,
+    "failingAlone": 9,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
@@ -5656,6 +5877,7 @@
     "correction": {
      "answered": false,
      "questions": [
+      6,
       10,
       14,
       16,
@@ -5666,63 +5888,23 @@
       "q10",
       "q14",
       "q16",
-      "q17"
+      "q17",
+      "q6"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "ok": false
     },
     "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": true,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "middle-build",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [
-     {
-      "code": "SHORTER_SHEET",
-      "count": 5,
-      "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
-     }
-    ],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 1,
-     "dropped": {
-      "codes": {
-       "K6": 1,
-       "PRINTED_ANSWER_LEAK": 4
-      },
-      "count": 5
-     },
-     "gate": "deliver",
-     "printedQuestions": 15,
-     "replaced": {
-      "codes": {
-       "PRINTED_ANSWER_KIND": 2,
-       "PRINTED_ANSWER_LEAK": 1
-      },
-      "count": 3
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {}
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:SOURCE_NOTATION",
+   "finalCode": "QUALITY_GATE_FAILED",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-p2",
    "ladder": {
@@ -5747,6 +5929,15 @@
         ],
         "group": "practice",
         "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 6,
         "stage": "source"
        },
        {
@@ -5795,7 +5986,7 @@
         "stage": "source"
        },
        {
-        "action": "dropped",
+        "action": "missing",
         "codes": [
          "K6"
         ],
@@ -5804,24 +5995,19 @@
         "stage": "render"
        }
       ],
-      "missing": 0,
+      "missing": 1,
       "planned": 20,
-      "printed": 15,
+      "printed": 14,
       "reservesOffered": 4,
       "reservesRefused": 1
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 3,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 5,
-    "gate": "deliver",
+    "gate": "replace",
     "gateCode": "K6",
-    "printed": 15,
-    "question": 15,
-    "replaced": 3,
+    "question": 14,
     "stage": "render"
    },
    "lesson": {
@@ -5867,6 +6053,15 @@
      "index": 5,
      "question": 5,
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"2\", \"relation\": \"ne\", \"right\": \"0\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.2.answer",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"(-2)^2 - 4*(-2) + c\", \"rhs\": \"0\", \"variable\": \"c\"}, \"unit\": \"\"}"
     },
     {
      "code": "PRINTED_ANSWER_LEAK",
@@ -5924,7 +6119,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 8,
+    "failingAlone": 9,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -5962,23 +6157,6 @@
        "status": "FAIL"
       }
      ]
-    },
-    {
-     "attempt": 2,
-     "gateFindings": [],
-     "reviewFindings": [],
-     "skippedChecks": [],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "middle-build",
-       "status": "PASS"
-      }
-     ]
     }
    ],
    "reply": {
@@ -6001,18 +6179,22 @@
     "correction": {
      "answered": false,
      "questions": [
+      8,
+      12,
       14,
       15
      ],
      "requested": true,
      "requiredKeys": [
+      "q12",
       "q14",
-      "q15"
+      "q15",
+      "q8"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "A printed relation with a blank or a letter cannot be decided",
      "ok": false
     },
     "requests": 2,
@@ -6034,7 +6216,7 @@
     "reviewFindings": [
      {
       "code": "SHORTER_SHEET",
-      "count": 2,
+      "count": 4,
       "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
      }
     ],
@@ -6043,17 +6225,19 @@
      "corrections": 1,
      "dropped": {
       "codes": {
-       "PRINTED_ANSWER_KIND": 1,
-       "PRINTED_ANSWER_LEAK": 1
+       "PRINTED_ANSWER_KIND": 2,
+       "PRINTED_ANSWER_LEAK": 1,
+       "SOURCE_NOTATION": 1
       },
-      "count": 2
+      "count": 4
      },
      "gate": "deliver",
-     "printedQuestions": 18,
+     "printedQuestions": 16,
      "replaced": {
       "codes": {
-       "PRINTED_ANSWER_KIND": 2,
-       "PRINTED_TASK_MISMATCH": 1
+       "PRINTED_ANSWER_KIND": 1,
+       "PRINTED_TASK_MISMATCH": 1,
+       "SOURCE_NOTATION": 1
       },
       "count": 3
      },
@@ -6070,8 +6254,17 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 2,
+      "dropped": 4,
       "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
        {
         "action": "reserve",
         "codes": [
@@ -6082,12 +6275,21 @@
         "stage": "source"
        },
        {
-        "action": "reserve",
+        "action": "dropped",
         "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 8,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 12,
         "stage": "source"
        },
        {
@@ -6120,7 +6322,7 @@
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 18,
+      "printed": 16,
       "reservesOffered": 4,
       "reservesRefused": 1
      }
@@ -6130,9 +6332,9 @@
     "byReserve": 3,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 2,
+    "dropped": 4,
     "gate": "deliver",
-    "printed": 18,
+    "printed": 16,
     "replaced": 3,
     "stage": "render"
    },
@@ -6163,6 +6365,15 @@
    "provider": "gemini",
    "questionFailures": [
     {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"3^2 - 7*3 + c\", \"rhs\": \"0\", \"variable\": \"c\"}, \"unit\": \"\"}"
+    },
+    {
      "code": "PRINTED_ANSWER_KIND",
      "detail": "A printed relation with a blank or a letter cannot be decided",
      "field": "item.1.answer",
@@ -6179,6 +6390,15 @@
      "index": 8,
      "question": 8,
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0 - 4\", \"relation\": \"ge\", \"right\": \"0\"}, \"unit\": \"\"}"
+    },
+    {
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.answer",
+     "group": "practice",
+     "index": 12,
+     "question": 12,
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"(-6)^2 - 4*1*m\", \"rhs\": \"0\", \"variable\": \"m\"}, \"unit\": \"\"}"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"x*(x + 1)\", \"rhs\": \"42\", \"variable\": \"x\"}, \"unit\": \"\"}",
@@ -6221,7 +6441,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 6,
+    "failingAlone": 8,
     "total": 24
    },
    "recorded": "2026-11-23 19:40Z",
@@ -6849,12 +7069,12 @@
     },
     {
      "code": "SOURCE_NOTATION",
-     "detail": "A printed variable must be a letter that the question prints",
-     "field": "question",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1.answer",
      "group": "practice",
      "index": 6,
      "question": 6,
-     "substring": "סרטטו במחברתכם טרפז לפי התיאור הבא וענו על השאלות."
+     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"solve\", \"lhs\": \"16 * h / 2\", \"rhs\": \"48\", \"variable\": \"h\"}, \"unit\": \"ס\\\"מ\"}"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0\", \"relation\": \"eq\", \"right\": \"0\"}, \"unit\": \"\"}",
@@ -9417,37 +9637,37 @@
   "byProvider": {
    "gemini": {
     "cases": 21,
-    "delivered": 9,
-    "failingAlone": 164,
+    "delivered": 8,
+    "failingAlone": 167,
     "questions": 484
    },
    "qwen": {
     "cases": 14,
-    "delivered": 5,
-    "failingAlone": 95,
+    "delivered": 4,
+    "failingAlone": 111,
     "questions": 272
    }
   },
   "cases": 35,
   "correctionsNotRecorded": 30,
-  "delivered": 14,
-  "deliveredRate": 0.4,
-  "deliveredShorter": 11,
+  "delivered": 12,
+  "deliveredRate": 0.3429,
+  "deliveredShorter": 9,
   "failureClasses": {
-   "DELIVERED": 14,
+   "DELIVERED": 12,
    "OTHER:QUALITY_GATE_FAILED": 1,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 1,
    "SOURCE:PRINTED_ANSWER_KIND": 3,
-   "SOURCE:PRINTED_ANSWER_LEAK": 6,
+   "SOURCE:PRINTED_ANSWER_LEAK": 4,
    "SOURCE:PRINTED_TASK_MISMATCH": 1,
    "SOURCE:QUALITY_GATE_FAILED": 1,
    "SOURCE:SOURCE_FIGURE": 2,
-   "SOURCE:SOURCE_NOTATION": 5,
+   "SOURCE:SOURCE_NOTATION": 9,
    "SOURCE:SOURCE_TEXT": 1
   },
   "finalStatus": {
-   "delivered": 14,
-   "failed": 19,
+   "delivered": 12,
+   "failed": 21,
    "needs_unrecorded_reply": 2
   },
   "firstRenderGateFindings": {
@@ -9459,13 +9679,13 @@
   "questions": {
    "byCode": {
     "NOT_AN_OBJECT": 8,
-    "PRINTED_ANSWER_KIND": 61,
+    "PRINTED_ANSWER_KIND": 60,
     "PRINTED_ANSWER_LEAK": 59,
     "PRINTED_EXPRESSION_SCOPE": 4,
     "PRINTED_TASK_MISMATCH": 27,
     "QUALITY_GATE_FAILED": 3,
     "SOURCE_FIGURE": 6,
-    "SOURCE_NOTATION": 37,
+    "SOURCE_NOTATION": 57,
     "SOURCE_NUMBER": 2,
     "SOURCE_PLAIN_MATH": 17,
     "SOURCE_RICH_TEXT": 1,
@@ -9474,8 +9694,8 @@
     "SOURCE_TEXT": 20,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 259,
-   "failingShare": 0.3426,
+   "failingAlone": 278,
+   "failingShare": 0.3677,
    "total": 756
   },
   "secondAttemptsNotRecorded": 2

@@ -38,9 +38,9 @@ def computed(expression):
 
 # The key of each item is a number the house gates refuse (G60): the source is valid, the built sheet is not.
 OUT_OF_RANGE = {'intro': 'חשבו את התרגילים הבאים:', 'items': [
-    {'prompt': '[[999999 x 999 + 1]] = ___', 'answer': computed('999999*999+1')},
-    {'prompt': '[[888888 x 999 + 1]] = ___', 'answer': computed('888888*999+1')},
-    {'prompt': '[[777777 x 999 + 2]] = ___', 'answer': computed('777777*999+2')}]}
+    {'prompt': '[[999999 x 999 + 1 = ___]]', 'answer': computed('999999*999+1')},
+    {'prompt': '[[888888 x 999 + 1 = ___]]', 'answer': computed('888888*999+1')},
+    {'prompt': '[[777777 x 999 + 2 = ___]]', 'answer': computed('777777*999+2')}]}
 
 
 class Scripted:

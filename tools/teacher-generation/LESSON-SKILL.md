@@ -213,8 +213,11 @@ spelling outside the notation of section 2.3 is refused with its code: `$...$`
 or LaTeX, `324x15` or a letter for the missing number in grades 1–6, `2³`,
 `½`, `☐`, a typed or one-letter angle inside a formula (`[[angle:D = 70°]]`),
 `[[a=1, b=-6, c=9]]`, a coordinate window that leaves out a point, a `decide`
-answer without its task wrapper. A reserve takes the place of the refused
-question, or the one correction call asks for it again. When unmarked
+answer without its task wrapper, a missing-number equation in grades 1–6 that
+is not one `[[...]]` formula (`24 : 6 = ___`, `[[47 : 5]] = ___`), an `=`
+between prose and an island, a percent sign after its island (`[[25]]%`), a
+`solve` task for a letter other than `x y a b`. A reserve takes the place of
+the refused question, or the one correction call asks for it again. When unmarked
 mathematics is the only fault, `skill_authoring.notation_correction` asks the
 model to insert the `[[...]]` marks, and its `apply` checks that no word
 changed.
@@ -389,13 +392,13 @@ Run from the repository root. Full guide: `bench/README.md`.
 | `bench/probes/run.py [--family F] [--show] [--update]` | 285 synthetic question forms: pass, rejected or wrong print; exit 1 on a regression | none |
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
-- **Recorded state:** replay delivers 14 of 35 cases with no further model
-  call, and 259 of 756 questions are refused alone
+- **Recorded state:** replay delivers 12 of 35 cases with no further model
+  call, and 278 of 756 questions are refused alone
   (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
   count as failed, so this under-states the live ladder. The key-print checks
   of section 2.4 cost three ג10 replays (A-, B- and G-division) whose
   fact-family items print their own answer; live, those questions go to the
-  correction call. Probes: 192 pass, 79 rejected, 14 wrong print.
+  correction call. Probes: 180 pass, 91 rejected, 14 wrong print.
 - **Sweep flags:** `--dry-run`, `--topics`, `--grades`, `--levels`, `--limit`,
   `--one-level-per-topic`, `--only-failed`, `--question-count`, `--minutes`
   (default 30), `--calls-per-case` (4), `--concurrency` (4), `--case-timeout`

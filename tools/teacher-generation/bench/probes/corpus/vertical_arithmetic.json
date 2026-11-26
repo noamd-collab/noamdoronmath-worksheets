@@ -34,9 +34,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "348 + 276 = ___",
-    "key": "624"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -133,9 +133,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "47 : 5 = ___ (שארית ___)",
-    "key": "9 (שארית 2 )"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
