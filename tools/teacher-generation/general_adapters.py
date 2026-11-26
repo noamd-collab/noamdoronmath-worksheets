@@ -23,7 +23,7 @@ from printed_percentages import percentage_evidence
 from printed_tasks import match_printed_task, matching_solution_choices, printed_solve, printed_table_row
 from printed_elementary import guard_counting_input, place_intro, printed_intent, validate_counting_values
 from printed_parts import answer_form, bind_parts, carries_data, chosen_solutions, comparison_blank, narrowed, printed_calculation, shows_task
-from answer_kinds import TEACHER_CHECK, bind_decision
+from answer_kinds import bind_decision
 
 LETTERS = "אבגדהוזחטי"
 LEVELS = {"a": "רמה א׳", "b": "רמה ב׳", "e": "מצוינות"}
@@ -506,8 +506,9 @@ def compile_source(lesson, validated, scope, skill_path, work, *, printed_answer
     """Write skill build inputs. A caller must still run every applicable gate.
 
     ``validated`` is revalidated rather than trusting deserialized evidence.
-    Elementary unsupported prose/proof answers require a real Ledger proof and
-    are refused before build inputs. Middle-school prose remains explicitly
+    Elementary answers without an exact verifier (an authored prose or proof
+    answer, a yes/no typed from a story) require a real Ledger proof and are
+    refused before build inputs. Middle-school prose remains explicitly
     unverified; all unchanged proof/didactic gates must still run.
     ``contract`` is the trusted runner's flag (--contract), passed through to
     validate_source: a worksheet-wire/5 source compiles only with it.
@@ -546,10 +547,9 @@ def compile_source(lesson, validated, scope, skill_path, work, *, printed_answer
         for n, question in enumerate((q for section in source["sections"] for q in section["questions"]), 1):
             if checker(question, overlay, skill_path=str(skill)):
                 raise GeneralSourceError("SOURCE_LEAK", f"Answer leak at q{n} (pinned D12 mirror)")
-    refused = [row for row in evidence["unverifiedAnswers"] if row.get("kind") not in ("label", "open", "decision")]
-    if refused and elementary:
-        where = re.fullmatch(r"q([1-9][0-9]?)-i([1-9])", refused[0]["itemId"])
-        raise GeneralSourceError("UNVERIFIED_ANSWERS", "This draft contains prose or proof answers without an implemented exact verifier; no deliverable was compiled",
+    if evidence["unverifiedAnswers"] and elementary:
+        where = re.fullmatch(r"q([1-9][0-9]?)-i([1-9])", evidence["unverifiedAnswers"][0]["itemId"])
+        raise GeneralSourceError("UNVERIFIED_ANSWERS", "This draft contains answers without an implemented exact verifier; no deliverable was compiled",
                                  question=int(where[1]) if where else None, item=int(where[2]) if where else None)
     if printed_fractions:
         from fraction_lesson import eligible
@@ -572,7 +572,7 @@ def compile_source(lesson, validated, scope, skill_path, work, *, printed_answer
     except GeneralSourceError as error:
         raise (error.at(cursor["question"]) if cursor["question"] else error)
     return {"skill": scope["topic"]["skillId"], "work": str(work), "sourcePath": str(work / "worksheet-source.json"), "evidencePath": str(work / "general-evidence.json"), "unverifiedAnswerCount": len(evidence["unverifiedAnswers"]),
-            # For a teacher note: which printed answers no kernel verified, and which items have no key.
+            # For a teacher note (middle school only): which printed answers no kernel verified.
             "unverifiedAnswers": [{"question": row.get("question"), "item": row.get("item"), "kind": row.get("kind", "review")}
                                   for row in evidence["unverifiedAnswers"]],
             "reviewRequired": True}
@@ -593,12 +593,6 @@ def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *
     figure_task = item["answer"]["kind"] == "figure"
     prompt = rich_text(item["prompt"], grade, H)
     seen = dict(question, intro=intro_spans)
-    if computed is None:
-        # A label is the author's own plain Hebrew, escaped. An open item has
-        # no key: a fixed line sends it to the teacher. Neither enters the ledger.
-        if item["answer"]["kind"] == "label":
-            return prompt + ' <div class="ansline"></div>', html.escape(item["answer"]["text"])
-        return prompt + ' <div class="open-work"></div>', html.escape(TEACHER_CHECK)
     if not figure_task and computed["question"].get("kind") == "decide":
         decision = bind_decision(seen, item, computed, number_grade)
         # A fresh calculation, not a model-provided answer or boolean.
@@ -706,7 +700,7 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                 pieces.append(H.fig(svg))
             for j, item in enumerate(question["items"], 1):
                 item_id = f"q{n}-i{j}"; computed = solved.get(item_id)
-                if computed is None and item["answer"]["kind"] not in ("label", "open"):
+                if computed is None:
                     raise GeneralSourceError("UNVERIFIED_ANSWERS", "An elementary answer has no exact verifier", question=n, item=j)
                 try:
                     body, answer = _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger,
@@ -717,11 +711,7 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
                     raise error.at(n, j)
                 pieces.append('<div class="sub">'+LETTERS[j-1]+'. '+body+'</div>')
                 items.append(H.plain(body)); answers.append(answer)
-                source_items.append({"id": item_id, "label": LETTERS[j-1], "text": H.plain(body), "answer": H.plain(answer), "task": computed["question"], "verificationId": f"{n}.{j}"}
-                                    if computed else
-                                    {"id": item_id, "label": LETTERS[j-1], "text": H.plain(body), "answer": H.plain(answer), "task": None,
-                                     "verification": "unverified label; teacher review required" if item["answer"]["kind"] == "label"
-                                     else "no key; the teacher checks this item"})
+                source_items.append({"id": item_id, "label": LETTERS[j-1], "text": H.plain(body), "answer": H.plain(answer), "task": computed["question"], "verificationId": f"{n}.{j}"})
             q = {"n": str(n), "intro": H.plain(intro), "items": items, "answer": H.plain(H.keyed(answers)), "star": question["star"]}
             if figpath:
                 q["fig"] = figpath
@@ -740,7 +730,7 @@ def _compile_elementary(lesson, source, evidence, scope, skill, work, *, printed
     # Keep long answer keys readable even when they continue across a page break.
     answer_layout = ("table.ans td{padding:8px}"
                      "table.ans tr:nth-last-child(-n+6):not(:last-child){break-after:avoid}")
-    head = head.replace('</head>', '<style>'+answer_layout+'.answers span.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block;white-space:nowrap}.work-table{border-collapse:collapse;width:100%;margin:8px 0}.work-table td,.work-table th{border:1px solid #9cb5c8;padding:6px;text-align:center}.section-title{font-size:18px;color:#286ca1}.open-work{min-height:3.2cm;margin:4px 0 8px;border:1px dashed #9cb5c8;border-radius:6px}</style></head>', 1)
+    head = head.replace('</head>', '<style>'+answer_layout+'.answers span.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block;white-space:nowrap}.work-table{border-collapse:collapse;width:100%;margin:8px 0}.work-table td,.work-table th{border:1px solid #9cb5c8;padding:6px;text-align:center}.section-title{font-size:18px;color:#286ca1}</style></head>', 1)
     body = ['<body class="'+('band-ab' if ab else 'band-gd' if lesson["gradeNumber"]<=4 else 'band-hv')+'">', '<div class="unit">'+html.escape(source["title"])+'</div><hr class="unit-rule">', '<div class="subtitle">'+LEVELS[lesson["level"]]+' · כיתה '+grade+'׳</div>', '<div class="details"><span>שם: ____________________</span><span>כיתה: ________</span><span>תאריך: __________</span></div>', '<p>'+rich_text(source["rule"], grade, H)+'</p>', '<ol class="questions">']
     for q, intro, rendered, answer in qs:
         body.append('<li'+(' class="starred"' if q["star"] else '')+'>'+('<span class="star"></span> ' if q["star"] else '')+intro+rendered+'</li>')

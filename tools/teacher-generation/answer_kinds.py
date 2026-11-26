@@ -1,4 +1,4 @@
-"""Answers that are not one computed value: a decision, a label, and an item without a key.
+"""Yes/no answers decided by the kernel, and the rule that a drawing has no key.
 
 A yes/no key is decided by the exact kernel from a typed claim. A true claim
 can still be the wrong answer when it is not the question that the pupil
@@ -6,14 +6,12 @@ reads ("is 56 : 8 greater than 5?" typed as "smaller than"). ``bind_decision``
 ties the claim to the print: to the one printed statement whose correctness is
 asked about, or to the relation word and the printed numbers of the question.
 Whatever it cannot tie is refused; a question may fail, a wrong "כן" may not
-be printed.
+be printed. A claim whose sides only a story describes is bound "story";
+general_source refuses it in elementary and lists it for the teacher in middle
+school.
 
-A label is a short Hebrew name that no kernel computes ("משולש", "יום שני").
-It is printed in the key and reported as unverified, for a teacher note. An
-open item (a drawing, a construction, the pupil's own example) has no key: its
-key line says that the teacher checks it. Neither kind may stand in for an
-answer that can be computed, and a number is never accepted as the key of a
-drawing.
+A drawing, a construction or an explanation has no key, and a number is never
+accepted as its key (``refuse_dummy_key``).
 
 Every refusal is a recoverable PRINTED_ANSWER_KIND or PRINTED_TASK_MISMATCH
 for one question.
@@ -26,13 +24,9 @@ import re
 from general_source import GeneralSourceError
 from math_tasks import MathTaskError, number, validate_and_solve_task
 from numeric_literals import NUMBER_TOKEN, literal_value
-from printed_elementary import _unpointed, blank_count
-from printed_parts import (_NUMBER_WORDS, _PART_WORDS, _closed, _numbers, _table_spans, task_numbers,
-                           visible_numbers, word_numbers)
+from printed_elementary import _unpointed
+from printed_parts import _closed, _numbers, _table_spans, task_numbers, visible_numbers, word_numbers
 
-# The fixed key line of an item without a key. Teacher notes stay unpointed in
-# every grade (pinned elementary skill, references/answer-quality.md).
-TEACHER_CHECK = "סעיף פתוח: לבדיקת המורה."
 VERDICTS = {
     ("yes_no", True): ("כן", "כֵּן"), ("yes_no", False): ("לא", "לֹא"),
     ("true_false", True): ("נכון", "נָכוֹן"), ("true_false", False): ("לא נכון", "לֹא נָכוֹן"),
@@ -56,14 +50,6 @@ DECISION_GUIDE = (
     "{\"kind\":\"computed\",\"task\":{\"kind\":\"decide\",\"relation\":\"gt\",\"left\":\"56/8\",\"right\":\"5\"},\"unit\":\"\"}. "
     "A question that offers two outcomes "
     "('קטן או גדול מ...') is not a yes/no question: give it a compare task with the two printed sides.")
-ELEMENTARY_KINDS_GUIDE = (
-    "Two more answer kinds exist for grades 1-6 only. {\"kind\":\"open\"} is for an item with no single answer "
-    "that the pupil draws, builds, measures, explains or invents ('ציירו', 'שרטטו', 'בנו', 'מדדו', 'הסבירו', "
-    "'תנו דוגמה'); its key says that the teacher checks it. Never give such an item a number as its answer. "
-    "{\"kind\":\"label\",\"text\":\"...\"} is only for an item whose own prompt asks for a name ('איזה מצולע ...?', "
-    "'... נקרא ___', 'מה שם ...?', 'באיזה יום ...?', 'מי ...?') and whose answer is a short Hebrew name of one to "
-    "four words without digits ('משולש', 'יום שני'); it is printed as written and marked for the teacher to "
-    "check. Whenever the answer is a number, a calculation, a comparison or a yes/no, use a computed task instead.")
 
 
 def _refuse_kind(reason):
@@ -680,7 +666,7 @@ def _ordered(before, after, first, second, shared, visible, grade, listed):
                 _mismatch("A printed calculation is on the other side of the typed claim")
 
 
-# -------------------------------------------------------------- label and open
+# ------------------------------------------------------- a drawing has no key
 _PRODUCTION = re.compile(
     r"(?<![א-ת])ו?(?:צי?ירו|שרטטו|סרטטו|צבעו|גזרו|קפלו|בנו|הרכיבו|מדדו|המציאו|הציעו|הסבירו|נמקו|תארו|"
     r"(?:תנו|הביאו|כתבו|רשמו) דו?גמ(?:ה|א|אות)|"
@@ -691,13 +677,6 @@ _QUANTITY = (r"סכו[םמ]|הפרש|מכפל[הת]|מנ[הת]|תוצא[הת]|ע
 _ASKS_NUMBER = re.compile(
     r"(?<![א-ת])ו?(?:כמה|בכמה|לכמה|חשבו|פתרו|השלימו|עגלו|פשטו|צמצמו|"
     r"מ(?:ה|הו|הי|הם|הן)\s+ה?(?:" + _QUANTITY + r")[והםן]{0,2}|מצאו את ה?(?:" + _QUANTITY + r")[והםן]{0,2})(?![א-ת])")
-_POINTS = "\u05b0-\u05bc\u05c1\u05c2\u05c7"
-_LABEL = re.compile("[א-ת][א-ת" + _POINTS + "־׳״'\" -]{0,38}[א-ת" + _POINTS + "׳']|[א-ת]")
-_NOT_A_LABEL = frozenset((
-    "כן", "לא", "נכון", "לא נכון", "שגוי", "שגויה", "אמת", "שקר",
-    "גדול", "גדולה", "קטן", "קטנה", "שווה", "שווים", "שוות", "גדול יותר", "קטן יותר", "גדולה יותר", "קטנה יותר",
-    "נימוק", "הוכחה", "לפי השרטוט", "ייתכנו תשובות נוספות",
-))
 
 
 def _words(spans):
@@ -708,64 +687,9 @@ def _has_formula_blank(spans):
     return any(span["kind"] == "formula" and "___" in span["notation"] for span in spans)
 
 
-def asks_for_number(question, item):
-    """The printed request has an answer that the kernel can key: a quantity, a blank in a formula, a yes/no."""
-    from printed_tasks import yes_no_question
-    prompt = _words(item["prompt"])
-    return bool(_ASKS_NUMBER.search(prompt) or _has_formula_blank(item["prompt"])
-                or yes_no_question(prompt) or _TRUE_FALSE.search(prompt))
-
-
 def is_production(question, item):
     """The pupil is asked to draw, build, measure, explain or invent something."""
     return bool(_PRODUCTION.search(_words(item["prompt"])) or _PRODUCTION.search(_words(question["intro"])))
-
-
-def check_open(question, item, grade):
-    """An item without a key is a production task and nothing that could be keyed."""
-    if grade > 6:
-        _refuse_kind("An item without a key exists only in the elementary skill; use review in middle school")
-    if not is_production(question, item):
-        _refuse_kind("Only a drawing, a construction, an explanation or the pupil's own example can have no key")
-    if ("?" in _words(item["prompt"]) or asks_for_number(question, item)
-            or _ASKS_NUMBER.search(_words(question["intro"]))):
-        _refuse_kind("The item also asks a question; give its result a computed answer, or ask only for the production")
-
-
-# A naming question names what it asks for. After "איזה" these nouns ask for a
-# number, a calculation or a choice between calculations, which the kernel keys.
-# "אילו" is left out: it also opens a condition ("אילו הייתה הזמנה ...").
-_COMPUTED_NOUN = (r"מספר(?:ים)?|תרגיל(?:ים)?|ביטוי(?:ים)?|תוצא(?:ה|ות)|סכום|הפרש|מכפלה|מנה|פעול(?:ה|ות)|חיבור|חיסור|כפל|"
-                  r"חילוק|שלב(?:ים)?|שגיא(?:ה|ות)|טעו(?:ת|יות)|סוגריים|ערך|שבר(?:ים)?|ספר(?:ה|ות)|משווא(?:ה|ות)|סימן|חלק|"
-                  r"כמות|מחיר|או?רך|רו?חב|גו?בה|הי?קף|שטח|נפח|משקל|שעה|גו?דל|מיד(?:ה|ות)|מרחק|גיל|ציון|אחוז(?:ים)?|שיט(?:ה|ות)|"
-                  r"דרך|אפשרות|אפשרויות")
-_NAMING = re.compile(
-    r"(?<![א-ת])(?:[בלמ]?(?:איזה|איזו)\s+(?!(?:" + _COMPUTED_NOUN + r")(?![א-ת]))[א-ת]"
-    r"|מ(?:ה|הו|הי)\s+ה?(?:שם|סוג)(?![א-ת])|מה\s+שמ[והםן](?![א-ת])|(?:כיצד|איך)\s+(?:נקרא|קוראים)"
-    r"|נקרא(?:ת|ים|ות)?(?:\s+[א-ת]+){0,2}\s*_+|שמ[והםן]\s+_+"
-    r"|מי(?![א-ת])(?!\s+מ)|מתי(?![א-ת])|היכן(?![א-ת])|איפה(?![א-ת]))")
-
-
-def check_label(question, item, grade):
-    """A label is a short Hebrew name, for a prompt that itself asks for a name."""
-    if grade > 6:
-        _refuse_kind("A label answer exists only in the elementary skill; use review in middle school")
-    label = item["answer"]["text"]
-    plain = " ".join(_unpointed(label).split())
-    # Whole words only: the pointed "מְרֻבָּע" and "מְחֻמָּשׁ" are spelled מרבע and מחמש,
-    # and stripping a prefix would read them as "from a quarter" and "from five".
-    counts = any(word.lstrip("ו") in _NUMBER_WORDS or word.lstrip("ו") in _PART_WORDS or word in ("אחד", "אחת")
-                 for word in re.findall(r"[א-ת]+", plain))
-    if (not _LABEL.fullmatch(label) or label != label.strip() or len(plain.split()) > 4
-            or plain in _NOT_A_LABEL or counts):
-        _refuse_kind("A label is one to four Hebrew words that name something; a number, a comparison or a "
-                     "yes/no needs a computed answer")
-    prompt = item["prompt"]
-    calculation = any((tree := _closed(span, grade)) is not None and tree.get("type") == "operation" for span in prompt)
-    if (asks_for_number(question, item) or is_production(question, item) or blank_count(prompt) > 1 or calculation
-            or not _NAMING.search(_words(prompt))):
-        _refuse_kind("Only a prompt that asks for a name takes a label ('איזה מצולע...?', '... נקרא ___', 'מה שם...?', "
-                     "'באיזה יום...?'); a quantity, a calculation or a choice between calculations has a computed answer")
 
 
 def refuse_dummy_key(question, item, solved, grade):
@@ -785,4 +709,4 @@ def refuse_dummy_key(question, item, solved, grade):
     from printed_elementary import WRITE_EXPRESSION
     if WRITE_EXPRESSION.search(prompt) or WRITE_EXPRESSION.search(_words(question["intro"])):
         return
-    _refuse_kind("A drawing, a construction or an explanation has no number as its key; use the open answer kind")
+    _refuse_kind("A drawing, a construction or an explanation has no number as its key and no key at all")

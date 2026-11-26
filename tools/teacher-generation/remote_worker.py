@@ -795,8 +795,8 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
             # this engine's own Hebrew notes. No gate or model text is forwarded.
             result.update(authoringProfile='general-skill-source/v1',renderingChecksPassed=True,
                           reviewFindings=public_review_findings(findings),
-                          # Which printed answers no exact kernel verified: labels, open items,
-                          # story-typed decisions and review answers, by question and item.
+                          # Which printed answers no exact kernel verified (middle school only):
+                          # review answers and story-typed decisions, by question and item.
                           teacherNotes=public_teacher_notes(manifest.get('unverifiedAnswers',[])),
                           unverifiedAnswers={kind:sum(row['kind']==kind for row in unverified)
                                              for kind in sorted({row['kind'] for row in unverified})})

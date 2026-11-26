@@ -399,11 +399,11 @@ def precheck_job(lesson, model_payload, workdir, skill_paths=None, *, salvaged_f
 def unverified_answers(work):
     """Printed answers that no exact kernel verified, from the adapter's evidence.
 
-    The general adapter records them in general-evidence.json: a label printed
-    as authored, an open item without a key, a yes/no decided from a claim
-    typed out of a story, an authored review answer. Returns [{'question',
-    'item','kind'}], [] when the adapter kept no such list, or None when the
-    file is there but cannot be trusted.
+    The general adapter records them in general-evidence.json: in middle
+    school an authored review answer and a yes/no decided from a claim typed
+    out of a story; the elementary adapter refuses every such answer. Returns
+    [{'question','item','kind'}], [] when the adapter kept no such list, or
+    None when the file is there but cannot be trusted.
     """
     path=work/'general-evidence.json'
     if not path.is_symlink() and not path.exists():
@@ -455,6 +455,11 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
             # Without the list the teacher could not be told which printed
             # answers are unverified, so nothing is rendered or delivered.
             steps.append({'name':'unverified-answers','status':'FAIL','reason':'EVIDENCE_UNREADABLE'})
+            ok=False;unverified=[]
+        elif unverified and cap['skill']=='elementary':
+            # An elementary answer without an exact verifier is never printed:
+            # the adapter refuses it, and a listed one fails the render here.
+            steps.append({'name':'unverified-answers','status':'FAIL','reason':'UNVERIFIED_ANSWERS'})
             ok=False;unverified=[]
     if ok and cap['skill']=='elementary':
         for name,args in [

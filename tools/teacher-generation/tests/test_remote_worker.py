@@ -741,9 +741,9 @@ class WorkerTests(unittest.TestCase):
         self.assertEqual(len(note), 1)
         self.assertEqual(note[0]['count'], 2)
         self.assertIn('פחות שאלות', note[0]['note'])
-        # Printed answers no kernel verified: their count by kind, and the note with their positions.
-        self.assertEqual(result['unverifiedAnswers'], {'open': 2})
-        self.assertEqual([(row['kind'], row['count']) for row in result['teacherNotes']], [('open', 2)])
+        # An item without a key is no answer kind: the list is untrusted, so no count and no note go out.
+        self.assertEqual(result['unverifiedAnswers'], {})
+        self.assertEqual(result['teacherNotes'], [])
         self.assertLess(len(json.dumps(result, ensure_ascii=False).encode()), 32000)
 
     def test_the_pre_pass_replaces_named_questions_twice_before_any_render(self):

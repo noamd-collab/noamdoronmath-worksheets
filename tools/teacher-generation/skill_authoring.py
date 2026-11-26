@@ -8,7 +8,7 @@ import re
 from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich, text, validate_question
 from math_tasks import MathTaskError
 from skill_feedback import FEEDBACK as GATE_FEEDBACK
-from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
+from answer_kinds import DECISION_GUIDE
 from claim_words import claim_lint
 from figure_probe import figure_refusal
 from lesson_select import CHALLENGES, PRACTICE, reserve_groups
@@ -414,7 +414,7 @@ def revision_request(rows, lesson, scope, context, model, title, rule, *, fix_ru
         "require fully vocalized Hebrew. Use unvocalized Hebrew for grades 3–9. "
         "For quantitative answers, use a computed task with the operands and the unit asked for. "
         "Use only the task fields in the supplied schema. Never claim approval or output code. "
-        + DECISION_GUIDE + (" " + ELEMENTARY_KINDS_GUIDE if lesson["gradeNumber"] <= 6 else "")
+        + DECISION_GUIDE
         + (" The sheet's rule was refused as well (ruleToCorrect): return it again at the key rule, with the same "
            "teaching content in plain Hebrew and valid [[...]] notation." if fix_rule else "")
     )
@@ -515,7 +515,6 @@ def correction_instructions(lesson, scope):
             "a missing number is three underscores, e.g. [[24 / ___ = 6]], with the answer expression 24/6. "
             "Never use x or other letters for an unknown, and never mix Hebrew words with the formula. "
             "Use ordinary Hebrew outside the formula. In task.expression use known numeric operands only.")
-        instructions["PRINTED_ANSWER_KIND"] += " " + ELEMENTARY_KINDS_GUIDE
     if not geometry_topic(scope):
         instructions["SOURCE_TABLE"] += " Example of a real table: table.head and table.rows contain separate plain cells; a missing value uses ___ in its own cell. Use only meaningful columns and givens for the selected concept."
     # Gates of the built sheet that name a question (skill_feedback.FEEDBACK).

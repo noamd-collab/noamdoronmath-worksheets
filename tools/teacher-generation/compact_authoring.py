@@ -904,7 +904,6 @@ def expand_source(source, grade, *, fraction_notation=False):
                             if fraction_notation:
                                 notation = fraction_literals(notation)
                             answer.setdefault("notation", notation)
-                    if "text" in answer and answer.get("kind") != "label":
-                        # A label stays one plain Hebrew string; it is never mathematics.
+                    if "text" in answer:
                         answer["text"] = rich(answer["text"])
     return data

@@ -98,19 +98,19 @@ list). The kernel decides it; no field holds an authored yes or no.
 `answer_kinds.py` ties the claim to the printed question, by the one printed
 statement whose correctness is asked about or by the relation word, its order
 and the printed quantities, and refuses a true claim that is not that
-question. The key prints the verdict with its exact calculation. Grades 1–6
-also have a `label` answer (a short Hebrew name, only for a prompt that asks
-for a name; printed as authored) and an `open` answer (a drawing, a
-construction, an explanation; the key says that the teacher checks it). A
-number is never the key of a drawing. Labels, open items and verdicts whose
-claim was typed from a story are listed as `unverifiedAnswers`
-(`question`, `item`, `kind`) in the adapter result and in
-`general-evidence.json`. `runner.render_job` copies the positions and kinds to
-`manifest.unverifiedAnswers`, and the worker result carries them as
-`teacherNotes`: one entry per kind with a fixed Hebrew sentence
-(`gate_policy.UNVERIFIED_NOTES`) and the question and item numbers. Evidence
-that is present but unreadable fails the render before anything is built.
-Authored prose answers (`review`) remain middle-school only.
+question. The key prints the verdict with its exact calculation. A number is
+never the key of a drawing. Grades 1–6 print no answer without a proven key:
+a verdict whose claim was typed from a story is refused, the schema offers no
+answer kind without a computed key (no `label`, `open` or `review`), and the
+adapter refuses any unverified answer (`UNVERIFIED_ANSWERS`). In middle
+school, authored prose answers (`review`) and verdicts whose claim was typed
+from a story are listed as `unverifiedAnswers` (`question`, `item`, `kind`)
+in the adapter result and in `general-evidence.json`. `runner.render_job`
+copies the positions and kinds to `manifest.unverifiedAnswers`, and the worker
+result carries them as `teacherNotes`: one entry per kind with a fixed Hebrew
+sentence (`gate_policy.UNVERIFIED_NOTES`) and the question and item numbers.
+Evidence that is present but unreadable, or that lists an elementary answer,
+fails the render before anything is built.
 Prose, reasoning and pedagogical correspondence still require human review.
 
 `general_adapters.py` compiles only trusted templates. Typed figures are

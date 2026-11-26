@@ -1,9 +1,11 @@
-"""Yes/no, label and open answers, from the provider wire format to the compiled sheet.
+"""Yes/no answers, and the refusal of answers without a key, from the provider wire format to the compiled sheet.
 
 The yes/no items are the "האם" items of recorded provider replies for grade
 three division (ג10) and grade eight percentages. In those replies they were
 keyed with a number and refused; here each one carries the claim that a
 provider is now asked for. Every prompt goes through expand_source first.
+An elementary claim typed from a story, a label and an item without a key
+have no proven key, and each one is refused.
 """
 import copy
 import json
@@ -56,8 +58,8 @@ def label(text):
     return {"kind": "label", "text": text}
 
 
-def wire(topic_id, intro, prompt, answer, *, table=None):
-    """Expand and validate one wire question; return it with its first item, exact result and pending rows."""
+def expand(topic_id, intro, prompt, answer, *, table=None):
+    """Expand one wire question as the provider boundary does; return it with its scope and grade."""
     lesson = lesson_for(topic_id)
     scope = scope_for_lesson(lesson)
     grade = lesson["gradeNumber"]
@@ -67,7 +69,12 @@ def wire(topic_id, intro, prompt, answer, *, table=None):
         question["table"] = table
     expanded = compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]}, grade,
                                                fraction_notation=scope["topic"]["domain"] == "fractions")
-    question = expanded["sections"][0]["questions"][0]
+    return expanded["sections"][0]["questions"][0], scope, grade
+
+
+def wire(topic_id, intro, prompt, answer, *, table=None):
+    """Expand and validate one wire question; return it with its first item, exact result and pending rows."""
+    question, scope, grade = expand(topic_id, intro, prompt, answer, table=table)
     evidence, pending = [], []
     validate_question(question, grade, scope, provider=True, qcount=1, evidence=evidence, pending=pending)
     return question, question["items"][0], evidence[0]["computed"] if evidence else None, grade, pending
@@ -132,6 +139,18 @@ class DecisionWireTests(unittest.TestCase):
     def verdicts(self, topic_id, rows):
         return [decision(topic_id, intro, prompt, answer).verdict() for intro, prompt, answer in rows]
 
+    def story(self, topic_id, intro, prompt, answer):
+        """An elementary claim typed from a story: refused at its item; the binder's own decision, bound "story"."""
+        question, scope, grade = expand(topic_id, intro, prompt, answer)
+        with self.assertRaises(GeneralSourceError) as caught:
+            validate_question(question, grade, scope, provider=True, qcount=1, evidence=[], pending=[])
+        self.assertEqual((caught.exception.code, caught.exception.question, caught.exception.item),
+                         ("PRINTED_ANSWER_KIND", 1, 1))
+        item = question["items"][0]
+        found = answer_kinds.bind_decision(question, item, solve(item["answer"]["task"]), grade)
+        self.assertEqual(found.proof["bound"], "story")
+        return found
+
     def test_recorded_grade_three_yes_no_items_are_decided(self):
         # Prompts as the provider wrote them, in the two recorded ג10 replies.
         rows = [
@@ -149,11 +168,16 @@ class DecisionWireTests(unittest.TestCase):
             ("שייכו כל תרגיל לקטגוריה המתאימה:", "האם [[25 : 5]] הוא חילוק שמביא לתוצאה אי-זוגית?",
              decide("not_divisible", "25/5", "2")),
             ("שייכו כל תרגיל לקטגוריה המתאימה:", "האם [[36 : 6]] הוא חילוק שמביא לתוצאה זוגית?", decide("divisible", "36/6", "2")),
+        ]
+        self.assertEqual(self.verdicts("ג10", rows), ["לא", "כן", "כן", "כן", "כן", "כן", "כן", "כן", "כן"])
+        # Three items of the same replies type their first side from a story. No binder proves
+        # that reading, so in elementary each one is refused; the binder still decides the claim.
+        stories = [
             ("חשבו לאחור:", "מספר חולק ב-6 והתקבל 7. האם המספר המקורי גדול מ-40?", decide("gt", "6*7", "40")),
             ("חשבו לאחור:", "מספר חולק ב-8 והתקבל 5. האם המספר המקורי קטן מ-40?", decide("lt", "8*5", "40")),
             ("חשבו לאחור:", "מספר חולק ב-9 והתקבל 4. האם המספר המקורי שווה ל-36?", decide("eq", "9*4", "36")),
         ]
-        self.assertEqual(self.verdicts("ג10", rows), ["לא", "כן", "כן", "כן", "כן", "כן", "כן", "כן", "כן", "כן", "לא", "כן"])
+        self.assertEqual([self.story("ג10", *row).verdict() for row in stories], ["כן", "לא", "כן"])
         # The same question in the other order of its two sides is the same claim.
         self.assertEqual(decision("ג10", "נחשו.", "האם המנה של [[56 : 8]] גדולה מ-5?", decide("lt", "5", "56/8")).verdict(), "כן")
 
@@ -203,7 +227,7 @@ class DecisionWireTests(unittest.TestCase):
         self.refused("ג10", "שייכו.", "האם [[25 : 5]] הוא חילוק שמביא לתוצאה אי-זוגית?", decide("divisible", "25/5", "2"))
         self.refused("ג03", "ענו.", "האם [[25]] מתחלק ב־[[4]]?", decide("divisible", "4", "25"))
 
-    def test_named_quantities_bind_the_claim_by_value_and_a_story_is_reported(self):
+    def test_named_quantities_bind_the_claim_by_value_and_a_story_is_refused_in_elementary(self):
         # The sentence names both quantities, so the verdict is that of the print:
         # every printed number is used here, and still the claim is not the question.
         percent = "האם [[10]]% מ-[[50]] שווה ל-[[5]]?"
@@ -215,10 +239,12 @@ class DecisionWireTests(unittest.TestCase):
         self.refused("ג10", "נחשו.", "האם המנה של [[56 : 8]] גדולה מ-5?", decide("gt", "56-8", "5"))
         statement = decision("ג10", "בדקו.", "האם [[32 : 4 = 8]] נכון?", decide("eq", "32/4", "8"))
         self.assertEqual(statement.proof["bound"], "print")
-        # A side that only a story describes is checked for its numbers, and the item is listed.
+        # A side that only a story describes is checked for its numbers only: no proven key in
+        # elementary, so the item is refused. In middle school the item is listed for the teacher.
         story = "מספר חולק ב-6 והתקבל 7. האם המספר המקורי גדול מ-40?"
-        question, item, solved, grade, pending = wire("ג10", "חשבו לאחור:", story, decide("gt", "6*7", "40"))
-        self.assertEqual(answer_kinds.bind_decision(question, item, solved, grade).proof["bound"], "story")
+        self.assertEqual(self.story("ג10", "חשבו לאחור:", story, decide("gt", "6*7", "40")).verdict(), "כן")
+        pending = wire("g8:percentages", "חשבו לאחור:", "מספר חולק ב־[[6]] והתקבל [[7]]. האם המספר המקורי גדול מ־[[40]]?",
+                       decide("gt", "6*7", "40"))[4]
         self.assertEqual([(row["question"], row["item"], row["kind"]) for row in pending],
                          [(1, 1, "decision"), (1, 2, "decision"), (1, 3, "decision")])
         self.refused("ג10", "חשבו לאחור:", story, decide("gt", "6*7", "6*7"))   # the named 40 is not a typed side
@@ -274,8 +300,9 @@ class DecisionWireTests(unittest.TestCase):
         remainder = decision("ג03", "ענו.", "האם [[25]] מתחלק ב־[[4]]?", decide("divisible", "25", "4"))
         self.assertEqual((remainder.verdict(), remainder.steps), ("לא", (("division", n(25), n(4), n(6), n(1)),)))
         self.assertEqual(decision("ג03", "ענו.", "האם [[7]] אינו גדול מ־[[5]]?", decide("le", "7", "5")).verdict(), "לא")
-        self.assertEqual(decision("ג08", "פתרו את הבעיה.", "האם [[124]] גולות מספיקות ל־[[4]] ילדים שכל אחד רוצה [[30]]?",
-                                  decide("ge", "124", "4*30")).verdict(), "כן")
+        # A sufficiency question types one side from its story: refused in elementary.
+        self.assertEqual(self.story("ג08", "פתרו את הבעיה.", "האם [[124]] גולות מספיקות ל־[[4]] ילדים שכל אחד רוצה [[30]]?",
+                                    decide("ge", "124", "4*30")).verdict(), "כן")
         numbers = "המספרים: [[2]], [[4]], [[6]], [[8]]."
         asked = "האם התוצאה של [[36 : 6]] נמצאת ברשימה?"
         self.assertEqual(decision("ג03", numbers, asked, decide("in", "36/6", values=["2", "4", "6", "8"])).verdict(), "כן")
@@ -330,41 +357,41 @@ class DecisionWireTests(unittest.TestCase):
 
 
 class LabelAndOpenWireTests(unittest.TestCase):
+    """A label (a name that no kernel computes) and an item without a key have no proven key.
+
+    Neither is an answer kind: each one is refused like any unsupported kind.
+    """
+
     def refused(self, *args, code="PRINTED_ANSWER_KIND", **extra):
         with self.assertRaises(GeneralSourceError) as caught:
             wire(*args, **extra)
         self.assertEqual(caught.exception.code, code)
         return caught.exception
 
-    def pending(self, *args, **extra):
-        return wire(*args, **extra)[4]
+    def unsupported(self, *args, **extra):
+        return self.refused(*args, code="SOURCE_ANSWER", **extra)
 
-    def test_a_label_names_and_is_listed_as_unverified(self):
-        rows = self.pending("ג16", "מיינו את המשולש.", "משולש שכל צלעותיו שוות נקרא ___", label("משולש שווה צלעות"))
-        self.assertEqual([(row["question"], row["item"], row["kind"]) for row in rows], [(1, 1, "label"), (1, 2, "label"), (1, 3, "label")])
-        self.pending("ג16", "ענו.", "איזה מצולע הוא בעל שלוש צלעות?", label("משולש"))
+    def test_a_label_is_refused(self):
+        self.unsupported("ג16", "מיינו את המשולש.", "משולש שכל צלעותיו שוות נקרא ___", label("משולש שווה צלעות"))
+        self.unsupported("ג16", "ענו.", "איזה מצולע הוא בעל שלוש צלעות?", label("משולש"))
         table = {"head": ["יום", "ספרים"], "rows": [["ראשון", "[[4]]"], ["שני", "[[9]]"], ["שלישי", "[[6]]"]]}
-        self.pending("ג20", "התבוננו בטבלה וענו.", "באיזה יום נקראו הכי הרבה ספרים?", label("יום שני"), table=table)
-        for name in ("מְשֻׁלָּשׁ", "מְרֻבָּע", "מְחֻמָּשׁ"):  # pointed names are not "from a quarter" or "from five"
-            self.pending("ב28", "עֲנוּ.", "אֵיזוֹ צוּרָה הִיא בַּעֲלַת שָׁלוֹשׁ צְלָעוֹת?", label(name))
-        # The label stays one plain string; it is never read as mathematics.
-        _, item, _, _, _ = wire("ג16", "ענו.", "איזה מצולע הוא בעל שלוש צלעות?", label("משולש"))
-        self.assertEqual(item["answer"], {"kind": "label", "text": "משולש"})
+        self.unsupported("ג20", "התבוננו בטבלה וענו.", "באיזה יום נקראו הכי הרבה ספרים?", label("יום שני"), table=table)
+        for name in ("מְשֻׁלָּשׁ", "מְרֻבָּע", "מְחֻמָּשׁ"):
+            self.unsupported("ב28", "עֲנוּ.", "אֵיזוֹ צוּרָה הִיא בַּעֲלַת שָׁלוֹשׁ צְלָעוֹת?", label(name))
 
     def test_a_label_never_replaces_an_answer_that_can_be_computed(self):
         naming = "איזה מצולע הוא בעל שלוש צלעות?"
-        self.refused("ג16", "ענו.", naming, label("3"))                       # a number
-        self.refused("ג16", "ענו.", "כמה צלעות יש למשולש?", label("שלוש"))     # a number in words
-        self.refused("ג16", "ענו.", naming, label("עשרים וחמש"))
-        self.refused("ג16", "ענו.", naming, label("רבע"))
-        self.refused("ג16", "ענו.", "כמה צלעות יש למשולש?", label("משולש"))    # a quantity is asked for
-        self.refused("ג16", "ענו.", "האם לכל משולש יש שלוש צלעות?", label("כן"))  # the author never supplies a verdict
-        self.refused("ג16", "ענו.", "איזה מספר גדול יותר?", label("גדול"))
-        self.refused("ג16", "ענו.", naming, label("משולש ישר זווית מאוד מאוד מיוחד"))
-        self.refused("ג16", "ענו.", naming, label("משולש [[3]]"))             # a label is never mathematics
-        self.refused("ג16", "ענו.", "[[3 + ___ = 7]]", label("ארבע"))
-        self.refused("ג16", "ענו.", "שרטטו משולש שווה צלעות.", label("משולש"))   # a drawing has no key
-        # Recorded prompts that have a computed key: none of them asks for a name.
+        self.unsupported("ג16", "ענו.", naming, label("3"))                       # a number
+        self.unsupported("ג16", "ענו.", "כמה צלעות יש למשולש?", label("שלוש"))     # a number in words
+        self.unsupported("ג16", "ענו.", naming, label("עשרים וחמש"))
+        self.unsupported("ג16", "ענו.", naming, label("רבע"))
+        self.unsupported("ג16", "ענו.", "כמה צלעות יש למשולש?", label("משולש"))    # a quantity is asked for
+        self.unsupported("ג16", "ענו.", "האם לכל משולש יש שלוש צלעות?", label("כן"))  # the author never supplies a verdict
+        self.unsupported("ג16", "ענו.", "איזה מספר גדול יותר?", label("גדול"))
+        self.unsupported("ג16", "ענו.", naming, label("משולש ישר זווית מאוד מאוד מיוחד"))
+        self.unsupported("ג16", "ענו.", naming, label("משולש [[3]]"))
+        self.unsupported("ג16", "ענו.", "[[3 + ___ = 7]]", label("ארבע"))
+        self.unsupported("ג16", "ענו.", "שרטטו משולש שווה צלעות.", label("משולש"))
         for prompt in ("מספר כלשהו חולק ב-6 והתקבלה התוצאה 7. מה היה המספר המקורי?",
                        "מהי הפעולה הראשונה בביטוי [[10 + 2 * 3]]?",
                        "בחידוש [[7 + 2 * 5]], איזו פעולה ראשונה?",
@@ -373,29 +400,27 @@ class LabelAndOpenWireTests(unittest.TestCase):
                        "אילו הייתה הזמנה של 2 מנות ראשונות ו-2 מנות עיקריות, מה הייתה העלות?",
                        "מי מהשיטות הבאות בודקת נכון את התרגיל [[20 : 4 = 5]]? א. [[4 x 5 = 20]]. ב. [[20 + 4 = 24]]."):
             with self.subTest(prompt=prompt):
-                self.refused("ד07", "ענו.", prompt, label("כפל"))
-        self.refused("ג16", "מיינו את המשולשים.", "משולש שצלעותיו [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ.", label("שונה צלעות"))
-        self.refused("ג16", "ענו.", naming, label("מְשֻׁלָּשׁ"), code="SOURCE_NIQQUD")
-        self.refused("ב28", "עֲנוּ.", "אֵיזוֹ צוּרָה הִיא בַּעֲלַת שָׁלוֹשׁ צְלָעוֹת?", label("משולש"), code="SOURCE_NIQQUD")
-        self.refused("g7:coordinate_system", "ענו.", "באיזה רביע נמצאת הנקודה [[A(-2,3)]]?", label("ברביע השני"))
+                self.unsupported("ד07", "ענו.", prompt, label("כפל"))
+        self.unsupported("ג16", "מיינו את המשולשים.", "משולש שצלעותיו [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ.", label("שונה צלעות"))
+        self.unsupported("ג16", "ענו.", naming, label("מְשֻׁלָּשׁ"))
+        self.unsupported("ב28", "עֲנוּ.", "אֵיזוֹ צוּרָה הִיא בַּעֲלַת שָׁלוֹשׁ צְלָעוֹת?", label("משולש"))
+        self.unsupported("g7:coordinate_system", "ענו.", "באיזה רביע נמצאת הנקודה [[A(-2,3)]]?", label("ברביע השני"))
 
-    def test_an_open_item_is_a_production_task_without_a_key(self):
-        rows = self.pending("ד28", "בנו משולש.", "שרטטו משולש שצלעותיו [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ.", OPEN)
-        self.assertEqual({row["kind"] for row in rows}, {"open"})
-        self.pending("ג18", "בנו צורה על הרשת.", "ציירו על הרשת מלבן ששטחו [[12]] משבצות.", OPEN)
-        self.pending("ג02", "ענו.", "תנו דוגמה למספר שנמצא בין [[340]] ל־[[360]].", OPEN)
-        self.pending("ג02", "ענו.", "הסבירו מדוע [[345]] קטן מ־[[354]].", OPEN)
-        self.refused("ג18", "ענו.", "כמה משבצות יש במלבן שאורכו [[4]] ורוחבו [[3]]?", OPEN)
-        self.refused("ג02", "ענו.", "[[345]] + [[10]] = ___", OPEN)
-        self.refused("ד28", "בנו משולש.", "שרטטו משולש שצלעותיו [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ. מה היקפו?", OPEN)
-        self.refused("ד18", "נמקו.", "האם כל ריבוע הוא מלבן? נמקו.", OPEN)
-        self.refused("ד28", "בנו משולש.", "שרטטו משולש.", {"kind": "open", "text": "משולש"}, code="SOURCE_SHAPE")
-        self.refused("g7:coordinate_system", "ענו.", "שרטטו מערכת צירים.", OPEN)
+    def test_an_item_without_a_key_is_refused(self):
+        self.unsupported("ד28", "בנו משולש.", "שרטטו משולש שצלעותיו [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ.", OPEN)
+        self.unsupported("ג18", "בנו צורה על הרשת.", "ציירו על הרשת מלבן ששטחו [[12]] משבצות.", OPEN)
+        self.unsupported("ג02", "ענו.", "תנו דוגמה למספר שנמצא בין [[340]] ל־[[360]].", OPEN)
+        self.unsupported("ג02", "ענו.", "הסבירו מדוע [[345]] קטן מ־[[354]].", OPEN)
+        self.unsupported("ג18", "ענו.", "כמה משבצות יש במלבן שאורכו [[4]] ורוחבו [[3]]?", OPEN)
+        self.unsupported("ג02", "ענו.", "[[345]] + [[10]] = ___", OPEN)
+        self.unsupported("ד28", "בנו משולש.", "שרטטו משולש שצלעותיו [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ. מה היקפו?", OPEN)
+        self.unsupported("ד18", "נמקו.", "האם כל ריבוע הוא מלבן? נמקו.", OPEN)
+        self.unsupported("ד28", "בנו משולש.", "שרטטו משולש.", {"kind": "open", "text": "משולש"})
+        self.unsupported("g7:coordinate_system", "ענו.", "שרטטו מערכת צירים.", OPEN)
+        self.unsupported("ג02", "ציירו ישר מספרים.", "ציירו ישר מספרים מ־[[300]] עד [[400]] וסמנו את [[350]].", OPEN)
+        self.unsupported("ב28", "צַיְּרוּ בְּעִפָּרוֹן.", "צַיְּרוּ מְשֻׁלָּשׁ.", OPEN)
+        self.unsupported("ב10", "צַיְּרוּ בְּעִפָּרוֹן.", "צַיְּרוּ [[5]] עִגּוּלִים.", OPEN)
         # Drawings stay in geometry lessons, in the pointed spelling of the young grades too.
-        self.refused("ג02", "ציירו ישר מספרים.", "ציירו ישר מספרים מ־[[300]] עד [[400]] וסמנו את [[350]].", OPEN,
-                     code="DRAWING_POLICY")
-        self.pending("ב28", "צַיְּרוּ בְּעִפָּרוֹן.", "צַיְּרוּ מְשֻׁלָּשׁ.", OPEN)
-        self.refused("ב10", "צַיְּרוּ בְּעִפָּרוֹן.", "צַיְּרוּ [[5]] עִגּוּלִים.", OPEN, code="DRAWING_POLICY")
         self.refused("ב10", "צַיְּרוּ בְּעִפָּרוֹן.", "צַיְּרוּ [[5]] עִגּוּלִים.", evaluate("5"), code="DRAWING_POLICY")
 
     def test_a_drawing_is_never_keyed_by_a_number(self):
@@ -457,7 +482,7 @@ class AdapterTests(unittest.TestCase):
                                   ("האם המנה של [[56 : 8]] גדולה מ-5? חשבו את המנה המדויקת.", decide("gt", "56/8", "5"))]),
             ("מצאו את הטעות.", [("תלמיד כתב: [[30 : 5 = 7]]. האם זה נכון? אם לא, מה התשובה הנכונה?", decide("eq", "30/5", "7")),
                                ("האם [[32 : 4 = 8]] נכון? בדקו באמצעות כפל.", decide("eq", "8*4", "32")),
-                               ("מספר חולק ב-6 והתקבל 7. האם המספר המקורי גדול מ-40?", decide("gt", "6*7", "40"))]),
+                               ("האם [[6 x 7]] גדול מ־[[40]]?", decide("gt", "6*7", "40"))]),
             ("מיינו.", [("האם התוצאה של [[16 : 4]] זוגית?", decide("divisible", "16/4", "2")),
                         ("האם התוצאה של [[25 : 5]] זוגית?", decide("divisible", "25/5", "2")),
                         ("האם [[27]] מתחלק ב־[[4]]?", decide("divisible", "27", "4"))]),
@@ -475,10 +500,12 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(rows[3, 2][1], "לא. 25 : 5 = 5, 5 : 2 = 2 (שארית 1)")
         self.assertEqual(rows[3, 3], ("האם 27 מתחלק ב־ 4?", "לא. 27 : 4 = 6 (שארית 3)"))
         self.assertEqual((rows[4, 1][1], rows[4, 2][1], rows[4, 3][1]), ("נכון. 36 : 6 = 6", "לא נכון. 40 : 8 = 5", "5"))
-        # Only the verdict whose first side was typed from a story is reported for the teacher.
-        self.assertEqual(result["unverifiedAnswers"], [{"question": 2, "item": 3, "kind": "decision"}])
+        # Every verdict is bound to the print; nothing is left unverified for the teacher.
+        self.assertEqual(result["unverifiedAnswers"], [])
         claims = {row["id"]: row for row in json.loads((work / "verified.json").read_text(encoding="utf-8"))["claims"]}
-        self.assertEqual((claims["1.1.decision"]["evidence"]["bound"], claims["2.3.decision"]["evidence"]["bound"]), ("print", "story"))
+        self.assertEqual({key: row["evidence"]["bound"] for key, row in claims.items() if key.endswith(".decision")},
+                         {f"{n}.{j}.decision": "print" for n, j in ((1, 1), (1, 2), (1, 3), (2, 1), (2, 2), (2, 3),
+                                                                     (3, 1), (3, 2), (3, 3), (4, 1), (4, 2))})
         self.assertEqual(claims["2.2.decision"]["evidence"]["rule"], "printed_statement")
         self.assertEqual(claims["1.3"]["method"], "sympy")
         html_text = (work / "sheet.html").read_text(encoding="utf-8")
@@ -504,51 +531,64 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual((rows[1, 1][1], rows[1, 2][1]), ("כֵּן. 5 + 3 = 8", "לֹא. 2 + 4 = 6"))
         self.assertEqual((rows[2, 1][1], rows[2, 2][1]), ("לֹא נָכוֹן. 5 + 3 = 8", "נָכוֹן. 4 + 2 = 6"))
 
-    def test_geometry_sheet_prints_labels_and_sends_open_items_to_the_teacher(self):
-        rows, result, work = self.sheet("ג16", [
-            ("כתבו את שם המשולש.", [("משולש שכל צלעותיו שוות נקרא ___", label("משולש שווה צלעות")),
-                                    ("משולש שיש לו שתי צלעות שוות נקרא ___", label("משולש שווה שוקיים")),
-                                    ("איזה משולש יש לו זווית ישרה?", label("משולש ישר זווית"))]),
-            ("שרטטו בעזרת סרגל.", [("שרטטו משולש שווה שוקיים.", OPEN), ("שרטטו משולש ישר זווית.", OPEN),
-                                   ("תנו דוגמה לחפץ בכיתה שצורתו משולש.", OPEN)]),
+    def test_a_verdict_typed_from_a_story_is_refused_by_the_adapter(self):
+        lesson, scope, expanded = self.source("ג10", [
+            ("השוו בין התוצאות.", [("האם התוצאות של [[12 : 3]] ושל [[12 : 4]] זהות?", decide("eq", "12/3", "12/4"))] * 3),
+            ("חשבו לאחור.", [("האם [[32 : 4 = 8]] נכון? בדקו באמצעות כפל.", decide("eq", "8*4", "32")),
+                             ("האם [[6 x 7]] גדול מ־[[40]]?", decide("gt", "6*7", "40")),
+                             ("מספר חולק ב-6 והתקבל 7. האם המספר המקורי גדול מ-40?", decide("gt", "6*7", "40"))]),
+            ("מיינו.", [("האם התוצאה של [[16 : 4]] זוגית?", decide("divisible", "16/4", "2"))] * 3),
+            ("נכון או לא נכון?", [("[[36 : 6 > 5]]", decide("gt", "36/6", "5"))] * 3),
+        ])
+        work = self.root / "story"
+        for check in (lambda: validate_source(lesson, expanded, scope, provider=True),
+                      lambda: compile_source(lesson, {"source": expanded}, scope, self.skill, work)):
+            with self.assertRaises(GeneralSourceError) as caught:
+                check()
+            self.assertEqual((caught.exception.code, caught.exception.question, caught.exception.item),
+                             ("PRINTED_ANSWER_KIND", 2, 3))
+        self.assertFalse(work.exists())
+
+    def test_a_geometry_sheet_with_labels_and_items_without_a_key_is_refused(self):
+        computed = [
             ("חשבו את ההיקף.", [("אורכי הצלעות של משולש הם [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ. מה ההיקף?", evaluate("3+4+5", "ס״מ")),
                                 ("אורך כל צלע במשולש שווה צלעות הוא [[6]] ס״מ. מה ההיקף?", evaluate("3*6", "ס״מ")),
-                                ("האם משולש שצלעותיו [[4]] ס״מ, [[4]] ס״מ ו־[[4]] ס״מ הוא משולש שהיקפו גדול מ־[[10]] ס״מ?",
-                                 decide("gt", "4+4+4", "10"))]),
-            ("ענו.", [("הנקודה שבה נפגשות שתי צלעות נקראת ___", label("קודקוד")),
-                      ("שרטטו משולש שונה צלעות.", OPEN),
+                                ("האם [[4 + 4 + 4]] גדול מ־[[10]]?", decide("gt", "4+4+4", "10"))]),
+            ("ענו.", [("כמה קודקודים יש למשולש?", evaluate("3")),
+                      ("כמה צלעות יש למשולש?", evaluate("3")),
                       ("כמה קודקודים יש למשולש?", evaluate("3"))]),
-        ])
-        self.assertEqual(rows[1, 1], ("משולש שכל צלעותיו שוות נקרא ___", "משולש שווה צלעות"))
-        self.assertEqual(rows[2, 1], ("שרטטו משולש שווה שוקיים.", "סעיף פתוח: לבדיקת המורה."))
-        self.assertEqual(rows[2, 3][1], answer_kinds.TEACHER_CHECK)
-        self.assertEqual((rows[3, 1][1], rows[3, 3][1]), ("12 ס״מ", "כן. 4 + 4 + 4 = 12"))
-        self.assertEqual((rows[4, 1][1], rows[4, 2][1], rows[4, 3][1]), ("קודקוד", "סעיף פתוח: לבדיקת המורה.", "3"))
-        # The structured list that a worker turns into a teacher note.
-        self.assertEqual(result["unverifiedAnswers"], [
-            {"question": 1, "item": 1, "kind": "label"}, {"question": 1, "item": 2, "kind": "label"},
-            {"question": 1, "item": 3, "kind": "label"}, {"question": 2, "item": 1, "kind": "open"},
-            {"question": 2, "item": 2, "kind": "open"}, {"question": 2, "item": 3, "kind": "open"},
-            {"question": 3, "item": 3, "kind": "decision"},
-            {"question": 4, "item": 1, "kind": "label"}, {"question": 4, "item": 2, "kind": "open"}])
-        self.assertEqual(result["unverifiedAnswerCount"], 9)
-        evidence = json.loads((work / "general-evidence.json").read_text(encoding="utf-8"))
-        self.assertEqual([(row["question"], row["item"], row["kind"]) for row in evidence["unverifiedAnswers"]][:2],
-                         [(1, 1, "label"), (1, 2, "label")])
-        # Nothing unverified enters the ledger, and a drawing gets room on the page.
-        claims = [row["id"] for row in json.loads((work / "verified.json").read_text(encoding="utf-8"))["claims"]]
-        self.assertFalse([claim for claim in claims if claim.startswith(("1.", "2.", "4.1", "4.2"))])
-        draft = json.loads((work / "worksheet-source.json").read_text(encoding="utf-8"))
-        self.assertEqual(draft["questions"][0]["items"][0]["verification"], "unverified label; teacher review required")
-        self.assertIsNone(draft["questions"][1]["items"][0]["task"])
+        ]
+        for name, answer in (("label", label("משולש שווה צלעות")), ("open", OPEN)):
+            with self.subTest(kind=name):
+                lesson, scope, expanded = self.source("ג16", [
+                    ("כתבו את שם המשולש.", [("משולש שכל צלעותיו שוות נקרא ___", answer)] * 3),
+                    ("שרטטו בעזרת סרגל.", [("שרטטו משולש שווה שוקיים.", answer)] * 3)] + computed)
+                work = self.root / ("geometry-" + name)
+                for check in (lambda: validate_source(lesson, expanded, scope, provider=True),
+                              lambda: compile_source(lesson, {"source": expanded}, scope, self.skill, work)):
+                    with self.assertRaises(GeneralSourceError) as caught:
+                        check()
+                    self.assertEqual(caught.exception.code, "SOURCE_ANSWER")
+                self.assertFalse(work.exists())
+        # Its verdict about a triangle that only the words describe is typed from a story: refused at its item.
+        story = ("האם משולש שצלעותיו [[4]] ס״מ, [[4]] ס״מ ו־[[4]] ס״מ הוא משולש שהיקפו גדול מ־[[10]] ס״מ?",
+                 decide("gt", "4+4+4", "10"))
+        lesson, scope, expanded = self.source("ג16", [(computed[0][0], computed[0][1][:2] + [story]), computed[1]] * 2)
+        with self.assertRaises(GeneralSourceError) as caught:
+            validate_source(lesson, expanded, scope, provider=True)
+        self.assertEqual((caught.exception.code, caught.exception.question, caught.exception.item),
+                         ("PRINTED_ANSWER_KIND", 1, 3))
+        # The computed items of that sheet are printed with their keys, and nothing is unverified.
+        rows, result, work = self.sheet("ג16", computed * 2)
+        self.assertEqual((rows[1, 1][1], rows[1, 3][1]), ("12 ס״מ", "כן. 4 + 4 + 4 = 12"))
+        self.assertEqual(rows[2, 1][1], "3")
+        self.assertEqual((result["unverifiedAnswers"], result["unverifiedAnswerCount"]), ([], 0))
         html_text = (work / "sheet.html").read_text(encoding="utf-8")
-        self.assertEqual(html_text.count('<div class="open-work"></div>'), 4)
-        self.assertIn('א. <span class="answer-text" dir="rtl">משולש שווה צלעות</span>', html_text)
-        self.assertIn('<span class="answer-text" dir="rtl">סעיף פתוח: לבדיקת המורה.</span>', html_text)
+        self.assertNotIn("open-work", html_text)
 
     def test_an_authored_prose_answer_is_still_refused_in_elementary(self):
         lesson, scope, expanded = self.source("ג16", [
-            ("ענו.", [("איזה משולש יש לו זווית ישרה?", label("משולש ישר זווית"))] * 3)] * 4)
+            ("ענו.", [("אורכי הצלעות של משולש הם [[3]] ס״מ, [[4]] ס״מ ו־[[5]] ס״מ. מה ההיקף?", evaluate("3+4+5", "ס״מ"))] * 3)] * 4)
         expanded["sections"][0]["questions"][2]["items"][1]["answer"] = {
             "kind": "review", "text": [{"kind": "text", "text": "משולש ישר זווית"}]}
         with self.assertRaises(GeneralSourceError) as caught:
@@ -569,7 +609,8 @@ class AuthorContractTests(unittest.TestCase):
 
     def test_the_wire_schema_offers_the_kinds_of_each_skill(self):
         kinds, tasks = self.answers("ג16")
-        self.assertEqual(kinds[:3], ["computed", "label", "open"])
+        self.assertEqual(kinds, ["computed", "figure"])  # no label and no item without a key
+        self.assertEqual(self.answers("ג10")[0], ["computed"])
         self.assertEqual([task["properties"]["relation"]["enum"] for task in tasks],
                          [["eq", "ne", "lt", "le", "gt", "ge", "divisible", "not_divisible"], ["in", "not_in"]])
         self.assertEqual(tasks[1]["required"], ["kind", "relation", "left", "values"])
@@ -578,10 +619,10 @@ class AuthorContractTests(unittest.TestCase):
         self.assertEqual(middle, ["computed", "review"])
         self.assertEqual(len(tasks), 2)
 
-    def test_the_author_request_describes_the_new_kinds(self):
+    def test_the_author_request_describes_the_decide_task_and_no_kind_without_a_key(self):
         config = {"api_key": "synthetic-fixture-key", "base_url": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
                   "model": "fixture-model"}
-        for topic_id, count, elementary in (("ג16", 12, True), ("g8:percentages", 20, False)):
+        for topic_id, count in (("ג16", 12), ("g8:percentages", 20)):
             lesson = {**lesson_for(topic_id, count), "explicitShortSheet": False}
             with self.subTest(topic=topic_id), patch("provider.build_authoring_context", return_value={}), \
                     patch("provider.request_author_json", side_effect=StopIteration) as request:
@@ -589,7 +630,8 @@ class AuthorContractTests(unittest.TestCase):
                     provider.author_lesson(lesson, **config)
                 system = request.call_args.args[2]["messages"][0]["content"]
                 self.assertIn(answer_kinds.DECISION_GUIDE, system)
-                self.assertEqual(answer_kinds.ELEMENTARY_KINDS_GUIDE in system, elementary)
+                self.assertNotIn('"kind":"open"', system)
+                self.assertNotIn('"kind":"label"', system)
 
     def test_a_refused_yes_no_item_is_told_to_use_the_decide_task(self):
         lesson = lesson_for("ג10", 12)
@@ -607,7 +649,8 @@ class AuthorContractTests(unittest.TestCase):
         self.assertEqual([(row["question"], row["codes"]) for row in findings], [(5, ["PRINTED_ANSWER_KIND"])])
         feedback = findings[0]["feedback"][0]
         self.assertIn('"kind":"decide"', feedback)
-        self.assertIn('"kind":"open"', feedback)          # an elementary lesson also learns the two elementary kinds
+        self.assertNotIn('"kind":"open"', feedback)       # no answer kind without a key is offered
+        self.assertNotIn('"kind":"label"', feedback)
         # The same question with the claim that the instruction asks for is accepted.
         questions[4]["items"][2]["answer"] = decide("eq", "12/3", "12/4")
         self.assertEqual(source_findings(reply, lesson, scope, GeneralSourceError("PRINTED_ANSWER_KIND", "refused")), [])

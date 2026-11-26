@@ -42,11 +42,10 @@ NOTES = {
 }
 
 # Hebrew teacher notes for printed answers that no exact kernel verified, by
-# the kind recorded in the adapter's evidence (general_source: label, open,
-# decision, review). The sheet is still delivered; the teacher is told where.
+# the kind recorded in the adapter's evidence (general_source: decision,
+# review). Only a middle-school sheet is delivered with them; the elementary
+# adapter and the runner refuse every such answer. Any other kind is refused.
 UNVERIFIED_NOTES = {
-    "open": "בדף יש סעיפים פתוחים שאין להם תשובה במפתח. הם מסומנים לבדיקת המורה.",
-    "label": "בחלק מהסעיפים התשובה היא שם או מונח. היא הודפסה כפי שנכתבה ולא אומתה בחישוב.",
     "decision": "בחלק משאלות כן/לא ההכרעה חושבה מטענה שנוסחה מתוך סיפור. כדאי לוודא שהטענה מתאימה לנוסח השאלה.",
     "review": "תשובות של הסבר או הוכחה לא אומתו בחישוב. נדרשת בהן בדיקת מורה.",
 }

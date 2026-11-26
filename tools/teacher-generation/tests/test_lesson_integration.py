@@ -174,7 +174,8 @@ class AuthorPromptTests(unittest.TestCase):
                 self.assertNotIn('prints its task along with the pupil prompt', system)
                 self.assertIn('printed after the prompt only when the prompt shows no number at all', system)
                 self.assertIn('"kind":"decide"', system)
-                self.assertEqual('"kind":"open"' in system, topic == 'ד07')
+                self.assertNotIn('"kind":"open"', system)   # no answer kind without a key
+                self.assertNotIn('"kind":"label"', system)
                 # Provider track: the reply example is not to be echoed.
                 self.assertIn('replyExample', system)
                 self.assertIn('must not become the standard opening of your prompts', system)
@@ -209,9 +210,13 @@ class RunnerEvidenceTests(unittest.TestCase):
         self.skill = Path(self.tmp.name) / 'skill'
         self.skill.mkdir()
         self.lesson = {'version': 3, 'gradeNumber': 4, 'topicId': 'ד07', 'level': 'b', 'questionCount': 12}
+        self.middle = {'version': 3, 'gradeNumber': 8, 'topicId': 'g8:percentages', 'level': 'b', 'questionCount': 12}
         self.calls = []
 
-    def render(self, evidence):
+    def render(self, evidence, lesson=None):
+        lesson = lesson or self.lesson
+        skill = 'middle' if lesson['gradeNumber'] >= 7 else 'elementary'
+
         def run(args, **kwargs):
             name = Path(args[2]).name
             self.calls.append(name)
@@ -223,31 +228,58 @@ class RunnerEvidenceTests(unittest.TestCase):
                         evidence if isinstance(evidence, str) else json.dumps(evidence), encoding='utf-8')
             if name in ('build_pdf.py', 'build_docx.py'):
                 (self.work / ('sheet.pdf' if name == 'build_pdf.py' else 'sheet.docx')).write_bytes(name.encode())
+            if name == 'build_v72.py':
+                # The pinned middle driver's report and its two files for level b.
+                for path in ('out/v72-report.json', 'out/docx/b/sheet.docx', 'out/deliver/b/sheet.pdf'):
+                    (self.work / path).parent.mkdir(parents=True, exist_ok=True)
+                    (self.work / path).write_bytes(path.encode())
             return SimpleNamespace(stdout='', stderr='', returncode=0)
 
-        with patch.object(runner, 'validate_model', return_value={'skill': 'elementary'}), \
+        with patch.object(runner, 'validate_model', return_value={'skill': skill}), \
                 patch.object(runner, 'verify_skill', return_value=(self.skill, {'version': 'pinned', 'sha256': 'a' * 64})), \
                 patch('runtime_catalog.scope_for_lesson', return_value={}), \
                 patch.object(runner.subprocess, 'run', side_effect=run):
-            return runner.render_job(self.lesson, {}, self.work, skill_paths={'elementary': self.skill})
+            return runner.render_job(lesson, {}, self.work, skill_paths={skill: self.skill})
 
     def test_unverified_answers_reach_the_manifest_as_positions_and_kinds(self):
-        rows = [{'itemId': 'q3-i2', 'question': 3, 'item': 2, 'kind': 'open', 'reason': 'PRIVATE WORDS'},
-                {'itemId': 'q2-i1', 'question': 2, 'item': 1, 'kind': 'label', 'reason': 'PRIVATE WORDS'},
+        # Middle school: authored review answers and verdicts typed from a story are delivered, with their places.
+        rows = [{'itemId': 'q3-i2', 'question': 3, 'item': 2, 'kind': 'review', 'reason': 'PRIVATE WORDS'},
                 {'itemId': 'q9-i3', 'question': 9, 'item': 3, 'kind': 'decision', 'reason': 'PRIVATE WORDS'},
-                {'itemId': 'q3-i1', 'question': 3, 'item': 1, 'kind': 'open', 'reason': 'PRIVATE WORDS'}]
-        manifest = self.render({'version': 1, 'computations': [], 'unverifiedAnswers': rows})
+                {'itemId': 'q3-i1', 'question': 3, 'item': 1, 'kind': 'review', 'reason': 'PRIVATE WORDS'}]
+        manifest = self.render({'version': 1, 'computations': [], 'unverifiedAnswers': rows}, self.middle)
         self.assertEqual(manifest['status'], 'needs_review')
         self.assertEqual(manifest['unverifiedAnswers'],
-                         [{'question': 3, 'item': 2, 'kind': 'open'}, {'question': 2, 'item': 1, 'kind': 'label'},
-                          {'question': 9, 'item': 3, 'kind': 'decision'}, {'question': 3, 'item': 1, 'kind': 'open'}])
+                         [{'question': 3, 'item': 2, 'kind': 'review'}, {'question': 9, 'item': 3, 'kind': 'decision'},
+                          {'question': 3, 'item': 1, 'kind': 'review'}])
         self.assertNotIn('PRIVATE', json.dumps(manifest))
         notes = policy.public_teacher_notes(manifest['unverifiedAnswers'])
         self.assertEqual([(note['kind'], note['count'], note['items']) for note in notes], [
-            ('open', 2, [{'question': 3, 'item': 1}, {'question': 3, 'item': 2}]),
-            ('label', 1, [{'question': 2, 'item': 1}]), ('decision', 1, [{'question': 9, 'item': 3}])])
+            ('decision', 1, [{'question': 9, 'item': 3}]),
+            ('review', 2, [{'question': 3, 'item': 1}, {'question': 3, 'item': 2}])])
         self.assertTrue(all(note['code'] == 'UNVERIFIED_ANSWER' and note['note'] == policy.UNVERIFIED_NOTES[note['kind']]
                             for note in notes))
+
+    def test_an_elementary_sheet_with_an_unverified_answer_is_never_delivered(self):
+        listed = lambda kind, question=3, item=2: {'itemId': f'q{question}-i{item}', 'question': question, 'item': item,
+                                                  'kind': kind, 'reason': 'PRIVATE WORDS'}
+        cases = (
+            # A label and an item without a key are no answer kind: the list is untrusted.
+            ('label and open', [listed('open'), listed('label', 2, 1), listed('decision', 9, 3), listed('open', 3, 1)],
+             'EVIDENCE_UNREADABLE'),
+            # The elementary adapter refuses every answer without an exact verifier; a listed one fails here.
+            ('review', [listed('review')], 'UNVERIFIED_ANSWERS'),
+            ('decision', [listed('decision', 9, 3)], 'UNVERIFIED_ANSWERS'),
+        )
+        for name, rows, reason in cases:
+            with self.subTest(name=name):
+                self.work = Path(self.tmp.name) / name.replace(' ', '-')
+                self.calls.clear()
+                manifest = self.render({'version': 1, 'computations': [], 'unverifiedAnswers': rows})
+                self.assertEqual((manifest['status'], manifest['artifacts'], manifest['unverifiedAnswers']), ('failed', [], []))
+                self.assertEqual(self.calls, ['general_adapters.py'])   # nothing was rendered
+                self.assertEqual(manifest['steps'][-1], {'name': 'unverified-answers', 'status': 'FAIL', 'reason': reason})
+                self.assertEqual(manifest['gate']['action'], 'fail')
+                self.assertNotIn('PRIVATE', json.dumps(manifest))
 
     def test_no_list_is_no_note_and_an_untrusted_list_delivers_nothing(self):
         for name, evidence in (('absent', None), ('native', {'version': 1, 'computations': []}),
@@ -256,9 +288,11 @@ class RunnerEvidenceTests(unittest.TestCase):
                 self.work = Path(self.tmp.name) / name
                 manifest = self.render(evidence)
                 self.assertEqual((manifest['status'], manifest['unverifiedAnswers']), ('needs_review', []))
-        bad = {'not json': '{', 'not a list': {'unverifiedAnswers': 'q1'}, 'no position': {'unverifiedAnswers': [{'kind': 'open'}]},
+        bad = {'not json': '{', 'not a list': {'unverifiedAnswers': 'q1'}, 'no position': {'unverifiedAnswers': [{'kind': 'review'}]},
                'unknown kind': {'unverifiedAnswers': [{'question': 1, 'item': 1, 'kind': 'verified'}]},
-               'out of range': {'unverifiedAnswers': [{'question': 1, 'item': 12, 'kind': 'open'}]},
+               'an open item': {'unverifiedAnswers': [{'question': 1, 'item': 1, 'kind': 'open'}]},
+               'a label': {'unverifiedAnswers': [{'question': 1, 'item': 1, 'kind': 'label'}]},
+               'out of range': {'unverifiedAnswers': [{'question': 1, 'item': 12, 'kind': 'review'}]},
                'not an object': ['q1']}
         for name, evidence in bad.items():
             with self.subTest(name=name):
@@ -271,25 +305,27 @@ class RunnerEvidenceTests(unittest.TestCase):
                 self.assertEqual(manifest['gate']['action'], 'fail')
 
     def test_only_fixed_notes_and_positions_reach_the_job_result(self):
-        forged = [{'question': 2, 'item': 1, 'kind': 'label', 'note': 'FORGED', 'text': 'FORGED'},
-                  {'question': 2, 'item': 1, 'kind': 'label'}, {'question': 5, 'item': 2, 'kind': 'review'}]
+        forged = [{'question': 2, 'item': 1, 'kind': 'decision', 'note': 'FORGED', 'text': 'FORGED'},
+                  {'question': 2, 'item': 1, 'kind': 'decision'}, {'question': 5, 'item': 2, 'kind': 'review'}]
         notes = policy.public_teacher_notes(forged)
         self.assertEqual(notes, [
-            {'code': 'UNVERIFIED_ANSWER', 'kind': 'label', 'count': 1, 'note': policy.UNVERIFIED_NOTES['label'],
+            {'code': 'UNVERIFIED_ANSWER', 'kind': 'decision', 'count': 1, 'note': policy.UNVERIFIED_NOTES['decision'],
              'items': [{'question': 2, 'item': 1}]},
             {'code': 'UNVERIFIED_ANSWER', 'kind': 'review', 'count': 1, 'note': policy.UNVERIFIED_NOTES['review'],
              'items': [{'question': 5, 'item': 2}]}])
         for untrusted in ('text', None, [{'question': 1, 'item': 1, 'kind': 'x'}], [None],
-                          [{'question': 1, 'item': 1, 'kind': 'open'}] * (policy.MAX_UNVERIFIED_ITEMS + 1)):
+                          [{'question': 1, 'item': 1, 'kind': 'open'}], [{'question': 1, 'item': 1, 'kind': 'label'}],
+                          [{'question': 1, 'item': 1, 'kind': 'review'}] * (policy.MAX_UNVERIFIED_ITEMS + 1)):
             self.assertEqual(policy.public_teacher_notes(untrusted), [])
-        self.assertEqual(set(policy.UNVERIFIED_NOTES), {'open', 'label', 'decision', 'review'})
+            self.assertIsNone(policy.unverified_rows(untrusted))
+        self.assertEqual(set(policy.UNVERIFIED_NOTES), {'decision', 'review'})
         for note in policy.UNVERIFIED_NOTES.values():
             self.assertRegex(note, r'^[א-ת /.]+$')
 
     def test_the_worker_result_carries_the_teacher_notes(self):
         job_id, owner, lease = ('11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222',
                                 '33333333-3333-4333-8333-333333333333')
-        lesson = json.loads((HERE / 'cloud/container/fixtures/general/grade4-skill-calculation/lesson.json').read_text())
+        lesson = json.loads((HERE / 'cloud/container/fixtures/general/grade7-equation-skill/lesson.json').read_text())
         job = {'id': job_id, 'owner_id': owner, 'lease_token': lease, 'status': 'running',
                'lease_until': (datetime.now(timezone.utc) + timedelta(minutes=20)).isoformat(), 'lesson': lesson}
         updates = []
@@ -302,10 +338,10 @@ class RunnerEvidenceTests(unittest.TestCase):
                 (target / ('sheet.' + kind)).write_bytes(blob)
                 artifacts.append({'kind': kind, 'path': 'sheet.' + kind, 'sha256': hashlib.sha256(blob).hexdigest(), 'bytes': len(blob)})
             return {'status': 'needs_review', 'automatedChecksPassed': True, 'renderingChecksPassed': True,
-                    'authoringProfile': 'general-skill-source/v1', 'skill': {'name': 'elementary'}, 'artifacts': artifacts,
+                    'authoringProfile': 'general-skill-source/v1', 'skill': {'name': 'middle'}, 'artifacts': artifacts,
                     'steps': [{'name': 'trusted-adapter', 'status': 'PASS'}], 'reviewFindings': [],
-                    'unverifiedAnswers': [{'question': 7, 'item': 2, 'kind': 'open', 'text': 'PRIVATE MODEL TEXT'},
-                                          {'question': 1, 'item': 3, 'kind': 'label'}]}
+                    'unverifiedAnswers': [{'question': 7, 'item': 2, 'kind': 'review', 'text': 'PRIVATE MODEL TEXT'},
+                                          {'question': 1, 'item': 3, 'kind': 'decision'}]}
 
         remote = SimpleNamespace(call=lambda *args, **kwargs: None)
         with tempfile.TemporaryDirectory() as root, patch.object(worker, 'author_lesson', return_value={}), \
@@ -315,10 +351,11 @@ class RunnerEvidenceTests(unittest.TestCase):
             worker.process_job(remote, job, Path(root).resolve(), enable_skill_revision=False)
         result = updates[-1]['result']
         self.assertEqual(result['teacherNotes'], [
-            {'code': 'UNVERIFIED_ANSWER', 'kind': 'open', 'count': 1, 'note': policy.UNVERIFIED_NOTES['open'],
-             'items': [{'question': 7, 'item': 2}]},
-            {'code': 'UNVERIFIED_ANSWER', 'kind': 'label', 'count': 1, 'note': policy.UNVERIFIED_NOTES['label'],
-             'items': [{'question': 1, 'item': 3}]}])
+            {'code': 'UNVERIFIED_ANSWER', 'kind': 'decision', 'count': 1, 'note': policy.UNVERIFIED_NOTES['decision'],
+             'items': [{'question': 1, 'item': 3}]},
+            {'code': 'UNVERIFIED_ANSWER', 'kind': 'review', 'count': 1, 'note': policy.UNVERIFIED_NOTES['review'],
+             'items': [{'question': 7, 'item': 2}]}])
+        self.assertEqual(result['unverifiedAnswers'], {'decision': 1, 'review': 1})
         self.assertNotIn('PRIVATE', json.dumps(result, ensure_ascii=False))
         self.assertLess(len(json.dumps(result, ensure_ascii=False).encode()), 32000)
 

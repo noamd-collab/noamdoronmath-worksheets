@@ -75,8 +75,7 @@ scope by `curriculum_scope.validate_curriculum_scope`.
 Built in `general_provider.author_general_lesson`.
 
 - **System text:** the fixed contract sentences in that function, plus
-  `answer_kinds.DECISION_GUIDE`, and for grades 1–6
-  `answer_kinds.ELEMENTARY_KINDS_GUIDE` and the claim-word bans of the truth
+  `answer_kinds.DECISION_GUIDE`, and for grades 1–6 the claim-word bans of the truth
   gates (no `תמיד`, `לעולם`, and no `לכל` in any sense…), or for grades 7–9 the `solve`/`review`
   block. Conditional blocks: reserves; `lessonGoal: "introduce"` (guided entry
   questions first, a rule with one worked example); a time budget of 1.8
@@ -145,19 +144,19 @@ Schema in `general_source.authoring_schema`; checks in
 | task `solve`, `substitute`, `solve_system`, `inequality` | lhs/rhs/variable… | computed | 7–9 |
 | task `statistics` | mean, median, mode, range, sort | computed | data domains only |
 | **decide** | `T = {"kind":"decide","relation":eq…ge\|divisible\|not_divisible,"left","right"}` or `in`/`not_in` with `values` | verdict plus its calculation; the author never writes yes/no | all |
-| **label** | `{"kind":"label","text":"משולש"}` | printed as written, listed for the teacher | 1–6 |
-| **open** | `{"kind":"open"}` | `סעיף פתוח: לבדיקת המורה.` (`answer_kinds.TEACHER_CHECK`) | 1–6 |
 | review | `{"kind":"review","text":rich}` | printed as written, listed for the teacher | 7–9 |
 | figure | `{"kind":"figure","operation","unit","point"?}` | computed from the figure | middle geometry |
 
 - **decide** is bound to the print by `answer_kinds.bind_decision`: to the one
   printed statement asked about, or to the relation word, its order and the
   printed quantities. A true claim that is not the printed question is refused.
-  A claim typed from a story is delivered but listed as `decision`.
-- **label** only where the prompt asks for a name (`answer_kinds.check_label`);
-  **open** only for drawing, building, explaining or inventing
-  (`answer_kinds.check_open`); a number is never the key of a drawing
-  (`answer_kinds.refuse_dummy_key`).
+  A claim typed from a story is refused in grades 1–6 (`PRINTED_ANSWER_KIND`);
+  in grades 7–9 it is delivered but listed as `decision`.
+- **Grades 1–6 print no answer without a proven key.** The schema offers no
+  `label`, `open` or `review` kind there; `label` and `open` are refused as
+  `SOURCE_ANSWER`, and the adapter refuses any unverified answer, an authored
+  `review` included (`UNVERIFIED_ANSWERS`). A number is never the key of a
+  drawing (`answer_kinds.refuse_dummy_key`).
 - **parts.** Wire v1 has no `parts` answer. A prompt with two or more blanks
   must be answered blank by blank: an elementary binder in `printed_parts`
   (place value, remainder, sequence, two-unit sizes) recomputes every blank
@@ -276,8 +275,8 @@ not in `gate_policy.GATES` is truth.
 - **Delivered:** status `needs_review`, the PDF and the DOCX, and in the result
   `reviewFindings` (the didactic review and shorter-sheet codes, counts,
   question numbers, the fixed note;
-  `gate_policy.public_review_findings`), `teacherNotes` (labels, open items,
-  story-typed verdicts and review answers by question and item;
+  `gate_policy.public_review_findings`), `teacherNotes` (middle-school review
+  answers and story-typed verdicts by question and item;
   `gate_policy.public_teacher_notes`), `unverifiedAnswers` counts, and
   `salvage` (attempts, corrections, replaced and dropped questions by code). A
   shorter sheet adds `SHORTER_SHEET`. No gate or model text leaves the worker.
@@ -438,7 +437,8 @@ Known gaps, stated plainly:
   and 3 prints that add numbers. Examples: a double inequality keyed by one
   side, a time answer keyed `8` for `8:15`, a ratio keyed without `:`. The test
   only forbids new ones (`tests/test_bench_probes.py`).
-- `label`, `open`, `review` and story-typed verdicts are human-checked by design.
+- Middle-school `review` answers and story-typed verdicts are human-checked by
+  design. Grades 1–6 refuse every answer without a proven key.
 - An answer printed in another question of the sheet is not refused (in the
   round-2 percentages sheet, 50% → 1/2 in Q1 and 1/2 → 50% in Q5): numbers of
   independent questions match by chance too often for a sheet-wide rule.

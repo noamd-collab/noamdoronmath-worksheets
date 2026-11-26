@@ -346,9 +346,14 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
             evidence.append({"itemId": item_id, "computed": solved})
             keys[j] = keyed
             if decision is not None and decision.proof["bound"] == "story":
+                if scope["topic"]["skillId"] == "elementary":
+                    # No binder proves that the typed claim reads the story's words, so
+                    # its yes or no has no proven key. Elementary prints none such.
+                    raise GeneralSourceError("PRINTED_ANSWER_KIND", "An elementary yes/no claim typed from a story has no proven key",
+                                             question=qcount, item=j)
                 # The verdict is exact for the typed claim. That the claim reads a
                 # story correctly is as unverified as in any word problem; a yes or
-                # a no hides a misreading, so the teacher is told.
+                # a no hides a misreading, so the middle-school teacher is told.
                 pending.append({"itemId": item_id, "question": qcount, "item": j, "kind": "decision",
                                 "reason": "The decided claim was typed from a story; its reading of the words is unverified"})
         elif answer.get("kind") == "figure":
@@ -368,24 +373,8 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
             answer["text"] = rich(answer["text"], grade, provider=provider, location=f"q{qcount}.item.{j}.answer")
             pending.append({"itemId": item_id, "question": qcount, "item": j, "kind": "review",
                             "reason": "No implemented exact verifier for this authored answer or proof"})
-        elif answer.get("kind") in ("label", "open"):
-            # A name that no kernel computes, or a task that has no key at all.
-            # Both are listed for the teacher; neither is ever a verified answer.
-            from answer_kinds import check_label, check_open
-            try:
-                if answer["kind"] == "label":
-                    exact(answer, ("kind", "text")); text(answer["text"], 40)
-                    check_label(question, item, grade)
-                else:
-                    exact(answer, ("kind",))
-                    check_open(question, item, grade)
-            except GeneralSourceError as error:
-                raise error.at(qcount, j)
-            pending.append({"itemId": item_id, "question": qcount, "item": j, "kind": answer["kind"],
-                            "reason": "A label is printed as authored; no exact verifier" if answer["kind"] == "label"
-                            else "No key is printed; the teacher checks this item"})
         else:
-            bad("SOURCE_ANSWER", "Supported answers: computed, figure, label or open in elementary, review in middle school")
+            bad("SOURCE_ANSWER", "Only computed, figure or explicitly unverified review answers are supported")
     from printed_parts import answer_leak
     leak = answer_leak(question, keys)
     if leak is not None:
@@ -692,12 +681,6 @@ def authoring_schema(lesson, scope):
     answers = [obj({"kind": {"const": "computed"}, "task": task, "unit": unit_schema})]
     if scope["topic"]["skillId"] == "middle":
         answers.append(obj({"kind": {"const": "review"}, "text": rt}))
-    else:
-        # A short Hebrew name for a naming question, and an item that the teacher checks.
-        label_schema = {"type": "string", "minLength": 1, "maxLength": 40, "pattern": r"^[^0-9A-Za-z\[\]<>$\\]*$"}
-        if grade <= 2:
-            label_schema["allOf"] = [vocalized]
-        answers += [obj({"kind": {"const": "label"}, "text": label_schema}), obj({"kind": {"const": "open"}})]
     answer = {"oneOf": answers}
     figures = []
     if scope["topic"]["skillId"] == "middle" and geometry_topic(scope):
