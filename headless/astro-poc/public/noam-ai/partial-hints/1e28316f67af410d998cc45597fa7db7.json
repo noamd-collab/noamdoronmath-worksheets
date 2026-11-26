@@ -1,0 +1,607 @@
+{
+  "version": 1,
+  "editionId": "ms-20261119-prp-01-r1",
+  "nativePrefix": "G8-T120",
+  "level": "a",
+  "levelCode": "A",
+  "title": "אחוזים — ייצוגים: שבר, מספר עשרוני ואחוז; אחוז מכמות והשלם",
+  "pdfId": "1e28316f67af410d998cc45597fa7db7",
+  "pdfSha256": "d889ecfe852c4c2a7e3be1a0809b6093cc0efdb15e49f8bca718efbda7a2fdaa",
+  "canonicalSourceSha256": "f9c56cc4e7c75e4bb88f32cbd9aec81497172fde939100dbe0914d16e08a8dca",
+  "items": [
+    {
+      "exerciseId": "G8-T120-A-Q01א",
+      "canonicalQuestionSha256": "db3aaad0b5cf145227a9f32421677a695b8591b6dd6f7e100f68bd2f03e43f2e",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.01.item.01",
+      "sourceExerciseSha256": "dbc848478a05ed202e637fbd37d245a28764f3af7e3132c41574c6533a7714f7",
+      "q": 1,
+      "part": "א",
+      "pin": {
+        "page": 1,
+        "x": 0.8452388984101806,
+        "y": 0.4027312966188041
+      },
+      "hintSha256": [
+        "22867d66f9468936048d3dd87cfab72e101b8256d4594b567e83311683b872ff",
+        "641930944a47de5eb6fe7bcefa77e332340a1f3ce1521bbf54a6422118800746",
+        "1e9e53c45e84a609a60e4ccee8e92a38090326529c9db17b99efbdb699297eb9"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q01ב",
+      "canonicalQuestionSha256": "db3aaad0b5cf145227a9f32421677a695b8591b6dd6f7e100f68bd2f03e43f2e",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.01.item.02",
+      "sourceExerciseSha256": "3f2df37e9438feadf7ea1dec55b36248f0b17c724b16a6cd7a41a6bc57970cb7",
+      "q": 1,
+      "part": "ב",
+      "pin": {
+        "page": 1,
+        "x": 0.8465953791630161,
+        "y": 0.48414570984843464
+      },
+      "hintSha256": [
+        "2f653acbc741f3a3f8c152748041244619566a211793e07b6729ea083c524c8b",
+        "4bd02f8eefb000454322f41910dbab85e60bcefb8dbf71610b644bbda7e3ba36",
+        "cfef806adf98675643dca1d8f8aa5ad2360232fe65569629c048acbaa84e1486"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q01ג",
+      "canonicalQuestionSha256": "db3aaad0b5cf145227a9f32421677a695b8591b6dd6f7e100f68bd2f03e43f2e",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.01.item.03",
+      "sourceExerciseSha256": "c2455594bfc0b5ec4c3aa7be08b587fefcbef5eba1215b671589cde97110510b",
+      "q": 1,
+      "part": "ג",
+      "pin": {
+        "page": 1,
+        "x": 0.8478882128002732,
+        "y": 0.5703114476491211
+      },
+      "hintSha256": [
+        "2294bce7740e8576573798a2069a89dd25ce38d2d7c74c18f83e0b2124181ec1",
+        "b36def14a34231244242d368d73ee20a145364eb0c7af62d86a565c56a0a90fe",
+        "22e20c3f2fac15523c7b30e9be0ce13607a6487a852f880526b0acbbf67493ec"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q01ד",
+      "canonicalQuestionSha256": "db3aaad0b5cf145227a9f32421677a695b8591b6dd6f7e100f68bd2f03e43f2e",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.01.item.04",
+      "sourceExerciseSha256": "04e9f7744e80cf9fecd6f9b78d7d1fbf14b1ac1c007ff7e832fd37ae6e85347b",
+      "q": 1,
+      "part": "ד",
+      "pin": {
+        "page": 1,
+        "x": 0.8473291281293592,
+        "y": 0.6837966401909534
+      },
+      "hintSha256": [
+        "2fa99d611f494916394037bb51742a0db159a3fe22d234668f28c7723554ad37",
+        "6288bfcd3181499e4161676355ee99d928ea0dea819f21808808eb05e7e0b4ca",
+        "dc2c1d0877637e6ae94956fb0dd40beb0d1063864cdf95845259555e084039f3"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q02א",
+      "canonicalQuestionSha256": "8dc7958a9afe30769ecad340a99f53f4fb1347ffbd336428a41078203dd4f9f4",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.02.item.01",
+      "sourceExerciseSha256": "0bb0964c95a9230bb43d4d87a95d30861a7ff708ee31540694e26e9d9313b291",
+      "q": 2,
+      "part": "א",
+      "pin": {
+        "page": 2,
+        "x": 0.8452388984101806,
+        "y": 0.19831950824452232
+      },
+      "hintSha256": [
+        "af057d801609ac5cf83b16344fca397f5127483e4f4616d77e625cbb335c6859",
+        "989fa7925cd8d67a859a6fd3b587ea512f543d0401064aab67ee3bf98ddb1d4a",
+        "33710d5b5aaf89050830a343e3dc751d58c4fbaa36fa4096740caabb136adce1"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q02ב",
+      "canonicalQuestionSha256": "8dc7958a9afe30769ecad340a99f53f4fb1347ffbd336428a41078203dd4f9f4",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.02.item.02",
+      "sourceExerciseSha256": "71e0535f9c32a2ff7120768bbb71da9e0bc74a564e0b8a36229681281d2f205d",
+      "q": 2,
+      "part": "ב",
+      "pin": {
+        "page": 2,
+        "x": 0.8465953791630161,
+        "y": 0.2859841471235555
+      },
+      "hintSha256": [
+        "26f5af0a9caf12963d1dad20c1067ac45ecf44cb903d058a6fdb63665dfe5690",
+        "4d1c5b32856cd07a127493b18ad23eb9450fe6331d776b8e722b5f07e1ab89f1",
+        "ef5bc66799a9aa8e9c97d0af4eb63a6da7c559340f68a71bcce4d9c9cfd37b96"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q02ג",
+      "canonicalQuestionSha256": "8dc7958a9afe30769ecad340a99f53f4fb1347ffbd336428a41078203dd4f9f4",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.02.item.03",
+      "sourceExerciseSha256": "59b650100952e0233288eff7f4daa740be493c7818a67498a7a8490f6f7b3260",
+      "q": 2,
+      "part": "ג",
+      "pin": {
+        "page": 2,
+        "x": 0.8478882128002732,
+        "y": 0.37840001995139455
+      },
+      "hintSha256": [
+        "7400460a1df6f6f3bbc7bd8453aa7157a354e202221c6944f8f2b074a4eeac4a",
+        "5d8fcd7737f7b118004a0231c2070aa2d8639e74efd0d5f1fa1abd122c5c1da1",
+        "e012f884556c2a3d038b9a0ca8a17c5f098872691a5bc5ee6d350e43ac60bff4"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q02ד",
+      "canonicalQuestionSha256": "8dc7958a9afe30769ecad340a99f53f4fb1347ffbd336428a41078203dd4f9f4",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.02.item.04",
+      "sourceExerciseSha256": "088d97338bc53d3f1e924958eee7fe42c48c5236f5bdbda8c43d0bf9ce4e61a8",
+      "q": 2,
+      "part": "ד",
+      "pin": {
+        "page": 2,
+        "x": 0.8473291281293592,
+        "y": 0.4684307242196736
+      },
+      "hintSha256": [
+        "3e9e82f218f4ff4b44c0a22b1a712fc436229ae9e36b0cce2eff1d5fd3e239e0",
+        "b8f22653bc381fc8ec1afdd89bac46654b114ac049053c9fc9f6e7487f4bd2d5",
+        "4e1f1efa79a828e0a9fa8e6c089aea23206e7c499cb1b54e02aef0de4f790262"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q03א",
+      "canonicalQuestionSha256": "4d3540e96b68abb2081ee72500b417bc1f4863bfc9c5a5a240352ad4932e3e1a",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.03.item.01",
+      "sourceExerciseSha256": "b2ca41cdd3f23e1239c811e8e7942a8a85e4e66b088a71b53492100ed2028dcf",
+      "q": 3,
+      "part": "א",
+      "pin": {
+        "page": 2,
+        "x": 0.8452388984101806,
+        "y": 0.580481004053932
+      },
+      "hintSha256": [
+        "ca3a36314108bc63b5e7fc8d9c339f447a5c5ab420d10fe5d188ce6d6740736f",
+        "6cbb7100f338a88f0733ab2e54a1fa37d66d4d49820422236d9b158960fc2e61",
+        "a83a6c44d3427bd7092a67a70951da482f30ad8a92fd8bf883ca14422eb6eed0"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q03ב",
+      "canonicalQuestionSha256": "4d3540e96b68abb2081ee72500b417bc1f4863bfc9c5a5a240352ad4932e3e1a",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.03.item.02",
+      "sourceExerciseSha256": "335f37360a91d10ad6dcc84adca2a3a85f86481cb20c4af704d7b93dc979d8d1",
+      "q": 3,
+      "part": "ב",
+      "pin": {
+        "page": 2,
+        "x": 0.8465953791630161,
+        "y": 0.6618954897813626
+      },
+      "hintSha256": [
+        "8eaf82de108ec630b58b68de399f88a9b2774d6ecd53c36e9a4df1b3179cded3",
+        "7e63aed6d74df31373e877c4d4ca49f055a5bc6bf99a740073b93a71c12f3415",
+        "c5c861e80968790928cc416dfeada501da04b713741b5305664c4ddde00f1319"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q03ג",
+      "canonicalQuestionSha256": "4d3540e96b68abb2081ee72500b417bc1f4863bfc9c5a5a240352ad4932e3e1a",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.03.item.03",
+      "sourceExerciseSha256": "38cd3314999b2dba692338ae22995f4a5a749091ee1e2301d9799daf24674f66",
+      "q": 3,
+      "part": "ג",
+      "pin": {
+        "page": 2,
+        "x": 0.8478882128002732,
+        "y": 0.748061155084249
+      },
+      "hintSha256": [
+        "9cdf3cd156982edcf6154c7fa4234a5a0dcda5edcaa4df89bd905e3d1905690c",
+        "7b46d5d67e9c830213ab5c94e29b153f7a07b8322c5e669c2f0e3e3d7b60ac74",
+        "ef6748d4b25800405ec81f8287c921c6ada7fb1cc6a9107d5a7468c7a1224e99"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q03ד",
+      "canonicalQuestionSha256": "4d3540e96b68abb2081ee72500b417bc1f4863bfc9c5a5a240352ad4932e3e1a",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.03.item.04",
+      "sourceExerciseSha256": "3ac684c757a58daa61ffc815c6103a23694b6ebcdb80b2e04d3f68640131c3f4",
+      "q": 3,
+      "part": "ד",
+      "pin": {
+        "page": 2,
+        "x": 0.8473291281293592,
+        "y": 0.8342268928849355
+      },
+      "hintSha256": [
+        "5618880699ca83260d59829004bd0b2066f452a277fbd75aee5503a3a47b6cd9",
+        "df1d7758b72430e6d0c4c279c10cae1e7edacb80f3212bf17b749cd92d23cfd8",
+        "6567d577e8e5e571d1df9780f75ccd1bba7a5efd4e3104c4e5f207fc0490fd0e"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q04א",
+      "canonicalQuestionSha256": "216cd252b2e110180f1b7a25e79eaf7b711ebc7ccff19134b9c58bc6ee7aecf9",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.04.item.01",
+      "sourceExerciseSha256": "ced63819ae3529dfdb2cb8afac4915c7ea8f6961645d27e4ec600f5746d2c749",
+      "q": 4,
+      "part": "א",
+      "pin": {
+        "page": 3,
+        "x": 0.8452388984101806,
+        "y": 0.26816197668731745
+      },
+      "hintSha256": [
+        "26fe889c17a2000909c78efef6c9d607b0a267540b45dc1413a432904d7cfad1",
+        "c5a45ec6a80347e918e97fbd1ef76a922c3186c7347a4fb9ab46047fe45495a7",
+        "7ca1cf054488c6ee0543d54e64519fb317e1de4572fdc1c1a2d24159f767e456"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q04ב",
+      "canonicalQuestionSha256": "216cd252b2e110180f1b7a25e79eaf7b711ebc7ccff19134b9c58bc6ee7aecf9",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.04.item.02",
+      "sourceExerciseSha256": "c628ad65988d534cb21a41a1f63b244ea5dc305fa54cd130a467889767d4e46f",
+      "q": 4,
+      "part": "ב",
+      "pin": {
+        "page": 3,
+        "x": 0.8465953791630161,
+        "y": 0.349576453352523
+      },
+      "hintSha256": [
+        "ba6df226b4a031bd3e35f6467dce6e079d748f09c171539f6b23f8b077562d72",
+        "bb7802fb6a124cc9cd600f8f69ae8254e4d056de0dc81343ae2484e97523663b",
+        "46d0051adbd340c1c559d4f0a3730541ee28d4d0dfcfa10106b711556cb25c9b"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q04ג",
+      "canonicalQuestionSha256": "216cd252b2e110180f1b7a25e79eaf7b711ebc7ccff19134b9c58bc6ee7aecf9",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.04.item.03",
+      "sourceExerciseSha256": "6ef1b064939665c3e570640600cba3f2ff56a25d486b6b54ff38632dc442e7a9",
+      "q": 4,
+      "part": "ג",
+      "pin": {
+        "page": 3,
+        "x": 0.8478882128002732,
+        "y": 0.4357421186554094
+      },
+      "hintSha256": [
+        "ca3a26df44cd0e98bb264396f698026b57ef046b477aab3bf624aff94f3e37ec",
+        "7c15de047bee9af9d11a1b48da205f6da41f3f9ba9824da9e24da06d7bbfd12a",
+        "5c43169ed3d2b968c76be9deb29acdb4314c83fa5b77a510b41620aa4ee7ad24"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q04ד",
+      "canonicalQuestionSha256": "216cd252b2e110180f1b7a25e79eaf7b711ebc7ccff19134b9c58bc6ee7aecf9",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.04.item.04",
+      "sourceExerciseSha256": "227ab51ff06d47dead44769db4655503cf8988c88b6ecea3191a70b6863213e5",
+      "q": 4,
+      "part": "ד",
+      "pin": {
+        "page": 3,
+        "x": 0.8473291281293592,
+        "y": 0.544228986621401
+      },
+      "hintSha256": [
+        "592bd8a1230bac2c7745845e0d255de92bd2763fab1b71071344679b66c70a8b",
+        "ff124aeb2377d7e123799536674a5a0e120c0dee3f368a12c317639d555de65e",
+        "3528af13c590073ae798cb6f9c04083c505f5377e2f80efad5803dc379685e06"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q04ה",
+      "canonicalQuestionSha256": "216cd252b2e110180f1b7a25e79eaf7b711ebc7ccff19134b9c58bc6ee7aecf9",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.04.item.05",
+      "sourceExerciseSha256": "f11b01a4e9525377f58a1fa5314cb7f7b4faa87d38a90d43c65ab4ac3fdc5ad5",
+      "q": 4,
+      "part": "ה",
+      "pin": {
+        "page": 3,
+        "x": 0.8453596305545117,
+        "y": 0.6577141791632333
+      },
+      "hintSha256": [
+        "60b25ed265480b5c87c68c3aa72643da6c58cb471d37b4f7243903116f37e07e",
+        "360ed15164f9082d2c0b17dfc7d23c6592e0ba9e56d50cec2b5d95f96e5a1bff",
+        "6f2cf040d7aedf01b335723144863f352cbf88d2eda4a25e54a2193ad0a895fb"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q05א",
+      "canonicalQuestionSha256": "03a8ced0ea406feb4ddb8508a436b830c77eba915992415d844423f408b75bad",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.05.item.01",
+      "sourceExerciseSha256": "d987f8f54af6e8baa9b3e4546c645bb43a11a6120f0ff913642db98f168c901b",
+      "q": 5,
+      "part": "א",
+      "pin": {
+        "page": 4,
+        "x": 0.8452388984101806,
+        "y": 0.09091406277526508
+      },
+      "hintSha256": [
+        "d0215c2ef36cf1e03628aa65522063fb0010d89d676d80c6a48a09e313f066dc",
+        "727120a8220b0ffe51be15febacd68c36990c924d4f4517fd2d2063d79c06a70",
+        "31075d79e5704b8f80037a5fcf1a24de830ce168046eeebfb9c1b75b1d5e71d1"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q05ב",
+      "canonicalQuestionSha256": "03a8ced0ea406feb4ddb8508a436b830c77eba915992415d844423f408b75bad",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.05.item.02",
+      "sourceExerciseSha256": "b5c335afa27f7d8aba82d6b648c6af26f9cca72f7749294a51fefcee16f2217a",
+      "q": 5,
+      "part": "ב",
+      "pin": {
+        "page": 4,
+        "x": 0.8465953791630161,
+        "y": 0.17232851225379567
+      },
+      "hintSha256": [
+        "c688935dfd0233637b61ef70b688af16719142c24bf46d2bfbfffd8c618c2670",
+        "fe3b37be00d167bb56989b18617b2de80041ca989de51ee40aa3368b085c5506",
+        "e5459bc404838939192365867e0fdeb139701cc8a7b375398335813517efc296"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q05ג",
+      "canonicalQuestionSha256": "03a8ced0ea406feb4ddb8508a436b830c77eba915992415d844423f408b75bad",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.05.item.03",
+      "sourceExerciseSha256": "91ed5403d86192676d8e6c8c2b11af3b7cdb68c1c37f15bfc1778f972c2144ac",
+      "q": 5,
+      "part": "ג",
+      "pin": {
+        "page": 4,
+        "x": 0.8478882128002732,
+        "y": 0.258494177556682
+      },
+      "hintSha256": [
+        "8d66d784d4add35165532f8b9ad60cc960a02561d14093ec74da1f5585e0e189",
+        "ff86768f01f24777921eaa924e629daee648e5474446d8f47be80dc00ca2a449",
+        "653c725d13bfb587dfec21de9670c619224f392eb1250fc99eaf66037fdc7852"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q05ד",
+      "canonicalQuestionSha256": "03a8ced0ea406feb4ddb8508a436b830c77eba915992415d844423f408b75bad",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.05.item.04",
+      "sourceExerciseSha256": "b5ef16e27035323093065f787d1c62a98a0749cef14afdcf96dc5d89927cd4e1",
+      "q": 5,
+      "part": "ד",
+      "pin": {
+        "page": 4,
+        "x": 0.8473291281293592,
+        "y": 0.39929885202633525
+      },
+      "hintSha256": [
+        "28e7bf5f556b63eea1106e464c587fbc8181c3d9cfc6f48522807bde41c32956",
+        "1bc806bd28fe802f94554566b5e05f656ae2563d20a82fc24b136392dc92c3d1",
+        "21063d0f8df5589c57004559db15d82ca3c5cccba5a48215dd535e6504ed7403"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q06א",
+      "canonicalQuestionSha256": "14b9b0750937fb41f749a80af64a873f2f5b24b80d611d82ea65bbec65d84403",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.06.item.01",
+      "sourceExerciseSha256": "d0b1e60bef6faf1f531115f18084ab2c4791adf3d14969c610d5d5900ed8676e",
+      "q": 6,
+      "part": "א",
+      "pin": {
+        "page": 4,
+        "x": 0.8452388984101806,
+        "y": 0.5386686590995396
+      },
+      "hintSha256": [
+        "333dfdd2b6b78b2eb2cdfac8d85f33aa0875214ced62e261cb33dd3e0d686215",
+        "c8d0182286f5768e2bf96ff01ec69eb8e785d9d58900dee27cbe3341de08f222",
+        "2b814203a31caef1de93aed169e1080266fb7c886b2faf1cd1529ec537f6be90"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q06ב",
+      "canonicalQuestionSha256": "14b9b0750937fb41f749a80af64a873f2f5b24b80d611d82ea65bbec65d84403",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.06.item.02",
+      "sourceExerciseSha256": "10296fcd75000f144d208aecff62f9b073de1ad954a9e323aec983a48a6e688e",
+      "q": 6,
+      "part": "ב",
+      "pin": {
+        "page": 4,
+        "x": 0.8465953791630161,
+        "y": 0.6200831085780703
+      },
+      "hintSha256": [
+        "9539817197c8104283420047355b377dd8d269e055873ebf556136efd33fdac7",
+        "2bd45d519352c7467e6a6db3095cfff7ad7239af00022212c219032c51bc8220",
+        "22033a9081617c0f17d69469ea06a29c36d22b1d69ab44af1fd6ce8afd424f01"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q06ג",
+      "canonicalQuestionSha256": "14b9b0750937fb41f749a80af64a873f2f5b24b80d611d82ea65bbec65d84403",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.06.item.03",
+      "sourceExerciseSha256": "6073c46c5fe863e8e81de4f5394231236d94ea45b5c35624ebd35cfa570fc9ab",
+      "q": 6,
+      "part": "ג",
+      "pin": {
+        "page": 4,
+        "x": 0.8478882128002732,
+        "y": 0.7335682648710025
+      },
+      "hintSha256": [
+        "d4d1b28c5ff9ed9647404ce554181923ca76e7b9e642db7a463bbfd4d1bd31db",
+        "87ae03313e7592a281bd8c00fd43726e6de1b1d1f4b9d7dff9ac43e701f95c54",
+        "b034a433b2ff65285221297ee709fe96a15ced17c2f72f9045353ac1d9c53538"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q06ד",
+      "canonicalQuestionSha256": "14b9b0750937fb41f749a80af64a873f2f5b24b80d611d82ea65bbec65d84403",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.06.item.04",
+      "sourceExerciseSha256": "b12966fa70177c3c12597c7d1a995825d1065bb0eecc3acd72d63c3f1e393d42",
+      "q": 6,
+      "part": "ד",
+      "pin": {
+        "page": 4,
+        "x": 0.8473291281293592,
+        "y": 0.8197339301738888
+      },
+      "hintSha256": [
+        "ac951e3960adc3ed55493082d76ea2afc2e888aefb4145b358206314689a1612",
+        "ab577484b7236ef17cdf8deae88463ebb816a366b938d96e424e6f8d23b4596a",
+        "a0b9d17a069472825726d3f74b8c3edfd2f3ea75144d7b93d49336d3539fbe06"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q07א",
+      "canonicalQuestionSha256": "52a56a9d4956ebe5145c2bd338fda439be20a640d25ba1a803442fd5ba6187d6",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.07.item.01",
+      "sourceExerciseSha256": "7fe3f332c9a6e529079520e2acb7c7893f9dc359899561a092ce59b19abd7846",
+      "q": 7,
+      "part": "א",
+      "pin": {
+        "page": 5,
+        "x": 0.8452388984101806,
+        "y": 0.18295462355444825
+      },
+      "hintSha256": [
+        "2f056c24d93be3c132d9bf9fb3c99148ad526e61c6fe3b89da6120eaab9ada08",
+        "53c0d6c24f371259e89814bd30a82d9d350162253e1f17ba93a814279737d6cd",
+        "0942e3870f1245376b6f2299afcd6056b108a7550debfdbd53fa30c532625de5"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q07ב",
+      "canonicalQuestionSha256": "52a56a9d4956ebe5145c2bd338fda439be20a640d25ba1a803442fd5ba6187d6",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.07.item.02",
+      "sourceExerciseSha256": "d430df431e5f90c912d80ab8fce4201d5576b5c93a2828fda0e889911092e881",
+      "q": 7,
+      "part": "ב",
+      "pin": {
+        "page": 5,
+        "x": 0.8465953791630161,
+        "y": 0.29168856402302473
+      },
+      "hintSha256": [
+        "bab7178f272e78a54952d53274df8f73289f5033c64d7aafab239cc6bc0d5ee0",
+        "88ad5b65927510a122b080350eab6c6d770e438c25ce8984060954cffc03fb24",
+        "5ac54fa17b9a88317e9a553633267b76756aa10a100f61b47a27f1a6b06ccf3e"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q07ג",
+      "canonicalQuestionSha256": "52a56a9d4956ebe5145c2bd338fda439be20a640d25ba1a803442fd5ba6187d6",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.07.item.03",
+      "sourceExerciseSha256": "3089e905537d61cb2a195775d21ae2c91cba7b25160e59a17eb66872506ddb7c",
+      "q": 7,
+      "part": "ג",
+      "pin": {
+        "page": 5,
+        "x": 0.8478882128002732,
+        "y": 0.4324932022437779
+      },
+      "hintSha256": [
+        "d045410407c1a8fc74a8c001219e013e44327a96360be225cce1e83ef6170360",
+        "1c60442847723cfe2bfd45d53eab22d6411590e94009449c6cb3b93620053cf3",
+        "2b860f5937902b7451e7c2d3c0fece114063a2349827bba0125fd53d04f2b158"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q07ד",
+      "canonicalQuestionSha256": "52a56a9d4956ebe5145c2bd338fda439be20a640d25ba1a803442fd5ba6187d6",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.07.item.04",
+      "sourceExerciseSha256": "2ca6bf473b4c6c774bc983a19c23f3444f5fcc8af914bd6b99aa02e1f5769d9d",
+      "q": 7,
+      "part": "ד",
+      "pin": {
+        "page": 5,
+        "x": 0.8473291281293592,
+        "y": 0.5956190884387613
+      },
+      "hintSha256": [
+        "13bddd78efe1a31ebdb7f5356c789e17abd7fcebcbfef1337dcd57f0de1b77e9",
+        "4bf4d9f1e0cb13388c6e889ff79b36636ddb6e65f5b2f940d26e3098d2cb6414",
+        "82d7ea826ee866738d57f6c032c6c04060f8ee9f2c473b09d421989b186363f6"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q08א",
+      "canonicalQuestionSha256": "ae1c7c971b3e4c248840c011050b874ae69be846320dfec8200ff366ffe0a36c",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.08.item.01",
+      "sourceExerciseSha256": "c2bcacf741ee1a535c6acf4aec3314c2f523dace9af14c9d710b6ab7dd4384cb",
+      "q": 8,
+      "part": "א",
+      "pin": {
+        "page": 6,
+        "x": 0.8452388984101806,
+        "y": 0.09091406277526508
+      },
+      "hintSha256": [
+        "7210565e8e771541964c65dfe3997b092126c84cd045f5d1eeca735b3824133e",
+        "1a2c25aea851fa4c4602a1c86a917d104ec310f342948a4e28760869c22eee78",
+        "6eb5c5e56896055ef688219e347ce1fca55c16610f5e0ac1c57588d429d50afe"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q08ב",
+      "canonicalQuestionSha256": "ae1c7c971b3e4c248840c011050b874ae69be846320dfec8200ff366ffe0a36c",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.08.item.02",
+      "sourceExerciseSha256": "5ad12203eaeb1deb05a78d905eba8d52a6721ad7dc9f6b550c2968ef4b2b2b58",
+      "q": 8,
+      "part": "ב",
+      "pin": {
+        "page": 6,
+        "x": 0.8465953791630161,
+        "y": 0.1996480304305166
+      },
+      "hintSha256": [
+        "78382fbdea3f8a91e919bbeeebe3ee780b0b42066c586b69adf8df65ab02b7b8",
+        "3b0e9228664d2411d41959de0c30b293ab6dcdd5e06f442232c27016ab7066e4",
+        "6e216ebf0cde13d2cef94caebf5ec2cfe2da92df709d57ff589130dac1420336"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q08ג",
+      "canonicalQuestionSha256": "ae1c7c971b3e4c248840c011050b874ae69be846320dfec8200ff366ffe0a36c",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.08.item.03",
+      "sourceExerciseSha256": "0648efaf73dfe5e6fe55d3f6a395d71ec8efa11723f57e08f6b961080c890163",
+      "q": 8,
+      "part": "ג",
+      "pin": {
+        "page": 6,
+        "x": 0.8478882128002732,
+        "y": 0.34045264146459475
+      },
+      "hintSha256": [
+        "fe9f5387174333ea658168602c093099c4858adc471db1d0742b5d0caf316e05",
+        "90f2081308f215aead4efe3463955219e496b81671fef33628df0b9366262987",
+        "431b2bd896b0a2f35357d555530f45c9fa0b2c4182c46544aa8640b02394caf1"
+      ]
+    },
+    {
+      "exerciseId": "G8-T120-A-Q08ד",
+      "canonicalQuestionSha256": "ae1c7c971b3e4c248840c011050b874ae69be846320dfec8200ff366ffe0a36c",
+      "canonicalItemId": "ms-g8-prp-01-a-r1.question.08.item.04",
+      "sourceExerciseSha256": "2c7962f6c8ac4a37865c8110139617cdc076be92373e5f5f3b0cedf181378e3c",
+      "q": 8,
+      "part": "ד",
+      "pin": {
+        "page": 6,
+        "x": 0.8473291281293592,
+        "y": 0.481257324996473
+      },
+      "hintSha256": [
+        "d0beeb5f7c5f6c6ab6009351e646b12afa78d0f7d487ef7a76d0e75f1d137382",
+        "82fb7628c403b9fcc4a70d11c64a0c3dadb8002b0ca8b75edeb6614117c4d11a",
+        "c537e16869b4ad1dc6f128b9bb1c94fb380b0f941f1cb31d9303b7cf382fe0e8"
+      ]
+    }
+  ]
+}

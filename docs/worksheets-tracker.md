@@ -14,6 +14,10 @@ The three G7-T137 student PDFs each have 20 reviewed Ramzi markers on the printe
 
 Each of the three G7-T136 student PDFs has 36 reviewed Ramzi markers. Each marker is bound to its printed subsection and the three approved text hints. The grade 7 frequency landing lists these PDFs under topic 25, alongside the original downloads.
 
+## 2026-11-26 — Ramzi B13 worksheet readers
+
+The catalog and topic pages link 54 PDFs in 18 middle-school editions to the existing Ramzi reader. The indexes bind 1,490 printed subsections to the exact PDF, source item and three ordered hint hashes. Each marker requires a matching verified Supabase row.
+
 ## 2026-11-22 — Grade 7 common factors and introductory equations (078 and 079)
 
 All 63 subsections in G7-T124 and 92 in G7-T125 have three reviewed text hints each. The six original PDFs are linked from their topic pages and the catalog. The Ramzi markers match the original printed positions and the anonymously verified hint text for each subsection.

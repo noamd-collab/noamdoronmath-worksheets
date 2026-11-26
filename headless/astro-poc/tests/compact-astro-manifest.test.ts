@@ -42,6 +42,23 @@ test('does not remove unique styles, repeated non-CSS data, or small styles', ()
   assert.deepEqual(compactManifestStyleStrings(input), { source: input, strings: 0, references: 0, savedBytes: 0 });
 });
 
+test('packs recurring external styles and preserves independent route objects', async () => {
+  const style = { type: 'external', src: '/_astro/shared-worksheets.css' };
+  const unrelated = { ...style, media: 'print' };
+  const data = {
+    routes: Array.from({ length: 8 }, () => ({ styles: [{ ...style }, { ...unrelated }] })),
+    note: JSON.stringify(style),
+  };
+  const compact = compactManifestStyleStrings(source(data));
+  assert.equal(compact.strings, 1);
+  assert.equal(compact.references, 8);
+  assert.ok(compact.savedBytes > 0);
+  const result = await load(compact.source);
+  assert.deepEqual(result, data);
+  result.routes[0].styles[0].src = '/only-on-first-route.css';
+  assert.equal(result.routes[1].styles[0].src, style.src);
+});
+
 test('fails closed on an unfamiliar manifest shape, duplicate declaration, or generated-binding collision', () => {
   const valid = source(fixture());
   assert.throws(() => compactManifestStyleStrings('export const manifest = {};'), /Unsupported/);
