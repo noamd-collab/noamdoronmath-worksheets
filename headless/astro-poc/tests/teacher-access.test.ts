@@ -40,7 +40,7 @@ test('every verified Google teacher can use existing tools, while new generation
     const request = new Request('https://www.noamdoronmath.co.il/teachers/app', {
       headers: { cookie: `${TEACHER_SESSION_COOKIE}=${credential}` },
     });
-    const accepted = { ok: true, userId: user.id, expiresAt: expiry };
+    const accepted = { ok: true, userId: user.id, expiresAt: expiry, email: user.email };
     assert.deepEqual(await verifyGoogleTeacherToken(credential, options(user)), accepted);
     assert.deepEqual(await requireGoogleTeacher(request, options(user)), accepted);
     assert.deepEqual(await requireOwnerTeacher(request, options(user)), user.id === config.ownerUserId ? accepted : denied);
@@ -53,7 +53,7 @@ test('client metadata and an owner-looking email never upgrade another Google te
   const user = { ...teacher(), user_metadata: { id: config.ownerUserId, ownerUserId: config.ownerUserId,
     role: 'owner', teacherAccess: 'owner', email: 'owner@example.test' } };
   const credential = token({ sub: user.id, role: 'owner', ownerUserId: config.ownerUserId });
-  assert.deepEqual(await verifyGoogleTeacherToken(credential, options(user)), { ok: true, userId: user.id, expiresAt: expiry });
+  assert.deepEqual(await verifyGoogleTeacherToken(credential, options(user)), { ok: true, userId: user.id, expiresAt: expiry, email: user.email });
   assert.deepEqual(await verifyTeacherToken(credential, options(user)), denied);
 });
 
@@ -61,7 +61,7 @@ test('Google tool access does not depend on owner configuration; owner generatio
   const user = teacher(), credential = token({ sub: user.id });
   for (const ownerUserId of ['', 'owner@example.test']) {
     const configured = { ...options(user), config: { ...config, ownerUserId } };
-    assert.deepEqual(await verifyGoogleTeacherToken(credential, configured), { ok: true, userId: user.id, expiresAt: expiry });
+    assert.deepEqual(await verifyGoogleTeacherToken(credential, configured), { ok: true, userId: user.id, expiresAt: expiry, email: user.email });
     assert.deepEqual(await verifyTeacherToken(credential, { ...configured, fetch: async () => {
       assert.fail('Invalid owner configuration must not request upstream identity');
     } }), unavailable);
@@ -119,7 +119,7 @@ test('valid owner is verified against fixed Auth origin with no redirects, cooki
     return Response.json(owner());
   };
   for (let n = 0; n < 2; n++) assert.deepEqual(await verifyTeacherToken(accessToken, { ...options(), fetch: fetcher }), {
-    ok: true, userId: config.ownerUserId, expiresAt: expiry,
+    ok: true, userId: config.ownerUserId, expiresAt: expiry, email: 'owner@example.test',
   });
   assert.equal(calls, 2, 'Every request rechecks Auth; permanent entitlement is not a cached session');
 });
@@ -176,7 +176,7 @@ test('permanent owner entitlement continues with a newly valid session rather th
   const later = now + 365 * 24 * 60 * 60 * 1000;
   const laterExpiry = later / 1000 + 300;
   assert.deepEqual(await verifyTeacherToken(token({ exp: laterExpiry }), { ...options(), now: () => later }), {
-    ok: true, userId: config.ownerUserId, expiresAt: laterExpiry,
+    ok: true, userId: config.ownerUserId, expiresAt: laterExpiry, email: 'owner@example.test',
   });
 });
 
@@ -232,7 +232,7 @@ test('request authorizer accepts exactly one host cookie and ignores client Auth
     assert.deepEqual(await authorizeTeacherRequest(new Request(url, { headers: { cookie } }), options()), required);
   }
   const request = new Request(url, { headers: { cookie: `other=a; ${TEACHER_SESSION_COOKIE}=${token()}; unrelated=z` } });
-  assert.deepEqual(await authorizeTeacherRequest(request, options()), { ok: true, userId: config.ownerUserId, expiresAt: expiry });
+  assert.deepEqual(await authorizeTeacherRequest(request, options()), { ok: true, userId: config.ownerUserId, expiresAt: expiry, email: 'owner@example.test' });
 });
 
 test('owner cookies and all failure responses remain private and non-indexable', async () => {
