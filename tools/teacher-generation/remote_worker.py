@@ -31,7 +31,7 @@ from pathlib import Path
 from urllib.request import Request, build_opener, HTTPRedirectHandler, HTTPSHandler
 from urllib.error import HTTPError
 from provider import author_lesson, safe_transport_measurements, safe_usage
-from gate_policy import public_review_findings, public_teacher_notes, unverified_rows
+from gate_policy import NOTES, public_review_findings, public_teacher_notes, unverified_rows
 from runner import V5_NOT_RUN_ALLOWED, precheck_job, render_job, render_structured
 from skill_feedback import gate_report
 from validation import GenerationError, capabilities, validate_lesson
@@ -670,6 +670,23 @@ def accepted_step(step, skill, not_run):
             and step['name'] in V5_NOT_RUN_ALLOWED and step['name'] in not_run)
 
 
+REVIEW_REASON = 'PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY'
+
+
+def accepted_review(steps, index, skill):
+    """Whether steps[index], a REVIEW step of a version 3 render, is the one REVIEW the worker delivers.
+
+    Only the production path from before #635 makes it: runner.render_job sets the middle driver's step
+    (middle-build) to REVIEW with reason PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY once didactic_review.py
+    reconciled it, and records that reconciliation as the next step, PASS. ``skill`` is the lesson's
+    skill when the manifest names the same one. Every other REVIEW is refused."""
+    step = steps[index]
+    after = steps[index + 1] if index + 1 < len(steps) else None
+    return (skill == 'middle' and step.get('name') == 'middle-build' and step.get('status') == 'REVIEW'
+            and step.get('reason') == REVIEW_REASON and isinstance(after, dict)
+            and after.get('name') == 'didactic-review-reconciliation' and after.get('status') == 'PASS')
+
+
 def structured_result(remote, job, manifest, artifact_root, structured):
     """Accept, upload and describe a worksheet-wire/5 render: the artifacts are exactly [pdf], the render passed
     every executed step, the manifest names the lesson's own skill, and every step passes accepted_step (PASS, or
@@ -720,7 +737,7 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
     try: expires=datetime.fromisoformat(job.get('lease_until','').replace('Z','+00:00'))
     except (ValueError,TypeError,AttributeError): raise RuntimeError('JOB_LEASE_LOST') from None
     if expires.tzinfo is None or expires<=utc(): raise RuntimeError('JOB_LEASE_LOST')
-    lesson=job.get('lesson');validate_lesson(lesson, allow_legacy=False)
+    lesson=job.get('lesson');cap=validate_lesson(lesson, allow_legacy=False)
     raw_target=root/job['id']
     if raw_target.is_symlink(): raise RuntimeError('JOB_PATH_DENIED')
     target=raw_target.resolve()
@@ -761,7 +778,24 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
         general=lesson.get('version')==3 and manifest.get('authoringProfile')=='general-skill-source/v1'
         passed=manifest.get('status')=='needs_review' and (manifest.get('automatedChecksPassed') is True
             or (general and manifest.get('renderingChecksPassed') is True))
-        passed=passed and bool(manifest.get('steps')) and all(s.get('status') in (('PASS','REVIEW') if general else ('PASS',)) for s in manifest['steps'])
+        steps=manifest.get('steps')
+        passed=passed and isinstance(steps,list) and bool(steps) and all(isinstance(s,dict) for s in steps)
+        named=manifest['skill'].get('name') if isinstance(manifest.get('skill'),dict) else None
+        # The lesson's own skill, when the manifest names the same one.
+        skill=cap['skill'] if named==cap['skill'] else None
+        # PASS, or on a version 3 render the one REVIEW of the middle driver's reconciled exit (accepted_review).
+        reviewed=passed and any(s.get('status')=='REVIEW' for s in steps)
+        passed=passed and all(s.get('status')=='PASS' or (general and accepted_review(steps,i,skill))
+                              for i,s in enumerate(steps))
+        unverified=unverified_rows(manifest.get('unverifiedAnswers',[])) if general else []
+        # A list of unverified answers that cannot be read is never dropped, and an elementary sheet never
+        # prints an answer without a proven key (D6): either one refuses the sheet before anything is uploaded.
+        passed=passed and unverified is not None and not (unverified and 'elementary' in (cap['skill'],named))
+        findings=[]
+        if passed and general:
+            findings=public_review_findings(manifest.get('reviewFindings',[]))
+            # A delivered REVIEW always carries its own note for the teacher.
+            passed=not reviewed or any(row['code']=='DIDACTIC_REVIEW' for row in findings)
         if not passed or {a.get('kind') for a in artifacts}!={'pdf','docx'} or len(artifacts)!=2:
             raise GenerationError('QUALITY_GATE_FAILED','A required output gate failed')
         stage='upload'
@@ -783,18 +817,16 @@ def process_job(remote, job, root, *, enable_skill_revision=ENABLE_SKILL_REVISIO
         result={'version':1,'automatedChecksPassed':manifest.get('automatedChecksPassed') is True,'humanReviewRequired':True,'skill':manifest['skill'],
                 'artifacts':published,'checks':[{'name':s['name'],'status':s['status']} for s in manifest['steps']]}
         if general:
-            findings=manifest.get('reviewFindings',[])
             salvage=public_salvage(summary,lesson['questionCount'])
             if salvage and salvage['dropped']['count']:
                 # A shorter sheet is delivered with its own note for the teacher.
-                findings=(findings if isinstance(findings,list) else [])+[
-                    {'code':'SHORTER_SHEET','class':'editorial','count':salvage['dropped']['count']}]
-            unverified=unverified_rows(manifest.get('unverifiedAnswers',[])) or []
-            # Notes of the editorial codes that do not block (the middle didactic
-            # REVIEW, a shorter sheet): fixed codes, counts, question numbers and
-            # this engine's own Hebrew notes. No gate or model text is forwarded.
+                findings=findings+[{'code':'SHORTER_SHEET','count':salvage['dropped']['count'],'note':NOTES['SHORTER_SHEET']}]
+            # Notes of the middle didactic REVIEW (the one finding that does not
+            # block) and of the worker's own shorter sheet: fixed codes, counts,
+            # question numbers and this engine's own Hebrew notes. No gate or
+            # model text is forwarded.
             result.update(authoringProfile='general-skill-source/v1',renderingChecksPassed=True,
-                          reviewFindings=public_review_findings(findings),
+                          reviewFindings=findings,
                           # Which printed answers no exact kernel verified (middle school only):
                           # review answers and story-typed decisions, by question and item.
                           teacherNotes=public_teacher_notes(manifest.get('unverifiedAnswers',[])),

@@ -142,7 +142,9 @@ copies the positions and kinds to `manifest.unverifiedAnswers`, and the worker
 result carries them as `teacherNotes`: one entry per kind with a fixed Hebrew
 sentence (`gate_policy.UNVERIFIED_NOTES`) and the question and item numbers.
 Evidence that is present but unreadable, or that lists an elementary answer,
-fails the render before anything is built.
+fails the render before anything is built. The worker checks the manifest
+again before anything is uploaded: a list it cannot read, or any listed answer
+on an elementary sheet, refuses the sheet.
 Prose, reasoning and pedagogical correspondence still require human review.
 
 `general_adapters.py` compiles only trusted templates. Typed figures are
@@ -195,7 +197,12 @@ A result is always `needs_review` or `failed`, never publication approval:
   review findings. `didactic_review.py` reconciles only the pinned driver's
   documented REVIEW-only exit discrepancy, checks every other gate and output
   hash, and reruns the pinned checker. It never converts a FAIL finding to
-  REVIEW.
+  REVIEW. This is the only REVIEW the worker accepts: `middle-build` with reason
+  `PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY`, followed by
+  `didactic-review-reconciliation` PASS, on a middle-school lesson, with its
+  `DIDACTIC_REVIEW` note; every other REVIEW is refused. A render that fails
+  after the reconciliation (a missing PDF or Word file) puts the step back to
+  FAIL and keeps no review note.
 - API, UI and private-storage RLS use equivalent readiness rules. Only exact
   owner PDF/DOCX paths can be downloaded; source, logs and keys remain private.
 

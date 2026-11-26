@@ -28,8 +28,9 @@ MAX_REVIEW_COUNT = 2000
 
 # Hebrew teacher notes. Only editorial codes have one, and only these fixed
 # sentences ever reach the teacher: gate output is never forwarded. A delivered
-# sheet can carry only the notes of the codes that do not block a render:
-# DIDACTIC_REVIEW (middle-build) and SHORTER_SHEET (added by the worker).
+# sheet carries only the DIDACTIC_REVIEW note of the one row that does not
+# block a render (middle-build, blocks()) and the SHORTER_SHEET note that the
+# worker adds for its own shorter sheet; a SHORTER_SHEET finding of a gate blocks.
 NOTES = {
     "G50": "מספר שאלות האתגר (★) בדף אינו בטווח הרגיל של 2 עד 4.",
     "G61": "רמת הקושי בדף אינה אחידה: הפער בין השאלות הקלות לשאלות הקשות גדול מהרגיל, "
@@ -290,9 +291,13 @@ def decide(report, failed_steps=()):
 def public_review_findings(rows):
     """The part of manifest reviewFindings that may leave the worker.
 
-    Codes are checked against the table and notes are taken from it, so no
-    manifest text reaches the job result. A row whose class says reconciled
-    stays private.
+    Only a row that blocks() lets through: on every step the row lists, its
+    code, with the class the table gives it, must not block. Today that is
+    the middle-build DIDACTIC_REVIEW row alone. A row that lists no step,
+    whose class is not the table's, or whose code blocks on any listed step
+    stays private. Codes are checked against the table and notes are taken
+    from it, so no manifest text reaches the job result. The worker adds the
+    SHORTER_SHEET note of its own shorter sheet itself.
     """
     result = []
     if not isinstance(rows, list):
@@ -300,8 +305,11 @@ def public_review_findings(rows):
     for row in rows[:40]:
         if not isinstance(row, dict):
             continue
-        code, count = row.get("code"), row.get("count")
-        if (not isinstance(code, str) or gate_class(code) != EDITORIAL or row.get("class") == "reconciled"
+        code, count, steps = row.get("code"), row.get("count"), row.get("steps")
+        if (not isinstance(code, str) or row.get("class", gate_class(code)) != gate_class(code)
+                or not isinstance(steps, list) or not 0 < len(steps) <= 8
+                or any(not isinstance(step, str) or blocks({"code": code, "class": gate_class(code), "step": step})
+                       for step in steps)
                 or type(count) is not int or not 0 < count <= MAX_REVIEW_COUNT):
             continue
         entry = {"code": code, "count": count, "note": NOTES[code]}

@@ -369,10 +369,17 @@ not in `gate_policy.GATES` is truth.
 
 **What the teacher gets** (`remote_worker.process_job`):
 
+- **Accepted:** every step PASS, or the one middle-build REVIEW of the
+  reconciled driver exit (reason `PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY`, then
+  `didactic-review-reconciliation` PASS, with its `DIDACTIC_REVIEW` note;
+  `remote_worker.accepted_review`). Any other REVIEW, an `unverifiedAnswers`
+  list that cannot be read, and any listed answer on an elementary sheet are
+  refused before anything is uploaded.
 - **Delivered:** status `needs_review`, the PDF and the DOCX, and in the result
-  `reviewFindings` (the didactic review and shorter-sheet codes, counts,
-  question numbers, the fixed note;
-  `gate_policy.public_review_findings`), `teacherNotes` (middle-school review
+  `reviewFindings` (codes, counts, question numbers and the fixed note of the
+  rows that `gate_policy.blocks` lets through, the middle-build didactic
+  review, by `gate_policy.public_review_findings`, and the worker's own
+  shorter-sheet note), `teacherNotes` (middle-school review
   answers and story-typed verdicts by question and item;
   `gate_policy.public_teacher_notes`), `unverifiedAnswers` counts, and
   `salvage` (attempts, corrections, replaced and dropped questions by code). A

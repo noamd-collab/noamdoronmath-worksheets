@@ -552,6 +552,17 @@ def render_job(lesson, model_payload, workdir, skill_paths=None, *, allow_legacy
                       for step in steps if step['status']=='FAIL']
         gate={'version':1,'action':action,'complete':report['complete'],'blocking':blocking,'questions':questions,
               'review':decision['reviewFindings']}
+    if general and not ok:
+        # A failed manifest keeps no REVIEW step and no review note. The middle
+        # driver's step goes back to the FAIL it exited with when a later check
+        # (word-upstream-presence, artifact-presence) failed after its
+        # reconciliation; the notes of a sheet that is not delivered are dropped.
+        for step in steps:
+            if step['status']=='REVIEW':
+                step['status']='FAIL';step.pop('reason',None)
+        review_findings=[]
+        if gate is not None:
+            gate['review']=[]
     manifest={'version':1,'status':'needs_review' if ok else 'failed','automatedChecksPassed':bool(ok and len(artifacts)==2 and all(s['status']=='PASS' for s in steps)),'skill':{'name':cap['skill'],'version':pin['version'],'sha256':pin['sha256']},'topicId':lesson['topicId'],'gradeNumber':lesson['gradeNumber'],'modelInputSha256':sha(work/'model-output.json'),'adapterSha256':sha(HERE/'adapters.py'),'steps':steps,'artifacts':artifacts if ok else [],'review':{'mathematical':'exact typed arithmetic verified; prose/template review pending','visual':'pending; every final PDF page and actual Word rendering must be inspected','curriculum':'bounded topic allowlist; free-text progress is not independently verified','publication':'not approved; private owner preview only'}}
     manifest['lessonBoundary']=lesson.get('lessonBoundary')
     if salvaged_from is not None:

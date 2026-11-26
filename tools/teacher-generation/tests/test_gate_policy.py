@@ -13,6 +13,7 @@ import gate_policy as policy
 import remote_worker as worker
 import runner
 from gate_policy import EDITORIAL, POLICY, TRUTH, decide, finding, public_review_findings
+from validation import GenerationError
 from test_skill_feedback import (ADAPTER_REFUSAL, HOUSE_G51_G61, HOUSE_G61, HOUSE_G61_G62, HOUSE_PASSING,
                                  OUTPUT_ANSWER_ORDER, TRUTH_G32)
 
@@ -122,18 +123,43 @@ class DecisionTests(unittest.TestCase):
                          [("G61", "house-gates"), ("STEP_FAILED", "bracket-order-reconciliation")])
         self.assertEqual(decide(report(), [])["action"], "deliver")
 
-    def test_only_fixed_editorial_notes_reach_the_job_result(self):
-        rows = [{"code": "G61", "class": "editorial", "count": 2, "questions": [10, 2, 2, 31, "7", 0], "note": "FORGED", "steps": ["x"]},
-                {"code": "DIDACTIC_REVIEW", "count": 62},
-                {"code": "G51", "class": "reconciled", "count": 1, "questions": []},
-                {"code": "G32", "class": "editorial", "count": 1, "note": "FORGED"},
-                {"code": "G62", "count": 0}, {"code": "G62", "count": 2001}, {"code": "G62", "count": True},
-                {"code": "DIDACTIC_REVIEW", "class": "reconciled", "count": 3}, "text", None]
+    def test_only_the_notes_of_findings_that_do_not_block_reach_the_job_result(self):
+        middle = ["middle-build"]
+        rows = [{"code": "DIDACTIC_REVIEW", "class": "editorial", "count": 2, "questions": [10, 2, 2, 31, "7", 0],
+                 "note": "FORGED", "steps": middle},
+                {"code": "DIDACTIC_REVIEW", "count": 62, "steps": middle},
+                # Every other editorial code blocks, wherever it was found: its note never leaves the worker.
+                {"code": "G61", "class": "editorial", "count": 2, "questions": [10, 2], "steps": ["house-gates"]},
+                {"code": "G62", "class": "editorial", "count": 1, "steps": ["x"]},
+                {"code": "G50", "count": 1, "steps": ["house-gates"]}, {"code": "PAGE_FILL", "count": 1, "steps": ["worksheet"]},
+                {"code": "PAGE_GAP", "count": 1, "steps": ["worksheet"]}, {"code": "SHORTER_SHEET", "count": 2, "steps": ["worker"]},
+                # A didactic REVIEW of any other step, of no step or beside another step blocks as well.
+                {"code": "DIDACTIC_REVIEW", "count": 4}, {"code": "DIDACTIC_REVIEW", "count": 4, "steps": []},
+                {"code": "DIDACTIC_REVIEW", "count": 4, "steps": ["house-gates"]},
+                {"code": "DIDACTIC_REVIEW", "count": 4, "steps": ["middle-build", "house-gates"]},
+                {"code": "DIDACTIC_REVIEW", "count": 4, "steps": "middle-build"},
+                {"code": "DIDACTIC_REVIEW", "count": 4, "steps": [None]},
+                # A class that is not the table's own stays private.
+                {"code": "DIDACTIC_REVIEW", "class": "reconciled", "count": 3, "steps": middle},
+                {"code": "DIDACTIC_REVIEW", "class": "truth", "count": 3, "steps": middle},
+                {"code": "G51", "class": "reconciled", "count": 1, "questions": [], "steps": ["house-gates"]},
+                {"code": "G32", "class": "editorial", "count": 1, "note": "FORGED", "steps": middle},
+                {"code": "DIDACTIC_REVIEW", "count": 0, "steps": middle}, {"code": "DIDACTIC_REVIEW", "count": 2001, "steps": middle},
+                {"code": "DIDACTIC_REVIEW", "count": True, "steps": middle}, "text", None]
         self.assertEqual(public_review_findings(rows), [
-            {"code": "G61", "count": 2, "note": policy.NOTES["G61"], "questions": [2, 10]},
+            {"code": "DIDACTIC_REVIEW", "count": 2, "note": policy.NOTES["DIDACTIC_REVIEW"], "questions": [2, 10]},
             {"code": "DIDACTIC_REVIEW", "count": 62, "note": policy.NOTES["DIDACTIC_REVIEW"]}])
         self.assertEqual(public_review_findings("G61"), [])
         self.assertNotIn("FORGED", json.dumps(public_review_findings(rows), ensure_ascii=False))
+        # The rows the runner writes: a didactic REVIEW passes, an editorial gate finding never does.
+        for code, step, public in (("DIDACTIC_REVIEW", "middle-build", True), ("G61", "house-gates", False),
+                                   ("G62", "house-gates", False), ("G50", "house-gates", False), ("PAGE_FILL", "worksheet", False)):
+            rows = policy.review_findings([{**finding(code, step, 3), "class": EDITORIAL}])
+            if code != "DIDACTIC_REVIEW":
+                # review_findings itself keeps only what does not block; a forged list is checked again here.
+                self.assertEqual(rows, [], code)
+                rows = [{"code": code, "class": EDITORIAL, "count": 1, "steps": [step], "questions": [3]}]
+            self.assertEqual(bool(public_review_findings(rows)), public, code)
 
 
 class RunnerPolicyTests(unittest.TestCase):
@@ -282,11 +308,14 @@ class RunnerPolicyTests(unittest.TestCase):
         self.assertEqual((manifest["gate"]["action"], manifest["gate"]["questions"]), ("fail", []))
         self.assertEqual(manifest["gate"]["blocking"], [{"code": "G51", "class": "truth", "step": "house-gates"}])
         # The one gate that delivers is the middle driver's reconciled didactic REVIEW. Without the printed PDF
-        # the artifact check fails, and the manifest says fail, not deliver.
+        # the artifact check fails, and without the Word file the upstream check fails: the manifest says fail,
+        # not deliver, and keeps no REVIEW step and no review note.
         review = json.dumps({"status": "REVIEW", "code": "DIDACTIC_REVIEW", "count": 1, "findings": [{"rule": "D12", "item": "q3b"}]})
         middle = {**self.lesson, "gradeNumber": 8, "topicId": "g8:x"}
-        for name, made in (("deliver", ("out/v72-report.json", "out/docx/b/sheet.docx", "out/deliver/b/sheet.pdf")),
-                           ("missing-pdf", ("out/v72-report.json", "out/docx/b/sheet.docx"))):
+        for name, made, failed in (
+                ("deliver", ("out/v72-report.json", "out/docx/b/sheet.docx", "out/deliver/b/sheet.pdf"), None),
+                ("missing-pdf", ("out/v72-report.json", "out/docx/b/sheet.docx"), "artifact-presence"),
+                ("missing-docx", ("out/v72-report.json", "out/deliver/b/sheet.pdf"), "word-upstream-presence")):
             self.work = Path(self.tmp.name) / name
             self.calls = []
             outputs = {"build_v72.py": ("", 1), "files": {"build_v72.py": {path: "stub" for path in made},
@@ -297,21 +326,29 @@ class RunnerPolicyTests(unittest.TestCase):
                  patch.object(runner.subprocess, "run", side_effect=self.execute(outputs)):
                 manifest = runner.render_job(middle, {}, self.work, skill_paths={"middle": self.skill})
             self.assertEqual(self.calls, ["general_adapters.py", "build_v72.py", "didactic_review.py"], name)
-            self.assertEqual([(step["name"], step["status"], step.get("reason")) for step in manifest["steps"]][:3],
-                             [("trusted-adapter", "PASS", None), ("middle-build", "REVIEW", "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY"),
-                              ("didactic-review-reconciliation", "PASS", None)], name)
-            self.assertEqual([(r["code"], r["count"], r["questions"]) for r in manifest["gate"]["review"]],
-                             [("DIDACTIC_REVIEW", 1, [3])], name)
             if name == "deliver":
+                self.assertEqual([(step["name"], step["status"], step.get("reason")) for step in manifest["steps"]],
+                                 [("trusted-adapter", "PASS", None),
+                                  ("middle-build", "REVIEW", "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY"),
+                                  ("didactic-review-reconciliation", "PASS", None)])
+                self.assertEqual([(r["code"], r["count"], r["questions"]) for r in manifest["gate"]["review"]],
+                                 [("DIDACTIC_REVIEW", 1, [3])])
+                self.assertEqual([(r["code"], r["count"], r["steps"], r["questions"]) for r in manifest["reviewFindings"]],
+                                 [("DIDACTIC_REVIEW", 1, ["middle-build"], [3])])
                 self.assertEqual((manifest["status"], [a["path"] for a in manifest["artifacts"]]),
                                  ("needs_review", ["out/deliver/b/sheet.pdf", "out/docx/b/sheet.docx"]))
                 self.assertEqual((manifest["gate"]["action"], manifest["gate"]["blocking"]), ("deliver", []))
                 continue
-            self.assertEqual((manifest["status"], manifest["artifacts"]), ("failed", []))
-            self.assertEqual(self.statuses(manifest)["artifact-presence"], "FAIL")
-            self.assertEqual((manifest["automatedChecksPassed"], manifest["renderingChecksPassed"]), (False, False))
-            self.assertEqual((manifest["gate"]["action"], manifest["gate"]["questions"]), ("fail", []))
-            self.assertEqual(manifest["gate"]["blocking"], [{"code": "ARTIFACT_MISSING", "class": "truth", "step": "artifact-presence"}])
+            # The middle driver's step goes back to the FAIL it exited with; no note of the undelivered sheet stays.
+            self.assertEqual([(step["name"], step["status"], step.get("reason")) for step in manifest["steps"]],
+                             [("trusted-adapter", "PASS", None), ("middle-build", "FAIL", None),
+                              ("didactic-review-reconciliation", "PASS", None), (failed, "FAIL", None)], name)
+            self.assertEqual((manifest["reviewFindings"], manifest["gate"]["review"]), ([], []), name)
+            self.assertEqual((manifest["status"], manifest["artifacts"]), ("failed", []), name)
+            self.assertEqual((manifest["automatedChecksPassed"], manifest["renderingChecksPassed"]), (False, False), name)
+            self.assertEqual((manifest["gate"]["action"], manifest["gate"]["questions"]), ("fail", []), name)
+            self.assertEqual(manifest["gate"]["blocking"], [{"code": "ARTIFACT_MISSING", "class": "truth", "step": failed}], name)
+            self.assertEqual(json.loads((self.work / "manifest.json").read_text())["steps"][1]["status"], "FAIL", name)
 
     def test_clean_render_has_no_gate_block_and_legacy_lessons_keep_the_old_rule(self):
         manifest = self.render({})
@@ -372,38 +409,59 @@ class RunnerPolicyTests(unittest.TestCase):
 
 
 class WorkerResultTests(unittest.TestCase):
-    def test_job_result_carries_the_didactic_review_note_and_nothing_else_from_the_manifest(self):
+    MIDDLE = "cloud/container/fixtures/general/grade7-equation-skill/lesson.json"
+    ELEMENTARY = "cloud/container/fixtures/general/grade4-fractions/lesson.json"
+
+    def manifest(self, artifacts):
+        # As render_job reports the middle driver's reconciled didactic REVIEW.
+        return {"status": "needs_review", "automatedChecksPassed": False, "renderingChecksPassed": True,
+                "authoringProfile": "general-skill-source/v1", "skill": {"name": "middle"}, "artifacts": artifacts,
+                "steps": [{"name": "trusted-adapter", "status": "PASS"},
+                          {"name": "middle-build", "status": "REVIEW", "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY"},
+                          {"name": "didactic-review-reconciliation", "status": "PASS"}],
+                "reviewFindings": [{"code": "DIDACTIC_REVIEW", "class": "editorial", "count": 2, "steps": ["middle-build"],
+                                    "questions": [4, 11], "rules": {"D12": 2}, "note": "PRIVATE MODEL TEXT"},
+                                   {"code": "G51", "class": "reconciled", "count": 1, "steps": ["house-gates"], "questions": []}],
+                "unverifiedAnswers": []}
+
+    def deliver(self, change=None, lesson=MIDDLE):
+        """One job through the worker with a stand-in render; returns (the final result or None, the remote)."""
+        import hashlib
         from datetime import datetime, timedelta, timezone
         from test_remote_worker import FakeRemote, JOB_ID, LEASE, TEACHER_A
-        # The one REVIEW a render still delivers: the middle driver's reconciled didactic REVIEW.
-        lesson = json.loads((HERE / "cloud/container/fixtures/general/grade7-equation-skill/lesson.json").read_text())
         job = {"id": JOB_ID, "owner_id": TEACHER_A, "lease_token": LEASE, "status": "running",
-               "lease_until": (datetime.now(timezone.utc) + timedelta(minutes=20)).isoformat(), "lesson": lesson}
+               "lease_until": (datetime.now(timezone.utc) + timedelta(minutes=20)).isoformat(),
+               "lesson": json.loads((HERE / lesson).read_text())}
 
         def rendered(_, payload, target):
-            import hashlib
             target.mkdir(parents=True, exist_ok=True)
             artifacts = []
             for kind in ("pdf", "docx"):
                 blob = ("synthetic " + kind).encode()
                 (target / ("sheet." + kind)).write_bytes(blob)
                 artifacts.append({"kind": kind, "path": "sheet." + kind, "sha256": hashlib.sha256(blob).hexdigest(), "bytes": len(blob)})
-            return {"status": "needs_review", "automatedChecksPassed": False, "renderingChecksPassed": True,
-                    "authoringProfile": "general-skill-source/v1", "skill": {"name": "middle"}, "artifacts": artifacts,
-                    "steps": [{"name": "trusted-adapter", "status": "PASS"},
-                              {"name": "middle-build", "status": "REVIEW", "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY"},
-                              {"name": "didactic-review-reconciliation", "status": "PASS"}],
-                    "reviewFindings": [{"code": "DIDACTIC_REVIEW", "class": "editorial", "count": 2, "steps": ["middle-build"],
-                                        "questions": [4, 11], "rules": {"D12": 2}, "note": "PRIVATE MODEL TEXT"},
-                                       {"code": "G51", "class": "reconciled", "count": 1, "steps": ["house-gates"], "questions": []}]}
+            manifest = self.manifest(artifacts)
+            if change is not None:
+                change(manifest)
+            return manifest
 
         remote = FakeRemote()
         with tempfile.TemporaryDirectory() as root, patch.object(worker, "author_lesson", return_value={}), \
                 patch.object(worker, "render_job", side_effect=rendered):
-            worker.process_job(remote, job, Path(root).resolve(), enable_skill_revision=False)
+            try:
+                worker.process_job(remote, job, Path(root).resolve(), enable_skill_revision=False)
+            except GenerationError as error:
+                self.assertEqual((error.code, error.job_failure["stage"]), ("QUALITY_GATE_FAILED", "acceptance"))
+                self.assertEqual(remote.uploads(), [])
+                self.assertFalse(any(call[2].get("status") == "needs_review" for call in remote.calls if call[1] == "PATCH"))
+                return None, remote
         final = [call[2] for call in remote.calls if call[1] == "PATCH" and call[2].get("status") == "needs_review"]
-        self.assertEqual(len(final), 1)
-        result = final[0]["result"]
+        self.assertEqual((len(final), len(remote.uploads())), (1, 2))
+        return final[0]["result"], remote
+
+    def test_job_result_carries_the_didactic_review_note_and_nothing_else_from_the_manifest(self):
+        # The one REVIEW a render still delivers: the middle driver's reconciled didactic REVIEW.
+        result, _ = self.deliver()
         # A forged reconciled G51 row stays private; the note is the table's own sentence.
         self.assertEqual(result["reviewFindings"], [{"code": "DIDACTIC_REVIEW", "count": 2, "note": policy.NOTES["DIDACTIC_REVIEW"],
                                                      "questions": [4, 11]}])
@@ -413,6 +471,53 @@ class WorkerResultTests(unittest.TestCase):
         self.assertNotIn("D12", json.dumps(result, ensure_ascii=False))
         self.assertNotIn("PRIVATE", json.dumps(result, ensure_ascii=False))
         self.assertLess(len(json.dumps(result, ensure_ascii=False).encode()), 32000)
+
+    def test_every_other_review_is_refused_before_any_upload(self):
+        def step(index, **values):
+            return lambda manifest: manifest["steps"][index].update(values)
+
+        def editorial(manifest):
+            # A house-gates REVIEW carrying an editorial finding, as the removed #635 path produced.
+            manifest["steps"].append({"name": "house-gates", "status": "REVIEW", "reason": "PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY"})
+            manifest["reviewFindings"].append({"code": "G61", "class": "editorial", "count": 2, "steps": ["house-gates"],
+                                               "questions": [2, 10]})
+
+        cases = {
+            "another step": step(0, status="REVIEW"),
+            "no reason": lambda manifest: manifest["steps"][1].pop("reason"),
+            "another reason": step(1, reason="RECONCILED_FINDINGS_ONLY"),
+            "reconciliation failed": step(2, status="FAIL"),
+            "reconciliation skipped": step(2, status="SKIP"),
+            "no reconciliation": lambda manifest: manifest["steps"].pop(2),
+            "reconciliation first": lambda manifest: manifest["steps"].insert(1, manifest["steps"].pop(2)),
+            "another skill": lambda manifest: manifest.update(skill={"name": "elementary"}),
+            "no note": lambda manifest: manifest.update(reviewFindings=[]),
+            "a note of another step": lambda manifest: manifest["reviewFindings"][0].update(steps=["house-gates"]),
+            "an editorial finding": editorial,
+            # The middle school's list of unverified answers is trusted only when every row reads.
+            "an unreadable list": lambda manifest: manifest.update(unverifiedAnswers=[{"question": 2, "item": 1, "kind": "open"}]),
+            "a list that is not one": lambda manifest: manifest.update(unverifiedAnswers="q2"),
+        }
+        for name, change in cases.items():
+            with self.subTest(case=name):
+                self.assertEqual(self.deliver(change)[0], None)
+        # The same reconciled exit on an elementary lesson is refused as well.
+        self.assertEqual(self.deliver(lambda manifest: manifest.update(skill={"name": "elementary"}), lesson=self.ELEMENTARY)[0], None)
+        # A clean elementary sheet is delivered; one that lists any unverified answer is refused (D6).
+        def clean(manifest):
+            manifest["steps"] = manifest["steps"][:1]
+            manifest.update(skill={"name": "elementary"}, reviewFindings=[], automatedChecksPassed=True)
+        result, _ = self.deliver(clean, lesson=self.ELEMENTARY)
+        self.assertEqual((result["reviewFindings"], result["teacherNotes"], result["unverifiedAnswers"]), ([], [], {}))
+        for kind in ("review", "decision"):
+            def listed(manifest, kind=kind):
+                clean(manifest)
+                manifest["unverifiedAnswers"] = [{"question": 3, "item": 1, "kind": kind}]
+            with self.subTest(kind=kind):
+                self.assertEqual(self.deliver(listed, lesson=self.ELEMENTARY)[0], None)
+        # A middle-school sheet with readable rows is delivered with their notes.
+        result, _ = self.deliver(lambda manifest: manifest.update(unverifiedAnswers=[{"question": 3, "item": 1, "kind": "review"}]))
+        self.assertEqual((result["unverifiedAnswers"], [note["kind"] for note in result["teacherNotes"]]), ({"review": 1}, ["review"]))
 
 
 if __name__ == "__main__":
