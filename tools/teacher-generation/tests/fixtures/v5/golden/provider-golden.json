@@ -31,8 +31,8 @@
     "v3-d10-unreviewed-listed": {
       "calls": [
         {
-          "bodyBytes": 158713,
-          "bodySha256": "145ea2df297806b1ac3d47a0dfde118d655cbafd0530d3cc5417ff72f95129b2",
+          "bodyBytes": 159207,
+          "bodySha256": "e7f96b106b709981af31199be28abb6d3d0ae6ef2b2a307a386b9b78a10f44a9",
           "key": "golden-unit-key",
           "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
           "timeout": 90
@@ -45,7 +45,7 @@
         "authorContract": "worksheet-source/4",
         "httpStatus": 418,
         "purpose": "authoring",
-        "requestBodySha256": "145ea2df297806b1ac3d47a0dfde118d655cbafd0530d3cc5417ff72f95129b2",
+        "requestBodySha256": "e7f96b106b709981af31199be28abb6d3d0ae6ef2b2a307a386b9b78a10f44a9",
         "requestSchemaSha256": "9132d0ef0ac520f5516a073c3114c97fdd18e38f876b5807859d3d2f62d820b0",
         "requestedModel": "golden-unit-model",
         "responseReceived": false,

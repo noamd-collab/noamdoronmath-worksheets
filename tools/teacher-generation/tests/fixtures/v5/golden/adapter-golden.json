@@ -630,21 +630,13 @@
   },
   "v4:grade4-skill-calculation": {
    "error": [
-    "general_source.GeneralSourceError: The prompt does not print the exercise that its key answers; a typed task is printed only after a bare instruction"
+    "general_source.GeneralSourceError: The printed blank is not filled from the print by any binder"
    ],
    "exitCode": 1,
    "files": {
     "adapter-failure.json": {
      "bytes": 113,
      "sha256": "53d5de6347ccb47f7948651a1cc7fe60366bb6ee5684aa4b9859fb5104c75338"
-    },
-    "general-evidence.json": {
-     "bytes": 50560,
-     "sha256": "7f5a521675ce52c0fcd52a9487f32159a2e6d282040d531a5e0405bc42b35033"
-    },
-    "general-source.json": {
-     "bytes": 68605,
-     "sha256": "2109f37873f81b89d67109585f2eec849ba748f6dce922dd71a64a929b756dd4"
     }
    },
    "stdout": ""
