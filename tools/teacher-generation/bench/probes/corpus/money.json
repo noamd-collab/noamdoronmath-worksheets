@@ -80,9 +80,9 @@
     "unit": "אגורות"
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "3 שקלים ו־ 50 אגורות = ___ אגורות",
-    "key": "350 אגורות"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {

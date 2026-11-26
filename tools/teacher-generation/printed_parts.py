@@ -1135,6 +1135,69 @@ def bind_parts(question, item, solved, grade):
     return binding
 
 
+_RELATION = re.compile(r"!=|<=|>=|[=<>≤≥≠]")
+
+
+def prints_blank_equation(spans):
+    """The field prints an equation or inequality with a blank.
+
+    Either one formula holds a relation and a blank ("24 : ___ = 6"), or a
+    relation sign stands in the sentence beside an operand while the field
+    has a blank ("[[3]] מטרים = ___ ס״מ"). A sign listed as an option
+    ("(<, > או =)") stands beside no operand.
+    """
+    if not isinstance(spans, list):
+        return False
+    line, blank = "", False
+    for span in spans:
+        if not isinstance(span, dict):
+            return False
+        if span.get("kind") == "text":
+            line += re.sub(r"[☐□▢]", "___", span["text"])
+            blank = blank or "___" in line
+        elif span.get("kind") == "formula" and _RELATION.fullmatch(span["notation"].strip()):
+            line += span["notation"]  # a relation sign written in the sentence
+        elif span.get("kind") == "formula":
+            if "___" in span["notation"]:
+                if _RELATION.search(span["notation"]):
+                    return True
+                blank = True
+            line += "0"
+        else:
+            line += "0"
+    if not blank:
+        return False
+    for sign in _RELATION.finditer(line):
+        left, right = line[:sign.start()].rstrip()[-1:], line[sign.end():].lstrip()[:1]
+        if (left and (left.isdigit() or left in "_)%")) or (right and (right.isdigit() or right in "_(-−")):
+            return True
+    return False
+
+
+def refuse_unsolved_equation(question, item, solved, grade):
+    """Grades 1–6: a printed equation with a blank is keyed only by solving it from the print.
+
+    The item's own equation must be bound by the missing-number binder
+    (``printed_tasks.match_printed_task``) or by a parts binder (place value,
+    remainder, sequence, two units). An equation with a blank in the intro or
+    in a table cell has no such binder, so its question is refused.
+    ``general_source.validate_question`` runs this after every other check of
+    the item, so a more specific refusal keeps its own code.
+    """
+    if grade > 6:
+        return
+    table = question.get("table") or {}
+    cells = list(table.get("head") or []) + [cell for row in table.get("rows") or [] if isinstance(row, list)
+                                             for cell in row]
+    if prints_blank_equation(question.get("intro")) or any(prints_blank_equation(cell) for cell in cells):
+        _reject("An equation with a blank outside the item's prompt is not solved from the print")
+    if not prints_blank_equation(item["prompt"]) or bind_parts(question, item, solved, grade) is not None:
+        return
+    from printed_tasks import match_printed_task
+    if item["answer"].get("kind") != "computed" or not match_printed_task(item, solved, grade):
+        _reject("The printed equation with a blank is not solved from the print")
+
+
 def check_item(question, item, solved, grade, *, authored=False):
     """Run every printed-answer binder at source validation, where a refusal is recoverable.
 

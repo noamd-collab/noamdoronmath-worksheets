@@ -100,7 +100,11 @@ printed from its tree whose minus stands before anything but a number (`-2^4`,
 never wrote (`printed_parts.refuse_unwritten_zero`, `SOURCE_NOTATION`).
 `printed_parts.py` and the other `printed_*` binders
 tie the key to an exercise that the prompt already shows. A prompt with several
-blanks gets one answer for each blank, or the question is refused.
+blanks gets one answer for each blank, or the question is refused. In grades 1–6
+an equation printed with a blank is keyed only when a binder solves it from the
+print, also with the right typed key; one written partly or wholly outside one
+island is refused for its notation (`printed_parts.refuse_unsolved_equation`,
+`compact_authoring.blank_equation_outside_island`; LESSON-SKILL.md section 3).
 
 A yes/no or true/false question carries a typed claim (task kind `decide`: an
 order or equality of two expressions, divisibility, membership in a short

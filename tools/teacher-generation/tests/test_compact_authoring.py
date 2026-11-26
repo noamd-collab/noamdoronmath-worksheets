@@ -244,15 +244,28 @@ class CompactAuthoringTests(unittest.TestCase):
     def test_a_missing_number_equation_is_one_island_or_refused(self):
         from printed_tasks import match_printed_task
 
-        # Partly marked or unmarked, the equation is refused as written; nothing wraps it.
+        # Partly marked or unmarked, the equation is refused as written; nothing wraps it. That holds after
+        # the joins of adjacent islands too ("24 : ___ = [[6]]" reads 24 : [[___ = 6]]), and among words.
         for visible in ("24 : [[___]] = 6", "[[35]] : 7 = [[___]]", "[[___]] : 9 = 8", "24 : 6 = ___",
-                        "[[24]] : [[6]] = ___", "7 + 5 = ___"):
+                        "[[24]] : [[6]] = ___", "7 + 5 = ___", "24 : ___ = [[6]]", "72 : ___ = [[8]]",
+                        "[[72]] : ___ = [[8]]", "7 + ___ = [[15]]", "20 - ___ = [[15]]", "24 : [[___]] = [[6]]",
+                        "7 + [[___]] = [[15]]", "[[72]]: [[___ = 8]]", "___ x [[4 = 20]]", "חשבו: 24 : 6 = ___",
+                        "24 : 6 = ___ .", "מהו 24 : 6 = ___ ?", "24 : 6 = [[___]]", "(7 + [[___ = 15]])",
+                        "[[3.47]] = [[3]] + [[0.4]] + ___", "___ מאות + ___ עשרות + ___ אחדות = 728",
+                        "3 מטרים = ___ ס״מ", "5 + ___ > [[9]]", "5 + ☐ = 9", "[[5]] + ☐ = [[9]]"):
             with self.subTest(visible=visible):
                 with self.assertRaises(GeneralSourceError) as refused:
                     spans(visible, 3)
                 self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
         # Islands joined across their operators (as before) are read as the one formula they spell.
         self.assertEqual(spans("[[8]] + ___ = [[15]]", 3), [{"kind": "formula", "notation": "8 +  ___ = 15"}])
+        # A colon after a word or touching a blank ends the sentence; a sign listed as an option, a
+        # conversion whose numbers are all marked, and a blank beside no relation are not such equations.
+        for accepted in ("השלימו: [[24 : ___ = 6]]", "המספר החסר הוא ___: [[___ + 4 x 3 = 17]]",
+                         "ו-[[24 : ___ = 6]]", "בחרו סימן (<, > או =): [[345 ___ 354]]", "[[3]] מטרים = ___ ס״מ",
+                         "[[5]], [[10]], ___, ___, [[25]]", "([[24 : ___ = 6]])"):
+            with self.subTest(accepted=accepted):
+                self.assertIsInstance(spans(accepted, 3), list)
         for visible, value in [("[[24 : ___ = 6]]", 4), ("[[35 : 7 = ___]]", 5),
                                ("[[___ : 9 = 8]]", 72), ("[[24 : 6 = ___]]", 4)]:
             with self.subTest(visible=visible):
@@ -275,13 +288,23 @@ class CompactAuthoringTests(unittest.TestCase):
             with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
                 spans(value, grade)
             self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
-        # A blank inside an island stays inside it, also before a Hebrew label.
-        self.assertEqual(spans("[[5 + 3 = ___]] מאות", 3),
-                         [{"kind": "formula", "notation": "5 + 3 = ___"}, {"kind": "text", "text": " מאות"}])
+        # A blank inside an island stays inside it. Before a Hebrew label it would print away from that label,
+        # so such an island is refused as written, in every grade.
+        self.assertEqual(spans("[[5 + 3 = ___]].", 3),
+                         [{"kind": "formula", "notation": "5 + 3 = ___"}, {"kind": "text", "text": "."}])
+        for value, grade in [("[[5 + 3 = ___]] מאות", 3), ("[[345 = ___]] מאות", 3), ("[[5 + 3 = ___]] שקלים", 4),
+                             ("[[47 : 5 = ___]] שארית ___", 3), ("[[345]] = [[___]] מאות", 3),
+                             ("[[47 = ___]] עֲשָׂרוֹת", 2), ("[[AB = ___]] ס״מ", 8)]:
+            with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
+                spans(value, grade)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        self.assertEqual(spans("[[___]] מאות", 3)[0], {"kind": "formula", "notation": "___"})
         # An "=" between prose and an island is not folded into the sentence, and a
-        # percent sign after an island is not moved into it.
+        # percent sign after an island, spaced or not, is not moved into it, in every grade.
         for value, grade in [("המחיר = [[5]]", 8), ("[[5]] = המחיר", 8), ("המחיר = [[5]] שקלים", 5),
-                             ("בדקו [[25]]%.", 8), ("בדקו [[2.5]]%.", 5)]:
+                             ("בדקו [[25]]%.", 8), ("בדקו [[2.5]]%.", 5), ("כמה הם [[25]] % מתוך [[80]]?", 6),
+                             ("כמה הם [[2,500]]% מתוך [[80]]?", 6), ("[[1/2]]%", 6), ("[[25]]  %", 8),
+                             ("[[frac(1,2)]]%", 9), ("[[25]]%", 4)]:
             with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
                 spans(value, grade)
             self.assertEqual(refused.exception.code, "SOURCE_NOTATION")

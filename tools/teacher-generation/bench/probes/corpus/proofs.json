@@ -114,10 +114,9 @@
     "text": "במשולש שווה שוקיים זוויות הבסיס שוות."
    },
    "recorded": {
-    "outcome": "pass",
-    "unverified": true,
-    "printed": "במשולש $\\tri ABC$ נתון $AB = AC$. הוכיחו: $\\angle{B} = \\angle{C}$.",
-    "key": "במשולש שווה שוקיים זוויות הבסיס שוות."
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

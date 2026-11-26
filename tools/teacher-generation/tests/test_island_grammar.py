@@ -232,7 +232,7 @@ class WrittenAsSentTests(unittest.TestCase):
             (8, "[[5 - 10 + 2]]"), (8, "[[2*3]]"), (4, "[[6+3]]"), (8, "[[0.5]]"), (6, "[[25%]]"), (6, "[[25%]] מהכיתה"),
             (6, "25% מהכיתה"), (8, "[[90°]]"), (4, "[[5 + ___ = 9]]"), (4, "[[5 + 3 = ___]]"),
             (4, "השלימו: ___ + [[5]] = [[9]]"), (4, "[[5 + 3 = 8]]?"), (7, "[[x = 5]]."), (4, "[[12.50]] ₪"),
-            (3, "[[5]] ס״מ"), (3, '[[5]] ס"מ'), (4, "[[5 + 3 = ___]] שקלים"),
+            (3, "[[5]] ס״מ"), (3, '[[5]] ס"מ'),
             (8, "[[segment:AD]] הוא תיכון לצלע [[segment:BC]]."), (5, "[[90°]]"), (4, "[[5 + 3]]"),
             (4, "מצב ב': [[4 + (2 * 3)]]. מה ההפרש"), (4, "בחישוב [[((___) + 4) * 3 = 21]], מהו המספר החסר?"),
             (8, "[[frac(1,2)]]"), (8, "[[2 * 3]]"), (8, "[[sqrt(16)]]"), (8, "חשבו [[x+1]] עכשיו"), (8, "ולכן [[AM ⊥ BC]]."),
@@ -245,10 +245,8 @@ class WrittenAsSentTests(unittest.TestCase):
             with self.subTest(value=value, grade=grade):
                 self.assertIsInstance(accepted(value, grade), list, accepted(value, grade))
         for value in ("נתון כי [[∠DAB = 70°]].", "נתון כי [[∠BCD = 120°]]. חשבו", "אם [[∠DAB = 70°]].",
-                      "נתון כי [[∠AOB = 90°]].", "נתון כי [[∠BAC = 35°]].", "נתון כי [[∠D = 70°]].",
-                      "שתי זוויות הבסיס העליון, [[∠A + ∠B]].", "נתון כי [[∠A = 100°]] ו־[[∠D = 80°]].",
-                      "נתון כי [[∠D = 65°]].", "נתון כי [[∠A = 3*x]] ו־[[∠D = 2*x]].",
-                      "טרפז ישר־זווית שבו [[∠A = ∠D = 90°]].", "[[∠ABC]] = [[50°]]"):
+                      "נתון כי [[∠AOB = 90°]].", "נתון כי [[∠BAC = 35°]].", "[[∠ABC]] = [[50°]]",
+                      "שתי זוויות הבסיס העליון, [[∠DAB + ∠ABC]].", "טרפז ישר־זווית שבו [[∠DAB = ∠ADC = 90°]]."):
             with self.subTest(value=value):
                 self.assertIsInstance(accepted(value, 9), list, accepted(value, 9))
         for grade, task in [(4, "324 x 15"), (4, "48 : 6 + 2"), (4, "48 : 6"), (4, "12 : 4"), (8, "sqrt(49)"), (8, "2^3"),
@@ -293,9 +291,33 @@ class WrittenAsSentTests(unittest.TestCase):
     def test_a_fraction_topic_reads_the_school_colon_as_division(self):
         self.assertEqual(accepted("[[12 : 4]]", 4, fractions=True), [{"kind": "formula", "notation": "12 / 4"}])
 
+    def test_an_angle_not_named_by_three_letters_is_refused_at_the_source(self):
+        # The pinned gate G81 fails the whole sheet on a one-letter angle at render. Refused here instead, in a
+        # formula and in the sentence, so that a reserve or the correction can replace the one question.
+        for value in ("נתון כי [[∠D = 70°]].", "שתי זוויות הבסיס העליון, [[∠A + ∠B]].",
+                      "נתון כי [[∠A = 100°]] ו־[[∠D = 80°]].", "נתון כי [[∠D = 65°]].",
+                      "נתון כי [[∠A = 3*x]] ו־[[∠D = 2*x]].", "טרפז ישר־זווית שבו [[∠A = ∠D = 90°]].",
+                      "[[∠ABC + ∠D]]", "[[∠AB = 40°]]", "[[∠ = 40°]]", "[[∠ABCD = 40°]]", "מצאו את גודל ∠A.",
+                      "נתון ∠B = 30°."):
+            with self.subTest(value=value):
+                self.assertEqual(accepted(value, 9), "SOURCE_NOTATION")
+        for value, grade in (("[[∠A]]", 7), ("[[∠D = 70°]]", 8), ("[[90°]] היא ∠C", 6),
+                             # The word before one point name prints the same one-letter angle.
+                             ("זווית A ישרה.", 9), ("מצאו את הזווית [[A]].", 8), ("זווית [[point:B]] ישרה.", 9),
+                             ("בזווית A1", 9)):
+            with self.subTest(value=value, grade=grade):
+                self.assertEqual(accepted(value, grade), "SOURCE_NOTATION")
+        for value in ("זווית [[angle:ABC]] ישרה.", "מהו גודל הזווית [[∠ACB]]?", "זווית ישרה היא [[90°]]."):
+            with self.subTest(value=value):
+                self.assertIsInstance(accepted(value, 8), list)
+        self.assertEqual(code(display_parts, "∠A = 3*x", 9), "SOURCE_NOTATION")
+        self.assertEqual(code(display_parts, "∠D = 70°", 9), "SOURCE_NOTATION")
+
     def test_spellings_with_two_readings_are_refused(self):
         for grade, value in [(8, "[[3,5]]"), (8, "[[5\u201310]]"), (4, "[[2½]]"), (4, "[[3_8]]"), (4, "[[3x = 12]]"),
-                             (8, "[[√25x]]"), (4, "[[5 + ... = 9]]"), (4, "[[1 000]]")]:
+                             (8, "[[√25x]]"), (4, "[[5 + ... = 9]]"), (4, "[[1 000]]"),
+                             # The island's last blank would print away from the label after it.
+                             (4, "[[5 + 3 = ___]] שקלים")]:
             with self.subTest(value=value):
                 self.assertEqual(accepted(value, grade), "SOURCE_NOTATION")
 

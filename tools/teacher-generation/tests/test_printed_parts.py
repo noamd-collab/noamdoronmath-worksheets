@@ -80,14 +80,16 @@ class WirePathTests(unittest.TestCase):
         return caught.exception
 
     def test_place_value_spellings_answer_every_blank_or_are_refused(self):
-        # An "=" written between the island and the blanks is refused for its notation.
-        for prompt in ("[[345]] = ___ מאות + ___ עשרות + ___ אחדות", "___ מאות + ___ עשרות + ___ אחדות = [[345]]"):
+        # An "=" written between the island and the blanks is refused for its notation, and so are the
+        # equation written without islands and an island that ends with its blank before the place's name.
+        for prompt in ("[[345]] = ___ מאות + ___ עשרות + ___ אחדות", "___ מאות + ___ עשרות + ___ אחדות = [[345]]",
+                       "345 = ___ מאות + ___ עשרות + ___ אחדות", "[[345 = ___]] מאות + ___ עשרות + ___ אחדות",
+                       "[[345]] = [[___]] מאות + [[___]] עשרות + [[___]] אחדות"):
             with self.subTest(prompt=prompt):
                 self.refused("ג01", "השלימו את המספרים החסרים.", prompt, evaluate("345"), code="SOURCE_NOTATION")
         spellings = [
-            "345 = ___ מאות + ___ עשרות + ___ אחדות",
-            "[[345 = ___]] מאות + ___ עשרות + ___ אחדות",
-            "[[345]] = [[___]] מאות + [[___]] עשרות + [[___]] אחדות",
+            "במספר [[345]] יש ___ מאות, ___ עשרות ו־___ אחדות",
+            "במספר [[345]] יש ___ מאות + ___ עשרות + ___ אחדות",
         ]
         for prompt in spellings:
             with self.subTest(prompt=prompt):
@@ -99,15 +101,50 @@ class WirePathTests(unittest.TestCase):
                 self.refused("ג01", "השלימו.", prompt, evaluate("354"))
 
     def test_a_blank_prints_where_the_model_wrote_it(self):
-        # Nothing moves a blank out of its island, also before a Hebrew label.
-        _, item, _, _ = wire("ג01", "השלימו.", "[[345 = ___]] מאות + ___ עשרות + ___ אחדות", evaluate("345"))
-        self.assertEqual(item["prompt"], [
-            {"kind": "formula", "notation": "345 = ___"},
-            {"kind": "text", "text": " מאות + ___ עשרות + ___ אחדות"}])
+        # Nothing moves a blank out of its island. An island that ends with its blank before a Hebrew label
+        # would print the blank away from that label, so it is refused as written, not printed.
+        self.refused("ג01", "השלימו.", "[[345 = ___]] מאות + ___ עשרות + ___ אחדות", evaluate("345"),
+                     code="SOURCE_NOTATION")
+        _, item, _, _ = wire("ג01", "השלימו.", "[[345 = ___ + ___ + ___]]", evaluate("345"))
+        self.assertEqual(item["prompt"], [{"kind": "formula", "notation": "345 = ___ + ___ + ___"}])
         # Nor into one: a calculation that ends with its blank is one exercise only when written as one.
         self.refused("ג06", "חשבו.", "[[348]] + [[276]] = ___", evaluate("348 + 276"), code="SOURCE_NOTATION")
         _, item, _, _ = wire("ג06", "חשבו.", "[[348 + 276 = ___]]", evaluate("348 + 276"))
         self.assertEqual(item["prompt"], [{"kind": "formula", "notation": "348 + 276 = ___"}])
+
+    def test_an_equation_with_a_blank_is_keyed_only_by_solving_it_from_the_print(self):
+        # Partly marked or unmarked, also among words: refused for its notation, whatever the typed key.
+        for topic_id, intro, prompt, typed in (
+                ("ג10", "השלימו.", "24 : ___ = [[6]]", "5"), ("ג10", "השלימו.", "72 : ___ = [[8]]", "8"),
+                ("ג10", "השלימו.", "[[72]] : ___ = [[8]]", "8"), ("ב10", "הַשְׁלִימוּ.", "7 + ___ = [[15]]", "9"),
+                ("ב10", "הַשְׁלִימוּ.", "20 - ___ = [[15]]", "6"), ("ג10", "השלימו.", "24 : [[___]] = [[6]]", "5"),
+                ("ב10", "הַשְׁלִימוּ.", "7 + [[___]] = [[15]]", "9"), ("ג10", "חשבו.", "חשבו: 24 : 6 = ___", "5"),
+                ("ג10", "חשבו.", "24 : 6 = ___ .", "5"), ("ג10", "חשבו.", "מהו 24 : 6 = ___ ?", "5"),
+                ("ג10", "חשבו.", "24 : 6 = [[___]]", "5"), ("ה28", "השלימו.", "[[3.47]] = [[3]] + [[0.4]] + ___", "0.07"),
+                ("ג22", "המירו.", "3 מטרים = ___ ס״מ", "300")):
+            with self.subTest(prompt=prompt):
+                self.refused(topic_id, intro, prompt, evaluate(typed), code="SOURCE_NOTATION")
+        # One complete island: bound by the missing-number binder, which refuses a wrong key.
+        _, item, _, _ = wire("ב10", "הַשְׁלִימוּ.", "הַשְׁלִימוּ אֶת הַמִּסְפָּר הֶחָסֵר: [[7 + ___ = 15]]", evaluate("8"))
+        self.assertEqual(item["prompt"][-1], {"kind": "formula", "notation": "7 + ___ = 15"})
+        self.refused("ב10", "הַשְׁלִימוּ.", "הַשְׁלִימוּ אֶת הַמִּסְפָּר הֶחָסֵר: [[7 + ___ = 15]]", evaluate("9"))
+        # Nothing solves the printed equation: words the binder does not read, one unit conversion,
+        # or the equation in the intro or in a table cell. Refused even with the right key.
+        for topic_id, intro, prompt, typed, extra in (
+                ("ג10", "השלימו.", "מהו המספר החסר? [[24 : ___ = 6]]", "4", {}),
+                ("ג22", "המירו.", "[[3]] מטרים = ___ ס״מ", "300", {}),
+                ("ג10", "בתרגיל [[24 : ___ = 6]] חסר מספר.", "מהו המספר החסר?", "4", {}),
+                ("ג10", "השלימו את הטבלה.", "חשבו.", "4",
+                 {"table": {"head": ["תרגיל", "תוצאה"], "rows": [["[[24 : ___ = 6]]", "___"]]}})):
+            with self.subTest(prompt=prompt, intro=intro):
+                error = self.refused(topic_id, intro, prompt, evaluate(typed), **extra)
+                self.assertEqual((error.question, error.item), (1, 1))
+        # A binder that recomputes every blank from the printed givens keys a conversion into two units.
+        self.assertEqual(key(bound("ג19", "המירו.", "[[150]] דקות = ___ שעות ו־___ דקות", evaluate("150"))),
+                         "2 שעות ו־30 דקות")
+        # A sign listed as an option is no equation: the comparison blank keeps its own binder.
+        _, item, solved, grade = wire("ג10", "השלימו את הסימן (<, > או =).", "[[24 : 6 ___ 5]]", compare("24/6", "5"))
+        self.assertEqual(printed_parts.comparison_blank(item, solved, grade)["rule"], "printed_sign")
 
     def test_other_grades_bind_from_the_printed_number_or_fail_closed(self):
         # With the "=" between the island and its blanks, each of these is refused for its notation.
@@ -120,26 +157,34 @@ class WirePathTests(unittest.TestCase):
                 ("ג01", "השלימו.", "[[345]] = ___ + ___ + ___", "345"),
                 ("ג01", "השלימו.", "[[345]] = ___ מאות + ___ אחדות", "345"),
                 ("ג01", "השלימו.", "[[456]] = ___ מאות + [[40]] + ___ אחדות", "6"),
-                ("ג01", "השלימו.", "[[10]] = ___ + ___ + ___", "10")):
+                ("ג01", "השלימו.", "[[10]] = ___ + ___ + ___", "10"),
+                # An island that ends with its blank before the place's name prints the blank away from it.
+                ("ב02", "הַשְׁלִימוּ.", "[[47 = ___]] עֲשָׂרוֹת + ___ יְחִידוֹת", "47"),
+                ("ג04", "השלימו.", "[[4,507 = ___]] אלפים + ___ מאות + ___ עשרות + ___ אחדות", "4507"),
+                ("ה28", "פרקו.", "[[3.47 = ___]] שלמים + ___ עשיריות + ___ מאיות", "3.47"),
+                ("ג01", "השלימו.", "[[345 = ___]] עשרות + ___ אחדות", "345"),
+                ("ג01", "השלימו.", "[[456 = ___]] מאות + [[50]] + ___ אחדות", "6"),
+                ("ג01", "השלימו.", "[[345 = ___]] מאות + ___ אחדות", "345"),
+                ("ג01", "השלימו.", "[[456 = ___]] מאות + [[40]] + ___ אחדות", "6")):
             with self.subTest(prompt=prompt):
                 self.refused(topic_id, intro, prompt, evaluate(typed), code="SOURCE_NOTATION")
-        tens = bound("ב02", "הַשְׁלִימוּ.", "[[47 = ___]] עֲשָׂרוֹת + ___ יְחִידוֹת", evaluate("47"))
-        self.assertEqual(key(tens), "4 עֲשָׂרוֹת, 7 יְחִידוֹת")  # the pupil's own pointed words
         sentence = bound("ב02", "הַשְׁלִימוּ.", "בַּמִּסְפָּר [[47]] יֵשׁ ___ עֲשָׂרוֹת וְ־___ יְחִידוֹת.", evaluate("47"))
-        self.assertEqual(key(sentence), "4 עֲשָׂרוֹת, 7 יְחִידוֹת")
-        thousands = bound("ג04", "השלימו.", "[[4,507 = ___]] אלפים + ___ מאות + ___ עשרות + ___ אחדות", evaluate("4507"))
+        self.assertEqual(key(sentence), "4 עֲשָׂרוֹת, 7 יְחִידוֹת")  # the pupil's own pointed words
+        thousands = bound("ג04", "השלימו.", "במספר [[4,507]] יש ___ אלפים, ___ מאות, ___ עשרות ו־___ אחדות",
+                          evaluate("4507"))
         self.assertEqual(key(thousands), "4 אלפים, 5 מאות, 0 עשרות, 7 אחדות")
-        decimals = bound("ה28", "פרקו.", "[[3.47 = ___]] שלמים + ___ עשיריות + ___ מאיות", evaluate("3.47"))
+        decimals = bound("ה28", "פרקו.", "במספר [[3.47]] יש ___ שלמים, ___ עשיריות ו־___ מאיות", evaluate("3.47"))
         self.assertEqual(key(decimals), "3 שלמים, 4 עשיריות, 7 מאיות")
-        regrouped = bound("ג01", "השלימו.", "[[345 = ___]] עשרות + ___ אחדות", evaluate("345"))
+        regrouped = bound("ג01", "השלימו.", "במספר [[345]] יש ___ עשרות ו־___ אחדות", evaluate("345"))
         self.assertEqual(key(regrouped), "34 עשרות, 5 אחדות")
-        given = bound("ג01", "השלימו.", "[[456 = ___]] מאות + [[50]] + ___ אחדות", evaluate("6"))
+        given = bound("ג01", "השלימו.", "במספר [[456]] יש ___ מאות, [[5]] עשרות ו־___ אחדות", evaluate("6"))
         self.assertEqual(key(given), "4 מאות, 6 אחדות")
+        self.assertEqual(given.proof["rule"], "missing_digits")
         expanded = bound("ג01", "השלימו.", "[[345 = ___ + ___ + ___]]", evaluate("345"))
         self.assertEqual(key(expanded), "300 + 40 + 5")
         # Hundreds and units alone cannot rebuild 345; a given part must be the right one.
-        self.refused("ג01", "השלימו.", "[[345 = ___]] מאות + ___ אחדות", evaluate("345"))
-        self.refused("ג01", "השלימו.", "[[456 = ___]] מאות + [[40]] + ___ אחדות", evaluate("6"))
+        self.refused("ג01", "השלימו.", "במספר [[345]] יש ___ מאות ו־___ אחדות", evaluate("345"))
+        self.refused("ג01", "השלימו.", "במספר [[456]] יש ___ מאות, [[4]] עשרות ו־___ אחדות", evaluate("6"))
         self.refused("ג01", "השלימו.", "[[10 = ___ + ___ + ___]]", evaluate("10"))
 
     def test_place_value_table_row_is_answered_from_its_own_number(self):
@@ -152,8 +197,10 @@ class WirePathTests(unittest.TestCase):
         error = self.refused("ג03", "השלימו.", "[[5]], ___, ___, [[20]]", evaluate("10"))
         self.assertEqual((error.question, error.item), (1, 1))  # structured, not only message text
         self.refused("ג19", "חשבו.", "הסרט נמשך ___ שעות ו־___ דקות", evaluate("7"))
-        self.refused("g7:equations", "השלימו.", "[[x = ___]] או [[x = ___]]",
-                     {"kind": "computed", "task": {"kind": "solve", "lhs": "x", "rhs": "3", "variable": "x"}, "unit": ""})
+        solve = {"kind": "computed", "task": {"kind": "solve", "lhs": "x", "rhs": "3", "variable": "x"}, "unit": ""}
+        self.refused("g7:equations", "השלימו.", "[[x = ___]], [[x = ___]]", solve)
+        # Before a Hebrew word, an island that ends with its blank is refused for its notation in every grade.
+        self.refused("g7:equations", "השלימו.", "[[x = ___]] או [[x = ___]]", solve, code="SOURCE_NOTATION")
         # The same unknown named twice is one answer, and its equation is solved from the print.
         question, item, solved, grade = wire("ד07", "השלימו את המספר החסר.", "המספר החסר הוא ___: [[___ + 4 * 3 = 17]]",
                                              evaluate("17 - 4 * 3"))
@@ -161,13 +208,15 @@ class WirePathTests(unittest.TestCase):
         self.refused("ד07", "השלימו.", "המספר החסר הוא ___: [[___ + 4 * 3 = 17]]", evaluate("6"))
 
     def test_quotient_and_remainder_are_keyed_together(self):
-        for prompt in ("[[47 : 5 = ___]] (שארית ___)", "[[47 : 5 = ___]] שארית ___"):
-            for typed in ("47 / 5", "9", "2"):
-                with self.subTest(prompt=prompt, typed=typed):
-                    binding = bound("ג21", "חשבו וכתבו את השארית.", prompt, evaluate(typed))
-                    self.assertEqual(key(binding), "9 (שארית 2)")
-                    self.assertNotIn("47/5", key(binding))
+        for typed in ("47 / 5", "9", "2"):
+            with self.subTest(typed=typed):
+                binding = bound("ג21", "חשבו וכתבו את השארית.", "[[47 : 5 = ___]] (שארית ___)", evaluate(typed))
+                self.assertEqual(key(binding), "9 (שארית 2)")
+                self.assertNotIn("47/5", key(binding))
         self.refused("ג21", "חשבו וכתבו את השארית.", "[[47 : 5 = ___]] (שארית ___)", evaluate("48 / 5"))
+        # Straight before the word, the island's blank prints away from it: refused for its notation.
+        self.refused("ג21", "חשבו וכתבו את השארית.", "[[47 : 5 = ___]] שארית ___", evaluate("47 / 5"),
+                     code="SOURCE_NOTATION")
         # The blank written after the island is not moved into it: refused for its notation.
         self.refused("ג21", "חשבו וכתבו את השארית.", "[[47 : 5]] = ___ (שארית ___)", evaluate("47 / 5"),
                      code="SOURCE_NOTATION")
@@ -456,11 +505,11 @@ class AdapterTests(unittest.TestCase):
     def test_grade_three_sheet_from_the_wire_prints_complete_keys_and_no_leak(self):
         place = lambda n, form: (form.format(n=n), evaluate(str(n)))
         rows, work = self.sheet("ג01", [
-            ("השלימו את המספרים החסרים.", [place(345, "[[{n} = ___]] מאות + ___ עשרות + ___ אחדות"),
-                                           place(728, "___ מאות + ___ עשרות + ___ אחדות = {n}"),
-                                           place(906, "{n} = ___ מאות + ___ עשרות + ___ אחדות")]),
-            ("מצאו את הספרות.", [place(451, "[[{n} = ___]] מאות + ___ עשרות + ___ אחדות"),
-                                 place(630, "[[{n}]] = [[___]] מאות + [[___]] עשרות + [[___]] אחדות"),
+            ("השלימו את המספרים החסרים.", [place(345, "במספר [[{n}]] יש ___ מאות, ___ עשרות ו־___ אחדות"),
+                                           place(728, "במספר [[{n}]] יש ___ מאות + ___ עשרות + ___ אחדות"),
+                                           place(906, "במספר [[{n}]] יש ___ מאות, ___ עשרות ו־___ אחדות")]),
+            ("מצאו את הספרות.", [place(451, "במספר [[{n}]] יש ___ מאות, ___ עשרות ו־___ אחדות"),
+                                 place(630, "במספר [[{n}]] יש ___ מאות + ___ עשרות + ___ אחדות"),
                                  ("במספר [[4,507]], מהו הערך של הספרה [[5]]?", evaluate("500"))]),
             ("חשבו וכתבו את השארית.", [("[[47 : 5 = ___]] (שארית ___)", evaluate("47 / 5")),
                                        ("מחלקים [[34]] גולות ל־[[6]] ילדים. כמה מקבל כל ילד וכמה נשארות?", evaluate("34 / 6")),
@@ -469,11 +518,11 @@ class AdapterTests(unittest.TestCase):
                          ("[[5]], [[10]], ___, ___, [[25]]", evaluate("15")),
                          ("לדני היו [[124]] גולות. הוא נתן [[38]] וקנה עוד [[15]]. כמה גולות יש לו?", evaluate("124 - 38 + 15"))]),
         ])
-        self.assertEqual(rows[1, 1], ("345 = ___ מאות + ___ עשרות + ___ אחדות", "3 מאות, 4 עשרות, 5 אחדות"))
-        self.assertEqual(rows[1, 2], ("___ מאות + ___ עשרות + ___ אחדות = 728", "7 מאות, 2 עשרות, 8 אחדות"))
-        self.assertEqual(rows[1, 3], ("906 = ___ מאות + ___ עשרות + ___ אחדות", "9 מאות, 0 עשרות, 6 אחדות"))
-        self.assertEqual(rows[2, 1], ("451 = ___ מאות + ___ עשרות + ___ אחדות", "4 מאות, 5 עשרות, 1 אחדות"))
-        self.assertEqual(rows[2, 2], ("630 = ___ מאות + ___ עשרות + ___ אחדות", "6 מאות, 3 עשרות, 0 אחדות"))
+        self.assertEqual(rows[1, 1], ("במספר 345 יש ___ מאות, ___ עשרות ו־___ אחדות", "3 מאות, 4 עשרות, 5 אחדות"))
+        self.assertEqual(rows[1, 2], ("במספר 728 יש ___ מאות + ___ עשרות + ___ אחדות", "7 מאות, 2 עשרות, 8 אחדות"))
+        self.assertEqual(rows[1, 3], ("במספר 906 יש ___ מאות, ___ עשרות ו־___ אחדות", "9 מאות, 0 עשרות, 6 אחדות"))
+        self.assertEqual(rows[2, 1], ("במספר 451 יש ___ מאות, ___ עשרות ו־___ אחדות", "4 מאות, 5 עשרות, 1 אחדות"))
+        self.assertEqual(rows[2, 2], ("במספר 630 יש ___ מאות + ___ עשרות + ___ אחדות", "6 מאות, 3 עשרות, 0 אחדות"))
         # The value of the digit is the answer: it is in the key and nowhere beside the question.
         self.assertEqual(rows[2, 3], ("במספר 4,507, מהו הערך של הספרה 5?", "500"))
         self.assertEqual(rows[3, 1], ("47 : 5 = ___ (שארית ___)", "9 (שארית 2)"))
@@ -495,10 +544,13 @@ class AdapterTests(unittest.TestCase):
         rows, _ = self.sheet("ה28", [
             ("השלימו את הסימן המתאים.", [("[[0.5]] ___ [[0.45]]", compare("0.5", "0.45")),
                                          ("השלימו את הסימן.", compare("0.5", "0.45")),
-                                         ("[[3.47 = ___]] שלמים + ___ עשיריות + ___ מאיות", evaluate("3.47"))]),
+                                         # Beside a printed relation the item's own blank is a number.
+                                         ("[[3.47 = 3 + 0.4 + ___]]", evaluate("0.07"))]),
             ("פתרו.", [("דנה קנתה מחברת ב־[[12.50]] שקלים ועט ב־[[7.90]] שקלים. כמה שילמה?", evaluate("12.50 + 7.90", "שקלים")),
                        ("חשבו.", evaluate("7.15 + 7.2")),
-                       ("[[45,238 = ___]] עשרות אלפים + ___ אלפים + ___ מאות + ___ עשרות + ___ אחדות", evaluate("45238"))]),
+                       ("במספר [[45,238]] יש ___ עשרות אלפים, ___ אלפים, ___ מאות, ___ עשרות ו־___ אחדות",
+                        evaluate("45238")),
+                       ("במספר [[3.47]] יש ___ שלמים, ___ עשיריות ו־___ מאיות", evaluate("3.47"))]),
             ("כתבו כמספר מעורב.", [("[[frac(7,3)]]", evaluate("frac(7,3)")),
                                    ("חשבו.", evaluate("2 + frac(1,3) + 1 + frac(1,6)")),
                                    ("כתבו את [[2 + frac(1,3)]] כשבר מדומה.", evaluate("2 + frac(1,3)"))]),
@@ -514,10 +566,11 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(rows[5, 3], ("3 + 4 ___ 9 − 1", "3 + 4 < 9 − 1"))
         self.assertEqual(rows[1, 1], ("0.5 ___ 0.45", "0.5 > 0.45"))                # not 1/2 > 9/20
         self.assertEqual(rows[1, 2], ("השלימו את הסימן. 0.5 ___ 0.45", "0.5 > 0.45"))
-        self.assertEqual(rows[1, 3][1], "3 שלמים, 4 עשיריות, 7 מאיות")
+        self.assertEqual(rows[1, 3], ("3.47 = 3 + 0.4 + ___", "0.07"))
         self.assertEqual(rows[2, 1][1], "20.40 שקלים")
         self.assertEqual(rows[2, 2], ("חשבו. 7.15 + 7.2", "14.35"))
         self.assertEqual(rows[2, 3][1], "4 עשרות אלפים, 5 אלפים, 2 מאות, 3 עשרות, 8 אחדות")
+        self.assertEqual(rows[2, 4][1], "3 שלמים, 4 עשיריות, 7 מאיות")
         self.assertEqual(rows[3, 1][1], "2 1 3")      # the mixed number 2⅓: whole, numerator, denominator
         self.assertEqual(rows[3, 2][1], "3 1 2")
         self.assertEqual(rows[3, 3][1], "7 3")        # an improper fraction where it is asked for
@@ -559,9 +612,9 @@ class AdapterTests(unittest.TestCase):
 
     def test_refusals_carry_the_question_and_item(self):
         lesson, scope, expanded = self.source("ג01", [
-            ("השלימו.", [("[[345 = ___]] מאות + ___ עשרות + ___ אחדות", evaluate("345"))] * 3)] * 3 + [
-            ("השלימו.", [("[[345 = ___]] מאות + ___ עשרות + ___ אחדות", evaluate("345"))] * 2
-             + [("[[728 = ___]] מאות + ___ עשרות + ___ אחדות", evaluate("729"))])])
+            ("השלימו.", [("במספר [[345]] יש ___ מאות, ___ עשרות ו־___ אחדות", evaluate("345"))] * 3)] * 3 + [
+            ("השלימו.", [("במספר [[345]] יש ___ מאות, ___ עשרות ו־___ אחדות", evaluate("345"))] * 2
+             + [("במספר [[728]] יש ___ מאות, ___ עשרות ו־___ אחדות", evaluate("729"))])])
         with self.assertRaises(GeneralSourceError) as caught:
             validate_source(lesson, expanded, scope, provider=True)
         self.assertEqual((caught.exception.code, caught.exception.question, caught.exception.item),
@@ -581,7 +634,7 @@ class AdapterTests(unittest.TestCase):
 
     def test_unverified_elementary_answer_names_its_item(self):
         lesson, scope, expanded = self.source("ג01", [
-            ("השלימו.", [("[[345 = ___]] מאות + ___ עשרות + ___ אחדות", evaluate("345"))] * 3)] * 4)
+            ("השלימו.", [("במספר [[345]] יש ___ מאות, ___ עשרות ו־___ אחדות", evaluate("345"))] * 3)] * 4)
         expanded["sections"][0]["questions"][2]["items"][1]["answer"] = {
             "kind": "review", "text": [{"kind": "text", "text": "תשובה בעל פה"}]}
         with self.assertRaises(GeneralSourceError) as caught:

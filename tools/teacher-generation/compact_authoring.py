@@ -206,7 +206,11 @@ DISPLAY_NAME = re.compile(r"sqrt|frac|___|[A-Z]{1,8}|[a-z]+")
 COORDINATE = re.compile(r"([A-Z]?)\(\s*(-?[0-9]{1,6})\s*,\s*(-?[0-9]{1,6})\s*\)")
 
 
-ANGLE_NAME = r"∠\s*(?:[A-Z]{3}|[A-Z])"
+# An angle is named by three letters only. The locked gate G81 of the pinned
+# middle skill fails a whole sheet on a one-letter angle, so ∠A is refused here.
+ANGLE_NAME = r"∠\s*[A-Z]{3}"
+SHORT_ANGLE = re.compile(r"∠(?!\s*[A-Z]{3}(?![A-Za-z0-9_'′’]))")
+ANGLE_WORD = re.compile(r"זווית\s+[A-Z](?:_?[0-9]+)?['′’]*(?![A-Za-z0-9'′’_])")
 DEGREES = r"[0-9]{1,3}(?:\.[0-9]{1,4})?\s*°"
 # One angle or a sum of angles; a chain of equal angles that may end in a measure.
 ANGLE_TERM = rf"{ANGLE_NAME}(?:\s*\+\s*{ANGLE_NAME}){{0,3}}"
@@ -278,7 +282,7 @@ def display_parts(value, grade):
 
         def alias(name):
             if name != "___" and (
-                grade < 7 or not re.fullmatch(r"[a-z]|[A-Z]{1,8}|∠[A-Z]{1,3}|[a-z][0-9]", name)
+                grade < 7 or not re.fullmatch(r"[a-z]|[A-Z]{1,8}|∠[A-Z]{3}|[a-z][0-9]", name)
             ):
                 invalid()
             if name not in aliases:
@@ -302,9 +306,9 @@ def display_parts(value, grade):
             # letter also stands alone, where x2 could be a product.
             bare = set(re.findall(r"(?<![A-Za-z0-9_])[xy](?![A-Za-z0-9_])", piece))
             subscript = r"(?<![A-Za-z0-9_])[a-z][0-9](?![0-9A-Za-z_.])"
-            names = re.compile(r"∠\s*[A-Z]{1,3}(?![A-Za-z])|" + subscript + "|" + DISPLAY_NAME.pattern)
+            names = re.compile(r"∠\s*[A-Z]{3}(?![A-Za-z])|" + subscript + "|" + DISPLAY_NAME.pattern)
             if any(re.search(r"(?<![A-Za-z0-9_])" + letter + r"[0-9]", piece) for letter in bare):
-                names = re.compile(r"∠\s*[A-Z]{1,3}(?![A-Za-z])|" + DISPLAY_NAME.pattern)
+                names = re.compile(r"∠\s*[A-Z]{3}(?![A-Za-z])|" + DISPLAY_NAME.pattern)
         rewritten = names.sub(rename, piece)
         spellings = {}
         # In an already parsed schoolbook polynomial keep ordinary numerical
@@ -577,12 +581,93 @@ def _safe_math_boundary(span):
     return span["kind"] == "text" and re.search(r"[א-ת]", span["text"]) is not None
 
 
-def unmarked_equation(value, grade):
-    """An elementary field that is one equation with one blank but is not one [[...]] formula."""
-    if value.count("___") != 1 or value.count("=") != 1 or re.search(r"[<>!≤≥≠]", value):
+PROSE_RELATION = re.compile(r"!=|<=|>=|[=<>≤≥≠]")
+# A relation with an operand on each side: an equation or an inequality, not a listed sign.
+SIDED_RELATION = re.compile(r"[^\s=<>≤≥≠!]\s*(?:!=|<=|>=|[=<>≤≥≠])\s*[^\s=<>≤≥≠!]")
+_RUN_SIGNS = frozenset("+-−*/×÷·x^%()=<>≤≥≠")
+_HEBREW_LETTER = re.compile(r"[֑-ׇא-ת]")
+
+
+def calculation_runs(value):
+    """The stretches of a field that read as one calculation, in the order written.
+
+    A stretch holds islands, numbers, blanks, operation and relation signs and
+    the spaces between them; a word or other punctuation ends it. A colon is
+    the school division sign after an operand ("24 : 6", "[[72]] :") or after
+    a spaced blank ("___ :"); after a word or a blank it touches ("השלימו:",
+    "___:") it ends the sentence. A hyphen right after a Hebrew letter (ו-5)
+    and a period or comma outside a number end it too.
+    """
+    runs, run, index = [], "", 0
+    while index < len(value):
+        if value.startswith("[[", index):
+            end = value.find("]]", index + 2)
+            if end < 0:
+                break
+            run += value[index:end + 2]
+            index = end + 2
+            continue
+        char = value[index]
+        before = run.rstrip()
+        if (char.isdigit() or char.isspace() or char == "_"
+                or (char in ".," and before[-1:].isdigit() and run == before and value[index + 1:index + 2].isdigit())
+                or (char == "!" and value[index + 1:index + 2] == "=")
+                or (char == ":" and (before[-1:].isdigit() or before.endswith(("]]", ")", "%"))
+                                     or (before.endswith("_") and before != run)))
+                or (char in _RUN_SIGNS and char != ":"
+                    and not (char == "-" and index and _HEBREW_LETTER.match(value[index - 1])))):
+            run += char
+        else:
+            if run.strip():
+                runs.append(run)
+            run = ""
+        index += 1
+    if run.strip():
+        runs.append(run)
+    return runs
+
+
+def blank_equation_outside_island(value):
+    """An elementary field with an equation and a blank that is not one complete [[...]] formula.
+
+    ``value`` is the field after the joins that read adjacent islands as one
+    formula. Refused: a calculation with a relation and a blank that is more
+    than one island ("7 + [[___ = 15]]", "[[72]] : [[___ = 8]]",
+    "[[3.47 = 3 + 0.4]] + ___", "24 : 6 = ___"), and a relation written in the
+    sentence beside an operand while the field has a blank and an unmarked
+    number ("___ מאות + ___ עשרות = 728", "3 מטרים = ___ ס״מ"). A box (☐) is
+    read as the blank it stands for; the field itself is not changed.
+    """
+    value = re.sub(r"[☐□▢]", "___", value)
+    if "___" not in value:
         return False
-    bare = re.sub(r"\[\[(___|[-−]?[0-9]+)\]\]", r"\1", value.strip())
-    return schoolbook_tokens(elementary_operations(bare.translate(MATH_TRANSLATION)), grade) is not None
+    for run in calculation_runs(value):
+        flat = re.sub(ISLAND, r" \1 ", run)
+        if ("___" in flat and SIDED_RELATION.search(flat)
+                and not re.fullmatch(r"[\s()]*" + ISLAND + r"[\s()]*", run)):
+            return True
+    prose = re.sub(ISLAND, "\x01", value)
+    if not re.search(r"[0-9]", prose):
+        return False
+    for sign in PROSE_RELATION.finditer(prose):
+        left, right = prose[:sign.start()].rstrip()[-1:], prose[sign.end():].lstrip()[:1]
+        if (left and (left.isdigit() or left in "_\x01)%")) or (right and (right.isdigit() or right in "_\x01(-−")):
+            return True
+    return False
+
+
+def labelled_blank(value):
+    """An island that ends with its blank, followed by a Hebrew word ("[[345 = ___]] מאות").
+
+    Inside the left-to-right island the blank prints at the far end from the
+    word after it, which reads as the label of the island's first number.
+    """
+    for match in re.finditer(ISLAND, value):
+        content = match[1].strip()
+        if (content.endswith("___") and content.strip("_ ")
+                and re.match(r"\s*[֑-ׇ]*[א-ת]", value[match.end():])):
+            return True
+    return False
 
 
 def spans(value, grade, *, fraction_notation=False):
@@ -590,12 +675,18 @@ def spans(value, grade, *, fraction_notation=False):
         return provider_span_array(value, grade, fraction_notation=fraction_notation)
     if len(value) > 2400:
         invalid()
-    if re.search(r"\[\[[-−]?[0-9]+(?:\.[0-9]+)?\]\]%", value):
+    if SHORT_ANGLE.search(value):
+        # ∠A, ∠AB or a lone ∠, in a formula or in the sentence: refused, never renamed.
+        invalid()
+    if re.search(r"\]\]\s*%", value):
         # The percent sign is written inside the island with its number, [[25%]];
         # one written after the island is refused, never moved into it.
         invalid()
     joined = join_islands(value)
-    if grade <= 6 and unmarked_equation(joined, grade):
+    if labelled_blank(joined):
+        # "[[345 = ___]] מאות" prints the blank away from its label: refused as written.
+        invalid()
+    if grade <= 6 and blank_equation_outside_island(joined):
         # A missing-number equation is one formula, [[24 : ___ = 6]]. Written outside
         # one, the key is not bound to the print: it is refused, never wrapped.
         invalid()
@@ -647,6 +738,12 @@ def spans(value, grade, *, fraction_notation=False):
             if (span["kind"] != "text" and index >= 2 and result[index - 2]["kind"] != "text"
                     and result[index - 1].get("text") in (".", ",", ":", "/")):
                 invalid()
+        # The word for an angle before one point name ("זווית A", "הזווית [[point:B]]") prints the
+        # one-letter angle that G81 refuses, as the sign does.
+        line = "".join(span["text"] if span["kind"] == "text" else span.get("names") or span.get("notation") or "0"
+                       for span in result)
+        if ANGLE_WORD.search(re.sub(r"[֑-ׇ]", "", line)):
+            invalid()
     return result
 
 

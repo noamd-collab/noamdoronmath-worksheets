@@ -116,6 +116,16 @@ class LiveCauses(unittest.TestCase):
         for case_id, group, number in (('L1-p1', 'practice', 12), ('L1-p3-a2', 'challenges', 3)):
             with self.subTest(case=case_id, group=group, number=number):
                 self.assertEqual(self.code(case_id, question(case_id, group, number)), 'SOURCE_NOTATION')
+        # With only that angle written in contract notation, each is refused for the leak itself: the key
+        # x = 4 printed as a given of the next item, and the key 4 of CE printed as the given CE = 4.
+        for case_id, group, number, written, contract in (
+                ('L1-p1', 'practice', 12, '[[angle:AOB = 90]] מעלות', '[[∠AOB = 90°]]'),
+                ('L1-p3-a2', 'challenges', 3, '[[angle:A = angle:D = 90°]]', '[[∠BAD = ∠ADC = 90°]]')):
+            with self.subTest(case=case_id, group=group, number=number, contract=contract):
+                wire = question(case_id, group, number)
+                self.assertEqual(wire['intro'].count(written), 1)
+                wire['intro'] = wire['intro'].replace(written, contract)
+                self.assertEqual(self.code(case_id, wire), 'PRINTED_ANSWER_LEAK')
 
     def test_independent_drill_items_may_share_a_number_by_chance(self):
         from compact_authoring import expression

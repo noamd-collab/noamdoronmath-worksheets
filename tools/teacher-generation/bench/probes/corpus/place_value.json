@@ -192,9 +192,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "3.47 = 3 + 0.4 + ___",
-    "key": "0.07"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

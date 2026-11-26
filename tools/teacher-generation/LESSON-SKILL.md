@@ -203,7 +203,7 @@ Schema in `general_source.authoring_schema`; checks in
     `decide` task, never a number or a `compare` sign; a yes/no question that
     offers comparison outcomes ("קטן או גדול מ...") asks for a sign. An item with
     a blank of its own is not asked the intro's yes/no or "whether", nor, when
-    the blank stands beside a printed relation ("[[3.47 = ___]] שלמים"), the
+    the blank stands beside a printed relation ("[[3.47 = 3 + 0.4 + ___]]"), the
     intro's sign.
   - "Whether" (`בדקו/קבעו/החליטו/בררו ... אם`, any word ending in ו directly
     before `אם`/`האם`, or a question ending in "נכון?", "שגוי?" without another
@@ -260,18 +260,61 @@ original fragments with `[[...]]` marks inserted, keeping every word.
 
 Nothing rewrites the model's reply. `compact_authoring.expand_source` parses a
 copy of the reply exactly as it arrived, and every check reads that text. A
-spelling outside the notation of section 2.3 is refused with its code: `$...$`
-or LaTeX, `324x15` or a letter for the missing number in grades 1–6, `2³`,
-`½`, `☐`, a typed or one-letter angle inside a formula (`[[angle:D = 70°]]`),
-`[[a=1, b=-6, c=9]]`, a coordinate window that leaves out a point, a `decide`
-answer without its task wrapper, a missing-number equation in grades 1–6 that
-is not one `[[...]]` formula (`24 : 6 = ___`, `[[47 : 5]] = ___`), an `=`
-between prose and an island, a percent sign after its island (`[[25]]%`), a
-`solve` task for a letter other than `x y a b`. A reserve takes the place of
-the refused question, or the one correction call asks for it again. When unmarked
-mathematics is the only fault, `skill_authoring.notation_correction` asks the
-model to insert the `[[...]]` marks, and its `apply` checks that no word
-changed.
+spelling outside the notation of section 2.3 is refused with its code. These
+are the refusals, by where the spelling stands:
+
+- **Anywhere in a rich field, in the sentence or in an island:**
+  - `$...$`, LaTeX or other markup (`SOURCE_TEXT`, `general_source.MARKUP`).
+  - An angle not named by three letters: `∠A`, `∠AB`, `[[∠D = 70°]]`,
+    `[[∠A + ∠B]]`, `[[∠A = 3*x]]`, `מצאו את גודל ∠A.`; in grades 7–9 also the
+    word זווית before one point name (`זווית A`, `הזווית [[point:B]]`). The
+    locked gate G81 would fail the whole sheet on it at render
+    (`compact_authoring.SHORT_ANGLE`, `ANGLE_WORD`; `SOURCE_NOTATION`).
+  - A percent sign outside the island that holds its number, in every grade:
+    `[[25]]%`, `[[25]] %`, `[[2,500]]%`, `[[1/2]]%`. The spelling is `[[25%]]`.
+  - An island that ends with its blank directly before a Hebrew word, in every
+    grade: `[[345 = ___]] מאות`, `[[47 : 5 = ___]] שארית ___`, `[[AB = ___]] ס״מ`.
+    Inside the left-to-right island the blank prints away from that word
+    (`compact_authoring.labelled_blank`). `[[47 : 5 = ___]] (שארית ___)` and
+    `במספר [[345]] יש ___ מאות, ___ עשרות ו־___ אחדות` are read.
+  - An `=` with spaces between a word or blank and an island: `המחיר = [[5]]`,
+    `[[345]] = ___ מאות`, `[[47 : 5]] = ___`.
+  - Grades 1–6: an equation or inequality with a blank (`___` or `☐`) that is
+    not one complete island once adjacent islands are joined
+    (`compact_authoring.blank_equation_outside_island`). Partly marked:
+    `24 : ___ = [[6]]` (read as `24 : [[___ = 6]]`), `[[72]] : ___ = [[8]]`,
+    `7 + [[___]] = [[15]]`, `[[3.47]] = [[3]] + [[0.4]] + ___`. Unmarked, also
+    among words or before punctuation: `24 : 6 = ___`, `חשבו: 24 : 6 = ___`,
+    `24 : 6 = ___ .`, `5 + ☐ = 9`. And a relation in the sentence beside an
+    operand while the field has a blank and an unmarked number:
+    `___ מאות + ___ עשרות + ___ אחדות = 728`, `3 מטרים = ___ ס״מ`. A colon after
+    a word or touching a blank ends the sentence (`השלימו: [[24 : ___ = 6]]`,
+    `המספר החסר הוא ___: [[___ + 4 x 3 = 17]]`), and a sign listed as an option
+    (`(<, > או =)`) is no relation.
+- **Inside an island only** (the same spelling in the sentence is not refused
+  for its notation): `324x15`, a letter for the missing number in grades 1–6
+  (`[[x : 5 = 8]]`), `2³`, `½`, `☐` (`[[345]] ☐ [[354]]` is a comparison
+  blank), a typed angle inside a formula (`[[angle:D = 70°]]`) or with fewer
+  than three points (`[[angle:A]]`), `[[a=1, b=-6, c=9]]`.
+- **Outside the rich text:** a coordinate window that leaves out a point, a
+  `decide` answer without its task wrapper, a `solve` task for a letter other
+  than `x y a b`.
+- **Not solved from the print** (grades 1–6, `printed_parts.refuse_unsolved_equation`,
+  `PRINTED_TASK_MISMATCH`, after every other check of the item): an item that
+  prints an equation with a blank, in one island or as a relation in the
+  sentence beside a blank (`[[3]] מטרים = ___ ס״מ`), is keyed only when a binder
+  solves that equation from the print. Either the missing-number binder
+  `printed_tasks.match_printed_task` (the island alone, or after השלימו,
+  השלימו את המספר החסר, מצאו את המספר החסר or המספר החסר הוא ___), or a parts
+  binder of section 2.4 (place value, quotient and remainder, sequence, two
+  units). Otherwise the item is refused, also with the right key:
+  `מהו המספר החסר? [[24 : ___ = 6]]`, a conversion into one unit. An equation
+  with a blank in the intro or in a table cell refuses its question.
+
+A reserve takes the place of the refused question, or the one correction call
+asks for it again. When unmarked mathematics is the only fault,
+`skill_authoring.notation_correction` asks the model to insert the `[[...]]`
+marks, and its `apply` checks that no word changed.
 
 ---
 
@@ -447,13 +490,16 @@ Run from the repository root. Full guide: `bench/README.md`.
 | `bench/probes/run.py [--family F] [--show] [--update]` | 285 synthetic question forms: pass or rejected; exit 1 on a regression or any wrong print | none |
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
-- **Recorded state:** replay delivers 5 of 35 cases with no further model
-  call, and 296 of 756 questions are refused alone
+- **Recorded state:** replay delivers 4 of 35 cases with no further model
+  call, and 308 of 756 questions are refused alone
   (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
   count as failed, so this under-states the live ladder. The key-print checks
   of section 2.4 cost three ג10 replays (A-, B- and G-division) whose
   fact-family items print their own answer; live, those questions go to the
-  correction call. Probes: 179 pass, 106 rejected, no wrong print.
+  correction call. The missing-number binding of section 3 costs L1-g4: its
+  "[[___ * 5 + 12 = 47]]" after "אלעד חישב לפי סדר הפעולות:" and its reserve
+  "בתרגיל [[(14 - 6) * ___ = 24]], מהו המספר החסר?" are not solved from the
+  print. Probes: 168 pass, 117 rejected, no wrong print.
 - **Sweep flags:** `--dry-run`, `--topics`, `--grades`, `--levels`, `--limit`,
   `--one-level-per-topic`, `--only-failed`, `--question-count`, `--minutes`
   (default 30), `--calls-per-case` (4), `--concurrency` (4), `--case-timeout`

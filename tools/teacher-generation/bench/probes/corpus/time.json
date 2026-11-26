@@ -119,9 +119,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "2 שעות ו־ 15 דקות = ___ דקות",
-    "key": "135 דקות"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {

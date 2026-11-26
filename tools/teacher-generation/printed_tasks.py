@@ -178,7 +178,7 @@ def validate_computed_request(question, item, solved, grade, location):
     if "___" in prompt or any(span["kind"] == "formula" and "___" in span["notation"] for span in item["prompt"]):
         # A blank of its own is the item's request: a group's yes/no or true/false
         # question cannot be asked of an item that is still to be filled in, and
-        # beside a printed relation ("[[3.47 = ___]] שלמים") the blank is a number,
+        # beside a printed relation ("[[3.47 = 3 + 0.4 + ___]]") the blank is a number,
         # not the group's sign.
         shared -= {"decision", "whether"}
         if _prints_relation(item["prompt"]):
@@ -271,7 +271,8 @@ def match_printed_task(item, solved, grade):
         labels = OP_NAMES if grade > 2 else {
             "add": "חִבּוּר", "subtract": "חִסּוּר", "multiply": "כֶּפֶל", "divide": "חִלּוּק"}
         return Binding({"rule": "first_operation", "step": steps[0]}, labels[steps[0]["op"]])
-    if ((not words or re.fullmatch(r"(?:השלימו|המספר החסר הוא(?: ___)?|מצאו את המספר החסר)[\s:?.]*", words))
+    if ((not words or re.fullmatch(r"(?:השלימו(?: את המספר החסר)?|המספר החסר הוא(?: ___)?|מצאו את המספר החסר)[\s:?.]*",
+                                   words))
             and span["kind"] == "formula" and span["notation"].count("___") == 1 and len(parts) == 3
             and parts[1] == "=" and isinstance(parts[0], dict) and isinstance(parts[2], dict)):
         if item["answer"]["unit"]:

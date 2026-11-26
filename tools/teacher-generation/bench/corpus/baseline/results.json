@@ -320,6 +320,7 @@
      "answered": false,
      "questions": [
       1,
+      4,
       5,
       6,
       8,
@@ -338,8 +339,8 @@
       "q1",
       "q10",
       "q11",
-      "q12",
       "q19",
+      "q4",
       "q5",
       "q6",
       "q8"
@@ -373,6 +374,15 @@
         ],
         "group": "practice",
         "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 4,
         "stage": "source"
        },
        {
@@ -484,9 +494,9 @@
         "stage": "source"
        }
       ],
-      "missing": 13,
+      "missing": 14,
       "planned": 20,
-      "printed": 7,
+      "printed": 6,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -524,6 +534,15 @@
      "index": 1,
      "question": 1,
      "substring": "{\"head\": [\"ביטוי\", \"תוצאה\"], \"rows\": [[\"[[10 + 2 * 3]]\", \"[[16]]\"], [\"[[5 * 4 - 2]]\", \"[[18]]\"], [\"[[8 + 12 / 4]]\", \"[[1…"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "[[15 - ___ * 2 = 9]]"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"3*4-2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -646,7 +665,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 13,
+    "failingAlone": 14,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -862,6 +881,7 @@
       3,
       4,
       5,
+      6,
       8,
       9,
       10,
@@ -871,19 +891,20 @@
       14,
       15,
       17,
+      18,
       19,
       20
      ],
      "requested": true,
      "requiredKeys": [
+      "q18",
       "q19",
       "q2",
       "q20",
       "q3",
       "q4",
       "q5",
-      "q8",
-      "q9",
+      "q6",
       "rule"
      ]
     },
@@ -947,6 +968,15 @@
         ],
         "group": "practice",
         "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "practice",
+        "question": 6,
         "stage": "source"
        },
        {
@@ -1036,6 +1066,15 @@
          "SOURCE_NOTATION"
         ],
         "group": "challenges",
+        "question": 18,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "SOURCE_NOTATION"
+        ],
+        "group": "challenges",
         "question": 19,
         "stage": "source"
        },
@@ -1049,9 +1088,9 @@
         "stage": "source"
        }
       ],
-      "missing": 15,
+      "missing": 17,
       "planned": 20,
-      "printed": 5,
+      "printed": 3,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -1120,6 +1159,16 @@
      "index": 5,
      "question": 5,
      "substring": "חשבו [[10]]% מ-[[100]] וחשבו [[20]]% מ-[[50]]. האם התוצאות שוות?"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(25/100)*100\", \"kind\": \"evaluate\"}, \"unit\": \"%\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "practice",
+     "index": 6,
+     "question": 6,
+     "substring": "[[x]]% מ-[[100]] הם [[25]]. מהו הערך של [[x]]?"
     },
     {
      "answer": "{\"kind\": \"review\", \"text\": \"כן, כי [[(10/100)*50 = 5]].\"}",
@@ -1211,6 +1260,16 @@
      "substring": "חשבו [[10]]% מ-[[100]] ו-[[20]]% מ-[[100]]. מה ההפרש בין התוצאות?"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(15/50)*100\", \"kind\": \"evaluate\"}, \"unit\": \"%\"}",
+     "code": "SOURCE_NOTATION",
+     "detail": "Invalid or unsupported compact mathematical notation",
+     "field": "item.1",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "אם [[x]]% מ-[[50]] הם [[15]], מהו [[x]]?"
+    },
+    {
      "answer": "{\"kind\": \"review\", \"text\": \"לא נכון. התשובה הנכונה היא [[(10/100)*200 = 20]].\"}",
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
@@ -1232,7 +1291,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 15,
+    "failingAlone": 17,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -1277,7 +1336,7 @@
     },
     "firstPass": {
      "code": "SOURCE_NOTATION",
-     "detail": "Wrong number of distinct points",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "ok": false
     },
     "requests": 2,
@@ -1394,7 +1453,7 @@
    "questionFailures": [
     {
      "code": "SOURCE_NOTATION",
-     "detail": "Wrong number of distinct points",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "field": "item.1.prompt",
      "group": "practice",
      "index": 1,
@@ -1489,6 +1548,7 @@
       11,
       13,
       14,
+      15,
       18,
       19
      ],
@@ -1600,6 +1660,15 @@
        {
         "action": "missing",
         "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "challenges",
@@ -1616,9 +1685,9 @@
         "stage": "source"
        }
       ],
-      "missing": 10,
+      "missing": 11,
       "planned": 20,
-      "printed": 10,
+      "printed": 9,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -1729,6 +1798,15 @@
      "substring": "האם התוצאה של [[50 : 10]] היא קטנה מ-6? חשבו את התוצאה המדויקת."
     },
     {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "[[___ : 5 = 7]]"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6*7\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The printed request needs a decision, not a expression key at q1.item.1",
@@ -1750,7 +1828,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 10,
+    "failingAlone": 11,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
@@ -3701,7 +3779,8 @@
       11,
       12,
       15,
-      17
+      17,
+      20
      ],
      "requested": true,
      "requiredKeys": [
@@ -3709,6 +3788,7 @@
       "q12",
       "q15",
       "q17",
+      "q20",
       "q6",
       "q7",
       "q8"
@@ -3797,11 +3877,20 @@
         "group": "practice",
         "question": 17,
         "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 20,
+        "stage": "source"
        }
       ],
-      "missing": 7,
+      "missing": 8,
       "planned": 20,
-      "printed": 13,
+      "printed": 12,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -3898,10 +3987,19 @@
      "index": 17,
      "question": 17,
      "substring": "לפניכם שני חישובים שונים המתחילים מאותו מספר כולל. חשבו כל תוצאה בנפרד."
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.1.prompt",
+     "group": "challenges",
+     "index": 3,
+     "question": 20,
+     "substring": "[[(20 / 4) * 3 = ___]]"
     }
    ],
    "questions": {
-    "failingAlone": 7,
+    "failingAlone": 8,
     "total": 20
    },
    "recorded": "2026-11-23 14:07Z",
@@ -4584,7 +4682,7 @@
     },
     {
      "code": "SOURCE_NOTATION",
-     "detail": "Wrong number of distinct points",
+     "detail": "Invalid or unsupported compact mathematical notation",
      "field": "item.3.answer",
      "group": "practice",
      "index": 7,
@@ -6743,7 +6841,9 @@
      "answered": false,
      "questions": [
       2,
+      3,
       5,
+      11,
       12,
       13,
       14,
@@ -6751,11 +6851,13 @@
      ],
      "requested": true,
      "requiredKeys": [
+      "q11",
       "q12",
       "q13",
       "q14",
       "q17",
       "q2",
+      "q3",
       "q5"
      ]
     },
@@ -6801,10 +6903,28 @@
        {
         "action": "missing",
         "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
         "group": "practice",
         "question": 5,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 11,
         "stage": "source"
        },
        {
@@ -6837,16 +6957,16 @@
        {
         "action": "missing",
         "codes": [
-         "G33"
+         "PRINTED_TASK_MISMATCH"
         ],
         "group": "practice",
         "question": 17,
         "stage": "source"
        }
       ],
-      "missing": 6,
+      "missing": 8,
       "planned": 20,
-      "printed": 14,
+      "printed": 12,
       "reservesOffered": 4,
       "reservesRefused": 2
      }
@@ -6877,14 +6997,13 @@
    "provider": "gemini",
    "questionFailures": [
     {
-     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"12 / 2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_TASK_MISMATCH",
      "detail": "The prompt has several blanks and the typed task answers only one of them",
-     "field": "item.1",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 1,
      "question": 1,
-     "substring": "השלימו את המספר החסר כדי לפתור את התרגיל: [[___ * 2 = 12]], ולכן [[12 / 2 = ___]]"
+     "substring": "[[___ * 2 = 12]]"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"14 / 2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -6897,6 +7016,15 @@
      "substring": "ידוע כי [[2 * 7 = 14]]. מהי תוצאת התרגיל [[14 / 2]]?"
     },
     {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 3,
+     "question": 3,
+     "substring": "[[___ * 4 = 24]]"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24 / 8\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_LEAK",
      "detail": "An item prints its own answer beside its question",
@@ -6905,6 +7033,15 @@
      "index": 5,
      "question": 5,
      "substring": "אם [[3 * 8 = 24]], מהי תוצאת התרגיל [[24 / 8]]?"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "[[___ / 6 = 7]]"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"9 * 8\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -6935,13 +7072,13 @@
      "substring": "{\"head\": [\"מחולק\", \"מחלק\", \"מנה מתאימה\"], \"items\": [{\"answer\": {\"kind\": \"computed\", \"task\": {\"expression\": \"35 / 7\", \"ki…"
     },
     {
-     "code": "QUALITY_GATE_FAILED",
-     "detail": "A planned question was refused and nothing replaced it",
-     "field": "intro",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.1.prompt",
      "group": "practice",
      "index": 17,
      "question": 17,
-     "substring": "שחזרו את המספר החסר המקיים את האילוץ הנתון."
+     "substring": "[[___ / 5 = 8]]"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"28 / 4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -6975,7 +7112,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 10,
+    "failingAlone": 12,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -6998,74 +7135,30 @@
     "answeredFromRecording": 1,
     "contract": "worksheet-source/4",
     "correction": {
-     "answered": null,
-     "questions": [],
-     "requested": false,
-     "requiredKeys": null
+     "answered": false,
+     "questions": [
+      18,
+      19
+     ],
+     "requested": true,
+     "requiredKeys": [
+      "q18",
+      "q19"
+     ]
     },
     "firstPass": {
-     "ok": true
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "ok": false
     },
-    "requests": 1,
+    "requests": 2,
     "timeoutSeconds": 300
    },
-   "delivered": true,
-   "delivery": {
-    "automatedChecksPassed": true,
-    "checks": [
-     {
-      "name": "trusted-adapter",
-      "status": "PASS"
-     },
-     {
-      "name": "content-truth",
-      "status": "PASS"
-     },
-     {
-      "name": "pdf",
-      "status": "PASS"
-     },
-     {
-      "name": "word",
-      "status": "PASS"
-     },
-     {
-      "name": "worksheet",
-      "status": "PASS"
-     },
-     {
-      "name": "output-gates",
-      "status": "PASS"
-     },
-     {
-      "name": "house-gates",
-      "status": "PASS"
-     }
-    ],
-    "reviewFindings": [],
-    "salvage": {
-     "attempts": 1,
-     "corrections": 0,
-     "dropped": {
-      "codes": {},
-      "count": 0
-     },
-     "gate": "deliver",
-     "printedQuestions": 20,
-     "replaced": {
-      "codes": {
-       "G32": 2,
-       "PRINTED_ANSWER_KIND": 1
-      },
-      "count": 3
-     },
-     "requestedQuestions": 20
-    },
-    "unverifiedAnswers": {}
-   },
-   "failureClass": "DELIVERED",
-   "finalCode": null,
-   "finalStatus": "delivered",
+   "delivered": false,
+   "delivery": null,
+   "failureClass": "SOURCE:PRINTED_TASK_MISMATCH",
+   "finalCode": "PRINTED_TASK_MISMATCH",
+   "finalStatus": "failed",
    "frameFailure": null,
    "id": "L1-g4",
    "ladder": {
@@ -7084,43 +7177,35 @@
         "stage": "source"
        },
        {
-        "action": "reserve_as_practice",
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 18,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
         "codes": [
          "G32"
         ],
         "group": "challenges",
         "question": 19,
         "stage": "source"
-       },
-       {
-        "action": "reserve",
-        "codes": [
-         "G32"
-        ],
-        "group": "practice",
-        "question": 9,
-        "stage": "precheck"
        }
       ],
-      "missing": 0,
+      "missing": 2,
       "planned": 20,
-      "printed": 20,
+      "printed": 18,
       "reservesOffered": 4,
-      "reservesRefused": 1
+      "reservesRefused": 2
      }
     ],
     "attempts": 1,
-    "byCorrection": 0,
-    "byReserve": 3,
-    "correctionFailed": false,
-    "corrections": 0,
-    "dropped": 0,
-    "gate": "deliver",
-    "gateCode": "G32",
-    "printed": 20,
-    "question": 9,
-    "replaced": 3,
-    "stage": "render"
+    "correctionFailed": true,
+    "corrections": 1,
+    "stage": "source"
    },
    "lesson": {
     "domain": "operations",
@@ -7139,22 +7224,7 @@
    "localAuthor": null,
    "model": "gemini-3.8-flash",
    "origin": "live round 1 (milestone 2), b-g4-order, call 1",
-   "prechecks": [
-    {
-     "codes": [
-      "G32"
-     ],
-     "questions": [
-      9
-     ],
-     "status": "replace"
-    },
-    {
-     "codes": [],
-     "questions": [],
-     "status": "clean"
-    }
-   ],
+   "prechecks": [],
    "provider": "gemini",
    "questionFailures": [
     {
@@ -7168,6 +7238,15 @@
      "substring": "האם שתי דרכי החישוב מביאות לאותה התוצאה? השוו בין [[3 * 4 + 3 * 6]] לבין [[3 * (4 + 6)]]."
     },
     {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.3.prompt",
+     "group": "challenges",
+     "index": 1,
+     "question": 18,
+     "substring": "[[___ * 5 + 12 = 47]]"
+    },
+    {
      "code": "QUALITY_GATE_FAILED",
      "detail": "A planned question was refused and nothing replaced it",
      "field": "intro",
@@ -7175,6 +7254,15 @@
      "index": 2,
      "question": 19,
      "substring": "באתגר זה תלמיד טעה ושכח את כללי סדר הפעולות. מצאו את התוצאה הנכונה בכל מקרה."
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.1.prompt",
+     "group": "reserves",
+     "index": 3,
+     "question": null,
+     "substring": "[[(14 - 6) * ___ = 24]]"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"(3 + 5) * 2\", \"relation\": \"eq\", \"right\": \"16\"}, \"unit\": \"\"}",
@@ -7188,52 +7276,11 @@
     }
    ],
    "questions": {
-    "failingAlone": 3,
+    "failingAlone": 5,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
-   "renders": [
-    {
-     "attempt": 1,
-     "gateFindings": [],
-     "reviewFindings": [],
-     "skippedChecks": [
-      "worksheet: PASS — pdffonts missing — skipped (warn)",
-      "worksheet: PASS — pdftoppm missing — skipped render (warn)"
-     ],
-     "status": "needs_review",
-     "steps": [
-      {
-       "name": "trusted-adapter",
-       "status": "PASS"
-      },
-      {
-       "name": "content-truth",
-       "status": "PASS"
-      },
-      {
-       "name": "pdf",
-       "status": "PASS"
-      },
-      {
-       "name": "word",
-       "status": "PASS"
-      },
-      {
-       "name": "worksheet",
-       "status": "PASS"
-      },
-      {
-       "name": "output-gates",
-       "status": "PASS"
-      },
-      {
-       "name": "house-gates",
-       "status": "PASS"
-      }
-     ]
-    }
-   ],
+   "renders": [],
    "reply": {
     "format": "json",
     "questionsFrom": "firstReply"
@@ -8475,13 +8522,19 @@
     "correction": {
      "answered": false,
      "questions": [
+      3,
+      11,
+      12,
       13,
       17
      ],
      "requested": true,
      "requiredKeys": [
+      "q11",
+      "q12",
       "q13",
-      "q17"
+      "q17",
+      "q3"
      ]
     },
     "firstPass": {
@@ -8528,7 +8581,7 @@
     "reviewFindings": [
      {
       "code": "SHORTER_SHEET",
-      "count": 2,
+      "count": 5,
       "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
      }
     ],
@@ -8537,15 +8590,16 @@
      "corrections": 1,
      "dropped": {
       "codes": {
-       "PRINTED_ANSWER_LEAK": 2
+       "PRINTED_ANSWER_LEAK": 4,
+       "PRINTED_TASK_MISMATCH": 1
       },
-      "count": 2
+      "count": 5
      },
      "gate": "deliver",
-     "printedQuestions": 18,
+     "printedQuestions": 15,
      "replaced": {
       "codes": {
-       "PRINTED_ANSWER_LEAK": 2
+       "PRINTED_TASK_MISMATCH": 2
       },
       "count": 2
      },
@@ -8562,10 +8616,28 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 2,
+      "dropped": 5,
       "events": [
        {
         "action": "reserve",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -8574,7 +8646,16 @@
         "stage": "source"
        },
        {
-        "action": "reserve",
+        "action": "dropped",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "dropped",
         "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
@@ -8603,7 +8684,7 @@
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 18,
+      "printed": 15,
       "reservesOffered": 4,
       "reservesRefused": 1
      }
@@ -8613,9 +8694,9 @@
     "byReserve": 2,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 2,
+    "dropped": 5,
     "gate": "deliver",
-    "printed": 18,
+    "printed": 15,
     "replaced": 2,
     "stage": "render"
    },
@@ -8646,6 +8727,24 @@
    "provider": "gemini",
    "questionFailures": [
     {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "[[12 : 3 = ___]]"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 2,
+     "question": 2,
+     "substring": "[[15 : 5 = ___]]"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"24 / 6\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_LEAK",
      "detail": "An item prints its own answer beside its question",
@@ -8654,6 +8753,15 @@
      "index": 3,
      "question": 3,
      "substring": "נתון כי [[4 * 6 = 24]]. השלימו את המנה: [[24 : 6 = ___]]"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "The printed equation with a blank is not solved from the print",
+     "field": "item.1.prompt",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "[[___ : 6 = 7]]"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5 * 7\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -8707,7 +8815,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 6,
+    "failingAlone": 9,
     "total": 24
    },
    "recorded": "2026-11-23 21:07Z",
@@ -9108,29 +9216,29 @@
   "byProvider": {
    "gemini": {
     "cases": 21,
-    "delivered": 4,
-    "failingAlone": 174,
+    "delivered": 3,
+    "failingAlone": 182,
     "questions": 484
    },
    "qwen": {
     "cases": 14,
     "delivered": 1,
-    "failingAlone": 122,
+    "failingAlone": 126,
     "questions": 272
    }
   },
   "cases": 35,
-  "correctionsNotRecorded": 30,
-  "delivered": 5,
-  "deliveredRate": 0.1429,
+  "correctionsNotRecorded": 31,
+  "delivered": 4,
+  "deliveredRate": 0.1143,
   "deliveredShorter": 2,
   "failureClasses": {
-   "DELIVERED": 5,
+   "DELIVERED": 4,
    "OTHER:QUALITY_GATE_FAILED": 1,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 2,
    "SOURCE:PRINTED_ANSWER_KIND": 5,
    "SOURCE:PRINTED_ANSWER_LEAK": 4,
-   "SOURCE:PRINTED_TASK_MISMATCH": 1,
+   "SOURCE:PRINTED_TASK_MISMATCH": 2,
    "SOURCE:QUALITY_GATE_FAILED": 1,
    "SOURCE:SOURCE_FIGURE": 2,
    "SOURCE:SOURCE_NOTATION": 9,
@@ -9139,8 +9247,8 @@
    "SOURCE:SOURCE_TEXT": 1
   },
   "finalStatus": {
-   "delivered": 5,
-   "failed": 28,
+   "delivered": 4,
+   "failed": 29,
    "needs_unrecorded_reply": 2
   },
   "firstRenderGateFindings": {},
@@ -9152,10 +9260,10 @@
     "PRINTED_ANSWER_KIND": 86,
     "PRINTED_ANSWER_LEAK": 51,
     "PRINTED_EXPRESSION_SCOPE": 4,
-    "PRINTED_TASK_MISMATCH": 27,
-    "QUALITY_GATE_FAILED": 3,
+    "PRINTED_TASK_MISMATCH": 38,
+    "QUALITY_GATE_FAILED": 2,
     "SOURCE_FIGURE": 6,
-    "SOURCE_NOTATION": 57,
+    "SOURCE_NOTATION": 59,
     "SOURCE_NUMBER": 2,
     "SOURCE_PLAIN_MATH": 17,
     "SOURCE_RICH_TEXT": 1,
@@ -9164,8 +9272,8 @@
     "SOURCE_TEXT": 20,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 296,
-   "failingShare": 0.3915,
+   "failingAlone": 308,
+   "failingShare": 0.4074,
    "total": 756
   },
   "secondAttemptsNotRecorded": 2
