@@ -1,7 +1,7 @@
 import { requireGoogleTeacher, teacherAccessFailure, TEACHER_PRIVATE_HEADERS, type TeacherAccessResult } from './teacherAccess';
 import { sameOriginTeacherMutation } from './teacherSession';
 import { createGenerationStore, generationSessionToken, GenerationStoreError, uuid, workerAcceptsCurrentIntake, workerAcceptsCurriculumIntake, type GenerationQuota } from './teacherGenerationStore';
-import { validateTeacherGenerationIntake, isTeacherGenerationDraftReady, type TeacherGenerationCurriculum } from './teacherGenerationContract';
+import { validateTeacherGenerationIntake, isTeacherGenerationDraftReady, WORKSHEET_WIRE_5, type TeacherGenerationCurriculum } from './teacherGenerationContract';
 import type { TeacherWorkerWake } from './teacherWorkerWake';
 
 const reply = (body: unknown, status = 200) => Response.json(body, { status, headers: TEACHER_PRIVATE_HEADERS });
@@ -61,6 +61,8 @@ export async function handleTeacherGeneration(request: Request, deps: Generation
       if (!kind) return reply({ ok: true, job });
       if (kind !== 'pdf' && kind !== 'docx') return error('INVALID_FILE');
       if (job.status !== 'needs_review' || !isTeacherGenerationDraftReady(job.result)) return error('DRAFT_NOT_AVAILABLE', 409);
+      // A worksheet-wire/5 draft is its PDF alone; a Word file is never served for it.
+      if (kind !== 'pdf' && job.result?.authorContract === WORKSHEET_WIRE_5) return error('DRAFT_NOT_AVAILABLE', 409);
       const file = await store.download(access.userId, id, kind);
       if (!file.ok) return error('DRAFT_NOT_AVAILABLE', 503);
       const length = Number(file.headers.get('content-length'));

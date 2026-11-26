@@ -147,13 +147,13 @@ try {
   let sequence = 0;
   const remaining = async () => (await query('select noam_teacher_trial.remaining(noam_teacher_trial.google_subject($1)) as value', [teacher]))[0].value;
   /** Enqueue as the server, claim as the worker, upload the given files, then report the draft. */
-  async function finish(document, files) {
+  async function finish(document, files, author = teacher) {
     const id = '50000000-0000-4000-8000-' + String(++sequence).padStart(12, '0');
     await as('service_role');
     await db.query(`insert into public.noam_teacher_generation_jobs(id,owner_id,request_key,request_hash,lesson)
-      values($1,$2,gen_random_uuid(),repeat('a',64),'{}')`, [id, teacher]);
+      values($1,$2,gen_random_uuid(),repeat('a',64),'{}')`, [id, author]);
     await db.query("update public.noam_teacher_generation_jobs set status='running',phase='authoring' where id=$1", [id]);
-    for (const kind of files) await db.query('insert into storage.objects(bucket_id,name) values($1,$2)', [bucket, `${teacher}/${id}/sheet.${kind}`]);
+    for (const kind of files) await db.query('insert into storage.objects(bucket_id,name) values($1,$2)', [bucket, `${author}/${id}/sheet.${kind}`]);
     const row = (await query(`update public.noam_teacher_generation_jobs set status='needs_review',phase='needs_review',result=$2
       where id=$1 returning status,phase,error_code,result is null as cleared`, [id, JSON.stringify(document)]))[0];
     return { id, ...row };
@@ -206,6 +206,38 @@ try {
     await db.query('insert into storage.objects(bucket_id,name) values($1,$2)', [bucket, `${teacher}/${id}/sheet.pdf`]);
     await insert();
     assert.equal(await remaining(), before - 1);
+  });
+  await test('after 20261126090000 the history gives a v5 draft the fields its rule reads, and its PDF only', async () => {
+    await as('postgres');
+    await db.exec(await migration('20261126090000_teacher_created_worksheets_v5_fields.sql'));
+    const signature = 'public.noam_teacher_created_worksheets()';
+    for (const role of ['anon', 'authenticated', 'service_role']) {
+      const allowed = (await query("select has_function_privilege($1,$2,'EXECUTE') as allowed", [role, signature]))[0].allowed;
+      assert.equal(allowed, role === 'authenticated', role);
+    }
+    const fn = (await query('select prosecdef,provolatile,proconfig from pg_proc where oid=$1::regprocedure', [signature]))[0];
+    assert.deepEqual(fn, { prosecdef: false, provolatile: 's', proconfig: ['search_path=""'] });
+    // A stray Word object beside a v5 draft is never listed; the PDF is.
+    // The owner, who has no trial limit: the trial teacher has used the five credits by now.
+    const v5 = await finish(middle, ['pdf', 'docx'], owner);
+    assert.equal(v5.status, 'needs_review');
+    const pair = await finish(review, ['pdf', 'docx'], owner);
+    assert.equal(pair.status, 'needs_review');
+    await as('authenticated', google(owner));
+    const rows = Object.fromEntries((await query('select id,result,formats from public.noam_teacher_created_worksheets()'))
+      .map(row => [row.id, row]));
+    assert.deepEqual(rows[v5.id].formats, ['pdf']);
+    assert.deepEqual(rows[v5.id].result, {
+      automatedChecksPassed: middle.automatedChecksPassed, authoringProfile: middle.authoringProfile,
+      renderingChecksPassed: middle.renderingChecksPassed, humanReviewRequired: middle.humanReviewRequired,
+      checks: middle.checks, authorContract: 'worksheet-wire/5', notRun: middle.notRun,
+      skill: { name: middle.skill.name }, artifacts: middle.artifacts.map(item => ({ kind: item.kind })),
+    });
+    // Every other row keeps exactly the five fields and both formats.
+    assert.deepEqual(rows[pair.id].formats, ['pdf', 'docx']);
+    assert.deepEqual(Object.keys(rows[pair.id].result).sort(),
+      Object.keys(review).filter(key => ['automatedChecksPassed', 'authoringProfile', 'renderingChecksPassed',
+        'humanReviewRequired', 'checks'].includes(key)).sort());
   });
 } finally {
   await db.exec('reset role').catch(() => undefined);
