@@ -10,7 +10,8 @@ import curriculumAlignment from '../data/curriculum-alignment.v1.json';
 import type { CatalogV1 } from './catalog/types';
 import { synthesizeBodyFlow, updatedLineIsoDate, type TopicPageContent } from './topicPages';
 import { topicPageCtaTopicIds, topicPageCtaWalk, type TopicPageCtaWalk } from './topicPageCtas';
-import { elementaryPrintEdition, findCatalogTopic, topicEditionsSelectedFirst } from './topicWorksheetEditions';
+import { studentFacingEditions } from './catalog/editions';
+import { elementaryPrintEdition, findCatalogTopic } from './topicWorksheetEditions';
 import {
   absolutePageUrl,
   educationalLevelForGrade,
@@ -85,7 +86,7 @@ export function topicPagePdfParts(
       }
     }
     // The edition order of the page's edition lists (topicWorksheetEditionLinks).
-    for (const edition of topicEditionsSelectedFirst(topic)) {
+    for (const edition of studentFacingEditions(topic, grade)) {
       const editionName = edition.editionId === 'legacy' ? '' : edition.label.replace(PDF_SUFFIX, '');
       for (const level of edition.levels) {
         const contentUrl = `${catalog.config.pdfBase}${level.pdfId}.pdf`;

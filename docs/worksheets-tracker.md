@@ -1,3 +1,7 @@
+## 2026-11-25 — old junior-high sheets removed from the public site
+
+Noam approved deleting old junior-high worksheets and keeping sheets created from generator/skill version 7 and up. Public lists for grades 7–9 (including the reduced grade-9 track) no longer show the pre-generator "דפים קודמים" set when a later edition exists. Editions without a recorded skill version stay. Four grade-9 topics that have no later edition keep their only sheets. Grades 1–6, the teacher area, games, and Noam AI / Ramzi stay as they were. Removed viewer and `/_files/ugd/` URLs 301 to the topic landing.
+
 ## 2026-11-22 — Grade 7 composite polygon area (092)
 
 The three G7-T138 worksheets each have 21 reviewed Ramzi markers on the printed subsections. Each marker opens three text hints referring to the original geometry worksheet. The shared landing keeps the original worksheet links for topics 46 and 45.

@@ -1,6 +1,5 @@
 ---
 import {
-  normalizeNavPath,
   resolveActiveNav,
   resolveWorksheetsNavBand,
   type ActiveNavKey,
@@ -9,8 +8,6 @@ import {
 import { GAMES_INDEX_PATH } from '../lib/eliyahuGames';
 interface Props { active?: ActiveNavKey | null; compactBrand?: boolean; }
 const active=Astro.props.active !== undefined ? Astro.props.active : resolveActiveNav(Astro.url.pathname);
-const navPath = normalizeNavPath(Astro.url.pathname);
-const onGamesCorner = navPath === GAMES_INDEX_PATH;
 const worksheetsBand: WorksheetsNavBand | null =
   active === 'worksheets' ? resolveWorksheetsNavBand(Astro.url.pathname, Astro.url.searchParams) : null;
 ---
@@ -30,11 +27,12 @@ const worksheetsBand: WorksheetsNavBand | null =
         <a aria-current={worksheetsBand === 'ysodi' ? 'page' : undefined} data-peek="ws-ysodi" href="/worksheets?level=ysodi" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-15">דפי עבודה ליסודי</a>
         <a aria-current={worksheetsBand === 'hatzava' ? 'page' : undefined} data-peek="ws-hatzava" href="/worksheets?level=hatzava" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-15">דפי עבודה לחטיבת הביניים</a>
         <a aria-current={active === 'blog' ? 'page' : undefined} data-peek="blog" href="/blog" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-16">בלוג</a>
+        <a class="exact-nav-games" aria-current={active === 'games' ? 'page' : undefined} aria-label="משחקים" href={GAMES_INDEX_PATH} data-exact-hover="exact-hover-17"><span class="exact-nav-rainbow" aria-hidden="true"><span>מ</span><span>ש</span><span>ח</span><span>ק</span><span>י</span><span>ם</span></span></a>
         <div class="exact-nav-tools">
-          <button type="button" class="exact-nav-tools__btn" data-tools-toggle data-exact-hover="exact-hover-17" aria-expanded="false" aria-controls="extras-menu" aria-haspopup="true" aria-current={active === 'tools' ? 'page' : undefined} aria-label="משחקים"><span class="exact-nav-rainbow" aria-hidden="true"><span>מ</span><span>ש</span><span>ח</span><span>ק</span><span>י</span><span>ם</span></span></button>
-          <div id="extras-menu" class="exact-nav-drop">
-            <a aria-current={active === 'tools' ? 'page' : undefined} href="/math-tools">משחקים וכלים</a>
-            <a class="exact-nav-game exact-nav-game--pink" aria-current={onGamesCorner ? 'page' : undefined} href={GAMES_INDEX_PATH}>פינת המשחקים של אליהו</a>
+          <button type="button" class="exact-nav-tools__btn" data-tools-toggle data-exact-hover="exact-hover-17" aria-expanded="false" aria-controls="addons-menu" aria-haspopup="true" aria-current={active === 'tools' ? 'page' : undefined}>תוספים</button>
+          <div id="addons-menu" class="exact-nav-drop">
+            <a aria-current={active === 'tools' ? 'page' : undefined} href="/math-tools">מחשבון מדעי</a>
+            <a href="/math-tools#practice-tools">כלי תרגול</a>
           </div>
         </div>
         <a class="exact-nav-external" aria-current={active === 'highschool' ? 'page' : undefined} data-peek="hs" href="/high-school-math" style="padding:8px 12px;border-radius:999px;color:#22305a;" data-exact-hover="exact-hover-18">מתמטיקה לתיכון<span class="exact-nav-ext">↗</span></a>
@@ -85,14 +83,14 @@ const worksheetsBand: WorksheetsNavBand | null =
     if (!root || !toggle || toggle.dataset.toolsReady) return;
     toggle.dataset.toolsReady = '1';
     const desktop = () => window.matchMedia('(min-width: 900px)').matches;
-    const visuallyOpen = () =>
-      desktop() &&
+    const menuOpen = () =>
       !root.hasAttribute('data-shut') &&
-      (root.hasAttribute('data-open') || root.matches(':hover') || root.matches(':focus-within'));
-    const syncExpanded = () => toggle.setAttribute('aria-expanded', String(visuallyOpen()));
+      (root.hasAttribute('data-open') ||
+        (desktop() && (root.matches(':hover') || root.matches(':focus-within'))));
+    const syncExpanded = () => toggle.setAttribute('aria-expanded', String(menuOpen()));
     const closeMenu = () => {
       root.removeAttribute('data-open');
-      if (desktop() && root.matches(':focus-within')) root.setAttribute('data-shut', '');
+      if (root.matches(':focus-within')) root.setAttribute('data-shut', '');
       else root.removeAttribute('data-shut');
       syncExpanded();
     };
@@ -120,7 +118,7 @@ const worksheetsBand: WorksheetsNavBand | null =
       syncExpanded();
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape' || !desktop() || !visuallyOpen()) return;
+      if (e.key !== 'Escape' || !menuOpen()) return;
       closeMenu();
       toggle.focus();
     });

@@ -14,6 +14,7 @@ import { fileURLToPath } from 'node:url';
 import elementaryPrintWorksheets from '../src/data/elementary-print-worksheets.json';
 import { SITE_CANONICAL_ORIGIN } from '../src/lib/siteSeo.ts';
 import alignmentFile from '../src/data/curriculum-alignment.v1.json';
+import { studentFacingEditions } from '../src/lib/catalog/editions.ts';
 import { loadCatalog } from '../src/lib/catalog/loadCatalog.ts';
 import { loadAllGradeHubs } from '../src/lib/gradeHubs.ts';
 import { homePageJsonLd } from '../src/lib/homePage.ts';
@@ -336,8 +337,9 @@ describe('topic-page JSON-LD (SEO-4)', () => {
         if (printed) for (const key of Object.keys(printed.levels)) {
           expected.add(`${SITE_CANONICAL_ORIGIN}/worksheet-pdfs/elementary/${printed.slug}/level-${key}.pdf`);
         }
-        const levels = [...topic.levels, ...(topic.editions || []).flatMap((e) => e.levels)];
-        for (const level of levels) expected.add(`${catalog.config.pdfBase}${level.pdfId}.pdf`);
+        for (const edition of studentFacingEditions(topic, page.grade)) {
+          for (const level of edition.levels) expected.add(`${catalog.config.pdfBase}${level.pdfId}.pdf`);
+        }
       }
       const parts = (resource.hasPart as Node[] | undefined) || [];
       assert.deepEqual(new Set(parts.map((p) => p.contentUrl)), expected, page.slug);
@@ -387,8 +389,8 @@ describe('topic-page JSON-LD (SEO-4)', () => {
     const parts = resource.hasPart as Node[];
     const { parts: expected } = topicPagePdfParts(catalog, 7, [6]);
     assert.deepEqual(parts.map((p) => p.contentUrl), expected.map((p) => p.contentUrl));
-    assert.ok(parts.length >= 6, 'legacy levels plus the PDF-only edition');
-    assert.equal(parts[0].name, 'חזקות עם מעריך טבעי · רמה א׳');
+    assert.ok(parts.length >= 3, 'the published junior-high PDFs');
+    assert.equal(parts[0].name, 'חזקות עם מעריך טבעי · חזקות — גדילה והקטנה · רמה א׳');
   });
 
   it('pythagorean-theorem-grade-7 keeps its stand-alone LearningResource, with the publisher inline', () => {
