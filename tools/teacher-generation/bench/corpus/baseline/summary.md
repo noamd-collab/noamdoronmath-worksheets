@@ -1,13 +1,13 @@
 # Replay of recorded model replies
 
-Delivered with no further model call: **14 of 35 (40%)**. Questions rejected when standing alone: 257 of 756 (34%). Model calls: 0; outbound connections attempted: 0.
+Delivered with no further model call: **14 of 35 (40%)**. Questions rejected when standing alone: 259 of 756 (34%). Model calls: 0; outbound connections attempted: 0.
 
 | Case | Provider | Topic | Q | Route | First pass | Fail alone | Correction asked | Ladder | First render | Final |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| A-division | qwen | ג10 | 20 | worker | PRINTED_ANSWER_LEAK | 8 of 20 | 8 q (not recorded) | — | — | failed |
+| A-division | qwen | ג10 | 20 | worker | PRINTED_ANSWER_LEAK | 9 of 20 | 8 q (not recorded) | — | — | failed |
 | A-order | qwen | ד07 | 20 | worker | PRINTED_ANSWER_LEAK | 8 of 20 | 8 q (not recorded) | — | — | failed |
 | A-equations | qwen | g7:equations | 20 | worker | SOURCE_TABLE | 5 of 20 | 5 q (not recorded) | dropped 5, prints 15 | pass | delivered |
-| A-percent | qwen | g8:percentages | 20 | worker | PRINTED_ANSWER_KIND | 1 of 20 | 1 q (not recorded) | dropped 1, prints 19 | pass | delivered |
+| A-percent | qwen | g8:percentages | 20 | worker | SOURCE_TABLE | 2 of 20 | 2 q (not recorded) | dropped 2, prints 18 | pass | delivered |
 | A-square | qwen | g9m:square | 20 | general | SOURCE_NOTATION | 7 of 20 | 7 q (not recorded) | — | — | failed |
 | B-division | qwen | ג10 | 20 | worker | PRINTED_ANSWER_LEAK | 7 of 20 | 7 q (not recorded) | — | — | failed |
 | B-order | qwen | ד07 | 20 | worker | SOURCE_NOTATION | 9 of 20 | 8 q (not recorded) | — | — | failed |
@@ -47,7 +47,7 @@ Delivered with fewer questions than requested: 11. Corrections the engine asked 
 | Provider | Cases | Delivered | Questions | Fail alone |
 | --- | --- | --- | --- | --- |
 | gemini | 21 | 9 | 484 | 164 |
-| qwen | 14 | 5 | 272 | 93 |
+| qwen | 14 | 5 | 272 | 95 |
 
 Recorded as text that is not JSON: G-equations. The replay sends the text as recorded; the question counts of such a case come from its declared hand repair.
 
@@ -79,8 +79,8 @@ Recorded as text that is not JSON: G-equations. The replay sends the text as rec
 | NOT_AN_OBJECT | 8 |
 | SOURCE_FIGURE | 6 |
 | SOURCE_SHAPE | 6 |
+| SOURCE_TABLE | 6 |
 | PRINTED_EXPRESSION_SCOPE | 4 |
-| SOURCE_TABLE | 4 |
 | QUALITY_GATE_FAILED | 3 |
 | SOURCE_NUMBER | 2 |
 | UNSUPPORTED_TASK | 2 |

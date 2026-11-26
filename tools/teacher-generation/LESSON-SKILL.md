@@ -390,7 +390,7 @@ Run from the repository root. Full guide: `bench/README.md`.
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
 - **Recorded state:** replay delivers 14 of 35 cases with no further model
-  call, and 257 of 756 questions are refused alone
+  call, and 259 of 756 questions are refused alone
   (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
   count as failed, so this under-states the live ladder. The key-print checks
   of section 2.4 cost three ג10 replays (A-, B- and G-division) whose

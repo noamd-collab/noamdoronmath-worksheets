@@ -178,24 +178,27 @@ class CompactAuthoringTests(unittest.TestCase):
             with self.subTest(token=token, grade=grade), self.assertRaises(GeneralSourceError):
                 spans("[[" + token + "]]", grade)
 
-    def test_only_complete_inline_rows_bind_to_a_printed_table(self):
+    def test_inline_rows_are_refused_and_a_supplied_table_binds_its_rows(self):
         from printed_tasks import printed_table_row
 
-        def question(records, grade, formula):
+        def question(records, grade, formula, table=None):
             data = {"intro": "השלימו את הטבלה.", "items": [
                 {"prompt": record, "answer": {"kind": "computed", "unit": "",
                                                "task": {"kind": "evaluate", "expression": formula}}}
                 for record in records
             ]}
+            if table is not None:
+                data["table"] = table
             return expand_source({"version": 4, "sections": [{"questions": [data]}]}, grade)["sections"][0]["questions"][0]
 
-        for records, grade, formula in [
-            (["מחולק: 16, מחלק: 4, מנה: ___", "[[מחולק | מחלק | מנה]]\n[[12 | 3 | ___]]"], 3, "16/4"),
-            (["בטבלה: מספר=[[100]], אחוז=[[10]]%, תוצאה=?",
-              "בטבלה: מספר=[[200]], אחוז=[[5]]%, תוצאה=?"], 8, "100*0.10"),
+        for table, grade, formula in [
+            ({"head": ["מחולק", "מחלק", "מנה"],
+              "rows": [["[[16]]", "[[4]]", "[[___]]"], ["[[12]]", "[[3]]", "[[___]]"]]}, 3, "16/4"),
+            ({"head": ["מספר", "אחוז", "תוצאה"],
+              "rows": [["[[100]]", "[[10%]]", "[[___]]"], ["[[200]]", "[[5%]]", "[[___]]"]]}, 8, "100*0.10"),
         ]:
-            with self.subTest(records=records):
-                q = question(records, grade, formula)
+            with self.subTest(table=table):
+                q = question(["שורה [[1]]", "שורה [[2]]"], grade, formula, table)
                 self.assertEqual(len(q["table"]["rows"]), 2)
                 for n, item in enumerate(q["items"], 1):
                     self.assertEqual(item["prompt"], spans(f"שורה [[{n}]]", grade))
@@ -207,11 +210,19 @@ class CompactAuthoringTests(unittest.TestCase):
                 item["answer"]["unit"] = "סנטימטרים"
                 with self.assertRaises(GeneralSourceError):
                     printed_table_row(q, item, solved)
-        for records in [["מחולק: 16, מחלק: 4, מנה: ___", "מחולק: 30, מנה: ___, מחלק: 6"],
-                        ["מחולק: 16, מחלק: 4, מנה: ___", "כמה מספרים יש?"],
-                        ["סכום: ___, כמות: ___"], ["סכום: 3, כמות: 4"]]:
-            with self.subTest(records=records), self.assertRaisesRegex(GeneralSourceError, "table"):
-                question(records, 3, "4")
+        for records, grade, formula in [
+            (["מחולק: 16, מחלק: 4, מנה: ___", "[[מחולק | מחלק | מנה]]\n[[12 | 3 | ___]]"], 3, "16/4"),
+            (["בטבלה: מספר=[[100]], אחוז=[[10]]%, תוצאה=?",
+              "בטבלה: מספר=[[200]], אחוז=[[5]]%, תוצאה=?"], 8, "100*0.10"),
+            (["מחולק: 16, מחלק: 4, מנה: ___", "מחולק: 30, מנה: ___, מחלק: 6"], 3, "4"),
+            (["מחולק: 16, מחלק: 4, מנה: ___", "כמה מספרים יש?"], 3, "4"),
+            (["סכום: ___, כמות: ___"], 3, "4"),
+            (["סכום: 3, כמות: 4"], 3, "4"),
+        ]:
+            with self.subTest(records=records):
+                with self.assertRaisesRegex(GeneralSourceError, "table") as failure:
+                    question(records, grade, formula)
+                self.assertEqual(failure.exception.code, "SOURCE_TABLE")
 
     def test_explicit_table_references_in_intro_or_item_require_a_table(self):
         from compact_authoring import requires_existing_table

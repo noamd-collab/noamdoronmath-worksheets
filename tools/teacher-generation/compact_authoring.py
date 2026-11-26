@@ -773,51 +773,6 @@ def requires_existing_table(question):
                 and not any(TABLE_CONSTRUCTION.search(part) for part in prose)))
 
 
-def _explicit_table_row(prompt):
-    """Read one fully specified row, preserving labels, values, blanks and order."""
-    if not isinstance(prompt, str) or len(prompt) > 2400:
-        return None
-    pipes = re.fullmatch(r"\[\[([^\[\]\n]+)\]\]\s*\n\s*\[\[([^\[\]\n]+)\]\]", prompt.strip())
-    if pipes:
-        header, raw = ([cell.strip() for cell in line.split("|")] for line in pipes.groups())
-    else:
-        fields = re.split(r",\s+", prompt.removeprefix("בטבלה: ").strip())
-        pairs = [re.fullmatch(r"([א-ת ][א-ת ]*)\s*[:=]\s*(.+)", field) for field in fields]
-        if not all(pairs):
-            return None
-        header, raw = zip(*((pair[1].strip(), pair[2].strip()) for pair in pairs))
-    if (not 2 <= len(header) == len(raw) <= 6 or len(set(header)) != len(header)
-            or any(not re.fullmatch(r"[א-ת]+(?: [א-ת]+){0,3}", label) for label in header)):
-        return None
-    row = []
-    for cell in raw:
-        island = re.fullmatch(r"\[\[([^\[\]]+)\]\](%?)", cell)
-        value = "".join(island.groups()) if island else cell
-        if value in {"?", "___"}:
-            row.append("[[___]]")
-        elif display_literal(value) is not None:
-            row.append("[[" + value + "]]")
-        else:
-            return None
-    if row.count("[[___]]") != 1:
-        return None
-    return list(header), row
-
-
-def _bind_inline_table(question, grade):
-    items = question.get("items")
-    if type(items) is not list or not 1 <= len(items) <= 9:
-        return False
-    parsed = [_explicit_table_row(item.get("prompt")) if isinstance(item, dict) else None for item in items]
-    if not all(parsed) or any(pair[0] != parsed[0][0] for pair in parsed):
-        return False
-    question["table"] = {"head": parsed[0][0], "rows": [pair[1] for pair in parsed]}
-    for index, item in enumerate(items, 1):
-        label = "שׁוּרָה" if grade <= 2 else "שורה"
-        item["prompt"] = f"{label} [[{index}]]"
-    return True
-
-
 def expand_source(source, grade, *, fraction_notation=False):
     if not isinstance(source, dict) or source.get("version") != 4:
         return source
@@ -842,7 +797,7 @@ def expand_source(source, grade, *, fraction_notation=False):
         for question in section["questions"]:
             if not isinstance(question, dict):
                 continue
-            if "table" not in question and requires_existing_table(question) and not _bind_inline_table(question, grade):
+            if "table" not in question and requires_existing_table(question):
                 raise GeneralSourceError("SOURCE_TABLE", "The question refers to a table that was not supplied")
             if "intro" in question:
                 question["intro"] = rich(question["intro"])

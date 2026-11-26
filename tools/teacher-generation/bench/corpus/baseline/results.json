@@ -10,6 +10,7 @@
       5,
       7,
       8,
+      9,
       10,
       11,
       14,
@@ -21,11 +22,11 @@
       "q10",
       "q11",
       "q14",
-      "q15",
       "q19",
       "q5",
       "q7",
-      "q8"
+      "q8",
+      "q9"
      ]
     },
     "firstPass": {
@@ -79,6 +80,15 @@
        {
         "action": "missing",
         "codes": [
+         "SOURCE_TABLE"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_ANSWER_LEAK"
         ],
         "group": "practice",
@@ -122,9 +132,9 @@
         "stage": "source"
        }
       ],
-      "missing": 8,
+      "missing": 9,
       "planned": 20,
-      "printed": 12,
+      "printed": 11,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -185,6 +195,15 @@
      "substring": "האם [[32 : 4 = 8]] נכון? בדקו באמצעות כפל."
     },
     {
+     "code": "SOURCE_TABLE",
+     "detail": "The question refers to a table that was not supplied",
+     "field": "intro",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "השלימו את הטבלה הבאה."
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5*9\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_LEAK",
      "detail": "An item prints its own answer beside its question",
@@ -236,7 +255,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 8,
+    "failingAlone": 9,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -817,16 +836,18 @@
     "correction": {
      "answered": false,
      "questions": [
+      9,
       14
      ],
      "requested": true,
      "requiredKeys": [
-      "q14"
+      "q14",
+      "q9"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a decision or an equation, not a scalar at q14.item.1",
+     "code": "SOURCE_TABLE",
+     "detail": "The question refers to a table that was not supplied",
      "ok": false
     },
     "requests": 2,
@@ -857,14 +878,14 @@
       "questions": [
        5,
        8,
-       11,
-       13,
-       18
+       10,
+       12,
+       17
       ]
      },
      {
       "code": "SHORTER_SHEET",
-      "count": 1,
+      "count": 2,
       "note": "בדף יש פחות שאלות מהמספר שהתבקש: שאלות שלא עברו את בדיקות הנכונות הושמטו ולא הוחלפו."
      }
     ],
@@ -873,12 +894,13 @@
      "corrections": 1,
      "dropped": {
       "codes": {
-       "PRINTED_ANSWER_KIND": 1
+       "PRINTED_ANSWER_KIND": 1,
+       "SOURCE_TABLE": 1
       },
-      "count": 1
+      "count": 2
      },
      "gate": "deliver",
-     "printedQuestions": 19,
+     "printedQuestions": 18,
      "replaced": {
       "codes": {},
       "count": 0
@@ -898,8 +920,17 @@
     "attemptRecords": [
      {
       "draft": true,
-      "dropped": 1,
+      "dropped": 2,
       "events": [
+       {
+        "action": "dropped",
+        "codes": [
+         "SOURCE_TABLE"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
        {
         "action": "dropped",
         "codes": [
@@ -912,7 +943,7 @@
       ],
       "missing": 0,
       "planned": 20,
-      "printed": 19,
+      "printed": 18,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -922,9 +953,9 @@
     "byReserve": 0,
     "correctionFailed": true,
     "corrections": 1,
-    "dropped": 1,
+    "dropped": 2,
     "gate": "deliver",
-    "printed": 19,
+    "printed": 18,
     "replaced": 0,
     "stage": "render"
    },
@@ -955,6 +986,15 @@
    "provider": "qwen",
    "questionFailures": [
     {
+     "code": "SOURCE_TABLE",
+     "detail": "The question refers to a table that was not supplied",
+     "field": "intro",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "קראו את הטבלה ומלאו את המשבצת החסרה בכל שורה."
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(10/100)*100\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.1",
@@ -966,7 +1006,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 1,
+    "failingAlone": 2,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -983,9 +1023,9 @@
        "questions": [
         5,
         8,
-        11,
-        13,
-        18
+        10,
+        12,
+        17
        ],
        "rules": {
         "D12": 15,
@@ -9384,7 +9424,7 @@
    "qwen": {
     "cases": 14,
     "delivered": 5,
-    "failingAlone": 93,
+    "failingAlone": 95,
     "questions": 272
    }
   },
@@ -9430,12 +9470,12 @@
     "SOURCE_PLAIN_MATH": 17,
     "SOURCE_RICH_TEXT": 1,
     "SOURCE_SHAPE": 6,
-    "SOURCE_TABLE": 4,
+    "SOURCE_TABLE": 6,
     "SOURCE_TEXT": 20,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 257,
-   "failingShare": 0.3399,
+   "failingAlone": 259,
+   "failingShare": 0.3426,
    "total": 756
   },
   "secondAttemptsNotRecorded": 2
