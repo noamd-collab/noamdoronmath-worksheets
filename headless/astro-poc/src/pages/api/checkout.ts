@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
 import { buildPaymentRedirect, validateCheckout, type CheckoutInput } from '../../lib/checkout';
-import { allowPaymentTesting } from '../../lib/paymentAccess';
 import { runtimeProcessEnv } from '../../lib/runtimeEnv';
 
 export const prerender = false;
@@ -16,15 +15,7 @@ const json = (body: unknown, status = 200) =>
  * Grow hosted-payment URL. No card data ever reaches this endpoint, and no
  * personal details are written to logs.
  */
-const closed = () =>
-  json(
-    { ok: false, code: 'PAYMENT_CLOSED', message: 'התשלום עדיין לא נפתח.' },
-    403
-  );
-
 export const POST: APIRoute = async ({ request }) => {
-  if (!(await allowPaymentTesting(request))) return closed();
-
   let body: CheckoutInput = {};
   try {
     body = (await request.json()) as CheckoutInput;
@@ -53,11 +44,9 @@ export const POST: APIRoute = async ({ request }) => {
   return json({ ok: true, plan: result.value.plan, redirectUrl });
 };
 
-export const GET: APIRoute = async ({ request }) => {
-  if (!(await allowPaymentTesting(request))) return closed();
-  return json({
+export const GET: APIRoute = () =>
+  json({
     ok: true,
     configured: Boolean(runtimeProcessEnv().GROW_PAYMENT_URL_MONTHLY || runtimeProcessEnv().GROW_PAYMENT_URL_YEARLY),
     plans: ['monthly', 'yearly'],
   });
-};

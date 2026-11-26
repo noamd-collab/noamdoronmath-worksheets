@@ -1,14 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PaymentClosed from '../components/PaymentClosed.astro';
 import business from '../data/business.json';
-import { allowPaymentTesting } from '../lib/paymentAccess';
 export const prerender = false;
-
-const paymentOpen = await allowPaymentTesting(Astro.request);
-Astro.response.headers.set('Cache-Control', 'private, no-store');
-Astro.response.headers.set('Vary', 'Cookie');
-if (!paymentOpen) Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
 
 const plans = [
   {
@@ -27,7 +20,6 @@ const plans = [
   },
 ];
 ---
-{paymentOpen ? (
 <BaseLayout
   title="תשלום על גישה לאזור המורים | נועם דורון מתמטיקה"
   description="בחירת מסלול, פרטי הלקוח ותשלום חד־פעמי מאובטח דרך Grow. ללא חיוב חוזר וללא חידוש אוטומטי."
@@ -241,4 +233,3 @@ const plans = [
   </script>
 
 </BaseLayout>
-) : <PaymentClosed />}
