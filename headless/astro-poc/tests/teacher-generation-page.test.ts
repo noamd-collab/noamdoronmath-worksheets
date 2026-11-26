@@ -68,6 +68,28 @@ test('the public trial hero links directly to generation only while the verified
   }
 });
 
+test('the access note stays the same quiet line when payment testing is forced open', async () => {
+  const container = await AstroContainer.create();
+  const Landing = await landing;
+  const trial = { active: false, startsAt: '2026-11-22T15:00:00Z', endsAt: '2026-11-25T15:00:00Z' };
+  const closed = await container.renderToString(Landing, { props: { trial } });
+  const open = await container.renderToString(Landing, { props: { trial, paymentOpen: true } });
+  function note(html: string) {
+    const section = parseHTML(html).document.querySelector('#teacher-plans');
+    assert.ok(section);
+    assert.equal(section.querySelector('a, button, h2, h3'), null);
+    assert.equal(section.textContent.replace(/\s+/g, ' ').trim(), 'גישה לאזור המורים תיפתח בקרוב. הפרטים עדיין בעבודה.');
+    return section.outerHTML;
+  }
+  assert.equal(note(closed), note(open));
+  for (const html of [closed, open]) {
+    assert.equal(html.includes('לבחירת מסלול ותשלום'), false);
+    assert.equal(html.includes('18 ש״ח'), false);
+    assert.equal(html.includes('180 ש״ח'), false);
+    assert.equal(html.includes('href="/payment"'), false);
+  }
+});
+
 async function render(access: 'owner' | 'teacher' | '401' | '403' | '503', search = '') {
   const container = await AstroContainer.create();
   const response = await container.renderToResponse(await component, {
