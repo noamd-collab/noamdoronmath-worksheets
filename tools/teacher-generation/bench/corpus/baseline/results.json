@@ -305,6 +305,7 @@
       10,
       12,
       13,
+      15,
       16,
       17
      ],
@@ -314,8 +315,8 @@
       "q10",
       "q12",
       "q13",
+      "q15",
       "q16",
-      "q17",
       "q5",
       "q8"
      ]
@@ -401,6 +402,15 @@
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
+        "question": 15,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
         "question": 16,
         "stage": "source"
        },
@@ -414,9 +424,9 @@
         "stage": "source"
        }
       ],
-      "missing": 8,
+      "missing": 9,
       "planned": 20,
-      "printed": 12,
+      "printed": 11,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -505,6 +515,16 @@
      "substring": "[[(x + 2) * 3 = 15]]"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"30/20\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a scalar at q1.item.3",
+     "field": "item.3",
+     "group": "practice",
+     "index": 15,
+     "question": 15,
+     "substring": "מהו היחס בין התוצאה הראשונה לשנייה?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"15\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The printed request needs a decision or an equation, not a scalar at q1.item.3",
@@ -526,7 +546,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 8,
+    "failingAlone": 9,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -1452,7 +1472,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
         "question": 11,
@@ -1570,8 +1590,8 @@
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"4*5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints its own answer beside its question",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a scalar at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 11,
@@ -2275,6 +2295,16 @@
      "substring": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(4,4)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(4*3)/(3*3)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a scalar at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "אם [[a=3]], מהו היחס בין ההיקף לשטח?"
+    },
+    {
      "code": "SOURCE_TEXT",
      "detail": "Text must be bounded plain text; use typed mathematics instead of markup",
      "field": "item.1.answer",
@@ -2285,7 +2315,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 8,
+    "failingAlone": 9,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
@@ -3187,10 +3217,7 @@
      "questions": [],
      "requested": true,
      "requiredKeys": [
-      "q10",
-      "q12",
-      "q4",
-      "q8"
+      "q9"
      ]
     },
     "firstPass": {
@@ -3215,44 +3242,17 @@
        {
         "action": "missing",
         "codes": [
-         "G32",
-         "G61"
+         "TRUSTED_ADAPTER",
+         "PRINTED_TASK_MISMATCH"
         ],
         "group": "practice",
-        "question": 4,
-        "stage": "precheck"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "G32"
-        ],
-        "group": "practice",
-        "question": 8,
-        "stage": "precheck"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "G61"
-        ],
-        "group": "challenges",
-        "question": 10,
-        "stage": "precheck"
-       },
-       {
-        "action": "missing",
-        "codes": [
-         "G32"
-        ],
-        "group": "challenges",
-        "question": 12,
+        "question": 9,
         "stage": "precheck"
        }
       ],
-      "missing": 4,
+      "missing": 1,
       "planned": 12,
-      "printed": 8,
+      "printed": 11,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -3260,8 +3260,8 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gateCode": "G32",
-    "question": 4,
+    "gateCode": "TRUSTED_ADAPTER",
+    "question": 9,
     "stage": "precheck"
    },
    "lesson": {
@@ -3284,14 +3284,10 @@
    "prechecks": [
     {
      "codes": [
-      "G32",
-      "G61"
+      "TRUSTED_ADAPTER"
      ],
      "questions": [
-      4,
-      8,
-      10,
-      12
+      9
      ],
      "status": "replace"
     }
@@ -6854,9 +6850,10 @@
      "printedQuestions": 20,
      "replaced": {
       "codes": {
-       "G32": 2
+       "G32": 2,
+       "PRINTED_ANSWER_KIND": 1
       },
-      "count": 2
+      "count": 3
      },
      "requestedQuestions": 20
     },
@@ -6873,6 +6870,15 @@
       "draft": true,
       "dropped": 0,
       "events": [
+       {
+        "action": "reserve",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       },
        {
         "action": "reserve_as_practice",
         "codes": [
@@ -6901,7 +6907,7 @@
     ],
     "attempts": 1,
     "byCorrection": 0,
-    "byReserve": 2,
+    "byReserve": 3,
     "correctionFailed": false,
     "corrections": 0,
     "dropped": 0,
@@ -6909,7 +6915,7 @@
     "gateCode": "G32",
     "printed": 20,
     "question": 9,
-    "replaced": 2,
+    "replaced": 3,
     "stage": "render"
    },
    "lesson": {
@@ -6948,6 +6954,16 @@
    "provider": "gemini",
    "questionFailures": [
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"kind\": \"compare\", \"left\": \"3 * 4 + 3 * 6\", \"right\": \"3 * (4 + 6)\"}, \"unit\": \"\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision, not a comparison key at q1.item.3",
+     "field": "item.3",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "האם שתי דרכי החישוב מביאות לאותה התוצאה? השוו בין [[3 * 4 + 3 * 6]] לבין [[3 * (4 + 6)]]."
+    },
+    {
      "code": "QUALITY_GATE_FAILED",
      "detail": "A planned question was refused and nothing replaced it",
      "field": "intro",
@@ -6968,7 +6984,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 2,
+    "failingAlone": 3,
     "total": 24
    },
    "recorded": "2026-11-23 19:39Z",
@@ -8837,13 +8853,13 @@
    "gemini": {
     "cases": 21,
     "delivered": 4,
-    "failingAlone": 167,
+    "failingAlone": 168,
     "questions": 484
    },
    "qwen": {
     "cases": 14,
     "delivered": 1,
-    "failingAlone": 111,
+    "failingAlone": 113,
     "questions": 272
    }
   },
@@ -8877,8 +8893,8 @@
   "questions": {
    "byCode": {
     "NOT_AN_OBJECT": 8,
-    "PRINTED_ANSWER_KIND": 60,
-    "PRINTED_ANSWER_LEAK": 59,
+    "PRINTED_ANSWER_KIND": 64,
+    "PRINTED_ANSWER_LEAK": 58,
     "PRINTED_EXPRESSION_SCOPE": 4,
     "PRINTED_TASK_MISMATCH": 27,
     "QUALITY_GATE_FAILED": 3,
@@ -8892,8 +8908,8 @@
     "SOURCE_TEXT": 20,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 278,
-   "failingShare": 0.3677,
+   "failingAlone": 281,
+   "failingShare": 0.3717,
    "total": 756
   },
   "secondAttemptsNotRecorded": 2

@@ -9,8 +9,10 @@ key. Nothing is rendered and no model is called.
     python3 tools/teacher-generation/bench/probes/run.py --family fractions --show
     python3 tools/teacher-generation/bench/probes/run.py --update   # record the current outcomes
 
-Exit status 1 when a probe that passed is now rejected, or when a probe starts
-to print a wrong key, an answer beside its question or an exercise twice.
+Exit status 1 when a probe that passed is now rejected, or when any probe
+prints a wrong key, an answer beside its question or an exercise twice. A
+probe is either refused or printed correctly: `--update` records nothing while
+any probe prints wrongly.
 """
 from __future__ import annotations
 
@@ -125,17 +127,18 @@ def run_probes(probes, work=None, skills=None):
 
 def changes(documents, outcomes):
     """Compare current outcomes with the recorded ones. Returns {kind: [lines]}."""
-    found = {name: [] for name in ('new_wrong_print', 'newly_rejected', 'unlocked', 'fixed_print',
+    found = {name: [] for name in ('wrong_print', 'newly_rejected', 'unlocked', 'fixed_print',
                                    'code_changed', 'print_changed', 'unrecorded')}
     for _, document in documents:
         for probe in document['probes']:
             now, before = outcomes[probe['id']], probe.get('recorded')
             label = f"{probe['id']} [{probe['topic']}] {probe.get('prompt') or probe['items'][0][0]}"
-            if before is None:
+            if now['outcome'] == 'wrong_print':
+                # Every wrong print counts, whatever was recorded before.
+                was = verdict.short(before) if before is not None else 'unrecorded'
+                found['wrong_print'].append(f"{label}: {was} -> {verdict.short(now)}")
+            elif before is None:
                 found['unrecorded'].append(f"{label} -> {verdict.short(now)}")
-            elif now['outcome'] == 'wrong_print' and (before['outcome'] != 'wrong_print'
-                                                    or set(now['flags']) - set(before.get('flags', []))):
-                found['new_wrong_print'].append(f"{label}: {verdict.short(before)} -> {verdict.short(now)}")
             elif now['outcome'] == 'rejected' and before['outcome'] != 'rejected':
                 found['newly_rejected'].append(f"{label}: {verdict.short(before)} -> {verdict.short(now)}")
             elif now['outcome'] == 'pass' and before['outcome'] == 'rejected':
@@ -150,7 +153,7 @@ def changes(documents, outcomes):
 
 
 TITLES = {
-    'new_wrong_print': 'NEW WRONG PRINT (a wrong key, an answer beside the question or a doubled exercise)',
+    'wrong_print': 'WRONG PRINT (a wrong key, an answer beside the question or a doubled exercise)',
     'newly_rejected': 'Now rejected (passed before)',
     'unlocked': 'Unlocked (rejected before, prints cleanly now)',
     'fixed_print': 'Print repaired',
@@ -179,9 +182,8 @@ def main(argv=None):
     parser.add_argument('--family', action='append', default=[], help='Family name; repeat to select several')
     parser.add_argument('--work', help='Scratch folder for compiled probes and the skill cache')
     parser.add_argument('--show', action='store_true', help='Print every probe with its current outcome')
-    parser.add_argument('--update', action='store_true', help='Record the current outcomes in the corpus files')
-    parser.add_argument('--accept-new-wrong-prints', action='store_true',
-                        help='With --update: also record probes that newly print wrongly')
+    parser.add_argument('--update', action='store_true',
+                        help='Record the current outcomes in the corpus files; refused while any probe prints wrongly')
     parser.add_argument('--json', help='Write the current outcomes to this file')
     args = parser.parse_args(argv)
     if args.worker:
@@ -207,11 +209,10 @@ def main(argv=None):
         print('\nNo change against the recorded outcomes.')
     if args.json:
         report.write_json(args.json, outcomes)
-    blocking = bool(found['new_wrong_print'] or found['newly_rejected'])
+    blocking = bool(found['wrong_print'] or found['newly_rejected'])
     if args.update:
-        if found['new_wrong_print'] and not args.accept_new_wrong_prints:
-            print('\nNot recorded: a probe newly prints wrongly. Fix it, or pass --accept-new-wrong-prints '
-                  'to record that state on purpose.')
+        if found['wrong_print']:
+            print('\nNot recorded: a probe prints wrongly. The engine must refuse that form or print it correctly.')
             return 1
         for path, document in documents:
             for probe in document['probes']:

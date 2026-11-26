@@ -1,21 +1,22 @@
 """Notation probes: the corpus, the judgement of a print, and the runner. No model, no network."""
 from __future__ import annotations
 
+import contextlib
 import importlib.util
+import io
 import json
 from pathlib import Path
 import shutil
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
 from bench import engine  # noqa: E402
 from bench.probes import run, verdict  # noqa: E402
 
-# Flags that mean a wrong key or an answer beside its question.
-KEY_FLAGS = {'key_mismatch', 'answer_beside_question', 'one_key_for_several_blanks', 'key_repeats_question'}
 ADAPTER_READY = all(importlib.util.find_spec(name) for name in ('sympy', 'bs4', 'matplotlib', 'numpy', 'lxml'))
 
 
@@ -31,13 +32,13 @@ class CorpusTests(unittest.TestCase):
                 self.assertTrue(probe['id'].startswith(document['family'] + '-'))
                 self.assertTrue(('prompt' in probe and 'answer' in probe) != ('items' in probe))
                 recorded = probe['recorded']
-                self.assertIn(recorded['outcome'], ('pass', 'rejected', 'wrong_print'))
+                # A probe is refused or printed correctly; no wrong print is ever recorded.
+                self.assertIn(recorded['outcome'], ('pass', 'rejected'))
                 if recorded['outcome'] == 'rejected':
                     self.assertRegex(recorded['code'], r'^[A-Z_:a-zA-Z]+$')
                 else:
                     self.assertTrue('key' in recorded or 'items' in recorded)
-                if recorded['outcome'] == 'wrong_print':
-                    self.assertTrue(set(recorded['flags']) <= set(verdict.FLAGS))
+                    self.assertNotIn('flags', recorded)
                 for key in probe.get('expect', {}):
                     self.assertIn(key, ('key', 'keyContains', 'keyExcludes'))
 
@@ -125,16 +126,19 @@ class ChangeTests(unittest.TestCase):
         wrong = {'outcome': 'wrong_print', 'flags': ['answer_beside_question'], 'printed': 'a 1', 'key': '1'}
         document = {'family': 'f', 'probes': [
             probe('unlocked', rejected), probe('regressed', passed), probe('leaks', passed), probe('worse', wrong),
-            probe('repaired', wrong), probe('recode', rejected), probe('reworded', passed), probe('same', passed),
-            {'id': 'new', 'topic': 't', 'prompt': 'p'}]}
+            probe('still', wrong), probe('repaired', wrong), probe('recode', rejected), probe('reworded', passed),
+            probe('same', passed), {'id': 'new', 'topic': 't', 'prompt': 'p'},
+            {'id': 'fresh', 'topic': 't', 'prompt': 'p'}]}
         now = {'unlocked': passed, 'regressed': rejected, 'leaks': wrong,
-               'worse': {**wrong, 'flags': ['answer_beside_question', 'key_mismatch']}, 'repaired': passed,
-               'recode': {**rejected, 'code': 'SOURCE_TEXT'}, 'reworded': {**passed, 'key': '2'}, 'same': passed,
-               'new': passed}
+               'worse': {**wrong, 'flags': ['answer_beside_question', 'key_mismatch']}, 'still': wrong,
+               'repaired': passed, 'recode': {**rejected, 'code': 'SOURCE_TEXT'}, 'reworded': {**passed, 'key': '2'},
+               'same': passed, 'new': passed, 'fresh': wrong}
         found = run.changes([(Path('f.json'), document)], now)
+        # Every current wrong print is listed: a new one, a worse one, one recorded before and an unrecorded one.
         self.assertEqual({kind: [line.split(' ')[0] for line in lines] for kind, lines in found.items()}, {
-            'new_wrong_print': ['leaks', 'worse'], 'newly_rejected': ['regressed'], 'unlocked': ['unlocked'],
-            'fixed_print': ['repaired'], 'code_changed': ['recode'], 'print_changed': ['reworded'], 'unrecorded': ['new']})
+            'wrong_print': ['leaks', 'worse', 'still', 'fresh'], 'newly_rejected': ['regressed'],
+            'unlocked': ['unlocked'], 'fixed_print': ['repaired'], 'code_changed': ['recode'],
+            'print_changed': ['reworded'], 'unrecorded': ['new']})
 
 
 @unittest.skipUnless(ADAPTER_READY, 'The trusted adapter needs the engine runtime packages')
@@ -154,54 +158,84 @@ class RunnerTests(unittest.TestCase):
     def test_every_probe_gets_an_outcome_through_the_engine(self):
         self.assertEqual(len(self.outcomes), 285)
         for name, outcome in self.outcomes.items():
-            self.assertIn(outcome['outcome'], ('pass', 'rejected', 'wrong_print'), name)
+            self.assertIn(outcome['outcome'], ('pass', 'rejected'), name)
             self.assertFalse(str(outcome.get('code', '')).startswith('ENGINE_EXCEPTION'), (name, outcome))
-        # Both skills are exercised, and all three outcomes still occur somewhere.
+        # Both skills are exercised, and both outcomes occur.
         kinds = {outcome['outcome'] for outcome in self.outcomes.values()}
-        self.assertIn('pass', kinds)
+        self.assertEqual(kinds, {'pass', 'rejected'})
         table = run.family_table(self.documents, self.outcomes)
         self.assertIn('| **all** | 285 |', table)
 
-    def test_no_probe_starts_to_print_a_wrong_key(self):
-        """The invariant: a probe may become rejected or correct, never newly wrong.
+    def test_no_probe_prints_a_wrong_key(self):
+        """The invariant: a probe is refused or printed correctly, never printed wrongly.
 
-        After a deliberate engine change, review the runner's report and record
-        the new state with `bench/probes/run.py --update`.
+        A wrong print is fixed in the engine by refusing that form. After a
+        deliberate engine change, review the runner's report and record the new
+        state with `bench/probes/run.py --update`.
         """
-        offenders = []
-        for _, document in self.documents:
-            for probe in document['probes']:
-                before, now = probe['recorded'], self.outcomes[probe['id']]
-                fresh = (set(now.get('flags', [])) - set(before.get('flags', []))) & KEY_FLAGS
-                if fresh:
-                    offenders.append(f"{probe['id']}: {sorted(fresh)} key «{now.get('key')}» (was {before['outcome']})")
+        offenders = [f"{probe['id']}: {self.outcomes[probe['id']].get('flags')} key «{self.outcomes[probe['id']].get('key')}»"
+                     for _, document in self.documents for probe in document['probes']
+                     if self.outcomes[probe['id']]['outcome'] == 'wrong_print']
         self.assertEqual(offenders, [])
 
-    def test_update_refuses_to_record_a_new_wrong_print_silently(self):
-        candidates = [(document['family'], probe) for _, document in self.documents for probe in document['probes']
-                      if set(self.outcomes[probe['id']].get('flags', [])) & KEY_FLAGS]
-        if not candidates:
-            self.skipTest('No probe prints a wrong key on this engine any more')
-        family, leaking = candidates[0]
-        corpus = Path(self.scratch) / 'corpus'
-        corpus.mkdir()
-        leaking = {**leaking, 'recorded': {'outcome': 'rejected', 'stage': 'source', 'code': 'SOURCE_NOTATION'}}
-        (corpus / f'{family}.json').write_text(json.dumps({'family': family, 'probes': [leaking]},
-                                                          ensure_ascii=False), encoding='utf-8')
-        argv = ['--corpus', str(corpus), '--work', str(Path(self.scratch) / 'work-update')]
-        import contextlib
-        import io
-        with contextlib.redirect_stdout(io.StringIO()) as output:
-            self.assertEqual(run.main(argv), 1)
-            self.assertEqual(run.main(argv + ['--update']), 1)
-        self.assertIn('NEW WRONG PRINT', output.getvalue())
-        kept = json.loads((corpus / f'{family}.json').read_text(encoding='utf-8'))['probes'][0]['recorded']
-        self.assertEqual(kept['outcome'], 'rejected')
-        with contextlib.redirect_stdout(io.StringIO()):
-            self.assertEqual(run.main(argv + ['--update', '--accept-new-wrong-prints']), 0)
-            self.assertEqual(run.main(argv), 0)
-        kept = json.loads((corpus / f'{family}.json').read_text(encoding='utf-8'))['probes'][0]['recorded']
-        self.assertEqual(kept['outcome'], 'wrong_print')
+
+class UpdateTests(unittest.TestCase):
+    """The runner on a synthetic engine outcome: a wrong print is never recorded and always blocks."""
+
+    def setUp(self):
+        self.scratch = Path(tempfile.mkdtemp(prefix='bench-probes-update-'))
+        self.addCleanup(shutil.rmtree, self.scratch, ignore_errors=True)
+        _, document = run.load()[0]
+        self.family, self.probe = document['family'], document['probes'][0]
+        self.corpus = self.scratch / 'corpus'
+        self.corpus.mkdir()
+        self.argv = ['--corpus', str(self.corpus), '--work', str(self.scratch / 'work')]
+        self.wrong = {'outcome': 'wrong_print', 'flags': ['key_mismatch'], 'notes': ['synthetic'],
+                      'printed': 'a', 'key': '1'}
+        self.rejected = {'outcome': 'rejected', 'stage': 'source', 'code': 'SOURCE_NOTATION'}
+
+    def record(self, recorded):
+        (self.corpus / f'{self.family}.json').write_text(
+            json.dumps({'family': self.family, 'probes': [{**self.probe, 'recorded': recorded}]}, ensure_ascii=False),
+            encoding='utf-8')
+
+    def kept(self):
+        return json.loads((self.corpus / f'{self.family}.json').read_text(encoding='utf-8'))['probes'][0]['recorded']
+
+    def main(self, now, extra=()):
+        with mock.patch.object(run, 'run_probes', return_value={self.probe['id']: now}) as engine_run, \
+                contextlib.redirect_stdout(io.StringIO()) as output:
+            status = run.main(self.argv + list(extra))
+        engine_run.assert_called_once()
+        return status, output.getvalue()
+
+    def test_a_wrong_print_blocks_and_is_never_recorded(self):
+        for recorded in (self.rejected, self.wrong):
+            with self.subTest(recorded=recorded['outcome']):
+                # A new wrong print, and one that the corpus already holds: both block.
+                self.record(recorded)
+                status, output = self.main(self.wrong)
+                self.assertEqual(status, 1)
+                self.assertIn('WRONG PRINT', output)
+                status, output = self.main(self.wrong, ['--update'])
+                self.assertEqual(status, 1)
+                self.assertIn('Not recorded', output)
+                self.assertEqual(self.kept(), recorded)
+
+    def test_no_option_records_a_wrong_print(self):
+        self.record(self.rejected)
+        with mock.patch.object(run, 'run_probes', return_value={self.probe['id']: self.wrong}), \
+                contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()), \
+                self.assertRaises(SystemExit) as refused:
+            run.main(self.argv + ['--update', '--accept-new-wrong-prints'])
+        self.assertEqual(refused.exception.code, 2)
+        self.assertEqual(self.kept(), self.rejected)
+
+    def test_an_unchanged_refusal_records_cleanly(self):
+        self.record(self.rejected)
+        self.assertEqual(self.main(self.rejected)[0], 0)
+        self.assertEqual(self.main(self.rejected, ['--update'])[0], 0)
+        self.assertEqual(self.kept(), self.rejected)
 
 
 if __name__ == '__main__':

@@ -246,6 +246,29 @@ class WirePathTests(unittest.TestCase):
         self.assertTrue(shown("g7:equations", "פתרו.", "פתרו את המשוואה.", middle))
         self.assertFalse(shown("g7:equations", "פתרו.", "חשבתי על מספר, הכפלתי אותו ב־[[2]], הוספתי [[3]] וקיבלתי [[9]]. מהו המספר?", middle))
 
+    def test_a_typed_task_is_printed_only_after_a_bare_instruction(self):
+        def refusal(topic, intro, prompt, answer, **extra):
+            question, item, solved, _ = wire(topic, intro, prompt, answer, **extra)
+            self.assertTrue(printed_parts.shows_task(question, item, solved))
+            try:
+                printed_parts.refuse_shown_task(question, item)
+            except GeneralSourceError as error:
+                return error.code
+            return None
+
+        # A bare instruction or question: the typed task is the exercise.
+        self.assertIsNone(refusal("ג06", "חשבו בטור.", "חשבו.", evaluate("348 + 276")))
+        self.assertIsNone(refusal("ג08", "חברו.", "מה הסכום?", evaluate("20 + 30 + 10")))
+        # A story of several sentences, an intro that states numbers, or a table: the task would show the operation
+        # or print an exercise again, so the item is refused.
+        self.assertEqual(refusal("ג08", "חשבו.", "בכיתה יש בנים ובנות. חשבו כמה ילדים יש בסך הכול.", evaluate("12 + 15")),
+                         "PRINTED_TASK_MISMATCH")
+        self.assertEqual(refusal("ג22", "זכרו: במטר אחד יש [[100]] סנטימטרים.", "המירו לסנטימטרים.", evaluate("3 * 100")),
+                         "PRINTED_TASK_MISMATCH")
+        table = {"head": ["ביטוי", "תוצאה"], "rows": [["[[10 + 2 x 3]]", "___"], ["[[5 x 4 - 2]]", "___"]]}
+        self.assertEqual(refusal("ד07", "השלימו את הטבלה.", "חשבו את הביטוי שבשורה הראשונה.", evaluate("10 + 2 * 3"),
+                                 table=table), "PRINTED_TASK_MISMATCH")
+
     def test_a_printed_calculation_must_be_the_one_that_is_keyed(self):
         question, item, solved, grade = wire("ג06", "חשבו.", "[[348 + 276]]", evaluate("348 + 276"))
         self.assertEqual(printed_parts.printed_calculation(question, item, solved, grade)["rule"], "printed_calculation")
@@ -278,7 +301,10 @@ class WirePathTests(unittest.TestCase):
         wire("ה13", "כתבו כמספר מעורב.", "[[frac(7,3)]]", evaluate("frac(7,3)"))
         wire("ה28", "מהי ספרת העשיריות במספר?", "[[3.47]]", evaluate("4"))
         wire("ג02", "חשבו.", "מהו המספר העוקב של [[399]]?", evaluate("399 + 1"))
-        # Two printed numbers, a blank or a printed calculation leave something to do.
+        # A prompt that only lists numbers, keyed by one of them, picks a number and calculates nothing.
+        self.assertEqual(refused("ג02", "סדרו מהקטן לגדול.", "[[354]], [[345]], [[435]]", evaluate("345")),
+                         ("PRINTED_TASK_MISMATCH", 1, 1))
+        # Two printed numbers in a question, a blank or a printed calculation leave something to do.
         wire("ג02", "איזה מספר גדול יותר?", "[[345]] או [[354]]?", evaluate("354"))
         wire("ג08", "חשבו.", "[[124 + 0 = ___]]", evaluate("124 + 0"))
         # Its blank written after the island is refused for the notation, before any key check.
@@ -531,23 +557,32 @@ class MiddleKeyTests(unittest.TestCase):
 
     def test_schoolbook_products_and_no_task_after_a_story(self):
         task = lambda kind, expression: {"kind": "computed", "unit": "", "task": {"kind": kind, "expression": expression}}
-        rows, _ = self.rows("g7:algebraic_expressions", "פשטו.", [
+        rows, items = self.rows("g7:algebraic_expressions", "פשטו.", [
             ("פשטו את הביטוי [[2*x + 3*x]].", task("simplify", "2*x + 3*x")),
             ("פתחו את הסוגריים.", task("expand", "3*(x + 2)")),
             ("כנסו איברים דומים.", task("simplify", "x^2 + 2*x - 3*x - 6"))])
         self.assertEqual(rows[0], ("פשטו את הביטוי $2x + 3x$.", "$5x$"))          # shown once, keyed 5x
         self.assertEqual(rows[1], (r"פתחו את הסוגריים. $3\g{x + 2}$", "$3x + 6$"))
         self.assertEqual(rows[2][1], "$x^{2} − x − 6$")
+        # A printed task is a stated given of its item.
+        self.assertEqual(items[1]["given"], [rows[1][0]])
         solve = {"kind": "computed", "unit": "", "task": {"kind": "solve", "lhs": "3*x", "rhs": "15", "variable": "x"}}
+        # After a story in the intro the typed equation is never printed: it would show the pupil how to model the
+        # story. The bare "פתרו את המשוואה." is refused instead.
+        with self.assertRaises(GeneralSourceError) as refused:
+            self.rows("g7:equations", "לכל מחברת מחיר של [[3]] שקלים.", [
+                ("דנה שילמה [[15]] שקלים. כמה מחברות קנתה?", solve),
+                ("כמה מחברות קונים ב־[[15]] שקלים?", solve),
+                ("פתרו את המשוואה.", solve)])
+        self.assertEqual((refused.exception.code, refused.exception.question, refused.exception.item),
+                         ("PRINTED_TASK_MISMATCH", 1, 3))
         rows, items = self.rows("g7:equations", "לכל מחברת מחיר של [[3]] שקלים.", [
             ("דנה שילמה [[15]] שקלים. כמה מחברות קנתה?", solve),
             ("כמה מחברות קונים ב־[[15]] שקלים?", solve),
-            ("פתרו את המשוואה.", solve)])
+            ("כמה מחברות קונים ב־[[15]] שקלים?", solve)])
         self.assertEqual(rows[0], ("דנה שילמה $15$ שקלים. כמה מחברות קנתה?", "$x = 5$"))
-        self.assertEqual(rows[2], ("פתרו את המשוואה. $3x = 15$", "$x = 5$"))
         # Without a printed task the shared story is a stated given of the item.
         self.assertEqual(items[0]["given"], [rows[0][0], "לכל מחברת מחיר של $3$ שקלים."])
-        self.assertEqual(items[2]["given"], [rows[2][0]])
 
     def test_blank_and_segment_names_keep_their_multiplication_sign(self):
         rows, _ = self.rows("g7:equations", "השלימו.", [

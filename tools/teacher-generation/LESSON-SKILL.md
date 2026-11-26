@@ -164,9 +164,14 @@ Schema in `general_source.authoring_schema`; checks in
   or a system). Otherwise the question is refused (`printed_parts.bind_parts`).
   Explicit `parts`, `list` and `set` answers come with wire v2 (section 8).
 - **Print rule.** The typed task is printed after the prompt only when the
-  prompt shows no number (`printed_parts.shows_task`); a later item may not
-  print an earlier item's answer (`printed_parts.answer_leak`,
-  `PRINTED_ANSWER_LEAK`).
+  prompt shows no number (`printed_parts.shows_task`), and only after a bare
+  instruction or question: after a story of more than one sentence, an intro
+  that states numbers, or a table or figure the item is refused
+  (`printed_parts.refuse_shown_task`, `PRINTED_TASK_MISMATCH`). A later item
+  may not print an earlier item's answer (`printed_parts.answer_leak`,
+  `PRINTED_ANSWER_LEAK`). A minus before anything but a number (`-2^4`, `-x`)
+  is refused in printed math unless it is printed as written: the tree would
+  print it as `0 − 2^4` (`SOURCE_NOTATION`).
 - **The key beside its own item** (`printed_parts.check_key_print`, run in
   `validate_question`, so selection, the whole sheet and the adapter agree):
   - an item may not print its own answer, in a complete numeric fact that
@@ -182,6 +187,18 @@ Schema in `general_source.authoring_schema`; checks in
   - a printed fraction read by the task as two numbers ("5/24" typed as
     `x(x+5) = 24`) is `PRINTED_TASK_MISMATCH`; an item that asks for an
     equation and for a number gets no single-number key.
+- **The answer kind the item asks for** (`printed_tasks.validate_computed_request`,
+  `PRINTED_ANSWER_KIND`): a yes/no or true/false question in the item takes only
+  a `decide` task, never a number or a `compare` sign (a question that offers
+  its outcomes, "קטן או גדול מ...", is a comparison); a number is never the key
+  of a requested equation, ratio, time of day, or who or which ("מהו היחס",
+  "מה תהיה השעה", "למי"), and an item without words of its own asks what its
+  intro asks.
+  A prompt that only lists numbers is not keyed by one of them
+  (`printed_parts.echoed_given`). A printed inequality binds a typed
+  inequality: a chain such as `-3 < 2x + 1 ≤ 7` is refused, and one printed
+  inequality must have the typed solution set (`printed_tasks.printed_inequality`,
+  `PRINTED_TASK_MISMATCH`).
 
 ### 2.5 Reply examples
 
@@ -393,16 +410,16 @@ Run from the repository root. Full guide: `bench/README.md`.
 | Tool | Answers | Calls |
 |---|---|---|
 | `bench/replay.py [--case ID] [--corrections exact\|subset\|none] [--compare bench/corpus/baseline/results.json]` | recorded replies through the unchanged worker (`bench/engine.run_job` → `remote_worker.process_job`) | none; sockets refused |
-| `bench/probes/run.py [--family F] [--show] [--update]` | 285 synthetic question forms: pass, rejected or wrong print; exit 1 on a regression | none |
+| `bench/probes/run.py [--family F] [--show] [--update]` | 285 synthetic question forms: pass or rejected; exit 1 on a regression or any wrong print | none |
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
 - **Recorded state:** replay delivers 5 of 35 cases with no further model
-  call, and 278 of 756 questions are refused alone
+  call, and 281 of 756 questions are refused alone
   (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
   count as failed, so this under-states the live ladder. The key-print checks
   of section 2.4 cost three ג10 replays (A-, B- and G-division) whose
   fact-family items print their own answer; live, those questions go to the
-  correction call. Probes: 180 pass, 91 rejected, 14 wrong print.
+  correction call. Probes: 179 pass, 106 rejected, no wrong print.
 - **Sweep flags:** `--dry-run`, `--topics`, `--grades`, `--levels`, `--limit`,
   `--one-level-per-topic`, `--only-failed`, `--question-count`, `--minutes`
   (default 30), `--calls-per-case` (4), `--concurrency` (4), `--case-timeout`
@@ -440,10 +457,6 @@ Known gaps, stated plainly:
 
 - The kernel proves the typed task, not that the task is what the prose asks.
   A wrong typing can print a wrong key; T2 (section 8) exists for this.
-- 14 probes are still recorded as wrong prints: 11 wrong or incomplete keys
-  and 3 prints that add numbers. Examples: a double inequality keyed by one
-  side, a time answer keyed `8` for `8:15`, a ratio keyed without `:`. The test
-  only forbids new ones (`tests/test_bench_probes.py`).
 - Middle-school `review` answers and story-typed verdicts are human-checked by
   design. Grades 1–6 refuse every answer without a proven key.
 - An answer printed in another question of the sheet is not refused (in the

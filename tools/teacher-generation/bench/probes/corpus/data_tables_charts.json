@@ -444,12 +444,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "חשבו את הביטוי שבשורה הראשונה. 10 + 2 x 3",
-    "key": "16"
+    "outcome": "rejected",
+    "stage": "adapter",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   }
  ]

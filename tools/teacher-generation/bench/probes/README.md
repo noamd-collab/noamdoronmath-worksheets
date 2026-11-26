@@ -6,7 +6,8 @@ given. They are hypotheses about model habits, not recorded model output.
 
 `run.py` sends every probe through the engine and compares the result with the
 outcome recorded in the corpus file, so a fix shows exactly which forms it
-unlocks and whether any form starts to print wrongly.
+unlocks and whether any form prints wrongly. Every probe is either refused or
+printed correctly; a wrong print is never recorded.
 
 ```sh
 python3 tools/teacher-generation/bench/probes/run.py                 # compare; exit 1 on a regression
@@ -45,7 +46,7 @@ python3 tools/teacher-generation/bench/probes/run.py --update        # record th
 | --- | --- |
 | `rejected` | The engine refused the question: `stage` is `source` (the author's compile path) or `adapter` (the trusted adapter), with the engine's code. |
 | `pass` | The question compiled and the print raised no flag. `unverified: true` marks a middle-school prose answer printed as written. |
-| `wrong_print` | The question compiled and the print breaks the sheet's invariant. `flags` says how. |
+| `wrong_print` | The question compiled and the print breaks the sheet's invariant. `flags` says how. Never recorded: the engine must refuse that form. |
 
 Flags (`verdict.py`):
 
@@ -65,20 +66,19 @@ They are simple on purpose; when a rule misjudges a probe, give the probe an
 
 At the commit that added the corpus: 56 pass, 94 rejected, 135 wrong print
 (`print_adds_numbers` 95, `key_mismatch` 30, `answer_beside_question` 28,
-`key_repeats_question` 8).
+`key_repeats_question` 8). Now: 179 pass, 106 rejected, no wrong print.
 
 ## Changes the runner reports
 
-- **New wrong print**: a probe that now carries a flag it did not have. Exit 1.
-  `--update` refuses to record it unless `--accept-new-wrong-prints` is given.
+- **Wrong print**: any probe that prints wrongly, whatever its recorded
+  outcome. Exit 1, and `--update` records nothing.
 - **Now rejected**: passed before. Exit 1.
 - **Unlocked**: rejected before, prints cleanly now.
 - **Print repaired**, **rejected with a different code**, **printed text, key
   or flags changed**: listed for review.
 
-`tests/test_bench_probes.py` runs the whole corpus and fails when a probe gains
-a flag about its key (`key_mismatch`, `answer_beside_question`,
-`one_key_for_several_blanks`, `key_repeats_question`).
+`tests/test_bench_probes.py` runs the whole corpus and fails when any probe
+prints wrongly, with any flag. Only `pass` and `rejected` may be recorded.
 
 ## How a probe is run
 

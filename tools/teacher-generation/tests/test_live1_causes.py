@@ -317,10 +317,20 @@ class LiveCauses(unittest.TestCase):
                                        ('L1-p1', 'practice', 8), ('L1-p1', 'practice', 13), ('L1-p3-a2', 'practice', 3)):
             with self.subTest(case=case_id, group=group, number=number):
                 self.assertEqual(self.code(case_id, question(case_id, group, number)), 'SOURCE_NOTATION')
-        # The same questions written by this test in contract notation, with three-letter angles, compile and print.
+        # The same questions written by this test in contract notation, with three-letter angles, compile.
         wire = question('L1-p3', 'practice', 1)
         wire['items'][0]['prompt'] = 'נתון כי [[∠ADC = 70°]]. חשבו את גודל הזווית החד־צדדית [[angle:BAD]].'
         wire['items'][1]['prompt'] = 'נתון כי [[∠ABC = 120°]]. חשבו את גודל הזווית החד־צדדית [[angle:BCD]].'
+        self.assertIsNone(self.check('L1-p3', wire))
+        # Its third item, "חשבו את סכום כל ארבע זוויות הטרפז." beside the figure, is keyed 110 + 70 + 120 + 60: the
+        # trusted adapter never prints that typed task after it (it would print the keys of items 1 and 2).
+        isolator = self.isolators['L1-p3']
+        compiled = engine.compile_reply(isolator.lesson, engine.ReplyFromSchema(wire, isolator.frame['title'], isolator.frame['rule']),
+                                        self.skills, context=isolator.context)
+        refused = engine.printed_questions(isolator.lesson, compiled['payload'], self.skills, Path(tempfile.mkdtemp(dir=self.scratch)))
+        self.assertEqual((refused['ok'], refused['code']), (False, 'PRINTED_TASK_MISMATCH'))
+        # With the second item in its place the question prints.
+        wire['items'][2] = deepcopy(wire['items'][1])
         self.assertIsNone(self.check('L1-p3', wire))
         rows = self.printed('L1-p3', wire)
         self.assertIn(r'$\angle{ADC} = 70°$', rows[0][0])
@@ -329,6 +339,17 @@ class LiveCauses(unittest.TestCase):
         for item, prompt in zip(wire['items'], ('חשבו את גודל הזווית [[angle:BCD]].', 'חשבו את גודל הזווית הקהה [[angle:BAD]].',
                                                 'חשבו את סכום שתי זוויות הבסיס העליון, [[∠BAD + ∠ABC]].')):
             item['prompt'] = prompt
+        self.assertIsNone(self.check('L1-p3', wire))
+        # Items 2 and 3 are keyed 180 - 55 and 125 + 125 beside the figure and the intro's 55°: the trusted adapter
+        # never prints those typed tasks after them (they would show the operation, and the key of item 2).
+        isolator = self.isolators['L1-p3']
+        compiled = engine.compile_reply(isolator.lesson, engine.ReplyFromSchema(wire, isolator.frame['title'], isolator.frame['rule']),
+                                        self.skills, context=isolator.context)
+        refused = engine.printed_questions(isolator.lesson, compiled['payload'], self.skills, Path(tempfile.mkdtemp(dir=self.scratch)))
+        self.assertEqual((refused['ok'], refused['code']), (False, 'PRINTED_TASK_MISMATCH'))
+        # Typed as the values themselves, nothing is printed after the prompts and the sum of the angles prints.
+        wire['items'][1]['answer']['task']['expression'] = '125'
+        wire['items'][2]['answer']['task']['expression'] = '250'
         self.assertIsNone(self.check('L1-p3', wire))
         rows = self.printed('L1-p3', wire)
         self.assertIn(r'$\angle{BAD} + \angle{ABC}$', rows[2][0])

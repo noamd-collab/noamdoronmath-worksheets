@@ -72,7 +72,15 @@ def implicit_products(tokens):
     return out
 
 
-def expression(value, grade, *, blank_symbol=False, printed=False, spellings=None, implicit=True):
+def expression(value, grade, *, blank_symbol=False, printed=False, spellings=None, implicit=True, as_written=False):
+    """Parse compact notation into an exact tree.
+
+    ``printed`` marks notation that the pupil reads, printed from this tree.
+    The tree has no negation sign, so a minus before anything but a number
+    (-2^4, -x, -(x + 1)) is refused there: it would print as 0 − 2^4, with a
+    zero that was never written. ``as_written`` marks notation that the
+    caller prints in its own spelling, not from the tree.
+    """
     if not isinstance(value, str):
         # Typed source (e.g. an older retained response) is checked as usual.
         return value
@@ -110,6 +118,8 @@ def expression(value, grade, *, blank_symbol=False, printed=False, spellings=Non
         token = take()
         if token == "-":
             arg = parse(3)
+            if printed and not as_written and arg["type"] != "number":
+                invalid()
             left = (
                 number(-arg["numerator"], arg["denominator"])
                 if arg["type"] == "number"
@@ -297,15 +307,16 @@ def display_parts(value, grade):
                 names = re.compile(r"∠\s*[A-Z]{1,3}(?![A-Za-z])|" + DISPLAY_NAME.pattern)
         rewritten = names.sub(rename, piece)
         spellings = {}
-        # Two diagram labels side by side are not a product.
-        tree = expression(rewritten, grade, blank_symbol=grade < 7 and "___" in aliases,
-                          printed=True, spellings=spellings,
-                          implicit=not any(name == "___" or name.isupper() for name in aliases))
         # In an already parsed schoolbook polynomial keep ordinary numerical
         # coefficients and juxtaposed factors as written. No model markup is copied.
-        if (grade >= 7 and (COEFFICIENT.search(piece) or IMPLICIT_PRODUCT.search(piece)) and
-                re.fullmatch(r"[0-9xyab,.+()\s^\-]+", piece) and
-                not re.search(rf"\^(?!(?:{_EXPONENTS})(?![0-9]))", piece)):
+        as_written = bool(grade >= 7 and (COEFFICIENT.search(piece) or IMPLICIT_PRODUCT.search(piece)) and
+                          re.fullmatch(r"[0-9xyab,.+()\s^\-]+", piece) and
+                          not re.search(rf"\^(?!(?:{_EXPONENTS})(?![0-9]))", piece))
+        # Two diagram labels side by side are not a product.
+        tree = expression(rewritten, grade, blank_symbol=grade < 7 and "___" in aliases,
+                          printed=True, spellings=spellings, as_written=as_written,
+                          implicit=not any(name == "___" or name.isupper() for name in aliases))
+        if as_written:
             result.append(re.sub(rf"\^({_EXPONENTS})(?![0-9])", r"^{\1}", piece.strip().replace("-", "−")))
         else:
             result.append((tree, {alias: printed_name(name) for name, alias in aliases.items()}, spellings))

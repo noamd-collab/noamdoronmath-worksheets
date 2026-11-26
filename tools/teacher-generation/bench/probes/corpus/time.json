@@ -46,15 +46,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch"
-    ],
-    "notes": [
-     "key numbers ['8'] != expected ['8', '15']"
-    ],
-    "printed": "השעה עכשיו 7:30. מה תהיה השעה בעוד 45 דקות?",
-    "key": "8"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_ANSWER_KIND"
    }
   },
   {
@@ -77,15 +71,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch"
-    ],
-    "notes": [
-     "key numbers ['8'] != expected ['8', '15']"
-    ],
-    "printed": "השעה עכשיו 7 : 30 . מה תהיה השעה בעוד 45 דקות?",
-    "key": "8"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_ANSWER_KIND"
    }
   },
   {
@@ -175,9 +163,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "הַמָּחוֹג הַקָּטָן מַצְבִּיעַ עַל 7 וְהַמָּחוֹג הַגָּדוֹל עַל 12 . מָה הַשָּׁעָה?",
-    "key": "7"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_ANSWER_KIND"
    }
   },
   {

@@ -113,10 +113,11 @@ variable, the author switch included, and use placeholder Qwen settings.
 
 ## After an engine change
 
-1. Run the unit tests. `test_bench_probes.py` fails if any probe starts to
-   print a wrong key or an answer beside its question.
+1. Run the unit tests. `test_bench_probes.py` fails if any probe prints a
+   wrong key, an answer beside its question or an exercise it should not show.
 2. Run `probes/run.py`, read the change report, and record the new state with
-   `--update` once it is what you intended.
+   `--update` once it is what you intended. `--update` records nothing while
+   any probe prints wrongly: make the engine refuse that form.
 3. Run `replay.py --compare bench/corpus/baseline/results.json` and replace the
    baseline when the change is deliberate.
 

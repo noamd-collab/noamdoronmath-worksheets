@@ -88,14 +88,19 @@ and expression bounds. `math_tasks.py` verifies typed arithmetic, symbolic
 operations, bounded equations/systems, inequalities and descriptive statistics.
 No model string is passed to eval, exec or a symbolic expression parser.
 Computed answers are derived from the typed task. The task is printed after
-a prompt only when the prompt carries no numbers of its own, and never when the
-print would be the answer; `printed_parts.py` and the other `printed_*` binders
+a prompt only when the prompt carries no numbers of its own and is a bare
+instruction or question, and never when the print would be the answer; after a
+story of more than one sentence, an intro with numbers, a table or a figure the
+item is refused instead.
+`printed_parts.py` and the other `printed_*` binders
 tie the key to an exercise that the prompt already shows. A prompt with several
 blanks gets one answer for each blank, or the question is refused.
 
 A yes/no or true/false question carries a typed claim (task kind `decide`: an
 order or equality of two expressions, divisibility, membership in a short
-list). The kernel decides it; no field holds an authored yes or no.
+list), and any other typed task for it is refused. The kernel decides it; no
+field holds an authored yes or no. A number is never the key of a requested
+ratio, time of day, or who or which.
 `answer_kinds.py` ties the claim to the printed question, by the one printed
 statement whose correctness is asked about or by the relation word, its order
 and the printed quantities, and refuses a true claim that is not that

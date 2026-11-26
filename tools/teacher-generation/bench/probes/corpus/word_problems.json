@@ -80,15 +80,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch"
-    ],
-    "notes": [
-     "key lacks 'דני'"
-    ],
-    "printed": "לדני היו 124 גולות ולרון 98 . למי יש יותר גולות, ובכמה?",
-    "key": "26 גולות"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_ANSWER_KIND"
    }
   },
   {

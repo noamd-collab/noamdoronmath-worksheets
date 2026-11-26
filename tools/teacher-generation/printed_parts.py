@@ -652,6 +652,25 @@ def shows_task(question, item, solved, *, intro=None):
     return True
 
 
+def refuse_shown_task(question, item, *, intro=None):
+    """Refuse an item whose typed task would be printed after anything but a bare instruction.
+
+    The adapter prints the typed task after a prompt without mathematics of
+    its own (``shows_task``). After a bare instruction or question ("חשבו.",
+    "מה הסכום?") that task is the exercise. After a story of more than one
+    sentence, an intro that states numbers, or a table or figure, the printed
+    calculation would reveal the operation that the pupil should find or print
+    again an exercise shown elsewhere, so the item is refused instead.
+    """
+    shared = question["intro"] if intro is None else intro
+    words = " ".join(_words(item["prompt"]).split())
+    sentences = [part for part in re.split(r"[.!?;]+", words) if part.strip()]
+    if "table" in question or "figure" in question or carries_data(shared) or len(sentences) > 1:
+        raise GeneralSourceError("PRINTED_TASK_MISMATCH",
+                                 "The prompt does not print the exercise that its key answers; a typed task is "
+                                 "printed only after a bare instruction")
+
+
 # --------------------------------------------------------------- one exercise
 _DIRECTIVE = re.compile(
     r"(?:(?:חשבו|פתרו|מצאו|השלימו|כתבו|רשמו)(?: בטור)?(?: את)?"
@@ -709,6 +728,11 @@ def echoed_given(item, solved, *, authored=False, mixed=False):
     (``mixed``). This second rule applies to an authored reply only
     (``authored``): a local author may state a count that the pupil then
     checks against the printed words.
+
+    A prompt that is nothing but a list of numbers, keyed by one of them, has
+    nothing to calculate either: the bare number only picks a printed number,
+    and no typed task proves the choice ("[[354]], [[345]], [[435]]" under
+    "סדרו מהקטן לגדול" keyed 345). This too applies to an authored reply.
     """
     typed = _scalar(solved)
     task = solved["question"]
@@ -722,6 +746,10 @@ def echoed_given(item, solved, *, authored=False, mixed=False):
         return
     if not authored or task["expression"].get("type") != "number":
         return
+    listed = [token.value for token in tokens if token.kind == "num"]
+    if (len(listed) >= 2 and typed in listed
+            and all(token.kind == "num" or (token.kind == "sym" and token.raw in ",;.") for token in tokens)):
+        _reject("The key repeats one of the listed numbers; there is nothing to calculate")
     shown = []  # (value, written decimal, written fraction in lowest terms)
     for token in tokens:
         if token.kind == "num":
@@ -1057,6 +1085,8 @@ def check_item(question, item, solved, grade, *, authored=False):
     """
     bind_parts(question, item, solved, grade)
     if item["answer"].get("kind") == "computed":
+        from printed_tasks import printed_inequality
+        printed_inequality(item, solved, grade)
         comparison_blank(item, solved, grade)
         printed_calculation(question, item, solved, grade)
         from answer_kinds import bind_decision, refuse_dummy_key

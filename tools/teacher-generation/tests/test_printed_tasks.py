@@ -70,3 +70,68 @@ class PupilAnswerTypeTests(unittest.TestCase):
                 validate_computed_request({}, {"prompt":spans(p, 8)}, solved, 8, "q2.item.1")
         validate_computed_request({}, {"prompt":spans("אם היו [[6]] ונוספו [[2]], כמה יש עכשיו?", 8)},
                                   solved, 8, "q2.item.1")
+
+    def test_a_yes_no_or_true_false_question_takes_only_a_decision(self):
+        from printed_tasks import validate_computed_request
+        compare = validate_and_solve_task({"kind": "compare", "left": expression("345", 3), "right": expression("354", 3)})
+        decision = validate_and_solve_task({"kind": "decide", "relation": "lt", "left": expression("345", 3),
+                                            "right": expression("354", 3)})
+        scalar = validate_and_solve_task({"kind": "evaluate", "expression": expression("32 / 4", 3)})
+        # A comparison sign printed as the key of a yes/no or true/false question is not its answer.
+        for prompt, solved in (("האם [[345 < 354]]?", compare), ("האם [[32 : 4 = 8]] נכון?", compare),
+                               ("נכון או לא נכון: [[32 : 4 = 9]]", compare), ("נכון או לא נכון: [[32 : 4 = 8]]", scalar)):
+            with self.subTest(prompt=prompt), self.assertRaisesRegex(GeneralSourceError, "at q1.item.2") as refused:
+                validate_computed_request({}, {"prompt": spans(prompt, 3)}, solved, 3, "q1.item.2")
+            self.assertEqual(refused.exception.code, "PRINTED_ANSWER_KIND")
+        # Only a decision answers it; a question that offers its outcomes is a comparison.
+        validate_computed_request({}, {"prompt": spans("האם [[345 < 354]]?", 3)}, decision, 3, "q1.item.2")
+        validate_computed_request({}, {"prompt": spans("האם [[345]] קטן או גדול מ־[[354]]?", 3)}, compare, 3, "q1.item.2")
+        validate_computed_request({}, {"prompt": spans("[[345]] ___ [[354]]", 3)}, compare, 3, "q1.item.2")
+
+    def test_a_number_is_not_a_ratio_a_time_of_day_or_who_or_which(self):
+        from printed_tasks import validate_computed_request
+        def solved(text, grade):
+            return validate_and_solve_task({"kind": "evaluate", "expression": expression(text, grade)})
+        for intro, prompt, task, grade in (
+                ("כתבו את היחס.", "בכיתה [[12]] בנים ו־[[18]] בנות. מהו היחס בין הבנים לבנות?", "12/18", 6),
+                ("צמצמו את היחס.", "[[12 : 18]]", "12/18", 6),                        # no words: the intro asks
+                ("ענו.", "השעה עכשיו 7:30. מה תהיה השעה בעוד [[45]] דקות?", "8", 3),
+                ("פתרו את הבעיה.", "לדני היו [[124]] גולות ולרון [[98]]. למי יש יותר גולות, ובכמה?", "124 - 98", 3)):
+            with self.subTest(prompt=prompt), self.assertRaises(GeneralSourceError) as refused:
+                validate_computed_request({"intro": spans(intro, grade)}, {"prompt": spans(prompt, grade)},
+                                          solved(task, grade), grade, "q1.item.1")
+            self.assertEqual(refused.exception.code, "PRINTED_ANSWER_KIND")
+        # A number that the words ask for is a key, whatever the intro says about ratios.
+        for intro, prompt, task, grade in (
+                ("השלימו יחס שקול.", "[[2 : 3 = ___ : 12]]", "2*12/3", 6),
+                ("צמצמו את היחס.", "כמה בנים יש בכיתה של [[30]] תלמידים?", "12", 6),
+                ("פתרו את הבעיה.", "לדני היו [[124]] גולות ולרון [[98]]. כמה גולות יש לשניהם?", "124 + 98", 3)):
+            with self.subTest(prompt=prompt):
+                validate_computed_request({"intro": spans(intro, grade)}, {"prompt": spans(prompt, grade)},
+                                          solved(task, grade), grade, "q1.item.1")
+
+
+class PrintedInequalityTests(unittest.TestCase):
+    def solved(self, lhs, rhs, relation):
+        return validate_and_solve_task({"kind": "inequality", "variable": "x", "lhs": expression(lhs, 8),
+                                        "rhs": expression(rhs, 8), "relation": relation})
+
+    def test_a_typed_inequality_is_the_printed_one(self):
+        from printed_tasks import printed_inequality
+        item = lambda prompt: {"prompt": spans(prompt, 8)}
+        self.assertEqual(printed_inequality(item("[[2x - 1 > 5]]"), self.solved("2x - 1", "5", "gt"), 8).proof["rule"],
+                         "printed_inequality")
+        # The same solution set written the other way round, or in another letter, is the printed inequality.
+        self.assertTrue(printed_inequality(item("[[5 < 2x - 1]]"), self.solved("2x - 1", "5", "gt"), 8))
+        self.assertTrue(printed_inequality(item("פתרו: [[2t - 1 ≥ 5]]"), self.solved("2x - 1", "5", "ge"), 8))
+        # A chain is two inequalities; one typed inequality solves only one of them.
+        for prompt, typed in (("[[-3 < 2x + 1 <= 7]]", ("2x + 1", "7", "le")), ("[[-3 < 2x + 1 <= 7]]", ("-3", "2x + 1", "lt")),
+                              ("[[2x - 1 > 5]]", ("2x + 1", "5", "gt")), ("[[2x - 1 > 5]]", ("2x - 1", "5", "ge")),
+                              ("[[2x - 1 > 5]] וגם [[x < 9]]", ("2x - 1", "5", "gt"))):
+            with self.subTest(prompt=prompt, typed=typed), self.assertRaises(GeneralSourceError) as refused:
+                printed_inequality(item(prompt), self.solved(*typed), 8)
+            self.assertEqual(refused.exception.code, "PRINTED_TASK_MISMATCH")
+        # A word problem prints no inequality; another task kind is not bound here.
+        self.assertIsNone(printed_inequality(item("מספר גדול מ־[[5]]. מהו התחום?"), self.solved("x", "5", "gt"), 8))
+        self.assertIsNone(printed_inequality(item("[[2x - 1 > 5]]"), validate_and_solve_task(
+            {"kind": "evaluate", "expression": expression("4", 8)}), 8))

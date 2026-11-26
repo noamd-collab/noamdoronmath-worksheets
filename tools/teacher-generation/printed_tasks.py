@@ -7,7 +7,7 @@ import unicodedata
 
 from compact_authoring import display_parts
 from general_source import GeneralSourceError
-from math_tasks import number, validate_and_solve_task
+from math_tasks import MathTaskError, number, validate_and_solve_task
 from numeric_literals import display_literal, literal_value
 
 
@@ -39,19 +39,48 @@ def yes_no_question(prompt):
     return False
 
 
+# Requests that no typed task keys with one number: the ratio itself, a time of
+# day, who or which ("למי", "מי מהשיטות"). The kernel has no ratio, clock time or
+# name to print.
+RATIO_REQUEST = re.compile(r"(?<![א-ת])(?:מה|מהו|מהי|כתבו|רשמו|צמצמו|פשטו|מצאו|חשבו)(?:\s+את)?\s+ה?יחס(?![א-ת])")
+CLOCK_REQUEST = re.compile(
+    r"(?<![א-ת])(?:(?:מה|מהי)\s+(?:(?:תהיה|הייתה|היא|יהיה|היה)\s+)?השעה|באיזו\s+שעה)(?![א-ת])")
+WHO_REQUEST = re.compile(r"(?:^|[.!?:;,@]\s*|\sו)(?:[למבש]|אצל\s+|של\s+)?מי\s[^.!?]*\?")
+
+
 def validate_computed_request(question, item, solved, grade, location):
-    """A numeric key cannot answer a yes/no question or supply a requested equation."""
-    if solved["result"].get("type") != "expression":
+    """The kind of answer that the item asks for, against the kind that its typed task gives.
+
+    A yes/no or true/false question is answered only by a decision: a number
+    or a comparison sign printed as its key is not its answer. A number cannot
+    supply a requested equation, nor a ratio, a time of day or who or which,
+    which the kernel never keys; for these an item without words of its own
+    asks what its intro asks.
+    """
+    kind = solved["result"].get("type")
+    if kind == "decision":
         return
     def words(spans):
         value = "".join(s["text"] if s["kind"] == "text" else "@" for s in spans)
         return "".join(c for c in value if not unicodedata.combining(c))
 
+    from answer_kinds import _OPTIONS, _TRUE_FALSE
     prompt = words(item["prompt"])
-    if (yes_no_question(prompt)
+    if kind != "expression":
+        # "האם ... קטן או גדול מ...?" offers its outcomes and is a comparison; a bare yes/no is not.
+        either = re.search(r"(?<![א-ת])או(?![א-ת])", _OPTIONS.sub(" ", prompt))
+        if _TRUE_FALSE.search(prompt) or (yes_no_question(prompt) and not either):
+            raise GeneralSourceError("PRINTED_ANSWER_KIND",
+                                     "The printed request needs a decision, not a " + str(kind) + " key at " + location)
+        return
+    if (yes_no_question(prompt) or _TRUE_FALSE.search(prompt)
             or re.search(r"(?:כתבו|רשמו|בנו|חברו)\s+(?:את\s+ה)?משוואה", prompt)):
         raise GeneralSourceError("PRINTED_ANSWER_KIND",
                                  "The printed request needs a decision or an equation, not a scalar at " + location)
+    asked = prompt if re.search(r"[א-ת]", prompt) else words(question.get("intro", []))
+    if RATIO_REQUEST.search(asked) or CLOCK_REQUEST.search(asked) or WHO_REQUEST.search(asked):
+        raise GeneralSourceError("PRINTED_ANSWER_KIND",
+                                 "The printed request needs a ratio, a time of day or who or which, not a scalar at " + location)
 
 
 def _tree(part):
@@ -242,6 +271,46 @@ def printed_solve(prompt, task, grade):
     if (native_symbol(left), native_symbol(right)) == (task.get("lhs"), task.get("rhs")):
         return label
     return mismatch()
+
+
+INEQUALITY_SIGN = re.compile(r"<=|>=|[<>≤≥]")
+_INEQUALITY_RELATIONS = {"<": "lt", "<=": "le", "≤": "le", ">": "gt", ">=": "ge", "≥": "ge"}
+
+
+def printed_inequality(item, solved, grade):
+    """Bind a typed inequality to the inequality that the item prints, or refuse it.
+
+    A printed chain such as -3 < 2x + 1 ≤ 7 is two inequalities, and a typed
+    inequality solves only one of them. One printed inequality in one letter
+    must have the solution set of the typed one. None when the item prints no
+    inequality or the task is not an inequality.
+    """
+    task = solved["question"]
+    if task.get("kind") != "inequality":
+        return None
+    printed = [span for span in item["prompt"] if span["kind"] == "formula" and INEQUALITY_SIGN.search(span["notation"])]
+    if not printed:
+        return None
+    from compact_authoring import RELATION, MATH_TRANSLATION, expression
+    if len(printed) != 1:
+        _reject()
+    pieces = [piece.strip() for piece in RELATION.split(printed[0]["notation"])]
+    if len(pieces) != 3 or pieces[1] not in _INEQUALITY_RELATIONS:
+        _reject()
+    names = {name for piece in (pieces[0], pieces[2]) for name in re.findall(r"[A-Za-z_]+", piece)} - {"sqrt", "frac"}
+    if len(names) != 1 or not re.fullmatch(r"[a-z]", next(iter(names))):
+        _reject()
+    letter = next(iter(names))
+    sides = [re.sub(r"(?<![A-Za-z_])" + letter + r"(?![A-Za-z_])", "x", piece).translate(MATH_TRANSLATION)
+             for piece in (pieces[0], pieces[2])]
+    try:
+        own = validate_and_solve_task({"kind": "inequality", "variable": "x", "lhs": expression(sides[0], grade),
+                                       "rhs": expression(sides[1], grade), "relation": _INEQUALITY_RELATIONS[pieces[1]]})
+    except (GeneralSourceError, MathTaskError):
+        _reject()
+    if own["result"]["intervals"] != solved["result"].get("intervals"):
+        _reject()
+    return Binding({"rule": "printed_inequality", "relation": _INEQUALITY_RELATIONS[pieces[1]]})
 
 
 MATCHING_BANK = re.compile(r"התאימו לכל משוואה את הפתרון הנכון מתוך הרשימה\s*:\s*")

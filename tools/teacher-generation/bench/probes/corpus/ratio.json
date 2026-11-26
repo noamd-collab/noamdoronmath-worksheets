@@ -24,15 +24,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch"
-    ],
-    "notes": [
-     "key lacks ':'"
-    ],
-    "printed": "בכיתה 12 בנים ו־ 18 בנות. מהו היחס בין הבנים לבנות?",
-    "key": "2 3"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_ANSWER_KIND"
    }
   },
   {
@@ -86,15 +80,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch"
-    ],
-    "notes": [
-     "key lacks ':'"
-    ],
-    "printed": "12 : 18",
-    "key": "2 3"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_ANSWER_KIND"
    }
   },
   {

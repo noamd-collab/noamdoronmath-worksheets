@@ -294,6 +294,24 @@ class CompactAuthoringTests(unittest.TestCase):
             expand_source(source, 8)
         self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
 
+    def test_a_printed_minus_before_anything_but_a_number_is_refused(self):
+        from compact_authoring import display_parts
+        from math_tasks import to_house_math
+        # The tree has no negation sign: -2^4 would print as 0 − 2^4, a zero that was never written.
+        for value in ("[[-2^4]]", "[[-x + 3]]", "[[-(x + 2)]]", "חשבו [[3 - -2^2]].", "[[2 * -x]]"):
+            with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
+                spans(value, 8)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        with self.assertRaises(GeneralSourceError):
+            display_parts("-x^2 + 4 = 0", 8)
+        # A negative number, a minus printed as written in a schoolbook polynomial, and a typed task that is never
+        # printed keep their meaning.
+        self.assertEqual(spans("[[-2]]", 8), [{"kind": "math", "expression": {"type": "number", "numerator": -2, "denominator": 1}}])
+        self.assertEqual(to_house_math(spans("[[(-2)^4]]", 8)[0]["expression"]), r"\g{−2}^{4}")
+        self.assertEqual(display_parts("-3x + 5", 8), ["−3x + 5"])
+        self.assertEqual(validate_and_solve_task({"kind": "evaluate", "expression": expression("-2^4", 8)})["result"]["value"],
+                         {"type": "number", "numerator": -16, "denominator": 1})
+
     def test_compiler_prints_requested_division_equations_from_verified_quantities(self):
         from general_adapters import _compile_elementary, _load_skill
         from printed_elementary import printed_intent
