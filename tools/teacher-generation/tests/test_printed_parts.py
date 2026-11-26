@@ -248,10 +248,10 @@ class WirePathTests(unittest.TestCase):
 
     def test_a_typed_task_is_printed_only_after_a_bare_instruction(self):
         def refusal(topic, intro, prompt, answer, **extra):
-            question, item, solved, _ = wire(topic, intro, prompt, answer, **extra)
+            question, item, solved, grade = wire(topic, intro, prompt, answer, **extra)
             self.assertTrue(printed_parts.shows_task(question, item, solved))
             try:
-                printed_parts.refuse_shown_task(question, item)
+                printed_parts.refuse_shown_task(question, item, solved, grade)
             except GeneralSourceError as error:
                 return error.code
             return None
@@ -259,15 +259,24 @@ class WirePathTests(unittest.TestCase):
         # A bare instruction or question: the typed task is the exercise.
         self.assertIsNone(refusal("ג06", "חשבו בטור.", "חשבו.", evaluate("348 + 276")))
         self.assertIsNone(refusal("ג08", "חברו.", "מה הסכום?", evaluate("20 + 30 + 10")))
-        # A story of several sentences, an intro that states numbers, or a table: the task would show the operation
-        # or print an exercise again, so the item is refused.
+        # A story of several sentences, an intro that states numbers, or a table whose row is not the exercise:
+        # the task would show the operation, or sit beside a row that prints its result, so the item is refused.
         self.assertEqual(refusal("ג08", "חשבו.", "בכיתה יש בנים ובנות. חשבו כמה ילדים יש בסך הכול.", evaluate("12 + 15")),
                          "PRINTED_TASK_MISMATCH")
         self.assertEqual(refusal("ג22", "זכרו: במטר אחד יש [[100]] סנטימטרים.", "המירו לסנטימטרים.", evaluate("3 * 100")),
                          "PRINTED_TASK_MISMATCH")
-        table = {"head": ["ביטוי", "תוצאה"], "rows": [["[[10 + 2 x 3]]", "___"], ["[[5 x 4 - 2]]", "___"]]}
+        filled = {"head": ["ביטוי", "תוצאה"], "rows": [["[[10 + 2 x 3]]", "[[16]]"], ["[[5 x 4 - 2]]", "[[18]]"]]}
         self.assertEqual(refusal("ד07", "השלימו את הטבלה.", "חשבו את הביטוי שבשורה הראשונה.", evaluate("10 + 2 * 3"),
-                                 table=table), "PRINTED_TASK_MISMATCH")
+                                 table=filled), "PRINTED_TASK_MISMATCH")
+        data = {"head": ["יום", "ספרים"], "rows": [["ראשון", "[[12]]"], ["שני", "[[15]]"]]}
+        self.assertEqual(refusal("ד07", "התבוננו בטבלה.", "חשבו כמה ספרים נקראו בסך הכול.", evaluate("12 + 15"),
+                                 table=data), "PRINTED_TASK_MISMATCH")
+        # The calculation of a row whose result the pupil fills in names that row.
+        blank = {"head": ["ביטוי", "תוצאה"], "rows": [["[[10 + 2 x 3]]", "___"], ["[[5 x 4 - 2]]", "___"]]}
+        self.assertIsNone(refusal("ד07", "השלימו את הטבלה.", "הערך החסר בטבלה הוא ___.", evaluate("10 + 2 * 3"),
+                                  table=blank))
+        self.assertEqual(refusal("ד07", "השלימו את הטבלה.", "הערך החסר בטבלה הוא ___.", evaluate("10 + 2 * 4"),
+                                 table=blank), "PRINTED_TASK_MISMATCH")
 
     def test_a_printed_calculation_must_be_the_one_that_is_keyed(self):
         question, item, solved, grade = wire("ג06", "חשבו.", "[[348 + 276]]", evaluate("348 + 276"))

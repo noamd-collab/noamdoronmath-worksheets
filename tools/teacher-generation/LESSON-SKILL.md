@@ -166,8 +166,9 @@ Schema in `general_source.authoring_schema`; checks in
 - **Print rule.** The typed task is printed after the prompt only when the
   prompt shows no number (`printed_parts.shows_task`), and only after a bare
   instruction or question: after a story of more than one sentence, an intro
-  that states numbers, or a table or figure the item is refused
-  (`printed_parts.refuse_shown_task`, `PRINTED_TASK_MISMATCH`). A later item
+  that states numbers, or a figure the item is refused, and beside a table the
+  task is printed only when it is the calculation of a row whose result the
+  pupil fills in (`printed_parts.refuse_shown_task`, `PRINTED_TASK_MISMATCH`). A later item
   may not print an earlier item's answer (`printed_parts.answer_leak`,
   `PRINTED_ANSWER_LEAK`). A minus before anything but a number (`-2^4`, `-x`)
   is refused in printed math unless it is printed as written: the tree would

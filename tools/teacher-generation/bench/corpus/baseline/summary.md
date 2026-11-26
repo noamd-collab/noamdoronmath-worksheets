@@ -16,7 +16,7 @@ Delivered with no further model call: **5 of 35 (14%)**. Questions rejected when
 | B-square | qwen | g9m:square | 20 | general | AUTHOR_PLAN_MISMATCH | 9 of 20 | — | 2nd attempt after AUTHOR_PLAN_MISMATCH | — | needs_unrecorded_reply |
 | T1-triangle | qwen | g8:triangle_parts | 20 | worker | SOURCE_FIGURE | 16 of 20 | 8 q (not recorded) | — | — | failed |
 | T2-triangle | qwen | g8:triangle_parts | 20 | worker | SOURCE_TEXT | 20 of 20 | 9 q (not recorded) | — | — | failed |
-| S-g4calc | qwen | ד07 | 12 | worker | pass | 0 of 12 | 1 q (not recorded) | — | — | failed |
+| S-g4calc | qwen | ד07 | 12 | worker | pass | 0 of 12 | 4 q (not recorded) | — | — | failed |
 | S-g7eq | qwen | g7:equations | 20 | worker | pass | 0 of 20 | — | — | pass | delivered |
 | G-division | gemini | ג10 | 20 | worker | QUALITY_GATE_FAILED | 7 of 20 | 7 q (not recorded) | — | — | failed |
 | G-order | gemini | ד07 | 20 | worker | pass | 0 of 20 | 5 q (not recorded) | dropped 5, prints 15 | pass | delivered |

@@ -652,20 +652,37 @@ def shows_task(question, item, solved, *, intro=None):
     return True
 
 
-def refuse_shown_task(question, item, *, intro=None):
+def _row_exercise(question, solved, grade):
+    """The typed task is the calculation of a table row whose result the pupil fills in."""
+    task = solved["question"]
+    if task.get("kind") != "evaluate":
+        return False
+    for row in question["table"]["rows"]:
+        if any(len(cell) == 1 and _closed(cell[0], grade) == task["expression"] for cell in row) \
+                and any(blank_count(cell) for cell in row):
+            return True
+    return False
+
+
+def refuse_shown_task(question, item, solved, grade, *, intro=None):
     """Refuse an item whose typed task would be printed after anything but a bare instruction.
 
     The adapter prints the typed task after a prompt without mathematics of
     its own (``shows_task``). After a bare instruction or question ("חשבו.",
     "מה הסכום?") that task is the exercise. After a story of more than one
-    sentence, an intro that states numbers, or a table or figure, the printed
-    calculation would reveal the operation that the pupil should find or print
-    again an exercise shown elsewhere, so the item is refused instead.
+    sentence, an intro that states numbers, or a figure, the printed
+    calculation would reveal the operation that the pupil should find, so the
+    item is refused instead. Beside a table the task is printed only when it is
+    the calculation of a row whose result the pupil fills in ("הערך החסר
+    בטבלה הוא ___." for the row "(10 + 2) x 3 | ___"); any other calculation
+    would show an operation on the table's data, or a row that already prints
+    its result.
     """
     shared = question["intro"] if intro is None else intro
     words = " ".join(_words(item["prompt"]).split())
     sentences = [part for part in re.split(r"[.!?;]+", words) if part.strip()]
-    if "table" in question or "figure" in question or carries_data(shared) or len(sentences) > 1:
+    if ("figure" in question or carries_data(shared) or len(sentences) > 1
+            or ("table" in question and not _row_exercise(question, solved, grade))):
         raise GeneralSourceError("PRINTED_TASK_MISMATCH",
                                  "The prompt does not print the exercise that its key answers; a typed task is "
                                  "printed only after a bare instruction")

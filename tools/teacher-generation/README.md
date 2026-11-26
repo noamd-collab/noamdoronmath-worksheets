@@ -90,8 +90,9 @@ No model string is passed to eval, exec or a symbolic expression parser.
 Computed answers are derived from the typed task. The task is printed after
 a prompt only when the prompt carries no numbers of its own and is a bare
 instruction or question, and never when the print would be the answer; after a
-story of more than one sentence, an intro with numbers, a table or a figure the
-item is refused instead.
+story of more than one sentence, an intro with numbers or a figure the item is
+refused instead, and beside a table the task is printed only when it is the
+calculation of a row whose result the pupil fills in.
 `printed_parts.py` and the other `printed_*` binders
 tie the key to an exercise that the prompt already shows. A prompt with several
 blanks gets one answer for each blank, or the question is refused.

@@ -3217,7 +3217,10 @@
      "questions": [],
      "requested": true,
      "requiredKeys": [
-      "q9"
+      "q10",
+      "q12",
+      "q4",
+      "q8"
      ]
     },
     "firstPass": {
@@ -3242,17 +3245,44 @@
        {
         "action": "missing",
         "codes": [
-         "TRUSTED_ADAPTER",
-         "PRINTED_TASK_MISMATCH"
+         "G32",
+         "G61"
         ],
         "group": "practice",
-        "question": 9,
+        "question": 4,
+        "stage": "precheck"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G32"
+        ],
+        "group": "practice",
+        "question": 8,
+        "stage": "precheck"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G61"
+        ],
+        "group": "challenges",
+        "question": 10,
+        "stage": "precheck"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "G32"
+        ],
+        "group": "challenges",
+        "question": 12,
         "stage": "precheck"
        }
       ],
-      "missing": 1,
+      "missing": 4,
       "planned": 12,
-      "printed": 11,
+      "printed": 8,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -3260,8 +3290,8 @@
     "attempts": 1,
     "correctionFailed": true,
     "corrections": 1,
-    "gateCode": "TRUSTED_ADAPTER",
-    "question": 9,
+    "gateCode": "G32",
+    "question": 4,
     "stage": "precheck"
    },
    "lesson": {
@@ -3284,10 +3314,14 @@
    "prechecks": [
     {
      "codes": [
-      "TRUSTED_ADAPTER"
+      "G32",
+      "G61"
      ],
      "questions": [
-      9
+      4,
+      8,
+      10,
+      12
      ],
      "status": "replace"
     }

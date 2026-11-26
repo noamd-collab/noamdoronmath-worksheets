@@ -663,7 +663,7 @@ def _elementary_item(lesson, question, item, computed, n, j, grade, H, ledger, *
     show = not bound and (shows_task(seen, item, computed) or own_task)
     if show and not own_task and computed["question"].get("kind") != "figure_measure":
         # The typed task is printed only after a bare instruction.
-        refuse_shown_task(seen, item)
+        refuse_shown_task(seen, item, computed, number_grade)
     task_text = _task_text(computed, grade, H, notation=notation) if show else ""
     # A fresh calculation, not a model-provided answer or boolean.
     repeated = solve_figure_task(question["figure"],item["answer"]["operation"],item["answer"].get("point")) if figure_task else validate_and_solve_task(item["answer"]["task"])
@@ -948,7 +948,7 @@ def _compile_middle(lesson, source, evidence, scope, skill, work, *, cursor=None
                     if show_task and computed["question"].get("kind") != "figure_measure":
                         try:
                             # The typed task is printed only after a bare instruction.
-                            refuse_shown_task(question, item)
+                            refuse_shown_task(question, item, computed, lesson["gradeNumber"])
                         except GeneralSourceError as error:
                             raise error.at(n, j)
                     body = prompt+(" "+_task_text(computed, lesson["gradeNumber"], notation=item["answer"].get("notation")) if show_task else "")
