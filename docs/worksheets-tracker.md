@@ -1,7 +1,3 @@
-## 2026-11-26 — Ramzi B13 worksheet readers
-
-The catalog and topic pages link 54 PDFs in 18 middle-school editions to the existing Ramzi reader. The indexes bind 1,490 printed subsections to the exact PDF, source item and three ordered hint hashes. Each marker requires a matching verified Supabase row.
-
 ## 2026-11-22 — Grade 7 composite polygon area (092)
 
 The three G7-T138 worksheets each have 21 reviewed Ramzi markers on the printed subsections. Each marker opens three text hints referring to the original geometry worksheet. The shared landing keeps the original worksheet links for topics 46 and 45.
@@ -13,6 +9,10 @@ The three G7-T137 student PDFs each have 20 reviewed Ramzi markers on the printe
 ## 2026-11-22 — Grade 7 frequency tables, modes and dot plots (090)
 
 Each of the three G7-T136 student PDFs has 36 reviewed Ramzi markers. Each marker is bound to its printed subsection and the three approved text hints. The grade 7 frequency landing lists these PDFs under topic 25, alongside the original downloads.
+
+## 2026-11-26 — Ramzi B13 worksheet readers
+
+The catalog and topic pages link 54 PDFs in 18 middle-school editions to the existing Ramzi reader. The indexes bind 1,490 printed subsections to the exact PDF, source item and three ordered hint hashes. Each marker requires a matching verified Supabase row.
 
 ## 2026-11-22 — Grade 7 common factors and introductory equations (078 and 079)
 
