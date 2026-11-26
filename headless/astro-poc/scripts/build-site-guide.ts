@@ -171,7 +171,7 @@ function main() {
   const teachersHtml = readFileSync(join(root, 'src/teacher-pages/wizard.html'), 'utf8');
   const learningHtml = readFileSync(join(root, 'public/learning.html'), 'utf8');
   const lessonHtml = readFileSync(join(root, 'src/public-lesson/lesson.html'), 'utf8');
-  const pythagorasHtml = readFileSync(join(root, 'src/games/eliyahu-pythagoras.html'), 'utf8');
+  const pythagorasHtml = readFileSync(join(root, 'public/games/eliyahu-pythagoras.html'), 'utf8');
   const viewerHow = [
     mustInclude(viewerHtml, 'הורדה / הדפסה'),
     mustInclude(viewerHtml, 'כלי PDF'),

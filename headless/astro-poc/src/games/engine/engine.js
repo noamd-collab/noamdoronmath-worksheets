@@ -1,7 +1,7 @@
 /**
  * Eliyahu game engine.
  *
- * Generalised from src/games/eliyahu-pythagoras.html: the same card, the same
+ * Generalised from public/games/eliyahu-pythagoras.html: the same card, the same
  * mascot with his speech bubble and moods, the same quiz scoring and the same
  * finish report, driven by a declarative spec instead of one hand-written file.
  *

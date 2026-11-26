@@ -25,7 +25,7 @@ function fromTest(relativePath: string): string {
   return fileURLToPath(new URL(relativePath, import.meta.url));
 }
 
-const gameHtml = readFileSync(fromTest('../src/games/eliyahu-pythagoras.html'), 'utf8');
+const gameHtml = readFileSync(fromTest('../public/games/eliyahu-pythagoras.html'), 'utf8');
 const page = readFileSync(fromTest('../src/pages/games/eliyahu-pythagoras/index.astro'), 'utf8');
 const play = readFileSync(fromTest('../src/pages/games/eliyahu-pythagoras/play.ts'), 'utf8');
 const header = readFileSync(fromTest('../src/components/SiteHeader.astro'), 'utf8');
@@ -74,10 +74,12 @@ describe('eliyahu pythagoras game page', () => {
     assert.match(page, /src=\{PYTHAGORAS_GAME_PLAY_PATH\}/);
   });
 
-  it('embeds the file without rewriting it', () => {
-    assert.match(play, /eliyahu-pythagoras\.html\?raw/);
-    assert.equal(play.includes('.replace('), false);
-    assert.match(play, /x-robots-tag': 'noindex'/);
+  it('serves the file as a static document and redirects the old embed URL', () => {
+    assert.match(play, /PYTHAGORAS_GAME_DOCUMENT_PATH = '\/games\/eliyahu-pythagoras\.html'/);
+    assert.match(play, /status: 308/);
+    assert.match(play, /location: PYTHAGORAS_GAME_DOCUMENT_PATH/);
+    assert.equal(play.includes('?raw'), false);
+    assert.match(gameHtml, /<meta name="robots" content="noindex">/);
     assert.match(page, new RegExp(`src=\\{PYTHAGORAS_GAME_PLAY_PATH\\}`));
     assert.match(page, /<BaseLayout/);
     assert.match(page, /skipHref="#eliyahu-game"/);

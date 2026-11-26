@@ -1,5 +1,5 @@
 /* Eliyahu game engine — shared shell.
-   Generalised from src/games/eliyahu-pythagoras.html so every game in the
+   Generalised from public/games/eliyahu-pythagoras.html so every game in the
    games corner keeps the same card, mascot, scoring and finish screen.
    Per-game colour comes from the custom properties on :root. */
 :root {
