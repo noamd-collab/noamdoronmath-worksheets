@@ -492,19 +492,46 @@ REFERENCE_INSTRUCTION = (
     "stands alone: state its own givens and never mention another question by number or position.")
 
 
+# What is refused where a typed task would be printed or keyed, told to the author in the request and in the
+# corrections (one text each, so that they cannot drift apart).
+PRINTED_TASK_PLACES = (
+    "The typed task is printed after the prompt only when the prompt shows no number at all and is a bare "
+    "instruction or question about the exercise itself: one clause, only words that say what to do with the "
+    "exercise and what it is (calculate, solve, simplify, the result, the sum, the expression). After a story, also "
+    "one sentence long, after an intro that states numbers, beside a table or beside a figure such an item is "
+    "refused: write the exercise itself in the prompt. Beside a table an item that names a row, by its ordinal, as "
+    "the last row or by its row number, must type exactly the one expression or number that this row prints; in "
+    "grades 1 to 6 every computed item beside a table must name its row so, and an item that names no row, names "
+    "two rows, names a row by its label, totals a column or computes anything else from the table is refused. When "
+    "the items do not each read one row, remove the table and give every item its own printed data.")
+PRINTED_MINUS = (
+    "A typed task that is printed after a bare instruction never has a minus before a letter, a power or a "
+    "bracket (-x + 3, -2^4, -(x + 2)): it would print as a subtraction from zero. Print the exercise itself in "
+    "the prompt instead, or write a negative base in brackets, (-2)^4.")
+REQUEST_KINDS = (
+    "Some requests have no key that the exact checker can print, so they are refused whatever the typed task: a "
+    "ratio or a map scale (keyed by neither a number nor a comparison sign), a time of day (when, at what hour, "
+    "the hour of an event, a blank for a clock time), who or which person or thing (also a request for a name), "
+    "and an order of several numbers (from smallest to largest, ascending, descending), which only a list "
+    "answers. A request to decide whether something holds, to circle, mark or underline the correct or the wrong "
+    "exercises, or to answer yes or no takes only a decide task. A comparison sign is never the answer of an item "
+    "that prints a complete relation such as [[32 / 4 = 9]]. Ask instead for one number that the pupil computes, "
+    "such as a duration in minutes or a difference.")
+
+
 def correction_instructions(lesson, scope):
     """The fixed instruction for each refusal code: source codes and the gates that name a question."""
     instructions = {
         "PRINTED_EXPRESSION_SCOPE": "Preserve the selected concept. If only ONE operation is taught ask directly for a numeric quantity with fully printed givens. Only when two operations are taught and needed for writing an expression, use 'כתבו תרגיל וחשבו את התוצאה:' followed by complete descriptions such as 'הסכום של 6 ו־4, מוכפל ב־3.' Vary the actual numbers and intended operations. Put only the matching two-operation calculation in the typed answer. The compiler prints the expression and its value in the key.",
         "PRINTED_EXPRESSION_MISMATCH": "Ensure that the comparison operands or the expression to be written exactly match the printed givens, in the same order, with the requested units.",
-        "SOURCE_NOTATION": "Check every intro, prompt, answer and table cell. Inside each [[...]] keep only one complete formula. Write units, question marks and Hebrew words outside the brackets. Each point with coordinates is [[A(2,3)]] and each angle has three distinct points, e.g. [[angle:ABC]]. A task expression never contains Hebrew, an equality, a question mark, a standalone operator or a blank. For equations provide left and right expressions in separate fields. Use explicit * and /, e.g. (15/100)*80.",
+        "SOURCE_NOTATION": "Check every intro, prompt, answer and table cell. Inside each [[...]] keep only one complete formula. Write units, question marks and Hebrew words outside the brackets. Each point with coordinates is [[A(2,3)]] and each angle has three distinct points, e.g. [[angle:ABC]]. A task expression never contains Hebrew, an equality, a question mark, a standalone operator or a blank. For equations provide left and right expressions in separate fields. Use explicit * and /, e.g. (15/100)*80. " + PRINTED_MINUS,
         "SOURCE_PLAIN_MATH": "Put the complete formula or variable name in one [[...]] span inside the Hebrew sentence.",
         "SOURCE_TABLE": "Use self-contained printed givens in each item; remove any reference to an absent table from the intro and every item. If a table is essential to the taught skill, supply it as a question-level table object with head and rows arrays, never pipes or Markdown in prompt text.",
         "DRAWING_POLICY": "Rewrite the complete question and its items in words using only printed givens. Remove all diagrams, sketches, drawing instructions and references to figures; keep the selected mathematical skill.",
         "SOURCE_FIGURE": "Use the construction and all of its labelled points as specified by the question plan. For a coordinate plane include every point and segment and integer limits that contain the origin. When the skill cannot draw the figure, choose other measures: sides that are not equal in the question must differ clearly, a right angle appears only where the question gives one, and no point stands on an axis next to the axis number it would hide.",
         "SOURCE_FIGURE_TASK": "Ask for a figure quantity supported by its actual construction; keep all named vertices and their stated measurements consistent.",
-        "PRINTED_ANSWER_KIND": "The answer kind does not fit what the item asks. " + DECISION_GUIDE + " A requested equation needs a complete equation. If the goal is quantitative, rewrite the question and its intro to ask only for the exact scalar you can verify.",
-        "PRINTED_TASK_MISMATCH": "Solve the exercise again using the exact givens in the printed prompt, including the displayed operand order, units and missing value. Correct the printed task and typed answer together. In a decide task the relation and the order of left and right are those of the printed sentence, every number and calculation printed in the item appears in the claim, and the claim uses no number that is not printed.",
+        "PRINTED_ANSWER_KIND": "The answer kind does not fit what the item asks. " + DECISION_GUIDE + " " + REQUEST_KINDS + " A requested equation needs a complete equation. If the goal is quantitative, rewrite the question and its intro to ask only for the exact scalar you can verify.",
+        "PRINTED_TASK_MISMATCH": "Solve the exercise again using the exact givens in the printed prompt, including the displayed operand order, units and missing value. Correct the printed task and typed answer together. In a decide task the relation and the order of left and right are those of the printed sentence, every number and calculation printed in the item appears in the claim, and the claim uses no number that is not printed. " + PRINTED_TASK_PLACES,
         "SOURCE_NIQQUD": "Apply the required grade-specific Hebrew pointing to every word of this question and its answers.",
         "SOURCE_RICH_TEXT": "Use plain Hebrew strings with [[...]] for mathematics in every rich field.",
         "PRINTED_ANSWER_LEAK": "An item of this question prints an answer that the pupil should find: its own answer (in a fact stated before it, a check exercise, or an estimate that names the result) or the answer of an earlier item. The pupil reads that answer on the sheet. Never write an item's result into its own prompt or into a later prompt; refer to an earlier result in words, such as 'המספר שמצאתם בסעיף א', or give the item its own new givens.",
@@ -518,7 +545,7 @@ def correction_instructions(lesson, scope):
             "Use ordinary Hebrew outside the formula. In task.expression use known numeric operands only. "
             "Outside the brackets write no calculation, no relation sign beside a number, no colon after a number "
             "or a blank, no letter and no blank other than ___; write a percent sign inside the brackets with its "
-            "number, [[25%]].")
+            "number, [[25%]]. " + PRINTED_MINUS)
         instructions["PRINTED_TASK_MISMATCH"] += (
             " A blank (___) is printed only where the printed numbers fix its answer (a place-value part, a "
             "remainder, a sequence term, two units of one size, a comparison sign); after a story or beside a "

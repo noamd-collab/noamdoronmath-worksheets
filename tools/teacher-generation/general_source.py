@@ -330,12 +330,15 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
                 if not matches:
                     bad("SOURCE_NOTATION", "The printed calculation must equal its exact typed task")
             from printed_parts import check_item, check_key_print, refuse_unsolved_equation
+            from printed_tasks import table_row_task
             try:
                 decision = check_item(question, item, solved, grade, authored=provider)
                 # The key as printed: only the solutions the item asks for, never beside its own prompt.
                 keyed = check_key_print(question, item, solved, grade)
                 # Grades 1–6: an equation printed with a blank is keyed only by solving that equation.
                 refuse_unsolved_equation(question, item, solved, grade)
+                # Beside a table: only the printed expression of the one row that the item names.
+                table_row_task(question, item, solved, grade)
             except GeneralSourceError as error:
                 if error.code == "PRINTED_ANSWER_KIND":
                     # A drawing outside geometry is refused as a drawing, whatever its answer.

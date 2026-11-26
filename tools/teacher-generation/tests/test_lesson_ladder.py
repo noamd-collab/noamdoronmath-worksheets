@@ -50,12 +50,15 @@ EXTRA_PRACTICE = (7, 8, 13)
 # The five questions of the recorded S-g4calc that the source refuses as written (round 3, notation by
 # allowlist), and the spelling that the source reads, with the same numbers and typed tasks: a colon that
 # touches a blank is the division sign (questions 3, 6 and 10, SOURCE_NOTATION), and a blank that no binder fills
-# from the print is refused (questions 9 and 11, PRINTED_TASK_MISMATCH). Question 9 keeps its table and an
-# instruction about it, so the trusted adapter still refuses to print its typed task beside the table.
+# from the print is refused (questions 9 and 11, PRINTED_TASK_MISMATCH). Question 9 keeps its table, and beside
+# a table an item is read only when it names the one row whose printed expression it types (round 4,
+# printed_tasks.table_row_task), so each of its items names its own row in an instruction about it; the trusted
+# adapter still refuses to print its typed task beside the table. A tuple gives each item its own spelling.
 STRICT_SPELLING = (
     (('practice', 2), 'המספר החסר הוא ___: ', 'המספר החסר הוא: '),
     (('practice', 5), 'המספר החסר הוא ___: ', 'המספר החסר הוא: '),
-    (('practice', 8), 'הערך החסר בטבלה הוא ___.', 'חשבו את הערך החסר בטבלה.'),
+    (('practice', 8), 'הערך החסר בטבלה הוא ___.', ('חשבו את הביטוי שבשורה הראשונה.', 'חשבו את הביטוי שבשורה השנייה.',
+                                                   'חשבו את הביטוי שבשורה השלישית.')),
     (('challenges', 0), 'המספר החסר הוא ___: ', 'המספר החסר הוא: '),
     (('challenges', 1), '. התוצאה הנכונה היא ___', '. מהי התוצאה הנכונה?'),
 )
@@ -68,10 +71,10 @@ def strict_spelling(recorded):
     """
     reply = copy.deepcopy(recorded)
     for (group, index), written, read in STRICT_SPELLING:
-        for item in reply[group][index]['items']:
+        for position, item in enumerate(reply[group][index]['items']):
             if written not in item['prompt']:
                 raise AssertionError('The recorded S-g4calc reply changed: ' + written)
-            item['prompt'] = item['prompt'].replace(written, read)
+            item['prompt'] = item['prompt'].replace(written, read[position] if isinstance(read, tuple) else read)
     return reply
 
 

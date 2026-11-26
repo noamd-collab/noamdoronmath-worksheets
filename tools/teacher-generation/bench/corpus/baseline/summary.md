@@ -1,16 +1,16 @@
 # Replay of recorded model replies
 
-Delivered with no further model call: **4 of 35 (11%)**. Questions rejected when standing alone: 315 of 756 (42%). Model calls: 0; outbound connections attempted: 0.
+Delivered with no further model call: **4 of 35 (11%)**. Questions rejected when standing alone: 328 of 756 (43%). Model calls: 0; outbound connections attempted: 0.
 
 | Case | Provider | Topic | Q | Route | First pass | Fail alone | Correction asked | Ladder | First render | Final |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | A-division | qwen | ג10 | 20 | worker | SOURCE_NOTATION | 12 of 20 | 8 q (not recorded) | — | — | failed |
-| A-order | qwen | ד07 | 20 | worker | PRINTED_ANSWER_LEAK | 14 of 20 | 8 q (not recorded) | — | — | failed |
+| A-order | qwen | ד07 | 20 | worker | PRINTED_TASK_MISMATCH | 15 of 20 | 8 q (not recorded) | — | — | failed |
 | A-equations | qwen | g7:equations | 20 | worker | SOURCE_TABLE | 5 of 20 | 5 q (not recorded) | — | — | failed |
 | A-percent | qwen | g8:percentages | 20 | worker | SOURCE_NOTATION | 17 of 20 | 8 q + rule (not recorded) | — | — | failed |
 | A-square | qwen | g9m:square | 20 | general | SOURCE_NOTATION | 7 of 20 | 7 q (not recorded) | — | — | failed |
-| B-division | qwen | ג10 | 20 | worker | SOURCE_NOTATION | 11 of 20 | 8 q (not recorded) | — | — | failed |
-| B-order | qwen | ד07 | 20 | worker | SOURCE_NOTATION | 11 of 20 | 8 q (not recorded) | — | — | failed |
+| B-division | qwen | ג10 | 20 | worker | SOURCE_NOTATION | 13 of 20 | 8 q (not recorded) | — | — | failed |
+| B-order | qwen | ד07 | 20 | worker | PRINTED_TASK_MISMATCH | 20 of 20 | 8 q (not recorded) | — | — | failed |
 | B-equations | qwen | g7:equations | 20 | worker | SOURCE_TABLE | 3 of 20 | 3 q (not recorded) | — | — | failed |
 | B-percent | qwen | g8:percentages | 20 | worker | SOURCE_TABLE | 2 of 20 | 2 q (not recorded) | — | — | failed |
 | B-square | qwen | g9m:square | 20 | general | AUTHOR_PLAN_MISMATCH | 9 of 20 | — | 2nd attempt after AUTHOR_PLAN_MISMATCH | — | needs_unrecorded_reply |
@@ -18,7 +18,7 @@ Delivered with no further model call: **4 of 35 (11%)**. Questions rejected when
 | T2-triangle | qwen | g8:triangle_parts | 20 | worker | SOURCE_TEXT | 20 of 20 | 8 q + rule (not recorded) | — | — | failed |
 | S-g4calc | qwen | ד07 | 12 | worker | SOURCE_NOTATION | 5 of 12 | 5 q (not recorded) | — | — | failed |
 | S-g7eq | qwen | g7:equations | 20 | worker | pass | 0 of 20 | — | — | pass | delivered |
-| G-division | gemini | ג10 | 20 | worker | QUALITY_GATE_FAILED | 8 of 20 | 8 q (not recorded) | — | — | failed |
+| G-division | gemini | ג10 | 20 | worker | QUALITY_GATE_FAILED | 9 of 20 | 8 q (not recorded) | — | — | failed |
 | G-order | gemini | ד07 | 20 | worker | pass | 0 of 20 | 5 q (not recorded) | dropped 5, prints 15 | pass | delivered |
 | G-equations | gemini | g7:equations | 20 | worker | AUTHOR_PLAN_MISMATCH | 0 of 20 | 3 q (not recorded) | — | — | failed |
 | G-percent | gemini | g8:percentages | 20 | worker | SOURCE_PLAIN_MATH | 3 of 20 | 3 q (not recorded) | — | — | failed |
@@ -46,8 +46,8 @@ Delivered with fewer questions than requested: 2. Corrections the engine asked f
 
 | Provider | Cases | Delivered | Questions | Fail alone |
 | --- | --- | --- | --- | --- |
-| gemini | 21 | 3 | 484 | 183 |
-| qwen | 14 | 1 | 272 | 132 |
+| gemini | 21 | 3 | 484 | 184 |
+| qwen | 14 | 1 | 272 | 144 |
 
 Recorded as text that is not JSON: G-equations. The replay sends the text as recorded; the question counts of such a case come from its declared hand repair.
 
@@ -58,11 +58,11 @@ Recorded as text that is not JSON: G-equations. The replay sends the text as rec
 | DELIVERED | 4 |
 | SOURCE:AUTHOR_PLAN_MISMATCH | 2 |
 | SOURCE:PRINTED_ANSWER_KIND | 5 |
-| SOURCE:PRINTED_ANSWER_LEAK | 4 |
-| SOURCE:PRINTED_TASK_MISMATCH | 2 |
+| SOURCE:PRINTED_ANSWER_LEAK | 3 |
+| SOURCE:PRINTED_TASK_MISMATCH | 4 |
 | SOURCE:QUALITY_GATE_FAILED | 1 |
 | SOURCE:SOURCE_FIGURE | 2 |
-| SOURCE:SOURCE_NOTATION | 10 |
+| SOURCE:SOURCE_NOTATION | 9 |
 | SOURCE:SOURCE_PLAIN_MATH | 1 |
 | SOURCE:SOURCE_TABLE | 3 |
 | SOURCE:SOURCE_TEXT | 1 |
@@ -71,10 +71,10 @@ Recorded as text that is not JSON: G-equations. The replay sends the text as rec
 
 | Code | Questions |
 | --- | --- |
-| PRINTED_ANSWER_KIND | 85 |
+| PRINTED_ANSWER_KIND | 86 |
 | SOURCE_NOTATION | 75 |
-| PRINTED_ANSWER_LEAK | 50 |
-| PRINTED_TASK_MISMATCH | 42 |
+| PRINTED_TASK_MISMATCH | 55 |
+| PRINTED_ANSWER_LEAK | 49 |
 | SOURCE_TEXT | 20 |
 | NOT_AN_OBJECT | 8 |
 | SOURCE_PLAIN_MATH | 7 |

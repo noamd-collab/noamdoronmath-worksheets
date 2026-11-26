@@ -166,19 +166,27 @@ class SourceTests(unittest.TestCase):
             with self.assertRaises(GeneralSourceError) as refused:
                 compile_source(lesson,validate_source(lesson,payload,scope),scope,ELEMENTARY,work)
         self.assertEqual((refused.exception.code,refused.exception.question,refused.exception.item),("PRINTED_TASK_MISMATCH",1,1))
-        # Items that print their own exercise compile with the table.
+        # Items that print their own exercise but name no row of the table: nothing ties their key to the
+        # table printed beside them, so they are refused when the source is read (printed_tasks.table_row_task).
         for item in payload["sections"][0]["questions"][0]["items"]:
             item["prompt"]=[{"kind":"text","text":"כתבו את התוצאה: "},{"kind":"math","expression":copy.deepcopy(item["answer"]["task"]["expression"])}]
+        with self.assertRaises(GeneralSourceError) as beside:
+            validate_source(lesson,payload,scope)
+        self.assertEqual((beside.exception.code,beside.exception.question,beside.exception.item),("PRINTED_TASK_MISMATCH",1,1))
+        # Items that name the one row whose printed expression is their typed task compile with the table.
+        question=payload["sections"][0]["questions"][0]
+        question["table"]["rows"]=[[[{"kind":"text","text":"עוגה"}],[{"kind":"math","expression":copy.deepcopy(question["items"][0]["answer"]["task"]["expression"])}]]]
+        for item in question["items"]:
+            item["prompt"]=[{"kind":"text","text":"שורה "},{"kind":"math","expression":number(1)}]
         with tempfile.TemporaryDirectory() as work:
             result=compile_source(lesson,validate_source(lesson,payload,scope),scope,ELEMENTARY,work)
             self.assertTrue(result["reviewRequired"])
             rendered=(Path(work)/"sheet.html").read_text()
             self.assertIn("עוגה",rendered);self.assertIn("work-table",rendered);self.assertIn('class="frac"',rendered)
             ledger=json.loads((Path(work)/"verified.json").read_text())
-            # One exact claim per item, and for each printed exercise of question 1 the binding of its key to it.
-            self.assertEqual(len(ledger["claims"]),15)
-            self.assertEqual({x["id"]:x["method"] for x in ledger["claims"] if x["method"]!="sympy"},
-                             {"1.1.calculation":"closed_form","1.2.calculation":"closed_form","1.3.calculation":"closed_form"})
+            # One exact claim per item.
+            self.assertEqual(len(ledger["claims"]),12)
+            self.assertEqual({x["id"]:x["method"] for x in ledger["claims"] if x["method"]!="sympy"},{})
 
     def test_middle_constant_bridge_keeps_multiple_roots_and_review_metadata(self):
         lesson,payload,scope=self.source("g9r:quad_func_and_eq",9)

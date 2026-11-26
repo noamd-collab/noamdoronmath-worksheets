@@ -35,9 +35,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "כמה ספרים נקראו ביום שני?",
-    "key": "15 ספרים"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -74,9 +74,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "כמה ספרים נקראו בסך הכול?",
-    "key": "36 ספרים"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -210,9 +210,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "בכמה ספרים נקראו ביום שני יותר מביום שלישי?",
-    "key": "6 ספרים"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -253,9 +253,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "שורה 1",
-    "key": "27"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -327,9 +327,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "כַּמָּה יְלָדִים בָּחֲרוּ בְּתַפּוּחַ?",
-    "key": "6 יְלָדִים"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -445,7 +445,7 @@
    },
    "recorded": {
     "outcome": "rejected",
-    "stage": "adapter",
+    "stage": "source",
     "code": "PRINTED_TASK_MISMATCH"
    }
   }

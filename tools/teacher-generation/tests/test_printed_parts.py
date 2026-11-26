@@ -351,16 +351,15 @@ class WirePathTests(unittest.TestCase):
                                  table=table), "PRINTED_TASK_MISMATCH")
         # Beside any table: the row's own calculation would be printed a second time, another row's
         # calculation under the name of this row, and an operation on the table's data revealed. A blank that no
-        # binder fills is refused before the print is even considered.
+        # binder fills is refused before the print is even considered, and so is an item whose typed task is not
+        # the printed expression of the one row it names (printed_tasks.table_row_task): another row's
+        # calculation, a row that prints its result too, or the table's data with no row named.
         self.refused("ד07", "השלימו את הטבלה.", "הערך החסר בטבלה הוא ___.", evaluate("10 + 2 * 3"), table=table)
-        self.assertEqual(refusal("ד07", "השלימו את הטבלה.", "חשבו את הביטוי שבשורה השנייה.", evaluate("10 + 2 * 3"),
-                                 table=table), "PRINTED_TASK_MISMATCH")
+        self.refused("ד07", "השלימו את הטבלה.", "חשבו את הביטוי שבשורה השנייה.", evaluate("10 + 2 * 3"), table=table)
         filled = {"head": ["ביטוי", "תוצאה"], "rows": [["[[10 + 2 x 3]]", "[[16]]"], ["[[5 x 4 - 2]]", "[[18]]"]]}
-        self.assertEqual(refusal("ד07", "השלימו את הטבלה.", "חשבו את הביטוי שבשורה הראשונה.", evaluate("10 + 2 * 3"),
-                                 table=filled), "PRINTED_TASK_MISMATCH")
+        self.refused("ד07", "השלימו את הטבלה.", "חשבו את הביטוי שבשורה הראשונה.", evaluate("10 + 2 * 3"), table=filled)
         data = {"head": ["יום", "ספרים"], "rows": [["ראשון", "[[12]]"], ["שני", "[[15]]"]]}
-        self.assertEqual(refusal("ד07", "התבוננו בטבלה.", "חשבו כמה ספרים נקראו בסך הכול.", evaluate("12 + 15"),
-                                 table=data), "PRINTED_TASK_MISMATCH")
+        self.refused("ד07", "התבוננו בטבלה.", "חשבו כמה ספרים נקראו בסך הכול.", evaluate("12 + 15"), table=data)
         # A story in one sentence, or any word that is not about the exercise itself, is not a bare instruction.
         self.assertEqual(refusal("g8:probability", "חשבו את ההסתברות.",
                                  "מה ההסתברות לקבל מספר זוגי בהטלת קובייה הוגנת, כאחוז?", evaluate("3/6*100", "%")),

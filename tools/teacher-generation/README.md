@@ -127,7 +127,26 @@ are refused. These refusals read a string field, a provider span array as the
 line it prints, and the sheet title, with invisible marks read through
 (`compact_authoring.refuse_notation`; LESSON-SKILL.md section 3). The old path
 still cannot prove that a word problem's key answers what its prose asks: a
-computed item without a blank keeps its typed key.
+computed item without a blank keeps its typed key, and the request readers
+below only refuse the kinds of request that no typed task keys, in the forms
+they list. Only worksheet-wire/5 removes that gap, because there code writes the
+question from its typed task.
+
+Beside a table (old path) an item that names a row is keyed only when its
+typed task is exactly that row's printed expression
+(`printed_tasks.table_row_task`, an allowlist): the row is named by an ordinal
+("בשורה השנייה"), "השורה האחרונה" or a row number ("שורה [[2]]") in the item or
+else in its intro, and that row prints exactly one closed expression or
+number. A mention of a row in any other form ("בכל שורה", "השורה הבאה", two
+rows) is refused. In grades 1–6 every computed item beside a table must name its
+row so: one that names no row, a row named by its label, a total of a column or
+any other calculation on the table's numbers is refused (`PRINTED_TASK_MISMATCH`),
+also with the right typed key. The role-named rows of
+`printed_tasks.printed_table_row` and the local fraction author's table keep
+their own binders. In grades 7–9 an item beside a table that names no row is
+not refused by this check and its key is not proven against the table: the
+reviewed fixture grade7-equation-skill asks for a table's values that way, and
+the v4 golden pins it as compiling, so refusing it needs the owner's decision.
 
 A yes/no or true/false question carries a typed claim (task kind `decide`: an
 order or equality of two expressions, divisibility, membership in a short
@@ -135,21 +154,41 @@ list), and any other typed task for it is refused. The kernel decides it; no
 field holds an authored yes or no. What a question asks for is read from its
 intro and its item prompt together, clause by clause, whatever the verb
 (`printed_tasks.requested`, `PRINTED_ANSWER_KIND`): a yes/no or true/false
-question takes only a decision (an item with a blank of its own is not asked
-the intro's yes/no, nor beside a printed relation the intro's sign); "whether" ("בדקו אם [[32 : 4 = 8]].", "[[32 : 4 = 8]],
+question takes only a decision (an item with a blank of its own in its
+mathematics is not asked the intro's yes/no, nor beside a printed relation the
+intro's sign; a blank in the words after a complete printed relation is where
+the verdict goes); "whether" ("בדקו אם [[32 : 4 = 8]].", "[[32 : 4 = 8]],
 נכון?") takes a decision, and a comparison sign answers it only when no relation
-is printed and the relation is asked in words ("בדקו אם השברים שווים."); a
-comparison sign ("השלימו את הסימן", a relation sign in the words, or a yes/no
-question that offers "קטן או גדול") takes only a `compare` task; an order
-("סדרו", "מהקטן לגדול") takes only a list. A ratio, a time of day, who, or which
-thing other than a number is never keyed: the kernel has no ratio, clock time or
-name to print. A sign, a ratio, who or which is asked for in a clause that is a
-question, holds a blank or tells the pupil to write, state, find, complete,
-reduce or calculate it (a closed list of verbs); a time of day by "איזו שעה",
-by "מתי" or the hour or clock in a question or beside a blank, or by an
-instruction to write the hour in a clause that states none. A ratio stated with its value is
-data, a comparison sign may answer "the relation between", and a printed
-proportion with one missing term (`[[2 : 3 = ___ : 12]]`) keys that term.
+is printed and the relation is asked in words ("בדקו אם השברים שווים."). A
+true/false word anywhere ("הקיפו את התרגילים הנכונים", "סמנו ✓ ליד כל תרגיל
+נכון", "ציינו אם הוא נכון") or "כן או לא" asks for a decision, unless the word
+is one of the readings on a closed list that ask for a number (it describes a
+quantity or the order of operations: "התוצאה הנכונה", "האחוז הנכון", "סדר
+הפעולות הנכון"; it belongs to what a quantity is of; it says how someone
+answered ("ענה נכון") or what a calculation checks ("שבודק את נכונות"); or it
+follows "כך ש", "כדי ש" or "כדי ל"). A comparison sign is never the key of an
+item that prints a complete relation ("[[32 : 4 = 9]]"), whatever its words
+ask. A comparison sign ("השלימו את הסימן", a relation sign in the words, or a
+yes/no question that offers "קטן או גדול") takes only a `compare` task; an
+order ("סדרו", "דרגו", "בסדר עולה", "מהקטן לגדול", "מהקטן ביותר לגדול ביותר",
+"מהגדול אל הקטן", "מן הקטן עד הגדול") takes only a list. A ratio or a map scale
+("יחס", "קנה המידה"), a time of day, who, or which thing other than a number is
+never keyed, by a number or by a comparison sign: the kernel has no ratio, clock
+time or name to print. A sign, a ratio, who or which is asked for in a clause
+that is a question, holds a blank or tells the pupil to write, state, find,
+complete, reduce or calculate it (a closed list of verbs); who also by
+"מיהו/מיהי/מיהם/מיהן" anywhere, by "מי" opening its clause (not "מי ש..." or
+a name in a list) and by a request for a name ("את שם", "שמו של", "מה שם"); a
+time of day by "איזו שעה", by "מתי" in a question or beside a blank (and, in a
+question that names hours or minutes, also as a request or opening its clause
+without a question mark), by השעה, שעת or a clock in a question, beside a blank or in an
+instruction that states no number, by a blank after "בשעה", and, in a question
+that names an hour or a part of the day, by a blank after "ב־", "ל־" or "עד"
+that ends its clause. A ratio is data only when its word is followed by its
+value ("ביחס [[2:3]]", "היחס הנתון", "היחס ... הוא [[2:3]]"); a printed
+proportion with one missing term (`[[2 : 3 = ___ : 12]]`) keys that term. A
+request for a time of day, a name, an order or a ratio in a form these readers
+do not list is not refused by them.
 `answer_kinds.py` ties the claim to the printed question, by the one printed
 statement whose correctness is asked about or by the relation word, its order
 and the printed quantities, and refuses a true claim that is not that

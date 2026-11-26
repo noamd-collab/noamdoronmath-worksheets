@@ -254,7 +254,7 @@
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"5*9\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 10,
@@ -341,6 +341,7 @@
       4,
       5,
       6,
+      7,
       8,
       10,
       11,
@@ -356,17 +357,17 @@
      "requiredKeys": [
       "q1",
       "q10",
-      "q11",
       "q19",
       "q4",
       "q5",
       "q6",
+      "q7",
       "q8"
      ]
     },
     "firstPass": {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
      "ok": false
     },
     "requests": 2,
@@ -374,8 +375,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:PRINTED_ANSWER_LEAK",
-   "finalCode": "PRINTED_ANSWER_LEAK",
+   "failureClass": "SOURCE:PRINTED_TASK_MISMATCH",
+   "finalCode": "PRINTED_TASK_MISMATCH",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "A-order",
@@ -388,7 +389,7 @@
        {
         "action": "missing",
         "codes": [
-         "PRINTED_ANSWER_LEAK"
+         "PRINTED_TASK_MISMATCH"
         ],
         "group": "practice",
         "question": 1,
@@ -419,6 +420,15 @@
         ],
         "group": "practice",
         "question": 6,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 7,
         "stage": "source"
        },
        {
@@ -512,9 +522,9 @@
         "stage": "source"
        }
       ],
-      "missing": 14,
+      "missing": 15,
       "planned": 20,
-      "printed": 6,
+      "printed": 5,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -545,8 +555,8 @@
    "provider": "qwen",
    "questionFailures": [
     {
-     "code": "PRINTED_ANSWER_LEAK",
-     "detail": "An item prints the answer of an earlier item of the same question",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
      "field": "table",
      "group": "practice",
      "index": 1,
@@ -581,6 +591,15 @@
      "index": 6,
      "question": 6,
      "substring": "בחידוש [[7 + 2 * 5]], איזו פעולה ראשונה?"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 7,
+     "question": 7,
+     "substring": "{\"head\": [\"ביטוי\", \"ערך\"], \"rows\": [[\"[[12 / 4 + 3]]\", \"[[6]]\"], [\"[[12 / (4 + 3)]]\", \"[[1.71]]\"]]}"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"2*5-3\", \"kind\": \"evaluate\"}, \"unit\": \"עוגיות\"}",
@@ -683,7 +702,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 14,
+    "failingAlone": 15,
     "total": 20
    },
    "recorded": "2026-11-22 ~16:00Z",
@@ -1563,6 +1582,8 @@
       5,
       7,
       8,
+      9,
+      10,
       11,
       13,
       14,
@@ -1573,13 +1594,13 @@
      "requested": true,
      "requiredKeys": [
       "q1",
-      "q11",
       "q18",
       "q19",
       "q3",
       "q5",
       "q7",
-      "q8"
+      "q8",
+      "q9"
      ]
     },
     "firstPass": {
@@ -1651,6 +1672,24 @@
        {
         "action": "missing",
         "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_ANSWER_KIND"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
@@ -1703,9 +1742,9 @@
         "stage": "source"
        }
       ],
-      "missing": 11,
+      "missing": 13,
       "planned": 20,
-      "printed": 9,
+      "printed": 7,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -1784,9 +1823,28 @@
      "substring": "האם [[16 : 4]] הוא חילוק שמביא לתוצאה זוגית?"
     },
     {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "{\"head\": [\"מספר\", \"מחלק\", \"תוצאה\"], \"rows\": [[\"48\", \"8\", \"6\"], [\"54\", \"9\", \"6\"], [\"63\", \"7\", \"9\"]]}"
+    },
+    {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(24-2)/4\", \"kind\": \"evaluate\"}, \"unit\": \"סוכריות\"}",
+     "code": "PRINTED_ANSWER_KIND",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
+     "field": "item.1",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "יש 24 סוכריות. רון אכל 2 סוכריות. שאר הסוכריות חולקו שווה בשווה בין 4 חברים. כמה סוכריות קיבל כל חבר?"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"4*5\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
+     "detail": "The printed request needs a decision, not a expression key at q1.item.1",
      "field": "item.1",
      "group": "practice",
      "index": 11,
@@ -1844,7 +1902,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 11,
+    "failingAlone": 13,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
@@ -1868,33 +1926,42 @@
     "correction": {
      "answered": false,
      "questions": [
+      1,
+      2,
       3,
+      4,
       5,
       6,
       7,
       8,
+      9,
+      10,
+      11,
       12,
       13,
       14,
       15,
+      16,
+      17,
       18,
+      19,
       20
      ],
      "requested": true,
      "requiredKeys": [
-      "q12",
+      "q1",
       "q18",
+      "q19",
+      "q2",
       "q20",
       "q3",
-      "q5",
-      "q6",
-      "q7",
-      "q8"
+      "q4",
+      "q5"
      ]
     },
     "firstPass": {
-     "code": "SOURCE_NOTATION",
-     "detail": "Invalid or unsupported compact mathematical notation",
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
      "ok": false
     },
     "requests": 2,
@@ -1902,8 +1969,8 @@
    },
    "delivered": false,
    "delivery": null,
-   "failureClass": "SOURCE:SOURCE_NOTATION",
-   "finalCode": "SOURCE_NOTATION",
+   "failureClass": "SOURCE:PRINTED_TASK_MISMATCH",
+   "finalCode": "PRINTED_TASK_MISMATCH",
    "finalStatus": "failed",
    "frameFailure": null,
    "id": "B-order",
@@ -1916,10 +1983,37 @@
        {
         "action": "missing",
         "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 1,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 2,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "SOURCE_NOTATION"
         ],
         "group": "practice",
         "question": 3,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 4,
         "stage": "source"
        },
        {
@@ -1961,6 +2055,33 @@
        {
         "action": "missing",
         "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 10,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 11,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_EXPRESSION_SCOPE"
         ],
         "group": "practice",
@@ -1997,10 +2118,37 @@
        {
         "action": "missing",
         "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 16,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 17,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "SOURCE_NOTATION"
         ],
         "group": "challenges",
         "question": 18,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "challenges",
+        "question": 19,
         "stage": "source"
        },
        {
@@ -2013,9 +2161,9 @@
         "stage": "source"
        }
       ],
-      "missing": 11,
+      "missing": 20,
       "planned": 20,
-      "printed": 9,
+      "printed": 0,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -2046,6 +2194,24 @@
    "provider": "qwen",
    "questionFailures": [
     {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 1,
+     "question": 1,
+     "substring": "{\"head\": [\"ביטוי\", \"פעולה ראשונה\"], \"rows\": [[\"[[10 + 2 * 3]]\", \"כפל\"], [\"[[8 - 4 / 2]]\", \"חילוק\"], [\"[[5 + 6 - 2]]\", \"ח…"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 2,
+     "question": 2,
+     "substring": "{\"head\": [\"ביטוי\", \"תוצאה\"], \"rows\": [[\"[[4 + 3 * 2]]\", \"___\"], [\"[[10 - 2 * 3]]\", \"___\"], [\"[[12 / 4 + 5]]\", \"___\"]]}"
+    },
+    {
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
      "field": "item.1.prompt",
@@ -2053,6 +2219,15 @@
      "index": 3,
      "question": 3,
      "substring": "[[x]]"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 4,
+     "question": 4,
+     "substring": "{\"head\": [\"שאלה\", \"חישוב\"], \"rows\": [[\"רון\", \"[[2*3+5]]\"], [\"נועה\", \"[[20-3*2]]\"], [\"ילדים\", \"[[12/4+2]]\"]]}"
     },
     {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(2+3)*4-(2+3*4)\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
@@ -2094,6 +2269,33 @@
      "substring": "האם הביטוי [[7 + 2 * 3]] מכיל סוגריים? חשבו אותו."
     },
     {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "{\"head\": [\"ביטוי\", \"תוצאה\"], \"rows\": [[\"[[2 + 3 * 4]]\", \"___\"], [\"[[(2 + 3) * 4]]\", \"___\"], [\"[[2 * 3 + 4]]\", \"___\"]]}"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 10,
+     "question": 10,
+     "substring": "{\"head\": [\"שאלה\", \"חישוב נחוץ\"], \"rows\": [[\"בקבוקי מים\", \"[[3*2]]\"], [\"כיסאות\", \"[[4*2]]\"], [\"כריכים\", \"[[12/3]]\"]]}"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 11,
+     "question": 11,
+     "substring": "{\"head\": [\"מקרה\", \"הפרש\"], \"rows\": [[\"מקרה 1\", \"___\"], [\"מקרה 2\", \"___\"], [\"מקרה 3\", \"___\"]]}"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"(2+3)*2\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_EXPRESSION_SCOPE",
      "detail": "Unverified pupil exercise or mismatched expression at q1.item.1",
@@ -2133,6 +2335,24 @@
      "substring": "[[(x + 2) * 3 = 15]]"
     },
     {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 16,
+     "question": 16,
+     "substring": "{\"head\": [\"שאלה\", \"חישוב\"], \"rows\": [[\"רון\", \"[[10-(2*3)]]\"], [\"עוגיות\", \"[[(12/3)+2]]\"], [\"תלמידים\", \"[[4*3]]\"]]}"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 17,
+     "question": 17,
+     "substring": "{\"head\": [\"פעולה\", \"תוצאה\"], \"rows\": [[\"כפל ואז חיבור\", \"___\"], [\"חיבור ואז כפל\", \"___\"], [\"הפרש\", \"___\"]]}"
+    },
+    {
      "code": "SOURCE_NOTATION",
      "detail": "Invalid or unsupported compact mathematical notation",
      "field": "item.1.prompt",
@@ -2140,6 +2360,15 @@
      "index": 1,
      "question": 18,
      "substring": "[[x]]"
+    },
+    {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "challenges",
+     "index": 2,
+     "question": 19,
+     "substring": "{\"head\": [\"ביטוי\", \"תוצאה נכונה\"], \"rows\": [[\"[[2 + 3 * 4]]\", \"___\"], [\"[[(5 + 5) / 2]]\", \"___\"], [\"[[10 - 2 * 3]]\", \"__…"
     },
     {
      "code": "SOURCE_NOTATION",
@@ -2152,7 +2381,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 11,
+    "failingAlone": 20,
     "total": 20
    },
    "recorded": "2026-11-22 ~21:30Z",
@@ -3886,6 +4115,7 @@
       6,
       7,
       8,
+      9,
       11,
       12,
       15,
@@ -3897,11 +4127,11 @@
       "q11",
       "q12",
       "q15",
-      "q17",
       "q20",
       "q6",
       "q7",
-      "q8"
+      "q8",
+      "q9"
      ]
     },
     "firstPass": {
@@ -3955,6 +4185,15 @@
        {
         "action": "missing",
         "codes": [
+         "PRINTED_TASK_MISMATCH"
+        ],
+        "group": "practice",
+        "question": 9,
+        "stage": "source"
+       },
+       {
+        "action": "missing",
+        "codes": [
          "PRINTED_ANSWER_KIND"
         ],
         "group": "practice",
@@ -3998,9 +4237,9 @@
         "stage": "source"
        }
       ],
-      "missing": 8,
+      "missing": 9,
       "planned": 20,
-      "printed": 12,
+      "printed": 11,
       "reservesOffered": 0,
       "reservesRefused": 0
      }
@@ -4060,6 +4299,15 @@
      "substring": "מתוך העובדה [[9 * 3 = 27]], מהי תוצאת התרגיל [[27 / 9]]?"
     },
     {
+     "code": "PRINTED_TASK_MISMATCH",
+     "detail": "Beside a table an item is keyed only when it names one row and its typed task is exactly that row's printed expression",
+     "field": "table",
+     "group": "practice",
+     "index": 9,
+     "question": 9,
+     "substring": "{\"head\": [\"שם הפריט\", \"כמות כוללת\", \"מספר קבוצות שוות\"], \"rows\": [[\"תפוחים\", \"[[21]]\", \"[[3]]\"], [\"אגסים\", \"[[25]]\", \"[[…"
+    },
+    {
      "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"6 * 4\", \"kind\": \"evaluate\"}, \"unit\": \"\"}",
      "code": "PRINTED_ANSWER_KIND",
      "detail": "The printed request needs a decision, not a expression key at q1.item.1",
@@ -4110,7 +4358,7 @@
     }
    ],
    "questions": {
-    "failingAlone": 8,
+    "failingAlone": 9,
     "total": 20
    },
    "recorded": "2026-11-23 14:07Z",
@@ -8345,7 +8593,7 @@
     },
     "firstPass": {
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The question does not ask about one relation that can be decided",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q4.item.1",
      "ok": false
     },
     "requests": 3,
@@ -8521,13 +8769,14 @@
      "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"0\", \"relation\": \"ne\", \"right\": \"1\"}, \"unit\": \"\"}"
     },
     {
+     "answer": "{\"kind\": \"computed\", \"task\": {\"expression\": \"4 * 9\", \"kind\": \"evaluate\"}, \"unit\": \"ס״מ\"}",
      "code": "PRINTED_ANSWER_KIND",
-     "detail": "The question does not ask about one relation that can be decided",
-     "field": "item.3.answer",
+     "detail": "The printed request needs a ratio, a time of day or who or which, not a expression key at q1.item.1",
+     "field": "item.1",
      "group": "practice",
      "index": 4,
      "question": 4,
-     "substring": "{\"kind\": \"computed\", \"task\": {\"kind\": \"decide\", \"left\": \"9\", \"relation\": \"eq\", \"right\": \"9\"}, \"unit\": \"\"}"
+     "substring": "במרובע ראשון כל ארבע הצלעות שוות לאורך [[9]] ס״מ וכל הזוויות שוות ל־[[90°]]. מהו היקף המרובע?"
     },
     {
      "code": "PRINTED_ANSWER_KIND",
@@ -9346,13 +9595,13 @@
    "gemini": {
     "cases": 21,
     "delivered": 3,
-    "failingAlone": 183,
+    "failingAlone": 184,
     "questions": 484
    },
    "qwen": {
     "cases": 14,
     "delivered": 1,
-    "failingAlone": 132,
+    "failingAlone": 144,
     "questions": 272
    }
   },
@@ -9365,11 +9614,11 @@
    "DELIVERED": 4,
    "SOURCE:AUTHOR_PLAN_MISMATCH": 2,
    "SOURCE:PRINTED_ANSWER_KIND": 5,
-   "SOURCE:PRINTED_ANSWER_LEAK": 4,
-   "SOURCE:PRINTED_TASK_MISMATCH": 2,
+   "SOURCE:PRINTED_ANSWER_LEAK": 3,
+   "SOURCE:PRINTED_TASK_MISMATCH": 4,
    "SOURCE:QUALITY_GATE_FAILED": 1,
    "SOURCE:SOURCE_FIGURE": 2,
-   "SOURCE:SOURCE_NOTATION": 10,
+   "SOURCE:SOURCE_NOTATION": 9,
    "SOURCE:SOURCE_PLAIN_MATH": 1,
    "SOURCE:SOURCE_TABLE": 3,
    "SOURCE:SOURCE_TEXT": 1
@@ -9385,10 +9634,10 @@
   "questions": {
    "byCode": {
     "NOT_AN_OBJECT": 8,
-    "PRINTED_ANSWER_KIND": 85,
-    "PRINTED_ANSWER_LEAK": 50,
+    "PRINTED_ANSWER_KIND": 86,
+    "PRINTED_ANSWER_LEAK": 49,
     "PRINTED_EXPRESSION_SCOPE": 4,
-    "PRINTED_TASK_MISMATCH": 42,
+    "PRINTED_TASK_MISMATCH": 55,
     "QUALITY_GATE_FAILED": 2,
     "SOURCE_FIGURE": 5,
     "SOURCE_NOTATION": 75,
@@ -9400,8 +9649,8 @@
     "SOURCE_TEXT": 20,
     "UNSUPPORTED_TASK": 2
    },
-   "failingAlone": 315,
-   "failingShare": 0.4167,
+   "failingAlone": 328,
+   "failingShare": 0.4339,
    "total": 756
   },
   "secondAttemptsNotRecorded": 2

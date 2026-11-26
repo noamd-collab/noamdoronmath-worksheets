@@ -15,9 +15,10 @@ import os
 from authoring_context import build_authoring_context, AuthoringContextError
 from general_source import validate_source, GeneralSourceError, geometry_topic
 from lesson_select import CHALLENGES, NO_QUESTION, PRACTICE, Selection
-from skill_authoring import (MAX_CORRECTED, bind_content, correction_instructions, examine_frame, instruction_for,
-                             notation_correction, question_codes, question_plan, refers_to_another_question,
-                             refusal_feedback, reserve_plan, revision_request, split_reserves, worksheet_schema)
+from skill_authoring import (MAX_CORRECTED, PRINTED_MINUS, PRINTED_TASK_PLACES, REQUEST_KINDS, bind_content,
+                             correction_instructions, examine_frame, instruction_for, notation_correction,
+                             question_codes, question_plan, refers_to_another_question, refusal_feedback, reserve_plan,
+                             revision_request, split_reserves, worksheet_schema)
 from answer_kinds import DECISION_GUIDE
 from runtime_catalog import catalog, question_floor, scope_for_lesson
 from validation import reject
@@ -446,11 +447,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'if that question actually supplies it. For counting give concrete countable data. Never describe '
         'an imagined picture or refer to a highlighted digit unless its position is explicit. '
         'Each computed task must reproduce the mathematics asked for from its actual givens. The key prints '
-        'the computed solution. The typed task is printed after the prompt only when the prompt shows no '
-        'number at all, as in a bare instruction; after a story, even in one sentence, an intro that states '
-        'numbers, a table or a figure such an item is refused, so write its exercise in the prompt. Such a printed '
-        'task with a minus before a letter, a power or a bracket is refused too. Never key a ratio, a time of '
-        'day, who or which, an order or a yes/no question with a number or a sign. '
+        'the computed solution. ' + PRINTED_TASK_PLACES + ' ' + PRINTED_MINUS + ' ' + REQUEST_KINDS + ' '
         'A prompt that shows numbers is printed exactly as written '
         'and nothing is added to it, so a word problem, a completion or a comparison must state every datum '
         'the pupil needs in its own intro or prompt. Do not supply '

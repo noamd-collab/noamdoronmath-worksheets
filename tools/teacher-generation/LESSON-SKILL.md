@@ -174,7 +174,25 @@ Schema in `general_source.authoring_schema`; checks in
   one sentence, or a unit to convert to), an intro that states numbers, a table
   (also a row whose result is blank beside the same calculation) or a figure
   the item is refused (`printed_parts.refuse_shown_task`,
-  `PRINTED_TASK_MISMATCH`). A later item may not print an earlier item's answer
+  `PRINTED_TASK_MISMATCH`).
+- **Beside a table** (`printed_tasks.table_row_task`, run in
+  `validate_question`, an allowlist): an item that names a row is keyed only
+  when its typed task is exactly that row's printed expression. The row is
+  named by an ordinal ("בשורה השנייה"), "השורה האחרונה" or a row number ("שורה
+  [[2]]", "שורה מספר [[2]]") in the item, or else in its intro, and the row
+  prints exactly one closed expression or number, equal to the typed task (an
+  `evaluate` task). A mention of a row in any other form ("השורה הבאה", "בכל
+  שורה", two rows) is refused, and so is a named row that prints two numbers or
+  its result too. In grades 1–6 every computed item beside a table must name its
+  row so: an item that names no row, a lookup by a row's label, a total of a
+  column or another typed kind is refused (`PRINTED_TASK_MISMATCH`), also with
+  the right typed key. The role-named row of `printed_tasks.printed_table_row`
+  and the local fraction author's table (`fraction_lesson.printed_evidence`)
+  keep their own binders. In grades 7–9 an item beside a table that names no
+  row is not refused here and its key is not proven against the table: the
+  reviewed fixture grade7-equation-skill asks for a table's values by an x
+  value ("עבור [[x = 5]]"), and the v4 golden pins it as compiling, so refusing
+  it needs the owner's decision. A later item may not print an earlier item's answer
   (`printed_parts.answer_leak`, `PRINTED_ANSWER_LEAK`). A minus before anything
   but a number (`-2^4`, `-x`) is refused in printed math unless it is printed as
   written: the tree would print it as `0 − 2^4` (`SOURCE_NOTATION`). This holds
@@ -201,34 +219,66 @@ Schema in `general_source.authoring_schema`; checks in
   `PRINTED_ANSWER_KIND`). `printed_tasks.requested` reads the intro and the item
   prompt, unpointed and clause by clause, by form and not by one verb; a request
   of the intro applies to every item.
-  - A yes/no or true/false question (`האם ...?`, "נכון או לא נכון") takes only a
-    `decide` task, never a number or a `compare` sign; a yes/no question that
-    offers comparison outcomes ("קטן או גדול מ...") asks for a sign. An item with
-    a blank of its own is not asked the intro's yes/no or "whether", nor, when
-    the blank stands beside a printed relation ("[[3.47 = 3 + 0.4 + ___]]"), the
-    intro's sign.
+  - A yes/no or true/false question (`האם ...?`, "נכון או לא נכון", "כן או לא",
+    "(כן/לא)") takes only a `decide` task, never a number or a `compare` sign; a
+    yes/no question that offers comparison outcomes ("קטן או גדול מ...") asks for a
+    sign. An item with a blank of its own is not asked the intro's yes/no or
+    "whether" when the blank is part of its mathematics (inside a formula, or
+    after a prompt that prints no complete relation); a blank in the words after
+    a complete printed relation ("[[32 : 4 = 9]] ___") is where the verdict goes,
+    so the intro's decision still applies. Beside a printed relation
+    ("[[3.47 = 3 + 0.4 + ___]]") the blank is not asked the intro's sign.
   - "Whether" (`בדקו/קבעו/החליטו/בררו ... אם`, any word ending in ו directly
     before `אם`/`האם`, or a question ending in "נכון?", "שגוי?" without another
-    question word) takes a `decide` task. A `compare` sign
-    answers it only when the item and the intro print no relation and the words
-    ask for it ("בדקו אם השברים שווים."); "בדקו אם [[32 : 4 = 8]]." is refused.
+    question word) takes a `decide` task. A true/false word anywhere in the
+    intro or the prompt, with any prefix ("הקיפו את התרגילים הנכונים", "סמנו ✓
+    ליד כל תרגיל נכון", "מתחו קו מתחת לתרגילים השגויים", "ציינו אם הוא נכון")
+    asks the same, unless it is one of the readings on a closed list that ask
+    for a number: it describes a quantity or the order of operations within the
+    three words before it ("התוצאה הנכונה", "מהי תוצאת החילוק הנכונה", "האחוז
+    הנכון", "סדר הפעולות הנכון"), it belongs to what a quantity is of
+    ("התוצאה הנכונה של כל תרגיל שגוי"), it says how someone answered or solved
+    ("ענה נכון על", "פתרו נכון את") or what a calculation checks ("שבודק את
+    נכונות המנה"), or it stands after "כך ש", "כדי ש" or "כדי ל". A `compare`
+    sign answers "whether" only when the item and the intro print no relation
+    and the words ask for it ("בדקו אם השברים שווים."); "בדקו אם [[32 : 4 =
+    8]]." is refused. A `compare` sign is never the key of an item that prints a
+    complete relation ("[[32 : 4 = 9]]", "[[345 < 354]]"), whatever its words ask.
   - A comparison sign ("סימן", or a relation sign in the words, in a clause
-    that asks for it as below) takes only a `compare` task; an order ("סדרו",
-    "מהקטן לגדול", "בסדר עולה") only a list.
-  - A ratio (any inflection of יחס, or קנה המידה), who (מי) or which thing
-    (איזה/איזו/אילו before a noun that is not a number word such as מספר, אחוז,
-    אורך, מחיר) is never keyed when its clause asks for it: it is a question,
-    holds a blank, or tells the pupil to write, state, find, complete, reduce or
-    calculate it (a closed list of verbs). A time of day is never keyed either:
-    "איזו שעה" anywhere, "מתי" in a question or beside a blank, השעה or השעון in
-    a question or beside a blank, or told to be written in a clause that states
-    no time, and "בשעה" beside a blank. The earlier wording-specific readers
-    ("מהו היחס", "מה תהיה השעה", "למי ...?") still apply anywhere. A ratio
-    stated with its value ("היחס ... הוא [[2:3]]", "ביחס [[2:3]]", "היחס
-    הנתון") and a time stated in a clause that asks nothing are data. A `compare` sign may answer "the relation between" two
-    printed quantities; a printed proportion with one missing term
-    (`[[2 : 3 = ___ : 12]]`) keys that term; "איזו פעולה מבצעים ראשונה" is keyed
-    by the operation's name (`match_printed_task`) or refused.
+    that asks for it as below) takes only a `compare` task; an order takes only
+    a list: "סדרו", "דרגו", "בסדר עולה/יורד", or a direction from one extreme to
+    the other in any spelling ("מהקטן לגדול", "מהקטן ביותר לגדול ביותר", "מהגדול
+    אל הקטן", "מן הקטן עד הגדול", "מהנמוך לגבוה").
+  - A ratio or a map scale (any inflection of יחס, or קנה המידה), who or which
+    thing (איזה/איזו/אילו before a noun that is not a number word such as
+    מספר, אחוז, אורך, מחיר) is never keyed, by a number or by a `compare` sign,
+    when its clause asks for it: it is a question, holds a blank, or tells the
+    pupil to write, state, find, complete, reduce or calculate it (a closed list
+    of verbs). Who is also read anywhere from "מיהו/מיהי/מיהם/מיהן", from "מי"
+    that opens its clause (not "מי ש..." and not the name מי in a list) and from
+    a request for a name ("את שם", "את שמו", "שמו של", "מה שם", "שם הילד"). A
+    time of day is never keyed either: "איזו שעה" anywhere; "מתי" in a question
+    or beside a blank, and in a question that names hours or minutes also as a
+    request or opening its clause without a question mark ("כתבו מתי הסתיים",
+    "מתי הסתיים השיעור"; "מצאו מתי הם שווים" in an equation is not read as a
+    time); השעה, שעת ("שעת הסיום") or השעון
+    in a question, beside a blank, or told to be written in a clause that states
+    no number; "בשעה" beside a blank; and, in a question that names an hour, a
+    clock, "מתי" or a part of the day, a blank after "ב־", "ל־" or "עד" that
+    ends its clause, or a blank before a part of the day ("ב־___ בערב"). The
+    earlier wording-specific readers ("מהו היחס", "מה תהיה השעה", "למי ...?")
+    still apply anywhere. A ratio is data only when its word is followed by its
+    value ("ביחס [[2:3]]", "היחס הנתון", "היחס בין הבנים לבנות הוא [[2:3]]"); a
+    number stated for something else in the clause ("הבנים הם [[12]]") does not
+    state it. A time stated in a clause that asks nothing is data. A printed
+    proportion with one missing term (`[[2 : 3 = ___ : 12]]`) keys that term;
+    "איזו פעולה מבצעים ראשונה" is keyed by the operation's name
+    (`match_printed_task`) or refused.
+  - These readers refuse the forms listed here. A request for a time of day, a
+    name, an order or a ratio written in a form they do not list is not refused
+    by them; the old path cannot prove that a word problem's key answers what its
+    prose asks (only worksheet-wire/5 removes that, because code writes the
+    question from its typed task).
   - A number is never the key of a requested equation.
   A prompt that only lists numbers is not keyed by one of them
   (`printed_parts.echoed_given`). A printed inequality binds a typed
@@ -380,7 +430,8 @@ are the refusals, by where the spelling stands:
 What is still not proven, also after every check above: a computed item
 without a blank keeps its typed key, and the old path cannot prove that a word
 problem's key answers what its prose asks (the typed task is checked, the
-reading of the story is not; in grades 7–9 a yes/no claim typed from a story is
+reading of the story is not; only worksheet-wire/5 removes that, because there
+code writes the question from its typed task; in grades 7–9 a yes/no claim typed from a story is
 listed as `decision`, and in grades 1–6 it is refused). A figure answer is
 computed from the figure for the operation typed, not for the question its
 words ask, and a blank in its prompt is not read by the binder rule above. A typed source validated without the provider flag (a code-written
@@ -584,7 +635,7 @@ Run from the repository root. Full guide: `bench/README.md`.
 | `bench/sweep.py --live --max-calls N --max-output-tokens T …` | default teacher requests across topics and levels | real, budgeted |
 
 - **Recorded state:** replay delivers 4 of 35 cases with no further model
-  call, and 315 of 756 questions are refused alone
+  call, and 328 of 756 questions are refused alone
   (`bench/corpus/baseline/summary.md`). Corrections that were never recorded
   count as failed, so this under-states the live ladder. The key-print checks
   of section 2.4 cost three ג10 replays (A-, B- and G-division) whose
@@ -596,8 +647,14 @@ Run from the repository root. Full guide: `bench/README.md`.
   allowlist and the blank rule of section 3 cost S-g4calc five of its twelve
   questions as recorded ("המספר החסר הוא ___: [[...]]" three times, a blank
   beside its table, a blank after a printed calculation) and A-division the
-  question whose intro prints a blank. Probes: 163 pass, 122 rejected, no
-  wrong print.
+  question whose intro prints a blank. The table rule of section 2.4 (grades
+  1–6: an item beside a table names its row and types that row's expression)
+  and the round 4 request readers cost thirteen more questions of four replays
+  that were not delivered before either: nine table questions of B-order, one
+  each of A-order, B-division and G-division, and B-division's "בחרו את
+  הנתונים הנכונים". Probes: 158 pass, 127 rejected, no wrong print (the
+  five ג20, ד25 and ב12 table probes that named no row, or a row of numbers,
+  are refused now).
 - **Sweep flags:** `--dry-run`, `--topics`, `--grades`, `--levels`, `--limit`,
   `--one-level-per-topic`, `--only-failed`, `--question-count`, `--minutes`
   (default 30), `--calls-per-case` (4), `--concurrency` (4), `--case-timeout`

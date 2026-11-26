@@ -66,7 +66,7 @@ They are simple on purpose; when a rule misjudges a probe, give the probe an
 
 At the commit that added the corpus: 56 pass, 94 rejected, 135 wrong print
 (`print_adds_numbers` 95, `key_mismatch` 30, `answer_beside_question` 28,
-`key_repeats_question` 8). Now: 163 pass, 122 rejected, no wrong print.
+`key_repeats_question` 8). Now: 158 pass, 127 rejected, no wrong print.
 
 ## Changes the runner reports
 
