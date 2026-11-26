@@ -161,13 +161,31 @@ class HelperTests(unittest.TestCase):
         ''' % str(marker))
         return binary, marker
 
+    @staticmethod
+    def running(pid):
+        """True while ``pid`` can still run code. A killed process whose new parent has not reaped it yet is a
+        zombie: in a container whose PID 1 never reaps orphans it stays one, so a zombie counts as gone."""
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return False
+        if os.path.isdir('/proc/self'):
+            try:
+                with open('/proc/%d/stat' % pid, encoding='ascii') as handle:
+                    state = handle.read().rsplit(')', 1)[1].split()[0]
+            except FileNotFoundError:
+                return False
+        else:
+            state = subprocess.run(['ps', '-o', 'stat=', '-p', str(pid)], capture_output=True, text=True).stdout.strip()[:1]
+            if not state:
+                return False
+        return state != 'Z'
+
     def assert_gone(self, pid):
-        """``pid`` is killed: it disappears within a few seconds (once its new parent has reaped it)."""
+        """``pid`` is killed: it stops running within a few seconds."""
         deadline = time.monotonic() + 10
         while time.monotonic() < deadline:
-            try:
-                os.kill(pid, 0)
-            except ProcessLookupError:
+            if not self.running(pid):
                 return
             time.sleep(0.05)
         os.kill(pid, signal.SIGKILL)
