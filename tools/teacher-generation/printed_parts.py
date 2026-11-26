@@ -6,8 +6,9 @@ minutes), and it can already show the exercise that the task repeats. Each
 binder here recomputes the whole printed answer from the printed givens and
 checks the typed result against it. A prompt with several blanks that no
 binder recognizes is refused: one number never answers two blanks. In grades
-1-6 a prompt with any blank is keyed only when a binder of a closed list fills
-it from the print (``solved_from_the_print``, ``refuse_unsolved_equation``).
+1-6 a computed item whose prompt has any blank is keyed only when a binder of a
+closed list fills it from the print (``solved_from_the_print``,
+``refuse_unsolved_equation``); a figure item keeps the figure's own key.
 
 Nothing here approves prose: an item without a blank keeps its typed key, and
 nothing proves that a word problem's key answers what its words ask. Every
@@ -1207,8 +1208,8 @@ def solved_from_the_print(question, item, solved, grade):
 def refuse_unsolved_equation(question, item, solved, grade):
     """Grades 1–6: a printed blank is keyed only by a binder that fills it from the print.
 
-    An item whose prompt prints a blank (``___`` or a box, in the sentence or
-    in an island) is keyed only when ``solved_from_the_print`` names the
+    A computed item whose prompt prints a blank (``___`` or a box, in the
+    sentence or in an island) is keyed only when ``solved_from_the_print`` names the
     binder that recomputes its key from the print, also when the typed key is
     right: a word problem with a blank ("[[3]] מטרים הם ___ ס״מ"), a blank
     beside a closed formula ("___: [[4 = 6]]") and an equation that no binder

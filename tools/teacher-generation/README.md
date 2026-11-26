@@ -108,7 +108,7 @@ never wrote (`printed_parts.refuse_unwritten_zero`, `SOURCE_NOTATION`).
 `printed_parts.py` and the other `printed_*` binders
 tie the key to an exercise that the prompt already shows. A prompt with several
 blanks gets one answer for each blank, or the question is refused. In grades 1–6
-an item that prints a blank is keyed only when a binder of a closed list
+a computed item that prints a blank is keyed only when a binder of a closed list
 recomputes its key from the print (place value, quotient and remainder,
 sequence, two units, the missing number in one complete formula, the comparison
 sign, the decided statement), also with the right typed key: a word problem

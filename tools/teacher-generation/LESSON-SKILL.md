@@ -354,9 +354,9 @@ are the refusals, by where the spelling stands:
   `decide` answer without its task wrapper, a `solve` task for a letter other
   than `x y a b`.
 - **A blank no binder fills** (grades 1–6, `printed_parts.refuse_unsolved_equation`,
-  `PRINTED_TASK_MISMATCH`, after every other check of the item). An item whose
-  prompt prints a blank (`___` or a box, in the sentence or in an island) is
-  keyed only when one binder of a closed list recomputes its key from the print
+  `PRINTED_TASK_MISMATCH`, after every other check of the item). A computed
+  item whose prompt prints a blank (`___` or a box, in the sentence or in an
+  island) is keyed only when one binder of a closed list recomputes its key from the print
   (`printed_parts.solved_from_the_print`): a parts binder of section 2.4 (place
   value, quotient and remainder, sequence, two units), the missing-number and
   first-operation binder `printed_tasks.match_printed_task` (the island alone,
@@ -383,7 +383,7 @@ problem's key answers what its prose asks (the typed task is checked, the
 reading of the story is not; in grades 7–9 a yes/no claim typed from a story is
 listed as `decision`, and in grades 1–6 it is refused). A figure answer is
 computed from the figure for the operation typed, not for the question its
-words ask. A typed source validated without the provider flag (a code-written
+words ask, and a blank in its prompt is not read by the binder rule above. A typed source validated without the provider flag (a code-written
 lesson, a source handed straight to `runner.render_job`) gets the binder
 refusal above but not the sentence refusals, which run where the model's reply
 is read (`general_source.rich(provider=True)`), on every reply of the worker.
