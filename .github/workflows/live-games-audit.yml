@@ -1,0 +1,94 @@
+# Live games audit in GitHub Actions.
+#
+# Audits games that are already deployed: screenshots and layout checks at phone and
+# desktop, page audit, drag probes and the zero-pointer flow, for a list of slugs.
+# It runs on demand and weekly; it is deliberately NOT a pull-request check, because
+# it measures the live site, not the branch.
+#
+# Prerequisite: vendor the harness once into tools/game-audit/ in the repository:
+#   scripts/live_audit.sh, scripts/live_flow.mjs, scripts/summarize_live.py,
+#   scripts/contact_sheet.py, shots-live.mjs, page_audit.mjs, drag_probe.mjs,
+#   _browser.mjs (the last three from the drag-free-interaction-retrofit skill)
+#   and flows/<slug>.mjs for every game you want audited.
+# The scripts resolve puppeteer-core from PUPPETEER_ROOT and the browser from
+# BROWSER_PATH, so nothing is installed globally.
+name: live-games-audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: 'Comma-separated slugs; empty uses the default list'
+        required: false
+        default: ''
+      base_url:
+        description: 'Live origin'
+        required: false
+        default: 'https://www.noamdoronmath.co.il'
+  schedule:
+    - cron: '0 4 * * 0'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-games-audit
+  cancel-in-progress: false
+
+env:
+  BASE: ${{ github.event.inputs.base_url || 'https://www.noamdoronmath.co.il' }}
+  LIVE_BASE: ${{ github.event.inputs.base_url || 'https://www.noamdoronmath.co.il' }}
+  SLUGS: ${{ github.event.inputs.slugs || 'mad-hazavit,chukiyot-vedfusim,model-hashetach,tavlat-hashkichut,merchav-hatotsaot,ee-shivyon-batsir,chafifat-meshulashim,yesharim-makbilim' }}
+  TOOLS: ${{ github.workspace }}/tools/game-audit
+  APP: ${{ github.workspace }}/headless/astro-poc
+  A11Y: ${{ github.workspace }}/tools/game-audit
+  PUPPETEER_ROOT: ${{ github.workspace }}/headless/astro-poc
+  BROWSER_PATH: /usr/bin/google-chrome
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: headless/astro-poc/package-lock.json
+
+      - name: Install app dependencies (puppeteer-core)
+        working-directory: headless/astro-poc
+        run: npm ci --no-audit --no-fund
+
+      - name: Every live page must answer 200 before anything is audited
+        run: |
+          set -e
+          for s in ${SLUGS//,/ }; do
+            code=$(curl -sL -o /dev/null -w '%{http_code}' "$BASE/games/$s/play")
+            echo "$s $code"
+            [ "$code" = "200" ] || { echo "::error::$s returned $code"; exit 1; }
+          done
+
+      - name: Screenshots, page audit, drag probes and flows
+        run: bash "$TOOLS/live_audit.sh" ${SLUGS//,/ }
+
+      - name: Summary table (also on failure)
+        if: always()
+        run: |
+          python3 "$TOOLS/summarize_live.py" --tools "$TOOLS" ${SLUGS//,/ } > summary.md || true
+          { echo '## Live games audit'; echo; cat summary.md; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep screenshots and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-audit
+          path: |
+            tools/game-audit/shots-live
+            tools/game-audit/audit-live
+            tools/game-audit/verify-live
+            tools/game-audit/contact
+            summary.md
+          retention-days: 14

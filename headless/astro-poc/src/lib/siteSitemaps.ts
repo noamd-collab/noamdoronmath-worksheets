@@ -20,9 +20,8 @@ import { topicPageDateModifiedByPath } from './topicPages';
 
 /**
  * Non-public / noise slugs — never appear in /sitemap-pages.xml.
- * /payment stays out while checkout is closed to everyone except the test owner.
  */
-const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops', 'search', 'payment']);
+const SKIP_SLUGS = new Set(['404', 'index', 'learning', 'dev-loops', 'search']);
 
 export const PAGES_SITEMAP_PATH = '/sitemap-pages.xml';
 
