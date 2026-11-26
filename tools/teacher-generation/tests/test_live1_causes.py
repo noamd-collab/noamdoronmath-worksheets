@@ -255,6 +255,46 @@ class LiveCauses(unittest.TestCase):
         self.assertIsNone(draft.rule_refusal)
         self.assertEqual(draft.rule, 'אחוז אחד הוא מאית מתוך שלם: [[1% = frac(1,100)]].')
 
+    def test_a_corrected_rule_that_is_still_refused_is_not_taken_and_the_sheet_fails_on_its_rule(self):
+        import general_provider
+        from general_source import GeneralSourceError
+        from runtime_catalog import scope_for_lesson
+        from skill_authoring import examine_frame
+        from validation import GenerationError
+        # The recorded grade 4 sheet S-g4calc, whose questions all pass the source stage, with a refused rule.
+        lesson = json.loads((CORPUS / 'lessons/g4-order-practice.json').read_text(encoding='utf-8'))
+        scope = scope_for_lesson(lesson)
+        reply = json.loads((CORPUS / 'replies/S-g4calc.json').read_text(encoding='utf-8'))
+        refused, still = 'מבצעים קודם כפל: [[4 @ 2]].', 'מבצעים קודם כפל וחילוק: [[3 @ 1]].'
+        for rule in (refused, still):
+            self.assertEqual(examine_frame(reply['title'], rule, lesson, scope).code, 'SOURCE_NOTATION')
+        reply['rule'] = refused
+        asked = []
+
+        def answer(target, key, body, observed, timeout):
+            asked.append(body)
+            return deepcopy(reply) if len(asked) == 1 else {'rule': still}
+
+        session = {}
+        with patch('provider.request_author_json', side_effect=answer), self.assertRaises(GenerationError) as error:
+            general_provider.author_general_lesson(lesson, metadata={}, revision=session, api_key='k', model='m',
+                                                   base_url='https://dashscope-intl.aliyuncs.com/compatible-mode/v1',
+                                                   authoring_context={'scope': scope})
+        draft = session['draft']
+        self.assertEqual(error.exception.code, 'SOURCE_NOTATION')
+        self.assertEqual((draft.missing(), draft.rule, draft.rule_refusal.code, draft.needs_model()),
+                         ([], refused, 'SOURCE_NOTATION', True))
+        # The one correction asks for the rule alone; its reply carries a rule that is refused again.
+        draft.correct()
+        self.assertEqual(len(asked), 2)
+        self.assertIn('rule', asked[1]['response_format']['json_schema']['schema']['required'])
+        self.assertEqual(json.loads(asked[1]['messages'][1]['content'])['ruleToCorrect']['rule'], refused)
+        # It is not taken: the rule stays as the model first wrote it, still refused, and the sheet fails on it.
+        self.assertEqual((draft.rule, draft.rule_refusal.code, draft.needs_model()), (refused, 'SOURCE_NOTATION', True))
+        with self.assertRaises(GeneralSourceError) as failed:
+            draft.source()
+        self.assertEqual(failed.exception.code, 'SOURCE_NOTATION')
+
     def test_the_recorded_percent_sheets_with_no_further_author_call(self):
         from bench import replay
         # The engine now asks for fewer questions than were recorded: each recorded correction answers

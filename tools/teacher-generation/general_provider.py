@@ -217,7 +217,7 @@ class Draft:
 
     def shorten(self):
         """Drop the positions that are still missing. False when the sheet would be too short:
-        under three quarters of the request, under six, or under the grade minimum."""
+        under three quarters of the request or under the grade minimum."""
         return self.selection.shorten()
 
     # ------------------------------------------------------------------ one correction call

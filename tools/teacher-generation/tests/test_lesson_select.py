@@ -7,6 +7,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
+import lesson_select  # noqa: E402
 from lesson_select import (CHALLENGES, NO_QUESTION, PRACTICE, Selection, minimum_count,  # noqa: E402
                            reserve_count, reserve_groups, select)
 from runtime_catalog import question_floor  # noqa: E402
@@ -45,9 +46,7 @@ class LimitTests(unittest.TestCase):
             self.assertEqual(len(groups), reserve_count(planned))
             self.assertEqual(groups.count(CHALLENGES), 1)   # one challenge reserve, the rest practice
 
-    def test_the_shortest_sheet_is_three_quarters_never_under_six_and_never_under_the_grade_minimum(self):
-        # Three quarters and six, below any grade minimum the callers pass:
-        self.assertEqual([minimum_count(n, 1) for n in (6, 8, 12, 14, 20, 30)], [6, 6, 9, 11, 15, 23])
+    def test_the_shortest_sheet_is_three_quarters_and_never_under_the_grade_minimum(self):
         # The grade minimums (8 / 12 / 14 / 20 for grades 1-2 / 3-4 / 5-6 / 7-9) win wherever they are larger.
         self.assertEqual([question_floor(grade) for grade in range(1, 10)], [8, 8, 12, 12, 14, 14, 20, 20, 20])
         counts = (6, 8, 12, 14, 16, 20, 24, 30)
@@ -65,7 +64,10 @@ class LimitTests(unittest.TestCase):
             Selection(sheet(), [], refuse({}))
         with self.assertRaises(TypeError):
             select(sheet(), [], refuse({}))
-        for bad in (0, -8, "8", True, 8.0, None):
+        # Only a grade minimum is a floor: a lower number would shorten a sheet below the minimum of every grade,
+        # and any other number is no grade's minimum.
+        self.assertFalse(hasattr(lesson_select, "MINIMUM_SHEET"))
+        for bad in (0, -8, "8", True, 8.0, None, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 13, 15, 16, 19, 21, 30):
             with self.subTest(floor=bad):
                 with self.assertRaises(ValueError):
                     minimum_count(12, bad)

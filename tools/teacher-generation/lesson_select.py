@@ -23,7 +23,6 @@ from dataclasses import dataclass, field
 PRACTICE, CHALLENGES = "practice", "challenges"
 GROUPS = (PRACTICE, CHALLENGES)
 MINIMUM_CHALLENGES = 2  # general_source: a sheet prints two to four starred questions
-MINIMUM_SHEET = 6
 NO_QUESTION = "QUESTION_MISSING"  # the author wrote fewer questions than planned
 
 
@@ -41,17 +40,22 @@ def reserve_groups(planned):
 def minimum_count(planned, floor):
     """The shortest sheet that may be delivered for ``planned`` questions.
 
-    Three quarters, never under six, and never under ``floor``: the grade
-    minimum the caller supplies (runtime_catalog.question_floor, the same
-    minimum validation.validate_lesson enforces on every request). A sheet
-    planned at its floor is never shortened.
+    Three quarters, and never under ``floor``: the grade minimum the caller
+    supplies (runtime_catalog.question_floor, the same minimum
+    validation.validate_lesson enforces on every request). A sheet planned at
+    its floor is never shortened.
     """
-    return max(MINIMUM_SHEET, -(-3 * planned // 4), _grade_floor(floor))
+    return max(-(-3 * planned // 4), _grade_floor(floor))
 
 
 def _grade_floor(floor):
-    if type(floor) is not int or floor < 1:
-        raise ValueError("floor must be a positive integer (the grade minimum)")
+    """``floor`` when it is one of the grade minimums of runtime_catalog.question_floor, else ValueError.
+
+    Any other number, a lower one in particular, would let a sheet be
+    shortened below the minimum of every grade."""
+    from runtime_catalog import question_floor
+    if type(floor) is not int or floor not in {question_floor(grade) for grade in range(1, 10)}:
+        raise ValueError("floor must be a grade minimum (runtime_catalog.question_floor)")
     return floor
 
 

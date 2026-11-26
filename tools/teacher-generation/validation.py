@@ -83,8 +83,8 @@ def salvaged_count(requested, printed, grade):
     """Whether ``printed`` questions may be delivered for a sheet of ``requested`` questions in ``grade``.
 
     Only the worker's salvage shortens a sheet (lesson_select): never below
-    three quarters of the request, never below six questions, and never below
-    the grade minimum that validate_lesson enforces on every request.
+    three quarters of the request and never below the grade minimum that
+    validate_lesson enforces on every request.
     """
     from lesson_select import minimum_count
     from runtime_catalog import question_floor
@@ -103,6 +103,9 @@ def validate_lesson(lesson, *, allow_legacy=False, salvaged_from=None):
                    "A salvaged sheet keeps at least three quarters of the requested questions and the grade minimum")
         cap = validate_lesson({**lesson, 'questionCount': salvaged_from}, allow_legacy=allow_legacy)
         integer(lesson.get("questionCount"), 4, 40, "questionCount")
+        # The printed count must itself be a count the topic allows, as every request's is.
+        if cap.get("questionCounts") and lesson["questionCount"] not in cap["questionCounts"]:
+            reject("UNSUPPORTED_VOLUME", "The pilot only supports its validated full-sheet question counts")
         return cap
     cap = capability(lesson)
     general = lesson['version'] == 3
