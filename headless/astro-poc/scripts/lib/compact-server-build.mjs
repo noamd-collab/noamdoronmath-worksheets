@@ -1,5 +1,6 @@
 import { transform } from 'esbuild';
 import { omitWixSitemapPathsPlugin } from './omit-wix-sitemap-paths.mjs';
+import { retiredJuniorWorkerPlugin } from '../retired-junior-worker-plugin.mjs';
 
 /**
  * Wix sends server modules as base64 JSON. Compact generated JavaScript before
@@ -20,7 +21,7 @@ export default function compactServerBuild() {
       // Wix page list behind /pages-sitemap.xml. Registered here so the fenced
       // astro.config.mjs stays byte-identical; a no-op without @wix/astro-pages.
       'astro:config:setup': ({ updateConfig }) => {
-        updateConfig({ vite: { plugins: [omitWixSitemapPathsPlugin()] } });
+        updateConfig({ vite: { plugins: [omitWixSitemapPathsPlugin(), retiredJuniorWorkerPlugin()] } });
       },
       'astro:build:setup': ({ target, updateConfig }) => {
         if (target !== 'server') return;
