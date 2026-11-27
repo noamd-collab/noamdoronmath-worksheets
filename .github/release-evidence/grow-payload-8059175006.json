@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "failedDeploymentId": 8059175006,
+  "failedRunId": 45625886565,
+  "failedSha": "ee96eeb3cdb47171f11405bf48fb2ba18f0412bc",
+  "previousDeploymentId": 8039996642,
+  "confirmedLiveSha": "ee96eeb3cdb47171f11405bf48fb2ba18f0412bc",
+  "observedAt": "2026-11-25T20:45:54Z",
+  "prePromotionFailureVerified": true,
+  "fullSourceShaProven": false,
+  "observationConclusion": "consistent-with-previous-confirmed-live",
+  "evidenceSummary": "Run 45625886565 checked out ee96eeb3 and exited in the worker-budget step before npx wix release, so that run published nothing. The newest guard status is error 23134699071. The last success record is still 83e7dd34, but the live homepage has the Grow footer phone that 83e7dd34 does not, the live search index matches ee96eeb3 and not 83e7dd34, and the scale-revision id 6009d89d81484f1aac92da7febec2905 is on the live static files. That tree is shared by ee96eeb3 and 9a8f137a only. The homepage has no Instagram block and old sheet URLs still 301 to filesusr, so f42ce00e is not live. This does not prove every live byte.",
+  "evidenceUrl": "https://github.com/noamd-collab/noamdoronmath-worksheets/actions/runs/45625886565",
+  "publicIndexSha256": "6cf5a632c34375cb0f442a6c4f18b4e234d52e00518aa2a61ae7e1b88a068594",
+  "publicIndexBytes": 1047021,
+  "publicIndexDocuments": 775,
+  "proofLimits": [
+    "Commit SHA is not unique: 9a8f137a has the identical tree 4b13ea57.",
+    "The public index matches the source file after JSON parse, not a byte-for-byte file compare.",
+    "observedAt must be within 24 hours of the write. Refresh it if the write is later."
+  ]
+}

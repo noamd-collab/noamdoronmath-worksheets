@@ -28,9 +28,9 @@ const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 const OLD_PUBLISH_WORKFLOW = 'da7689feaa7915c65e9979a8703250113ea3a5668be7b9c5508e7c153f5dbed9';
 // The completed incident keeps its exact historical controller contract.
 const CURRENT_PUBLISH_WORKFLOW = 'e6fdfcfd2bdc3434a68e25ac255870bcbd9a62eceb20029c840e6bff81d9ed76';
-const RECONCILE_WORKFLOW = 'cf52733425781ef5179f68524236595994983b07563efa0ae78705e270eb3ffe';
+const RECONCILE_WORKFLOW = '7ee0a03038c861c20f33266fc9993338507cf26475ab5fc351fad79b154ed6f2';
 const GUARD_CODE = 'd632a389dae17449365fbf4d94c6c072716a9f11cc303358bab4fc6be1805e80';
-const RECONCILE_CODE = '1836a9c9a6b6f33b6bf189494d597ed838f98b751d727bf025538de98e1c7ee3';
+const RECONCILE_CODE = '29ce4cde4e234676d1cec5f5a254e3c88e93232035d3d787171aafed66119dbb';
 const sha = value => /^[0-9a-f]{40}$/.test(value || '');
 const id = value => /^[1-9]\d*$/.test(String(value || '')) && Number.isSafeInteger(Number(value));
 const same = (a, b) => stable(a) === stable(b);

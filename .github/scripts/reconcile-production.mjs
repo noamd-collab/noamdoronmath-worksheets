@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { ENVIRONMENT, TASK, assertReleaseHistory, githubApi } from './production-release.mjs';
 
-// Deliberately one incident, not a general escape hatch from the release guard.
+// Two reviewed incidents, not a general escape hatch from the release guard.
 export const INCIDENT = Object.freeze({
   failedDeploymentId: 7706338816,
   failedStatusId: 21934891324,
@@ -15,7 +15,29 @@ export const INCIDENT = Object.freeze({
   previousDeploymentId: 7669709987,
   previousLiveSha: '7f5f679781ec152850ee4e9e2f112b384b19950b',
 });
+// The 2026-11-25 guard record. The publish step exited in the worker-budget
+// check before `wix release`, so that run published nothing. The live tree is
+// still this failed SHA, not the previous success record 83e7dd34.
+export const GROW_PAYLOAD_INCIDENT = Object.freeze({
+  failedDeploymentId: 8059175006,
+  failedStatusId: 23134699071,
+  failedRunId: 45625886565,
+  failedJobId: 139246081490,
+  failedSha: 'ee96eeb3cdb47171f11405bf48fb2ba18f0412bc',
+  failedControllerSha: '9611a15d77ab588eee8e9ceb2ede109a25a67e8b',
+  previousDeploymentId: 8039996642,
+  previousLiveSha: '83e7dd3447adfa7b7fa570548ca3728d52e7eca8',
+  confirmedLiveSha: 'ee96eeb3cdb47171f11405bf48fb2ba18f0412bc',
+  evidencePath: '.github/release-evidence/grow-payload-8059175006.json',
+});
+export const INCIDENTS = Object.freeze([INCIDENT, GROW_PAYLOAD_INCIDENT]);
 export const EVIDENCE_PATH = '.github/release-evidence/landing-release-413.json';
+export const liveShaOf = incident => incident.confirmedLiveSha || incident.previousLiveSha;
+export function incidentByDeploymentId(id) {
+  const found = INCIDENTS.find(item => String(item.failedDeploymentId) === String(id));
+  requireValue(found, 'Explicit incident IDs do not match a reviewed reconciliation');
+  return found;
+}
 const INDEX_PATH = 'headless/astro-poc/src/data/search-index.v1.json';
 const PUBLIC_INDEX = 'https://www.noamdoronmath.co.il/search-index.v1.json';
 const REPOSITORY = 'noamd-collab/noamdoronmath-worksheets';
@@ -25,7 +47,7 @@ const stable = value => JSON.stringify(value, (_, item) => item && !Array.isArra
   ? Object.fromEntries(Object.keys(item).sort().map(key => [key, item[key]])) : item);
 function requireValue(condition, message) { if (!condition) throw new Error(message); }
 const clone = value => JSON.parse(JSON.stringify(value));
-export const writeConfirmation = incident => `NOAM APPROVED RECONCILIATION OF ${incident.failedDeploymentId} TO LIVE ${incident.previousLiveSha}`;
+export const writeConfirmation = incident => `NOAM APPROVED RECONCILIATION OF ${incident.failedDeploymentId} TO LIVE ${liveShaOf(incident)}`;
 
 async function paged(api, pathname, field) {
   const rows = [];
@@ -84,8 +106,8 @@ async function snapshot(api, incident) {
 export function validateEvidence({ rawEvidence, evidenceSha256, confirmedLiveSha, incident = INCIDENT, now = Date.now() }) {
   requireValue(/^[0-9a-f]{64}$/.test(evidenceSha256 || '') && digest(rawEvidence) === evidenceSha256, 'Reviewed evidence digest mismatch');
   const evidence = JSON.parse(rawEvidence);
-  requireValue(confirmedLiveSha === incident.previousLiveSha && evidence.confirmedLiveSha === confirmedLiveSha,
-    'Only the explicitly confirmed previous live SHA can be reconciled');
+  requireValue(confirmedLiveSha === liveShaOf(incident) && evidence.confirmedLiveSha === confirmedLiveSha,
+    'Only the explicitly confirmed live SHA can be reconciled');
   requireValue(evidence.schemaVersion === 1 && evidence.failedDeploymentId === incident.failedDeploymentId &&
     evidence.failedRunId === incident.failedRunId && evidence.failedSha === incident.failedSha &&
     evidence.previousDeploymentId === incident.previousDeploymentId, 'Evidence identifies a different incident');
@@ -127,7 +149,7 @@ export async function reconcileProduction({ api, gitDir, rawEvidence, evidenceSh
   requireValue(evidence.publicIndexSha256 === expectedIndex, 'Evidence index digest differs from the confirmed Git commit');
   const before = await snapshot(api, incident);
   await verifyPublicIndex({ fetchImpl, expected: expectedIndex });
-  const plan = { incident, confirmedLiveSha, controllerSha, evidencePath: EVIDENCE_PATH, evidenceSha256,
+  const plan = { incident, confirmedLiveSha, controllerSha, evidencePath: incident.evidencePath || EVIDENCE_PATH, evidenceSha256,
     expectedIndex, stateSha256: digest(stable(before)), action: 'Record operator-confirmed previous live SHA from scoped evidence; preserve failure; do not publish' };
   const planSha256 = digest(stable(plan));
   if (!write) return { reconciled: false, planSha256, plan };
@@ -166,12 +188,14 @@ async function main() {
     process.env.GITHUB_REPOSITORY === REPOSITORY, 'Reconciliation runs only from the reviewed main workflow');
   requireValue(['dry-run', 'write'].includes(process.env.RECONCILE_MODE), 'Choose dry-run or write explicitly');
   const gitDir = process.env.SITE_DIR || process.cwd();
+  const incident = incidentByDeploymentId(process.env.FAILED_DEPLOYMENT_ID);
   // Read committed evidence, never an unreviewed working-tree replacement.
-  const rawEvidence = execFileSync('git', ['-C', gitDir, 'show', `${process.env.GITHUB_SHA}:${EVIDENCE_PATH}`], { encoding: 'utf8', maxBuffer: 20_000 });
+  const rawEvidence = execFileSync('git', ['-C', gitDir, 'show', `${process.env.GITHUB_SHA}:${incident.evidencePath || EVIDENCE_PATH}`], { encoding: 'utf8', maxBuffer: 20_000 });
   const result = await reconcileProduction({
     api: githubApi({ token: process.env.GITHUB_TOKEN, repository: REPOSITORY }), gitDir, rawEvidence,
     evidenceSha256: process.env.EVIDENCE_SHA256, confirmedLiveSha: process.env.CONFIRMED_LIVE_SHA,
     failedDeploymentId: process.env.FAILED_DEPLOYMENT_ID, failedRunId: process.env.FAILED_RUN_ID,
+    incident,
     controllerSha: process.env.GITHUB_SHA, runId: process.env.GITHUB_RUN_ID,
     write: process.env.RECONCILE_MODE === 'write', confirmation: process.env.RECONCILE_CONFIRMATION,
     approvedPlanSha256: process.env.APPROVED_PLAN_SHA256,
