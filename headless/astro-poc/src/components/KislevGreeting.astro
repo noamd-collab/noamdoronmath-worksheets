@@ -1,4 +1,5 @@
 ---
+import { HANUKKAH_5787_END_MS, HANUKKAH_5787_START_MS } from '../lib/hanukkah5787';
 import { KISLEV_5787_END_MS, KISLEV_5787_START_MS } from '../lib/kislev5787';
 
 /** Eight mitzvah lights plus the shamash, drawn as ink-and-paper candles. */
@@ -14,8 +15,13 @@ const candles = [
   { x: 124, h: 15 },
 ];
 ---
-<script is:inline define:vars={{ start: KISLEV_5787_START_MS, end: KISLEV_5787_END_MS }}>
-  if (Date.now() >= start && Date.now() < end) document.documentElement.classList.add('kislev-5787');
+<script is:inline define:vars={{ start: KISLEV_5787_START_MS, end: KISLEV_5787_END_MS, hanukkahStart: HANUKKAH_5787_START_MS, hanukkahEnd: HANUKKAH_5787_END_MS }}>
+  var holidayDate = new URLSearchParams(location.search).get('holidayDate');
+  var now = holidayDate && /^\d{4}-\d{2}-\d{2}$/.test(holidayDate)
+    ? Date.parse(holidayDate + 'T12:00:00+02:00')
+    : Date.now();
+  if (now >= hanukkahStart && now < hanukkahEnd) document.documentElement.classList.add('hanukkah-5787');
+  else if (now >= start && now < end) document.documentElement.classList.add('kislev-5787');
 </script>
 <div class="kislev-strip" id="kislev-5787" data-kislev-greeting>
   <div class="kislev-strip__row">
@@ -39,10 +45,20 @@ const candles = [
         })}
       </g>
     </svg>
-    <p class="kislev-strip__copy">
+    <p class="kislev-strip__copy" data-kislev-copy>
       <strong class="kislev-strip__hello">חודש כסלו טוב!</strong>
       <span class="kislev-strip__sum">שמונה לילות אור, וסכום נרות המצווה <span class="kislev-strip__eq" dir="ltr">1+2+…+8 = 36</span></span>
     </p>
+    <div class="kislev-strip__copy" id="hanukkah-5787" data-hanukkah-greeting>
+      <strong class="kislev-strip__hello">חג חנוכה שמח! 🕎</strong>
+      <span class="kislev-strip__sum">נר אחר נר מוסיפים אור, וגם בלמידה מוסיפים צעד אחר צעד.</span>
+      <button type="button" class="kislev-strip__ask" data-hanukkah-ask aria-expanded="false">בלילה השמיני מדליקים 8 נרות, בלי השמש. כמה נרות מדליקים בכל שמונת הלילות יחד, בלי השמש?</button>
+      <span data-hanukkah-answer hidden>
+        <span class="kislev-strip__eq" dir="ltr">1+2+…+8 = 36</span>
+        <span class="kislev-strip__sum">, ועם השמש </span>
+        <span class="kislev-strip__eq" dir="ltr">36+8 = 44</span>
+      </span>
+    </div>
     <svg class="kislev-strip__donut" viewBox="0 0 36 36" width="32" height="32" aria-hidden="true" focusable="false">
       <circle cx="18" cy="18" r="13.5" fill="#f3d2a4" stroke="#22305a" stroke-width="2"></circle>
       <circle cx="18" cy="18" r="4.6" fill="#e5735c" stroke="#22305a" stroke-width="1.5"></circle>
@@ -53,16 +69,33 @@ const candles = [
     </svg>
   </div>
 </div>
+<script is:inline>
+  var ask = document.querySelector('[data-hanukkah-ask]');
+  if (ask) ask.addEventListener('click', function () {
+    var answer = document.querySelector('[data-hanukkah-answer]');
+    if (!answer) return;
+    answer.hidden = false;
+    ask.setAttribute('aria-expanded', 'true');
+  });
+</script>
 <style>
   .kislev-strip {
     display: none;
     scroll-margin-top: 96px;
   }
-  :global(html.kislev-5787) .kislev-strip {
+  :global(html.kislev-5787) .kislev-strip,
+  :global(html.hanukkah-5787) .kislev-strip {
     display: block;
     background: #fdf6e8;
     color: #22305a;
     border-block-end: 2px solid #22305a;
+  }
+  :global(html.kislev-5787) [data-hanukkah-greeting],
+  :global(html.hanukkah-5787) [data-kislev-copy] {
+    display: none;
+  }
+  :global(html.hanukkah-5787) [data-hanukkah-greeting] {
+    display: flex;
   }
   .kislev-strip__row {
     display: flex;
@@ -111,6 +144,23 @@ const candles = [
     font-weight: 700;
     color: #1f6462;
     white-space: nowrap;
+  }
+  .kislev-strip__ask {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 500;
+    line-height: 1.35;
+    text-align: center;
+    cursor: pointer;
+    min-height: 44px;
+  }
+  .kislev-strip__ask:focus-visible {
+    outline: 3px solid #2a7c7a;
+    outline-offset: 2px;
   }
   .kislev-flame {
     transform-box: fill-box;
