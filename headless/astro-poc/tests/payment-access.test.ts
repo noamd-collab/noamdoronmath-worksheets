@@ -133,12 +133,22 @@ test('the closed payment page and the public landing do not offer a pay link', (
   }
 
   const landing = readFileSync(new URL('../src/components/TeacherComingSoon.astro', import.meta.url), 'utf8');
-  assert.match(landing, /paymentOpen = false/);
-  assert.match(landing, /\{paymentOpen && <section[^>]*id="teacher-plans"/);
+  assert.equal(landing.includes('paymentOpen'), false);
+  assert.match(landing, /<section class="teacher-access-note wrap" id="teacher-plans">/);
   const plansAt = landing.indexOf('id="teacher-plans"');
-  const plansEnd = landing.indexOf('</section>}', plansAt);
+  const plansEnd = landing.indexOf('</section>', plansAt);
   assert.ok(plansAt > 0 && plansEnd > plansAt);
-  assert.match(landing.slice(plansAt, plansEnd), /href="\/payment"/);
+  const plans = landing.slice(plansAt, plansEnd);
+  assert.match(plans, /גישה לאזור המורים תיפתח בקרוב\. הפרטים עדיין בעבודה\./);
+  for (const needle of ['18', '180', 'לבחירת מסלול', '/payment', 'חודשיים מתנה', 'Grow', '30 יום', '365', 'button']) {
+    assert.equal(plans.includes(needle), false, needle);
+  }
+
+  const teachers = readFileSync(new URL('../src/pages/teachers.astro', import.meta.url), 'utf8');
+  assert.match(teachers, /Cache-Control', 'private, no-store'/);
+  assert.match(teachers, /Vary', 'Cookie'/);
+  assert.equal(teachers.includes('paymentOpen'), false);
+  assert.equal(teachers.includes('allowPaymentTesting'), false);
 
   for (const slug of ['purchase-terms', 'cancellation', 'delivery']) {
     const raw = readFileSync(new URL(`../src/data/site-pages/${slug}.json`, import.meta.url), 'utf8');
