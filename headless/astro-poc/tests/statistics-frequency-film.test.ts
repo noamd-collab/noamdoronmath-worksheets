@@ -1,7 +1,6 @@
 /**
- * Grade 8 statistics film (Noam, 2026-11-09): silent autoplay on this landing
- * only. Animation clock, no narration request, one pause/resume control.
- * The narrated mp3 stays on disk and is not referenced by the player.
+ * Grade 8 statistics film: silent in every mode, including a direct open.
+ * Animation clock, no audio markup and no narration file, one pause/resume control.
  * It does not loop. Stop Animations still pauses it.
  */
 import assert from 'node:assert/strict';
@@ -60,13 +59,13 @@ describe('grade 8 statistics film', () => {
   it('autoplays in silence and does not loop or request the narration', () => {
     assert.match(film, /function startSilentAutoplay\(\)/);
     assert.match(film, /window\.__statsFilm=\{silent:true,loop:false,audio:false/);
-    assert.equal(film.includes('narration.ee7f390cbe.mp3'), false);
+    for (const token of ['<audio', '.mp3', 'narration.', 'mute']) {
+      assert.equal(film.includes(token), false, token);
+    }
+    assert.equal(existsSync(join(root, 'public/loops/statistics-frequency/narration.ee7f390cbe.mp3')), false);
     assert.equal(/\bautoplay\b/.test(film.replace('startSilentAutoplay', '')), false);
     assert.equal(film.includes(';base64,'), false, 'assets are files, not inline base64');
     assert.ok(Buffer.byteLength(film) < 200_000);
-    const narration = join(root, 'public/loops/statistics-frequency/narration.ee7f390cbe.mp3');
-    assert.ok(existsSync(narration));
-    assert.ok(statSync(narration).size > 0);
     for (const [, path] of film.matchAll(/"(\/loops\/statistics-frequency\/[^"]+)"/g)) {
       assert.ok(existsSync(join(root, 'public', path)), path);
     }
