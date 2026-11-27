@@ -1,5 +1,11 @@
 ---
-import { INSTAGRAM_PROFILE_URL, featuredReelUrl } from '../lib/instagramReel';
+import {
+  CAT_FILM_AI_NOTE,
+  CAT_FILM_POSTER,
+  CAT_FILM_TITLE,
+  INSTAGRAM_PROFILE_URL,
+  featuredReelUrl,
+} from '../lib/instagramReel';
 
 const reelUrl = featuredReelUrl();
 ---
@@ -12,31 +18,38 @@ const reelUrl = featuredReelUrl();
   aria-labelledby="ig-feature-title"
 >
   <h2 id="ig-feature-title" class="ig-feature__title"><span class="ig-feature__line">נועם דורון </span><span class="ig-feature__line">מתמטיקה</span><span class="ig-feature__sep"> - </span><span class="ig-feature__slogan">לא משננים, מבינים.<svg viewBox="0 0 120 16" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M3 9 Q 18 2, 33 9 T 63 9 T 93 9 T 117 7" fill="none" stroke="#e5735c" stroke-width="4" stroke-linecap="round"></path></svg></span></h2>
-  {reelUrl ? (
-    <div class="ig-feature__embed" data-ig-reel>
-      <blockquote
-        class="instagram-media"
-        data-instgrm-permalink={reelUrl}
-        data-instgrm-version="14"
-      >
-        <a href={reelUrl} target="_blank" rel="noopener">צפייה בסרטון באינסטגרם<span class="ig-feature__sr"> (נפתח בחלון חדש)</span></a>
-      </blockquote>
-    </div>
-  ) : (
-    <a class="ig-feature__card" href={INSTAGRAM_PROFILE_URL} target="_blank" rel="noopener">
-      <span class="ig-feature__mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="36" height="36" focusable="false">
-          <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
-          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
-          <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"></circle>
-        </svg>
-      </span>
-      <span class="ig-feature__badge">אינסטגרם</span>
-      <span class="ig-feature__card-title">הסרטון החדש בדרך</span>
-      <span class="ig-feature__card-text">עולה עכשיו. בינתיים, העמוד שלנו פתוח.</span>
-      <span class="ig-feature__go">כניסה לעמוד<span class="ig-feature__sr"> (נפתח בחלון חדש)</span></span>
-    </a>
-  )}
+  <div class="cat-film" data-cat-film>
+    <h3 id="cat-film-title" class="cat-film__title">{CAT_FILM_TITLE}</h3>
+    <p class="cat-film__note">{CAT_FILM_AI_NOTE}</p>
+    {reelUrl ? (
+      <div class="ig-feature__embed" data-ig-reel>
+        <blockquote
+          class="instagram-media"
+          data-instgrm-permalink={reelUrl}
+          data-instgrm-version="14"
+        >
+          <a href={reelUrl} target="_blank" rel="noopener">
+            <img class="cat-film__poster" src={CAT_FILM_POSTER} alt="" width="1080" height="1920" loading="lazy" decoding="async">
+            <span class="cat-film__watch">צפייה בסרטון באינסטגרם<span class="ig-feature__sr"> (נפתח בחלון חדש)</span></span>
+          </a>
+        </blockquote>
+      </div>
+    ) : (
+      <a class="ig-feature__card" href={INSTAGRAM_PROFILE_URL} target="_blank" rel="noopener">
+        <span class="ig-feature__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="36" height="36" focusable="false">
+            <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+            <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+            <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"></circle>
+          </svg>
+        </span>
+        <span class="ig-feature__badge">אינסטגרם</span>
+        <span class="ig-feature__card-title">הסרטון החדש בדרך</span>
+        <span class="ig-feature__card-text">עולה עכשיו. בינתיים, העמוד שלנו פתוח.</span>
+        <span class="ig-feature__go">כניסה לעמוד<span class="ig-feature__sr"> (נפתח בחלון חדש)</span></span>
+      </a>
+    )}
+  </div>
   <p class="ig-feature__profile">
     <a href={INSTAGRAM_PROFILE_URL} target="_blank" rel="noopener">לעמוד האינסטגרם שלנו<span class="ig-feature__sr"> (נפתח בחלון חדש)</span></a>
   </p>
@@ -132,15 +145,34 @@ const reelUrl = featuredReelUrl();
     height: 12px;
     overflow: visible;
   }
+  .cat-film {
+    width: min(100%, 36em);
+    margin-inline: auto;
+  }
+  .cat-film__title {
+    max-width: 16em;
+    margin: 0 auto 6px;
+    font-family: 'Secular One', 'Secular One Fallback', sans-serif;
+    font-weight: 400;
+    font-size: clamp(22px, 4.4vw, 30px);
+    line-height: 1.25;
+    color: #22305a;
+    text-wrap: balance;
+  }
+  .cat-film__note {
+    margin: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #3d4870;
+  }
   .ig-feature__embed,
   .ig-feature__card {
-    width: min(100%, 480px);
-    max-width: 540px;
+    width: 100%;
+    max-width: 340px;
     margin-inline: auto;
     box-sizing: border-box;
   }
   .ig-feature__embed {
-    min-height: min(78vh, 720px);
     background: #fff;
     border: 2px solid #22305a;
     border-radius: 18px 6px 20px 8px / 8px 20px 6px 18px;
@@ -150,9 +182,34 @@ const reelUrl = featuredReelUrl();
   .ig-feature__embed :global(.instagram-media) {
     width: 100% !important;
     min-width: 0 !important;
-    max-width: 540px !important;
+    max-width: 340px !important;
     margin: 0 auto !important;
     background: #fff;
+  }
+  .cat-film__poster {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 16;
+    object-fit: cover;
+    background: #fbfaf5;
+  }
+  .cat-film__watch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 8px 12px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1e605e;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .ig-feature__embed a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
   }
   .ig-feature__card {
     display: flex;
