@@ -8,10 +8,11 @@ Three classes:
   policy     Correct content that the owner's rules do not allow for this
              pupil or lesson: chronology, drawings outside geometry, signs
              by grade, brand lines. Blocks. Acts on one question when named.
-  editorial  Level, variety and page-fill findings a teacher can judge and
-             change in the Word file. Never blocks. Becomes a teacher note
-             on a needs_review sheet.
+  editorial  Level, variety and page-fill findings. Blocks like the other
+             two classes. Acts on one question when the gate output names it.
 
+Every finding blocks, with one exception (blocks()): a DIDACTIC_REVIEW row
+of the middle-build step that didactic_review.py already reconciled.
 A code that is not in the table is truth, so an unknown outcome blocks.
 The table was read from the two pinned skills (file names below are relative
 to each skill root) and from this engine's own steps.
@@ -26,7 +27,10 @@ MAX_REVIEW_QUESTIONS = 30
 MAX_REVIEW_COUNT = 2000
 
 # Hebrew teacher notes. Only editorial codes have one, and only these fixed
-# sentences ever reach the teacher: gate output is never forwarded.
+# sentences ever reach the teacher: gate output is never forwarded. A delivered
+# sheet carries only the DIDACTIC_REVIEW note of the one row that does not
+# block a render (middle-build, blocks()) and the SHORTER_SHEET note that the
+# worker adds for its own shorter sheet; a SHORTER_SHEET finding of a gate blocks.
 NOTES = {
     "G50": "מספר שאלות האתגר (★) בדף אינו בטווח הרגיל של 2 עד 4.",
     "G61": "רמת הקושי בדף אינה אחידה: הפער בין השאלות הקלות לשאלות הקשות גדול מהרגיל, "
@@ -39,11 +43,10 @@ NOTES = {
 }
 
 # Hebrew teacher notes for printed answers that no exact kernel verified, by
-# the kind recorded in the adapter's evidence (general_source: label, open,
-# decision, review). The sheet is still delivered; the teacher is told where.
+# the kind recorded in the adapter's evidence (general_source: decision,
+# review). Only a middle-school sheet is delivered with them; the elementary
+# adapter and the runner refuse every such answer. Any other kind is refused.
 UNVERIFIED_NOTES = {
-    "open": "בדף יש סעיפים פתוחים שאין להם תשובה במפתח. הם מסומנים לבדיקת המורה.",
-    "label": "בחלק מהסעיפים התשובה היא שם או מונח. היא הודפסה כפי שנכתבה ולא אומתה בחישוב.",
     "decision": "בחלק משאלות כן/לא ההכרעה חושבה מטענה שנוסחה מתוך סיפור. כדאי לוודא שהטענה מתאימה לנוסח השאלה.",
     "review": "תשובות של הסבר או הוכחה לא אומתו בחישוב. נדרשת בהן בדיקת מורה.",
 }
@@ -172,11 +175,10 @@ STEP_CODES = {
 }
 
 
-# Fixed second measurements of one documented false positive each. Their own
-# refusal is not a finding: the gate they could not reconcile still blocks.
-RECONCILIATION_STEPS = frozenset({"didactic-review-reconciliation", "bracket-order-reconciliation"})
-# The only code a second measurement may clear (paren_order.py).
-RECONCILABLE = frozenset({"G51"})
+# The fixed second check of the middle driver's documented REVIEW-only exit
+# (didactic_review.py). Its own refusal is not a finding: the middle-build
+# step it could not reconcile still fails and blocks.
+RECONCILIATION_STEPS = frozenset({"didactic-review-reconciliation"})
 
 
 def gate_class(code):
@@ -205,10 +207,16 @@ def finding(code, step, question=None, item=None, **evidence):
 
 
 def blocks(row):
-    """Editorial findings and reconciled findings do not block. All else does."""
-    if row.get("reconciled") is True and row.get("code") in RECONCILABLE:
-        return False
-    return not (row.get("class") == EDITORIAL and gate_class(row.get("code")) == EDITORIAL)
+    """Every finding blocks, editorial ones included, with one exception.
+
+    A DIDACTIC_REVIEW row of middle-build: it exists only after
+    didactic_review.py reconciled the pinned driver's REVIEW-only exit and
+    the runner set that step to REVIEW; its delivery follows the runner's own
+    result, and this keeps its per-question teacher note. A G51 always
+    blocks, whatever a row says about it.
+    """
+    return not (row.get("code") == "DIDACTIC_REVIEW" and row.get("step") == "middle-build"
+                and row.get("class") == EDITORIAL)
 
 
 def review_findings(rows):
@@ -221,8 +229,6 @@ def review_findings(rows):
         entry = grouped.setdefault(code, {"code": code, "class": row["class"], "count": 0,
                                           "steps": [], "questions": []})
         entry["count"] += 1
-        if row["class"] != EDITORIAL:
-            entry["class"] = "reconciled"
         if row["step"] not in entry["steps"]:
             entry["steps"].append(row["step"])
         question = row.get("question")
@@ -248,9 +254,9 @@ def decide(report, failed_steps=()):
     names of the steps that did not pass.
 
     action:
-      deliver  nothing blocks. Failed steps carry only editorial or
-               reconciled findings; they become REVIEW and the notes go to
-               the teacher.
+      deliver  nothing blocks. The only rows that do not block are
+               middle-build DIDACTIC_REVIEW rows (blocks()); their notes
+               stay in reviewFindings.
       replace  something blocks and every blocking finding names a question.
                ``questions`` lists them; the caller may replace those
                questions and render again.
@@ -285,8 +291,15 @@ def decide(report, failed_steps=()):
 def public_review_findings(rows):
     """The part of manifest reviewFindings that may leave the worker.
 
-    Codes are checked against the table and notes are taken from it, so no
-    manifest text reaches the job result. Reconciled findings stay private.
+    Only a row that blocks() lets through: on every step the row lists, its
+    code, with the class the table gives it, must not block. Today that is
+    the middle-build DIDACTIC_REVIEW row alone. A row that lists no step,
+    whose class is not the table's, or whose code blocks on any listed step
+    stays private. Codes are checked against the table and notes are taken
+    from it, so no manifest text reaches the job result. The worker adds the
+    SHORTER_SHEET note of its own shorter sheet itself. The worker never
+    delivers on the strength of this filter: remote_worker.general_verdict
+    refuses a manifest with any row this function leaves out.
     """
     result = []
     if not isinstance(rows, list):
@@ -294,8 +307,11 @@ def public_review_findings(rows):
     for row in rows[:40]:
         if not isinstance(row, dict):
             continue
-        code, count = row.get("code"), row.get("count")
-        if (not isinstance(code, str) or gate_class(code) != EDITORIAL or row.get("class") == "reconciled"
+        code, count, steps = row.get("code"), row.get("count"), row.get("steps")
+        if (not isinstance(code, str) or row.get("class", gate_class(code)) != gate_class(code)
+                or not isinstance(steps, list) or not 0 < len(steps) <= 8
+                or any(not isinstance(step, str) or blocks({"code": code, "class": gate_class(code), "step": step})
+                       for step in steps)
                 or type(count) is not int or not 0 < count <= MAX_REVIEW_COUNT):
             continue
         entry = {"code": code, "count": count, "note": NOTES[code]}

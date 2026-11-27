@@ -1,0 +1,938 @@
+{
+ "cases": {
+  "closed:counting": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.json": {
+     "bytes": 5714,
+     "sha256": "48a7220650fffa620ab6be2518ebdaf7a45452df88e74fc783e1a5a359bd194e"
+    },
+    "general-evidence.json": {
+     "bytes": 30820,
+     "sha256": "5ebb789cb5ca8524a50e7aee708c4a7aad5c7cac6190552445d78e6922ec022d"
+    },
+    "general-source.json": {
+     "bytes": 28010,
+     "sha256": "430c7b2d00dcc50c00cc1515f7a1e8126f26e9c021c4b44fbbabedb7a86d6733"
+    },
+    "sheet.html": {
+     "bytes": 25659,
+     "sha256": "b2b5e798b15d9c25a2589f986cf7545fa0bb54fe1467cb9026ab993375908c4f"
+    },
+    "verified.json": {
+     "bytes": 39468,
+     "sha256": "2061a551569d54282633ed427f0578cac1bf8cba188b3879cb112e677874c61d"
+    },
+    "worksheet-source.json": {
+     "bytes": 20988,
+     "sha256": "33f7edd622de5174381a9d14a93856c74ef82d5bf5608694b637026842ca3019"
+    }
+   },
+   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
+  },
+  "closed:division_facts": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.json": {
+     "bytes": 4548,
+     "sha256": "2f3a7ca87c2d36e0d135e29a916213d856f0e69a6fad361b24a429a4674c9f35"
+    },
+    "didactic-evidence.json": {
+     "bytes": 3431,
+     "sha256": "04072a3cc510a60655b07f8669145f0b0743ad8a6bf2a86c1b39570f29616509"
+    },
+    "sheet.html": {
+     "bytes": 26763,
+     "sha256": "6916944a1c78ce6a745919b3978f7b0149e7b860b708f5e24578f860d0993b95"
+    },
+    "verified.json": {
+     "bytes": 9927,
+     "sha256": "950f736862aa3a504a98dc2577a7d57d41ff58a4be92859051267dd9adcefe71"
+    },
+    "worksheet-source.json": {
+     "bytes": 13835,
+     "sha256": "3de2f777d5bacb4e7dd95a1a552af957c6dc3f6feb9534726465c39b6854a26d"
+    }
+   },
+   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"reviewRequired\": true}\n"
+  },
+  "closed:fraction": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.json": {
+     "bytes": 7628,
+     "sha256": "deca1a2481c40f3946f0ef11d128a5ba161286627480fe1208ffc582777f68c2"
+    },
+    "general-evidence.json": {
+     "bytes": 45836,
+     "sha256": "61c6dee0447b9e313db0f3e5b2c9f914c2965cbd5b5477b813fac240cc91ea77"
+    },
+    "general-source.json": {
+     "bytes": 77542,
+     "sha256": "08f1179c3e99a43de0e610207b14c8e317680cf1b0a964798fae0faa8a4628ca"
+    },
+    "sheet.html": {
+     "bytes": 40283,
+     "sha256": "209b5247cac3c41e92cd13f53f9479a4e0e8073c4016dedfb723f10b4d0857d3"
+    },
+    "verified.json": {
+     "bytes": 51031,
+     "sha256": "fd5cca7f2682388e6d308d970e8c54980fcb089e2c7a6983728afd1f7a9c7073"
+    },
+    "worksheet-source.json": {
+     "bytes": 40649,
+     "sha256": "5e1e94ca45211238b9c0de931658c1a9c5c7e0b2342c535ed632009315785901"
+    }
+   },
+   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
+  },
+  "closed:pythagoras": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.py": {
+     "bytes": 738,
+     "sha256": "3f5e852ef35406a117c60a7971f2545d930cfb9d816fd419c0dae5d79f3434e8"
+    },
+    "figures/q1.json": {
+     "bytes": 273,
+     "sha256": "6f5eee4ca3bafffa9b5d1d6414e646d94d9a727b8e6f60ea5dc33a6e1105031a"
+    },
+    "figures/q1.svg": {
+     "bytes": 2111,
+     "sha256": "8b5faa9db5efb7dd2f76d8c472caded8f3f5399e8ee2af108391cf2535dd8fd3"
+    },
+    "figures/q10.json": {
+     "bytes": 360,
+     "sha256": "9ca8371fae812b1dc099f7a8c8689f8c1540aaf46e54f3c0bdd892480c998dce"
+    },
+    "figures/q10.svg": {
+     "bytes": 4684,
+     "sha256": "6d02969bea5ba37235c79fccb1bf4a235619c1b7be877337c4202e59feaffd97"
+    },
+    "figures/q11.json": {
+     "bytes": 280,
+     "sha256": "5695343a0ea6c701708127171c6be9602159598709b31b7ff48bd6acb8598cc9"
+    },
+    "figures/q11.svg": {
+     "bytes": 2669,
+     "sha256": "ded4520026492d0feb1e294e0f741181874b7633c5d254653fda2e5e887c266f"
+    },
+    "figures/q12.json": {
+     "bytes": 281,
+     "sha256": "2c7af98b6ea429444db4d02e3be095358202324dbb3bc64ce945c5eb37f82504"
+    },
+    "figures/q12.svg": {
+     "bytes": 2814,
+     "sha256": "903d941a3affcc856dfa08604075c1840c2f0268cbad74c203ce94650eb9b0c5"
+    },
+    "figures/q14.json": {
+     "bytes": 274,
+     "sha256": "2dc9f2a7d1072717ef7f0213732bfeba9b9dfee9509a7df4e2d9ff9984b8a749"
+    },
+    "figures/q14.svg": {
+     "bytes": 2120,
+     "sha256": "5ef65e7e82ada393357edae76bc50bb7b0d9c0273bf75e44e8a87b52f1212e70"
+    },
+    "figures/q15.json": {
+     "bytes": 484,
+     "sha256": "3b3c400c6ef6e85ed17fbaacb484205ff2445a877cc070983d56313a6e0d0cef"
+    },
+    "figures/q15.svg": {
+     "bytes": 5800,
+     "sha256": "d74b3a7aec504648e80106132cb0a71abfbc50c89ba8539105e20f5c4b9e9484"
+    },
+    "figures/q16.json": {
+     "bytes": 278,
+     "sha256": "f45b1542c50f9874bd90c09aea515e980ad6b2891a838afaf35fe0e7302c2101"
+    },
+    "figures/q16.svg": {
+     "bytes": 3046,
+     "sha256": "ae1c8c212191c25d27386fe118b7acbaef41c58ad9dd95d8adac7193174d6237"
+    },
+    "figures/q17.json": {
+     "bytes": 277,
+     "sha256": "55189c96bd8714b2858531f96cb8fb969af32c34bd781458aac07ffa07ae47da"
+    },
+    "figures/q17.svg": {
+     "bytes": 2669,
+     "sha256": "aaf78515a0d8022ab0309ba632b6d28058aaeab317b5fff78de087e584786a0b"
+    },
+    "figures/q19.json": {
+     "bytes": 359,
+     "sha256": "8095d42c7d63dc00f90d90181d40901fdd4818aa7c26916c88d06045913db31e"
+    },
+    "figures/q19.svg": {
+     "bytes": 4453,
+     "sha256": "ae3ec7bd611d89ba960049a4df4ca9b128922cfb189b88cebeb38ef56f18e4b6"
+    },
+    "figures/q2.json": {
+     "bytes": 428,
+     "sha256": "4b09d10ce8c47e0caee39295691ded99f6512a4495532d2122459bb98efcd364"
+    },
+    "figures/q2.svg": {
+     "bytes": 5081,
+     "sha256": "669926a3d4a3e391f34fb6fd728726ac59a246532326697c5d2087080d50d356"
+    },
+    "figures/q20.json": {
+     "bytes": 280,
+     "sha256": "0c5eb1cb08e29059991776b21aeb725619efd1074ae153430cc51508eca8e70d"
+    },
+    "figures/q20.svg": {
+     "bytes": 2812,
+     "sha256": "fa37e981cae621931ebaded53690b801f3a73de73b7c922ccaa9d0c7bd0730ce"
+    },
+    "figures/q4.json": {
+     "bytes": 279,
+     "sha256": "27763068203d6cac02cb32ffd177484d311e1bf11d14ac45b071fa0d54bce4c7"
+    },
+    "figures/q4.svg": {
+     "bytes": 2679,
+     "sha256": "59d76c8a45c43c7f2c2d18db52934ae07eb2180d5bbc605fe5d9e8a23674b268"
+    },
+    "figures/q5.json": {
+     "bytes": 278,
+     "sha256": "ed1c9f8820ee22b03650cf85a48d366941373d1af26cb9fcd9dcc0edbd32b9fa"
+    },
+    "figures/q5.svg": {
+     "bytes": 2824,
+     "sha256": "3776f51efd5d75767e08fe8634af79dbdfe1d6c5c71c5cfa5c153e62d0a0359e"
+    },
+    "figures/q6.json": {
+     "bytes": 359,
+     "sha256": "1cbdad46c32feb6a2b76625cd0788165bf22cd1209603d123c4ef2c44b381593"
+    },
+    "figures/q6.svg": {
+     "bytes": 4375,
+     "sha256": "46b47bb3a953e280298efd8c9820c33c7b7b44437f985564b610f276b0a7d9bd"
+    },
+    "figures/q7.json": {
+     "bytes": 276,
+     "sha256": "c68ed505cd9c1b208eb2ddb85ab06edf1eb5fd05fe483d4d59309d8438ba0a33"
+    },
+    "figures/q7.svg": {
+     "bytes": 2110,
+     "sha256": "68e9d83120134f37c419e94752045176978b3fa214bc9a189e159df01c535973"
+    },
+    "figures/q9.json": {
+     "bytes": 275,
+     "sha256": "ae9cc92616b362e61d131b22dfbc4a21c4080f0b8bf8fd2c18d5385f04963977"
+    },
+    "figures/q9.svg": {
+     "bytes": 3058,
+     "sha256": "d92446f0cd9347105ee4f6e84d779002f51197a00f8fb6be441b610c02aef1c2"
+    },
+    "general-evidence.json": {
+     "bytes": 9975,
+     "sha256": "c8b1810e08af86e6e16278d497de31727ad709f2b714d063e4ed6a77a2795ed2"
+    },
+    "general-source.json": {
+     "bytes": 202,
+     "sha256": "cfa3db8e76dfde9ac8710a057bad9b97237fa6d3f41df70f66ce1601303cdf8b"
+    },
+    "levels.json": {
+     "bytes": 124473,
+     "sha256": "8874ed890d071086459a9f2403306ee7936a81d6037574a0f365cce4e841238b"
+    },
+    "pythagoras_shape.py": {
+     "bytes": 1939,
+     "sha256": "b094677c980a92ef92366c1391b8190ca03ae003c28ac81e54e4f96a5df2ab55"
+    },
+    "verified.json": {
+     "bytes": 9975,
+     "sha256": "c8b1810e08af86e6e16278d497de31727ad709f2b714d063e4ed6a77a2795ed2"
+    },
+    "worksheet-source.json": {
+     "bytes": 48121,
+     "sha256": "2c139d412a8eaec3f3a782c93a52997551af53f4418cde43e481fa862d576807"
+    }
+   },
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"reviewRequired\": true}\n"
+  },
+  "closed:square": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.py": {
+     "bytes": 718,
+     "sha256": "7bfc13723dd909fd130fd113eb4b2516c336f75675c584d4880158f1f2616e02"
+    },
+    "figures/q1.json": {
+     "bytes": 186,
+     "sha256": "3d4421875776159e4fab84ad1e6b93a5689cc3c4f38a5b12182232a060afb86a"
+    },
+    "figures/q1.svg": {
+     "bytes": 2182,
+     "sha256": "4bd8ed99e366cffbf9dfc734bebef2583aec8cfad7a6945b28a8a94d0134538a"
+    },
+    "figures/q10.json": {
+     "bytes": 188,
+     "sha256": "eba18865f43bd3b27b0e4b7c1c355f7e69afa5034b6b1bc0eb6a38b08f164c7f"
+    },
+    "figures/q10.svg": {
+     "bytes": 2586,
+     "sha256": "11c13b4b7cb851ce616f621c3294f1b2afcd0fa29135d13f452f8e6749eb364c"
+    },
+    "figures/q11.json": {
+     "bytes": 364,
+     "sha256": "d51600cb4294b587d7ec11609192de5f81b0fdc3c35ffa094b168eb458e42cac"
+    },
+    "figures/q11.svg": {
+     "bytes": 6173,
+     "sha256": "72be2cd0a3cc358bb975d47d93adc93c6b2b1c67e7f028167004aa89e961ddfd"
+    },
+    "figures/q12.json": {
+     "bytes": 200,
+     "sha256": "0261e8ecef7917febbf769082bbff27ee1b5390dbbc9d38bfa5fece9b083d32a"
+    },
+    "figures/q12.svg": {
+     "bytes": 3722,
+     "sha256": "5dcb4156e4a5b6e2e5cf6c6e5c34846aaf82fa7d219b9e52fe916637c8dfae8e"
+    },
+    "figures/q14.json": {
+     "bytes": 188,
+     "sha256": "06cf6feb6d68d77d8014c7fc0bce1b7546d8d667929ef3b075cc7793f91ab14c"
+    },
+    "figures/q14.svg": {
+     "bytes": 2184,
+     "sha256": "ed5a039c853600375276102a1d5433a8c67cb2373a27d751c95a5783ec2ab84d"
+    },
+    "figures/q15.json": {
+     "bytes": 364,
+     "sha256": "690a72c4d4eb2f3c51557db54aa4d29d1e8f9c987a849492dc40721880c83285"
+    },
+    "figures/q15.svg": {
+     "bytes": 4764,
+     "sha256": "a34f28e4396b24027149aaffa0571e392f3a342dd7febf35972f63c3903579e6"
+    },
+    "figures/q16.json": {
+     "bytes": 191,
+     "sha256": "7a73e9f03f369c7ce490c7339826b94335156f8ccc3026694608b894e08f91a4"
+    },
+    "figures/q16.svg": {
+     "bytes": 2588,
+     "sha256": "78d40840bb195b1584e778cb27a3dcb078ac3781e432890af2d258bdecd1d4da"
+    },
+    "figures/q17.json": {
+     "bytes": 189,
+     "sha256": "4d02f5e75d1ab041116ce08e5d2efd08148610bab61120f6172e7b41c4369b21"
+    },
+    "figures/q17.svg": {
+     "bytes": 2173,
+     "sha256": "b2f101ea8f16e2029188a01730512404be456e2bed1797febb9de1365e52f70a"
+    },
+    "figures/q19.json": {
+     "bytes": 364,
+     "sha256": "c40c5061a1f4ccabb332ccaa87985e51262e19bc67790d5a8529d452b4460bb6"
+    },
+    "figures/q19.svg": {
+     "bytes": 5674,
+     "sha256": "e7dee16275a50e8ad355517ed18a3c79ec679e4e50f9f5172c601033a8f6a980"
+    },
+    "figures/q2.json": {
+     "bytes": 364,
+     "sha256": "691633bb41907a59dc5ad852a122906ccc94567dc56d7213d1d72307d54c8e1f"
+    },
+    "figures/q2.svg": {
+     "bytes": 5680,
+     "sha256": "f1fa2355297597166748b9608cf7a3f17802840785a930b80339baabdff54f9f"
+    },
+    "figures/q20.json": {
+     "bytes": 194,
+     "sha256": "65d0f907772402a9293b6c053eb239e2e725159174319e36ae4714829d5011e7"
+    },
+    "figures/q20.svg": {
+     "bytes": 2286,
+     "sha256": "4b8f5bc5971d98f4e506a0aa654e207112e8126930962858639424397228d6bf"
+    },
+    "figures/q4.json": {
+     "bytes": 191,
+     "sha256": "99062dafef41f203fc9d31680c7f72929cebd0781b445f00776d06e033bd7f45"
+    },
+    "figures/q4.svg": {
+     "bytes": 2588,
+     "sha256": "66056c4d1b9d4fb0036faf7aac7393c80e4b50b20a00a573ed5d78e299cc17d3"
+    },
+    "figures/q5.json": {
+     "bytes": 189,
+     "sha256": "80104af39538934b77bd7c381540defb6e70240aa860f0e3d086be1bbbd7d39d"
+    },
+    "figures/q5.svg": {
+     "bytes": 2173,
+     "sha256": "8ab2ebe13b78b9fa41a3a058b3983743bda194a7139c2eb50275250575d18818"
+    },
+    "figures/q6.json": {
+     "bytes": 364,
+     "sha256": "127d3173893ccf66a25e8f01729708a5eb524fcc2593227bab07f848c6fe742f"
+    },
+    "figures/q6.svg": {
+     "bytes": 4754,
+     "sha256": "5ab102015c711887a9753c41c3a3c608f109e6620c858a8f51e7c2912c8d5d69"
+    },
+    "figures/q7.json": {
+     "bytes": 193,
+     "sha256": "e3b2cf67d1d7e8d11418a6b061ac1f6dd80e5bd72df4e248a40f397a347b72ee"
+    },
+    "figures/q7.svg": {
+     "bytes": 2287,
+     "sha256": "c1a074307ad7b3a2c9c6ceadd1062d145c3a8516a8a82e287cc52d6578e88e29"
+    },
+    "figures/q9.json": {
+     "bytes": 188,
+     "sha256": "219141eb35652c3f6c15adb10ae569f6e6b7dc80cf7f00960af7d92e0872fccf"
+    },
+    "figures/q9.svg": {
+     "bytes": 3017,
+     "sha256": "0b28aa3a919b4e6b744310c390b200d80d9b23d97da934633e0238044e628efb"
+    },
+    "general-evidence.json": {
+     "bytes": 10958,
+     "sha256": "2fb8b3bb8a7b6e7a5bf61147281a8896f3d9982d4db28ae2e6059aa20626f504"
+    },
+    "general-source.json": {
+     "bytes": 198,
+     "sha256": "b6251fcafdbac8a6b3909d97af9456d489c01d4f974716183d4b1779ed378460"
+    },
+    "levels.json": {
+     "bytes": 126649,
+     "sha256": "a5d48bb052c51fb5f579552d9715ad08c0bba28a8e899854677451647852c487"
+    },
+    "square_shape.py": {
+     "bytes": 2236,
+     "sha256": "8f110ca848f96005ac5a2c36aadb7a136445d09b7156587d1eb96476a7410760"
+    },
+    "verified.json": {
+     "bytes": 10958,
+     "sha256": "2fb8b3bb8a7b6e7a5bf61147281a8896f3d9982d4db28ae2e6059aa20626f504"
+    },
+    "worksheet-source.json": {
+     "bytes": 47799,
+     "sha256": "bef3ae233409969eacef92f03a89e827adb6226fc6400b122c1ad806479180f6"
+    }
+   },
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"reviewRequired\": true}\n"
+  },
+  "closed:triangle": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.py": {
+     "bytes": 724,
+     "sha256": "436f047ce2124774bd59156b4de1b74fa3960bbefe6068504c440cb67fd993c6"
+    },
+    "figures/q1.json": {
+     "bytes": 324,
+     "sha256": "35499a8c02d4c09372e8e1a33794663c9d1b9a8fb4e7f206c4770995d748e5eb"
+    },
+    "figures/q1.svg": {
+     "bytes": 2500,
+     "sha256": "5220b4697e54456846ab05b7d419198e16c16d1822957044f0e935496abac7d8"
+    },
+    "figures/q10.json": {
+     "bytes": 331,
+     "sha256": "cff654fe20d60834ed3ebe8a7dd1e5e335bc04c5cc34ddaa0039397657b7ef67"
+    },
+    "figures/q10.svg": {
+     "bytes": 5066,
+     "sha256": "c5d17722f3445571d076b7525f29e3df76b05014c833a112813daee542f478c2"
+    },
+    "figures/q12.json": {
+     "bytes": 326,
+     "sha256": "dbe72f35259888f009a2bb853f12407ae0b2e2d74ca9740c6cf4993c260bed65"
+    },
+    "figures/q12.svg": {
+     "bytes": 2509,
+     "sha256": "ea39f21584de8710cf6947d303850082f56154bea605868103f4022f34ee0a34"
+    },
+    "figures/q13.json": {
+     "bytes": 321,
+     "sha256": "9e762552ec9882f44b2e0d9526f5efe194331c865911c1567376b8cbf1c40c77"
+    },
+    "figures/q13.svg": {
+     "bytes": 2499,
+     "sha256": "ea72d41dd5e2ebee3abd938f2462c1350c91215d582041c18313794c0485f87b"
+    },
+    "figures/q14.json": {
+     "bytes": 323,
+     "sha256": "b2aaadfca45f7b2d6050bb92e1a98c9b003bb1022c6cf0cf0d454b92ab102b65"
+    },
+    "figures/q14.svg": {
+     "bytes": 5964,
+     "sha256": "c106b5a65a168c1c086abdb5b9754ed7380069b5a68f95c9715fac8c2856b6ea"
+    },
+    "figures/q15.json": {
+     "bytes": 331,
+     "sha256": "1b385573a00a7e832ff89cc953f3350917a08152213d23802d67d00dc03e673f"
+    },
+    "figures/q15.svg": {
+     "bytes": 3356,
+     "sha256": "972e8cc0989ad2cba97b69c35015bcf72698eaa6ca869733a9d3573609109a23"
+    },
+    "figures/q16.json": {
+     "bytes": 325,
+     "sha256": "9c7e66b46485b1f65715d5743b6c75f315349f4d9a72ca6adcf048be5582cda6"
+    },
+    "figures/q16.svg": {
+     "bytes": 2926,
+     "sha256": "c9a73131890775c17b435f4de6cd4286d013822a9bd19afd9db39d9eb29c27f6"
+    },
+    "figures/q18.json": {
+     "bytes": 329,
+     "sha256": "f8c119280dcbe01e62556159a17e5ee90aedc42c51866e3a6157bdeb90e63aae"
+    },
+    "figures/q18.svg": {
+     "bytes": 2432,
+     "sha256": "dfdbce8fa7b03f9b55c3dce83279961e02560d8cffbe402cbc17e9abfdb5df7f"
+    },
+    "figures/q19.json": {
+     "bytes": 331,
+     "sha256": "610011b558bf8f0b9909fcbb9aed8b3179f9bf2526e7b39f75e8fc854f44193f"
+    },
+    "figures/q19.svg": {
+     "bytes": 5290,
+     "sha256": "f819295397eed4014ece4be7280cbf6040df80f389ffc957a376aabd2a1248f8"
+    },
+    "figures/q2.json": {
+     "bytes": 330,
+     "sha256": "239adb32e2345ba6efe8f62caf572357e204e4b638bc10792aed0ada6fc7b023"
+    },
+    "figures/q2.svg": {
+     "bytes": 5789,
+     "sha256": "6f1ce4951c0f054adefefa8cfa21d97d0feeb7270b0445319d72bbc5622e98ac"
+    },
+    "figures/q20.json": {
+     "bytes": 325,
+     "sha256": "6faf4bb25945e96208bdf2a33ee00d3da48212c04a32e008ebaad4ae58dc7f93"
+    },
+    "figures/q20.svg": {
+     "bytes": 2522,
+     "sha256": "6fdd79898dc338abaf67b0155e718ae9756f25b06d471c8dbf82a975d6288eba"
+    },
+    "figures/q3.json": {
+     "bytes": 331,
+     "sha256": "96cd7cf137c92c2b843ad07c08f37fe5e45adb6c0c0722e496701278db1b6856"
+    },
+    "figures/q3.svg": {
+     "bytes": 3356,
+     "sha256": "0597b6a8e86207bc85e8f1aa046a4736bd0c18474ed33adacbe9c768e532bcbc"
+    },
+    "figures/q5.json": {
+     "bytes": 326,
+     "sha256": "9cfd6785fab66cd95355a5e2f545ccb4007c606b178c1d38a90e63d3950268e1"
+    },
+    "figures/q5.svg": {
+     "bytes": 3325,
+     "sha256": "5703aae639ba19584f7bc92fbbdccdfcd08b4cb1cb6be2ad034a65946ae273d4"
+    },
+    "figures/q6.json": {
+     "bytes": 328,
+     "sha256": "19ada5400ae60f46474460ba0bd6709114a59fe485b79f26bd5b411d48d6a89e"
+    },
+    "figures/q6.svg": {
+     "bytes": 2430,
+     "sha256": "307339542ee5b0e444c836bb67347c7a57ded23ca99a934147d155fd7662ecc4"
+    },
+    "figures/q7.json": {
+     "bytes": 324,
+     "sha256": "91be633c3e5bc125f150db953a04a97c74df439c6125ff344cf564cfd237cfd8"
+    },
+    "figures/q7.svg": {
+     "bytes": 7148,
+     "sha256": "51742c7783dbc5fc1213ab40d9c14fd1a40bbf149df5459133b080dff15fbb6d"
+    },
+    "figures/q8.json": {
+     "bytes": 327,
+     "sha256": "55f5a033599861182f24dec9afb8c0756911951f36c5df203a29ee2278640321"
+    },
+    "figures/q8.svg": {
+     "bytes": 2523,
+     "sha256": "2a8435f4a23c14ee87a9dcaaaea31178deefe7ede3fe6cfa15df714ab1d0748c"
+    },
+    "figures/q9.json": {
+     "bytes": 329,
+     "sha256": "be53624dcef08fb5eaf769f34d467028036328c02db521ce13c9420c9f65da88"
+    },
+    "figures/q9.svg": {
+     "bytes": 2802,
+     "sha256": "208698ba740c4a33d1d1a2d5c89ecee0b1755c9cbc3a8c85d2a97d91f52c6c67"
+    },
+    "general-evidence.json": {
+     "bytes": 18241,
+     "sha256": "a9d05816ad01cfada1d3bdb5f2049e337ce999405cf5dbad0633e9bfe94dba91"
+    },
+    "general-source.json": {
+     "bytes": 200,
+     "sha256": "e912d7948378fe8766d2d2af701f6b547a3d76d77367d412e2e219d7187ace44"
+    },
+    "levels.json": {
+     "bytes": 136485,
+     "sha256": "a8f330793433b6876aedb1c605a7132a5467e8e65299380fa1929ae40f740819"
+    },
+    "triangle_shape.py": {
+     "bytes": 2937,
+     "sha256": "f5bfa2a2838bc9a0faa1cff71083202a93be15ceea7f8a4276c290c60c6e7e5b"
+    },
+    "verified.json": {
+     "bytes": 18241,
+     "sha256": "a9d05816ad01cfada1d3bdb5f2049e337ce999405cf5dbad0633e9bfe94dba91"
+    },
+    "worksheet-source.json": {
+     "bytes": 47305,
+     "sha256": "58d6ae4710491cd3b42aa5cdbd94c3d54e3a18c5fd1a64492fdfe1fc3c9e7c0a"
+    }
+   },
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"reviewRequired\": true}\n"
+  },
+  "v4:grade2-vocalized": {
+   "error": [
+    "general_source.GeneralSourceError: The prompt does not print the exercise that its key answers; a typed task is printed only after a bare instruction"
+   ],
+   "exitCode": 1,
+   "files": {
+    "adapter-failure.json": {
+     "bytes": 113,
+     "sha256": "91f33b0f5f6659800d99a68ae11aac89129138551ae5d16658f0e7112d057119"
+    },
+    "general-evidence.json": {
+     "bytes": 41974,
+     "sha256": "74cdf68a9873e3c720ef5da22dc0059c9c4aa54824f0edabe75babb38a783c23"
+    },
+    "general-source.json": {
+     "bytes": 43529,
+     "sha256": "7a893c36b677d21986084c455989aed10fa8d1f7d19b9ed1bfdbf1bfc61c77a7"
+    }
+   },
+   "stdout": ""
+  },
+  "v4:grade4-fractions": {
+   "error": [
+    "general_source.GeneralSourceError: The prompt does not print the exercise that its key answers; a typed task is printed only after a bare instruction"
+   ],
+   "exitCode": 1,
+   "files": {
+    "adapter-failure.json": {
+     "bytes": 113,
+     "sha256": "91f33b0f5f6659800d99a68ae11aac89129138551ae5d16658f0e7112d057119"
+    },
+    "general-evidence.json": {
+     "bytes": 29966,
+     "sha256": "91cd9f8e7117f3bc421359043ec26e07782cfbb6211824eb5087d25126569cc4"
+    },
+    "general-source.json": {
+     "bytes": 29536,
+     "sha256": "3333f24bbb3f0e2f4bd176c77ac163caddf4aacb70230bee07f8e2ca9c98586a"
+    }
+   },
+   "stdout": ""
+  },
+  "v4:grade4-skill-calculation": {
+   "error": [
+    "general_source.GeneralSourceError: The printed blank is not filled from the print by any binder"
+   ],
+   "exitCode": 1,
+   "files": {
+    "adapter-failure.json": {
+     "bytes": 113,
+     "sha256": "53d5de6347ccb47f7948651a1cc7fe60366bb6ee5684aa4b9859fb5104c75338"
+    }
+   },
+   "stdout": ""
+  },
+  "v4:grade7-equation-skill": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.py": {
+     "bytes": 1431,
+     "sha256": "1ed12fed723ac17c1cdd4a964c850322a279bdde26170e03a13f7013fd88a9ef"
+    },
+    "general-evidence.json": {
+     "bytes": 43619,
+     "sha256": "3a7c21c98477b6baf0cd35215f53e44842415d6d15982012fb35fc388a4ebf44"
+    },
+    "general-source.json": {
+     "bytes": 91860,
+     "sha256": "59d3c2a5beb8b224b85ffc9d6a31af7759bb3bff259219deef95da1dd8e4dad1"
+    },
+    "levels.json": {
+     "bytes": 48138,
+     "sha256": "e283d048f0054fff171899a39d0874908f443127145430159a1824219a40a929"
+    },
+    "verified.json": {
+     "bytes": 39695,
+     "sha256": "24020bcbd87e52572f17eeadb7dab1159b789b0fd0934254295b01ba0efd7645"
+    },
+    "worksheet-source.json": {
+     "bytes": 45094,
+     "sha256": "b4166261748dc8b5814d39717f99b9c36a8bcb0e67d6b59c3535f3e9f3971d77"
+    }
+   },
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 31, \"unverifiedAnswers\": [{\"question\": 1, \"item\": 1, \"kind\": \"review\"}, {\"question\": 1, \"item\": 2, \"kind\": \"review\"}, {\"question\": 1, \"item\": 3, \"kind\": \"review\"}, {\"question\": 2, \"item\": 1, \"kind\": \"review\"}, {\"question\": 2, \"item\": 2, \"kind\": \"review\"}, {\"question\": 2, \"item\": 3, \"kind\": \"review\"}, {\"question\": 4, \"item\": 1, \"kind\": \"review\"}, {\"question\": 4, \"item\": 2, \"kind\": \"review\"}, {\"question\": 4, \"item\": 3, \"kind\": \"review\"}, {\"question\": 5, \"item\": 1, \"kind\": \"review\"}, {\"question\": 5, \"item\": 2, \"kind\": \"review\"}, {\"question\": 5, \"item\": 3, \"kind\": \"review\"}, {\"question\": 8, \"item\": 1, \"kind\": \"review\"}, {\"question\": 8, \"item\": 2, \"kind\": \"review\"}, {\"question\": 8, \"item\": 3, \"kind\": \"review\"}, {\"question\": 10, \"item\": 1, \"kind\": \"review\"}, {\"question\": 10, \"item\": 2, \"kind\": \"review\"}, {\"question\": 11, \"item\": 1, \"kind\": \"review\"}, {\"question\": 11, \"item\": 2, \"kind\": \"review\"}, {\"question\": 11, \"item\": 3, \"kind\": \"review\"}, {\"question\": 12, \"item\": 1, \"kind\": \"review\"}, {\"question\": 12, \"item\": 2, \"kind\": \"review\"}, {\"question\": 12, \"item\": 3, \"kind\": \"review\"}, {\"question\": 13, \"item\": 1, \"kind\": \"review\"}, {\"question\": 13, \"item\": 2, \"kind\": \"review\"}, {\"question\": 13, \"item\": 3, \"kind\": \"review\"}, {\"question\": 19, \"item\": 1, \"kind\": \"review\"}, {\"question\": 19, \"item\": 2, \"kind\": \"review\"}, {\"question\": 19, \"item\": 3, \"kind\": \"review\"}, {\"question\": 20, \"item\": 1, \"kind\": \"review\"}, {\"question\": 20, \"item\": 3, \"kind\": \"review\"}], \"reviewRequired\": true}\n"
+  },
+  "v4:grade9-coordinate-triangles": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.py": {
+     "bytes": 1431,
+     "sha256": "2b0bcdf125c143145b1042765a6d9f9202a07ea8bfcfccac399482efdd188a07"
+    },
+    "figures/q1.json": {
+     "bytes": 640,
+     "sha256": "92642072cc9c04445f4f190d06c140e57a1096a7d89298e2fa536d2b12fe7c32"
+    },
+    "figures/q1.svg": {
+     "bytes": 7147,
+     "sha256": "c245ad24daca596fd5c605df132d74190edf8e91de2687542be512a4ecf02792"
+    },
+    "figures/q10.json": {
+     "bytes": 640,
+     "sha256": "4997d2c8953b10e936ff27a4a0f78ca34216a1470de35e06bcbf970c63f553b1"
+    },
+    "figures/q10.svg": {
+     "bytes": 7045,
+     "sha256": "4cd8645607b68fe3ef9d11323799e928955ac2df76784279c196e0032989954e"
+    },
+    "figures/q11.json": {
+     "bytes": 638,
+     "sha256": "7d5dafb5ff187de016b9c70be515747edc1218c0585a29eb2562b30d42a5a75a"
+    },
+    "figures/q11.svg": {
+     "bytes": 6558,
+     "sha256": "3c8e2ccd70b6f389868f83eb1dbf3d3e7f1968aa7d40d641b477a5bc108f7956"
+    },
+    "figures/q12.json": {
+     "bytes": 638,
+     "sha256": "d37806293c1c97c3619dd208e09b3a95f65b1bfa37e1ed1a3754af9fa35089f2"
+    },
+    "figures/q12.svg": {
+     "bytes": 6947,
+     "sha256": "ffa24ba3a21ed54efc4a8c86364ed1169fcde31ec867d99c93a789483b8f5623"
+    },
+    "figures/q13.json": {
+     "bytes": 640,
+     "sha256": "cc0801aa6893752729ff97288b7f271b3b55294925d432e4797e96119b141f41"
+    },
+    "figures/q13.svg": {
+     "bytes": 7025,
+     "sha256": "51f3173235e2510dd9b631244f38bbaa32b1b44d2fb6d6323845fe06a5829275"
+    },
+    "figures/q14.json": {
+     "bytes": 640,
+     "sha256": "10e5b9a2697824b023758b320cf0d9097d72c09814ed61ced79f255edcec4fbe"
+    },
+    "figures/q14.svg": {
+     "bytes": 7022,
+     "sha256": "cdfba36e814eda2f5f806e6a24f0491c10f3da59a8bb293ba4b73fc930b7e53d"
+    },
+    "figures/q15.json": {
+     "bytes": 641,
+     "sha256": "4f52403c189d6fae31fe4f5efb49880d57b2354894c4a62cdc34d978ac8cc5f5"
+    },
+    "figures/q15.svg": {
+     "bytes": 6462,
+     "sha256": "3d6ab71cf1cc15135b46d5de17450444cac660093b736757f1f734b495f13117"
+    },
+    "figures/q16.json": {
+     "bytes": 638,
+     "sha256": "7a25359a5d8eac6077bd4a46194a090008b8d3c8afc8d1a5b782dc20ca5d4cf0"
+    },
+    "figures/q16.svg": {
+     "bytes": 6943,
+     "sha256": "1fb60fffcbd8630734171be7e2393e7fd4c5a3a7b4c5693b2df525275875c000"
+    },
+    "figures/q2.json": {
+     "bytes": 640,
+     "sha256": "8cd91d141842908c21c9147afa9b01076e0f6be86c8f4b7c95ccec83c9fedcca"
+    },
+    "figures/q2.svg": {
+     "bytes": 6951,
+     "sha256": "7eb61ca9d449b8358d63cc879a10fee9761b796c449336ac37fe82e35df92f99"
+    },
+    "figures/q3.json": {
+     "bytes": 640,
+     "sha256": "97ae2acda2e42ed94ab7a19bed10415ab39613be436820835ad75c11833357f5"
+    },
+    "figures/q3.svg": {
+     "bytes": 6548,
+     "sha256": "644699da25dab9f2f4221d0ecaeb5ba3f527942eaeef51276ec05443973aa32d"
+    },
+    "figures/q4.json": {
+     "bytes": 638,
+     "sha256": "ad8ed7042952363b801ddf40537dbfe13d61fbed28d0e0b91d9e012e1a9bfc21"
+    },
+    "figures/q4.svg": {
+     "bytes": 6948,
+     "sha256": "2b26f948dc57e76e8aa5a6ac4b0a3915024791584143e1e40f652ce81dce7d7d"
+    },
+    "figures/q5.json": {
+     "bytes": 640,
+     "sha256": "75c15bc0a03758024d8e953e0d6c61610059c9ad0bcdc3949178173506f06549"
+    },
+    "figures/q5.svg": {
+     "bytes": 6870,
+     "sha256": "380cdeb8527454d38838c72a1231368b3e28c3174affc802ea795b811afea3f6"
+    },
+    "figures/q6.json": {
+     "bytes": 638,
+     "sha256": "6902d353f7fa51b15e587bbbc5efac2bb3c780e2b7ab39267bdb7586dc1e52bd"
+    },
+    "figures/q6.svg": {
+     "bytes": 6947,
+     "sha256": "43271ee00b687f6511c9c16901a9c8106ac0e9c60a426f2a976d6f6fabbc9686"
+    },
+    "figures/q7.json": {
+     "bytes": 640,
+     "sha256": "5ff36235bbb5d1426acf5f1bfef3a1ba914aa8f12831e8a23aa0dac42d5ac0ac"
+    },
+    "figures/q7.svg": {
+     "bytes": 6460,
+     "sha256": "c309cfa514a6e5e4c5575db23169460ad1b12055fe56dc2be404f16f2c9357d5"
+    },
+    "figures/q8.json": {
+     "bytes": 640,
+     "sha256": "cd215b5f8cedb7241c0c5f980cb65acb25904aa4a10dd59e74c561305f625d9f"
+    },
+    "figures/q8.svg": {
+     "bytes": 6845,
+     "sha256": "83cb7f4e96517eaf780af6f98072bef7bfb89eafa64ffeb8d92d597528042f3e"
+    },
+    "figures/q9.json": {
+     "bytes": 640,
+     "sha256": "339b3d030009416fab5306a6609b600d2f6822eaf7368bad6db8893ff3f2708e"
+    },
+    "figures/q9.svg": {
+     "bytes": 6946,
+     "sha256": "19b267d129828865092e1ca3842cba882c4755cd158b937fd33213843b9f6873"
+    },
+    "general-evidence.json": {
+     "bytes": 83786,
+     "sha256": "3a5ad7582c826830a61477577587906e31dd84378abbeefb56d431d2185c1139"
+    },
+    "general-source.json": {
+     "bytes": 49224,
+     "sha256": "5dac02b9c8379d35a77bdcc2574f2564f614ee44af68d3925700ed81cea3d7f1"
+    },
+    "levels.json": {
+     "bytes": 193140,
+     "sha256": "d6852f83dcce18f2ca1da95622ca0bbadca0db9c2a545b151897938b1e667f58"
+    },
+    "verified.json": {
+     "bytes": 81347,
+     "sha256": "23fa674f86083b94f3ed943384deda90dfbeafd4c3591a6cb61e997f9b99578a"
+    },
+    "worksheet-source.json": {
+     "bytes": 91426,
+     "sha256": "c44dc6e57d136593f7e109fe15bacb27f09cccac604236d95041ea78385945a6"
+    }
+   },
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 12, \"unverifiedAnswers\": [{\"question\": 17, \"item\": 1, \"kind\": \"review\"}, {\"question\": 17, \"item\": 2, \"kind\": \"review\"}, {\"question\": 17, \"item\": 3, \"kind\": \"review\"}, {\"question\": 18, \"item\": 1, \"kind\": \"review\"}, {\"question\": 18, \"item\": 2, \"kind\": \"review\"}, {\"question\": 18, \"item\": 3, \"kind\": \"review\"}, {\"question\": 19, \"item\": 1, \"kind\": \"review\"}, {\"question\": 19, \"item\": 2, \"kind\": \"review\"}, {\"question\": 19, \"item\": 3, \"kind\": \"review\"}, {\"question\": 20, \"item\": 1, \"kind\": \"review\"}, {\"question\": 20, \"item\": 2, \"kind\": \"review\"}, {\"question\": 20, \"item\": 3, \"kind\": \"review\"}], \"reviewRequired\": true}\n"
+  },
+  "v4:grade9-quadratic": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.py": {
+     "bytes": 1431,
+     "sha256": "2b0bcdf125c143145b1042765a6d9f9202a07ea8bfcfccac399482efdd188a07"
+    },
+    "general-evidence.json": {
+     "bytes": 164977,
+     "sha256": "f946d7be5a35aa729395a8a027567cc8a3fd217aca91433b9f1048c20663f08a"
+    },
+    "general-source.json": {
+     "bytes": 114754,
+     "sha256": "381006eec27791a9ba86533a35117617a329592784a14a2ba9a1dfd16a90d358"
+    },
+    "levels.json": {
+     "bytes": 51753,
+     "sha256": "89ae7a079fac61aff66e68c4f8a39eeadda9fdd9dd17420e08a0868bd5b6b46c"
+    },
+    "verified.json": {
+     "bytes": 164748,
+     "sha256": "1e973908e0ac312186517ae76475d6198002539c55fa17fecbca21a28dca8ade"
+    },
+    "worksheet-source.json": {
+     "bytes": 97476,
+     "sha256": "5064cd7cbbb6208308d792de82893e99fb6f11f42a7c5754b2015667aa95b8ac"
+    }
+   },
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
+  },
+  "v4:test_general_source:g9r": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.py": {
+     "bytes": 1431,
+     "sha256": "2b0bcdf125c143145b1042765a6d9f9202a07ea8bfcfccac399482efdd188a07"
+    },
+    "general-evidence.json": {
+     "bytes": 22216,
+     "sha256": "76824ad22095ce5d9d2a138f0f1d17c56cac0f6e139d3f35f357983ccc55ba90"
+    },
+    "general-source.json": {
+     "bytes": 18885,
+     "sha256": "8d6b822f4c34330882a5fef238d6ba2228e2db36957aebd36430949b9711671b"
+    },
+    "levels.json": {
+     "bytes": 9536,
+     "sha256": "f7a0421c7b531bf5f90e7c596df0b46235b48d37941aaa009800a8414d70cbdd"
+    },
+    "verified.json": {
+     "bytes": 21987,
+     "sha256": "459d74940c4d3c8982306c04884b389488c6870e6b699bdb6bd72d55515add63"
+    },
+    "worksheet-source.json": {
+     "bytes": 15411,
+     "sha256": "a97d60a864848eb86e9d68d87c1d0b3dc66857d5a2034ece4ab49c061ef640d7"
+    }
+   },
+   "stdout": "{\"skill\": \"middle\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
+  },
+  "v4:test_general_source:ד11": {
+   "error": null,
+   "exitCode": 0,
+   "files": {
+    "content.json": {
+     "bytes": 1454,
+     "sha256": "7d533407fa7c1ce37fa2bc4f7d2d43bd0c17a059826a0841e13f1d76542e8858"
+    },
+    "general-evidence.json": {
+     "bytes": 12958,
+     "sha256": "174722991bbfcf63d3112a82a987c9d5da1da6b506d04918970796777b93c358"
+    },
+    "general-source.json": {
+     "bytes": 12087,
+     "sha256": "59a6b448f3fd41069c8ee6ef41868422f378d9e3c51e6b79d8e05fe43213eeb9"
+    },
+    "sheet.html": {
+     "bytes": 21718,
+     "sha256": "0eb7a74c78c2131d9ccf25a9216b6695c7de3e302f318d8f122a399a88aaa563"
+    },
+    "verified.json": {
+     "bytes": 10998,
+     "sha256": "cf3b9f92d7f219113280800fc9a03b6323ff3f8a314e8cb685fc359002f324f3"
+    },
+    "worksheet-source.json": {
+     "bytes": 9749,
+     "sha256": "442e0ea06e67419a781a00838a928e122d9dc056b72ec434f20ada3bd5fdb617"
+    }
+   },
+   "stdout": "{\"skill\": \"elementary\", \"work\": \"<WORK>\", \"sourcePath\": \"<WORK>/worksheet-source.json\", \"evidencePath\": \"<WORK>/general-evidence.json\", \"unverifiedAnswerCount\": 0, \"unverifiedAnswers\": [], \"reviewRequired\": true}\n"
+  }
+ },
+ "skillLock": {
+  "elementary": {
+   "sha256": "582ce27fd320b3714a248f2ef7adcfd9d96b0faf6644af7be7c78bb566418d5f",
+   "version": "1.0.5-noam"
+  },
+  "middle": {
+   "sha256": "89697b363762936aa2bd7352427e99f39b740ca6c24d28a08c3bd6cb480bb944",
+   "version": "7.2.0-noam"
+  }
+ }
+}

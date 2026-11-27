@@ -22,9 +22,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "345 = ___ מאות + ___ עשרות + ___ אחדות",
-    "key": "3 מאות, 4 עשרות, 5 אחדות"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -47,9 +47,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "47 = ___ עֲשָׂרוֹת + ___ יְחִידוֹת",
-    "key": "4 עֲשָׂרוֹת, 7 יְחִידוֹת"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -192,9 +192,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "3.47 = 3 + 0.4 + ___",
-    "key": "0.07"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -238,9 +238,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "4,507 = ___ אלפים + ___ מאות + ___ עשרות + ___ אחדות",
-    "key": "4 אלפים, 5 מאות, 0 עשרות, 7 אחדות"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -257,9 +257,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "24 : 6 = ___",
-    "key": "4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -276,9 +276,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "24 : ___ = 6",
-    "key": "4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -295,9 +295,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "35 : 7 = ___",
-    "key": "5"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   }
  ]

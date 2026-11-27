@@ -72,12 +72,9 @@
     "unit": "%"
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "print_adds_numbers"
-    ],
-    "printed": "מטילים קובייה הוגנת. מה ההסתברות לקבל מספר זוגי? כתבו כאחוז. $\\f{3}{6} · 100$",
-    "key": "$50%$"
+    "outcome": "rejected",
+    "stage": "adapter",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {

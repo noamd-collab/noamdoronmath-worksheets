@@ -34,9 +34,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "1 2 + 1 4 = ___",
-    "key": "3 4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -53,9 +53,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "1 2 + 1 4 = ___",
-    "key": "3 4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -301,9 +301,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "חֲצִי מִ־ 8 הוּא ___",
-    "key": "4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {
@@ -422,9 +422,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "1 2 ___ 1 4",
-    "key": "1 2 > 1 4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

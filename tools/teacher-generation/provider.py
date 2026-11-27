@@ -629,6 +629,20 @@ def author_lesson(lesson, *, api_key=None, base_url=None, model=None, timeout=90
             if metadata is not None:
                 metadata.update(authorContract=VERSION, providerCalled=False, responseReceived=False)
             return parameters(lesson)
+        # worksheet-wire/5 only when the operator has declared the site ready for a PDF-only v5 result
+        # (TEACHER_V5_SITE_READY exactly "1"; V5-DESIGN §14 lists what must land first), AND lists the topic in
+        # TEACHER_V5_TOPICS, AND the overlay is reviewed (D7). Both variables are unset by default, so nothing here
+        # imports a v5 module, spends a call or changes a request unless the operator opts in. The structured result
+        # (source plus its trusted render contract) is not a plain payload: the worker renders it with
+        # runner.render_structured.
+        listed = os.environ.get('TEACHER_V5_TOPICS', '')
+        if (os.environ.get('TEACHER_V5_SITE_READY') == '1'
+                and lesson['topicId'] in {topic.strip() for topic in listed.split(',') if topic.strip()}):
+            import structured_author
+            if structured_author.route_enabled(lesson):
+                return structured_author.author_structured_lesson(
+                    lesson, api_key=api_key, base_url=base_url, model=model, timeout=timeout,
+                    metadata=metadata, deadline=None, skill_path=paths[skill])
         from general_provider import author_general_lesson
         return author_general_lesson(lesson, api_key=api_key, base_url=base_url, model=model,
                                      timeout=timeout, metadata=metadata, authoring_context=context,

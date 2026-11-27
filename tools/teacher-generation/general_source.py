@@ -19,6 +19,10 @@ MARKUP = re.compile(r"[<>$\\]|(?:https?|file|data):", re.I)
 HEBREW = re.compile(r"[\u05d0-\u05ea]")
 NIQQUD = re.compile(r"[\u05b0-\u05bc\u05c1\u05c2\u05c7]")
 NAMES = re.compile(r"[A-Z]{1,12}\Z")
+# Root marker of a compiled worksheet-wire/5 source (equal to structured_contract.CONTRACT). The v5 branches
+# below run only when a trusted caller passes validate_source(..., contract=V5_CONTRACT) AND the source carries
+# this marker; the marker alone selects nothing, and every other call takes exactly the code it took before.
+V5_CONTRACT = "worksheet-wire/5"
 MAX_BYTES = 160_000
 MAX_ITEMS = 180
 SHAPES = {
@@ -67,13 +71,67 @@ def text(value, maximum=1000, empty=False):
     return value
 
 
+def title(value, grade, *, v5=False):
+    """A sheet or section title: bounded plain text, refused for the notation that a rich field is refused for.
+
+    The title prints as written, so the refusals of
+    ``compact_authoring.refuse_notation`` apply to it as one line, in every
+    grade (``SOURCE_NOTATION``): a one-letter angle (``מציאת ∠A בטרפז``,
+    ``זווית A בטרפז``), a percent sign apart from its number, and in grades
+    1-6 mathematics or a blank. A worksheet-wire/5 title is code-written and
+    checked against its overlay instead.
+    """
+    text(value, 160)
+    if not v5:
+        from compact_authoring import refuse_notation
+        refuse_notation(value, grade)
+    return value
+
+
 def bounded_int(value, lo, hi):
     if type(value) is not int or not lo <= value <= hi:
         bad("SOURCE_NUMBER", "Integer outside supported bounds")
     return value
 
 
-def rich(value, grade, *, provider=False, location=""):
+def _rich_v5(value, grade, overlay, location):
+    """v5 spans: text (Hebrew prose, code-written) and display (canonical school grammar) only."""
+    from item_kinds import BindingError, check_display_span
+    from text_lint import check_ir_spans, check_ir_text
+    where = " at " + location if location else ""
+    if type(value) is not list or not 1 <= len(value) <= 30:
+        bad("SOURCE_RICH_TEXT", "A text block needs one to thirty typed spans" + where)
+    for span in value:
+        if type(span) is not dict:
+            bad("SOURCE_RICH_TEXT", "Expected a typed span" + where)
+        kind = span.get("kind")
+        if kind == "text":
+            exact(span, ("kind", "text")); text(span["text"], 1200)
+            if re.search(r"[0-9A-Za-z]", span["text"]) or check_ir_text(span["text"]):
+                bad("SOURCE_PLAIN_MATH", "v5 text spans hold Hebrew prose only" + where)
+        elif kind == "display":
+            try:
+                check_display_span(span, overlay)
+            except BindingError as error:
+                bad("SOURCE_DISPLAY", error.code + where)
+        else:
+            bad("SOURCE_RICH_TEXT", "Unsupported text span" + where)
+    if check_ir_spans(value):
+        bad("SOURCE_ATOM", "Two atoms need Hebrew text between them and no bracket beside them" + where)
+    return deepcopy(value)
+
+
+def _v5_overlay(lesson, scope):
+    from structured_contract import overlay_for
+    overlay = overlay_for(lesson["topicId"], lesson["level"])
+    if overlay is None or scope["topic"]["skillId"] != overlay.get("skill", "middle"):
+        bad("SOURCE_WIRE_SCOPE", "This topic and level are not enabled for worksheet-wire/5")
+    return overlay
+
+
+def rich(value, grade, *, provider=False, location="", v5=False, overlay=None):
+    if v5:
+        return _rich_v5(value, grade, overlay, location)
     # Only the provider boundary accepts equivalent wire representations.
     # Do not infer the meaning of bare math, labels, markup or unknown objects.
     if provider:
@@ -206,22 +264,6 @@ def validate_prose(value, grade, scope, *, require_hebrew=False):
         bad("SOURCE_NIQQUD", "Grades one and two require vocalized prose in every Hebrew text field")
 
 
-def check_printed_variable(question, item, answer, solved):
-    """The letter that a solve task's key prints in place of its contract letter (compact_authoring.rename_unknown).
-
-    It is a single lowercase letter outside x, y, a and b that the question
-    itself prints, and the task solves for x.
-    """
-    name = answer["printedVariable"]
-    task = solved["question"]
-    printed = [span.get("notation", "") for span in question["intro"] + item["prompt"] if span.get("kind") == "formula"]
-    printed += [span.get("text", "") for span in question["intro"] + item["prompt"] if span.get("kind") == "text"]
-    if (type(name) is not str or not re.fullmatch(r"[a-z]", name) or name in "xyab"
-            or task.get("kind") != "solve" or task.get("variable") != "x"
-            or not any(re.search(r"(?<![A-Za-z])" + name + r"(?![A-Za-z])", text) for text in printed)):
-        bad("SOURCE_NOTATION", "A printed variable must be a letter that the question prints")
-
-
 def validate_question(question, grade, scope, *, provider, qcount, evidence, pending):
     """Validate and normalize one expanded question, preserving its printed position."""
     exact(question, ("intro", "star", "items"), ("table", "figure", "drawingFromWords"))
@@ -261,10 +303,12 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
             bad("SOURCE_ANSWER", "Expected typed answer")
         item_id = f"q{qcount}-i{j}"
         if answer.get("kind") == "computed":
-            exact(answer, ("kind", "task", "unit"), ("notation", "printedVariable")); text(answer["unit"], 50, empty=True)
+            exact(answer, ("kind", "task", "unit"), ("notation",)); text(answer["unit"], 50, empty=True)
+            if type(answer["task"]) is dict and answer["task"].get("kind") == "divide_remainder":
+                # The kernel's worksheet-wire/5 elementary task kind stays outside the v4 contract:
+                # refused exactly as before the kernel learned it (G1).
+                raise MathTaskError("UNSUPPORTED_TASK", "No trusted solver for this task kind")
             solved = validate_and_solve_task(answer["task"])
-            if "printedVariable" in answer:
-                check_printed_variable(question, item, answer, solved)
             from printed_tasks import match_printed_task, printed_table_row, validate_computed_request
             validate_computed_request(question, item, solved, grade, location=f"q{qcount}.item.{j}")
             match_printed_task(item, solved, grade)
@@ -285,11 +329,16 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
                                and expression(notation, grade) == typed["expression"])
                 if not matches:
                     bad("SOURCE_NOTATION", "The printed calculation must equal its exact typed task")
-            from printed_parts import check_item, check_key_print
+            from printed_parts import check_item, check_key_print, refuse_unsolved_equation
+            from printed_tasks import table_row_task
             try:
                 decision = check_item(question, item, solved, grade, authored=provider)
                 # The key as printed: only the solutions the item asks for, never beside its own prompt.
                 keyed = check_key_print(question, item, solved, grade)
+                # Grades 1–6: an equation printed with a blank is keyed only by solving that equation.
+                refuse_unsolved_equation(question, item, solved, grade)
+                # Beside a table: only the printed expression of the one row that the item names.
+                table_row_task(question, item, solved, grade)
             except GeneralSourceError as error:
                 if error.code == "PRINTED_ANSWER_KIND":
                     # A drawing outside geometry is refused as a drawing, whatever its answer.
@@ -301,9 +350,14 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
             evidence.append({"itemId": item_id, "computed": solved})
             keys[j] = keyed
             if decision is not None and decision.proof["bound"] == "story":
+                if scope["topic"]["skillId"] == "elementary":
+                    # No binder proves that the typed claim reads the story's words, so
+                    # its yes or no has no proven key. Elementary prints none such.
+                    raise GeneralSourceError("PRINTED_ANSWER_KIND", "An elementary yes/no claim typed from a story has no proven key",
+                                             question=qcount, item=j)
                 # The verdict is exact for the typed claim. That the claim reads a
                 # story correctly is as unverified as in any word problem; a yes or
-                # a no hides a misreading, so the teacher is told.
+                # a no hides a misreading, so the middle-school teacher is told.
                 pending.append({"itemId": item_id, "question": qcount, "item": j, "kind": "decision",
                                 "reason": "The decided claim was typed from a story; its reading of the words is unverified"})
         elif answer.get("kind") == "figure":
@@ -323,24 +377,8 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
             answer["text"] = rich(answer["text"], grade, provider=provider, location=f"q{qcount}.item.{j}.answer")
             pending.append({"itemId": item_id, "question": qcount, "item": j, "kind": "review",
                             "reason": "No implemented exact verifier for this authored answer or proof"})
-        elif answer.get("kind") in ("label", "open"):
-            # A name that no kernel computes, or a task that has no key at all.
-            # Both are listed for the teacher; neither is ever a verified answer.
-            from answer_kinds import check_label, check_open
-            try:
-                if answer["kind"] == "label":
-                    exact(answer, ("kind", "text")); text(answer["text"], 40)
-                    check_label(question, item, grade)
-                else:
-                    exact(answer, ("kind",))
-                    check_open(question, item, grade)
-            except GeneralSourceError as error:
-                raise error.at(qcount, j)
-            pending.append({"itemId": item_id, "question": qcount, "item": j, "kind": answer["kind"],
-                            "reason": "A label is printed as authored; no exact verifier" if answer["kind"] == "label"
-                            else "No key is printed; the teacher checks this item"})
         else:
-            bad("SOURCE_ANSWER", "Supported answers: computed, figure, label or open in elementary, review in middle school")
+            bad("SOURCE_ANSWER", "Only computed, figure or explicitly unverified review answers are supported")
     from printed_parts import answer_leak
     leak = answer_leak(question, keys)
     if leak is not None:
@@ -349,14 +387,22 @@ def validate_question(question, grade, scope, *, provider, qcount, evidence, pen
     validate_prose(question, grade, scope)
 
 
-def validate_source(lesson, payload, scope, *, provider=False):
+def validate_source(lesson, payload, scope, *, provider=False, contract=None):
+    """``contract`` (keyword only) is trusted caller configuration, never payload data. Only code that compiled
+    the source itself sets it (structured_source.compile_sheet, v5_offline_render) or passes it through
+    (runner.render_job, validation.validate_model, general_adapters): contract=V5_CONTRACT selects the
+    worksheet-wire/5 branches, and the source must then carry the same root marker. Without it a root
+    "contract" or "selection" key is SOURCE_SHAPE exactly as at bafa36f0, whatever the payload says. The
+    provider boundary (provider=True, every model reply) never passes it."""
+    if contract is not None and (contract != V5_CONTRACT or provider):
+        raise ValueError("Unsupported trusted source contract")
     try:
-        return _validate_source(lesson, payload, scope, provider=provider)
+        return _validate_source(lesson, payload, scope, provider=provider, contract=contract)
     except MathTaskError as error:
         raise GeneralSourceError(error.code, "A typed mathematical task is invalid or outside the supported exact verifier") from None
 
 
-def _validate_source(lesson, payload, scope, *, provider):
+def _validate_source(lesson, payload, scope, *, provider, contract=None):
     """Return normalized source plus evidence, never an approval assertion."""
     try:
         size = len(json.dumps(payload, ensure_ascii=False, allow_nan=False).encode("utf-8"))
@@ -364,22 +410,32 @@ def _validate_source(lesson, payload, scope, *, provider):
         bad("SOURCE_JSON", "Source must be finite JSON")
     if size > MAX_BYTES:
         bad("SOURCE_SIZE", "Source exceeds byte budget")
-    exact(payload, ("version", "title", "rule", "sections"))
+    # worksheet-wire/5 is selected only by the trusted caller's contract= flag, never by the payload's own root
+    # marker (model-shaped data): model output (the provider boundary, general_provider.compile_content) and every
+    # unflagged caller keep a root "contract" or "selection" key as SOURCE_SHAPE, exactly as before v5 existed.
+    v5 = contract == V5_CONTRACT
+    if v5:
+        exact(payload, ("version", "contract", "title", "rule", "sections", "selection"))
+        if payload["contract"] != V5_CONTRACT:
+            bad("SOURCE_SHAPE", "A trusted worksheet-wire/5 source carries its root marker")
+    else:
+        exact(payload, ("version", "title", "rule", "sections"))
     if type(payload["version"]) is not int or payload["version"] != 4:
         bad("SOURCE_VERSION", "Expected source version four")
     if scope["topic"]["gradeNumber"] != lesson["gradeNumber"] or scope["topic"]["topicId"] != lesson["topicId"] or lesson["level"] not in scope["levels"]:
         bad("SOURCE_SCOPE", "Lesson and trusted curriculum scope disagree")
+    overlay = _v5_overlay(lesson, scope) if v5 else None
     grade = lesson["gradeNumber"]
     normalized = deepcopy(payload)
-    text(payload["title"], 160)
-    normalized["rule"] = rich(payload["rule"], grade, provider=provider, location="rule")
+    title(payload["title"], grade, v5=v5)
+    normalized["rule"] = rich(payload["rule"], grade, provider=provider, location="rule", v5=v5, overlay=overlay)
     if type(payload["sections"]) is not list or not 1 <= len(payload["sections"]) <= 8:
         bad("SOURCE_SECTIONS", "Need one to eight sections")
     allowed = {c["id"] for c in scope["selectedConcepts"]}
     seen, evidence, pending, qcount, item_count, stars = set(), [], [], 0, 0, 0
     for section in normalized["sections"]:
         exact(section, ("title", "conceptIds", "questions"))
-        text(section["title"], 160)
+        title(section["title"], grade, v5=v5)
         if type(section["conceptIds"]) is not list or not section["conceptIds"] or any(type(c) is not str or c not in allowed for c in section["conceptIds"]) or len(set(section["conceptIds"])) != len(section["conceptIds"]):
             bad("SOURCE_CONCEPT", "Sections must bind to selected source concepts")
         seen.update(section["conceptIds"])
@@ -387,16 +443,25 @@ def _validate_source(lesson, payload, scope, *, provider):
             bad("SOURCE_QUESTIONS", "Empty or oversized section")
         for question in section["questions"]:
             qcount += 1
-            validate_question(question, grade, scope, provider=provider, qcount=qcount,
-                              evidence=evidence, pending=pending)
+            if v5:
+                item_count += _v5_question(question, grade, provider=provider, qcount=qcount, evidence=evidence,
+                                           overlay=overlay)
+            else:
+                validate_question(question, grade, scope, provider=provider, qcount=qcount,
+                                  evidence=evidence, pending=pending)
+                item_count += len(question["items"])
             stars += int(question["star"])
-            item_count += len(question["items"])
-    if qcount != lesson["questionCount"] or not 4 <= qcount <= 30 or item_count > MAX_ITEMS:
+    if v5:
+        _v5_selection(lesson, scope, normalized, qcount, item_count)
+    elif qcount != lesson["questionCount"] or not 4 <= qcount <= 30 or item_count > MAX_ITEMS:
         bad("SOURCE_VOLUME", "Source must exactly match the requested question count and item budget")
     if seen != allowed:
         bad("SOURCE_COVERAGE", "Every selected concept must be represented by a section")
     if not 2 <= stars <= 4:
         bad("SOURCE_STARS", "The pinned skill requires two to four starred questions")
+    if v5:
+        _v5_questions(normalized, overlay)
+        _v5_code_written(lesson, scope, normalized, overlay)
     validate_prose(normalized, grade, scope, require_hebrew=True)
     if grade == 2 and scope["topic"]["topicId"] == "ב05" and allowed == {"ב05#1"}:
         from no_carry_addition import validate_topic_math
@@ -407,6 +472,140 @@ def _validate_source(lesson, payload, scope, *, provider):
         "unverifiedAnswers": pending, "reviewRequired": True,
         "verificationScope": "Typed tasks only. Prose-task alignment, chronology, pedagogy, figure claims and visual output require independent review.",
         "curriculumSha256": scope["curriculum"]["sha256"]}}
+
+
+def _v5_question(question, grade, *, provider, qcount, evidence, overlay):
+    """One worksheet-wire/5 question (the v5 branch of the question loop); returns its item count.
+
+    A v5 question prints a code-written one-way table only on an overlay that declares tables (the probability
+    overlay: relative frequency); probability_kinds.verify_question binds it to the story. No figure and no
+    drawing-from-words. Every answer is computed by the kernel and bound to its printed display (_v5_answer)."""
+    exact(question, ("intro", "star", "items"), ("table",) if overlay.get("tables") is True else ())
+    question["intro"] = rich(question["intro"], grade, provider=provider, location=f"q{qcount}.intro", v5=True, overlay=overlay)
+    if type(question["star"]) is not bool:
+        bad("SOURCE_STAR", "Star must be boolean")
+    if "table" in question:
+        table = question["table"]; exact(table, ("head", "rows"))
+        if type(table["head"]) is not list or not 2 <= len(table["head"]) <= 6 or type(table["rows"]) is not list or not 1 <= len(table["rows"]) <= 12:
+            bad("SOURCE_TABLE", "Table exceeds supported size")
+        for col, cell in enumerate(table["head"]):
+            table["head"][col] = rich(cell, grade, provider=provider, location=f"q{qcount}.table.head.{col+1}", v5=True, overlay=overlay)
+        for row_num, row in enumerate(table["rows"], 1):
+            if type(row) is not list or len(row) != len(table["head"]):
+                bad("SOURCE_TABLE", "Table rows must have the header width")
+            for col, cell in enumerate(row):
+                row[col] = rich(cell, grade, provider=provider, location=f"q{qcount}.table.row.{row_num}.{col+1}", v5=True, overlay=overlay)
+    if type(question["items"]) is not list or not 3 <= len(question["items"]) <= 6:
+        bad("SOURCE_ITEMS", "A worksheet-wire/5 question has three to six items")
+    for j, item in enumerate(question["items"], 1):
+        exact(item, ("prompt", "answer"))
+        item["prompt"] = rich(item["prompt"], grade, provider=provider, location=f"q{qcount}.item.{j}.prompt", v5=True, overlay=overlay)
+        answer = item["answer"]
+        if type(answer) is not dict:
+            bad("SOURCE_ANSWER", "Expected typed answer")
+        evidence.append({"itemId": f"q{qcount}-i{j}", "computed": _v5_answer(item, answer, overlay, f"q{qcount}.item.{j}")})
+    return len(question["items"])
+
+
+def _v5_answer(item, answer, overlay, location):
+    """A worksheet-wire/5 answer: computed by the kernel, keyed and bound to its printed display (item_kinds)."""
+    from item_kinds import BindingError, verify_item
+    if answer.get("kind") != "computed":
+        bad("SOURCE_ANSWER", "worksheet-wire/5 answers are computed and kernel-proven")
+    exact(answer, ("kind", "task", "unit", "printTask", "key"))
+    if answer["unit"] != "" or answer["printTask"] is not False:
+        bad("SOURCE_SHAPE", "worksheet-wire/5 answers print no unit and no task")
+    solved = validate_and_solve_task(answer["task"])
+    try:
+        verify_item(item["prompt"], answer, solved, overlay)
+    except BindingError as error:
+        code = "SOURCE_KEY" if error.code in ("KEY_ROUNDTRIP", "FORM_UNREPRESENTABLE", "FORM_UNKNOWN") else "SOURCE_BINDING"
+        bad(code, f"{error.code} at {location}")
+    return solved
+
+
+def _v5_selection(lesson, scope, normalized, qcount, item_count):
+    """Replaces only the exact-count rule: the selection record, recomputed against the grade floor."""
+    from structured_contract import SelectionError, validate_selection
+    if not 4 <= qcount <= 30 or item_count > MAX_ITEMS:
+        bad("SOURCE_VOLUME", "Source exceeds the question or item budget")
+    printed = [question for section in normalized["sections"] for question in section["questions"]]
+    try:
+        validate_selection(normalized["selection"], lesson=lesson, scope=scope, questions=printed)
+    except SelectionError as error:
+        bad(error.code, "Selection record: " + error.reason)
+
+
+def _v5_questions(normalized, overlay):
+    """Per question: one binding kind, the code-written intro and star; then question and sheet leaks."""
+    from item_kinds import BindingError, verify_question
+    import leak_checks
+    questions = [question for section in normalized["sections"] for question in section["questions"]]
+    if overlay.get("family") == "probability":
+        # The probability kinds: their own repeats (DUPLICATE_ITEM, KEY_REPEATED, DUPLICATE_TASK, DUPLICATE_REORDERED)
+        # and a question sharing a value with the rule box (LEAK_RULE_FACT). The pinned D12 mirror needs the trusted
+        # skill path and runs in general_adapters.compile_source.
+        import probability_kinds
+        for n, question in enumerate(questions, 1):
+            try:
+                verify_question(question, overlay)
+            except BindingError as error:
+                bad("SOURCE_BINDING", f"{error.code} at q{n}")
+            if probability_kinds.question_leaks(question, overlay):
+                bad("SOURCE_LEAK", f"Duplicate item or repeated answer at q{n}")
+        if probability_kinds.sheet_leaks(questions, overlay):
+            bad("SOURCE_LEAK", "A task or a story with the same counts repeats across questions, or a question "
+                               "shares a value with the rule box")
+        return
+    if overlay.get("skill") == "elementary":
+        # The elementary division kinds: their own repeats (DUPLICATE_ITEM, DUPLICATE_TASK, EXAMPLE_COPY). The
+        # pinned G62 mirror needs the trusted skill path and runs in general_adapters.compile_source.
+        import division_kinds
+        for n, question in enumerate(questions, 1):
+            try:
+                verify_question(question, overlay)
+            except BindingError as error:
+                bad("SOURCE_BINDING", f"{error.code} at q{n}")
+            if division_kinds.question_leaks(question):
+                bad("SOURCE_LEAK", f"Duplicate item at q{n}")
+        if division_kinds.sheet_leaks(questions, overlay):
+            bad("SOURCE_LEAK", "Duplicate division across questions or a copy of the rule box example")
+        return
+    for n, question in enumerate(questions, 1):
+        try:
+            verify_question(question, overlay)
+        except BindingError as error:
+            bad("SOURCE_BINDING", f"{error.code} at q{n}")
+        if leak_checks.question_leaks(question, overlay, skill_path=None) or leak_checks.reordered_items(question):
+            bad("SOURCE_LEAK", f"Answer leak or duplicate item at q{n}")
+    if leak_checks.sheet_leaks(questions, examples=normalized["rule"]) or leak_checks.reordered_tasks(questions):
+        bad("SOURCE_LEAK", "Duplicate task or linked answers across questions")
+
+
+def _v5_code_written(lesson, scope, normalized, overlay):
+    """What only code writes in a v5 source, checked last so every earlier refusal keeps its code:
+
+    - the title, every section title and the rule box are exactly the overlay's (SOURCE_BINDING);
+    - each printed question's kind is a kind of the plan row of the slot that produced it, and its recorded
+      conceptIds are that row's concepts, recomputed with plan_rows instead of trusting the record
+      (SOURCE_SELECTION)."""
+    from structured_contract import ContractError, plan_rows, rule_spans
+    if normalized["title"] != overlay["title"] or any(
+            section["title"] != overlay["title"] for section in normalized["sections"]):
+        bad("SOURCE_BINDING", "The title is the overlay's code-written title")
+    if normalized["rule"] != rule_spans(overlay):
+        bad("SOURCE_BINDING", "The rule box is the overlay's code-written rule")
+    try:
+        planned, reserves = plan_rows(lesson, scope, overlay)
+    except ContractError:
+        bad("SOURCE_WIRE_SCOPE", "This lesson has no worksheet-wire/5 plan")
+    rows = {row.slot: row for row in list(planned) + list(reserves)}
+    questions = [question for section in normalized["sections"] for question in section["questions"]]
+    for n, (record, question) in enumerate(zip(normalized["selection"]["questions"], questions), 1):
+        row = rows.get(record["slot"])
+        kind = question["items"][0]["answer"]["key"]["binding"]["kind"]
+        if row is None or kind not in row.kinds or record["conceptIds"] != list(row.concepts):
+            bad("SOURCE_SELECTION", f"Question kind or concepts outside its planned row at q{n}")
 
 
 def _prose_strings(value):
@@ -486,12 +685,6 @@ def authoring_schema(lesson, scope):
     answers = [obj({"kind": {"const": "computed"}, "task": task, "unit": unit_schema})]
     if scope["topic"]["skillId"] == "middle":
         answers.append(obj({"kind": {"const": "review"}, "text": rt}))
-    else:
-        # A short Hebrew name for a naming question, and an item that the teacher checks.
-        label_schema = {"type": "string", "minLength": 1, "maxLength": 40, "pattern": r"^[^0-9A-Za-z\[\]<>$\\]*$"}
-        if grade <= 2:
-            label_schema["allOf"] = [vocalized]
-        answers += [obj({"kind": {"const": "label"}, "text": label_schema}), obj({"kind": {"const": "open"}})]
     answer = {"oneOf": answers}
     figures = []
     if scope["topic"]["skillId"] == "middle" and geometry_topic(scope):

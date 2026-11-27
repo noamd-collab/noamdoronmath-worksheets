@@ -15,9 +15,9 @@
     "unit": "ס״מ"
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "3 מטרים = ___ ס״מ",
-    "key": "300 ס״מ"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -34,9 +34,9 @@
     "unit": "ס״מ"
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "3 מ׳ = ___ ס״מ",
-    "key": "300 ס״מ"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -59,9 +59,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "235 ס״מ = ___ מטרים ו־___ ס״מ",
-    "key": "2 מטרים ו־ 35 ס״מ"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -78,9 +78,9 @@
     "unit": "מ׳"
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "2.5 ק״מ = ___ מ׳",
-    "key": "2500 מ׳"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -116,9 +116,9 @@
     "unit": "סמ״ק"
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "2 ליטר = ___ סמ״ק",
-    "key": "2,000 סמ״ק"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -135,9 +135,9 @@
     "unit": "ליטר"
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "3 מ״ק = ___ ליטר",
-    "key": "3,000 ליטר"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

@@ -1,6 +1,6 @@
 import { DurableObject } from 'cloudflare:workers';
-import { Supervisor, INACTIVITY_MS, type ContainerPort, type Identity, type RuntimeEnv } from './controller.ts';
-import { route } from './router.ts';
+import { Supervisor, rearm, type ContainerPort, type Identity, type RuntimeEnv } from './controller.ts';
+import { cron, route } from './router.ts';
 
 interface Env extends RuntimeEnv {
   TEACHER_CLOUD_OPERATOR_KEY: string;
@@ -23,7 +23,7 @@ export class TeacherGenerationContainer extends DurableObject<Env> {
       exec: (command, options) => container.exec(command, options),
     };
     // Cloudflare resets this setting when a Durable Object is recreated.
-    if (container.running) void ctx.blockConcurrencyWhile(() => container.setInactivityTimeout(INACTIVITY_MS));
+    rearm(bridge, promise => ctx.waitUntil(promise));
     this.supervisor = new Supervisor(bridge, ctx.storage, env, ctx.id.toString(), promise => ctx.waitUntil(promise));
   }
   status() { return this.supervisor.status(); }
@@ -34,8 +34,5 @@ export class TeacherGenerationContainer extends DurableObject<Env> {
 }
 export default {
   fetch(request: Request, env: Env) { return route(request, env); },
-  async scheduled(_controller: ScheduledController, env: Env) {
-    try { await env.GENERATOR.getByName('primary').tick(); }
-    catch { console.error(JSON.stringify({ event: 'teacher_cloud_cycle_unavailable' })); }
-  },
+  scheduled(_controller: ScheduledController, env: Env) { return cron(env); },
 } satisfies ExportedHandler<Env>;

@@ -183,9 +183,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "$x^{2} = 16$",
-    "key": "$x = −4$, $x = 4$"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -327,9 +327,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "___ + 5 = 9",
-    "key": "4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -346,9 +346,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "___ + 5 = 9",
-    "key": "4"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -410,9 +410,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "מצאו את המספר החסר במשוואה 2 x ___ + 3 = 9 .",
-    "key": "3"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

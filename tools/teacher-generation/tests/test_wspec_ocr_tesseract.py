@@ -3,11 +3,13 @@ from pathlib import Path
 import importlib.util
 import io
 import os
+import signal
 import subprocess
 import sys
 import tempfile
 import tarfile
 import textwrap
+import time
 import types
 import unittest
 from unittest.mock import patch
@@ -139,6 +141,106 @@ class HelperTests(unittest.TestCase):
             code, output = self.invoke(binary)
         self.assertEqual(code, 1)
         self.assertIn('#ERR\tTESSERACT_TIMEOUT', output)
+
+    def descendant_holding_the_pipes(self):
+        """A fake OCR process whose child writes its pid, then holds the pipes for a minute; the leader exits."""
+        marker = self.root / 'descendant.pid'
+        binary = self.fake('''
+            import os,time
+            from pathlib import Path
+            marker = Path(%r)
+            if os.fork() == 0:
+                marker.with_suffix('.tmp').write_text(str(os.getpid()))
+                marker.with_suffix('.tmp').rename(marker)
+                time.sleep(60)
+                os._exit(0)
+            deadline = time.monotonic() + 30
+            while not marker.exists() and time.monotonic() < deadline:
+                time.sleep(0.01)
+            os._exit(0)
+        ''' % str(marker))
+        return binary, marker
+
+    @staticmethod
+    def running(pid):
+        """True while ``pid`` can still run code. A killed process whose new parent has not reaped it yet is a
+        zombie: in a container whose PID 1 never reaps orphans it stays one, so a zombie counts as gone."""
+        try:
+            os.kill(pid, 0)
+        except ProcessLookupError:
+            return False
+        if os.path.isdir('/proc/self'):
+            try:
+                with open('/proc/%d/stat' % pid, encoding='ascii') as handle:
+                    state = handle.read().rsplit(')', 1)[1].split()[0]
+            except FileNotFoundError:
+                return False
+        else:
+            state = subprocess.run(['ps', '-o', 'stat=', '-p', str(pid)], capture_output=True, text=True).stdout.strip()[:1]
+            if not state:
+                return False
+        return state != 'Z'
+
+    def assert_gone(self, pid):
+        """``pid`` is killed: it stops running within a few seconds."""
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline:
+            if not self.running(pid):
+                return
+            time.sleep(0.05)
+        os.kill(pid, signal.SIGKILL)
+        self.fail('the descendant was still alive')
+
+    def test_a_refused_group_kill_reaps_the_leader_and_kills_the_group_once_more(self):
+        # macOS: killpg raises EPERM while the group's leader has exited and is not yet reaped. The first call is
+        # refused here; the leader must be reaped before the one retry, which still kills the live descendant.
+        real, calls = os.killpg, []
+
+        def refused_once(pgid, signum):
+            try:
+                os.kill(pgid, 0)
+                leader = 'present'
+            except ProcessLookupError:
+                leader = 'reaped'
+            calls.append((pgid, signum, leader))
+            if len(calls) == 1:
+                raise PermissionError(1, 'Operation not permitted')
+            return real(pgid, signum)
+
+        binary, marker = self.descendant_holding_the_pipes()
+        started = time.monotonic()
+        with patch.object(OCR, 'MAX_IMAGE_SECONDS', 2.0), patch.object(OCR.os, 'killpg', side_effect=refused_once):
+            code, output = self.invoke(binary)
+        self.assertLess(time.monotonic() - started, 30)
+        self.assertEqual(code, 1)
+        self.assertIn('#ERR\tTESSERACT_TIMEOUT', output)
+        child = int(marker.read_text())
+        self.assertEqual(len(calls), 2)
+        self.assertEqual({(pgid, signum) for pgid, signum, _ in calls}, {(calls[0][0], signal.SIGKILL)})
+        self.assertNotEqual(calls[0][0], child)
+        self.assertEqual(calls[1][2], 'reaped')
+        self.assert_gone(child)
+
+    def test_a_group_kill_refused_twice_fails_the_batch_instead_of_leaving_the_descendant(self):
+        real, calls = os.killpg, []
+
+        def refused(pgid, signum):
+            calls.append(pgid)
+            raise PermissionError(1, 'Operation not permitted')
+
+        binary, marker = self.descendant_holding_the_pipes()
+        try:
+            with patch.object(OCR, 'MAX_IMAGE_SECONDS', 2.0), patch.object(OCR.os, 'killpg', side_effect=refused), \
+                    self.assertRaises(PermissionError):
+                self.invoke(binary)
+            self.assertEqual(len(calls), 2)
+        finally:
+            if calls:
+                try:
+                    real(calls[0], signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+        self.assert_gone(int(marker.read_text()))
 
     def test_tsv_corruption_and_confidence_forgery_fail_closed(self):
         invalid = [('', 'INVALID_TSV_HEADER'), (HEADER + word('A', 'nan'), 'INVALID_TSV_CONFIDENCE'),

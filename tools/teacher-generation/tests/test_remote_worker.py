@@ -18,6 +18,7 @@ from urllib.parse import parse_qs, urlsplit
 HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
 import remote_worker as worker
+from gate_policy import NOTES
 from validation import GenerationError
 
 JOB_ID = '22222222-2222-4222-8222-222222222222'
@@ -518,12 +519,12 @@ class WorkerTests(unittest.TestCase):
         (target / 'sheet.pdf').write_bytes(b'first failed private draft')
         return manifest
 
-    def rendered_general(self, lesson, payload, target, **kwargs):
-        # As render_job reports a version 3 sheet: REVIEW steps are allowed, the profile is named.
+    def rendered_general(self, lesson, payload, target, unverified=(), **kwargs):
+        # As render_job reports a clean version 3 sheet: every step passed, the profile is named, and the
+        # elementary adapter left no unverified answer.
         manifest = self.rendered(lesson, payload, target)
         manifest.update(authoringProfile='general-skill-source/v1', renderingChecksPassed=True,
-                        reviewFindings=[], unverifiedAnswers=[{'question': 2, 'item': 1, 'kind': 'open'},
-                                                              {'question': 5, 'item': 3, 'kind': 'open'}])
+                        reviewFindings=[], unverifiedAnswers=list(unverified))
         return manifest
 
     def clean_precheck(self, lesson, payload, target, **kwargs):
@@ -567,8 +568,10 @@ class WorkerTests(unittest.TestCase):
 
     def test_ladder_does_not_reach_legacy_or_disabled_v3(self):
         for mode in ('legacy-enabled', 'general-disabled'):
+            # A version 3 render is accepted only in the form the runner writes it (rendered_general).
+            render = self.rendered_general if mode == 'general-disabled' else self.rendered
             with self.subTest(mode=mode), patch.object(worker, 'author_lesson', return_value={}) as author, \
-                 patch.object(worker, 'render_job', side_effect=self.rendered) as renderer, \
+                 patch.object(worker, 'render_job', side_effect=render) as renderer, \
                  patch.object(worker, 'precheck_job') as precheck:
                 case = self.root / mode
                 case.mkdir()
@@ -581,6 +584,29 @@ class WorkerTests(unittest.TestCase):
                 precheck.assert_not_called()
                 # One render, straight into the job folder.
                 self.assertEqual(renderer.call_args.args[2], case / JOB_ID)
+
+    def test_a_version_3_render_is_refused_unless_it_is_in_the_runners_general_form(self):
+        # The legacy stand-in (no profile, no review rows, no unverified list) and a version 2 render that names
+        # another skill are forms the runner never writes for these lessons: refused before any upload.
+        def legacy_other_skill(lesson, payload, target):
+            manifest = self.rendered(lesson, payload, target)
+            manifest['skill']['name'] = 'middle'
+            return manifest
+        for name, general, render in (('version 3 without the profile', True, self.rendered),
+                                      ('version 2 naming another skill', False, legacy_other_skill)):
+            with self.subTest(case=name):
+                if general:
+                    self.use_general_lesson()
+                remote = FakeRemote()
+                case = self.root / name.replace(' ', '-')
+                case.mkdir()
+                with patch.object(worker, 'author_lesson', return_value={}), \
+                     patch.object(worker, 'render_job', side_effect=render), \
+                     self.assertRaises(GenerationError) as refused:
+                    worker.process_job(remote, self.job, case, enable_skill_revision=False)
+                self.assertEqual((refused.exception.code, refused.exception.job_failure['stage']),
+                                 ('QUALITY_GATE_FAILED', 'acceptance'))
+                self.assertEqual(remote.uploads(), [])
 
     def test_a_gate_named_question_is_swapped_and_only_the_final_pair_is_uploaded(self):
         self.use_general_lesson()
@@ -718,33 +744,92 @@ class WorkerTests(unittest.TestCase):
         self.assertNotIn('PRIVATE_', str(record))
 
     def test_a_shorter_sheet_is_delivered_with_its_note_and_the_requested_count(self):
+        from validation import validate_lesson
         self.use_general_lesson()
+        # Sixteen requested in grade 4: fourteen is above three quarters and the grade minimum of twelve.
+        self.job['lesson'] = {**self.job['lesson'], 'questionCount': 16}
         draft = FakeDraft(self.job['lesson'], missing=[3, 7], code='SOURCE_ANSWER', can_shorten=True)
         draft.on_correct = Mock(side_effect=GenerationError('INVALID_MODEL_OUTPUT', 'private'))
         seen = {}
         def render(lesson, payload, target, **kwargs):
+            validate_lesson(lesson, **kwargs)   # as the render's own validation reads the sheet
             seen.update(count=lesson['questionCount'], kwargs=kwargs)
             return self.rendered_general(lesson, payload, target)
         def precheck(lesson, payload, target, **kwargs):
+            validate_lesson(lesson, **kwargs)
             seen['precheck'] = (lesson['questionCount'], kwargs)
             return self.clean_precheck(lesson, payload, target)
         author = self.general_author([draft], fail=[GenerationError('SOURCE_ANSWER', 'private')])
         self.run_general(author, render, precheck=precheck)
         # The sheet's own lesson carries the rewritten count; the request travels beside it.
-        self.assertEqual((seen['count'], seen['kwargs']), (10, {'salvaged_from': 12}))
-        self.assertEqual(seen['precheck'], (10, {'salvaged_from': 12}))
-        self.assertEqual(self.job['lesson']['questionCount'], 12)
+        self.assertEqual((seen['count'], seen['kwargs']), (14, {'salvaged_from': 16}))
+        self.assertEqual(seen['precheck'], (14, {'salvaged_from': 16}))
+        self.assertEqual(self.job['lesson']['questionCount'], 16)
+        # Twelve requested, the grade 4 minimum, is never shortened: the same ten of twelve is refused.
+        with self.assertRaises(GenerationError) as refused:
+            validate_lesson({**self.job['lesson'], 'questionCount': 10}, salvaged_from=12)
+        self.assertEqual(refused.exception.code, 'UNSUPPORTED_SHORT_SHEET')
         result = self.final_result()
         self.assertEqual(result['salvage']['dropped'], {'count': 2, 'codes': {'SOURCE_ANSWER': 2}})
-        self.assertEqual((result['salvage']['requestedQuestions'], result['salvage']['printedQuestions']), (12, 10))
-        note = [row for row in result['reviewFindings'] if row['code'] == 'SHORTER_SHEET']
-        self.assertEqual(len(note), 1)
-        self.assertEqual(note[0]['count'], 2)
-        self.assertIn('פחות שאלות', note[0]['note'])
-        # Printed answers no kernel verified: their count by kind, and the note with their positions.
-        self.assertEqual(result['unverifiedAnswers'], {'open': 2})
-        self.assertEqual([(row['kind'], row['count']) for row in result['teacherNotes']], [('open', 2)])
+        self.assertEqual((result['salvage']['requestedQuestions'], result['salvage']['printedQuestions']), (16, 14))
+        self.assertEqual(result['reviewFindings'], [{'code': 'SHORTER_SHEET', 'count': 2, 'note': NOTES['SHORTER_SHEET']}])
+        self.assertIn('פחות שאלות', result['reviewFindings'][0]['note'])
+        # The manifest lists no unverified answer: no count and no note.
+        self.assertEqual((result['unverifiedAnswers'], result['teacherNotes']), ({}, []))
+        self.assertEqual(len(self.remote.uploads()), 2)
         self.assertLess(len(json.dumps(result, ensure_ascii=False).encode()), 32000)
+
+    def test_a_shorter_sheet_below_the_grade_minimum_is_refused_by_the_render_validation(self):
+        from validation import validate_lesson
+        self.use_general_lesson()
+        # Twelve requested in grade 4, the grade minimum: a draft that shortened it anyway to ten is refused
+        # before anything is checked or rendered, on both attempts.
+        drafts = [FakeDraft(self.job['lesson'], missing=[3, 7], code='SOURCE_ANSWER', can_shorten=True) for _ in range(2)]
+        for draft in drafts:
+            draft.on_correct = Mock(side_effect=GenerationError('INVALID_MODEL_OUTPUT', 'private'))
+        seen = []
+        def precheck(lesson, payload, target, **kwargs):
+            seen.append((lesson['questionCount'], kwargs))
+            validate_lesson(lesson, **kwargs)
+            return self.clean_precheck(lesson, payload, target)
+        author = self.general_author(drafts, fail=[GenerationError('SOURCE_ANSWER', 'private')] * 2)
+        with self.assertRaises(GenerationError) as refused:
+            _, renderer, _ = self.run_general(author, self.rendered_general, precheck=precheck)
+        self.assertEqual(refused.exception.code, 'UNSUPPORTED_SHORT_SHEET')
+        self.assertEqual(seen, [(10, {'salvaged_from': 12})] * 2)
+        self.assertEqual([(draft.dropped, draft.corrections) for draft in drafts], [(2, 1), (2, 1)])
+        self.assertEqual(refused.exception.job_failure, {'stage': 'precheck', 'question': None, 'gate': None, 'attempts': 2,
+                                                         'corrections': 2, 'firstCode': 'UNSUPPORTED_SHORT_SHEET'})
+        self.assertFalse(self.remote.uploads())
+        self.assertFalse(any(c[2].get('status') == 'needs_review' for c in self.remote.calls if c[1] == 'PATCH'))
+
+    def test_an_elementary_sheet_that_lists_an_unverified_answer_or_an_unreadable_list_is_refused(self):
+        self.use_general_lesson()
+        listed = {
+            # An item without a key (open) is no answer kind at all: the list cannot be read.
+            'open': [{'question': 2, 'item': 1, 'kind': 'open'}, {'question': 5, 'item': 3, 'kind': 'open'}],
+            # Kinds that a middle-school sheet may carry with a note; an elementary sheet never prints them (D6).
+            'review': [{'question': 2, 'item': 1, 'kind': 'review'}],
+            'decision': [{'question': 4, 'item': 2, 'kind': 'decision'}],
+            'not a list': 'q2', 'no position': [{'kind': 'review'}]}
+        for name, rows in listed.items():
+            with self.subTest(rows=name):
+                root = self.root / name.replace(' ', '-')
+                root.mkdir()
+                remote = FakeRemote()
+                # The shorter-sheet run above, with the same render listing these rows.
+                self.job['lesson'] = {**self.job['lesson'], 'questionCount': 16}
+                draft = FakeDraft(self.job['lesson'], missing=[3, 7], code='SOURCE_ANSWER', can_shorten=True)
+                draft.on_correct = Mock(side_effect=GenerationError('INVALID_MODEL_OUTPUT', 'private'))
+                render = lambda lesson, payload, target, **kwargs: self.rendered_general(lesson, payload, target, unverified=rows)
+                author = self.general_author([draft], fail=[GenerationError('SOURCE_ANSWER', 'private')])
+                with self.assertRaises(GenerationError) as refused:
+                    self.run_general(author, render, root=root, remote=remote)
+                self.assertEqual(refused.exception.code, 'QUALITY_GATE_FAILED')
+                self.assertEqual(refused.exception.job_failure['stage'], 'acceptance')
+                self.assertEqual((draft.lesson['questionCount'], draft.dropped), (14, 2))
+                self.assertFalse(remote.uploads())
+                self.assertFalse(any(c[2].get('status') == 'needs_review' for c in remote.calls if c[1] == 'PATCH'))
 
     def test_the_pre_pass_replaces_named_questions_twice_before_any_render(self):
         self.use_general_lesson()
@@ -759,7 +844,7 @@ class WorkerTests(unittest.TestCase):
                         'gate': {'action': 'replace', 'questions': [len(rounds)],
                                  'blocking': [{'code': 'G66', 'class': 'policy', 'step': 'house-gates', 'question': len(rounds)}]}}
             return self.clean_precheck(lesson, payload, target)
-        initial, renderer, checker = self.run_general(self.general_author([draft]), self.rendered, precheck=precheck)
+        initial, renderer, checker = self.run_general(self.general_author([draft]), self.rendered_general, precheck=precheck)
         self.assertEqual(draft.replaced, [{1: ['G66']}, {2: ['G66']}])
         self.assertEqual(checker.call_count, 2)       # at most two passes, then the render decides
         renderer.assert_called_once()
@@ -833,9 +918,9 @@ class WorkerTests(unittest.TestCase):
                     self.run_general(self.general_author([draft]), render, root=root)
                 self.assertFalse(self.remote.uploads())
 
-    def test_no_repair_on_an_unnamed_gate_a_render_fault_or_a_failure_without_a_draft(self):
+    def test_no_repair_on_an_unnamed_gate_a_render_fault_a_review_or_a_failure_without_a_draft(self):
         self.use_general_lesson()
-        for failure in ('unknown-gate', 'renderer', 'provider', 'success'):
+        for failure in ('unknown-gate', 'renderer', 'provider', 'review', 'unchecked', 'success'):
             with self.subTest(failure=failure):
                 root = self.root / failure
                 root.mkdir()
@@ -849,11 +934,14 @@ class WorkerTests(unittest.TestCase):
                 def render(lesson, payload, target, **kwargs):
                     if failure == 'renderer':
                         raise OSError('unavailable renderer')
-                    if failure == 'success':
-                        manifest = self.rendered(lesson, payload, target)
-                        manifest.update(authoringProfile='general-skill-source/v1', automatedChecksPassed=False,
-                                        renderingChecksPassed=True)
-                        manifest['steps'][0]['status'] = 'REVIEW'
+                    if failure in ('review', 'unchecked', 'success'):
+                        manifest = self.rendered_general(lesson, payload, target)
+                        if failure != 'success':
+                            # Every step PASS but automatedChecksPassed false: a form the runner never writes.
+                            manifest.update(automatedChecksPassed=False)
+                        if failure == 'review':
+                            # A REVIEW the runner never writes on this path: not the middle driver's reconciled exit.
+                            manifest['steps'][0]['status'] = 'REVIEW'
                         return manifest
                     return self.failed_gate(lesson, payload, target, gate='pdf')
                 remote = FakeRemote()
@@ -864,9 +952,14 @@ class WorkerTests(unittest.TestCase):
                     with self.assertRaises((OSError, GenerationError)) as caught:
                         self.run_general(author, render, root=root, remote=remote)
                     self.assertFalse(remote.uploads())
+                    self.assertFalse(any(c[2].get('status') == 'needs_review' for c in remote.calls if c[1] == 'PATCH'))
                     if failure == 'unknown-gate':
                         self.assertEqual(caught.exception.job_failure, {'stage': 'render', 'question': None, 'gate': 'PDF_BUILD',
                                                                         'attempts': 1, 'corrections': 0})
+                    if failure in ('review', 'unchecked'):
+                        self.assertEqual((caught.exception.code, caught.exception.job_failure),
+                                         ('QUALITY_GATE_FAILED', {'stage': 'acceptance', 'question': None, 'gate': None,
+                                                                  'attempts': 1, 'corrections': 0}))
                 self.assertEqual((draft.replaced, draft.corrections), ([], 0))
 
     def test_lease_loss_blocks_a_correction_and_a_second_attempt(self):

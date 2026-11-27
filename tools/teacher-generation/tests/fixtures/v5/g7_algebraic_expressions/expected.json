@@ -1,0 +1,1042 @@
+{
+ "about": "Hand-computed outcomes of reply_good.json and reply_with_failures.json for lesson.json. 'keys' are the canonical key notations (ASCII), 'house' the printed answer islands (U+2212 minus, spaced binary signs). 'printed' is the sheet order: ordinary questions, then challenges.",
+ "reply_good": {
+  "requested": 20,
+  "floor": 20,
+  "delivered": 20,
+  "replaced": [],
+  "dropped": [],
+  "trimmed": [],
+  "refusals": [],
+  "unusedReserves": [
+   "R1",
+   "R2",
+   "R3",
+   "R4",
+   "R5",
+   "R6"
+  ],
+  "printed": [
+   {
+    "n": 1,
+    "slot": "Q1",
+    "origin": "planned",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "5y",
+     "x+b",
+     "2a-y"
+    ],
+    "house": [
+     "$5y$",
+     "$x + b$",
+     "$2a − y$"
+    ]
+   },
+   {
+    "n": 2,
+    "slot": "Q2",
+    "origin": "planned",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "ay",
+     "12b",
+     "y-x",
+     "4a+3b"
+    ],
+    "house": [
+     "$ay$",
+     "$12b$",
+     "$y − x$",
+     "$4a + 3b$"
+    ]
+   },
+   {
+    "n": 3,
+    "slot": "Q3",
+    "origin": "planned",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "6x+a",
+     "9a",
+     "y+b"
+    ],
+    "house": [
+     "$6x + a$",
+     "$9a$",
+     "$y + b$"
+    ]
+   },
+   {
+    "n": 4,
+    "slot": "Q4",
+    "origin": "planned",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "a-b",
+     "15x",
+     "by"
+    ],
+    "house": [
+     "$a − b$",
+     "$15x$",
+     "$by$"
+    ]
+   },
+   {
+    "n": 5,
+    "slot": "Q5",
+    "origin": "planned",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "7x-b",
+     "a+x",
+     "20y",
+     "3x+10y"
+    ],
+    "house": [
+     "$7x − b$",
+     "$a + x$",
+     "$20y$",
+     "$3x + 10y$"
+    ]
+   },
+   {
+    "n": 6,
+    "slot": "Q6",
+    "origin": "planned",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "4b",
+     "2y+b",
+     "b-y"
+    ],
+    "house": [
+     "$4b$",
+     "$2y + b$",
+     "$b − y$"
+    ]
+   },
+   {
+    "n": 7,
+    "slot": "Q7",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "10",
+     "8",
+     "12"
+    ],
+    "house": [
+     "$10$",
+     "$8$",
+     "$12$"
+    ]
+   },
+   {
+    "n": 8,
+    "slot": "Q8",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "13",
+     "10",
+     "3"
+    ],
+    "house": [
+     "$13$",
+     "$10$",
+     "$3$"
+    ]
+   },
+   {
+    "n": 9,
+    "slot": "Q9",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "-7",
+     "-5",
+     "-15",
+     "14"
+    ],
+    "house": [
+     "$−7$",
+     "$−5$",
+     "$−15$",
+     "$14$"
+    ]
+   },
+   {
+    "n": 10,
+    "slot": "Q10",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "4",
+     "-12",
+     "11"
+    ],
+    "house": [
+     "$4$",
+     "$−12$",
+     "$11$"
+    ]
+   },
+   {
+    "n": 11,
+    "slot": "Q11",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "11",
+     "-2",
+     "15"
+    ],
+    "house": [
+     "$11$",
+     "$−2$",
+     "$15$"
+    ]
+   },
+   {
+    "n": 12,
+    "slot": "Q12",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "-3",
+     "-7",
+     "17",
+     "10"
+    ],
+    "house": [
+     "$−3$",
+     "$−7$",
+     "$17$",
+     "$10$"
+    ]
+   },
+   {
+    "n": 13,
+    "slot": "Q13",
+    "origin": "planned",
+    "kind": "collect_like_terms",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": false,
+    "keys": [
+     "7x+4",
+     "10+3y",
+     "5a+5"
+    ],
+    "house": [
+     "$7x + 4$",
+     "$10 + 3y$",
+     "$5a + 5$"
+    ]
+   },
+   {
+    "n": 14,
+    "slot": "Q14",
+    "origin": "planned",
+    "kind": "collect_like_terms",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": false,
+    "keys": [
+     "7b-7",
+     "2x+11",
+     "2y+7"
+    ],
+    "house": [
+     "$7b − 7$",
+     "$2x + 11$",
+     "$2y + 7$"
+    ]
+   },
+   {
+    "n": 15,
+    "slot": "Q15",
+    "origin": "planned",
+    "kind": "collect_like_terms",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": false,
+    "keys": [
+     "4x+y",
+     "8a+4b",
+     "5y-6"
+    ],
+    "house": [
+     "$4x + y$",
+     "$8a + 4b$",
+     "$5y − 6$"
+    ]
+   },
+   {
+    "n": 16,
+    "slot": "Q16",
+    "origin": "planned",
+    "kind": "collect_like_terms",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": false,
+    "keys": [
+     "3a+10",
+     "b+7",
+     "2x+14",
+     "4y+7"
+    ],
+    "house": [
+     "$3a + 10$",
+     "$b + 7$",
+     "$2x + 14$",
+     "$4y + 7$"
+    ]
+   },
+   {
+    "n": 17,
+    "slot": "Q17",
+    "origin": "planned",
+    "kind": "collect_like_terms",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": false,
+    "keys": [
+     "9+5x",
+     "3a+3b",
+     "4y+9"
+    ],
+    "house": [
+     "$9 + 5x$",
+     "$3a + 3b$",
+     "$4y + 9$"
+    ]
+   },
+   {
+    "n": 18,
+    "slot": "Q18",
+    "origin": "planned",
+    "kind": "find_error_collect",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": true,
+    "keys": [
+     "6x+9",
+     "5a+4",
+     "5y+3b"
+    ],
+    "house": [
+     "$6x + 9$",
+     "$5a + 4$",
+     "$5y + 3b$"
+    ]
+   },
+   {
+    "n": 19,
+    "slot": "Q19",
+    "origin": "planned",
+    "kind": "find_error_collect",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": true,
+    "keys": [
+     "5b+7",
+     "4y+7",
+     "3a+6x"
+    ],
+    "house": [
+     "$5b + 7$",
+     "$4y + 7$",
+     "$3a + 6x$"
+    ]
+   },
+   {
+    "n": 20,
+    "slot": "Q20",
+    "origin": "planned",
+    "kind": "find_error_collect",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": true,
+    "keys": [
+     "2x+4y",
+     "7a+11",
+     "3y+5"
+    ],
+    "house": [
+     "$2x + 4y$",
+     "$7a + 11$",
+     "$3y + 5$"
+    ]
+   }
+  ],
+  "reserves": {
+   "R1": [
+    "13a",
+    "xy",
+    "5b+x"
+   ],
+   "R2": [
+    "15",
+    "-10",
+    "7"
+   ],
+   "R3": [
+    "7x+9",
+    "10b-8",
+    "3a+12"
+   ],
+   "R4": [
+    "x+y",
+    "11y",
+    "6a-x"
+   ],
+   "R5": [
+    "5b+11",
+    "4x+3",
+    "4y+7a"
+   ],
+   "R6": [
+    "4b+5",
+    "6x+4y",
+    "3a+11"
+   ]
+  }
+ },
+ "reply_with_failures": {
+  "requested": 20,
+  "floor": 20,
+  "delivered": 20,
+  "replaced": [
+   {
+    "slot": "Q3",
+    "by": "R1",
+    "codes": [
+     "FIELD_NOT_EMPTY",
+     "ITEM_COUNT",
+     "TEXT_NUMBER_WORD"
+    ]
+   },
+   {
+    "slot": "Q5",
+    "by": "R4",
+    "codes": [
+     "FIELD_NOT_EMPTY",
+     "TEXT_CHAR"
+    ]
+   },
+   {
+    "slot": "Q8",
+    "by": "R2",
+    "codes": [
+     "ITEM_COUNT",
+     "MATH_SCOPE_POWER"
+    ]
+   },
+   {
+    "slot": "Q16",
+    "by": "R3",
+    "codes": [
+     "ITEM_COUNT",
+     "LEAK_OWN",
+     "LEAK_PINNED_VALUE"
+    ]
+   },
+   {
+    "slot": "Q19",
+    "by": "R5",
+    "codes": [
+     "ITEM_COUNT",
+     "MISTAKE_UNMODELED"
+    ]
+   },
+   {
+    "slot": "Q20",
+    "by": "R6",
+    "codes": [
+     "Q_KIND_NOT_ALLOWED"
+    ]
+   }
+  ],
+  "dropped": [],
+  "trimmed": [
+   {
+    "slot": "Q12",
+    "items": [
+     4
+    ]
+   }
+  ],
+  "refusals": [
+   [
+    "Q3",
+    2,
+    "text",
+    "FIELD_NOT_EMPTY"
+   ],
+   [
+    "Q3",
+    2,
+    "text",
+    "TEXT_NUMBER_WORD"
+   ],
+   [
+    "Q3",
+    0,
+    "items",
+    "ITEM_COUNT"
+   ],
+   [
+    "Q5",
+    0,
+    "intro",
+    "FIELD_NOT_EMPTY"
+   ],
+   [
+    "Q5",
+    0,
+    "intro",
+    "TEXT_CHAR"
+   ],
+   [
+    "Q8",
+    3,
+    "expr",
+    "MATH_SCOPE_POWER"
+   ],
+   [
+    "Q8",
+    0,
+    "items",
+    "ITEM_COUNT"
+   ],
+   [
+    "Q12",
+    4,
+    "values",
+    "MATH_SCOPE_RANGE"
+   ],
+   [
+    "Q16",
+    2,
+    "expr",
+    "LEAK_PINNED_VALUE"
+   ],
+   [
+    "Q16",
+    4,
+    "expr",
+    "LEAK_OWN"
+   ],
+   [
+    "Q16",
+    0,
+    "items",
+    "ITEM_COUNT"
+   ],
+   [
+    "Q19",
+    1,
+    "expr2",
+    "MISTAKE_UNMODELED"
+   ],
+   [
+    "Q19",
+    0,
+    "items",
+    "ITEM_COUNT"
+   ],
+   [
+    "Q20",
+    0,
+    "kind",
+    "Q_KIND_NOT_ALLOWED"
+   ]
+  ],
+  "unusedReserves": [],
+  "printed": [
+   {
+    "n": 1,
+    "slot": "Q1",
+    "origin": "planned",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "5y",
+     "x+b",
+     "2a-y"
+    ],
+    "house": [
+     "$5y$",
+     "$x + b$",
+     "$2a − y$"
+    ],
+    "position": "Q1"
+   },
+   {
+    "n": 2,
+    "slot": "Q2",
+    "origin": "planned",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "ay",
+     "12b",
+     "y-x",
+     "4a+3b"
+    ],
+    "house": [
+     "$ay$",
+     "$12b$",
+     "$y − x$",
+     "$4a + 3b$"
+    ],
+    "position": "Q2"
+   },
+   {
+    "n": 3,
+    "slot": "R1",
+    "origin": "reserve",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "13a",
+     "xy",
+     "5b+x"
+    ],
+    "house": [
+     "$13a$",
+     "$xy$",
+     "$5b + x$"
+    ],
+    "position": "Q3"
+   },
+   {
+    "n": 4,
+    "slot": "Q4",
+    "origin": "planned",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "a-b",
+     "15x",
+     "by"
+    ],
+    "house": [
+     "$a − b$",
+     "$15x$",
+     "$by$"
+    ],
+    "position": "Q4"
+   },
+   {
+    "n": 5,
+    "slot": "R4",
+    "origin": "reserve",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "x+y",
+     "11y",
+     "6a-x"
+    ],
+    "house": [
+     "$x + y$",
+     "$11y$",
+     "$6a − x$"
+    ],
+    "position": "Q5"
+   },
+   {
+    "n": 6,
+    "slot": "Q6",
+    "origin": "planned",
+    "kind": "write_from_words",
+    "conceptIds": [
+     "g7:algebraic_expressions#0"
+    ],
+    "star": false,
+    "keys": [
+     "4b",
+     "2y+b",
+     "b-y"
+    ],
+    "house": [
+     "$4b$",
+     "$2y + b$",
+     "$b − y$"
+    ],
+    "position": "Q6"
+   },
+   {
+    "n": 7,
+    "slot": "Q7",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "10",
+     "8",
+     "12"
+    ],
+    "house": [
+     "$10$",
+     "$8$",
+     "$12$"
+    ],
+    "position": "Q7"
+   },
+   {
+    "n": 8,
+    "slot": "R2",
+    "origin": "reserve",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "15",
+     "-10",
+     "7"
+    ],
+    "house": [
+     "$15$",
+     "$−10$",
+     "$7$"
+    ],
+    "position": "Q8"
+   },
+   {
+    "n": 9,
+    "slot": "Q9",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "-7",
+     "-5",
+     "-15",
+     "14"
+    ],
+    "house": [
+     "$−7$",
+     "$−5$",
+     "$−15$",
+     "$14$"
+    ],
+    "position": "Q9"
+   },
+   {
+    "n": 10,
+    "slot": "Q10",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "4",
+     "-12",
+     "11"
+    ],
+    "house": [
+     "$4$",
+     "$−12$",
+     "$11$"
+    ],
+    "position": "Q10"
+   },
+   {
+    "n": 11,
+    "slot": "Q11",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "11",
+     "-2",
+     "15"
+    ],
+    "house": [
+     "$11$",
+     "$−2$",
+     "$15$"
+    ],
+    "position": "Q11"
+   },
+   {
+    "n": 12,
+    "slot": "Q12",
+    "origin": "planned",
+    "kind": "substitute",
+    "conceptIds": [
+     "g7:algebraic_expressions#1"
+    ],
+    "star": false,
+    "keys": [
+     "-3",
+     "-7",
+     "17"
+    ],
+    "house": [
+     "$−3$",
+     "$−7$",
+     "$17$"
+    ],
+    "position": "Q12"
+   },
+   {
+    "n": 13,
+    "slot": "Q13",
+    "origin": "planned",
+    "kind": "collect_like_terms",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": false,
+    "keys": [
+     "7x+4",
+     "10+3y",
+     "5a+5"
+    ],
+    "house": [
+     "$7x + 4$",
+     "$10 + 3y$",
+     "$5a + 5$"
+    ],
+    "position": "Q13"
+   },
+   {
+    "n": 14,
+    "slot": "Q14",
+    "origin": "planned",
+    "kind": "collect_like_terms",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": false,
+    "keys": [
+     "7b-7",
+     "2x+11",
+     "2y+7"
+    ],
+    "house": [
+     "$7b − 7$",
+     "$2x + 11$",
+     "$2y + 7$"
+    ],
+    "position": "Q14"
+   },
+   {
+    "n": 15,
+    "slot": "Q15",
+    "origin": "planned",
+    "kind": "collect_like_terms",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": false,
+    "keys": [
+     "4x+y",
+     "8a+4b",
+     "5y-6"
+    ],
+    "house": [
+     "$4x + y$",
+     "$8a + 4b$",
+     "$5y − 6$"
+    ],
+    "position": "Q15"
+   },
+   {
+    "n": 16,
+    "slot": "R3",
+    "origin": "reserve",
+    "kind": "collect_like_terms",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": false,
+    "keys": [
+     "7x+9",
+     "10b-8",
+     "3a+12"
+    ],
+    "house": [
+     "$7x + 9$",
+     "$10b − 8$",
+     "$3a + 12$"
+    ],
+    "position": "Q16"
+   },
+   {
+    "n": 17,
+    "slot": "Q17",
+    "origin": "planned",
+    "kind": "collect_like_terms",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": false,
+    "keys": [
+     "9+5x",
+     "3a+3b",
+     "4y+9"
+    ],
+    "house": [
+     "$9 + 5x$",
+     "$3a + 3b$",
+     "$4y + 9$"
+    ],
+    "position": "Q17"
+   },
+   {
+    "n": 18,
+    "slot": "Q18",
+    "origin": "planned",
+    "kind": "find_error_collect",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": true,
+    "keys": [
+     "6x+9",
+     "5a+4",
+     "5y+3b"
+    ],
+    "house": [
+     "$6x + 9$",
+     "$5a + 4$",
+     "$5y + 3b$"
+    ],
+    "position": "Q18"
+   },
+   {
+    "n": 19,
+    "slot": "R5",
+    "origin": "reserve",
+    "kind": "find_error_collect",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": true,
+    "keys": [
+     "5b+11",
+     "4x+3",
+     "4y+7a"
+    ],
+    "house": [
+     "$5b + 11$",
+     "$4x + 3$",
+     "$4y + 7a$"
+    ],
+    "position": "Q19"
+   },
+   {
+    "n": 20,
+    "slot": "R6",
+    "origin": "reserve",
+    "kind": "find_error_collect",
+    "conceptIds": [
+     "g7:algebraic_expressions#2"
+    ],
+    "star": true,
+    "keys": [
+     "4b+5",
+     "6x+4y",
+     "3a+11"
+    ],
+    "house": [
+     "$4b + 5$",
+     "$6x + 4y$",
+     "$3a + 11$"
+    ],
+    "position": "Q20"
+   }
+  ]
+ }
+}

@@ -532,3 +532,23 @@ test('trial admissions require the actor-safe renderer and a remaining slot; clo
   assert.equal((await (await handleTeacherGeneration(post(),f.deps)).json()).reused,true);
   assert.ok(!f.calls.includes('enqueue'));
 });
+
+test('a worksheet-wire/5 draft serves its PDF and never a Word file', async () => {
+  const cases = JSON.parse(readFileSync(new URL('../../../tools/security/fixtures/teacher-draft-readiness-cases.json', import.meta.url), 'utf8'));
+  const ready = cases.accepted.map((entry: { document: unknown }) => entry.document);
+  assert.ok(ready.length > 0);
+  for (const result of ready) {
+    for (const kind of ['pdf', 'docx']) {
+      const f = fixture(); f.store.get = async () => { f.calls.push('get'); return { ...job, status: 'needs_review', result }; };
+      const response = await handleTeacherGeneration(new Request(origin + '/api/teacherGeneration?id=' + jobId + '&file=' + kind), f.deps);
+      if (kind === 'pdf') {
+        assert.equal(response.status, 200);
+        assert.equal(response.headers.get('content-type'), 'application/pdf');
+        assert.deepEqual(f.calls, ['auth', 'get', 'download']);
+      } else {
+        await code(response, 409, 'DRAFT_NOT_AVAILABLE');
+        assert.deepEqual(f.calls, ['auth', 'get']);
+      }
+    }
+  }
+});

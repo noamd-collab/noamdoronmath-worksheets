@@ -131,7 +131,8 @@ def replay_case(case, corpus, skills, work, *, render=True, corrections_mode='ex
         # The engine's ladder ended without a sheet and it asked for a second
         # full author reply, which was never recorded. Offline the job stops
         # here; with a model it could still go either way. An unrecorded
-        # correction does not stop a job: the ladder goes on to a shorter sheet.
+        # correction does not stop a job: the ladder goes on, to a shorter sheet
+        # only when the request is above its grade minimum.
         final = 'needs_unrecorded_reply'
     else:
         final = 'failed'
@@ -242,7 +243,10 @@ def markdown(summary, records, env):
         correction = '—'
         if r['author']['correction']['requested']:
             keys = r['author']['correction']['requiredKeys'] or r['author']['correction']['questions']
-            correction = f"{len(keys)} q" + ('' if r['author']['correction']['answered'] else ' (not recorded)')
+            # The rule has its own key in the request; it is not a question.
+            count = sum(1 for key in keys if key != 'rule')
+            asked = ([f"{count} q"] if count or 'rule' not in keys else []) + (['rule'] if 'rule' in keys else [])
+            correction = ' + '.join(asked) + ('' if r['author']['correction']['answered'] else ' (not recorded)')
         ladder = r['ladder']
         salvage = []
         if ladder.get('replaced'):
@@ -281,8 +285,10 @@ def markdown(summary, records, env):
         lines += [f"Not installed on this machine: {', '.join(missing)}. {env['note']}", '']
     lines += ['`needs_unrecorded_reply` means the repair ladder ended without a sheet and the engine asked for a second '
               'full author reply that was never recorded; the replay stops there instead of inventing one. A correction '
-              'that was never recorded does not stop a job: it counts as a failed correction and the ladder goes on to '
-              'a shorter sheet.', '']
+              'that was never recorded does not stop a job: it counts as a failed correction and the ladder goes on, '
+              'to a shorter sheet only when the request is above its grade minimum (8 / 12 / 14 / 20 questions in '
+              'grades 1-2 / 3-4 / 5-6 / 7-9). "Correction asked" counts the questions asked for again and names the '
+              'rule when it was asked for too.', '']
     return '\n'.join(lines)
 
 
@@ -351,7 +357,8 @@ def main(argv=None):
                         help='exact: a recorded correction answers only a request for exactly its keys (default); '
                              'subset: it also answers a request for some of its keys, with those questions '
                              '(a what-if: the live request would have differed); none: no correction is answered, '
-                             'so only reserves and a shorter sheet can save a case')
+                             'so only reserves, and a shorter sheet when the request is above its grade minimum, '
+                             'can save a case')
     parser.add_argument('--compare', help='An earlier results.json to report changes against')
     args = parser.parse_args(argv)
     out = Path(args.out) if args.out else Path(tempfile.mkdtemp(prefix='teacher-replay-'))

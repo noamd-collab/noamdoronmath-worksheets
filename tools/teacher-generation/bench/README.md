@@ -70,13 +70,20 @@ instead of attributing failures.
   (default) only a request for exactly the recorded keys; `subset` also a
   request for some of them, with those questions (a what-if: the live request
   would have named fewer questions); `none` answers no correction, so only
-  reserves and a shorter sheet can save a case. A correction kept as text
+  reserves, and a shorter sheet when the request is above its grade minimum
+  (8 / 12 / 14 / 20 questions in grades 1–2 / 3–4 / 5–6 / 7–9), can save a
+  case. 25 of the 35 corpus cases ask for 20 questions in grades 7–9, the
+  minimum, so no shorter sheet exists for them. A correction kept as text
   (`format: "text"` in the index) goes through the engine's own reply reader.
 - `needs_unrecorded_reply` means the repair ladder ended without a sheet and
   the engine asked for a second full author reply that was never recorded. The
   replay stops there; it never invents a reply. A correction that was never
   recorded does not stop a job: it counts as a failed correction, the ladder
-  goes on to a shorter sheet, and `ladder.correctionFailed` records it.
+  goes on (to a shorter sheet only when the request is above its grade
+  minimum), and `ladder.correctionFailed` records it. In `summary.md` the
+  column "Correction asked" counts the questions asked for again and adds
+  `rule` when the refused rule was asked for too (`rule` alone when no
+  question was).
 - Each case carries `ladder`: the worker's attempts and corrections, the
   questions replaced and dropped, and per author attempt the selection events
   (question, group, codes, stage, action). No worksheet text.
@@ -113,10 +120,11 @@ variable, the author switch included, and use placeholder Qwen settings.
 
 ## After an engine change
 
-1. Run the unit tests. `test_bench_probes.py` fails if any probe starts to
-   print a wrong key or an answer beside its question.
+1. Run the unit tests. `test_bench_probes.py` fails if any probe prints a
+   wrong key, an answer beside its question or an exercise it should not show.
 2. Run `probes/run.py`, read the change report, and record the new state with
-   `--update` once it is what you intended.
+   `--update` once it is what you intended. `--update` records nothing while
+   any probe prints wrongly: make the engine refuse that form.
 3. Run `replay.py --compare bench/corpus/baseline/results.json` and replace the
    baseline when the change is deliberate.
 

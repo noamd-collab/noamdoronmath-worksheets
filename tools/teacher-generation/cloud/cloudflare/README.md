@@ -29,6 +29,39 @@ A missed minute or slow cold start can temporarily make the UI unavailable;
 measure real heartbeat gaps before cutover instead of extending this threshold
 to hide an unavailable worker. Cron configuration can take time to propagate.
 
+Every awaited container call is bounded; `monitor()` and storage calls are not.
+Inside the object `inspect`, `setInactivityTimeout` and `destroy` get 20 seconds
+and `exec` 60. An unanswered call fails that one operation and is logged as
+`teacher_cloud_platform_timeout` with the call's name. Its answer is dropped, but
+the call itself cannot be withdrawn: after an unanswered `destroy` this instance
+of the object starts no check container until that destroy settles, and sends no
+second one; a rebuilt object does not remember it. A check that starts late is
+stopped. A run is watched before its keep-alive is confirmed. If the keep-alive
+of the tick that started the run goes unanswered, that tick is recorded as a
+failed cycle, the run is still observed to its end, a clean exit clears the
+failure, and a failed exit is counted once with its pause running from the
+failure. A later busy tick whose keep-alive goes unanswered fails without
+changing state. After a rebuild a run is watched again only once it could be
+inspected; while inspect stays unanswered its end is recorded as unknown. The
+re-arm after a rebuild is a single attempt, logged as
+`teacher_cloud_rearm_unconfirmed` when it is not confirmed.
+
+Status is read-only and is not queued. With deactivate it answers from stored
+state when a running container cannot be inspected: `running` true with
+`observedImage` null. The apply phases of the release guard read that as a
+mismatch; `--observe` does not print `observedImage`.
+
+Outside the object the Worker stops waiting after 45 seconds on a cron tick
+(`teacher_cloud_cycle_timeout`), 30 on status, 330 on preflight and 90 on the
+other operator routes, which then answer 504 `CLOUD_OPERATION_TIMEOUT`. A 504
+means no answer in time, not that the operation was dropped: it may still be
+carried out. A refusal stays 503 `CLOUD_OPERATION_FAILED`.
+
+These limits exist because on 2026-11-25 the object ran no cycle and answered
+neither status nor deactivate for 5 h 36 min, most likely because of one
+unanswered container call. The 20-second figure is a judgment, not a
+measurement of the platform.
+
 ## Operator boundary
 
 The public Worker exposes no lesson, artifact, shell or arbitrary command API.

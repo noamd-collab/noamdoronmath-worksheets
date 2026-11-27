@@ -21,7 +21,7 @@ class ProviderMiddleMathTests(unittest.TestCase):
             ("הנתונים הם DE ∥ BC, AD ⊥ BC.", r"הנתונים הם $DE \para BC$, $AD \perp BC$."),
             ("נתון △ABC. לכן ∠ADB = 90°.", r"נתון $\tri ABC$. לכן $\angle{ADB} = 90°$."),
             ("הוכיחו כי ∠BAD = ∠DAC.", r"הוכיחו כי $\angle{BAD} = \angle{DAC}$."),
-            ("מצאו את גודל ∠A.", r"מצאו את גודל $\angle{A}$."),
+            ("מצאו את גודל ∠CAB.", r"מצאו את גודל $\angle{CAB}$."),
             ("הקטע CD = 12.50 מופיע בשרטוט.", "הקטע $CD = 12.50$ מופיע בשרטוט."),
             ("נהלו דיון על המשוואה x + 2 = 5.", "נהלו דיון על המשוואה $x + 2 = 5$."),
         ]
@@ -42,6 +42,11 @@ class ProviderMiddleMathTests(unittest.TestCase):
                 rich([{"kind": "text", "text": value}], 8, provider=True)
         with self.assertRaises(GeneralSourceError):
             rich([{"kind": "text", "text": "מספר 2", "untrusted": True}], 8, provider=True)
+        # A one-letter angle in the sentence is refused at the source: the locked gate G81 fails it at render.
+        for value in ("מצאו את גודל ∠A.", "נתון ∠A = ∠B."):
+            with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
+                rich([{"kind": "text", "text": value}], 8, provider=True)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
 
     def test_mixed_math_separators_survive_normalization(self):
         single = {"kind": "math", "expression": {"type": "number", "numerator": 2, "denominator": 1}}

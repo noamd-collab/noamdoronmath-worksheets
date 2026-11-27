@@ -2,6 +2,7 @@
 import copy
 import importlib.util
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -11,7 +12,7 @@ HERE = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(HERE))
 import claim_words
 import runner
-from claim_words import claim_lint, claims, register, scan
+from claim_words import claim_lint, claims, scan
 
 # Wording of real Qwen replies (grade 3 division, grade 4 order of operations)
 # that the pinned gates failed on 2026-11-23.
@@ -112,15 +113,14 @@ class PinnedSkillTests(unittest.TestCase):
     def gate(self, questions):
         ledger = self.truth.Ledger(str(self.root / "unused.json"))
         ledger.claim("5", "בדיקת הנתונים בשרטוט המודפס", (1 + 1 == 2, 2), method="figure_assert")
-        recorded = register(ledger, questions)
         labelled = [("content.json.questions#" + q["n"], q) for q in questions]
         fails = self.truth.Fail()
         ids = [entry["id"] for entry in ledger.entries]
         self.truth.g32_universal_claims(labelled, ids, fails)
         self.truth.g33_enumeration(labelled, ids, fails)
-        return recorded, [line.split("  ")[0] + line.split("#")[1].split("]")[0] for line in fails], ledger
+        return [line.split("  ")[0] + line.split("#")[1].split("]")[0] for line in fails], ledger
 
-    def test_pinned_gates_pass_benign_readings_and_still_fail_claims(self):
+    def test_pinned_gates_fail_every_listed_word_without_a_ledger_entry(self):
         questions = [
             {"n": "1", "intro": "כמה עפרונות יש לכל תלמיד בסוף?", "items": ["(20 : 4) + 3"], "answer": "א. 8"},
             {"n": "2", "intro": "מכפלה תמיד גדולה מכל אחד מהגורמים.", "items": ["3 x 4"], "answer": "א. 12"},
@@ -130,40 +130,80 @@ class PinnedSkillTests(unittest.TestCase):
             {"n": "6", "intro": "חשבו.", "items": ["24 : 6 + 9"], "answer": "א. 13"},
             {"n": "7", "intro": "לכל מספר זוגי יש מחלק 2.", "items": ["6 : 2"], "answer": "א. 3"},
         ]
-        recorded, failed, ledger = self.gate(questions)
-        self.assertEqual(recorded, ["1", "3"])
-        # 4 mixes a benign word with a real request to enumerate: nothing is recorded, both gates fail it.
-        # 5 already holds a measured-figure entry, which the pinned gate accepts; nothing was added for it.
-        self.assertEqual(failed, ["G322", "G324", "G327", "G334"])
-        entry = next(e for e in ledger.entries if e["id"] == "1")
-        self.assertEqual((entry["method"], entry["statement"]), ("closed_form", claim_words.STATEMENT))
-        self.assertEqual(entry["evidence"], {"words": [{"gate": "G32", "word": "לכל", "reading": "per_unit"}]})
-        self.assertEqual(len([e for e in ledger.entries if e["id"] == "5"]), 1)
-        self.assertNotIn("עפרונות", json.dumps(entry, ensure_ascii=False))
+        failed, ledger = self.gate(questions)
+        # The locked gates refuse the benign readings too (D19): the per-unit "לכל" of 1 and the conditional
+        # "אילו" of 3 fail like the claims of 2, 4 and 7. 4 fails both gates. Only 5, which holds a
+        # measured-figure entry under its own number, passes; nothing else is in the ledger.
+        self.assertEqual(failed, ["G321", "G322", "G324", "G327", "G333", "G334"])
+        self.assertEqual([e["id"] for e in ledger.entries], ["5"])
 
-    def precheck(self, extra, name):
+    def readable(self):
+        """The fixture with the two questions that are refused when the reply is read written another way.
+
+        Question 9 prints a blank beside its table and question 11 a blank after a printed calculation, and no
+        binder fills either from the print (PRINTED_TASK_MISMATCH). A copy of question 7 in place of question 9,
+        and question 11 asked as a question, let the adapter and the gates see the whole sheet.
+        """
         model = copy.deepcopy(self.model)
+        model["sections"][0]["questions"][8] = copy.deepcopy(model["sections"][0]["questions"][6])
+        for entry in model["sections"][0]["questions"][10]["items"]:
+            if entry["prompt"][-1] != {"kind": "text", "text": ". התוצאה הנכונה היא ___"}:
+                raise AssertionError("The recorded fixture changed")
+            entry["prompt"][-1] = {"kind": "text", "text": ". מהי התוצאה הנכונה?"}
+        return model
+
+    def precheck(self, extra, name, *, ninth_as_seventh=False):
+        model = self.readable() if ninth_as_seventh else copy.deepcopy(self.model)
         model["sections"][0]["questions"][3]["intro"][-1]["text"] += extra
         work = self.root / "runs" / name
         return runner.precheck_job(self.lesson, model, work, {"elementary": str(self.skill)}), work
 
-    def test_real_prepass_delivers_benign_wording_and_names_the_question_of_a_real_claim(self):
-        cases = {"benign": (" תנו לכל תלמיד בקבוצה סעיף אחד.", "clean", []),
-                 "if": (" אילו המורה הייתה מוסיפה עוד מחברת, התוצאה הייתה גדלה.", "clean", []),
-                 "always": (" זכרו: מכפלה תמיד גדולה מכל אחד מהגורמים.", "replace", [("G32", 4)]),
-                 "every": (" לכל מספר זוגי יש מחלק 2.", "replace", [("G32", 4)]),
-                 "which": (" אילו מהתרגילים קלים?", "replace", [("G33", 4)])}
-        for name, (extra, status, blocking) in cases.items():
+    def test_real_prepass_names_the_question_of_every_gate_word(self):
+        # The fixture prints its three challenges with a star, and the pinned G61 proxy weighs that star: the
+        # difficulty spread of the sheet as printed is 5 > 4 (Q41=2 against Q102=7), so G61 names questions 4 and
+        # 10 in every case but "always", whose "תמיד" also lifts question 4. The truth step fails question 4 in
+        # every case: the locked G32 / G33 refuse a per-unit "לכל" and a conditional "אילו" as they refuse a claim.
+        spread = [("G61", 4, "editorial"), ("G61", 10, "editorial")]
+        cases = {"benign": (" תנו לכל תלמיד בקבוצה סעיף אחד.", [("G32", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"]),
+                 "if": (" אילו המורה הייתה מוסיפה עוד מחברת, התוצאה הייתה גדלה.", [("G33", 4, "truth")] + spread,
+                        ["PASS", "FAIL", "FAIL"]),
+                 "always": (" זכרו: מכפלה תמיד גדולה מכל אחד מהגורמים.", [("G32", 4, "truth")], ["PASS", "FAIL", "PASS"]),
+                 "every": (" לכל מספר זוגי יש מחלק 2.", [("G32", 4, "truth")] + spread, ["PASS", "FAIL", "FAIL"])}
+        # "Which" asked in the intro is a question that no number of the items answers: the reply is refused
+        # when it is read (PRINTED_ANSWER_KIND), before the trusted adapter or any gate, also with question 7 in
+        # place of question 9.
+        from validation import GenerationError
+        for ninth_as_seventh in (False, True):
+            with self.subTest(name="which", ninth_as_seventh=ninth_as_seventh), \
+                    self.assertRaises(GenerationError) as refused:
+                self.precheck(" אילו מהתרגילים קלים?", "which" + ("" if ninth_as_seventh else "-recorded"),
+                              ninth_as_seventh=ninth_as_seventh)
+            self.assertEqual(refused.exception.code, "PRINTED_ANSWER_KIND")
+            work = self.root / "runs" / ("which" + ("" if ninth_as_seventh else "-recorded"))
+            self.assertFalse((work / "content.json").exists() or (work / "verified.json").exists())
+        for name, (extra, blocking, statuses) in cases.items():
             with self.subTest(name=name):
-                result, work = self.precheck(extra, name)
-                # Editorial findings of the fixture itself would make a benign case "review".
-                self.assertIn(result["status"], ("clean", "review") if status == "clean" else (status,))
-                self.assertEqual([(b["code"], b["question"]) for b in result["gate"]["blocking"]], blocking)
-                self.assertEqual({b["class"] for b in result["gate"]["blocking"]}, {"truth"} if blocking else set())
-                self.assertEqual([step["name"] for step in result["steps"]], ["trusted-adapter", "content-truth", "house-gates"])
+                # As recorded, the reply is refused when it is read: question 9 prints a blank beside its table that no
+                # binder fills from the print. No adapter or gate runs and nothing is built.
+                with self.assertRaises(GenerationError) as refused:
+                    self.precheck(extra, name + "-recorded")
+                self.assertEqual(refused.exception.code, "PRINTED_TASK_MISMATCH")
+                work = self.root / "runs" / (name + "-recorded")
+                self.assertFalse((work / "content.json").exists() or (work / "verified.json").exists())
+                # With question 7 in place of question 9 and question 11 asked as a question the gates see the
+                # whole sheet.
+                result, work = self.precheck(extra, name, ninth_as_seventh=True)
+                self.assertEqual(result["status"], "replace")
+                self.assertEqual([(b["code"], b["question"], b["class"]) for b in result["gate"]["blocking"]], blocking)
+                self.assertEqual(result["gate"]["review"], [])
+                self.assertEqual([(step["name"], step["status"]) for step in result["steps"]],
+                                 list(zip(["trusted-adapter", "content-truth", "house-gates"], statuses)))
                 self.assertFalse((work / "sheet.pdf").exists() or (work / "sheet.docx").exists())
-                recorded = [c["id"] for c in json.loads((work / "verified.json").read_text())["claims"] if c["id"] == "4"]
-                self.assertEqual(recorded, ["4"] if status == "clean" else [])
+                claims = json.loads((work / "verified.json").read_text())["claims"]
+                # The compiler never writes a ledger entry under a bare question number, except a measured figure:
+                # that is the id the locked gates accept for the whole question.
+                self.assertEqual([c["id"] for c in claims if c["id"] == "4"], [])
+                self.assertEqual([c for c in claims if str(c["id"]).isdigit() and c["method"] != "figure_assert"], [])
 
     def test_adapter_refusal_inside_the_compiler_names_the_question_and_item(self):
         # A binder that only the trusted adapter runs refuses the second item of question 3.
@@ -189,10 +229,13 @@ class PinnedSkillTests(unittest.TestCase):
         )
         import subprocess
         fixture = HERE / "cloud/container/fixtures/general/grade4-skill-calculation"
+        # The fixture as the adapter can read it: as recorded, the reply is refused when it is read (question 9).
+        model = self.root / "readable-model.json"
+        model.write_text(json.dumps(self.readable(), ensure_ascii=False))
         sizes = [len(q["items"]) for q in self.model["sections"][0]["questions"]]
         call = sizes[0] + sizes[1] + 2
         done = subprocess.run([sys.executable, "-B", "-c", script, str(HERE), str(fixture / "lesson.json"),
-                               str(fixture / "model-output.json"), str(self.skill), str(self.root / "runs/refusal"), str(call)],
+                               str(model), str(self.skill), str(self.root / "runs/refusal"), str(call)],
                               capture_output=True, text=True, timeout=120)
         self.assertEqual(json.loads(done.stdout), {"code": "PRINTED_TASK_MISMATCH", "question": 3, "item": 2}, done.stderr)
         # The same fields are what the adapter process leaves in its failure record.
@@ -203,25 +246,44 @@ class PinnedSkillTests(unittest.TestCase):
                                  "evidence": {"error": "GeneralSourceError", "refusal": "PRINTED_TASK_MISMATCH"}}])
         self.assertTrue(complete)
 
-    def test_gate_content_follows_the_pinned_schema_and_the_page_keeps_its_stars(self):
-        result, work = self.precheck("", "schema")
-        self.assertIn(result["status"], ("clean", "review"))
+    def test_gate_content_carries_the_printed_stars(self):
+        # As recorded, the reply is refused when it is read (question 9: a blank beside its table that no binder
+        # fills) and nothing is built.
+        from validation import GenerationError
+        with self.assertRaises(GenerationError) as refused:
+            self.precheck("", "schema-recorded")
+        self.assertEqual(refused.exception.code, "PRINTED_TASK_MISMATCH")
+        work = self.root / "runs" / "schema-recorded"
+        self.assertFalse((work / "content.json").exists() or (work / "sheet.html").exists())
+        result, work = self.precheck("", "schema", ninth_as_seventh=True)
+        # The star the page prints is the star the pinned G61 proxy weighs: both ends of the spread are named.
+        self.assertEqual(result["status"], "replace")
+        self.assertEqual([(b["code"], b["question"], b["item"]) for b in result["gate"]["blocking"]], [("G61", 4, 1), ("G61", 10, 2)])
+        self.assertEqual(result["gate"]["review"], [])
         content = json.loads((work / "content.json").read_text())
         keys = {key for question in content["questions"] for key in question}
-        self.assertNotIn("star", keys)
-        self.assertLessEqual({"n", "intro", "items", "answer"}, keys)
-        self.assertEqual((work / "sheet.html").read_text().count('class="starred"'), 3)
-        # With the star in content.json the pinned difficulty proxy adds two points to every challenge item.
+        self.assertEqual(keys, {"n", "intro", "items", "answer", "star"})
+        stars = [question["star"] for question in content["questions"]]
+        self.assertEqual(stars, [False] * 9 + [True] * 3)
+        page = (work / "sheet.html").read_text()
+        self.assertEqual([marked == ' class="starred"' for marked in re.findall(r'<li( class="starred")?>', page)], stars)
+        self.assertEqual(page.count('class="starred"'), 3)
+        # The pinned difficulty proxy adds two points to every item of a starred question, and to nothing else.
         spec = importlib.util.spec_from_file_location("pinned_content_quality", self.skill / "scripts/lib/content_quality.py")
         quality = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(quality)
         profile = quality.profile_of(content)
-        plain = [quality.difficulty(r, profile) for r in quality.normalize(content)]
-        for question in content["questions"][-3:]:
-            question["star"] = True
+        stripped = copy.deepcopy(content)
+        for question in stripped["questions"]:
+            del question["star"]
+        plain = [quality.difficulty(r, profile) for r in quality.normalize(stripped)]
         starred = [quality.difficulty(r, profile) for r in quality.normalize(content)]
         challenge_items = sum(len(q["items"]) for q in content["questions"][-3:])
+        self.assertEqual((len(plain), challenge_items), (36, 9))
         self.assertEqual([b - a for a, b in zip(plain, starred)], [0] * (len(plain) - challenge_items) + [2] * challenge_items)
+        self.assertEqual([r["starred"] for r in quality.normalize(content)], [False] * (len(plain) - challenge_items) + [True] * challenge_items)
+        self.assertEqual(quality.g61_level_consistency(quality.normalize(content), profile),
+                         (quality.FAIL, "פער קושי 5 > 4 — הדף מערבב רמות (Q41=2 מול Q102=7)"))
 
 
 if __name__ == "__main__":

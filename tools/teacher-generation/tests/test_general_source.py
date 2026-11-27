@@ -161,14 +161,32 @@ class SourceTests(unittest.TestCase):
     def test_elementary_original_prose_table_and_fraction_compile_together(self):
         lesson,payload,scope=self.source()
         payload["sections"][0]["questions"][0]["table"]={"head":[[{"kind":"text","text":"שם"}],[{"kind":"text","text":"כמות"}]],"rows":[[[{"kind":"text","text":"עוגה"}],[{"kind":"math","expression":number(1,8)}]]]}
+        # Its items are bare instructions: beside a table their typed task is never printed, so the item is refused.
+        with tempfile.TemporaryDirectory() as work:
+            with self.assertRaises(GeneralSourceError) as refused:
+                compile_source(lesson,validate_source(lesson,payload,scope),scope,ELEMENTARY,work)
+        self.assertEqual((refused.exception.code,refused.exception.question,refused.exception.item),("PRINTED_TASK_MISMATCH",1,1))
+        # Items that print their own exercise but name no row of the table: nothing ties their key to the
+        # table printed beside them, so they are refused when the source is read (printed_tasks.table_row_task).
+        for item in payload["sections"][0]["questions"][0]["items"]:
+            item["prompt"]=[{"kind":"text","text":"כתבו את התוצאה: "},{"kind":"math","expression":copy.deepcopy(item["answer"]["task"]["expression"])}]
+        with self.assertRaises(GeneralSourceError) as beside:
+            validate_source(lesson,payload,scope)
+        self.assertEqual((beside.exception.code,beside.exception.question,beside.exception.item),("PRINTED_TASK_MISMATCH",1,1))
+        # Items that name the one row whose printed expression is their typed task compile with the table.
+        question=payload["sections"][0]["questions"][0]
+        question["table"]["rows"]=[[[{"kind":"text","text":"עוגה"}],[{"kind":"math","expression":copy.deepcopy(question["items"][0]["answer"]["task"]["expression"])}]]]
+        for item in question["items"]:
+            item["prompt"]=[{"kind":"text","text":"שורה "},{"kind":"math","expression":number(1)}]
         with tempfile.TemporaryDirectory() as work:
             result=compile_source(lesson,validate_source(lesson,payload,scope),scope,ELEMENTARY,work)
             self.assertTrue(result["reviewRequired"])
             rendered=(Path(work)/"sheet.html").read_text()
             self.assertIn("עוגה",rendered);self.assertIn("work-table",rendered);self.assertIn('class="frac"',rendered)
             ledger=json.loads((Path(work)/"verified.json").read_text())
+            # One exact claim per item.
             self.assertEqual(len(ledger["claims"]),12)
-            self.assertTrue(all(x["method"]=="sympy" for x in ledger["claims"]))
+            self.assertEqual({x["id"]:x["method"] for x in ledger["claims"] if x["method"]!="sympy"},{})
 
     def test_middle_constant_bridge_keeps_multiple_roots_and_review_metadata(self):
         lesson,payload,scope=self.source("g9r:quad_func_and_eq",9)
@@ -324,7 +342,7 @@ class PrintedPercentagesTests(unittest.TestCase):
         with self.assertRaises(GeneralSourceError):self.setup_item("במבחן היו 40 שאלות.",p,number(90),"אחוזים")
         with self.assertRaises(GeneralSourceError):self.setup_item("במבחן היו 50 שאלות.",p,number(90),"שאלות")
 
-    def test_middle_native_compiler_keeps_recipe_for_an_incomplete_instruction(self):
+    def test_middle_native_compiler_refuses_the_recipe_of_an_incomplete_instruction(self):
         import tempfile
         from general_adapters import _compile_middle
         from math_tasks import validate_and_solve_task
@@ -335,11 +353,18 @@ class PrintedPercentagesTests(unittest.TestCase):
         source={"title":"אחוזים","rule":self.rich_text("חלק ממאה"),"sections":[{"title":"אחוז מתוך השלם","conceptIds":["g8:percentages#0"],"questions":[q]}]}
         solved=validate_and_solve_task(task); evidence={"computations":[{"itemId":"q1-i1","computed":solved},{"itemId":"q1-i2","computed":solved}]}
         scope={"topic":{"sourceTopicId":"percentages","sourceTrack":"ח","domain":"מספרי"}}
+        # The intro states the numbers: printing the typed recipe after the incomplete instruction would show the
+        # operation, so the second item is refused instead.
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaises(GeneralSourceError) as refused:
+                _compile_middle({"gradeNumber":8,"level":"b","topicId":"g8:percentages"},source,evidence,scope,None,Path(tmp))
+        self.assertEqual((refused.exception.code,refused.exception.question,refused.exception.item),("PRINTED_TASK_MISMATCH",1,2))
+        # The complete question alone is printed as written and bound to its printed numbers.
+        q["items"]=q["items"][:1]; evidence["computations"]=evidence["computations"][:1]
         with tempfile.TemporaryDirectory() as tmp:
             _compile_middle({"gradeNumber":8,"level":"b","topicId":"g8:percentages"},source,evidence,scope,None,Path(tmp))
             items=json.loads((Path(tmp)/"worksheet-source.json").read_text())["questions"][0]["items"]
-            self.assertEqual(items[0]["text"],"כמה הם 20 אחוזים מ־25 התלמידים?")
-            self.assertIn("25",items[1]["text"])
+            self.assertEqual([item["text"] for item in items],["כמה הם 20 אחוזים מ־25 התלמידים?"])
             self.assertEqual(set(json.loads((Path(tmp)/"verified.json").read_text())["printedChecks"]),{"q1-i1"})
 
 if __name__=="__main__":unittest.main()

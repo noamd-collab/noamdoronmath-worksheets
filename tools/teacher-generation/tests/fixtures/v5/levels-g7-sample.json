@@ -1,0 +1,1763 @@
+[
+ {
+  "level": "רמה ב׳",
+  "key": "b",
+  "grade": "כיתה ז׳",
+  "keep_questions": true,
+  "figure_topic": [
+   false,
+   "הנושא אינו גיאומטריה; הוראת נועם אוסרת שרטוטים בנושא זה"
+  ],
+  "title": "ביטויים אלגבריים: הצבה וכינוס איברים דומים",
+  "rule": "ביטוי אלגברי הוא ביטוי שיש בו מספרים, משתנים ופעולות חשבון. כדי למצוא את ערך הביטוי מציבים מספר במקום המשתנה. איברים דומים הם איברים שיש להם אותו חלק של משתנים. כדי לכנס איברים דומים מחברים או מחסרים את המספרים שלפני המשתנה, למשל: $3x + 5x = 8x$.",
+  "questions": [
+   {
+    "n": 1,
+    "intro": "כתבו ביטוי אלגברי מתאים לכל תיאור:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "מספר הגדול פי $4$ מ־$x$",
+      "space": 32,
+      "answer": "$4x$",
+      "given": [
+       "מספר הגדול פי $4$ מ־$x$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$4x$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "הסכום של $a$ ו־$b$",
+      "space": 32,
+      "answer": "$a + b$",
+      "given": [
+       "הסכום של $a$ ו־$b$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$a + b$"
+       }
+      ],
+      "variables": [
+       "a",
+       "b"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "פי $3$ מ־$y$ ועוד $x$",
+      "space": 32,
+      "answer": "$3y + x$",
+      "given": [
+       "פי $3$ מ־$y$ ועוד $x$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$3y + x$"
+       }
+      ],
+      "variables": [
+       "x",
+       "y"
+      ]
+     }
+    ],
+    "to_prove": [],
+    "part": [
+     "ביטויים אלגבריים: הצבה וכינוס איברים דומים",
+     "1–20"
+    ]
+   },
+   {
+    "n": 2,
+    "intro": "כתבו ביטוי אלגברי מתאים לכל תיאור:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "ההפרש בין $x$ לבין $y$",
+      "space": 32,
+      "answer": "$x − y$",
+      "given": [
+       "ההפרש בין $x$ לבין $y$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$x − y$"
+       }
+      ],
+      "variables": [
+       "x",
+       "y"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "המכפלה של $a$ ב־$b$",
+      "space": 32,
+      "answer": "$ab$",
+      "given": [
+       "המכפלה של $a$ ב־$b$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$ab$"
+       }
+      ],
+      "variables": [
+       "a",
+       "b"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "מספר הגדול פי $6$ מ־$b$",
+      "space": 32,
+      "answer": "$6b$",
+      "given": [
+       "מספר הגדול פי $6$ מ־$b$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$6b$"
+       }
+      ],
+      "variables": [
+       "b"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 3,
+    "intro": "כתבו ביטוי אלגברי מתאים לכל תיאור:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "ההפרש בין פי $5$ מ־$a$ לבין $b$",
+      "space": 32,
+      "answer": "$5a − b$",
+      "given": [
+       "ההפרש בין פי $5$ מ־$a$ לבין $b$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$5a − b$"
+       }
+      ],
+      "variables": [
+       "a",
+       "b"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "פי $2$ מ־$x$ ועוד פי $7$ מ־$y$",
+      "space": 32,
+      "answer": "$2x + 7y$",
+      "given": [
+       "פי $2$ מ־$x$ ועוד פי $7$ מ־$y$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$2x + 7y$"
+       }
+      ],
+      "variables": [
+       "x",
+       "y"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "הסכום של $y$ ו־$a$",
+      "space": 32,
+      "answer": "$y + a$",
+      "given": [
+       "הסכום של $y$ ו־$a$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$y + a$"
+       }
+      ],
+      "variables": [
+       "a",
+       "y"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 4,
+    "intro": "כתבו ביטוי אלגברי מתאים לכל תיאור:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "מספר הגדול פי $11$ מ־$a$",
+      "space": 32,
+      "answer": "$11a$",
+      "given": [
+       "מספר הגדול פי $11$ מ־$a$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$11a$"
+       }
+      ],
+      "variables": [
+       "a"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "הסכום של $x$ ו־$b$",
+      "space": 32,
+      "answer": "$x + b$",
+      "given": [
+       "הסכום של $x$ ו־$b$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$x + b$"
+       }
+      ],
+      "variables": [
+       "b",
+       "x"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "ההפרש בין פי $6$ מ־$y$ לבין $x$",
+      "space": 32,
+      "answer": "$6y − x$",
+      "given": [
+       "ההפרש בין פי $6$ מ־$y$ לבין $x$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$6y − x$"
+       }
+      ],
+      "variables": [
+       "x",
+       "y"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 5,
+    "intro": "כתבו ביטוי אלגברי מתאים לכל תיאור:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "מספר הגדול פי $9$ מ־$y$",
+      "space": 32,
+      "answer": "$9y$",
+      "given": [
+       "מספר הגדול פי $9$ מ־$y$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$9y$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "פי $4$ מ־$a$ ועוד $b$",
+      "space": 32,
+      "answer": "$4a + b$",
+      "given": [
+       "פי $4$ מ־$a$ ועוד $b$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$4a + b$"
+       }
+      ],
+      "variables": [
+       "a",
+       "b"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "ההפרש בין $a$ לבין $x$",
+      "space": 32,
+      "answer": "$a − x$",
+      "given": [
+       "ההפרש בין $a$ לבין $x$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$a − x$"
+       }
+      ],
+      "variables": [
+       "a",
+       "x"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 6,
+    "intro": "כתבו ביטוי אלגברי מתאים לכל תיאור:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "פי $3$ מ־$b$ ועוד פי $2$ מ־$x$",
+      "space": 32,
+      "answer": "$3b + 2x$",
+      "given": [
+       "פי $3$ מ־$b$ ועוד פי $2$ מ־$x$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$3b + 2x$"
+       }
+      ],
+      "variables": [
+       "b",
+       "x"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "ההפרש בין פי $7$ מ־$x$ לבין $a$",
+      "space": 32,
+      "answer": "$7x − a$",
+      "given": [
+       "ההפרש בין פי $7$ מ־$x$ לבין $a$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$7x − a$"
+       }
+      ],
+      "variables": [
+       "a",
+       "x"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "הסכום של $b$ ו־$y$",
+      "space": 32,
+      "answer": "$b + y$",
+      "given": [
+       "הסכום של $b$ ו־$y$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$b + y$"
+       }
+      ],
+      "variables": [
+       "b",
+       "y"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 7,
+    "intro": "חשבו את ערך הביטוי:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$4y − y$ עבור $y = −2$",
+      "space": 32,
+      "answer": "$−6$",
+      "given": [
+       "$4y − y$ עבור $y = −2$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$−6$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$2a + 5$ עבור $a = 3$",
+      "space": 32,
+      "answer": "$11$",
+      "given": [
+       "$2a + 5$ עבור $a = 3$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$11$"
+       }
+      ],
+      "variables": [
+       "a"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$5b − 2b$ עבור $b = 4$",
+      "space": 32,
+      "answer": "$12$",
+      "given": [
+       "$5b − 2b$ עבור $b = 4$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$12$"
+       }
+      ],
+      "variables": [
+       "b"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 8,
+    "intro": "חשבו את ערך הביטוי:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$3x + 2$ עבור $x = 5$",
+      "space": 32,
+      "answer": "$17$",
+      "given": [
+       "$3x + 2$ עבור $x = 5$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$17$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$6 − y$ עבור $y = −3$",
+      "space": 32,
+      "answer": "$9$",
+      "given": [
+       "$6 − y$ עבור $y = −3$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$9$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$2b + b$ עבור $b = −4$",
+      "space": 32,
+      "answer": "$−12$",
+      "given": [
+       "$2b + b$ עבור $b = −4$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$−12$"
+       }
+      ],
+      "variables": [
+       "b"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 9,
+    "intro": "חשבו את ערך הביטוי:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$2x + 6$ עבור $x = −2$",
+      "space": 32,
+      "answer": "$2$",
+      "given": [
+       "$2x + 6$ עבור $x = −2$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$2$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$5 − b$ עבור $b = −5$",
+      "space": 32,
+      "answer": "$10$",
+      "given": [
+       "$5 − b$ עבור $b = −5$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$10$"
+       }
+      ],
+      "variables": [
+       "b"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$7y − 2y$ עבור $y = 3$",
+      "space": 32,
+      "answer": "$15$",
+      "given": [
+       "$7y − 2y$ עבור $y = 3$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$15$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 10,
+    "intro": "חשבו את ערך הביטוי:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$5x − 3x$ עבור $x = 6$",
+      "space": 32,
+      "answer": "$12$",
+      "given": [
+       "$5x − 3x$ עבור $x = 6$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$12$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$10 − 2a$ עבור $a = 3$",
+      "space": 32,
+      "answer": "$4$",
+      "given": [
+       "$10 − 2a$ עבור $a = 3$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$4$"
+       }
+      ],
+      "variables": [
+       "a"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$b + b + b$ עבור $b = −2$",
+      "space": 32,
+      "answer": "$−6$",
+      "given": [
+       "$b + b + b$ עבור $b = −2$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$−6$"
+       }
+      ],
+      "variables": [
+       "b"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 11,
+    "intro": "חשבו את ערך הביטוי:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$4 + 3y$ עבור $y = 2$",
+      "space": 32,
+      "answer": "$10$",
+      "given": [
+       "$4 + 3y$ עבור $y = 2$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$10$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$9x − x$ עבור $x = −1$",
+      "space": 32,
+      "answer": "$−8$",
+      "given": [
+       "$9x − x$ עבור $x = −1$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$−8$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$2a − 7$ עבור $a = 5$",
+      "space": 32,
+      "answer": "$3$",
+      "given": [
+       "$2a − 7$ עבור $a = 5$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$3$"
+       }
+      ],
+      "variables": [
+       "a"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 12,
+    "intro": "חשבו את ערך הביטוי:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$6y + 1$ עבור $y = 3$",
+      "space": 32,
+      "answer": "$19$",
+      "given": [
+       "$6y + 1$ עבור $y = 3$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$19$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$8 − x$ עבור $x = −2$",
+      "space": 32,
+      "answer": "$10$",
+      "given": [
+       "$8 − x$ עבור $x = −2$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$10$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$3a − a$ עבור $a = 7$",
+      "space": 32,
+      "answer": "$14$",
+      "given": [
+       "$3a − a$ עבור $a = 7$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$14$"
+       }
+      ],
+      "variables": [
+       "a"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 13,
+    "intro": "כנסו איברים דומים:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$3x + 5 + 2x − 1$",
+      "space": 32,
+      "answer": "$5x + 4$",
+      "given": [
+       "$3x + 5 + 2x − 1$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$5x + 4$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$−4y + 9 + 6y − 2$",
+      "space": 32,
+      "answer": "$2y + 7$",
+      "given": [
+       "$−4y + 9 + 6y − 2$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$2y + 7$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$8a − 3 + a − 5$",
+      "space": 32,
+      "answer": "$9a − 8$",
+      "given": [
+       "$8a − 3 + a − 5$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$9a − 8$"
+       }
+      ],
+      "variables": [
+       "a"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 14,
+    "intro": "כנסו איברים דומים:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$6b + 5 − 2b + 9$",
+      "space": 32,
+      "answer": "$4b + 14$",
+      "given": [
+       "$6b + 5 − 2b + 9$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$4b + 14$"
+       }
+      ],
+      "variables": [
+       "b"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$y + y + 10 − 3$",
+      "space": 32,
+      "answer": "$2y + 7$",
+      "given": [
+       "$y + y + 10 − 3$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$2y + 7$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$7x − 6 + 2x − 2$",
+      "space": 32,
+      "answer": "$9x − 8$",
+      "given": [
+       "$7x − 6 + 2x − 2$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$9x − 8$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 15,
+    "intro": "כנסו איברים דומים:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$6x − 2 + x + 5$",
+      "space": 32,
+      "answer": "$7x + 3$",
+      "given": [
+       "$6x − 2 + x + 5$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$7x + 3$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$9 − 3y + 4y − 1$",
+      "space": 32,
+      "answer": "$8 + y$",
+      "given": [
+       "$9 − 3y + 4y − 1$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$8 + y$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$5a + 11 − 2a − 4$",
+      "space": 32,
+      "answer": "$3a + 7$",
+      "given": [
+       "$5a + 11 − 2a − 4$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$3a + 7$"
+       }
+      ],
+      "variables": [
+       "a"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 16,
+    "intro": "כנסו איברים דומים:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$4b + 3 − b + 9$",
+      "space": 32,
+      "answer": "$3b + 12$",
+      "given": [
+       "$4b + 3 − b + 9$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$3b + 12$"
+       }
+      ],
+      "variables": [
+       "b"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$x + 6 + 5x + 2$",
+      "space": 32,
+      "answer": "$6x + 8$",
+      "given": [
+       "$x + 6 + 5x + 2$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$6x + 8$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$10y − 4 − 3y − 3$",
+      "space": 32,
+      "answer": "$7y − 7$",
+      "given": [
+       "$10y − 4 − 3y − 3$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$7y − 7$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 17,
+    "intro": "כנסו איברים דומים:",
+    "star": false,
+    "items": [
+     {
+      "label": "א",
+      "text": "$2a + 9 + 3a − 1$",
+      "space": 32,
+      "answer": "$5a + 8$",
+      "given": [
+       "$2a + 9 + 3a − 1$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$5a + 8$"
+       }
+      ],
+      "variables": [
+       "a"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "$−y + 11 + 4y − 4$",
+      "space": 32,
+      "answer": "$3y + 7$",
+      "given": [
+       "$−y + 11 + 4y − 4$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$3y + 7$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "$9x − 2 − 4x − 3$",
+      "space": 32,
+      "answer": "$5x − 5$",
+      "given": [
+       "$9x − 2 − 4x − 3$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$5x − 5$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 18,
+    "intro": "בכל סעיף תלמיד כינס איברים דומים וטעה. רשמו את התוצאה הנכונה.",
+    "star": true,
+    "items": [
+     {
+      "label": "א",
+      "text": "כינוס הביטוי $4a + 3 + a + 2$ נתן $10a$",
+      "space": 46,
+      "answer": "$5a + 5$",
+      "given": [
+       "כינוס הביטוי $4a + 3 + a + 2$ נתן $10a$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$5a + 5$"
+       }
+      ],
+      "variables": [
+       "a"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "כינוס הביטוי $6x + 7 − 1 − 2x$ נתן $4x + 8$",
+      "space": 46,
+      "answer": "$4x + 6$",
+      "given": [
+       "כינוס הביטוי $6x + 7 − 1 − 2x$ נתן $4x + 8$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$4x + 6$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "כינוס הביטוי $5b + 2a + b$ נתן $5b + 2a$",
+      "space": 46,
+      "answer": "$6b + 2a$",
+      "given": [
+       "כינוס הביטוי $5b + 2a + b$ נתן $5b + 2a$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$6b + 2a$"
+       }
+      ],
+      "variables": [
+       "a",
+       "b"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 19,
+    "intro": "בכל סעיף תלמיד כינס איברים דומים וטעה. רשמו את התוצאה הנכונה.",
+    "star": true,
+    "items": [
+     {
+      "label": "א",
+      "text": "כינוס הביטוי $5x + 2 + x + 6$ נתן $14x$",
+      "space": 46,
+      "answer": "$6x + 8$",
+      "given": [
+       "כינוס הביטוי $5x + 2 + x + 6$ נתן $14x$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$6x + 8$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "כינוס הביטוי $7b + 9 − 4 − 2b$ נתן $5b + 13$",
+      "space": 46,
+      "answer": "$5b + 5$",
+      "given": [
+       "כינוס הביטוי $7b + 9 − 4 − 2b$ נתן $5b + 13$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$5b + 5$"
+       }
+      ],
+      "variables": [
+       "b"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "כינוס הביטוי $3y + 2x + y$ נתן $3y + 2x$",
+      "space": 46,
+      "answer": "$4y + 2x$",
+      "given": [
+       "כינוס הביטוי $3y + 2x + y$ נתן $3y + 2x$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$4y + 2x$"
+       }
+      ],
+      "variables": [
+       "x",
+       "y"
+      ]
+     }
+    ],
+    "to_prove": []
+   },
+   {
+    "n": 20,
+    "intro": "בכל סעיף תלמיד כינס איברים דומים וטעה. רשמו את התוצאה הנכונה.",
+    "star": true,
+    "items": [
+     {
+      "label": "א",
+      "text": "כינוס הביטוי $2y + 5 + y + 4$ נתן $12y$",
+      "space": 46,
+      "answer": "$3y + 9$",
+      "given": [
+       "כינוס הביטוי $2y + 5 + y + 4$ נתן $12y$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$3y + 9$"
+       }
+      ],
+      "variables": [
+       "y"
+      ]
+     },
+     {
+      "label": "ב",
+      "text": "כינוס הביטוי $9x + 8 − 2 − 3x$ נתן $6x + 10$",
+      "space": 46,
+      "answer": "$6x + 6$",
+      "given": [
+       "כינוס הביטוי $9x + 8 − 2 − 3x$ נתן $6x + 10$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$6x + 6$"
+       }
+      ],
+      "variables": [
+       "x"
+      ]
+     },
+     {
+      "label": "ג",
+      "text": "כינוס הביטוי $4a + 3b + a$ נתן $4a + 3b$",
+      "space": 46,
+      "answer": "$5a + 3b$",
+      "given": [
+       "כינוס הביטוי $4a + 3b + a$ נתן $4a + 3b$"
+      ],
+      "to_prove": [
+       {
+        "type": "find",
+        "quantity": "value",
+        "what": "תוצאת המשימה המתמטית בסעיף",
+        "value": "$5a + 3b$"
+       }
+      ],
+      "variables": [
+       "a",
+       "b"
+      ]
+     }
+    ],
+    "to_prove": []
+   }
+  ],
+  "answers": [
+   [
+    1,
+    [
+     [
+      "א",
+      "$4x$"
+     ],
+     [
+      "ב",
+      "$a + b$"
+     ],
+     [
+      "ג",
+      "$3y + x$"
+     ]
+    ],
+    false
+   ],
+   [
+    2,
+    [
+     [
+      "א",
+      "$x − y$"
+     ],
+     [
+      "ב",
+      "$ab$"
+     ],
+     [
+      "ג",
+      "$6b$"
+     ]
+    ],
+    false
+   ],
+   [
+    3,
+    [
+     [
+      "א",
+      "$5a − b$"
+     ],
+     [
+      "ב",
+      "$2x + 7y$"
+     ],
+     [
+      "ג",
+      "$y + a$"
+     ]
+    ],
+    false
+   ],
+   [
+    4,
+    [
+     [
+      "א",
+      "$11a$"
+     ],
+     [
+      "ב",
+      "$x + b$"
+     ],
+     [
+      "ג",
+      "$6y − x$"
+     ]
+    ],
+    false
+   ],
+   [
+    5,
+    [
+     [
+      "א",
+      "$9y$"
+     ],
+     [
+      "ב",
+      "$4a + b$"
+     ],
+     [
+      "ג",
+      "$a − x$"
+     ]
+    ],
+    false
+   ],
+   [
+    6,
+    [
+     [
+      "א",
+      "$3b + 2x$"
+     ],
+     [
+      "ב",
+      "$7x − a$"
+     ],
+     [
+      "ג",
+      "$b + y$"
+     ]
+    ],
+    false
+   ],
+   [
+    7,
+    [
+     [
+      "א",
+      "$−6$"
+     ],
+     [
+      "ב",
+      "$11$"
+     ],
+     [
+      "ג",
+      "$12$"
+     ]
+    ],
+    false
+   ],
+   [
+    8,
+    [
+     [
+      "א",
+      "$17$"
+     ],
+     [
+      "ב",
+      "$9$"
+     ],
+     [
+      "ג",
+      "$−12$"
+     ]
+    ],
+    false
+   ],
+   [
+    9,
+    [
+     [
+      "א",
+      "$2$"
+     ],
+     [
+      "ב",
+      "$10$"
+     ],
+     [
+      "ג",
+      "$15$"
+     ]
+    ],
+    false
+   ],
+   [
+    10,
+    [
+     [
+      "א",
+      "$12$"
+     ],
+     [
+      "ב",
+      "$4$"
+     ],
+     [
+      "ג",
+      "$−6$"
+     ]
+    ],
+    false
+   ],
+   [
+    11,
+    [
+     [
+      "א",
+      "$10$"
+     ],
+     [
+      "ב",
+      "$−8$"
+     ],
+     [
+      "ג",
+      "$3$"
+     ]
+    ],
+    false
+   ],
+   [
+    12,
+    [
+     [
+      "א",
+      "$19$"
+     ],
+     [
+      "ב",
+      "$10$"
+     ],
+     [
+      "ג",
+      "$14$"
+     ]
+    ],
+    false
+   ],
+   [
+    13,
+    [
+     [
+      "א",
+      "$5x + 4$"
+     ],
+     [
+      "ב",
+      "$2y + 7$"
+     ],
+     [
+      "ג",
+      "$9a − 8$"
+     ]
+    ],
+    false
+   ],
+   [
+    14,
+    [
+     [
+      "א",
+      "$4b + 14$"
+     ],
+     [
+      "ב",
+      "$2y + 7$"
+     ],
+     [
+      "ג",
+      "$9x − 8$"
+     ]
+    ],
+    false
+   ],
+   [
+    15,
+    [
+     [
+      "א",
+      "$7x + 3$"
+     ],
+     [
+      "ב",
+      "$8 + y$"
+     ],
+     [
+      "ג",
+      "$3a + 7$"
+     ]
+    ],
+    false
+   ],
+   [
+    16,
+    [
+     [
+      "א",
+      "$3b + 12$"
+     ],
+     [
+      "ב",
+      "$6x + 8$"
+     ],
+     [
+      "ג",
+      "$7y − 7$"
+     ]
+    ],
+    false
+   ],
+   [
+    17,
+    [
+     [
+      "א",
+      "$5a + 8$"
+     ],
+     [
+      "ב",
+      "$3y + 7$"
+     ],
+     [
+      "ג",
+      "$5x − 5$"
+     ]
+    ],
+    false
+   ],
+   [
+    18,
+    [
+     [
+      "א",
+      "$5a + 5$"
+     ],
+     [
+      "ב",
+      "$4x + 6$"
+     ],
+     [
+      "ג",
+      "$6b + 2a$"
+     ]
+    ],
+    true
+   ],
+   [
+    19,
+    [
+     [
+      "א",
+      "$6x + 8$"
+     ],
+     [
+      "ב",
+      "$5b + 5$"
+     ],
+     [
+      "ג",
+      "$4y + 2x$"
+     ]
+    ],
+    true
+   ],
+   [
+    20,
+    [
+     [
+      "א",
+      "$3y + 9$"
+     ],
+     [
+      "ב",
+      "$6x + 6$"
+     ],
+     [
+      "ג",
+      "$5a + 3b$"
+     ]
+    ],
+    true
+   ]
+  ],
+  "curriculum": {
+   "topic": "algebraic_expressions",
+   "track": "ז"
+  }
+ }
+]

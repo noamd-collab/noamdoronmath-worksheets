@@ -1,4 +1,4 @@
-import type { Identity } from './controller.ts';
+import { within, type Identity } from './controller.ts';
 
 export interface OperatorRpc {
   status(): Promise<unknown>;
@@ -11,6 +11,12 @@ export interface RouterEnv {
   TEACHER_CLOUD_OPERATOR_KEY: string;
   GENERATOR: { getByName(name: string): OperatorRpc };
 }
+/** Longest wait for the Durable Object, per operation. Without it a request waits for as long as its caller
+ *  stays connected, and on 2026-11-25 that was the only thing an operator could see: no answer at all.
+ *  Each limit is above the object's own worst case: status 20 s, a tick 40 s, a preflight 270 s behind a tick. */
+export const ROUTE_MS = { status: 30 * 1000, preflight: 330 * 1000, other: 90 * 1000 };
+/** A cron tick gives up before the next minute so that an unanswering object is not also kept busy by its own callers. */
+export const CRON_MS = 45 * 1000;
 function response(value: unknown, status = 200) {
   return Response.json(value, { status, headers: { 'Cache-Control': 'private, no-store',
     'X-Content-Type-Options': 'nosniff', 'X-Robots-Tag': 'noindex, nofollow' } });
@@ -49,16 +55,20 @@ async function readObject(request: Request): Promise<Record<string, unknown>> {
   if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('BAD_REQUEST');
   return parsed;
 }
-export async function route(request: Request, env: RouterEnv): Promise<Response> {
+export async function route(request: Request, env: RouterEnv, limits = ROUTE_MS): Promise<Response> {
   const url = new URL(request.url);
   const paths = new Set(['/operator/status', '/operator/preflight', '/operator/activate', '/operator/deactivate', '/operator/tick']);
   if (!paths.has(url.pathname) || url.search || !await authorized(request, env.TEACHER_CLOUD_OPERATOR_KEY)) {
     return response({ error: 'NOT_FOUND' }, 404);
   }
+  let late = false;
+  const answer = async (operation: () => Promise<unknown>, ms: number) => {
+    try { return response(await within(operation(), ms, () => { late = true; })); }
+    catch { return late ? response({ error: 'CLOUD_OPERATION_TIMEOUT' }, 504) : response({ error: 'CLOUD_OPERATION_FAILED' }, 503); }
+  };
   if (url.pathname === '/operator/status') {
     if (request.method !== 'GET') return response({ error: 'METHOD_NOT_ALLOWED' }, 405);
-    try { return response(await env.GENERATOR.getByName('primary').status()); }
-    catch { return response({ error: 'CLOUD_OPERATION_FAILED' }, 503); }
+    return answer(() => env.GENERATOR.getByName('primary').status(), limits.status);
   }
   if (request.method !== 'POST') return response({ error: 'METHOD_NOT_ALLOWED' }, 405);
   let body: Record<string, unknown>;
@@ -70,10 +80,14 @@ export async function route(request: Request, env: RouterEnv): Promise<Response>
     } else if (Object.keys(body).length) throw new Error('BAD_REQUEST');
   } catch { return response({ error: 'BAD_REQUEST' }, 400); }
   const stub = env.GENERATOR.getByName('primary');
-  try {
-    if (url.pathname === '/operator/preflight') return response(await stub.preflight());
-    if (url.pathname === '/operator/activate') return response(await stub.activate(body as unknown as Identity));
-    if (url.pathname === '/operator/deactivate') return response(await stub.deactivate());
-    return response(await stub.tick());
-  } catch { return response({ error: 'CLOUD_OPERATION_FAILED' }, 503); }
+  if (url.pathname === '/operator/preflight') return answer(() => stub.preflight(), limits.preflight);
+  if (url.pathname === '/operator/activate') return answer(() => stub.activate(body as unknown as Identity), limits.other);
+  if (url.pathname === '/operator/deactivate') return answer(() => stub.deactivate(), limits.other);
+  return answer(() => stub.tick(), limits.other);
+}
+/** One cron tick. Never throws; one log line when the object refused or did not answer in time. */
+export async function cron(env: Pick<RouterEnv, 'GENERATOR'>, ms = CRON_MS, log: (line: string) => void = console.error) {
+  let late = false;
+  try { await within(env.GENERATOR.getByName('primary').tick(), ms, () => { late = true; }); }
+  catch { log(JSON.stringify({ event: late ? 'teacher_cloud_cycle_timeout' : 'teacher_cloud_cycle_unavailable' })); }
 }

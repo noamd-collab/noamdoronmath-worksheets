@@ -10,16 +10,20 @@ uses fail as well:
         נתנה לכל תלמיד 3 עפרונות / התאימו לכל ביטוי את התוצאה
   אילו  the conditional "if": אילו המורה הייתה מחלקת (not "which ones")
 
+Those refusals stand (D19). Nothing here writes to the ledger, so the pinned
+gates judge every listed word, whatever its reading, and the question is
+replaced. The one exception is a question with a figure: general_adapters
+records its measured figure under the bare question number (figure_assert),
+and G32/G33 accept that id for every listed word of the question, so a benign
+reading there is printed without a judgment (a claim is still named by
+claim_lint below).
+
 This module decides, by closed patterns only, whether a word occurrence has
 one of those two readings. Every other occurrence, and every other word on
-the lists, stays a claim: the gate fails and names the question.
-"מכפלה תמיד גדולה מכל אחד מהגורמים" is a claim here, as is "לכל מספר זוגי".
-
-Used in two places:
-  general_adapters._compile_elementary  records the reading in the ledger for
-      a question whose listed words ALL have a benign reading, which is the
-      gate's own mechanism for "this text was looked at";
-  claim_lint (a caller before rendering) names a question that would fail.
+the lists, is a claim. "מכפלה תמיד גדולה מכל אחד מהגורמים" is a claim here,
+as is "לכל מספר זוגי". claim_lint (a caller before rendering) names the
+claims of a source question so that it is replaced before it is built. A
+word with a benign reading is not named there; the gates refuse it later.
 """
 from __future__ import annotations
 
@@ -74,7 +78,6 @@ _CONDITIONAL = (
     re.compile(rf"\s+ה[{_LETTER}]{{2,20}}\s+(?:לא\s+)?(?:היה|הייתה|היו){_END}"),
     re.compile(rf"\s+(?![מה])[{_LETTER}]{{2,20}}\s+(?:לא\s+)?(?:היה|הייתה){_END}"),
 )
-STATEMENT = "המילים שהשער מחפש בשאלה נקראו לפי תבניות סגורות: כמות ליחידה, הוראת פעולה או תנאי. אין בשאלה טענה כוללת או בקשת מנייה."
 
 
 def _each(text, start, end):
@@ -110,8 +113,9 @@ def _which(text, start, end):
 def scan(text):
     """Every occurrence of a gate word: {"gate", "word", "reading"}.
 
-    ``reading`` is None for a claim the gate must judge, otherwise the
-    benign reading. Order follows the gates: G32 words, then G33 words.
+    ``reading`` is None for a claim, otherwise the benign reading. The
+    pinned gates fail on both. Order follows the gates: G32 words, then G33
+    words.
     """
     found = []
     for gate, words in GATE_WORDS.items():
@@ -128,56 +132,17 @@ def scan(text):
 
 
 def claims(text):
-    """The occurrences that stay claims: what G32 / G33 should fail on."""
+    """The occurrences read as claims. G32 / G33 fail on these and on the benign readings too."""
     return [{"gate": row["gate"], "word": row["word"]} for row in scan(text) if row["reading"] is None]
-
-
-def gate_text(question):
-    """The text the pinned gate reads for one content.json question: every string in it."""
-    parts = []
-
-    def walk(value):
-        if isinstance(value, dict):
-            for item in value.values():
-                walk(item)
-        elif isinstance(value, list):
-            for item in value:
-                walk(item)
-        elif isinstance(value, str):
-            parts.append(value)
-    walk(question)
-    return "\n".join(parts)
-
-
-def register(ledger, questions):
-    """Record the reading for each question whose gate words are ALL benign.
-
-    ``ledger`` is the pinned content_truth.Ledger and ``questions`` the
-    records about to be written to content.json. A question with any claim,
-    or with no gate word, is left alone, so the gates judge it unchanged.
-    A question that already has its own entry (a measured figure) is left
-    alone too. Returns the question labels that were recorded.
-    """
-    recorded = []
-    held = {str(entry.get("id")) for entry in ledger.entries}
-    for question in questions:
-        label = str(question["n"])
-        rows = scan(gate_text(question))
-        if not rows or label in held:
-            continue
-        open_claims = [row for row in rows if row["reading"] is None]
-        if open_claims:
-            continue
-        ledger.claim(label, STATEMENT, (len(open_claims) == 0, {"words": rows}), method="closed_form")
-        recorded.append(label)
-    return recorded
 
 
 def claim_lint(question):
     """Claims in one source question (rich spans), before anything is rendered.
 
-    Advisory: the pinned gates still decide on the built content.json. A
-    caller can use a non-empty result to replace the question first.
+    Advisory: the pinned gates still decide on the built content.json, and
+    they also refuse a word with a benign reading, which is not named here
+    (but not in a question whose measured figure is in the ledger).
+    A caller can use a non-empty result to replace the question first.
     """
     parts = []
 

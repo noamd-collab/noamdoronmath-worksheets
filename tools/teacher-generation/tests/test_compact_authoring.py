@@ -170,32 +170,39 @@ class CompactAuthoringTests(unittest.TestCase):
             self.assertEqual(failure.exception.code, "DRAWING_POLICY")
 
     def test_numeric_islands_preserve_percent_spelling_and_explicit_lists(self):
-        atoms = spans("התוצאות הן 20, 40, 60. ההנחה היא [[10.50]]%.", 8)
+        atoms = spans("התוצאות הן 20, 40, 60. ההנחה היא [[10.50%]].", 8)
         self.assertEqual([s["expression"]["numerator"] for s in atoms if s["kind"] == "math"], [20, 40, 60])
         self.assertIn({"kind": "formula", "notation": "10.50%"}, atoms)
+        # A percent sign written after the island is refused, never moved into it.
+        with self.assertRaises(GeneralSourceError) as refused:
+            spans("התוצאות הן 20, 40, 60. ההנחה היא [[10.50]]%.", 8)
+        self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
         self.assertEqual(spans("[[point:A(-2,4)]]", 8), spans("[[A(-2,4)]]", 8))
         for token, grade in [("point:A(-2,4)", 4), ("point:A(x,4)", 8), ("point:AB(1,2)", 8)]:
             with self.subTest(token=token, grade=grade), self.assertRaises(GeneralSourceError):
                 spans("[[" + token + "]]", grade)
 
-    def test_only_complete_inline_rows_bind_to_a_printed_table(self):
+    def test_inline_rows_are_refused_and_a_supplied_table_binds_its_rows(self):
         from printed_tasks import printed_table_row
 
-        def question(records, grade, formula):
+        def question(records, grade, formula, table=None):
             data = {"intro": "השלימו את הטבלה.", "items": [
                 {"prompt": record, "answer": {"kind": "computed", "unit": "",
                                                "task": {"kind": "evaluate", "expression": formula}}}
                 for record in records
             ]}
+            if table is not None:
+                data["table"] = table
             return expand_source({"version": 4, "sections": [{"questions": [data]}]}, grade)["sections"][0]["questions"][0]
 
-        for records, grade, formula in [
-            (["מחולק: 16, מחלק: 4, מנה: ___", "[[מחולק | מחלק | מנה]]\n[[12 | 3 | ___]]"], 3, "16/4"),
-            (["בטבלה: מספר=[[100]], אחוז=[[10]]%, תוצאה=?",
-              "בטבלה: מספר=[[200]], אחוז=[[5]]%, תוצאה=?"], 8, "100*0.10"),
+        for table, grade, formula in [
+            ({"head": ["מחולק", "מחלק", "מנה"],
+              "rows": [["[[16]]", "[[4]]", "[[___]]"], ["[[12]]", "[[3]]", "[[___]]"]]}, 3, "16/4"),
+            ({"head": ["מספר", "אחוז", "תוצאה"],
+              "rows": [["[[100]]", "[[10%]]", "[[___]]"], ["[[200]]", "[[5%]]", "[[___]]"]]}, 8, "100*0.10"),
         ]:
-            with self.subTest(records=records):
-                q = question(records, grade, formula)
+            with self.subTest(table=table):
+                q = question(["שורה [[1]]", "שורה [[2]]"], grade, formula, table)
                 self.assertEqual(len(q["table"]["rows"]), 2)
                 for n, item in enumerate(q["items"], 1):
                     self.assertEqual(item["prompt"], spans(f"שורה [[{n}]]", grade))
@@ -207,11 +214,19 @@ class CompactAuthoringTests(unittest.TestCase):
                 item["answer"]["unit"] = "סנטימטרים"
                 with self.assertRaises(GeneralSourceError):
                     printed_table_row(q, item, solved)
-        for records in [["מחולק: 16, מחלק: 4, מנה: ___", "מחולק: 30, מנה: ___, מחלק: 6"],
-                        ["מחולק: 16, מחלק: 4, מנה: ___", "כמה מספרים יש?"],
-                        ["סכום: ___, כמות: ___"], ["סכום: 3, כמות: 4"]]:
-            with self.subTest(records=records), self.assertRaisesRegex(GeneralSourceError, "table"):
-                question(records, 3, "4")
+        for records, grade, formula in [
+            (["מחולק: 16, מחלק: 4, מנה: ___", "[[מחולק | מחלק | מנה]]\n[[12 | 3 | ___]]"], 3, "16/4"),
+            (["בטבלה: מספר=[[100]], אחוז=[[10]]%, תוצאה=?",
+              "בטבלה: מספר=[[200]], אחוז=[[5]]%, תוצאה=?"], 8, "100*0.10"),
+            (["מחולק: 16, מחלק: 4, מנה: ___", "מחולק: 30, מנה: ___, מחלק: 6"], 3, "4"),
+            (["מחולק: 16, מחלק: 4, מנה: ___", "כמה מספרים יש?"], 3, "4"),
+            (["סכום: ___, כמות: ___"], 3, "4"),
+            (["סכום: 3, כמות: 4"], 3, "4"),
+        ]:
+            with self.subTest(records=records):
+                with self.assertRaisesRegex(GeneralSourceError, "table") as failure:
+                    question(records, grade, formula)
+                self.assertEqual(failure.exception.code, "SOURCE_TABLE")
 
     def test_explicit_table_references_in_intro_or_item_require_a_table(self):
         from compact_authoring import requires_existing_table
@@ -226,11 +241,39 @@ class CompactAuthoringTests(unittest.TestCase):
         self.assertFalse(requires_existing_table({"intro": "השתמשו בלוח הכפל."}))
         self.assertTrue(requires_existing_table({"intro": "בנו טבלה.", "items": [{"prompt": "עיינו בטבלה הנתונה."}]}))
 
-    def test_missing_number_equation_survives_partial_numeric_islands(self):
+    def test_a_missing_number_equation_is_one_island_or_refused(self):
         from printed_tasks import match_printed_task
 
-        for visible, value in [("24 : [[___]] = 6", 4), ("[[35]] : 7 = [[___]]", 5),
-                               ("[[___]] : 9 = 8", 72), ("24 : 6 = ___", 4)]:
+        # Partly marked or unmarked, the equation is refused as written; nothing wraps it. That holds after
+        # the joins of adjacent islands too ("24 : ___ = [[6]]" reads 24 : [[___ = 6]]), and among words.
+        for visible in ("24 : [[___]] = 6", "[[35]] : 7 = [[___]]", "[[___]] : 9 = 8", "24 : 6 = ___",
+                        "[[24]] : [[6]] = ___", "7 + 5 = ___", "24 : ___ = [[6]]", "72 : ___ = [[8]]",
+                        "[[72]] : ___ = [[8]]", "7 + ___ = [[15]]", "20 - ___ = [[15]]", "24 : [[___]] = [[6]]",
+                        "7 + [[___]] = [[15]]", "[[72]]: [[___ = 8]]", "___ x [[4 = 20]]", "חשבו: 24 : 6 = ___",
+                        "24 : 6 = ___ .", "מהו 24 : 6 = ___ ?", "24 : 6 = [[___]]", "(7 + [[___ = 15]])",
+                        "[[3.47]] = [[3]] + [[0.4]] + ___", "___ מאות + ___ עשרות + ___ אחדות = 728",
+                        "3 מטרים = ___ ס״מ", "5 + ___ > [[9]]", "5 + ☐ = 9", "[[5]] + ☐ = [[9]]",
+                        # A colon touching a blank is the division sign, so the joined [[4 = 6]] is never read
+                        # alone beside its blank; the missing-number wording with that colon goes with it. An
+                        # "=" in the sentence is refused also when every number is marked.
+                        "___: [[4]] = [[6]]", "___:[[4]]=[[6]]", "מספר: ___: [[4]] = [[6]]",
+                        "המספר החסר הוא ___: [[___ + 4 x 3 = 17]]", "[[3]] מטרים = ___ ס״מ",
+                        "[[150]] דקות = ___ שעות ו־___ דקות"):
+            with self.subTest(visible=visible):
+                with self.assertRaises(GeneralSourceError) as refused:
+                    spans(visible, 3)
+                self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        # Islands joined across their operators (as before) are read as the one formula they spell.
+        self.assertEqual(spans("[[8]] + ___ = [[15]]", 3), [{"kind": "formula", "notation": "8 +  ___ = 15"}])
+        # A colon after a word ends the sentence; a sign listed as an option and a blank beside no relation
+        # are not such equations.
+        for accepted in ("השלימו: [[24 : ___ = 6]]", "המספר החסר הוא: [[___ + 4 x 3 = 17]]",
+                         "ו-[[24 : ___ = 6]]", "בחרו סימן (<, > או =): [[345 ___ 354]]",
+                         "[[5]], [[10]], ___, ___, [[25]]", "([[24 : ___ = 6]])"):
+            with self.subTest(accepted=accepted):
+                self.assertIsInstance(spans(accepted, 3), list)
+        for visible, value in [("[[24 : ___ = 6]]", 4), ("[[35 : 7 = ___]]", 5),
+                               ("[[___ : 9 = 8]]", 72), ("[[24 : 6 = ___]]", 4)]:
             with self.subTest(visible=visible):
                 item = {"prompt": spans(visible, 3), "answer": {"unit": ""}}
                 self.assertEqual([s["kind"] for s in item["prompt"]], ["formula"])
@@ -244,6 +287,154 @@ class CompactAuthoringTests(unittest.TestCase):
                     match_printed_task(item, solved, 3)
         with self.assertRaises(GeneralSourceError):
             spans("חשבו את הנעלם x בתרגיל: [[x : 5 = 8]]", 3)
+
+    def test_the_model_notation_is_never_rewritten(self):
+        # A blank after an island stays outside it, so the "=" between them is refused.
+        for value, grade in [("[[47 : 5]] = ___", 4), ("[[345]] = ___ מאות + ___ עשרות", 3)]:
+            with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
+                spans(value, grade)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        # A blank inside an island stays inside it. Before a Hebrew label it would print away from that label,
+        # so such an island is refused as written, in every grade.
+        self.assertEqual(spans("[[5 + 3 = ___]].", 3),
+                         [{"kind": "formula", "notation": "5 + 3 = ___"}, {"kind": "text", "text": "."}])
+        for value, grade in [("[[5 + 3 = ___]] מאות", 3), ("[[345 = ___]] מאות", 3), ("[[5 + 3 = ___]] שקלים", 4),
+                             ("[[47 : 5 = ___]] שארית ___", 3), ("[[345]] = [[___]] מאות", 3),
+                             ("[[47 = ___]] עֲשָׂרוֹת", 2), ("[[AB = ___]] ס״מ", 8)]:
+            with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
+                spans(value, grade)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        self.assertEqual(spans("[[___]] מאות", 3)[0], {"kind": "formula", "notation": "___"})
+        # An "=" between prose and an island is not folded into the sentence, and a
+        # percent sign after an island, spaced or not, is not moved into it, in every grade.
+        for value, grade in [("המחיר = [[5]]", 8), ("[[5]] = המחיר", 8), ("המחיר = [[5]] שקלים", 5),
+                             ("בדקו [[25]]%.", 8), ("בדקו [[2.5]]%.", 5), ("כמה הם [[25]] % מתוך [[80]]?", 6),
+                             ("כמה הם [[2,500]]% מתוך [[80]]?", 6), ("[[1/2]]%", 6), ("[[25]]  %", 8),
+                             ("[[frac(1,2)]]%", 9), ("[[25]]%", 4),
+                             # Another percent glyph anywhere, and a bidi mark between the island and its sign.
+                             ("כמה הם [[25]]٪ מתוך [[80]]?", 6), ("כמה הם [[25]]％ מתוך [[80]]?", 6),
+                             ("כמה הם [[25]] \u200e% מתוך [[80]]?", 6), ("בדקו [[25]]\u200f%.", 8),
+                             ("בדקו [[25]]\u061c%.", 9), ("[[25]]﹪", 8), ("[[25]]‰", 8), ("25٪ מהכיתה", 6),
+                             ("כמה הם 25 % מתוך [[80]]?", 6), ("כמה % מהכיתה?", 5), ("כמה % מהכיתה?", 8)]:
+            with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
+                spans(value, grade)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        self.assertEqual(spans("בדקו [[25%]].", 8)[1], {"kind": "formula", "notation": "25%"})
+        # A solve task keeps its own letter: one outside x, y, a and b is refused, not renamed to x.
+        task = {"kind": "solve", "lhs": "3*c + 4", "rhs": "40", "variable": "c"}
+        source = {"version": 4, "sections": [{"questions": [{"intro": "פתרו.", "items": [
+            {"prompt": "פתרו [[3*x + 4 = 40]].", "answer": {"kind": "computed", "unit": "", "task": task}}]}]}]}
+        with self.assertRaises(GeneralSourceError) as refused:
+            expand_source(source, 8)
+        self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+
+    def test_grades_one_to_six_print_no_mathematics_outside_an_island(self):
+        # What prints outside the islands is closed: words, punctuation, a number on its own, the blank ___
+        # or a box, and a sign in one of its sentence readings. Every other spelling of a calculation, a
+        # relation or a blank is refused as written, partly marked or not, whatever key it was typed with.
+        for visible in (
+                # A letter as the blank, the word or a fullwidth sign as the relation (round 3).
+                "x : [[5]] = [[8]]", "x : 5 = 8", "[[24]] : ___ שווה [[6]]", "[[24]] : ___ ＝ [[6]]",
+                "[[24 : 6]] שווה [[4]]", "[[24 : 6]] שָׁוֶה [[4]]", "[[24]] ＝ [[6]]",
+                # "?", two underscores, another box or an empty bracket as the blank.
+                "24 : 6 = ?", "24 : ? = 6", "[[24 : 6]] = ?", "24 : __ = 6", "24 : ⬜ = 6", "24 : ( ) = 6",
+                "[[24 : ___ = 6]] __", "____ + [[4]]", "[[5]] ◻ [[7]]", "השלימו: ( )",
+                # A calculation printed outside an island, with no relation and no blank.
+                "חשבו: 24 : 6", "חשבו: [[24]] : [[6]]", "[[24]] x [[6]]", "5 - 3", "5 + 3", "[[5]] + עוד",
+                "[[5]] -", "24 ÷ 6", "[[2]] → [[4]]", "[[3]] · [[4]]", "1/2 מהכיתה", "בשעה 7:30",
+                "בין 3-4 ילדים", "[[7]]:[[30]]", "קנה המידה הוא 1:50,000.", "25 % מהכיתה", "הציונים: 80, 90, 100",
+                "½ מהעוגה", "המספר ²", "[[5]] ≈ [[5.1]]", "[[5]] ： [[1]]",
+                # A Latin letter in the sentence.
+                "המספר x", "בקבוצה A יש [[5]] ילדים"):
+            with self.subTest(visible=visible), self.assertRaises(GeneralSourceError) as refused:
+                spans(visible, 3)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        for accepted in ("השלימו: [[24 : ___ = 6]]", "לדני היו 24 גולות.", "בשנת 2024 היו 1,000 ילדים.",
+                         "25% מהכיתה", "ו־5 ילדים", "מ-25 עד 30", "[[345]] – ספרת המאות היא ___",
+                         "במספר [[345]] יש ___ מאות + ___ עשרות + ___ אחדות", "[[345]] ☐ [[354]]",
+                         "כתבו < או > או =.", "בחרו פעולה: +, ×, − או :", "כמה זה [[24 : 6]]?",
+                         "[[150]] דקות הן ___ שעות ו־___ דקות", "המספר החסר הוא: [[___ + 4 x 3 = 17]]",
+                         "האם [[24 : 6]] שווה ל־[[4]]?", "השוו בין [[5]] ל־[[7]]."):
+            with self.subTest(accepted=accepted):
+                self.assertIsInstance(spans(accepted, 3), list)
+        # From grade seven the sentence holds no number or letter at all, under its own code.
+        from general_source import rich
+        with self.assertRaises(GeneralSourceError) as refused:
+            rich(spans("חשבו: 24 / 6", 7), 7, provider=True)
+        self.assertEqual(refused.exception.code, "SOURCE_PLAIN_MATH")
+
+    def test_a_provider_span_array_and_the_title_are_refused_as_a_string_is(self):
+        from general_source import rich, title
+        from skill_authoring import examine_frame
+
+        def number(n):
+            return {"kind": "math", "expression": {"type": "number", "numerator": n, "denominator": 1}}
+
+        def text(value):
+            return {"kind": "text", "text": value}
+
+        # The exact misprints of round 3, typed as span arrays at the provider boundary, in every grade.
+        for value, grade in (
+                ([{"kind": "formula", "notation": "345 = ___"}, text(" מאות + ___ עשרות + ___ אחדות")], 3),
+                ([text("כמה הם "), number(25), text(" % מתוך "), number(80), text("?")], 6),
+                ([text("כמה הם "), number(25), text("% מהכיתה?")], 8),
+                ([text("כמה הם "), number(25), text("٪ מהכיתה?")], 8),
+                ([text("זווית "), {"kind": "formula", "notation": "A"}, text(" ישרה.")], 8),
+                ([text("זווית "), {"kind": "geometry", "type": "point", "names": "A"}], 8),
+                ([text("זוית \u200e"), {"kind": "geometry", "type": "point", "names": "B"}, text(" ישרה.")], 9),
+                ([text("מצאו את גודל ∠"), {"kind": "formula", "notation": "A"}], 8),
+                ([text("מצאו את גודל ∡"), {"kind": "formula", "notation": "ABC"}], 8),
+                ([text("חשבו: 24 : 6 = ___")], 3),
+                ([number(24), text(" : ___ = "), number(6)], 3),
+                ([text("___: "), {"kind": "formula", "notation": "4 = 6"}], 3),
+                ([number(5), {"kind": "formula", "notation": "<"}, number(7)], 3),
+                ([text("כִּתְבוּ 19 + 19")], 2),
+                ("כמה הם [[25]]% מתוך [[80]]?", 6), ({"kind": "text", "text": "x : 5 = 8"}, 4)):
+            with self.subTest(value=value, grade=grade), self.assertRaises(GeneralSourceError) as refused:
+                rich(value, grade, provider=True)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        # The same arrays with the contract's spelling are read.
+        for value, grade in (([text("במספר "), number(345), text(" יש ___ מאות, ___ עשרות ו־___ אחדות")], 3),
+                             ([text("כמה הם "), {"kind": "formula", "notation": "25%"}, text(" מהכיתה?")], 8),
+                             ([text("זווית "), {"kind": "geometry", "type": "angle", "names": "ABC"}, text(" ישרה.")], 8),
+                             ([text("בחרו סימן ("), {"kind": "formula", "notation": "<"}, text(", "),
+                               {"kind": "formula", "notation": ">"}, text(" או "), {"kind": "formula", "notation": "="},
+                               text(")."), {"kind": "formula", "notation": "345 ___ 354"}], 3)):
+            with self.subTest(value=value, grade=grade):
+                self.assertIsInstance(rich(value, grade, provider=True), list)
+        # The title prints as written: the same refusals, in every grade, on the sheet and when the frame is examined.
+        lesson = {"gradeNumber": 8}
+        scope = {"topic": {"domain": "geometry"}}
+        for value, grade in (("מציאת ∠A בטרפז", 8), ("זווית A בטרפז", 8), ("זוית \u200fB בטרפז", 9), ("מציאת ∡ABC", 8),
+                             ("אחוזים: [[25]]%", 6), ("25 % הנחה", 6), ("חשבו 24 : 6 = ___", 3), ("השלימו x : 5 = 8", 4)):
+            with self.subTest(title=value, grade=grade):
+                with self.assertRaises(GeneralSourceError) as refused:
+                    title(value, grade)
+                self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+                self.assertEqual(examine_frame(value, "חשבו.", {**lesson, "gradeNumber": grade}, scope).code,
+                                 "SOURCE_NOTATION")
+        for value, grade in (("זוויות במשולש", 8), ("25% הנחה", 6), ("חיבור עד 100", 3)):
+            with self.subTest(title=value, grade=grade):
+                self.assertEqual(title(value, grade), value)
+
+    def test_a_printed_minus_before_anything_but_a_number_is_refused(self):
+        from compact_authoring import display_parts
+        from math_tasks import to_house_math
+        # The tree has no negation sign: -2^4 would print as 0 − 2^4, a zero that was never written.
+        for value in ("[[-2^4]]", "[[-x + 3]]", "[[-(x + 2)]]", "חשבו [[3 - -2^2]].", "[[2 * -x]]"):
+            with self.subTest(value=value), self.assertRaises(GeneralSourceError) as refused:
+                spans(value, 8)
+            self.assertEqual(refused.exception.code, "SOURCE_NOTATION")
+        with self.assertRaises(GeneralSourceError):
+            display_parts("-x^2 + 4 = 0", 8)
+        # A negative number, a minus printed as written in a schoolbook polynomial, and a typed task that is never
+        # printed keep their meaning. A typed task printed from its tree after a bare instruction is refused instead
+        # (printed_parts.refuse_unwritten_zero).
+        self.assertEqual(spans("[[-2]]", 8), [{"kind": "math", "expression": {"type": "number", "numerator": -2, "denominator": 1}}])
+        self.assertEqual(to_house_math(spans("[[(-2)^4]]", 8)[0]["expression"]), r"\g{−2}^{4}")
+        self.assertEqual(display_parts("-3x + 5", 8), ["−3x + 5"])
+        self.assertEqual(validate_and_solve_task({"kind": "evaluate", "expression": expression("-2^4", 8)})["result"]["value"],
+                         {"type": "number", "numerator": -16, "denominator": 1})
 
     def test_compiler_prints_requested_division_equations_from_verified_quantities(self):
         from general_adapters import _compile_elementary, _load_skill

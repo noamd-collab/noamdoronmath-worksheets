@@ -34,9 +34,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "כמה הם 25% מתוך 80 ?",
-    "key": "20"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -101,9 +101,9 @@
     ]
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "0.25 = ___ %",
-    "key": "25"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {

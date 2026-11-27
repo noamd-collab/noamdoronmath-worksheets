@@ -26,8 +26,13 @@ source. Adding a subject from the curriculum does not require a subject-specific
 
 The general author supplies a title, one rule, two groups of questions and a few
 reserve questions (three beside fewer than 16 planned questions, four beside fewer
-than 24, otherwise five), each tagged with its group and concept. Reserves are
-optional on arrival: a reply without them still compiles. Mathematical
+than 24, otherwise five), each tagged with its group and concept. A reply without
+the reserves field still compiles, with no reserves. A reply that carries the field
+must carry exactly the reserves the request asked for (`skill_authoring.split_reserves`:
+the count, and in order each reserve's group and concept from `reserve_plan`, with no
+other field); any other reserve list refuses the whole reply (`SOURCE_SHAPE`). Only in a reply
+read question by question (`reply_salvage`) does an entry the reader could not decode count as a
+refused reserve in its place. Mathematical
 tasks are parsed into bounded, verified expressions. Printed literals preserve significant
 decimal zeros, thousands separators, and percent signs. A completed source-v4 document
 remains a supported input. Basic grade-two no-regrouping addition also accepts its existing
@@ -41,10 +46,12 @@ power beyond the bound) makes it a bad question to replace, never a failed sheet
 In middle school its figure is also drawn with the pinned constructors
 (`figure_probe.py`), so a figure the skill refuses is a refused question
 (`SOURCE_FIGURE`) and not an unnamed render failure. The rule is examined alone
-too: a refused rule loses each sentence that is refused on its own, or is asked for
-again in the one correction call. A finished reply that is not JSON as a whole is
-read question by question (`reply_salvage.py`); a question that does not decode
-counts as refused.
+too: a refused rule is kept as written and asked for again in the one correction
+call, also when no question is missing, unless that call is the notation-only fix.
+The title is examined with it and is never asked for again: when the title is
+refused, no returned rule is taken and that draft yields no sheet. A finished reply that is
+not JSON as a whole is read question by question (`reply_salvage.py`); a question
+that does not decode counts as refused.
 `lesson_select.py` chooses the sheet: a bad question takes a reserve of its own group;
 a practice reserve may stand in for a challenge only while two real challenges remain,
 and is then printed as an ordinary question. It knows nothing about the wire format or
@@ -54,11 +61,17 @@ The production worker repairs a version 3 job in this order, each step only when
 before left a deficit (`remote_worker.author_and_render`, through `general_provider.Draft`):
 
 1. reserve questions, with no model call;
-2. ONE targeted correction call for the missing questions only (at most eight), each with
-   the fixed instruction of its code and the exact field and substring that carries the fault;
-3. a shorter sheet: at least three quarters of the requested questions, never fewer than six,
-   with at least two real challenges. The lesson of that sheet carries the rewritten count
-   and the request travels beside it (`salvaged_from`); the result holds a `SHORTER_SHEET` note;
+2. ONE targeted correction call for the missing questions (at most eight) and a refused rule
+   (the rule alone when no question is missing), each with the fixed instruction of its code
+   and the exact field and substring that carries the fault; or, when unmarked mathematics is
+   the only fault, the notation-only fix;
+3. a shorter sheet: at least three quarters of the requested questions and never fewer than
+   the grade minimum that every request must meet (8 / 12 / 14 / 20 for grades 1–2 / 3–4 /
+   5–6 / 7–9; `lesson_select` takes no other floor), so only a sheet requested above that
+   minimum is shortened; with at least two real challenges, and the printed count must be one
+   the topic allows, as every request's is. The lesson of that sheet carries the rewritten
+   count and the request travels beside it (`salvaged_from`); the result holds a
+   `SHORTER_SHEET` note;
 4. ONE second full author call, when the first reply is unusable as a whole (not JSON, wrong
    shape, plan mismatch) or the steps above ended without a sheet.
 
@@ -77,44 +90,129 @@ the worker logs one `generation_failed` line with the code, the stage, the quest
 request states that this is an opening sheet and the plan marks its first questions as guided
 entry questions. Each local author keeps its own eligibility rule; `assessment` stays unsupported.
 
-`source_normalize.py` runs once on the reply when it arrives
-(`general_provider.author_general_lesson`), so the compile, the notation correction
-and the per-question predicate read the same text, and again inside `expand_source`,
-where it is a no-op on text that is already normal. It rewrites spellings that
-have exactly one reading into the contract's notation (an unspaced school operator,
-`$...$` math, a letter for the single missing number of an elementary formula, a label
-after the Hebrew noun that names it). It never computes and never chooses between two
-readings; such a spelling is left for validation to reject. Its module docstring lists every rule.
+The reply is compiled exactly as the model wrote it; nothing rewrites it. A spelling
+outside the contract's notation is refused, and a reserve or the one correction call
+replaces the question; unmarked mathematics alone goes to the notation correction,
+where the model inserts the marks and no word may change.
 
 `general_source.py` checks closed shapes, size, volume, niqqud, allowed concepts
 and expression bounds. `math_tasks.py` verifies typed arithmetic, symbolic
 operations, bounded equations/systems, inequalities and descriptive statistics.
 No model string is passed to eval, exec or a symbolic expression parser.
 Computed answers are derived from the typed task. The task is printed after
-a prompt only when the prompt carries no numbers of its own, and never when the
-print would be the answer; `printed_parts.py` and the other `printed_*` binders
+a prompt only when the prompt carries no numbers of its own and is a bare
+instruction or question, and never when the print would be the answer. A bare
+instruction is one clause whose every word is on a closed list of words about
+the exercise itself ("חשבו.", "מה הסכום?", "פתרו את המשוואה.",
+`printed_parts.bare_instruction`); after any other prompt (a story, also in one
+sentence), an intro with numbers, a table (also beside a row whose result is
+blank) or a figure the item is refused instead (`PRINTED_TASK_MISMATCH`). A task
+printed from its tree whose minus stands before anything but a number (`-2^4`,
+`-x + 3`) is refused: the tree would print it as `0 − 2^4`, with a zero the task
+never wrote (`printed_parts.refuse_unwritten_zero`, `SOURCE_NOTATION`).
+`printed_parts.py` and the other `printed_*` binders
 tie the key to an exercise that the prompt already shows. A prompt with several
-blanks gets one answer for each blank, or the question is refused.
+blanks gets one answer for each blank, or the question is refused. In grades 1–6
+a computed item that prints a blank is keyed only when a binder of a closed list
+recomputes its key from the print (place value, quotient and remainder,
+sequence, two units, the missing number in one complete formula, the comparison
+sign, the decided statement), also with the right typed key: a word problem
+with a blank, a one-unit conversion written with words and a blank in the intro
+are refused (`printed_parts.refuse_unsolved_equation`, `PRINTED_TASK_MISMATCH`).
+What may print outside the islands in grades 1–6 is closed as well: Hebrew
+words, punctuation, a number on its own, the blank `___` and a sign listed as an
+option or used as punctuation. A calculation, a relation sign beside an
+operand (also `=` between marked numbers and a blank), a colon after a number
+or a blank, a Latin letter, any other blank (`__`, `⬜`, `( )`, `?`) and any
+other numeral or symbol there is refused for its notation
+(`compact_authoring.sentence_math`, `SOURCE_NOTATION`). In every grade a
+one-letter angle (`∠A`, `∡A`, the word זווית or זוית before one letter) and a
+percent sign apart from its number (`[[25]]%`, `٪`, `％`, a bidi mark between)
+are refused. These refusals read a string field, a provider span array as the
+line it prints, and the sheet title, with invisible marks read through
+(`compact_authoring.refuse_notation`; LESSON-SKILL.md section 3). The old path
+still cannot prove that a word problem's key answers what its prose asks: a
+computed item without a blank keeps its typed key, and the request readers
+below only refuse the kinds of request that no typed task keys, in the forms
+they list. Only worksheet-wire/5 removes that gap, because there code writes the
+question from its typed task.
+
+Beside a table (old path) an item that names a row is keyed only when its
+typed task is exactly that row's printed expression
+(`printed_tasks.table_row_task`, an allowlist): the row is named by an ordinal
+("בשורה השנייה"), "השורה האחרונה" or a row number ("שורה [[2]]") in the item or
+else in its intro, and that row prints exactly one closed expression or
+number. A mention of a row in any other form ("בכל שורה", "השורה הבאה", two
+rows) is refused. In grades 1–6 every computed item beside a table must name its
+row so: one that names no row, a row named by its label, a total of a column or
+any other calculation on the table's numbers is refused (`PRINTED_TASK_MISMATCH`),
+also with the right typed key. The role-named rows of
+`printed_tasks.printed_table_row` and the local fraction author's table keep
+their own binders. In grades 7–9 an item beside a table that names no row is
+not refused by this check and its key is not proven against the table: the
+reviewed fixture grade7-equation-skill asks for a table's values that way, and
+the v4 golden pins it as compiling, so refusing it needs the owner's decision.
 
 A yes/no or true/false question carries a typed claim (task kind `decide`: an
 order or equality of two expressions, divisibility, membership in a short
-list). The kernel decides it; no field holds an authored yes or no.
+list), and any other typed task for it is refused. The kernel decides it; no
+field holds an authored yes or no. What a question asks for is read from its
+intro and its item prompt together, clause by clause, whatever the verb
+(`printed_tasks.requested`, `PRINTED_ANSWER_KIND`): a yes/no or true/false
+question takes only a decision (an item with a blank of its own in its
+mathematics is not asked the intro's yes/no, nor beside a printed relation the
+intro's sign; a blank in the words after a complete printed relation is where
+the verdict goes); "whether" ("בדקו אם [[32 : 4 = 8]].", "[[32 : 4 = 8]],
+נכון?") takes a decision, and a comparison sign answers it only when no relation
+is printed and the relation is asked in words ("בדקו אם השברים שווים."). A
+true/false word anywhere ("הקיפו את התרגילים הנכונים", "סמנו ✓ ליד כל תרגיל
+נכון", "ציינו אם הוא נכון") or "כן או לא" asks for a decision, unless the word
+is one of the readings on a closed list that ask for a number (it describes a
+quantity or the order of operations: "התוצאה הנכונה", "האחוז הנכון", "סדר
+הפעולות הנכון"; it belongs to what a quantity is of; it says how someone
+answered ("ענה נכון") or what a calculation checks ("שבודק את נכונות"); or it
+follows "כך ש", "כדי ש" or "כדי ל"). A comparison sign is never the key of an
+item that prints a complete relation ("[[32 : 4 = 9]]"), whatever its words
+ask. A comparison sign ("השלימו את הסימן", a relation sign in the words, or a
+yes/no question that offers "קטן או גדול") takes only a `compare` task; an
+order ("סדרו", "דרגו", "בסדר עולה", "מהקטן לגדול", "מהקטן ביותר לגדול ביותר",
+"מהגדול אל הקטן", "מן הקטן עד הגדול") takes only a list. A ratio or a map scale
+("יחס", "קנה המידה"), a time of day, who, or which thing other than a number is
+never keyed, by a number or by a comparison sign: the kernel has no ratio, clock
+time or name to print. A sign, a ratio, who or which is asked for in a clause
+that is a question, holds a blank or tells the pupil to write, state, find,
+complete, reduce or calculate it (a closed list of verbs); who also by
+"מיהו/מיהי/מיהם/מיהן" anywhere, by "מי" opening its clause (not "מי ש..." or
+a name in a list) and by a request for a name ("את שם", "שמו של", "מה שם"); a
+time of day by "איזו שעה", by "מתי" in a question or beside a blank (and, in a
+question that names hours or minutes, also as a request or opening its clause
+without a question mark), by השעה, שעת or a clock in a question, beside a blank or in an
+instruction that states no number, by a blank after "בשעה", and, in a question
+that names an hour or a part of the day, by a blank after "ב־", "ל־" or "עד"
+that ends its clause. A ratio is data only when its word is followed by its
+value ("ביחס [[2:3]]", "היחס הנתון", "היחס ... הוא [[2:3]]"); a printed
+proportion with one missing term (`[[2 : 3 = ___ : 12]]`) keys that term. A
+request for a time of day, a name, an order or a ratio in a form these readers
+do not list is not refused by them.
 `answer_kinds.py` ties the claim to the printed question, by the one printed
 statement whose correctness is asked about or by the relation word, its order
 and the printed quantities, and refuses a true claim that is not that
-question. The key prints the verdict with its exact calculation. Grades 1–6
-also have a `label` answer (a short Hebrew name, only for a prompt that asks
-for a name; printed as authored) and an `open` answer (a drawing, a
-construction, an explanation; the key says that the teacher checks it). A
-number is never the key of a drawing. Labels, open items and verdicts whose
-claim was typed from a story are listed as `unverifiedAnswers`
-(`question`, `item`, `kind`) in the adapter result and in
-`general-evidence.json`. `runner.render_job` copies the positions and kinds to
-`manifest.unverifiedAnswers`, and the worker result carries them as
-`teacherNotes`: one entry per kind with a fixed Hebrew sentence
-(`gate_policy.UNVERIFIED_NOTES`) and the question and item numbers. Evidence
-that is present but unreadable fails the render before anything is built.
-Authored prose answers (`review`) remain middle-school only.
+question. The key prints the verdict with its exact calculation. A number is
+never the key of a drawing. Grades 1–6 print no answer without a proven key:
+a verdict whose claim was typed from a story is refused, the schema offers no
+answer kind without a computed key (no `label`, `open` or `review`), and the
+adapter refuses any unverified answer (`UNVERIFIED_ANSWERS`). In middle
+school, authored prose answers (`review`) and verdicts whose claim was typed
+from a story are listed as `unverifiedAnswers` (`question`, `item`, `kind`)
+in the adapter result and in `general-evidence.json`. `runner.render_job`
+copies the positions and kinds to `manifest.unverifiedAnswers`, and the worker
+result carries them as `teacherNotes`: one entry per kind with a fixed Hebrew
+sentence (`gate_policy.UNVERIFIED_NOTES`) and the question and item numbers.
+Evidence that is present but unreadable, or that lists an elementary answer,
+fails the render before anything is built. The worker checks the manifest
+again before anything is uploaded (`remote_worker.general_verdict`): a missing
+list or one it cannot read, or any listed answer on an elementary sheet,
+refuses the sheet.
 Prose, reasoning and pedagogical correspondence still require human review.
 
 `general_adapters.py` compiles only trusted templates. Typed figures are
@@ -147,18 +245,24 @@ A result is always `needs_review` or `failed`, never publication approval:
   form) and policy findings (chronology, drawings, signs, brand) block; when
   the gate output names questions, `manifest.gate.questions` lists them.
   Editorial findings (difficulty spread, repeated item structure, star count,
-  page fill) do not block: the step is recorded as REVIEW and
-  `reviewFindings` carries the code, the questions and a fixed Hebrew teacher
-  note. An unknown line, a timeout or a crashed step blocks.
+  page fill) block in the same way. An unknown line, a timeout or a crashed
+  step blocks.
   `skill_feedback.gate_report` reads every finding of a work folder. When the
   trusted adapter refuses a question it leaves `adapter-failure.json`
   (`code`, `question`, `item`), and the report names that question from it.
-- `paren_order.py` measures again the one documented false positive of the
-  pinned bracket gate G51 (a correctly printed product of two bracketed
-  groups). A reversed pair still fails.
-- `claim_words.py` records in the ledger a closed-pattern reading of the words
-  that the pinned truth gates G32/G33 search for ("לכל תלמיד", conditional
-  "אילו"). Universal claims and requests to enumerate still fail.
+- The pinned bracket gate G51 is never measured again. It names no question,
+  so a G51 finding fails the sheet, also on a correctly printed product of two
+  bracketed groups (a known false refusal, accepted).
+- `claim_words.py` names, before rendering, the claims among the words that
+  the pinned truth gates G32/G33 search for (`claim_lint`). It records nothing
+  in the ledger, so the gates judge every listed word: a per-unit "לכל" or a
+  conditional "אילו" is refused in the pre-pass and the question is replaced,
+  like a universal claim or a request to enumerate. One exception: the adapter
+  records the measured figure of an elementary question in the ledger under the
+  bare question number (`figure_assert`), and the locked G32/G33 accept that id
+  for every listed word of the question. In a question with a figure, a benign
+  reading that `claim_lint` does not name is therefore printed, not judged; a
+  claim is still named by `claim_lint` and the question replaced.
 - `runner.precheck_job` builds `content.json` and runs only the content-truth
   and house gates that read it, before any PDF or Word file exists.
 - A narrowly verified middle-skill didactic REVIEW may produce a private draft
@@ -166,7 +270,19 @@ A result is always `needs_review` or `failed`, never publication approval:
   review findings. `didactic_review.py` reconciles only the pinned driver's
   documented REVIEW-only exit discrepancy, checks every other gate and output
   hash, and reruns the pinned checker. It never converts a FAIL finding to
-  REVIEW.
+  REVIEW. This is the only REVIEW the worker accepts: `middle-build` with reason
+  `PINNED_DRIVER_REVIEW_EXIT_DISCREPANCY`, followed by
+  `didactic-review-reconciliation` PASS, on a middle-school lesson, whose
+  review rows are its `DIDACTIC_REVIEW` rows of `middle-build` and nothing
+  else; every other REVIEW is refused. The worker accepts by allowlist
+  (`remote_worker.general_verdict`): a render whose steps all passed is
+  delivered only with `reviewFindings == []`, any review row that
+  `gate_policy.blocks` blocks (or a G51 row of any class, or a row of another
+  step) refuses the sheet instead of being dropped, and a manifest that names
+  another skill than the lesson's is refused. A render that fails after the
+  reconciliation (a missing PDF or Word file) puts the step back to FAIL,
+  keeps no review note, and lists that step in `gate.blocking` with every other
+  failed step.
 - API, UI and private-storage RLS use equivalent readiness rules. Only exact
   owner PDF/DOCX paths can be downloaded; source, logs and keys remain private.
 
@@ -188,9 +304,10 @@ python3 tools/teacher-generation/cloud/container/test_packaging.py
 
 The hash-pinned Linux image includes SymPy/mpmath, fonts, Chromium, Poppler and
 a fixed Tesseract OCR bridge. The cloud qualification workflow runs without
-network or secrets: three legacy fixtures, four general fixtures (grade-2
-niqqud, grade-4 fractions, grade-9 quadratic equations and triangles in the coordinate plane), real
-raster OCR, and the existing Chromium fallback. Fixture coverage is not
+network or secrets: three legacy fixtures, twelve general fixtures (nine must
+deliver; grade-2 niqqud, grade-4 fractions and grade-4 calculation must be
+refused exactly as recorded, see `cloud/container/README.md`), real raster OCR,
+and the existing Chromium fallback. Fixture coverage is not
 232-topic pedagogical certification. Inspect the generated PDFs and Word files.
 
 Production runs in Cloudflare. A Mac development command is not a backup

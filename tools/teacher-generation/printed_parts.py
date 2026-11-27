@@ -5,10 +5,15 @@ answer (a quotient and its remainder, several terms of a sequence, hours and
 minutes), and it can already show the exercise that the task repeats. Each
 binder here recomputes the whole printed answer from the printed givens and
 checks the typed result against it. A prompt with several blanks that no
-binder recognizes is refused: one number never answers two blanks.
+binder recognizes is refused: one number never answers two blanks. In grades
+1-6 a computed item whose prompt has any blank is keyed only when a binder of a
+closed list fills it from the print (``solved_from_the_print``,
+``refuse_unsolved_equation``); a figure item keeps the figure's own key.
 
-Nothing here approves prose. Every refusal is a recoverable
-PRINTED_TASK_MISMATCH for one question.
+Nothing here approves prose: an item without a blank keeps its typed key, and
+nothing proves that a word problem's key answers what its words ask. Every
+refusal is recoverable for one question, as PRINTED_TASK_MISMATCH unless a
+check names its own code.
 """
 
 from fractions import Fraction
@@ -652,6 +657,83 @@ def shows_task(question, item, solved, *, intro=None):
     return True
 
 
+# The only words of a bare instruction or question about the exercise that
+# follows it: what to do with it and what it is. Any other word (a die, a
+# class, a unit to convert to) tells a story, and the printed task would show
+# its operation. Unpointed, each word may carry a leading ו.
+_BARE_WORDS = frozenset((
+    "חשבו", "פתרו", "פשטו", "כנסו", "מצאו", "השלימו", "כתבו", "רשמו", "פרקו", "פתחו", "חברו", "חסרו", "כפלו",
+    "חלקו", "צמצמו", "הציבו", "הרחיבו", "המירו", "סדרו",
+    "את", "של", "כל", "הבא", "הבאה", "הבאים", "הבאות", "בטור", "במאונך", "לגורמים",
+    "התוצאה", "תוצאת", "התוצאות", "הביטוי", "ביטוי", "הביטויים", "ערך", "הערך", "התרגיל", "התרגילים", "המשוואה",
+    "המשוואות", "אי", "השוויון", "הפתרון", "הפתרונות", "הסכום", "ההפרש", "המכפלה", "המנה", "הסימן", "המתאים",
+    "איברים", "דומים", "הסוגריים", "החבור", "החיבור", "החיסור", "הכפל", "החילוק", "המספר", "המספרים", "השבר",
+    "השברים", "שני", "הממשיים", "ממשיים", "השלמים", "שלמים", "החיוביים", "חיוביים", "השליליים", "שליליים",
+    "מה", "מהו", "מהי", "כמה", "זה", "יש", "ביחד", "מקבלים", "כשמחברים", "כשמחסרים", "כשכופלים", "כשמחלקים",
+))
+
+
+def bare_instruction(spans):
+    """True when the prompt is one instruction or question that names only the exercise.
+
+    One clause, no number, and only the words of ``_BARE_WORDS``: "חשבו.",
+    "מה הסכום?", "פתרו את המשוואה.". A story in one sentence ("מה ההסתברות
+    לקבל מספר זוגי בהטלת קובייה?") is not bare.
+    """
+    words = " ".join(_words(spans).split())
+    clauses = [part for part in re.split(r"[.!?;,]+", words) if part.strip()]
+    if len(clauses) > 1 or carries_data(spans):
+        return False
+    return all(word in _BARE_WORDS or (word.startswith("ו") and word[1:] in _BARE_WORDS)
+               for word in re.findall(r"[א-ת]+", words))
+
+
+def refuse_shown_task(question, item, *, intro=None):
+    """Refuse an item whose typed task would be printed after anything but a bare instruction.
+
+    The adapter prints the typed task after a prompt without mathematics of
+    its own (``shows_task``). After a bare instruction or question ("חשבו.",
+    "מה הסכום?", ``bare_instruction``) that task is the exercise. After a story,
+    in one sentence or more, an intro that states numbers, or a table or
+    figure, the printed calculation would reveal the operation that the pupil
+    should find or print again an exercise shown elsewhere, so the item is
+    refused instead. A table row with a blank beside the same calculation is
+    no exception: the print would show that row's exercise a second time.
+    """
+    shared = question["intro"] if intro is None else intro
+    if "table" in question or "figure" in question or carries_data(shared) or not bare_instruction(item["prompt"]):
+        raise GeneralSourceError("PRINTED_TASK_MISMATCH",
+                                 "The prompt does not print the exercise that its key answers; a typed task is "
+                                 "printed only after a bare instruction")
+
+
+def _subtracts_from_zero(tree):
+    if not isinstance(tree, dict) or tree.get("type") != "operation":
+        return False
+    if tree["op"] == "subtract" and tree["args"][0] == {"type": "number", "numerator": 0, "denominator": 1}:
+        return True
+    return any(_subtracts_from_zero(arg) for arg in tree["args"])
+
+
+def refuse_unwritten_zero(solved):
+    """Refuse a typed task whose print would show a zero that the task never wrote.
+
+    The exact tree has no negation sign: a minus before anything but a number
+    (-2^4, -x + 3, -(x + 2)) is the subtraction 0 − 2^4, and the house printer
+    would print that zero. A typed task printed from its tree after a bare
+    instruction is refused instead, wherever such a subtraction stands. A zero
+    that the task did write is refused too: the tree cannot tell them apart.
+    """
+    task = solved["question"]
+    trees = [task[field] for field in ("expression", "left", "right", "lhs", "rhs") if field in task]
+    values = task.get("values")
+    trees += list(values.values()) if isinstance(values, dict) else list(values or [])
+    trees += [eq[side] for eq in task.get("equations", []) for side in ("lhs", "rhs")]
+    if any(_subtracts_from_zero(tree) for tree in trees):
+        raise GeneralSourceError("SOURCE_NOTATION",
+                                 "A minus before anything but a number would print as a subtraction from zero")
+
+
 # --------------------------------------------------------------- one exercise
 _DIRECTIVE = re.compile(
     r"(?:(?:חשבו|פתרו|מצאו|השלימו|כתבו|רשמו)(?: בטור)?(?: את)?"
@@ -709,6 +791,11 @@ def echoed_given(item, solved, *, authored=False, mixed=False):
     (``mixed``). This second rule applies to an authored reply only
     (``authored``): a local author may state a count that the pupil then
     checks against the printed words.
+
+    A prompt that is nothing but a list of numbers, keyed by one of them, has
+    nothing to calculate either: the bare number only picks a printed number,
+    and no typed task proves the choice ("[[354]], [[345]], [[435]]" under
+    "סדרו מהקטן לגדול" keyed 345). This too applies to an authored reply.
     """
     typed = _scalar(solved)
     task = solved["question"]
@@ -722,6 +809,10 @@ def echoed_given(item, solved, *, authored=False, mixed=False):
         return
     if not authored or task["expression"].get("type") != "number":
         return
+    listed = [token.value for token in tokens if token.kind == "num"]
+    if (len(listed) >= 2 and typed in listed
+            and all(token.kind == "num" or (token.kind == "sym" and token.raw in ",;.") for token in tokens)):
+        _reject("The key repeats one of the listed numbers; there is nothing to calculate")
     shown = []  # (value, written decimal, written fraction in lowest terms)
     for token in tokens:
         if token.kind == "num":
@@ -1042,11 +1133,105 @@ def bind_parts(question, item, solved, grade):
         blanks = max(blank_count(item["prompt"]), _row_blanks(question, item["prompt"]))
         if blanks >= 2 and _answers(solved) != blanks:
             from printed_tasks import match_printed_task
-            # "המספר החסר הוא ___: [[___ + 4 = 17]]" names one unknown twice,
+            # "המספר החסר הוא ___. [[___ + 4 = 17]]" names one unknown twice,
             # and its binder has already solved the printed equation for it.
             if kind != "computed" or not match_printed_task(item, solved, grade):
                 _reject("The prompt has several blanks and the typed task answers only one of them")
     return binding
+
+
+_RELATION = re.compile(r"!=|<=|>=|[=<>≤≥≠]")
+
+
+def prints_blank_equation(spans):
+    """The field prints an equation or inequality with a blank.
+
+    Either one formula holds a relation and a blank ("24 : ___ = 6"), or the
+    field has a blank and also a formula with a relation ("___: [[4 = 6]]"),
+    or a relation sign stands in the sentence beside an operand while the
+    field has a blank ("[[3]] מטרים = ___ ס״מ"). A sign listed as an option
+    ("(<, > או =)") stands beside no operand.
+    """
+    if not isinstance(spans, list):
+        return False
+    line, blank, equation = "", False, False
+    for span in spans:
+        if not isinstance(span, dict):
+            return False
+        if span.get("kind") == "text":
+            line += re.sub(r"[☐□▢]", "___", span["text"])
+            blank = blank or "___" in line
+        elif span.get("kind") == "formula" and _RELATION.fullmatch(span["notation"].strip()):
+            line += span["notation"]  # a relation sign written in the sentence
+        elif span.get("kind") == "formula":
+            if "___" in span["notation"]:
+                if _RELATION.search(span["notation"]):
+                    return True
+                blank = True
+            elif _RELATION.search(span["notation"]):
+                # A formula that is a whole equation is never read as one number: its "="
+                # stands beside the field's blank as much as one written in the sentence.
+                equation = True
+            line += "0"
+        else:
+            line += "0"
+    if not blank:
+        return False
+    if equation:
+        return True
+    for sign in _RELATION.finditer(line):
+        left, right = line[:sign.start()].rstrip()[-1:], line[sign.end():].lstrip()[:1]
+        if (left and (left.isdigit() or left in "_)%")) or (right and (right.isdigit() or right in "_(-−")):
+            return True
+    return False
+
+
+def solved_from_the_print(question, item, solved, grade):
+    """The binder that recomputes this item's key from what it prints, or None.
+
+    The closed list (an allowlist) of the forms whose blank a binder fills:
+    a parts binder (place value, quotient and remainder, sequence, two units;
+    ``bind_parts``), the missing-number and first-operation binder
+    (``printed_tasks.match_printed_task``), the comparison sign between two
+    printed quantities (``comparison_blank``) and the printed statement that a
+    yes/no item decides (``answer_kinds.bind_decision``).
+    """
+    binding = bind_parts(question, item, solved, grade)
+    if binding is not None or item["answer"].get("kind") != "computed":
+        return binding
+    from printed_tasks import match_printed_task
+    from answer_kinds import bind_decision
+    return (match_printed_task(item, solved, grade) or comparison_blank(item, solved, grade)
+            or bind_decision(question, item, solved, grade))
+
+
+def refuse_unsolved_equation(question, item, solved, grade):
+    """Grades 1–6: a printed blank is keyed only by a binder that fills it from the print.
+
+    A computed item whose prompt prints a blank (``___`` or a box, in the
+    sentence or in an island) is keyed only when ``solved_from_the_print`` names the
+    binder that recomputes its key from the print, also when the typed key is
+    right: a word problem with a blank ("[[3]] מטרים הם ___ ס״מ"), a blank
+    beside a closed formula ("___: [[4 = 6]]") and an equation that no binder
+    reads are refused. No binder reads a blank in the intro, so a question
+    whose intro prints one is refused, and so is one whose table cell prints
+    an equation with a blank. ``general_source.validate_question`` runs this
+    after every other check of the item, so a more specific refusal keeps its
+    own code.
+    """
+    if grade > 6:
+        return
+    table = question.get("table") or {}
+    cells = list(table.get("head") or []) + [cell for row in table.get("rows") or [] if isinstance(row, list)
+                                             for cell in row]
+    intro = question.get("intro")
+    if (isinstance(intro, list) and blank_count(intro)) or prints_blank_equation(intro) \
+            or any(prints_blank_equation(cell) for cell in cells):
+        _reject("A blank in the intro or an equation with a blank in a table cell is not solved from the print")
+    if not blank_count(item["prompt"]) and not prints_blank_equation(item["prompt"]):
+        return
+    if solved_from_the_print(question, item, solved, grade) is None:
+        _reject("The printed blank is not filled from the print by any binder")
 
 
 def check_item(question, item, solved, grade, *, authored=False):
@@ -1057,6 +1242,8 @@ def check_item(question, item, solved, grade, *, authored=False):
     """
     bind_parts(question, item, solved, grade)
     if item["answer"].get("kind") == "computed":
+        from printed_tasks import printed_inequality
+        printed_inequality(item, solved, grade)
         comparison_blank(item, solved, grade)
         printed_calculation(question, item, solved, grade)
         from answer_kinds import bind_decision, refuse_dummy_key

@@ -1,0 +1,183 @@
+{
+  "cases": {
+    "v2-elementary-listed": {
+      "calls": [
+        {
+          "bodyBytes": 5673,
+          "bodySha256": "090c851761e1d6acbc68edcaa2872d6e77d81d01e82e8eb027854c0fcd44b2dd",
+          "key": "golden-unit-key",
+          "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "timeout": 90
+        }
+      ],
+      "code": "PROVIDER_HTTP_ERROR",
+      "detail": "Provider returned HTTP 418; body omitted",
+      "env": "ג10",
+      "metadata": {
+        "authorContract": "worksheet-parameters/2",
+        "derivation": {
+          "canonicalVersion": 1,
+          "performed": false,
+          "rule": "left=divisor*quotient; right=divisor; answer=quotient"
+        },
+        "httpStatus": 418,
+        "purpose": "authoring",
+        "requestedModel": "golden-unit-model",
+        "responseReceived": false,
+        "validated": false
+      },
+      "outcome": "error"
+    },
+    "v3-d10-unreviewed-listed": {
+      "calls": [
+        {
+          "bodyBytes": 160772,
+          "bodySha256": "1e9505d78089bedf5f0450433cbca47e108964d7c5797f085fd0f2fad7423232",
+          "key": "golden-unit-key",
+          "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "timeout": 90
+        }
+      ],
+      "code": "PROVIDER_HTTP_ERROR",
+      "detail": "Provider returned HTTP 418; body omitted",
+      "env": "ד10",
+      "metadata": {
+        "authorContract": "worksheet-source/4",
+        "httpStatus": 418,
+        "purpose": "authoring",
+        "requestBodySha256": "1e9505d78089bedf5f0450433cbca47e108964d7c5797f085fd0f2fad7423232",
+        "requestSchemaSha256": "9132d0ef0ac520f5516a073c3114c97fdd18e38f876b5807859d3d2f62d820b0",
+        "requestedModel": "golden-unit-model",
+        "responseReceived": false,
+        "validated": false
+      },
+      "outcome": "error"
+    },
+    "v3-g7-empty": {
+      "calls": [
+        {
+          "bodyBytes": 254800,
+          "bodySha256": "a0080a42b38b439b8bc66f3b24ed0e86661464b7b01cedff38f2cd5de0669f3e",
+          "key": "golden-unit-key",
+          "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "timeout": 90
+        }
+      ],
+      "code": "PROVIDER_HTTP_ERROR",
+      "detail": "Provider returned HTTP 418; body omitted",
+      "env": "",
+      "metadata": {
+        "authorContract": "worksheet-source/4",
+        "httpStatus": 418,
+        "purpose": "authoring",
+        "requestBodySha256": "a0080a42b38b439b8bc66f3b24ed0e86661464b7b01cedff38f2cd5de0669f3e",
+        "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
+        "requestedModel": "golden-unit-model",
+        "responseReceived": false,
+        "validated": false
+      },
+      "outcome": "error"
+    },
+    "v3-g7-level-not-enabled": {
+      "calls": [
+        {
+          "bodyBytes": 254800,
+          "bodySha256": "3a7373fba04416305447f6314a917a183c911f276d91b66ed82a7a976c81bdcb",
+          "key": "golden-unit-key",
+          "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "timeout": 90
+        }
+      ],
+      "code": "PROVIDER_HTTP_ERROR",
+      "detail": "Provider returned HTTP 418; body omitted",
+      "env": "g7:algebraic_expressions",
+      "metadata": {
+        "authorContract": "worksheet-source/4",
+        "httpStatus": 418,
+        "purpose": "authoring",
+        "requestBodySha256": "3a7373fba04416305447f6314a917a183c911f276d91b66ed82a7a976c81bdcb",
+        "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
+        "requestedModel": "golden-unit-model",
+        "responseReceived": false,
+        "validated": false
+      },
+      "outcome": "error"
+    },
+    "v3-g7-other-topics": {
+      "calls": [
+        {
+          "bodyBytes": 254800,
+          "bodySha256": "a0080a42b38b439b8bc66f3b24ed0e86661464b7b01cedff38f2cd5de0669f3e",
+          "key": "golden-unit-key",
+          "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "timeout": 90
+        }
+      ],
+      "code": "PROVIDER_HTTP_ERROR",
+      "detail": "Provider returned HTTP 418; body omitted",
+      "env": "g7:equations, g9r:probability",
+      "metadata": {
+        "authorContract": "worksheet-source/4",
+        "httpStatus": 418,
+        "purpose": "authoring",
+        "requestBodySha256": "a0080a42b38b439b8bc66f3b24ed0e86661464b7b01cedff38f2cd5de0669f3e",
+        "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
+        "requestedModel": "golden-unit-model",
+        "responseReceived": false,
+        "validated": false
+      },
+      "outcome": "error"
+    },
+    "v3-g7-unset": {
+      "calls": [
+        {
+          "bodyBytes": 254800,
+          "bodySha256": "a0080a42b38b439b8bc66f3b24ed0e86661464b7b01cedff38f2cd5de0669f3e",
+          "key": "golden-unit-key",
+          "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "timeout": 90
+        }
+      ],
+      "code": "PROVIDER_HTTP_ERROR",
+      "detail": "Provider returned HTTP 418; body omitted",
+      "env": null,
+      "metadata": {
+        "authorContract": "worksheet-source/4",
+        "httpStatus": 418,
+        "purpose": "authoring",
+        "requestBodySha256": "a0080a42b38b439b8bc66f3b24ed0e86661464b7b01cedff38f2cd5de0669f3e",
+        "requestSchemaSha256": "ae92a1edb08960cd18cde68e8e073008ef283c59073bb50ef1edb36cecc2b3d1",
+        "requestedModel": "golden-unit-model",
+        "responseReceived": false,
+        "validated": false
+      },
+      "outcome": "error"
+    },
+    "v3-g9r-unreviewed-listed": {
+      "calls": [
+        {
+          "bodyBytes": 230849,
+          "bodySha256": "38b25688e2905794e87a4b917e92ac4be12b1bfd5d1f1d4691e86db2f3dc8753",
+          "key": "golden-unit-key",
+          "target": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions",
+          "timeout": 90
+        }
+      ],
+      "code": "PROVIDER_HTTP_ERROR",
+      "detail": "Provider returned HTTP 418; body omitted",
+      "env": "g9r:probability",
+      "metadata": {
+        "authorContract": "worksheet-source/4",
+        "httpStatus": 418,
+        "purpose": "authoring",
+        "requestBodySha256": "38b25688e2905794e87a4b917e92ac4be12b1bfd5d1f1d4691e86db2f3dc8753",
+        "requestSchemaSha256": "46ce44a9a058891140da6e6c9f4c53570162927c40c53b3af396c774753c0dbf",
+        "requestedModel": "golden-unit-model",
+        "responseReceived": false,
+        "validated": false
+      },
+      "outcome": "error"
+    }
+  },
+  "version": 1
+}

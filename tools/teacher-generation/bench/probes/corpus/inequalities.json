@@ -68,15 +68,9 @@
     ]
    },
    "recorded": {
-    "outcome": "wrong_print",
-    "flags": [
-     "key_mismatch"
-    ],
-    "notes": [
-     "key numbers ['3'] != expected ['2', '3']"
-    ],
-    "printed": "$−3 < 2x + 1 \\leq 7$",
-    "key": "$x \\leq 3$"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "PRINTED_TASK_MISMATCH"
    }
   },
   {

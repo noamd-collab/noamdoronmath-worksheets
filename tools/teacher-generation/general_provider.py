@@ -15,13 +15,12 @@ import os
 from authoring_context import build_authoring_context, AuthoringContextError
 from general_source import validate_source, GeneralSourceError, geometry_topic
 from lesson_select import CHALLENGES, NO_QUESTION, PRACTICE, Selection
-from skill_authoring import (MAX_CORRECTED, bind_content, correction_instructions, examine_frame, instruction_for,
-                             notation_correction, question_codes, question_plan, refers_to_another_question,
-                             refusal_feedback, reserve_plan, revision_request, split_reserves, trim_rule,
-                             worksheet_schema)
-from source_normalize import normalize_question, normalize_rich, normalize_source
-from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
-from runtime_catalog import catalog, scope_for_lesson
+from skill_authoring import (MAX_CORRECTED, PRINTED_MINUS, PRINTED_TASK_PLACES, REQUEST_KINDS, bind_content,
+                             correction_instructions, examine_frame, instruction_for, notation_correction,
+                             question_codes, question_plan, refers_to_another_question, refusal_feedback, reserve_plan,
+                             revision_request, split_reserves, worksheet_schema)
+from answer_kinds import DECISION_GUIDE
+from runtime_catalog import catalog, question_floor, scope_for_lesson
 from validation import reject
 import no_carry_addition
 import compact_authoring
@@ -83,8 +82,10 @@ class Draft:
 
       missing()   planned positions that still have no usable question
       replace()   take out printed questions a gate named; reserves fill in
-      correct()   ONE model call, for the missing questions only
-      shorten()   drop what is still missing, within lesson_select's limits
+      correct()   ONE model call: the notation-only fix, or the missing questions (at
+                  most MAX_CORRECTED) and a refused rule, the rule alone when no
+                  question is missing
+      shorten()   drop what is still missing, never below lesson_select.minimum_count
       source()    the unchanged whole-sheet validation of the current sheet
 
     ``lesson`` is the lesson of the sheet last returned by source(): the
@@ -101,17 +102,16 @@ class Draft:
         self._printed = []
         self.corrections = 0
         self.sheet_error = None
-        # The rule is examined alone, as each question is. A refused rule loses each
-        # sentence that is refused on its own; when that is not enough, the one
-        # correction call asks for the rule again. Unmarked mathematics keeps its own
-        # repair (the notation correction), so it is left to the whole-sheet check.
-        self.rule_refusal, self.rule_trimmed = examine_frame(self.title, self.rule, lesson, scope), False
+        # The rule is examined alone, as each question is. A refused rule stays as
+        # the model wrote it; the one correction call asks for the rule again,
+        # unless that call is the notation-only fix. examine_frame reads the title
+        # too, and no call asks for a title: when the title is refused, no returned
+        # rule is taken and the draft yields no sheet. Unmarked mathematics keeps
+        # its own repair (the notation correction), so it is left to the
+        # whole-sheet check.
+        self.rule_refusal = examine_frame(self.title, self.rule, lesson, scope)
         if self.rule_refusal is not None and self.rule_refusal.code == 'SOURCE_PLAIN_MATH':
             self.rule_refusal = None
-        elif self.rule_refusal is not None and self.rule_refusal.code.startswith('SOURCE_'):
-            trimmed = trim_rule(self.title, self.rule, lesson, scope)
-            if trimmed is not None:
-                self.rule, self.rule_refusal, self.rule_trimmed = trimmed, None, True
         authored = {PRACTICE: list(flat['practice']), CHALLENGES: list(flat['challenges'])}
         taken = {PRACTICE: 0, CHALLENGES: 0}
         planned = []
@@ -132,7 +132,8 @@ class Draft:
                 written.add(text)
                 spare.append(row)
         self.repeated_reserves = len(reserves) + len(extra) - len(spare)
-        self.selection = Selection(planned, spare, self._judge)
+        # A shorter sheet keeps the grade minimum of every request (validation.validate_lesson).
+        self.selection = Selection(planned, spare, self._judge, floor=question_floor(lesson['gradeNumber']))
         self.selection.screen()
 
     @staticmethod
@@ -145,20 +146,6 @@ class Draft:
     def _judge(self, question, challenge, number):
         return question_codes(question, self.requested, self.scope, challenge=challenge, index=number,
                               refusals=self._refusals)
-
-    def _normalise_rule(self, rule):
-        try:
-            return normalize_rich(rule, self.requested['gradeNumber'], topic_id=self.scope['topic'].get('topicId'),
-                                  domain=self.scope['topic'].get('domain'), path='rule')[0]
-        except Exception:  # noqa: BLE001 - the normaliser never decides; examine_frame does
-            return rule
-
-    def _normalise(self, question):
-        try:
-            return normalize_question(question, self.requested['gradeNumber'], topic_id=self.scope['topic'].get('topicId'),
-                                      domain=self.scope['topic'].get('domain'))[0]
-        except Exception:  # noqa: BLE001 - the normaliser never decides; the predicate does
-            return question
 
     # ------------------------------------------------------------------ state
 
@@ -183,7 +170,7 @@ class Draft:
 
     def report(self):
         """Counts and codes only (lesson_select.Selection.summary) plus the corrections used."""
-        return {**self.selection.summary(), 'corrections': self.corrections, 'ruleTrimmed': self.rule_trimmed}
+        return {**self.selection.summary(), 'corrections': self.corrections}
 
     # ------------------------------------------------------------------ the sheet
 
@@ -235,7 +222,8 @@ class Draft:
         return len(named)
 
     def shorten(self):
-        """Drop the positions that are still missing. False when the sheet would be too short."""
+        """Drop the positions that are still missing. False when the sheet would be too short:
+        under three quarters of the request or under the grade minimum."""
         return self.selection.shorten()
 
     # ------------------------------------------------------------------ one correction call
@@ -321,9 +309,9 @@ class Draft:
                     raise GeneralSourceError('REVISION_SCOPE', 'The correction reply is not an object of questions')
                 for slot, key in zip(slots, keys):
                     row = reply.get(key)
-                    self.selection.fill(slot.number, self._normalise(row) if isinstance(row, dict) else None)
+                    self.selection.fill(slot.number, row if isinstance(row, dict) else None)
                 if fix_rule is not None and isinstance(reply.get('rule'), str):
-                    rule = self._normalise_rule(reply['rule'])
+                    rule = reply['rule']
                     if examine_frame(self.title, rule, self.requested, self.scope) is None:
                         self.rule, self.rule_refusal, self.sheet_error = rule, None, None
             # A restored challenge may now let a practice reserve stand in for another one.
@@ -404,6 +392,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
                              separators=(',',':'),ensure_ascii=False).encode()).hexdigest(),
                          'requestBodySha256':hashlib.sha256(json.dumps(body,sort_keys=True,
                              separators=(',',':'),ensure_ascii=False).encode()).hexdigest()})
+        # Set again by this call's reply reader only (provider.parse_author_reply): split_reserves reads it.
+        measured.pop('replySalvaged', None)
         return request_author_json(target, key, body, measured, timeout)
 
     import square_lesson
@@ -459,8 +449,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         'if that question actually supplies it. For counting give concrete countable data. Never describe '
         'an imagined picture or refer to a highlighted digit unless its position is explicit. '
         'Each computed task must reproduce the mathematics asked for from its actual givens. The key prints '
-        'the computed solution. The typed task is printed after the prompt only when the prompt shows no '
-        'number at all, as in a bare instruction. A prompt that shows numbers is printed exactly as written '
+        'the computed solution. ' + PRINTED_TASK_PLACES + ' ' + PRINTED_MINUS + ' ' + REQUEST_KINDS + ' '
+        'A prompt that shows numbers is printed exactly as written '
         'and nothing is added to it, so a word problem, a completion or a comparison must state every datum '
         'the pupil needs in its own intro or prompt. Do not supply '
         'the already-computed answer as an evaluate task or hide unsupported reasoning in an answer unit. '
@@ -492,10 +482,15 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
         system += (
             ' Elementary arithmetic uses numbers only. Put a missing number in one complete formula: '
             '[[24 / ___ = 6]] or [[___ + 5 = 9]]. Never use a letter for a missing number. '
+            'Outside [[...]] write only Hebrew words, punctuation and single numbers: never a calculation, a '
+            'relation sign beside a number, a colon after a number or a blank, a Latin letter, a question mark '
+            'as a blank or any blank other than ___. A ___ outside a formula is allowed only where the printed '
+            'numbers fix its answer: a place-value part, a remainder, a sequence term, two units of one size, '
+            'a comparison sign between two numbers. Write a percent sign inside the formula with its number: '
+            '[[25%]]. '
             'Use only taught operations. A construction or explanation cannot have a scalar answer key. '
             'Ask for the actual numerical result or a comparison. For a request to write and evaluate '
             'a two-operation expression, give its complete ordered description in words.')
-        system += ' ' + ELEMENTARY_KINDS_GUIDE
     else:
         system += (
             ' Use solve for a printed equation, with ONE expression on each side. For example, '
@@ -604,7 +599,8 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             'operation itself as the evaluate task. Check that word problems use plausible items and units. '
             'Across the whole sheet at most three subitems may share one bare form such as [[a : b = ___]] '
             '(two at excellence level). '
-            'Use לכל only for an amount per named person or container, or right after התאימו, כתבו or חשבו. '
+            'Never write לכל, not even for an amount per person or container or after התאימו, כתבו or חשבו; '
+            'state the amount that one named person or container gets or holds. '
             'Never write תמיד, לעולם, אי אפשר, לכל מספר or כל משולש. '
             'For a hypothetical write אם. Do not ask אילו מה..., מי מהם, האם ייתכן or כל האפשרויות.')
     if 'representation' in plan[0]:
@@ -646,12 +642,6 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
     response = request_content(system, user, schema, schema_name, 'worksheet-source/4', 40000)
     if session is not None:
         session['replyReceived'] = True
-    # Single-reading spellings become contract notation once, on arrival, so the
-    # compile, the notation correction and the per-question replay read one text.
-    # Only the number of rewrites is measured: the notes quote worksheet text.
-    rewrites = []
-    response = normalize_source(response, lesson['gradeNumber'], topic=scope['topic'], notes=rewrites)
-    measured['sourceRewrites'] = len(rewrites)
 
     def compile_content(payload, sheet_lesson=lesson, stars=3):
         """The whole-sheet validation. ``sheet_lesson`` and ``stars`` differ only for a salvaged sheet."""
@@ -660,7 +650,7 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             payload = no_carry_addition.build_source(lesson, payload, addition_plan)
         payload = bind_content(payload, scope)
         payload = assemble_sections(payload, sheet_lesson['questionCount'], stars)
-        payload = compact_authoring.expand_source(payload, lesson['gradeNumber'], topic=scope['topic'],
+        payload = compact_authoring.expand_source(payload, lesson['gradeNumber'],
                                                   fraction_notation=scope['topic']['domain'] == 'fractions')
         payload = validate_source(sheet_lesson, payload, scope, provider=True)["source"]
         if len(payload['sections'])!=1:
@@ -678,17 +668,17 @@ def author_general_lesson(lesson, *, api_key=None, base_url=None, model=None,
             measured['initialPlainMath'] = True
         reject(exc.code, str(exc))
 
-    flat, reserve_rows, dropped = split_reserves(response)
+    try:
+        # Reserves other than the ones reservePlan asked for refuse the whole reply (split_reserves). Only a reply
+        # read question by question (reply_salvage) may have a lost entry, which counts as a refused reserve.
+        flat, reserve_rows, dropped = split_reserves(response, lesson, scope,
+                                                     salvaged=isinstance(measured.get('replySalvaged'), dict))
+    except GeneralSourceError as exc:
+        failed(exc)
     if (isinstance(flat, dict) and set(flat) == {"title", "rule", "practice", "challenges"}
             and isinstance(flat["practice"], list) and isinstance(flat["challenges"], list)):
         # The planned questions and the reserves, each examined alone. A bad
         # question has taken a reserve before anything else happens.
-        for row in reserve_rows:
-            try:
-                row['question'] = normalize_question(row['question'], lesson['gradeNumber'],
-                    topic_id=scope['topic'].get('topicId'), domain=scope['topic'].get('domain'))[0]
-            except Exception:  # noqa: BLE001 - the predicate decides, never the normaliser
-                pass
         draft = Draft(flat, reserve_rows, lesson, scope, plan, compile_sheet=compile_content,
                       ask=lambda body, observed: request_author_json(target, key, body, observed, timeout),
                       context=context, model=chosen, measured=measured)

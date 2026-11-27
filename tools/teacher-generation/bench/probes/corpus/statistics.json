@@ -68,9 +68,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "הציונים: 80, 90, 100",
-    "key": "90"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_NOTATION"
    }
   },
   {
@@ -146,9 +146,9 @@
     "unit": ""
    },
    "recorded": {
-    "outcome": "pass",
-    "printed": "הנתונים: $3$, $7$, $8$, $12$, $15$",
-    "key": "$8$"
+    "outcome": "rejected",
+    "stage": "source",
+    "code": "SOURCE_PLAIN_MATH"
    }
   },
   {

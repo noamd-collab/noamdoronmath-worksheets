@@ -3,11 +3,11 @@
 from copy import deepcopy
 from itertools import groupby
 import re
+import unicodedata
 
 from general_source import GeneralSourceError, MAX_BYTES
 from math_tasks import MAX_POWER, MathTaskError, inspect_ast, number, operation
 from numeric_literals import COEFFICIENT, NUMBER_TOKEN, arithmetic_tokens, display_literal, elementary_operations, literal_value
-from source_normalize import normalize_source
 
 GEOMETRY = re.compile(r"(point|segment|triangle|angle|polygon):([A-Z]{1,8})")
 OP = {
@@ -73,7 +73,15 @@ def implicit_products(tokens):
     return out
 
 
-def expression(value, grade, *, blank_symbol=False, printed=False, spellings=None, implicit=True):
+def expression(value, grade, *, blank_symbol=False, printed=False, spellings=None, implicit=True, as_written=False):
+    """Parse compact notation into an exact tree.
+
+    ``printed`` marks notation that the pupil reads, printed from this tree.
+    The tree has no negation sign, so a minus before anything but a number
+    (-2^4, -x, -(x + 1)) is refused there: it would print as 0 − 2^4, with a
+    zero that was never written. ``as_written`` marks notation that the
+    caller prints in its own spelling, not from the tree.
+    """
     if not isinstance(value, str):
         # Typed source (e.g. an older retained response) is checked as usual.
         return value
@@ -111,6 +119,8 @@ def expression(value, grade, *, blank_symbol=False, printed=False, spellings=Non
         token = take()
         if token == "-":
             arg = parse(3)
+            if printed and not as_written and arg["type"] != "number":
+                invalid()
             left = (
                 number(-arg["numerator"], arg["denominator"])
                 if arg["type"] == "number"
@@ -197,7 +207,15 @@ DISPLAY_NAME = re.compile(r"sqrt|frac|___|[A-Z]{1,8}|[a-z]+")
 COORDINATE = re.compile(r"([A-Z]?)\(\s*(-?[0-9]{1,6})\s*,\s*(-?[0-9]{1,6})\s*\)")
 
 
-ANGLE_NAME = r"∠\s*(?:[A-Z]{3}|[A-Z])"
+# An angle is named by three letters only. The locked gate G81 of the pinned
+# middle skill fails a whole sheet on a one-letter angle, so ∠A is refused here.
+# ∠ before three letters is the one angle sign of the contract: every other
+# angle sign (∡, which G81 reads too, ∢, ⦟ ...) is refused wherever it stands.
+ANGLE_NAME = r"∠\s*[A-Z]{3}"
+SHORT_ANGLE = re.compile(r"∠(?!\s*[A-Z]{3}(?![A-Za-z0-9_'′’]))")
+OTHER_ANGLE_SIGN = re.compile(r"[∡∢⊾⟀⦛-⦯]")
+# The word for an angle, also spelled with one vav (זוית), before one point name.
+ANGLE_WORD = re.compile(r"זוו?ית\s+[A-Z](?:_?[0-9]+)?['′’]*(?![A-Za-z0-9'′’_])")
 DEGREES = r"[0-9]{1,3}(?:\.[0-9]{1,4})?\s*°"
 # One angle or a sum of angles; a chain of equal angles that may end in a measure.
 ANGLE_TERM = rf"{ANGLE_NAME}(?:\s*\+\s*{ANGLE_NAME}){{0,3}}"
@@ -269,7 +287,7 @@ def display_parts(value, grade):
 
         def alias(name):
             if name != "___" and (
-                grade < 7 or not re.fullmatch(r"[a-z]|[A-Z]{1,8}|∠[A-Z]{1,3}|[a-z][0-9]", name)
+                grade < 7 or not re.fullmatch(r"[a-z]|[A-Z]{1,8}|∠[A-Z]{3}|[a-z][0-9]", name)
             ):
                 invalid()
             if name not in aliases:
@@ -293,20 +311,21 @@ def display_parts(value, grade):
             # letter also stands alone, where x2 could be a product.
             bare = set(re.findall(r"(?<![A-Za-z0-9_])[xy](?![A-Za-z0-9_])", piece))
             subscript = r"(?<![A-Za-z0-9_])[a-z][0-9](?![0-9A-Za-z_.])"
-            names = re.compile(r"∠\s*[A-Z]{1,3}(?![A-Za-z])|" + subscript + "|" + DISPLAY_NAME.pattern)
+            names = re.compile(r"∠\s*[A-Z]{3}(?![A-Za-z])|" + subscript + "|" + DISPLAY_NAME.pattern)
             if any(re.search(r"(?<![A-Za-z0-9_])" + letter + r"[0-9]", piece) for letter in bare):
-                names = re.compile(r"∠\s*[A-Z]{1,3}(?![A-Za-z])|" + DISPLAY_NAME.pattern)
+                names = re.compile(r"∠\s*[A-Z]{3}(?![A-Za-z])|" + DISPLAY_NAME.pattern)
         rewritten = names.sub(rename, piece)
         spellings = {}
-        # Two diagram labels side by side are not a product.
-        tree = expression(rewritten, grade, blank_symbol=grade < 7 and "___" in aliases,
-                          printed=True, spellings=spellings,
-                          implicit=not any(name == "___" or name.isupper() for name in aliases))
         # In an already parsed schoolbook polynomial keep ordinary numerical
         # coefficients and juxtaposed factors as written. No model markup is copied.
-        if (grade >= 7 and (COEFFICIENT.search(piece) or IMPLICIT_PRODUCT.search(piece)) and
-                re.fullmatch(r"[0-9xyab,.+()\s^\-]+", piece) and
-                not re.search(rf"\^(?!(?:{_EXPONENTS})(?![0-9]))", piece)):
+        as_written = bool(grade >= 7 and (COEFFICIENT.search(piece) or IMPLICIT_PRODUCT.search(piece)) and
+                          re.fullmatch(r"[0-9xyab,.+()\s^\-]+", piece) and
+                          not re.search(rf"\^(?!(?:{_EXPONENTS})(?![0-9]))", piece))
+        # Two diagram labels side by side are not a product.
+        tree = expression(rewritten, grade, blank_symbol=grade < 7 and "___" in aliases,
+                          printed=True, spellings=spellings, as_written=as_written,
+                          implicit=not any(name == "___" or name.isupper() for name in aliases))
+        if as_written:
             result.append(re.sub(rf"\^({_EXPONENTS})(?![0-9])", r"^{\1}", piece.strip().replace("-", "−")))
         else:
             result.append((tree, {alias: printed_name(name) for name, alias in aliases.items()}, spellings))
@@ -386,9 +405,6 @@ JOINED_ISLANDS = re.compile(
     ISLAND + r"\s*([+*/^−÷×<>!=≤≥≠-](?:___|[+*/^−÷×<>!=≤≥≠ -])*)\s*" + ISLAND
 )
 MATH_TRANSLATION = str.maketrans({"−": "-", "×": "*", "·": "*", "÷": "/"})
-_HEBREW_AHEAD = r"(?=\s*[\u0591-\u05c7]*[א-ת])"
-_LABELLED_BLANK = re.compile(r"\[\[([^\[\]=_]*[^\[\]=_\s])\s*=\s*___\]\]" + _HEBREW_AHEAD)
-_TRAILING_BLANK = re.compile(ISLAND + r"\s*([+*/−÷×=<>-])\s*___(?![\w\]])(?!\s*[\u0591-\u05c7]*[א-ת+*/−÷×=<>-])")
 
 
 def fraction_literals(value):
@@ -404,13 +420,8 @@ def join_islands(value):
     while True:
         joined = JOINED_ISLANDS.sub(r"[[\1 \2 \3]]", value)
         if joined == value:
-            break
+            return joined
         value = joined
-    # A blank that is completed by a Hebrew label ("= ___ מאות") belongs to the
-    # sentence. Inside the LTR island it would print away from its own label.
-    value = _LABELLED_BLANK.sub(r"[[\1]] = ___", value)
-    # The mirror of the first rule: "[[47 : 5]] = ___" is one printed exercise.
-    return _TRAILING_BLANK.sub(r"[[\1 \2 ___]]", value)
 
 
 # Comparison signs listed as separate options can be isolated without guessing.
@@ -533,8 +544,54 @@ def _span_text(span):
     return None
 
 
+def marked_line(value):
+    """A provider span array as the one line it prints, in compact notation, or None.
+
+    Text is kept as written, a formula that is only a relation sign stands in
+    the sentence as that sign, a geometry span is its typed name and every
+    other span is one island. Nothing here is printed: the line is only read
+    by ``refuse_notation``. None for a value that is not a span array; the
+    typed validation (``general_source.rich``) refuses that with its own code.
+    """
+    items = [value] if isinstance(value, dict) else value
+    if not isinstance(items, list):
+        return None
+    parts = []
+    for span in items:
+        if type(span) is str:
+            parts.append(span)
+            continue
+        if type(span) is not dict:
+            return None
+        kind = span.get("kind")
+        if kind == "text":
+            if type(span.get("text")) is not str:
+                return None
+            parts.append(span["text"])
+        elif kind == "formula":
+            notation = span.get("notation")
+            if type(notation) is not str:
+                return None
+            parts.append(notation if RELATION.fullmatch(notation.strip()) else "[[" + notation + "]]")
+        elif kind == "geometry":
+            if type(span.get("type")) is not str or type(span.get("names")) is not str:
+                return None
+            parts.append("[[" + span["type"] + ":" + span["names"] + "]]")
+        else:
+            parts.append("[[0]]")
+    return "".join(parts)
+
+
 def provider_span_array(value, grade, *, fraction_notation=False):
-    """Expand text fields of a mixed provider reply before binding its printed tasks."""
+    """Expand text fields of a mixed provider reply before binding its printed tasks.
+
+    Every grade: the array is first read as the line it prints
+    (``marked_line``) and refused for the same notation as a string field
+    (``refuse_notation``), without the joins of adjacent islands, which a
+    span array does not get.
+    """
+    if isinstance(value, (dict, list)) and (line := marked_line(value)) is not None:
+        refuse_notation(line, grade, join=False)
     if grade < 7 or not isinstance(value, (dict, list)):
         return value
     items = [value] if isinstance(value, dict) else value
@@ -575,25 +632,259 @@ def _safe_math_boundary(span):
     return span["kind"] == "text" and re.search(r"[א-ת]", span["text"]) is not None
 
 
-def _fold_prose_equals(result):
-    """A spaced "=" between Hebrew prose and one island is part of the sentence."""
-    def blank(span):
-        return span["kind"] == "text" and not span["text"].strip()
+PROSE_RELATION = re.compile(r"!=|<=|>=|[=<>≤≥≠]")
+# A relation with an operand on each side: an equation or an inequality, not a listed sign.
+SIDED_RELATION = re.compile(r"[^\s=<>≤≥≠!]\s*(?:!=|<=|>=|[=<>≤≥≠])\s*[^\s=<>≤≥≠!]")
+_RUN_SIGNS = frozenset("+-−*/×÷·x^%()=<>≤≥≠")
+_HEBREW_LETTER = re.compile(r"[֑-ׇא-ת]")
 
-    def prose(span):
-        return span["kind"] == "text" and bool(span["text"].strip())
 
-    def equals(span):
-        return span.get("kind") == "formula" and span.get("notation") == "="
+def calculation_runs(value):
+    """The stretches of a field that read as one calculation, in the order written.
 
-    index = 0
-    while index + 2 < len(result):
-        a, b, c = result[index:index + 3]
-        if equals(b) and ((prose(a) and blank(c)) or (blank(a) and prose(c))):
-            result[index:index + 3] = [{"kind": "text", "text": a["text"] + "=" + c["text"]}]
+    A stretch holds islands, numbers, blanks, operation and relation signs and
+    the spaces between them; a word or other punctuation ends it. A colon is
+    the school division sign after an operand: a number, an island, a closing
+    bracket, a percent or a blank, spaced or touching ("24 : 6", "[[72]] :",
+    "___ :", "___:"). Only after a word ("השלימו:") does it end the sentence,
+    so "___: [[4]] = [[6]]" is one stretch with a blank and is never read as
+    the formula [[4 = 6]] beside a separate blank. A hyphen right after a
+    Hebrew letter (ו-5) and a period or comma outside a number end it too.
+    """
+    runs, run, index = [], "", 0
+    while index < len(value):
+        if value.startswith("[[", index):
+            end = value.find("]]", index + 2)
+            if end < 0:
+                break
+            run += value[index:end + 2]
+            index = end + 2
+            continue
+        char = value[index]
+        before = run.rstrip()
+        if (char.isdigit() or char.isspace() or char == "_"
+                or (char in ".," and before[-1:].isdigit() and run == before and value[index + 1:index + 2].isdigit())
+                or (char == "!" and value[index + 1:index + 2] == "=")
+                or (char == ":" and (before[-1:].isdigit() or before.endswith(("]]", ")", "%", "_"))))
+                or (char in _RUN_SIGNS and char != ":"
+                    and not (char == "-" and index and _HEBREW_LETTER.match(value[index - 1])))):
+            run += char
         else:
+            if run.strip():
+                runs.append(run)
+            run = ""
+        index += 1
+    if run.strip():
+        runs.append(run)
+    return runs
+
+
+def blank_equation_outside_island(value):
+    """An elementary field with an equation and a blank that is not one complete [[...]] formula.
+
+    ``value`` is the field after the joins that read adjacent islands as one
+    formula. Refused: a calculation with a relation and a blank that is more
+    than one island ("7 + [[___ = 15]]", "[[72]] : [[___ = 8]]",
+    "[[3.47 = 3 + 0.4]] + ___", "24 : 6 = ___"), and a relation written in the
+    sentence beside an operand while the field has a blank and an unmarked
+    number ("___ מאות + ___ עשרות = 728", "3 מטרים = ___ ס״מ"). A box (☐) is
+    read as the blank it stands for; the field itself is not changed.
+    """
+    value = re.sub(r"[☐□▢]", "___", value)
+    if "___" not in value:
+        return False
+    for run in calculation_runs(value):
+        flat = re.sub(ISLAND, r" \1 ", run)
+        if ("___" in flat and SIDED_RELATION.search(flat)
+                and not re.fullmatch(r"[\s()]*" + ISLAND + r"[\s()]*", run)):
+            return True
+    prose = re.sub(ISLAND, "\x01", value)
+    if not re.search(r"[0-9]", prose):
+        return False
+    for sign in PROSE_RELATION.finditer(prose):
+        left, right = prose[:sign.start()].rstrip()[-1:], prose[sign.end():].lstrip()[:1]
+        if (left and (left.isdigit() or left in "_\x01)%")) or (right and (right.isdigit() or right in "_\x01(-−")):
+            return True
+    return False
+
+
+def labelled_blank(value):
+    """An island that ends with its blank, followed by a Hebrew word ("[[345 = ___]] מאות").
+
+    Inside the left-to-right island the blank prints at the far end from the
+    word after it, which reads as the label of the island's first number.
+    """
+    for match in re.finditer(ISLAND, value):
+        content = match[1].strip()
+        if (content.endswith("___") and content.strip("_ ")
+                and re.match(r"\s*[֑-ׇ]*[א-ת]", value[match.end():])):
+            return True
+    return False
+
+
+def printing_characters(value):
+    """The characters that print: an invisible format mark (a bidi mark, a joiner) is read through.
+
+    Only the checks read this; the field itself is never changed.
+    """
+    return "".join(char for char in value if unicodedata.category(char) != "Cf")
+
+
+# The one percent sign of the contract is % with its number: inside the island
+# ([[25%]]) or directly after a number in the sentence (25%).
+PERCENT_SIGNS = frozenset("%٪％﹪‰‱؉؊")
+
+
+def percent_outside_island(line):
+    """A percent glyph other than %, or a % that does not directly follow a number in the sentence."""
+    prose = re.sub(ISLAND, "\x01", line)
+    return any(char in PERCENT_SIGNS and (char != "%" or not prose[index - 1:index].isdigit())
+               for index, char in enumerate(prose))
+
+
+def printed_text(line):
+    """The marked line as it prints: each island as its content, a typed geometry name as its letters."""
+    def content(match):
+        geometry = GEOMETRY.fullmatch(match[1].strip())
+        return geometry[2] if geometry else match[1]
+    return re.sub(ISLAND, content, line)
+
+
+# ---------------------------------------------------------- grades 1-6: the sentence
+# What may print outside the islands in grades 1-6 is closed (an allowlist):
+# Hebrew words and punctuation, a number on its own (prose_spans makes it a
+# math span), the blank ___ and a box (☐ □ ▢) that the binders read as a blank,
+# and a sign in one of the readings below. Everything else prints mathematics
+# outside an island, where no binder ties the key to it, and is refused.
+_CONTRACT_BLANK = re.compile(r"(?<!_)___(?!_)|[☐□▢]")
+# Any other spelling of a blank: another run of underscores, another box, an empty bracket.
+_OTHER_BLANK = re.compile(r"_|[⬜◻◽▭▯⬚⎕⍰]|[(\[{]\s*[)\]}]")
+# The mathematical symbols (Unicode Sm) that have a reading in the sentence; any other is refused.
+_SENTENCE_SIGNS = frozenset("+<=>≤≥≠×÷−")
+# Other spellings of a sign that are not mathematical symbols in Unicode.
+_FOREIGN_SIGNS = frozenset("－﹣：﹕︓꞉✕✖⁎✱＊／")
+_RELATION_SIGNS = frozenset(("=", "<", ">", "≤", "≥", "≠", "<=", ">=", "!="))
+_DASHES = frozenset("-–—־−‐‑‒")
+_OPERATORS = frozenset("×·*/÷^")
+# "שווה" between two operands is the relation "=" in a word ("[[24]] : ___ שווה [[6]]"); read unpointed,
+# so the pointed spelling with one vav (שָׁוֶה) is the same word.
+_EQUAL_WORD = re.compile(r"ו?שוו?(?:ה|ים|ות)")
+# A Hebrew word keeps its points, geresh and gershayim; the maqaf (U+05BE) is a sign of its own.
+_SENTENCE_TOKEN = re.compile("\x01|\x02|<=|>=|!=|[0-9]+(?:[.,][0-9]+)*%?|[A-Za-z]+"
+                             "|[א-ת֑-ֽֿ-ׇ׳״\"']+|\\S")
+_POINTS = re.compile("[֑-ֽֿ-ׇ]")
+
+
+def _operand(tokens, index):
+    """The token prints a value: an island, a blank, a number, a letter or "?", or a bracket around one."""
+    while 0 <= index < len(tokens):
+        token = tokens[index]
+        if token == ")":
+            index -= 1
+            continue
+        if token == "(":
             index += 1
-    return result
+            continue
+        return token in ("\x01", "\x02", "?", "%") or token[0].isdigit() or (token[0].isascii() and token[0].isalpha())
+    return False
+
+
+def sentence_math(line, grade):
+    """Grades 1-6: the line prints mathematics or a blank outside the islands that no binder reads.
+
+    ``line`` is the field as written, its adjacent islands joined when it is a
+    string. Refused, in the sentence outside every island:
+    - a blank other than ``___`` or a box: ``__``, ``____``, ``⬜``, ``( )``;
+    - a Latin letter (in grades 1-6 a letter is never a name and never a blank);
+    - a digit that does not stand alone as a number (``24 : 6``, ``25 %``,
+      ``7:30``, ``1/2``, ``80, 90``), or any other numeral (``½``, ``²``);
+    - a mathematical symbol without a reading in the sentence (``＝``, ``→``,
+      ``≈``) and other spellings of a sign (``：``, ``／``);
+    - a relation sign (``= < > ≤ ≥ ≠``) beside an operand, on either side; only
+      a sign listed as an option, with no operand beside it, is read
+      ("(<, > או =)");
+    - a colon after an operand (``[[24]] : [[6]]``, ``___: [[4]] = [[6]]``); after
+      a word it ends the sentence ("השלימו:");
+    - a dash, hyphen or minus between two operands (``5 - 3``, ``3-4``), or at an
+      end of the line beside one (``[[5]] -``); with a word on one side it is
+      punctuation ("ו־[[5]]", "345 – ספרת המאות"), and a minus written onto the
+      number that opens the line is that number's sign ("-5");
+    - a plus after an operand, or before one when no word stands before it; only
+      "___ מאות + ___ עשרות" is read;
+    - ``× · * / ÷ ^`` beside an operand;
+    - the word שווה between two operands.
+    An operand is an island, a number, a blank, a letter, "?" or a percent,
+    and a bracket around one of them.
+    """
+    prose = _CONTRACT_BLANK.sub("\x02", re.sub(ISLAND, "\x01", line))
+    if _OTHER_BLANK.search(prose) or re.search(r"[A-Za-z]", prose):
+        return True
+    for char in prose:
+        category = unicodedata.category(char)
+        if ((category == "Sm" and char not in _SENTENCE_SIGNS) or char in _FOREIGN_SIGNS
+                or (category in ("Nd", "No", "Nl") and not ("0" <= char <= "9"))):
+            return True
+    for piece in re.split(r"\[\[[^\[\]]+\]\]", line):
+        if any(span["kind"] == "text" and re.search(r"[0-9]", span["text"]) for span in prose_spans(piece, grade)):
+            return True
+    matches = list(_SENTENCE_TOKEN.finditer(prose))
+    tokens = [match[0] for match in matches]
+    for index, token in enumerate(tokens):
+        left, right = _operand(tokens, index - 1), _operand(tokens, index + 1)
+        word_before = index > 0 and re.match(r"[א-ת]", _POINTS.sub("", tokens[index - 1])) is not None
+        # A dash at an end of the line beside an operand ("[[5]] -") is a sign, except a minus written
+        # onto the number that opens the line ("-5").
+        edge = ((left and index == len(tokens) - 1)
+                or (right and index == 0 and not (token in "-−" and matches[1].start() == matches[0].end()
+                                                    and tokens[1][0].isdigit())))
+        if ((token in _RELATION_SIGNS and (left or right))
+                or (token == ":" and left)
+                or (token in _DASHES and ((left and right) or edge))
+                or (token == "+" and (left or (right and not word_before)))
+                or (token in _OPERATORS and (left or right))
+                or (_EQUAL_WORD.fullmatch(_POINTS.sub("", token)) and left and right)):
+            return True
+    return False
+
+
+def refuse_notation(line, grade, *, join=True):
+    """Refuse a rich field for its notation, read as the one line that it prints.
+
+    ``line`` is a string field as written, or a provider span array as
+    ``marked_line`` writes it (``join=False``: its islands stay separate, as
+    they print). Every grade, wherever the spelling stands, after reading
+    through invisible marks (``printing_characters``):
+    - an angle sign other than ∠, or ∠ not before three letters (``∠A``,
+      ``∡A``, ``[[∠D = 70°]]``), and the word זווית or זוית before one point
+      name (``זווית A``, ``הזווית [[point:B]]``): G81 fails the whole sheet on
+      a one-letter angle;
+    - a percent sign outside the island that holds its number (``[[25]]%``,
+      ``[[25]] %``, a bidi mark between them) and any other percent glyph (``٪``,
+      ``％``, ``‰``);
+    - an island that ends with its blank directly before a Hebrew word
+      (``labelled_blank``).
+    Grades 1-6 also: an equation with a blank that is not one complete island
+    (``blank_equation_outside_island``), and anything else that prints
+    mathematics or a blank outside an island (``sentence_math``).
+    """
+    readable = printing_characters(line)
+    if OTHER_ANGLE_SIGN.search(readable) or SHORT_ANGLE.search(readable):
+        # ∠A, ∠AB, a lone ∠ or another angle sign: refused, never renamed.
+        invalid()
+    if percent_outside_island(readable):
+        # The percent sign is written with its number, [[25%]]; one written after the
+        # island is refused, never moved into it.
+        invalid()
+    joined = join_islands(readable) if join else readable
+    if labelled_blank(joined):
+        # "[[345 = ___]] מאות" prints the blank away from its label: refused as written.
+        invalid()
+    if ANGLE_WORD.search(re.sub(r"[֑-ׇ]", "", printed_text(joined))):
+        invalid()
+    if grade <= 6 and (blank_equation_outside_island(joined) or sentence_math(joined, grade)):
+        # A missing-number equation is one formula, [[24 : ___ = 6]]; any other mathematics
+        # outside an island is not bound to the key: refused, never wrapped.
+        invalid()
 
 
 def spans(value, grade, *, fraction_notation=False):
@@ -601,15 +892,10 @@ def spans(value, grade, *, fraction_notation=False):
         return provider_span_array(value, grade, fraction_notation=fraction_notation)
     if len(value) > 2400:
         invalid()
+    refuse_notation(value, grade)
+    joined = join_islands(value)
     result = []
-    if grade <= 6 and value.count("___") == 1 and value.count("=") == 1 and not re.search(r"[<>!≤≥≠]", value):
-        bare = re.sub(r"\[\[(___|[-−]?[0-9]+)\]\]", r"\1", value.strip())
-        formula = elementary_operations(bare.translate(MATH_TRANSLATION))
-        if schoolbook_tokens(formula, grade) is not None:
-            value = "[[" + formula + "]]"
-    # A percent sign on a numeric island belongs to the same printed LTR token.
-    value = re.sub(r"\[\[([-−]?[0-9]+(?:\.[0-9]+)?)\]\]%", r"[[\1%]]", value)
-    pieces = re.split(r"(\[\[|\]\])", join_islands(value))
+    pieces = re.split(r"(\[\[|\]\])", joined)
     i = 0
     while i < len(pieces):
         prose = pieces[i]
@@ -645,7 +931,6 @@ def spans(value, grade, *, fraction_notation=False):
         result.pop(0)
     if result and result[-1].get("kind") == "text" and not result[-1]["text"].strip():
         result.pop()
-    result = _fold_prose_equals(result)
     if any(span["kind"] == "text" and not span["text"].strip() for span in result):
         invalid()
     if grade >= 7:
@@ -678,30 +963,6 @@ def wire_schema(schema, statistics):
         stats["properties"]["values"]["items"] = {"$ref": "#/$defs/expression"}
     else:
         tasks.remove(stats)
-
-
-_TASK_LETTER = re.compile(r"(?<![A-Za-z])[a-z](?![A-Za-z])")
-
-
-def rename_unknown(task):
-    """Write the unknown of a solve task with a contract letter; return its printed letter, or None.
-
-    A model may solve for the letter that the question prints ("c", "h",
-    "m"). When that letter is the task's only letter and is not x, y, a or b,
-    it becomes the first contract letter the task does not use, and the key
-    prints the original letter again (printedVariable).
-    """
-    variable = task.get("variable")
-    sides = [task.get("lhs"), task.get("rhs")]
-    if (not isinstance(variable, str) or not re.fullmatch(r"[a-z]", variable) or variable in VARIABLES
-            or not all(isinstance(side, str) for side in sides)):
-        return None
-    letters = {letter for side in sides for letter in _TASK_LETTER.findall(side)}
-    if letters != {variable}:
-        return None
-    task["lhs"], task["rhs"] = (_TASK_LETTER.sub("x", side) for side in sides)
-    task["variable"] = "x"
-    return variable
 
 
 def expand_task(task, grade, fraction_notation):
@@ -774,52 +1035,7 @@ def requires_existing_table(question):
                 and not any(TABLE_CONSTRUCTION.search(part) for part in prose)))
 
 
-def _explicit_table_row(prompt):
-    """Read one fully specified row, preserving labels, values, blanks and order."""
-    if not isinstance(prompt, str) or len(prompt) > 2400:
-        return None
-    pipes = re.fullmatch(r"\[\[([^\[\]\n]+)\]\]\s*\n\s*\[\[([^\[\]\n]+)\]\]", prompt.strip())
-    if pipes:
-        header, raw = ([cell.strip() for cell in line.split("|")] for line in pipes.groups())
-    else:
-        fields = re.split(r",\s+", prompt.removeprefix("בטבלה: ").strip())
-        pairs = [re.fullmatch(r"([א-ת ][א-ת ]*)\s*[:=]\s*(.+)", field) for field in fields]
-        if not all(pairs):
-            return None
-        header, raw = zip(*((pair[1].strip(), pair[2].strip()) for pair in pairs))
-    if (not 2 <= len(header) == len(raw) <= 6 or len(set(header)) != len(header)
-            or any(not re.fullmatch(r"[א-ת]+(?: [א-ת]+){0,3}", label) for label in header)):
-        return None
-    row = []
-    for cell in raw:
-        island = re.fullmatch(r"\[\[([^\[\]]+)\]\](%?)", cell)
-        value = "".join(island.groups()) if island else cell
-        if value in {"?", "___"}:
-            row.append("[[___]]")
-        elif display_literal(value) is not None:
-            row.append("[[" + value + "]]")
-        else:
-            return None
-    if row.count("[[___]]") != 1:
-        return None
-    return list(header), row
-
-
-def _bind_inline_table(question, grade):
-    items = question.get("items")
-    if type(items) is not list or not 1 <= len(items) <= 9:
-        return False
-    parsed = [_explicit_table_row(item.get("prompt")) if isinstance(item, dict) else None for item in items]
-    if not all(parsed) or any(pair[0] != parsed[0][0] for pair in parsed):
-        return False
-    question["table"] = {"head": parsed[0][0], "rows": [pair[1] for pair in parsed]}
-    for index, item in enumerate(items, 1):
-        label = "שׁוּרָה" if grade <= 2 else "שורה"
-        item["prompt"] = f"{label} [[{index}]]"
-    return True
-
-
-def expand_source(source, grade, *, fraction_notation=False, topic=None, notes=None):
+def expand_source(source, grade, *, fraction_notation=False):
     if not isinstance(source, dict) or source.get("version") != 4:
         return source
     from json import dumps
@@ -830,8 +1046,7 @@ def expand_source(source, grade, *, fraction_notation=False, topic=None, notes=N
     def rich(value):
         return spans(value, grade, fraction_notation=fraction_notation)
 
-    # Single-reading spellings become contract notation before anything is parsed.
-    data = normalize_source(deepcopy(source), grade, topic=topic, notes=notes)
+    data = deepcopy(source)
     if "rule" in data:
         data["rule"] = rich(data["rule"])
     for section in (
@@ -844,7 +1059,7 @@ def expand_source(source, grade, *, fraction_notation=False, topic=None, notes=N
         for question in section["questions"]:
             if not isinstance(question, dict):
                 continue
-            if "table" not in question and requires_existing_table(question) and not _bind_inline_table(question, grade):
+            if "table" not in question and requires_existing_table(question):
                 raise GeneralSourceError("SOURCE_TABLE", "The question refers to a table that was not supplied")
             if "intro" in question:
                 question["intro"] = rich(question["intro"])
@@ -881,14 +1096,8 @@ def expand_source(source, grade, *, fraction_notation=False, topic=None, notes=N
                     item["prompt"] = rich(item["prompt"])
                 answer = item.get("answer")
                 if isinstance(answer, dict):
-                    # Only the compiler names a printed variable (below); a reply cannot.
-                    answer.pop("printedVariable", None)
                     if isinstance(answer.get("task"), dict):
                         task = answer["task"]
-                        if grade >= 7 and task.get("kind") == "solve":
-                            renamed = rename_unknown(task)
-                            if renamed:
-                                answer["printedVariable"] = renamed
                         if task.get("kind") == "solve":
                             from printed_tasks import printed_solve
                             bound = printed_solve(item.get("prompt"), task, grade)
@@ -906,7 +1115,6 @@ def expand_source(source, grade, *, fraction_notation=False, topic=None, notes=N
                             if fraction_notation:
                                 notation = fraction_literals(notation)
                             answer.setdefault("notation", notation)
-                    if "text" in answer and answer.get("kind") != "label":
-                        # A label stays one plain Hebrew string; it is never mathematics.
+                    if "text" in answer:
                         answer["text"] = rich(answer["text"])
     return data

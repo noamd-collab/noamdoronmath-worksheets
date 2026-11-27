@@ -259,24 +259,49 @@
   if(code==='WORKER_INTERRUPTED' || code==='WORKER_FAILED')return 'עיבוד הדף בשרת נפסק לפני שהטיוטה הושלמה. אפשר לשלוח בקשת יצירה חדשה.';
   return 'הטיוטה לא הושלמה. כדי לנסות שוב, יש לשלוח בקשת יצירה חדשה.';
  }
+ // D22, approved by Noam on 2026-11-25 (runner.V5_NOT_RUN_ALLOWED): the only steps a middle-path
+ // worksheet-wire/5 draft may leave as SKIP. The database rule (M1) and the server hold the same list.
+ const v5SkipAllowed=['pinned:emit_docx','pinned:catalog/landing','pinned:gate_sections G85–G92',
+  'pinned-gate:G85-section-volume:sheet','pinned-gate:G86-terms:sheet','pinned-gate:G87-subtopic-chronology:sheet',
+  'pinned-gate:G88-level-parity:sheet','pinned-gate:G89-catalog:sheet','pinned-gate:G92-section-structure:sheet'];
+ const record=value=>Boolean(value) && typeof value==='object' && !Array.isArray(value);
+ // The worksheet-wire/5 arm of the database rule (M1), clause for clause, as in isTeacherGenerationDraftReady.
+ function v5DraftReady(result) {
+  const {artifacts,notRun,checks,skill}=result;
+  if(!Array.isArray(artifacts) || !Array.isArray(notRun) || !Array.isArray(checks))return false;
+  const skillName=record(skill) && typeof skill.name==='string'?skill.name:null;
+  return result.authoringProfile==='general-skill-source/v1' && result.humanReviewRequired===true &&
+   typeof result.automatedChecksPassed==='boolean' && typeof result.renderingChecksPassed==='boolean' &&
+   (skillName==='elementary' || skillName==='middle') &&
+   artifacts.length===1 && record(artifacts[0]) && artifacts[0].kind==='pdf' &&
+   notRun.every(name=>typeof name==='string') && checks.length>0 &&
+   checks.some(c=>record(c) && c.status==='PASS') &&
+   checks.every(c=>record(c) && typeof c.name==='string' && (c.status==='PASS' ||
+    (c.status==='SKIP' && skillName==='middle' && v5SkipAllowed.includes(c.name) && notRun.includes(c.name)))) &&
+   ((result.automatedChecksPassed===false && result.renderingChecksPassed===false) ||
+    (notRun.length===0 && checks.every(c=>record(c) && c.status==='PASS')));
+ }
  function renderHistory(history) {
   const root=$('generation-jobs'), worksheets=new Set();
   root.replaceChildren();
   for(const job of history) {
    if(job.status!=='needs_review' || !Array.isArray(job.formats))continue;
-   const formats=['pdf','docx'].filter(kind=>job.formats.includes(kind));
-   if(!formats.length)continue;
    const result=job.result, checks=result?.checks;
-   const allPassed=result?.automatedChecksPassed===true && (checks===undefined || Array.isArray(checks) && checks.every(c=>c?.status==='PASS'));
-   const reviewReady=result?.automatedChecksPassed===false && result.authoringProfile==='general-skill-source/v1' && result.renderingChecksPassed===true && result.humanReviewRequired===true && Array.isArray(checks) && checks.length>0 && checks.every(c=>c?.status==='PASS' || c?.status==='REVIEW');
-   if(!allPassed && !reviewReady)continue;
+   // A worksheet-wire/5 draft is decided by its own arm alone and is a PDF only.
+   const v5=Boolean(result) && typeof result==='object' && result.authorContract==='worksheet-wire/5';
+   const formats=(v5?['pdf']:['pdf','docx']).filter(kind=>job.formats.includes(kind));
+   if(!formats.length)continue;
+   const v5Ready=v5 && v5DraftReady(result);
+   const allPassed=!v5 && result?.automatedChecksPassed===true && (checks===undefined || Array.isArray(checks) && checks.every(c=>c?.status==='PASS'));
+   const reviewReady=!v5 && result?.automatedChecksPassed===false && result.authoringProfile==='general-skill-source/v1' && result.renderingChecksPassed===true && result.humanReviewRequired===true && Array.isArray(checks) && checks.length>0 && checks.every(c=>c?.status==='PASS' || c?.status==='REVIEW');
+   if(!v5Ready && !allPassed && !reviewReady)continue;
    worksheets.add(job.id);
    const article=node('article',null,'generation-job');
    const topic=catalog.find(t=>t.topicId===job.lesson?.topicId);
    article.append(node('h3',topic?.title || 'דף לשיעור'));
    article.append(node('p',new Date(job.created_at).toLocaleString('he-IL')+' · '+labels.needs_review));
    if(job.lesson?.lastLesson)article.append(node('p','נקודת העצירה: '+job.lesson.lastLesson));
-   article.append(node('p',allPassed?'הבדיקות האוטומטיות עברו. יש לעיין בטיוטה לפני שימוש בכיתה.':'טיוטה לבדיקה — חלק מההסברים או ההוכחות דורשים בדיקה שלך.'));
+   if(!v5)article.append(node('p',allPassed?'הבדיקות האוטומטיות עברו. יש לעיין בטיוטה לפני שימוש בכיתה.':'טיוטה לבדיקה — חלק מההסברים או ההוכחות דורשים בדיקה שלך.'));
    const actions=node('div',null,'actions');
    for(const kind of formats) {
     const link=node('a',kind==='pdf'?'הורדת PDF לעיון':'הורדת Word לעריכה','download');

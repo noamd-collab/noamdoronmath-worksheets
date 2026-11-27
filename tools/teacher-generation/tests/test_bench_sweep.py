@@ -248,27 +248,51 @@ class RunTests(unittest.TestCase):
         self.assertEqual(code, 0)
         root = self.scratch / 'sweep'
         summary = json.loads((root / 'summary.json').read_text(encoding='utf-8'))
-        # Each case spends its draft call and then asks for a correction or stops; two calls is the hard cap.
-        self.assertLessEqual(summary['thisRun']['calls'], 2)
-        self.assertLessEqual(len(self.prompts), 2)
-        self.assertGreaterEqual(len(summary['thisRun']['notRun']), 1)
+        # A case spends its draft call and a correction (in the first case the pre-pass names question 9, whose typed
+        # task the trusted adapter refuses to print beside its table), then a second draft and a correction; two
+        # calls is the hard cap, so the first case is cut short. A case the budget cut short is not a result: no case
+        # is done and the rerun runs it again.
+        self.assertEqual(summary['thisRun']['calls'], 2)
+        self.assertEqual(self.prompts, ['skill_worksheet_content', 'revise_skill_questions'])
+        self.assertEqual(summary['thisRun']['notRun'], ['g4-07-b-q12-m30', 'g4-08-b-q12-m30', 'g4-09-b-q12-m30'])
         self.assertIn('not run', text)
         done_first = {p.parent.name for p in root.glob('cases/*/result.json')}
-        self.assertTrue(done_first)
+        self.assertEqual(done_first, set())
+        # Four calls finish the first case; the budget then runs out between cases and the other two are not started.
+        before = len(self.prompts)
+        code, text = self.live('--max-calls', '4', '--max-output-tokens', '200000', *selection)
+        self.assertEqual(code, 0)
+        self.assertIn('3 cases selected, 0 already done, 3 to run', text)
+        summary = json.loads((root / 'summary.json').read_text(encoding='utf-8'))
+        self.assertEqual((summary['thisRun']['ran'], summary['thisRun']['calls']), (1, 4))
+        self.assertEqual(summary['thisRun']['notRun'], ['g4-08-b-q12-m30', 'g4-09-b-q12-m30'])
+        self.assertEqual(self.prompts[before:], ['skill_worksheet_content', 'revise_skill_questions'] * 2)
+        self.assertIn('not run', text)
+        done_second = {p.parent.name for p in root.glob('cases/*/result.json')}
+        self.assertEqual(done_second, {'g4-07-b-q12-m30'})
+        finished = (root / 'cases/g4-07-b-q12-m30/result.json').read_bytes()
+        self.assertFalse(json.loads(finished)['cutByBudget'])
+        # The rerun keeps the finished case as it is and resumes the two that were not run.
         before = len(self.prompts)
         code, text = self.live('--max-calls', '20', '--max-output-tokens', '900000', *selection)
-        self.assertIn(f'{len(done_first)} already done', text)
+        self.assertIn('3 cases selected, 1 already done, 2 to run', text)
+        self.assertEqual((root / 'cases/g4-07-b-q12-m30/result.json').read_bytes(), finished)
         summary = json.loads((root / 'summary.json').read_text(encoding='utf-8'))
         self.assertEqual(summary['cases'], 3)
         self.assertEqual(summary['thisRun']['notRun'], [])
         self.assertEqual(set(summary['byGrade']), {'4'})
         self.assertEqual(sum(summary['failureClasses'].values()), 3)
-        self.assertGreater(len(self.prompts), before)
+        self.assertEqual(len(self.prompts) - before, 8)
         self.assertEqual(summary['usage']['calls'], len(self.prompts))
         self.assertTrue(summary['costUsd']['scenarios'])
         for attempts in root.glob('cases/*/attempt-*'):
             self.assertTrue((attempts / 'lesson.json').is_file())
             self.assertTrue((attempts / 'outcome.json').is_file())
+        # A rerun with the same folder skips every finished case and calls nothing.
+        after = len(self.prompts)
+        code, text = self.live('--max-calls', '20', '--max-output-tokens', '900000', *selection)
+        self.assertIn('3 cases selected, 3 already done, 0 to run', text)
+        self.assertEqual((code, len(self.prompts)), (0, after))
 
     def test_a_stopped_case_is_a_result_and_broken_case_processes_stop_the_run(self):
         root = self.scratch / 'sweep'

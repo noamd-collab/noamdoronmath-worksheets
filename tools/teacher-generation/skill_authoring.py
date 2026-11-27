@@ -5,10 +5,11 @@ from dataclasses import dataclass
 import json
 import re
 
-from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich, text, validate_question
+from general_source import GeneralSourceError, authoring_schema, geometry_topic, rich, validate_question
+from general_source import title as sheet_title
 from math_tasks import MathTaskError
 from skill_feedback import FEEDBACK as GATE_FEEDBACK
-from answer_kinds import DECISION_GUIDE, ELEMENTARY_KINDS_GUIDE
+from answer_kinds import DECISION_GUIDE
 from claim_words import claim_lint
 from figure_probe import figure_refusal
 from lesson_select import CHALLENGES, PRACTICE, reserve_groups
@@ -17,7 +18,6 @@ import compact_authoring
 # The questions one correction call may rewrite. More missing questions than
 # this are a failed reply, not a correction.
 MAX_CORRECTED = 8
-MAX_RESERVES = 8
 
 
 def entry_questions(lesson, challenges=3):
@@ -97,7 +97,8 @@ def worksheet_schema(lesson, scope):
         content[group] = {"type": "array", "items": {"$ref": "#/$defs/question"},
                           "minItems": count, "maxItems": count}
     # Reserve questions, each tagged with its group and concept. The author is
-    # asked for all of them; a reply without them is still accepted (split_reserves).
+    # asked for exactly these; a reply that carries other reserves is refused,
+    # and a reply without the field has none (split_reserves).
     reserves = len(reserve_groups(lesson["questionCount"]))
     content["reserves"] = {"type": "array", "minItems": reserves, "maxItems": reserves, "items": {
         "type": "object", "additionalProperties": False, "required": ["group", "conceptId", "question"],
@@ -128,31 +129,46 @@ def bind_content(payload, scope):
     }]}
 
 
-def split_reserves(reply):
-    """Separate the optional reserve questions from a flat reply.
+def split_reserves(reply, lesson, scope, *, salvaged=False):
+    """Separate the reserve questions from a flat reply, exactly as the request asked for them.
 
-    Returns (the reply without ``reserves``, the usable reserves as
-    [{"group", "concepts", "question"}], how many entries were dropped).
-    Reserves are optional: a reply without the field, or with an entry that
-    is not {"group", "question"}, loses only that reserve. The question
-    inside is examined like any other before it may be printed.
+    Returns (the reply without ``reserves``, the reserves as
+    [{"group", "concepts", "question"}], how many entries the reader lost). A
+    reply without the field (every reply recorded before reserves were asked
+    for) has no reserves; each of its planned questions is still examined. A
+    reply that carries the field must carry exactly the reserves of
+    reserve_plan(lesson, scope), which the author schema (worksheet_schema:
+    minItems = maxItems) and the request's reservePlan ask for: one entry per
+    planned reserve, in that order, each exactly {"group", "conceptId",
+    "question"} with the plan's group and concept and a question object.
+    Anything else refuses the whole reply (SOURCE_SHAPE): another count, the
+    alias "challenge", another group, concept or order, an extra field, an
+    entry that is not an object. No such entry is dropped and the rest kept.
+
+    One exception, ``salvaged``: the reply was not JSON as a whole and the
+    reader (reply_salvage, provider.parse_author_reply: measured
+    replySalvaged) decoded it question by question. An entry it could not
+    decode is None in its place and counts as a refused reserve, exactly as a
+    lost planned question counts as a refused question; it is never used.
+    The count and every decoded entry must still be exactly the plan's. In a
+    reply that was read as JSON a null entry refuses the reply like any other.
+    The question inside a reserve is examined like any other before it may be
+    printed.
     """
     if not isinstance(reply, dict) or "reserves" not in reply:
         return reply, [], 0
     flat = {key: value for key, value in reply.items() if key != "reserves"}
-    rows = reply["reserves"]
-    if not isinstance(rows, list):
-        return flat, [], 1
-    usable = []
-    for row in rows[:MAX_RESERVES]:
-        group = row.get("group") if isinstance(row, dict) else None
-        group = CHALLENGES if group == "challenge" else group
-        if group not in (PRACTICE, CHALLENGES) or not isinstance(row.get("question"), dict):
-            continue
-        concept = row.get("conceptId")
-        usable.append({"group": group, "question": row["question"],
-                       "concepts": (concept,) if isinstance(concept, str) else ()})
-    return flat, usable, len(rows) - len(usable)
+    rows, plan = reply["reserves"], reserve_plan(lesson, scope)
+    if not (isinstance(rows, list) and len(rows) == len(plan) and all(
+            (row is None and salvaged is True)
+            or (isinstance(row, dict) and set(row) == {"group", "conceptId", "question"}
+                and isinstance(row["group"], str) and row["group"] == asked["group"]
+                and isinstance(row["conceptId"], str) and row["conceptId"] == asked["conceptId"]
+                and isinstance(row["question"], dict))
+            for row, asked in zip(rows, plan))):
+        raise GeneralSourceError("SOURCE_SHAPE", "Expected exactly the reserve questions of reservePlan, in its order")
+    return flat, [{"group": row["group"], "question": row["question"], "concepts": (row["conceptId"],)}
+                  for row in rows if row is not None], sum(row is None for row in rows)
 
 
 # A notation correction returns only the original prose fragments with marks
@@ -414,7 +430,7 @@ def revision_request(rows, lesson, scope, context, model, title, rule, *, fix_ru
         "require fully vocalized Hebrew. Use unvocalized Hebrew for grades 3–9. "
         "For quantitative answers, use a computed task with the operands and the unit asked for. "
         "Use only the task fields in the supplied schema. Never claim approval or output code. "
-        + DECISION_GUIDE + (" " + ELEMENTARY_KINDS_GUIDE if lesson["gradeNumber"] <= 6 else "")
+        + DECISION_GUIDE
         + (" The sheet's rule was refused as well (ruleToCorrect): return it again at the key rule, with the same "
            "teaching content in plain Hebrew and valid [[...]] notation." if fix_rule else "")
     )
@@ -491,19 +507,46 @@ REFERENCE_INSTRUCTION = (
     "stands alone: state its own givens and never mention another question by number or position.")
 
 
+# What is refused where a typed task would be printed or keyed, told to the author in the request and in the
+# corrections (one text each, so that they cannot drift apart).
+PRINTED_TASK_PLACES = (
+    "The typed task is printed after the prompt only when the prompt shows no number at all and is a bare "
+    "instruction or question about the exercise itself: one clause, only words that say what to do with the "
+    "exercise and what it is (calculate, solve, simplify, the result, the sum, the expression). After a story, also "
+    "one sentence long, after an intro that states numbers, beside a table or beside a figure such an item is "
+    "refused: write the exercise itself in the prompt. Beside a table an item that names a row, by its ordinal, as "
+    "the last row or by its row number, must type exactly the one expression or number that this row prints; in "
+    "grades 1 to 6 every computed item beside a table must name its row so, and an item that names no row, names "
+    "two rows, names a row by its label, totals a column or computes anything else from the table is refused. When "
+    "the items do not each read one row, remove the table and give every item its own printed data.")
+PRINTED_MINUS = (
+    "A typed task that is printed after a bare instruction never has a minus before a letter, a power or a "
+    "bracket (-x + 3, -2^4, -(x + 2)): it would print as a subtraction from zero. Print the exercise itself in "
+    "the prompt instead, or write a negative base in brackets, (-2)^4.")
+REQUEST_KINDS = (
+    "Some requests have no key that the exact checker can print, so they are refused whatever the typed task: a "
+    "ratio or a map scale (keyed by neither a number nor a comparison sign), a time of day (when, at what hour, "
+    "the hour of an event, a blank for a clock time), who or which person or thing (also a request for a name), "
+    "and an order of several numbers (from smallest to largest, ascending, descending), which only a list "
+    "answers. A request to decide whether something holds, to circle, mark or underline the correct or the wrong "
+    "exercises, or to answer yes or no takes only a decide task. A comparison sign is never the answer of an item "
+    "that prints a complete relation such as [[32 / 4 = 9]]. Ask instead for one number that the pupil computes, "
+    "such as a duration in minutes or a difference.")
+
+
 def correction_instructions(lesson, scope):
     """The fixed instruction for each refusal code: source codes and the gates that name a question."""
     instructions = {
         "PRINTED_EXPRESSION_SCOPE": "Preserve the selected concept. If only ONE operation is taught ask directly for a numeric quantity with fully printed givens. Only when two operations are taught and needed for writing an expression, use 'כתבו תרגיל וחשבו את התוצאה:' followed by complete descriptions such as 'הסכום של 6 ו־4, מוכפל ב־3.' Vary the actual numbers and intended operations. Put only the matching two-operation calculation in the typed answer. The compiler prints the expression and its value in the key.",
         "PRINTED_EXPRESSION_MISMATCH": "Ensure that the comparison operands or the expression to be written exactly match the printed givens, in the same order, with the requested units.",
-        "SOURCE_NOTATION": "Check every intro, prompt, answer and table cell. Inside each [[...]] keep only one complete formula. Write units, question marks and Hebrew words outside the brackets. Each point with coordinates is [[A(2,3)]] and each angle has three distinct points, e.g. [[angle:ABC]]. A task expression never contains Hebrew, an equality, a question mark, a standalone operator or a blank. For equations provide left and right expressions in separate fields. Use explicit * and /, e.g. (15/100)*80.",
+        "SOURCE_NOTATION": "Check every intro, prompt, answer and table cell. Inside each [[...]] keep only one complete formula. Write units, question marks and Hebrew words outside the brackets. Each point with coordinates is [[A(2,3)]] and each angle has three distinct points, e.g. [[angle:ABC]]. A task expression never contains Hebrew, an equality, a question mark, a standalone operator or a blank. For equations provide left and right expressions in separate fields. Use explicit * and /, e.g. (15/100)*80. " + PRINTED_MINUS,
         "SOURCE_PLAIN_MATH": "Put the complete formula or variable name in one [[...]] span inside the Hebrew sentence.",
         "SOURCE_TABLE": "Use self-contained printed givens in each item; remove any reference to an absent table from the intro and every item. If a table is essential to the taught skill, supply it as a question-level table object with head and rows arrays, never pipes or Markdown in prompt text.",
         "DRAWING_POLICY": "Rewrite the complete question and its items in words using only printed givens. Remove all diagrams, sketches, drawing instructions and references to figures; keep the selected mathematical skill.",
         "SOURCE_FIGURE": "Use the construction and all of its labelled points as specified by the question plan. For a coordinate plane include every point and segment and integer limits that contain the origin. When the skill cannot draw the figure, choose other measures: sides that are not equal in the question must differ clearly, a right angle appears only where the question gives one, and no point stands on an axis next to the axis number it would hide.",
         "SOURCE_FIGURE_TASK": "Ask for a figure quantity supported by its actual construction; keep all named vertices and their stated measurements consistent.",
-        "PRINTED_ANSWER_KIND": "The answer kind does not fit what the item asks. " + DECISION_GUIDE + " A requested equation needs a complete equation. If the goal is quantitative, rewrite the question and its intro to ask only for the exact scalar you can verify.",
-        "PRINTED_TASK_MISMATCH": "Solve the exercise again using the exact givens in the printed prompt, including the displayed operand order, units and missing value. Correct the printed task and typed answer together. In a decide task the relation and the order of left and right are those of the printed sentence, every number and calculation printed in the item appears in the claim, and the claim uses no number that is not printed.",
+        "PRINTED_ANSWER_KIND": "The answer kind does not fit what the item asks. " + DECISION_GUIDE + " " + REQUEST_KINDS + " A requested equation needs a complete equation. If the goal is quantitative, rewrite the question and its intro to ask only for the exact scalar you can verify.",
+        "PRINTED_TASK_MISMATCH": "Solve the exercise again using the exact givens in the printed prompt, including the displayed operand order, units and missing value. Correct the printed task and typed answer together. In a decide task the relation and the order of left and right are those of the printed sentence, every number and calculation printed in the item appears in the claim, and the claim uses no number that is not printed. " + PRINTED_TASK_PLACES,
         "SOURCE_NIQQUD": "Apply the required grade-specific Hebrew pointing to every word of this question and its answers.",
         "SOURCE_RICH_TEXT": "Use plain Hebrew strings with [[...]] for mathematics in every rich field.",
         "PRINTED_ANSWER_LEAK": "An item of this question prints an answer that the pupil should find: its own answer (in a fact stated before it, a check exercise, or an estimate that names the result) or the answer of an earlier item. The pupil reads that answer on the sheet. Never write an item's result into its own prompt or into a later prompt; refer to an earlier result in words, such as 'המספר שמצאתם בסעיף א', or give the item its own new givens.",
@@ -514,8 +557,14 @@ def correction_instructions(lesson, scope):
             "Keep elementary arithmetic in the selected operations. Put the ENTIRE expression in one math span: "
             "a missing number is three underscores, e.g. [[24 / ___ = 6]], with the answer expression 24/6. "
             "Never use x or other letters for an unknown, and never mix Hebrew words with the formula. "
-            "Use ordinary Hebrew outside the formula. In task.expression use known numeric operands only.")
-        instructions["PRINTED_ANSWER_KIND"] += " " + ELEMENTARY_KINDS_GUIDE
+            "Use ordinary Hebrew outside the formula. In task.expression use known numeric operands only. "
+            "Outside the brackets write no calculation, no relation sign beside a number, no colon after a number "
+            "or a blank, no letter and no blank other than ___; write a percent sign inside the brackets with its "
+            "number, [[25%]]. " + PRINTED_MINUS)
+        instructions["PRINTED_TASK_MISMATCH"] += (
+            " A blank (___) is printed only where the printed numbers fix its answer (a place-value part, a "
+            "remainder, a sequence term, two units of one size, a comparison sign); after a story or beside a "
+            "closed formula ask the question in words instead.")
     if not geometry_topic(scope):
         instructions["SOURCE_TABLE"] += " Example of a real table: table.head and table.rows contain separate plain cells; a missing value uses ___ in its own cell. Use only meaningful columns and givens for the selected concept."
     # Gates of the built sheet that name a question (skill_feedback.FEEDBACK).
@@ -539,40 +588,15 @@ _BROKEN = (KeyError, TypeError, IndexError, AttributeError, ValueError, Recursio
 def examine_frame(title, rule, lesson, scope):
     """The refusal of a sheet's title or rule examined alone, as the whole sheet examines them; None when both pass."""
     try:
-        text(title, 160)
+        sheet_title(title, lesson["gradeNumber"])
         expanded = compact_authoring.expand_source({"version": 4, "title": title, "rule": rule, "sections": []},
-            lesson["gradeNumber"], topic=scope["topic"], fraction_notation=scope["topic"]["domain"] == "fractions")
+            lesson["gradeNumber"], fraction_notation=scope["topic"]["domain"] == "fractions")
         rich(expanded["rule"], lesson["gradeNumber"], provider=True, location="rule")
     except (GeneralSourceError, MathTaskError) as exc:
         return exc
     except _BROKEN:
         return GeneralSourceError("SOURCE_SHAPE", "The rule does not have the shape of the worksheet contract")
     return None
-
-
-def _sentences(value):
-    """The sentences of a rule, split after . ! or ? outside [[...]]."""
-    masked = re.sub(r"\[\[[^\[\]]*\]\]", lambda m: "#" * len(m[0]), value)
-    cuts = [m.end() for m in re.finditer(r"[.!?](?=\s)", masked)]
-    pieces = [value[a:b].strip() for a, b in zip([0] + cuts, cuts + [len(value)])]
-    return [piece for piece in pieces if piece]
-
-
-def trim_rule(title, rule, lesson, scope):
-    """The rule without each whole sentence that is refused on its own, or None.
-
-    A refused rule used to end the whole author attempt. When at least one
-    sentence stands, the rule keeps the sentences that pass, in their order,
-    and the result is examined again as a whole. Nothing is rewritten.
-    """
-    if not isinstance(rule, str):
-        return None
-    sentences = _sentences(rule)
-    kept = [sentence for sentence in sentences if examine_frame(title, sentence, lesson, scope) is None]
-    if not kept or len(kept) == len(sentences):
-        return None
-    trimmed = " ".join(kept)
-    return trimmed if examine_frame(title, trimmed, lesson, scope) is None else None
 
 
 def examine_question(wire, index, lesson, scope, *, challenge):
@@ -587,7 +611,7 @@ def examine_question(wire, index, lesson, scope, *, challenge):
             raise GeneralSourceError("SOURCE_SHAPE", "A question is an object that leaves the challenge flag to the compiler")
         question = {**deepcopy(wire), "star": challenge}
         expanded = compact_authoring.expand_source({"version": 4, "sections": [{"questions": [question]}]},
-            lesson["gradeNumber"], topic=scope["topic"], fraction_notation=scope["topic"]["domain"] == "fractions")
+            lesson["gradeNumber"], fraction_notation=scope["topic"]["domain"] == "fractions")
         validated = expanded["sections"][0]["questions"][0]
         validate_question(validated, lesson["gradeNumber"], scope,
                           provider=True, qcount=index, evidence=[], pending=[])
@@ -611,8 +635,11 @@ def question_codes(wire, lesson, scope, *, challenge, index=1, refusals=None):
     """Every reason one wire question may not be printed, as codes. [] for a usable question.
 
     After the validation of examine_question, an elementary question is read
-    for the claim words that the content-truth gates refuse (claim_words): the
-    gate would fail the built sheet on them, so the question is replaced first.
+    for the claims among the words that the content-truth gates search for
+    (claim_words.claim_lint): the gate would fail the built sheet on them, so
+    the question is replaced first. A word with a benign reading (a per-unit
+    לכל, a conditional אילו) is not named here; the gates refuse it in the
+    pre-pass, except in a question with a measured figure (claim_words).
     ``refusals``, when a dict, keeps the refusal under id(wire) for a caller
     that builds a correction request.
     """

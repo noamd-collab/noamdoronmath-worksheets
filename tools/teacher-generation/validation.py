@@ -79,14 +79,17 @@ def calculate(left, op, right):
     reject("INVALID_MODEL_OUTPUT", "Unknown operation or division by zero")
 
 
-def salvaged_count(requested, printed):
-    """Whether ``printed`` questions may be delivered for a sheet of ``requested`` questions.
+def salvaged_count(requested, printed, grade):
+    """Whether ``printed`` questions may be delivered for a sheet of ``requested`` questions in ``grade``.
 
     Only the worker's salvage shortens a sheet (lesson_select): never below
-    three quarters of the request, never below six questions.
+    three quarters of the request and never below the grade minimum that
+    validate_lesson enforces on every request.
     """
     from lesson_select import minimum_count
-    return (type(requested) is int and type(printed) is int and minimum_count(requested) <= printed < requested)
+    from runtime_catalog import question_floor
+    return (type(requested) is int and type(printed) is int and type(grade) is int
+            and minimum_count(requested, question_floor(grade)) <= printed < requested)
 
 
 def validate_lesson(lesson, *, allow_legacy=False, salvaged_from=None):
@@ -94,10 +97,15 @@ def validate_lesson(lesson, *, allow_legacy=False, salvaged_from=None):
     worker delivers a shorter, salvaged sheet. It is trusted worker state and
     is never read from a job: the request itself must pass every check."""
     if salvaged_from is not None:
-        if not isinstance(lesson, dict) or lesson.get('version') != 3 or not salvaged_count(salvaged_from, lesson.get('questionCount')):
-            reject("UNSUPPORTED_SHORT_SHEET", "A salvaged sheet keeps at least three quarters of the requested questions")
+        if (not isinstance(lesson, dict) or lesson.get('version') != 3
+                or not salvaged_count(salvaged_from, lesson.get('questionCount'), lesson.get('gradeNumber'))):
+            reject("UNSUPPORTED_SHORT_SHEET",
+                   "A salvaged sheet keeps at least three quarters of the requested questions and the grade minimum")
         cap = validate_lesson({**lesson, 'questionCount': salvaged_from}, allow_legacy=allow_legacy)
         integer(lesson.get("questionCount"), 4, 40, "questionCount")
+        # The printed count must itself be a count the topic allows, as every request's is.
+        if cap.get("questionCounts") and lesson["questionCount"] not in cap["questionCounts"]:
+            reject("UNSUPPORTED_VOLUME", "The pilot only supports its validated full-sheet question counts")
         return cap
     cap = capability(lesson)
     general = lesson['version'] == 3
@@ -138,15 +146,35 @@ def validate_lesson(lesson, *, allow_legacy=False, salvaged_from=None):
     # Free-text progress is context for authoring, never an authorization to add tools.
     if lesson.get("taughtThroughTopicId") not in (None, lesson["topicId"]):
         reject("UNSUPPORTED_PROGRESS", "This pilot requires the selected topic as the taught-through boundary")
-    minimum = 8 if lesson["gradeNumber"] <= 2 else 12 if lesson["gradeNumber"] <= 4 else 14 if lesson["gradeNumber"] <= 6 else 20
+    from runtime_catalog import question_floor
+    minimum = question_floor(lesson["gradeNumber"])
     if lesson["questionCount"] < minimum:
         # No hidden relaxation of the installed engine's volume gates.
         reject("UNSUPPORTED_SHORT_SHEET", f"This adapter requires at least {minimum} questions; explicit short-sheet support is pending")
     return cap
 
 
-def validate_model(lesson, payload, *, allow_legacy=False, salvaged_from=None):
+def _validate_trusted_contract(lesson, payload, contract):
+    """A compiled worksheet-wire/5 source, flagged by its trusted caller (runner.render_job(contract=...), set
+    only by structured_source / v5_offline_render). The payload's own root marker never selects this path:
+    without contract= such a payload takes the general branch below and stays SOURCE_SHAPE, as at bafa36f0."""
+    from general_source import V5_CONTRACT, GeneralSourceError, validate_source
+    from runtime_catalog import scope_for_lesson
+    if contract != V5_CONTRACT:
+        raise ValueError('Unsupported trusted source contract')
+    if lesson['version'] != 3:
+        reject('WIRE_SCOPE_UNSUPPORTED', 'worksheet-wire/5 sources need a version 3 lesson')
+    try:
+        validate_source(lesson, payload, scope_for_lesson(lesson), contract=contract)
+    except GeneralSourceError as exc:
+        reject(exc.code, str(exc))
+
+
+def validate_model(lesson, payload, *, allow_legacy=False, salvaged_from=None, contract=None):
     cap = validate_lesson(lesson, allow_legacy=allow_legacy, salvaged_from=salvaged_from)
+    if contract is not None:
+        _validate_trusted_contract(lesson, payload, contract)
+        return cap
     if lesson['version'] == 3:
         from general_source import validate_source, GeneralSourceError
         from runtime_catalog import scope_for_lesson

@@ -1,0 +1,65 @@
+{
+ "about": "Hand-computed keys for the ד10 fixtures (long division, written out by hand: dividend = quotient x divisor + remainder). A drill keys 'quotient שארית remainder', or the plain quotient when the remainder is 0. A story keys full_groups = quotient, leftover = remainder, groups_needed = quotient + 1. keyLine is the content.json answer line of the question.",
+ "reply_good": {
+  "delivered": 12,
+  "replaced": [],
+  "trimmed": [],
+  "printed": ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12"],
+  "stars": ["Q10", "Q11", "Q12"]
+ },
+ "drills": {
+  "347:5": {"quotient": 69, "remainder": 2, "printed": "69 שארית 2"},
+  "216:8": {"quotient": 27, "remainder": 0, "printed": "27"},
+  "593:7": {"quotient": 84, "remainder": 5, "printed": "84 שארית 5"},
+  "418:3": {"quotient": 139, "remainder": 1, "printed": "139 שארית 1"},
+  "682:9": {"quotient": 75, "remainder": 7, "printed": "75 שארית 7"},
+  "731:4": {"quotient": 182, "remainder": 3, "printed": "182 שארית 3"}
+ },
+ "stories": {
+  "Q2": {"template": "S_PENCILS", "division": [158, 6], "full_groups": 26, "leftover": 2, "groups_needed": 27},
+  "Q3": {"template": "S_EGGS", "division": [245, 6], "full_groups": 40, "leftover": 5, "groups_needed": 41},
+  "Q4": {"template": "S_SHELVES", "division": [374, 8], "full_groups": 46, "leftover": 6, "groups_needed": 47},
+  "Q5": {"template": "S_COOKIES", "division": [431, 9], "full_groups": 47, "leftover": 8, "groups_needed": 48},
+  "Q6": {"template": "S_BOATS", "division": [263, 4], "full_groups": 65, "leftover": 3, "groups_needed": 66},
+  "Q7": {"template": "S_TEAMS", "division": [189, 5], "full_groups": 37, "leftover": 4, "groups_needed": 38},
+  "Q8": {"template": "S_BOTTLES", "division": [538, 6], "full_groups": 89, "leftover": 4, "groups_needed": 90},
+  "Q9": {"template": "S_STICKERS", "division": [317, 3], "full_groups": 105, "leftover": 2, "groups_needed": 106},
+  "Q10": {"template": "S_PENCILS", "division": [413, 4], "full_groups": 103, "leftover": 1, "groups_needed": 104},
+  "Q11": {"template": "S_EGGS", "division": [625, 3], "full_groups": 208, "leftover": 1, "groups_needed": 209},
+  "Q12": {"template": "S_SHELVES", "division": [965, 9], "full_groups": 107, "leftover": 2, "groups_needed": 108},
+  "R1": {"template": "S_COOKIES", "division": [274, 7], "full_groups": 39, "leftover": 1, "groups_needed": 40},
+  "R2": {"template": "S_BOATS", "division": [457, 6], "full_groups": 76, "leftover": 1, "groups_needed": 77},
+  "R3": {"template": "S_TEAMS", "division": [382, 9], "full_groups": 42, "leftover": 4, "groups_needed": 43},
+  "R4": {"template": "S_BOTTLES", "division": [509, 5], "full_groups": 101, "leftover": 4, "groups_needed": 102}
+ },
+ "keyLines": {
+  "Q1": "א. 69 שארית 2 ; ב. 27 ; ג. 84 שארית 5",
+  "Q2": "א. 26 ; ב. 2 ; ג. 27",
+  "Q3": "א. 40 ; ב. 5 ; ג. 41",
+  "Q4": "א. 46 ; ב. 6 ; ג. 47",
+  "Q5": "א. 47 ; ב. 8 ; ג. 48",
+  "Q6": "א. 65 ; ב. 3 ; ג. 66",
+  "Q7": "א. 37 ; ב. 4 ; ג. 38",
+  "Q8": "א. 89 ; ב. 4 ; ג. 90",
+  "Q9": "א. 105 ; ב. 2 ; ג. 106",
+  "Q10": "א. 103 ; ב. 1 ; ג. 104",
+  "Q11": "א. 208 ; ב. 1 ; ג. 209",
+  "Q12": "א. 107 ; ב. 2 ; ג. 108",
+  "R1": "א. 39 ; ב. 1 ; ג. 40",
+  "R2": "א. 76 ; ב. 1 ; ג. 77",
+  "R3": "א. 42 ; ב. 4 ; ג. 43",
+  "R4": "א. 101 ; ב. 4 ; ג. 102"
+ },
+ "reply_replacements": {
+  "about": "reply_good with four planned questions refused, each for a different reason, and every reserve used: two at compile time (screen), two by the sheet loop.",
+  "delivered": 12,
+  "replaced": [
+   {"slot": "Q7", "by": "R2", "codes": ["ITEM_COUNT", "STORY_REMAINDER_ZERO"]},
+   {"slot": "Q11", "by": "R4", "codes": ["CHALLENGE_PROFILE"]},
+   {"slot": "Q2", "by": "R1", "codes": ["STRUCTURE_REPEATED"]},
+   {"slot": "Q4", "by": "R3", "codes": ["EXAMPLE_COPY"]}
+  ],
+  "printed": ["Q1", "R1", "Q3", "R3", "Q5", "Q6", "R2", "Q8", "Q9", "Q10", "R4", "Q12"],
+  "stars": ["Q10", "R4", "Q12"]
+ }
+}

@@ -1,0 +1,96 @@
+{
+ "skill_version": "7.2.0-noam",
+ "engine_version": "6.18-noam",
+ "package": "G7-T90",
+ "sheet_id": null,
+ "legacy": true,
+ "result": "PASS",
+ "review": [],
+ "steps": [
+  {
+   "step": "build_plus (PDF + gates)",
+   "status": "PASS"
+  },
+  {
+   "step": "check_plain_math.py",
+   "status": "PASS"
+  },
+  {
+   "step": "verify_export.py",
+   "status": "PASS"
+  },
+  {
+   "step": "selfcheck_noam_package.py",
+   "status": "PASS"
+  },
+  {
+   "step": "check_didactic.py",
+   "status": "PASS"
+  },
+  {
+   "step": "emit_docx",
+   "status": "SKIP",
+   "note": "--no-docx: no Word file, so G90/G91 did not run"
+  },
+  {
+   "step": "catalog/landing",
+   "status": "SKIP",
+   "note": "legacy package (no SHEET)"
+  },
+  {
+   "step": "gate_sections G85–G92",
+   "status": "SKIP",
+   "note": "6 results, 0 FAIL, 0 REVIEW"
+  }
+ ],
+ "gates": [
+  {
+   "gate": "G85-section-volume",
+   "level": null,
+   "status": "SKIP",
+   "messages": [
+    "legacy package (no SHEET)"
+   ]
+  },
+  {
+   "gate": "G86-terms",
+   "level": null,
+   "status": "SKIP",
+   "messages": [
+    "legacy package (no SHEET)"
+   ]
+  },
+  {
+   "gate": "G87-subtopic-chronology",
+   "level": null,
+   "status": "SKIP",
+   "messages": [
+    "legacy package (no SHEET)"
+   ]
+  },
+  {
+   "gate": "G88-level-parity",
+   "level": null,
+   "status": "SKIP",
+   "messages": [
+    "legacy package (no SHEET)"
+   ]
+  },
+  {
+   "gate": "G89-catalog",
+   "level": null,
+   "status": "SKIP",
+   "messages": [
+    "legacy package (no SHEET)"
+   ]
+  },
+  {
+   "gate": "G92-section-structure",
+   "level": null,
+   "status": "SKIP",
+   "messages": [
+    "legacy package (no SHEET)"
+   ]
+  }
+ ]
+}

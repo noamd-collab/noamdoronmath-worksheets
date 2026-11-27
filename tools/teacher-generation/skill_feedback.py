@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 
 from claim_words import GATE_WORDS
-from gate_policy import RECONCILIATION_STEPS, STEP_CODES, decide, finding as _finding
+from gate_policy import RECONCILIATION_STEPS, STEP_CODES, finding as _finding
 
 
 MAX_QUESTIONS = 6
@@ -729,15 +729,6 @@ def gate_report(workdir, skill, steps, question_count):
                 found.append(_finding("UNREADABLE", name))
             rows += found
             complete = complete and good
-        if any(step.get("name") == "bracket-order-reconciliation" and step.get("status") == "PASS" for step in steps):
-            # paren_order.py measured every G51 sample again and found each
-            # closing bracket to the right of its opening one.
-            measured = json.loads(read("logs/bracket-order.json"))
-            if (measured.get("status") == "RECONCILED" and type(measured.get("matches")) is int
-                    and measured["matches"] > 0 and measured.get("unbalanced") == 0):
-                for row in rows:
-                    if row["code"] == "G51":
-                        row["reconciled"] = True
     except (OSError, UnicodeError, ValueError, TypeError, KeyError, AttributeError, RecursionError):
         rows.append(_finding("UNREADABLE", "report")); complete = False
     if len(rows) > MAX_FINDINGS:
@@ -762,34 +753,4 @@ def read_gate_report(workdir, question_count):
     except (OSError, UnicodeError, ValueError, TypeError, KeyError, RecursionError):
         return {"version": 1, "skill": None, "complete": False, "findings": [],
                 "unnamed": [_finding("UNREADABLE", "report")]}
-
-
-def blocking_feedback(workdir, question_count):
-    """Correction rows for the questions that block, from the structured report.
-
-    Same shape as read_skill_feedback, for the same correction call, but
-    editorial findings ask for nothing, so they neither spend the question
-    budget nor stop the request. Returns [] unless every blocking finding
-    names a question, has a fixed instruction, and at most MAX_QUESTIONS
-    questions are named; a caller then replaces questions instead.
-    """
-    try:
-        manifest = json.loads(_read(Path(workdir).resolve(strict=True), "manifest.json"))
-        steps = manifest["steps"]
-        if manifest["status"] != "failed":
-            return []
-        report = gate_report(workdir, manifest["skill"]["name"], steps, question_count)
-        failed = [step["name"] for step in steps if step["status"] == "FAIL"]
-    except (OSError, UnicodeError, ValueError, TypeError, KeyError, RecursionError):
-        return []
-    decision = decide(report, failed)
-    if decision["action"] != "replace" or len(decision["questions"]) > MAX_QUESTIONS:
-        return []
-    result = {}
-    for row in decision["blocking"]:
-        if type(FEEDBACK.get(row["code"])) is not str:
-            return []
-        result.setdefault(row["question"], {})[row["code"]] = FEEDBACK[row["code"]]
-    return [{"question": q, "codes": sorted(found), "feedback": [found[c] for c in sorted(found)]}
-            for q, found in sorted(result.items())]
 

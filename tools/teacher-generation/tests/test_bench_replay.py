@@ -254,8 +254,11 @@ class ReplayTests(unittest.TestCase):
         # three whose brackets a stray character replaced are lost and count as refused.
         self.assertEqual(text['author']['firstPass']['code'], 'AUTHOR_PLAN_MISMATCH')
         # The reply predates reserves: one correction is asked for the three positions. It was
-        # never recorded, so it counts as a failed correction and the sheet is shorter.
-        self.assertEqual(text['finalStatus'], 'authored')
+        # never recorded, so it counts as a failed correction. Seventeen of twenty is below the
+        # grade 7 minimum of twenty: no sheet is shortened and the case fails.
+        self.assertEqual((text['finalStatus'], text['failureClass']), ('failed', 'SOURCE:AUTHOR_PLAN_MISMATCH'))
+        self.assertEqual({key: text['ladder']['attemptRecords'][0][key] for key in ('planned', 'printed', 'missing', 'dropped')},
+                         {'planned': 20, 'printed': 17, 'missing': 3, 'dropped': 0})
         self.assertEqual((text['author']['requests'], text['author']['answeredFromRecording']), (2, 1))
         self.assertEqual((text['ladder']['attempts'], text['ladder']['corrections'], text['ladder']['correctionFailed']),
                          (1, 1, True))
@@ -278,6 +281,16 @@ class ReplayTests(unittest.TestCase):
         head, lines = replay.compare(results, changed)
         self.assertEqual(lines, [f"S-g7eq: final {results['cases'][0]['finalStatus']} -> delivered"])
         self.assertIn('-> 1 of 1', head)
+
+    def test_the_summary_counts_the_questions_asked_again_and_names_the_rule_apart(self):
+        # L2-g8 asks for its refused rule alone; L1-g8-a2 for question 11 and the rule.
+        out = Path(tempfile.mkdtemp(prefix='out-', dir=self.scratch))
+        results = self.replay(only=('L2-g8', 'L1-g8-a2'), out=out, render=False)
+        self.assertEqual({case['id']: case['author']['correction']['requiredKeys'] for case in results['cases']},
+                         {'L1-g8-a2': ['q11', 'rule'], 'L2-g8': ['rule']})
+        rows = {line.split(' | ')[0].strip('| '): line.split(' | ')[7]
+                for line in (out / 'summary.md').read_text(encoding='utf-8').splitlines() if line.startswith('| L')}
+        self.assertEqual(rows, {'L1-g8-a2': '1 q + rule (not recorded)', 'L2-g8': 'rule (not recorded)'})
 
     def test_a_planted_fault_is_found_at_its_question_field_and_substring(self):
         lesson = json.loads((CORPUS / 'lessons/g7-equations-practice.json').read_text(encoding='utf-8'))
@@ -340,12 +353,34 @@ class ReplayTests(unittest.TestCase):
 
     @unittest.skipUnless(os.environ.get('BENCH_RENDER_TESTS') == '1', 'Set BENCH_RENDER_TESTS=1 to run the skill render')
     def test_full_pipeline_through_the_skill_render_and_gates(self):
-        case = self.replay(only=('S-g4calc',))['cases'][0]
-        self.assertTrue(case['renders'])
-        self.assertTrue(all(step['status'] in ('PASS', 'FAIL', 'REVIEW') for step in case['renders'][0]['steps']))
-        self.assertIn(case['finalStatus'], ('delivered', 'failed', 'needs_unrecorded_reply'))
-        if not case['delivered'] and case['renders'][0]['status'] == 'failed':
-            self.assertTrue(case['renders'][0]['gateFindings'])
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from test_lesson_ladder import clean_sheet
+        # As recorded, S-g4calc never reaches the render: the pre-pass stops at question 9, whose typed task the
+        # trusted adapter refuses to print beside its table, and no correction was recorded.
+        recorded = self.replay(only=('S-g4calc',))['cases'][0]
+        self.assertEqual((recorded['finalStatus'], recorded['finalCode'], recorded['renders']),
+                         ('failed', 'QUALITY_GATE_FAILED', []))
+        self.assertEqual(recorded['prechecks'], [{'codes': ['TRUSTED_ADAPTER'], 'questions': [9], 'status': 'replace'}])
+        # Its test-local clean copy (test_lesson_ladder.clean_sheet) with the three reserves the author schema asks for
+        # goes through the pinned skill's render and every gate: reserves take the two questions the pre-pass names
+        # (G61), and the sheet of twelve passes every step.
+        lesson = json.loads((CORPUS / 'lessons/g4-order-practice.json').read_text(encoding='utf-8'))
+        pool = json.loads((CORPUS / 'replies/G-order.json').read_text(encoding='utf-8'))
+        reply = clean_sheet(json.loads((CORPUS / 'replies/S-g4calc.json').read_text(encoding='utf-8')), pool)
+        concept = lesson['lessonBoundary']['conceptIds'][0]
+        reply['reserves'] = ([{'group': 'practice', 'conceptId': concept, 'question': question} for question in pool['practice'][:2]]
+                             + [{'group': 'challenges', 'conceptId': concept, 'question': pool['challenges'][0]}])
+        case = self.replay(write_corpus(Path(self.scratch) / 'c-render', 'S-g4calc-clean', lesson, reply))['cases'][0]
+        self.assertEqual((case['finalStatus'], case['finalCode'], case['delivered']), ('delivered', None, True))
+        self.assertEqual(len(case['renders']), 1)
+        self.assertEqual((case['renders'][0]['status'], case['renders'][0]['gateFindings']), ('needs_review', []))
+        self.assertEqual([(step['name'], step['status']) for step in case['renders'][0]['steps']],
+                         [('trusted-adapter', 'PASS'), ('content-truth', 'PASS'), ('pdf', 'PASS'), ('word', 'PASS'),
+                          ('worksheet', 'PASS'), ('output-gates', 'PASS'), ('house-gates', 'PASS')])
+        self.assertEqual([(event['question'], event['codes'], event['action'])
+                          for event in case['ladder']['attemptRecords'][0]['events']],
+                         [(4, ['G61'], 'reserve'), (10, ['G61'], 'reserve')])
+        self.assertEqual((case['ladder']['printed'], case['ladder']['corrections'], case['ladder']['dropped']), (12, 0, 0))
 
 
 if __name__ == '__main__':

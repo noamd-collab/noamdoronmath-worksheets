@@ -10,8 +10,8 @@ whether the same rejection code comes back:
   are tested alone; inside a failing text, each `[[...]]` island is tested
   alone.
 
-The method therefore follows the engine as its grammar, normaliser and answer
-contract change. It reports what reproduces a rejection; it never repairs.
+The method therefore follows the engine as its grammar and answer contract
+change. It reports what reproduces a rejection; it never repairs.
 """
 from __future__ import annotations
 
