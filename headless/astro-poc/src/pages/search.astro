@@ -6,14 +6,13 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SiteSearch } from '../components/SiteSearch';
-import { loadSearchIndexData } from '../lib/siteSearch/packedIndex';
+import indexData from '../data/search-index.v1.json';
 import { prepareIndex, search } from '../lib/siteSearch/engine';
 import type { SearchIndex } from '../lib/siteSearch/types';
 import { parseSearchUrl } from '../lib/siteSearch/url';
 
 export const prerender = false;
 
-const indexData = await loadSearchIndexData();
 const prepared = prepareIndex(indexData as SearchIndex);
 const state = parseSearchUrl(Astro.url.searchParams);
 const initial = search(prepared, state.q, { grade: state.grade });
