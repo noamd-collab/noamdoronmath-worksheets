@@ -5,9 +5,9 @@
   "level": "c",
   "levelCode": "E",
   "title": "חוצה זווית, סכום והפרש זוויות",
-  "pdfId": "0786a43b24d1416e9abedeea42e4be41",
-  "pdfSha256": "37c59d95ada78dc322d3594849e75c741792b45ee86767d72a46d51e97c5ac14",
-  "canonicalSourceSha256": "23cf3dfd8f2559294d3ac83d36b4ff783706a9cb0e0129068c4a954531f56619",
+  "pdfId": "0246f51e8fc3497284208e691322fe98",
+  "pdfSha256": "48c5f4e56da8c24c1e895440456cdc5b7cd8ada81509b45e2a594ec399927fc8",
+  "canonicalSourceSha256": "d30c21ec3acff4f9c77b32a620191950208cf31de35a99f48711f7ac3ce79b09",
   "items": [
     {
       "exerciseId": "G7-T54-E-Q01א",
@@ -292,9 +292,9 @@
         "y": 0.5478614163953195
       },
       "hintSha256": [
-        "c5184e1ffb2289cc99b9ad5bbdf8452bcc97dfad11cfb85ad2e59f7b15a0ba6a",
-        "4248e2fae402d1f5c5a806e2db2951d7a3b8cad7a2ae209cbe84a84f93b4cc33",
-        "b34070dfaf2596f04f23b997d1c93d568db869f1582eeb70a36d624ed0eaad2c"
+        "16e5d071af4e06215dbc32190bab6a56986010a774ca93636c0f285843be7735",
+        "14b4a61ce45986e7fabe348e7bc7a9950cea998745e2ec12a681404d04fb9110",
+        "f542f24ec73b4f133271319f24920f4930a1793b893442b766bc2d9d6d4644c6"
       ]
     },
     {

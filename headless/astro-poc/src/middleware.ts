@@ -18,6 +18,7 @@ import { deduplicateSeoResponse } from './lib/serverSeo';
 import { OTTERLY_API_KEY } from 'astro:env/server';
 import { redirectTargetForSiteUgdPath } from './lib/wixMedia';
 import { retiredJuniorRequestTarget } from './lib/retiredJuniorWorksheets';
+import { replacedPartialHintTarget } from './lib/replacedPartialHints';
 import { resolveRedirect } from './lib/redirects';
 import { PUBLIC_HTML_SHELLS } from './lib/publicHtmlShells';
 import { secretFromEnv } from './lib/noamSecrets';
@@ -47,6 +48,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const retired = retiredJuniorRequestTarget(path, context.url.searchParams);
   if (retired) {
     return context.redirect(retired, 301);
+  }
+  const replacedPartial = replacedPartialHintTarget(path, context.url.searchParams);
+  if (replacedPartial) {
+    return context.redirect(replacedPartial, 301);
   }
   const target = redirectTargetForSiteUgdPath(path, context.url.search);
   if (target) {

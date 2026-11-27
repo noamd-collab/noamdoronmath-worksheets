@@ -844,6 +844,17 @@ main.teacher-coming-soon .example-caption {
 main.teacher-coming-soon .example-note {
   font-size: 14px;
 }
+main.teacher-coming-soon .teacher-access-note {
+  padding-block: 4px 0;
+  border-block-start: 1px solid var(--line);
+}
+main.teacher-coming-soon .teacher-access-note p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+}
 main.teacher-coming-soon .coming-soon-context {
   padding-block: 34px 58px;
   border-top: 1px solid var(--line);

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { isolateMathRuns } from '../../src/lib/mathDirection';
 import { createHash } from 'node:crypto';
 import { beforeGrade9SpecialTrianglesReview } from '../helpers/beforeGrade9SpecialTrianglesReview';
+import { catalogBeforePdfCorrections, registryBeforePdfCorrections } from './pdf-corrections';
 import reviewed from '../../../../docs/middle-090-091-094-pdf-20261121.json';
 
 import seven from '../../../../docs/middle-b18-seven-pdf-20261122.json';
@@ -64,7 +65,7 @@ type RegistryEdition = { editionId: string };
 
 /** Reverse only the named release block and verify every entry, position and order. */
 export function registryBeforeRelease<T>(registry: T, expected: RegistryEdition[]): T {
-  const result: any = structuredClone(registry);
+  const result: any = registryBeforePdfCorrections(registry);
   const index = result.editions.findIndex((edition: RegistryEdition) => edition.editionId === expected[0].editionId);
   assert.ok(index >= 0, expected[0].editionId);
   assert.deepEqual(result.editions.splice(index, expected.length), expected);
@@ -77,7 +78,7 @@ export function registryBeforeRelease<T>(registry: T, expected: RegistryEdition[
  * so that every baseline recorded before the correction keeps its recorded hash.
  */
 export function catalogBeforeCorrections<T>(catalog: T): T {
-  const result: any = structuredClone(catalog);
+  const result: any = catalogBeforePdfCorrections(catalog);
   for (const item of (scaleFeedback as any).corrections) {
     const topic = result.grades.find((g: any) => g.grade === item.grade)?.topics.find((t: any) => t.id === item.topicId);
     assert.ok(topic, item.slug);
