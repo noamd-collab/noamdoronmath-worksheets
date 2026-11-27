@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { botConfigBody, handleNoamSiteCompanion } from '../../../noam-ai/site-companion/endpoint.js';
 import { STEP_UP_TTL_MS } from '../../../noam-ai/site-companion/teacher-step-up.js';
-import { RECAPTCHA_TIMEOUT_MS } from '../../../noam-ai/site-companion/bot-guard.js';
+import { RECAPTCHA_TIMEOUT_MS, verifyRecaptcha } from '../../../noam-ai/site-companion/bot-guard.js';
 
 const now = Date.UTC(2026, 9, 30, 12);
 const origin = 'https://www.noamdoronmath.co.il';
@@ -340,4 +340,160 @@ test('non-picker teacher messages and oversized exact payloads cannot create a s
     assert.equal(result.body.challenge, undefined);
     assert.ok(!f.calls.includes('model'));
   }
+});
+
+const browserError = () => ({ success: false, 'error-codes': ['browser-error'] });
+function browserErrorFixture() {
+  const f = fixture(); f.v3(browserError()); return f;
+}
+
+test('exact server-assessed browser-error remains failed v3 and offers only a signed teacher challenge before fresh v2', async () => {
+  const assessment = await verifyRecaptcha({ token: 'synthetic-v3-proof', secret: 'synthetic-private-v3-key',
+    action: 'noam_site_companion', timeoutMs: 5000,
+    fetch: async () => ({ ok: true, json: async () => browserError() }) });
+  assert.ok('stepUpEligible' in assessment && 'stepUpReason' in assessment);
+  assert.equal(assessment.passed, false); assert.equal(assessment.stepUpEligible, true);
+  assert.equal(assessment.stepUpReason, 'browser-error');
+  const f = browserErrorFixture(), { first, resumed } = await f.challenge();
+  assert.deepEqual(f.calls, ['rate', 'v3']); assert.equal(f.used.size, 0);
+  assert.equal(first.body.source, 'fallback'); assert.equal(first.body.siteverify, undefined);
+  assert.equal(first.body.stepUpEligible, undefined); assert.equal(first.body.stepUpReason, undefined);
+  assert.equal(first.body.challenge.provider, 'recaptcha-v2');
+  const result = await f.run(resumed);
+  assert.equal(result.status, 200); assert.equal(result.body.source, 'classifier');
+  assert.deepEqual(f.calls, ['rate', 'v3', 'rate', 'v2', 'consume', 'model']);
+  for (const count of [5, 10, 15]) {
+    assert.equal(result.body.teacherPlans[count].exerciseIds.length, count);
+    assert.deepEqual(result.body.teacherPlans[count].modelExerciseIds, labels(count).map(label => `ex:${pdfId}:${label.slice(2)}`));
+  }
+});
+
+test('browser-error eligibility checks the exact raw Google response, never sanitized diagnostics or other failures', async () => {
+  const malformed = [null, [], 'browser-error', {}, { 'error-codes': ['browser-error'] },
+    { ...browserError(), success: true }, { ...browserError(), success: 'false' },
+    ...[[], ['invalid-input-secret'], ['invalid-input-response'], ['timeout-or-duplicate'],
+      ['browser-error', 'timeout-or-duplicate'], ['browser-error', 'browser-error'], ['browser-error', null],
+      [['browser-error']], 'browser-error'].map(codes => ({ ...browserError(), 'error-codes': codes })),
+    ...['score', 'hostname', 'action'].flatMap(field => [undefined, null, '', 0, 0.1, false, {}, [], 'wrong']
+      .map(value => ({ ...browserError(), [field]: value }))),
+  ];
+  for (const raw of malformed) {
+    const f = fixture(); f.v3(raw); const result = await f.run();
+    assert.equal(result.status, 403); assert.equal(result.body.code, 'BOT_VERIFICATION_FAILED');
+    assert.equal(result.body.challenge, undefined); assert.deepEqual(f.calls, ['rate', 'v3']);
+    assert.equal(f.used.size, 0);
+  }
+});
+
+test('v3 transport, HTTP, JSON and deadline failures never become a browser-error challenge', async () => {
+  for (const kind of ['transport', 'http', 'json', 'timeout']) {
+    const f = fixture(); let attempts = 0;
+    const result = await f.run(payload(), { recaptchaTimeoutMs: 5, fetch: async () => {
+      attempts += 1;
+      if (kind === 'transport') throw new Error('browser-error');
+      if (kind === 'timeout') return new Promise(() => {});
+      return { ok: kind !== 'http', status: kind === 'http' ? 503 : 200, json: async () => {
+        if (kind === 'json') throw new SyntaxError('browser-error');
+        return browserError();
+      } };
+    } });
+    assert.equal(attempts, 1); assert.equal(result.body.challenge, undefined);
+    assert.equal(result.body.code, kind === 'timeout' ? 'UNAVAILABLE' : 'BOT_VERIFICATION_FAILED');
+    assert.deepEqual(f.calls, ['rate']); assert.equal(f.used.size, 0);
+  }
+});
+
+test('client-forged eligibility or siteverify fields cannot create a browser-error challenge', async () => {
+  const f = fixture(); f.v3({ success: false, 'error-codes': ['invalid-input-response'] });
+  const input = payload();
+  for (const target of [input, input.botVerification]) Object.assign(target, {
+    stepUpEligible: true, stepUpReason: 'browser-error', siteverify: { errorCodes: ['browser-error'], score: null, hostname: '', action: '' },
+  });
+  const result = await f.run(input);
+  assert.equal(result.status, 403); assert.equal(result.body.code, 'BOT_VERIFICATION_FAILED');
+  assert.equal(result.body.challenge, undefined); assert.deepEqual(f.calls, ['rate', 'v3']);
+});
+
+test('browser-error cannot issue tickets outside the existing teacher, configuration, origin and host boundaries', async () => {
+  for (const kind of ['home', 'worksheet', 'ramzi']) {
+    const f = browserErrorFixture(), input = payload(); input.page.kind = kind;
+    const result = await f.run(input);
+    assert.equal(result.body.challenge, undefined); assert.ok(!f.calls.includes('model'));
+  }
+  for (const overrides of [{ recaptchaV2SiteKey: '' }, { recaptchaV2Secret: '' }, { captchaUses: undefined },
+    { origin: 'https://attacker.example' }, { requestHost: 'attacker.example' }, { requestHost: 'noamdoronmath.co.il' }]) {
+    const f = browserErrorFixture(), result = await f.run(payload(), overrides);
+    assert.equal(result.status, 403); assert.equal(result.body.challenge, undefined);
+    assert.ok(!f.calls.includes('model')); assert.equal(f.used.size, 0);
+  }
+  const f = browserErrorFixture(), input = payload(); input.botVerification.token = '';
+  assert.equal((await f.run(input)).body.challenge, undefined); assert.deepEqual(f.calls, ['rate']);
+});
+
+test('browser-error tickets retain exact payload, origin, host, IP, signature and 120-second expiry bindings', async () => {
+  for (const kind of ['payload', 'origin', 'host', 'ip', 'tampered', 'expired', 'future']) {
+    const f = browserErrorFixture(), { resumed } = await f.challenge(); f.calls.length = 0;
+    const overrides: any = {};
+    if (kind === 'payload') resumed.teacher.count = 10;
+    if (kind === 'origin') Object.assign(overrides, { origin: 'https://noamdoronmath.co.il', requestHost: 'noamdoronmath.co.il' });
+    if (kind === 'host') overrides.requestHost = 'noamdoronmath.co.il';
+    if (kind === 'ip') overrides.clientIp = '203.0.113.99';
+    if (kind === 'tampered') resumed.botVerification.requestToken = 'A' + resumed.botVerification.requestToken.slice(1);
+    if (kind === 'expired') overrides.now = now + STEP_UP_TTL_MS;
+    if (kind === 'future') overrides.now = now - 1;
+    const result = await f.run(resumed, overrides);
+    assert.equal(result.status, 403); assert.equal(result.body.challenge, undefined);
+    assert.deepEqual(f.calls, ['rate']); assert.equal(f.used.size, 0);
+  }
+});
+
+test('browser-error without a trusted IP still requires the signed HttpOnly session and both rate buckets', async () => {
+  const f = browserErrorFixture(), overrides = { clientIp: '' };
+  const { first, resumed } = await f.challenge(payload(), overrides);
+  assert.deepEqual(f.calls, ['rate', 'rate', 'v3']);
+  const header = first.headers['Set-Cookie'];
+  for (const attribute of ['HttpOnly', 'Secure', 'SameSite=Strict', 'Max-Age=120', 'Path=/api/noamSiteCompanion']) assert.ok(header.includes(attribute));
+  f.calls.length = 0;
+  assert.equal((await f.run(resumed, overrides)).status, 403); assert.deepEqual(f.calls, ['rate', 'rate']);
+  f.calls.length = 0;
+  assert.equal((await f.run(resumed, overrides, header.split(';')[0])).body.source, 'classifier');
+  assert.deepEqual(f.calls, ['rate', 'rate', 'v2', 'consume', 'model']);
+});
+
+test('browser-error tickets require a fresh successful same-host v2 assessment and never chain another challenge', async () => {
+  for (const assessment of [browserError(), { success: false },
+    { success: true, hostname: 'attacker.example', challenge_ts: new Date(now).toISOString() },
+    { success: true, hostname: host, challenge_ts: new Date(now - STEP_UP_TTL_MS - 1).toISOString() },
+    { success: true, hostname: host, challenge_ts: new Date(now).toISOString(), score: 0.9, action: 'noam_site_companion' }]) {
+    const f = browserErrorFixture(), { resumed } = await f.challenge(); f.calls.length = 0; f.v2(assessment);
+    const result = await f.run(resumed);
+    assert.equal(result.status, 403); assert.equal(result.body.code, 'BOT_VERIFICATION_FAILED');
+    assert.equal(result.body.challenge, undefined); assert.deepEqual(f.calls, ['rate', 'v2']);
+    assert.equal(f.used.size, 0);
+  }
+});
+
+test('browser-error tickets remain atomic single-use and never permit a model call after store failure', async () => {
+  const f = browserErrorFixture(), { resumed } = await f.challenge();
+  const results = await Promise.all([f.run(resumed), f.run({ ...resumed,
+    botVerification: { ...resumed.botVerification, token: 'another-synthetic-human-v2-proof' } })]);
+  assert.deepEqual(results.map(result => result.status).sort(), [200, 403]);
+  assert.equal(f.calls.filter(call => call === 'model').length, 1); assert.equal(f.used.size, 1);
+  for (const throws of [false, true]) {
+    const blocked = browserErrorFixture(), ticket = await blocked.challenge(); blocked.calls.length = 0;
+    const result = await blocked.run(ticket.resumed, { captchaUses: { consume: async () => {
+      if (throws) throw new Error('synthetic nonce store failure'); return false;
+    } } });
+    assert.equal(result.status, 403); assert.equal(result.body.challenge, undefined);
+    assert.deepEqual(blocked.calls, ['rate', 'v2']);
+  }
+});
+
+test('browser-error fallback retains rate enforcement before both issuance and redemption', async () => {
+  const deniedRate = { rateBackend: { take: async () => false } };
+  const f = browserErrorFixture();
+  assert.equal((await f.run(payload(), deniedRate)).status, 429); assert.deepEqual(f.calls, []);
+  const { resumed } = await f.challenge(); f.calls.length = 0;
+  const result = await f.run(resumed, deniedRate);
+  assert.equal(result.status, 429); assert.equal(result.body.challenge, undefined); assert.deepEqual(f.calls, []);
 });

@@ -302,16 +302,25 @@ export async function verifyRecaptcha({ token, secret, fetch, action, timeoutMs 
     data.score >= RECAPTCHA_MIN_SCORE &&
     isAllowedRecaptchaHostname(data.hostname)
   );
-  // Only a valid assessment whose sole failure is the score may request a
-  // human challenge. An invalid/expired token or wrong action/host cannot.
-  const stepUpEligible = !!(
+  // A low score still requires the original action and allowed hostname.
+  const lowScoreEligible = !!(
     data?.success === true && data.action === expected &&
     Number.isFinite(data.score) && data.score >= 0 && data.score < RECAPTCHA_MIN_SCORE &&
     isAllowedRecaptchaHostname(data.hostname) &&
     (data["error-codes"] === undefined || (Array.isArray(data["error-codes"]) && data["error-codes"].length === 0))
   );
+  // Google's exact browser-error assessment may offer a separately verified
+  // human challenge, never model access. Check the raw response, not the
+  // sanitized diagnostic fields: malformed or mixed assessments stay denied.
+  const browserErrorEligible = !!(
+    data && typeof data === "object" && !Array.isArray(data) && data.success === false &&
+    Array.isArray(data["error-codes"]) && data["error-codes"].length === 1 && data["error-codes"][0] === "browser-error" &&
+    !("score" in data) && !("hostname" in data) && !("action" in data)
+  );
+  const stepUpEligible = lowScoreEligible || browserErrorEligible;
   if (!passed) siteverifyLog(data);
-  return { passed, stepUpEligible, siteverify: siteverifyFields(data) };
+  return { passed, stepUpEligible, siteverify: siteverifyFields(data),
+    ...(browserErrorEligible ? { stepUpReason: "browser-error" } : {}) };
 }
 
 function rateErrorText(error) {
@@ -409,6 +418,7 @@ export async function guardCompanionRequest(input, deps) {
       code: "BOT_VERIFICATION_FAILED",
       siteverify: (check && check.siteverify) || siteverifyFields(null),
       stepUpEligible: check?.stepUpEligible === true,
+      ...(check?.stepUpReason === "browser-error" ? { stepUpReason: "browser-error" } : {}),
     };
   }
   return { ok: true, status: 200 };
