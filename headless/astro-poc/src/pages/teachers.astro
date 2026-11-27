@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { allowPaymentTesting } from '../lib/paymentAccess';
 import { readPublicGenerationTrial } from '../lib/teacherGenerationStore';
 import TeacherComingSoon from '../components/TeacherComingSoon.astro';
 import {
@@ -33,7 +32,6 @@ if (legacyTarget) {
   });
 }
 const trial = await readPublicGenerationTrial();
-const paymentOpen = await allowPaymentTesting(Astro.request);
 Astro.response.headers.set('Cache-Control', 'private, no-store');
 Astro.response.headers.set('Vary', 'Cookie');
 ---
@@ -44,5 +42,5 @@ Astro.response.headers.set('Vary', 'Cookie');
   skipHref="#teacher-start"
 >
   <script type="application/ld+json" set:html={JSON.stringify(teacherFaqJsonLd)} />
-  <TeacherComingSoon trial={trial} paymentOpen={paymentOpen} />
+  <TeacherComingSoon trial={trial} />
 </BaseLayout>
