@@ -8,7 +8,7 @@ import { resolveTestBrowser } from './helpers/chromium.ts';
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), 'utf8');
 const pageSource = read('../src/pages/games/eliyahu-pythagoras/index.astro');
-const game = read('../src/games/eliyahu-pythagoras.html');
+const game = read('../public/games/eliyahu-pythagoras.html');
 // Exercise the actual wrapper styles and resize script with the actual game,
 // isolated from the site's authentication, network services, and widgets.
 const wrapper = `<!doctype html><html dir="rtl"><head><meta charset="utf-8">

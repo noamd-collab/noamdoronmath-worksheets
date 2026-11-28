@@ -1,18 +1,22 @@
 /**
- * Unchanged game document. The public page iframes this URL.
- * X-Robots-Tag keeps the raw file out of the index; the wrapper page is canonical.
+ * The playable game document for /games/eliyahu-pythagoras/play.
+ * The 756 KB document is a static file at /games/eliyahu-pythagoras.html, so it
+ * stays out of the worker bundle and never costs base64 budget. This route keeps
+ * the old embed URL working; the static file carries
+ * <meta name="robots" content="noindex"> and the wrapper page at
+ * /games/eliyahu-pythagoras stays canonical.
  */
 import type { APIRoute } from 'astro';
-import gameHtml from '../../../games/eliyahu-pythagoras.html?raw';
+
+export const PYTHAGORAS_GAME_DOCUMENT_PATH = '/games/eliyahu-pythagoras.html';
 
 export const prerender = false;
 
 export const GET: APIRoute = () =>
-  new Response(gameHtml, {
-    status: 200,
+  new Response(null, {
+    status: 308,
     headers: {
-      'content-type': 'text/html; charset=utf-8',
+      location: PYTHAGORAS_GAME_DOCUMENT_PATH,
       'cache-control': 'public, max-age=300',
-      'x-robots-tag': 'noindex',
     },
   });
