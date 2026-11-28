@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { GROW_IPN_SECRET, NOAM_TEACHER_GRANT_SECRET } from 'astro:env/server';
 import {
   GROW_CONTRACT,
   grantGrowEntitlement,
@@ -6,6 +7,7 @@ import {
   revokeGrowEntitlement,
   verifyGrowSignature,
 } from '../../../lib/growPayment';
+import { secretFromEnv } from '../../../lib/noamSecrets';
 import { runtimeProcessEnv } from '../../../lib/runtimeEnv';
 
 export const prerender = false;
@@ -27,7 +29,13 @@ const json = (body: unknown, status = 200) =>
  * 200 — including duplicates and statuses we deliberately ignore.
  */
 export const POST: APIRoute = async ({ request }) => {
-  const env = runtimeProcessEnv();
+  // On Wix hosting the worker has no populated process.env; secrets arrive
+  // through the Astro env schema, with process.env as the local/test fallback.
+  const env = {
+    ...runtimeProcessEnv(),
+    GROW_IPN_SECRET: secretFromEnv('GROW_IPN_SECRET', GROW_IPN_SECRET),
+    NOAM_TEACHER_GRANT_SECRET: secretFromEnv('NOAM_TEACHER_GRANT_SECRET', NOAM_TEACHER_GRANT_SECRET),
+  };
   const secret = env.GROW_IPN_SECRET || '';
   if (!secret) {
     return json({ ok: false, code: 'NOT_CONFIGURED' }, 503);

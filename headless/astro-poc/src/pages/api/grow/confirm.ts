@@ -1,5 +1,7 @@
 import type { APIRoute } from 'astro';
+import { GROW_IPN_SECRET } from 'astro:env/server';
 import { verifyReturnToken } from '../../../lib/growPayment';
+import { secretFromEnv } from '../../../lib/noamSecrets';
 import { runtimeProcessEnv } from '../../../lib/runtimeEnv';
 
 export const prerender = false;
@@ -13,7 +15,10 @@ export const prerender = false;
  * teacher area closed until the server confirms.
  */
 export const GET: APIRoute = async ({ request, url }) => {
-  const env = runtimeProcessEnv();
+  const env = {
+    ...runtimeProcessEnv(),
+    GROW_IPN_SECRET: secretFromEnv('GROW_IPN_SECRET', GROW_IPN_SECRET),
+  };
   const secret = env.GROW_IPN_SECRET || '';
   const token = url.searchParams.get('t') || '';
   const fallback = new URL('/payment', url);

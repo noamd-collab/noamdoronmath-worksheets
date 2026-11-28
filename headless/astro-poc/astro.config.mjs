@@ -47,6 +47,11 @@ export default defineConfig({
       NOAM_RECAPTCHA_V2_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       // OtterlyAI Agent Analytics webhook. Optional until the secret is saved.
       OTTERLY_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      // Grow: the IPN signature key and the shared grant secret. Optional so a
+      // preview build succeeds before they are set; the routes refuse to grant
+      // when either is missing, rather than trusting an unsigned notification.
+      GROW_IPN_SECRET: envField.string({ context: 'server', access: 'secret', optional: true }),
+      NOAM_TEACHER_GRANT_SECRET: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
 });
