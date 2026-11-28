@@ -304,7 +304,9 @@ export async function grantGrowEntitlement(input: {
   return {
     ok: true,
     status: String(data.status ?? 'active'),
-    alreadyGranted: data.already_granted === true || data.created === false,
+    // The RPC answers {granted, duplicate, expiresAt}: a retried payment id
+    // returns the existing row with granted=false, duplicate=true.
+    alreadyGranted: data.duplicate === true || data.granted === false,
   };
 }
 

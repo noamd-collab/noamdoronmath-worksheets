@@ -173,9 +173,10 @@ describe('grant', () => {
   };
 
   it('calls the grant RPC with the secret and the server-side plan', async () => {
-    const { fetchImpl, calls } = stubFetch({ ok: true, status: 'active', created: true });
+    const { fetchImpl, calls } = stubFetch({ granted: true, duplicate: false, expiresAt: '2026-12-26T00:00:00Z' });
     const result = await grantGrowEntitlement({ notification, env: ENV, fetchImpl });
     assert.equal(result.ok, true);
+    if (result.ok) assert.equal(result.alreadyGranted, false);
     assert.equal(calls.length, 1);
     assert.equal(calls[0].url, 'https://example.supabase.co/rest/v1/rpc/noam_teacher_access_grant');
     assert.deepEqual(calls[0].body, {
@@ -190,7 +191,7 @@ describe('grant', () => {
   });
 
   it('reports a duplicate instead of pretending a new grant was created', async () => {
-    const { fetchImpl } = stubFetch({ ok: true, status: 'active', created: false });
+    const { fetchImpl } = stubFetch({ granted: false, duplicate: true, expiresAt: '2026-12-26T00:00:00Z' });
     const result = await grantGrowEntitlement({ notification, env: ENV, fetchImpl });
     assert.equal(result.ok, true);
     if (result.ok) assert.equal(result.alreadyGranted, true);
