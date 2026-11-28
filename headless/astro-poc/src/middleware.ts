@@ -3,9 +3,11 @@
  * OPEN-15: then old classic-site paths and trailing slashes (lib/redirects.ts).
  * Astro treats `pages/_…` as private (not routed), so this lives in middleware.
  *
- * On Wix Headless hosting, edge often intercepts `/_files` before Astro
- * (301 → site filesusr). This middleware applies when Astro sees the path
- * (local/node, or if edge passes through). Prefer CDN links from catalog.
+ * On Wix Headless hosting the Cloudflare asset handler serves `/_files` and
+ * public HTML before Astro (301 → site filesusr, or the static viewer).
+ * Retired junior sheets are therefore answered in src/worker/retiredJuniorEdge.ts
+ * at the start of the worker fetch. This middleware still applies when Astro
+ * sees the path (local/node, or if the asset handler passes through).
  *
  * Astra / Wix quirk: public `*.html` assets 404 for document navigations that
  * include a query string. `context.rewrite(pathname)` still 404s on Wix — return
@@ -16,6 +18,7 @@ import { deduplicateSeoResponse } from './lib/serverSeo';
 import { OTTERLY_API_KEY } from 'astro:env/server';
 import { redirectTargetForSiteUgdPath } from './lib/wixMedia';
 import { retiredJuniorRequestTarget } from './lib/retiredJuniorWorksheets';
+import { replacedPartialHintTarget } from './lib/replacedPartialHints';
 import { resolveRedirect } from './lib/redirects';
 import { PUBLIC_HTML_SHELLS } from './lib/publicHtmlShells';
 import { secretFromEnv } from './lib/noamSecrets';
@@ -45,6 +48,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const retired = retiredJuniorRequestTarget(path, context.url.searchParams);
   if (retired) {
     return context.redirect(retired, 301);
+  }
+  const replacedPartial = replacedPartialHintTarget(path, context.url.searchParams);
+  if (replacedPartial) {
+    return context.redirect(replacedPartial, 301);
   }
   const target = redirectTargetForSiteUgdPath(path, context.url.search);
   if (target) {

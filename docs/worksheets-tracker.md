@@ -14,6 +14,10 @@ The three G7-T137 student PDFs each have 20 reviewed Ramzi markers on the printe
 
 Each of the three G7-T136 student PDFs has 36 reviewed Ramzi markers. Each marker is bound to its printed subsection and the three approved text hints. The grade 7 frequency landing lists these PDFs under topic 25, alongside the original downloads.
 
+## 2026-11-26 — Ramzi B13 worksheet readers
+
+The catalog and topic pages link 54 PDFs in 18 middle-school editions to the existing Ramzi reader. The indexes bind 1,490 printed subsections to the exact PDF, source item and three ordered hint hashes. Each marker requires a matching verified Supabase row.
+
 ## 2026-11-22 — Grade 7 common factors and introductory equations (078 and 079)
 
 All 63 subsections in G7-T124 and 92 in G7-T125 have three reviewed text hints each. The six original PDFs are linked from their topic pages and the catalog. The Ramzi markers match the original printed positions and the anonymously verified hint text for each subsection.
@@ -71,6 +75,7 @@ These nine worksheets use skill 7.3.3. Each has space for working and includes a
 - G7-ANG-02 (7/12, adjacent-vertical-angles-grade-7, after G7-ANG-03): angle bisector, and sum and difference of angles. Three pdf-only PDFs, non-default; the landing gets a second short PDF section, whose note starts with "גם לסדרה זו" so the page repeats no paragraph.
 - Qwen Code took the package over from GitHub Copilot with Astra integration; r02 fixed both HOLD receipts of r01 (copied example content, a rounding contradiction, an ambiguous claim, an answer without the angle name). Both r02 reviews (Google Antigravity full and blind numbers) PASS. Two media readbacks per PDF match.
 - With this package every required grade 7–9 program unit has a reviewed series on the site.
+- Corrected on 26.11.2026: the printed final answer to 5ג in the excellence level (מצוינות) said no; a bisector of a reflex angle makes two obtuse angles, so it now says yes, and no only for angles up to 180°. The level keeps its edition, worksheet and learning ids and moves to revision 2 with a new PDF (`0246f51e…`). Pages 1–8 are identical, so all 43 Ramzi pins stay in place; the old Ramzi reader link redirects to the new PDF, and the replaced PDF stays on Wix. The batch 12 record keeps the replaced row under `corrections`. The 10 arc markers of q1, q11 and q12 are now named by their given equal-angle constraints (no PDF change), so verify_export, the Noam AI package check and the plain-math check report 0 errors; two items remain for a human look.
 
 ## 2026-11-18 — batch 11: four reviewed PDF editions; the grade 7 angle units go live (candidate)
 

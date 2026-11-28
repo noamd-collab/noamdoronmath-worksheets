@@ -32,7 +32,8 @@ if (legacyTarget) {
   });
 }
 const trial = await readPublicGenerationTrial();
-Astro.response.headers.set('Cache-Control', 'no-store');
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+Astro.response.headers.set('Vary', 'Cookie');
 ---
 <BaseLayout
   title={TEACHER_LANDING_TITLE}

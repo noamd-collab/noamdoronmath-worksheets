@@ -31,6 +31,7 @@ import { reviewedBatch09 } from './fixtures/batch09-pdf';
 import { reviewedBatch10 } from './fixtures/batch10-pdf';
 import { reviewedBatch11 } from './fixtures/batch11-pdf';
 import { reviewedBatch12 } from './fixtures/batch12-pdf';
+import { editionAfterPdfCorrections } from './fixtures/pdf-corrections';
 import { reviewedBatch13 } from './fixtures/batch13-pdf';
 import { reviewedPcm53 } from './fixtures/pcm53-pdf';
 import { afterLandingCorrections } from './fixtures/landing-corrections-20261118';
@@ -880,7 +881,7 @@ test('the real batch-12 page exposes the three ANG-02 PDFs after the earlier edi
     for (const addition of reviewedBatch12.additions.filter(item => item.slug === slug)) {
       const links = [...hero.querySelectorAll(`a[data-edition-id="${addition.editionId}"]`)];
       assert.deepEqual(links.map(link => link.getAttribute('href')),
-        addition.edition.levels.map(level => `https://static.wixstatic.com/ugd/d8e7ad_${level.pdfId}.pdf`));
+        editionAfterPdfCorrections(addition.edition).levels.map(level => `https://static.wixstatic.com/ugd/d8e7ad_${level.pdfId}.pdf`));
       assert.ok(links.every(link => link.textContent.includes('פתיחת PDF')
         && !link.textContent.includes('רמזי') && !link.getAttribute('href')!.includes('viewer')));
       links.forEach(link => urls.add(link.getAttribute('href')!));

@@ -65,6 +65,13 @@ export function beforeBatch12Copy<T>(slug: string, page: T): T {
   const delta = reviewed.landingDeltas.find(d => d.slug === slug);
   if (!delta) return page;
   const restored: any = structuredClone(page);
+  // The B13 reader adds subsection links to the three November 18 PDFs.
+  // Unwind only its exact navigation sentence when examining that timeline.
+  const directions = restored.sections?.[2]?.blocks?.[2];
+  if (slug === 'adjacent-vertical-angles-grade-7' &&
+      directions?.text === 'בדפים הקודמים אפשר להיעזר ברמזי. כשמופיע קישור המסומן ״רמזי״ ליד הרמה שבחרתם, פותחים אותו ולוחצים על ״רמז״ ליד הסעיף.') {
+    directions.text = 'בדפים הקודמים שנפתחים עם רמזי אפשר לבקש רמז ולהמשיך לנסות באופן עצמאי; בקובצי ה־PDF הנוספים יש שאלות ותשובות סופיות, בלי רמזים.';
+  }
   for (const change of delta.fields) {
     assert.equal(change.path.length, 1, `${slug}: reviewed top-level copy field`);
     const key = change.path[0];
