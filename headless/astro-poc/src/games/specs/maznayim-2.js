@@ -709,27 +709,24 @@
       { step: 7, name: 'משוואה מסיפור', math: '4x + 6 = x + 24' }
     ],
     bonus: {
-      label: 'מכונת המשוואות ⚖️',
+      label: 'מכונת המשוואות בשני האגפים ⚖️',
       closeLabel: 'סגור את המכונה',
-      hint: 'קבל משוואה, בחר את הפתרון ובדוק אותו בהצבה.',
+      hint: 'קבל משוואה עם איקס בשני האגפים, בחר את הפתרון ובדוק אותו בהצבה.',
       setup: function (box, ctx) {
         var q = null, guess = 0;
         function coef(c) { return (c === 1 ? '' : String(c)) + 'x'; }
         function pick(lo, hi) { return lo + Math.floor(Math.random() * (hi - lo + 1)); }
         function roll() {
-          var x = pick(1, 9), b = pick(1, 9), a;
-          if (Math.random() < 0.65) {
-            a = pick(2, 6);
-            q = { both: false, a: a, b: b, x: x, c: a * x + b };
-          } else {
-            a = pick(3, 7);
-            var d = pick(1, a - 1);
-            q = { both: true, a: a, b: b, d: d, x: x, e: b + (a - d) * x };
-          }
+          // Every equation keeps the unknown on both sides: this machine is the sequel's
+          // drill, and the one-sided version belongs to maznayim.
+          var x = pick(1, 9), b = pick(1, 9);
+          var a = pick(3, 7);
+          var d = pick(1, a - 1);
+          q = { both: true, a: a, b: b, d: d, x: x, e: b + (a - d) * x };
         }
         function rightValue(v) { return q.both ? q.d * v + q.e : q.c; }
         function leftValue(v) { return q.a * v + q.b; }
-        box.innerHTML = '<div class="bTitle">מכונת המשוואות</div>'
+        box.innerHTML = '<div class="bTitle">מכונת המשוואות בשני האגפים</div>'
           + '<div class="bSub">פתור בראש, בחר את הפתרון ובדוק: המכונה מציבה אותו בשני הצדדים.</div>'
           + '<div class="bChip" data-eq dir="ltr"></div>'
           + '<div class="stepper" dir="ltr"><div class="unit" dir="ltr">'
